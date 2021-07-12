@@ -1,4 +1,4 @@
-# MONAI Informatics Gateway Specification
+# MONAI Informatics Gateway Requirements
 
 ## Overview
 
