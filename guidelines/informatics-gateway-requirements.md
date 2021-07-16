@@ -4,6 +4,8 @@
 
 The MONAI Informatics Gateway (MIG) is the integration point between healthcare information systems and the MONAI Deploy SDK and MONAI App Server.  
 
+## Purpose
+
 This document defines the requirements for the MONAI Informatics Gateway.
 
 ## Goal

@@ -23,6 +23,8 @@ Data SHALL be routed to the user-defined applications and results, if any, SHALL
 
 #### MWM SHALL be able to receive notifications upon data enters MONAI Deploy.
 
+#### MWM SHALL be able to receive notifications upon data enters MONAI Deploy without triggering app discovery engine.
+
 #### MWM SHALL be able to discover applications deployed on MONAI Deploy.
 
 #### MWM SHALL respect user-defined data discovery rules.
@@ -38,3 +40,10 @@ Data SHALL be routed to the user-defined applications and results, if any, SHALL
 
 #### MWM SHALL allow users to create custom sinks.
 
+### Functional Requirements
+
+#### MWM SHALL be able to support multiple orchestration engines.
+
+#### MWM SHALL track status of all jobs initiated with orchestration engines.
+
+#### MWM SHALL remove payloads only upon successful export.
