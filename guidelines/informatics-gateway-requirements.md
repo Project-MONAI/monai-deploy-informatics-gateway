@@ -98,8 +98,11 @@ MIG SHALL handle or ignore C-ECHO requests based on user configuration.
 #### Store SCU AE Title shall be configurable
 MIG SHALL allow users to configure the SCU AE TItle.
 
-#### Allow exporting to multiple DICOM destinations
-MIG SHALL be able to export inference results to one or more DICOM destinations.
+#### Allow multiple remote (source) SCP to be configured
+MIG SHALL allow users to configure multiple remote (source) AETs.
+
+#### Allow multiple remote (destination) SCP to be configured
+MIG SHALL allow users to configure multiple remote (destination) AETs.
 
 #### Configure number of concurrent associations
 MIG SHALL allow user to configure number of concurrent association that are allowed, per system.
