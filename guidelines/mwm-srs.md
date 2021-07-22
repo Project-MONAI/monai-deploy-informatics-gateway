@@ -36,7 +36,7 @@ For each requirement, the following attributes have been specified
 
 ### [REQ] MWM SHALL allow users to upload data
 
-An API must be provided to the data ingestion services, such on the Informatics Gateway, to upload payloads to the data discovery engine.
+An API must be provided to the data ingestion services, such as the Informatics Gateway, to upload payloads to the data discovery engine.
 
 #### Background
 With the design of MONAI Deploy, the MWM does not interface with HIS/RIS directly but rather, through the Informatics Gateway (a data ingestion service).  Therefore, APIs must be provided to interface any data ingestion services.  This also allows the users of the platform to extend these APIs to interface their systems using different messaging protocols.
@@ -60,8 +60,8 @@ Verify that payloads can be uploaded from a data ingestion service and then trig
 #### Target Release
 MONAI Workload Manager R1
 
-### [REQ] MWM SHALL be able to discover applications deployed on MONAI Deploy
-MWM shall discover applications deployed on the systems and make them available to the data discovery agent and export sinks.
+### [REQ] MWM SHALL be able to discover applications deployed on MONAI App Server
+MWM shall discover applications deployed on the MONAI App Server and make them available to the data discovery agent and export sinks.
 
 #### Background
 In order to associate user-defined data discovery rules with applications, users and MWM, itself must know all MONAI applications deployed on the platform. This also allows users to link each deployed applications to one or more export sinks.
@@ -74,14 +74,35 @@ MONAI Workload Manager R1
 
 ## Data Discover Agent/Rules Requirements
 
-### [REQ] MWM Data Discover Agent (DDA) SHALL be able to filter data by DICOM header
-MWM DDA shall allow users to define filtering rules based on DICOM headers using pre-built functions, such as, equals, contains, greater, greater-than, less, less-than, etc...
+### [REQ] MWM Data Discover Agent (DDA) SHALL be able to filter data by DICOM headers
+MWM DDA shall allow users to define filtering rules based on DICOM Attributes that do not require parsing pixel data using pre-built functions:
+* Equals
+* Contains
+* Greater
+* Greater-Than
+* Less
+* Less-Than
 
 #### Background
 Given that multiple applications may be deployed on the MONAI Deploy platform and often more jobs are scheduled and launched than available resources.  To avoid launching all applications and let the applications decide if a dataset is a fit, the DDA applies user defined DICOM header rules to select the dataset that meets its requirements before launching the application.
 
 #### Verification Strategy
-Given a set of data discovery rules using the pre-built functions and a DICOM dataset, the data discovery agent applies the rule to removes any data that is not suitable.
+Given a set of data discovery rules using the pre-built functions and a DICOM dataset, the data discovery agent applies the rule set to select any data that matches the filtering criteria.
+
+#### Target Release
+MONAI Workload Manager R1
+
+### [REQ] MWM Data Discover Agent (DDA) SHALL be able to filter data by combining DICOM headers 
+MWM DDA shall provide a mechanism so that users can combine two or more DICOM attribute based filtering rules using logical operators:
+
+* AND
+* OR
+
+#### Background
+Often in DICOM data filtering, users want to combine multiple attributes, e.g., any DICOM with Modality equals CT *OR* SC to allow proprietary data that are stored in Secondary Capture along with CT to be processed.
+
+#### Verification Strategy
+Combine DICOM rules using the logical operators and a DICOM dataset, the data discovery agent applies the rule set to select any data that matches the filtering criteria.
 
 #### Target Release
 MONAI Workload Manager R1
@@ -134,19 +155,6 @@ Deploy a rule set and associate it with two applications.  Verify that both appl
 #### Target Release
 MONAI Workload Manager R1
 
-### [REQ] MWM SHALL allow application produced outputs routed back to another application
-MWM shall allow output of an application to be routed back to other application(s).
-
-#### Background
-Given that DDA only filters data based on a static list of rules and cannot apply complex algorithms to a dataset, it may often not meet the needs of an application.  Therefore, this requirement enables user to construct a complex data filtering application to decide and output the dataset that is suitable for another application.
-
-#### Verification Strategy
-Deploy and link a data filtering application and a main application.  Verify that the main application receives output from the data filtering application.
-
-#### Target Release
-MONAI Workload Manager R2
-
-
 ## Data Export Requirements
 
 ### [REQ] MWM SHALL support multiple export sinks (destinations)
@@ -187,8 +195,8 @@ MONAI Workload Manager R1
 
 ## Functional Requirements
 
-### [REQ] MWM SHALL be able to support multiple orchestration engines
-Besides integrating MONAI App Server, MWM shall support other popular OSS orchestration engines so MONAI App SDK can be easily integrated.
+### [REQ] MWM shall provide a mechanism to develop plugins for discovering applications
+Besides integrating MONAI App Server, MWM shall provide a mechanism to allow users to develop plugins to discover apps registered with an orchestration engine such as Argo.
 
 #### Background
 Many existing users have already invested in other orchestration engines which may have already become a requirement for their workflow.  Therefore, supporting other OSS orchestration engines would simplify the integration of their existing environment with MONAI products.
@@ -211,8 +219,20 @@ Set up MWM with two orchestration engines, trigger a couple jobs and make sure s
 #### Target Release
 MONAI Workload Manager R1
 
+### [REQ] MWM SHALL provide a mechanism for clients to subscribe to notifications
+MWM shall provide a mechanism so that users or clients can subscribe to the notification service to get job status or other system information.
+
+#### Background
+TBD
+
+#### Verification Strategy
+TBD
+
+#### Target Release
+MONAI Workload Manager R3
+
 ### [REQ] MWM SHALL allow users to define storage cleanup rules
-MWM shall provide functionalities on how and when payloads can be removed from the system.
+MWM shall provide functionalities on when the payloads can be removed from the MWM cache.
 
 #### Background
 Often medical records, especially medical images, requires large amount of disk storage and given that disk storage space is always limited, there must exist a method to remove payloads. For MWM, payloads that are associated with a job that completes in a successful state may be removed while ones that failed may need to be kept for further investigation.
@@ -223,3 +243,14 @@ Verify that payloads are removed based on users' configuration.
 #### Target Release
 MONAI Workload Manager R2
 
+### [REQ] MWM SHALL allow application outputs routed to other applications
+MWM shall allow output of an application to be routed back to other application(s).
+
+#### Background
+Given that DDA only filters data based on a static list of rules and cannot apply complex algorithms to a dataset, it may often not meet the needs of an application.  Therefore, this requirement enables user to construct a complex data filtering application to decide and output the dataset that is suitable for another application.
+
+#### Verification Strategy
+Deploy and link a data filtering application and a main application.  Verify that the main application receives output from the data filtering application.
+
+#### Target Release
+MONAI Workload Manager R2
