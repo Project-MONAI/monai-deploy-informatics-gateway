@@ -1,0 +1,28 @@
+# Created at https://sequencediagram.org/
+title Payloads Service
+
+fontawesome f0f8 "PACS" as PACS
+participant "Informatics Gateway" as MIG
+participant "Payloasd API" as Payload
+fontawesome f0a0 "Storage" as Storage
+database "MWM Database" as DB
+
+
+group Payload.Upload API [Upload payload]
+MIG->Payload: Payload.Upload
+activate Payload 
+Payload->Storage: Save (State:Ready)
+Payload->DB: Save
+MIG<--Payload: Response
+deactivate Payload
+end 
+
+group Payload.Download API [Download payload]
+MIG->Payload: Payload.Download
+activate Payload 
+Payload->DB: Get
+Payload<--DB: Response
+Payload<--Storage: Load
+MIG<--Payload: Response
+deactivate Payload
+end 

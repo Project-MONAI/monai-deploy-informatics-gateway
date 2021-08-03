@@ -1,0 +1,28 @@
+# Created at https://sequencediagram.org/
+title Data Export Collection Service
+
+participant "Data Export Collection Service" as SVC
+database "MWM Database" as DB
+fontawesome f0a0 "Storage" as Storage
+participant "MONAI App Server" as APPS
+
+group Startup
+SVC->DB: Reset Results State:Processing->Queued
+end
+
+loop Update Jobs States
+SVC->DB: Query for jobs (State: Submitted)
+SVC->APPS: Query status of jobs
+SVC<-APPS: Response
+end 
+
+loop Download Payloads
+SVC->DB: Query for results (State: JobCompleted)
+note over SVC,DB: "results": where application \nregister their artifacts
+SVC<-APPS: Download payloads
+SVC->Storage: Save payloads
+SVC->DB: Query for App->Sink mappings
+SVC->DB: Geneate export jobs (State: Pending)
+note over SVC,DB: "export jobs": where the export clients \nquery for files to export
+SVC->DB: Update results (State: Completed)
+end

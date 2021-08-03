@@ -1,0 +1,35 @@
+# Created at https://sequencediagram.org/
+title Data Discovery Service & Job Scheduling Service
+
+participant "Data Discovery Service" as SVC
+participant "Job Scheduling Service" as JOB
+database "MWM Database" as DB
+participant "MONAI App Server" as APPS
+
+group Startup
+activate SVC
+activate JOB
+SVC->DB: Startup: Reset Payload:DataDiscovery->Pending
+SVC<-DB: Response
+JOB->DB: Startup: Load existing buckets
+JOB<-DB: Response
+end
+loop for each payload
+SVC<-DB: Load Data Discovery rulesets
+SVC<-DB: Load Payloads(State:Ready)
+SVC->DB: Update Payloads(State:DataDiscovery)
+loop for each rule
+SVC->SVC: Apply ruleset-filtering to each file
+SVC->SVC: Apply ruleset-grouping to each file
+SVC->JOB:Match: Create job bucket
+JOB->DB:Sync to DB
+note over JOB:A new bucket is created, if needed, with \ngrouping criteria, timeout info, etc...
+SVC->JOB: Match: Add payload to bucket
+JOB->DB:Sync to DB
+JOB->APPS: Launch Job
+JOB->DB:Remove bucket from DB
+SVC->DB: Update Paylods (State: DataDiscoveryCompleted)
+end
+end 
+deactivate SVC
+deactivate JOB

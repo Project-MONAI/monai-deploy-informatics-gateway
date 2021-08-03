@@ -1,0 +1,129 @@
+# Created at https://sequencediagram.org/
+
+title Export API
+
+participant PACS
+participant "MONAI\nInformatics Gateway" as MIG
+participant "Export Client" as Client
+participant CLI
+participant "Export API" as Export
+database "MWM Database" as DB
+
+group Sink.Create API [Create a sink]
+CLI->Export: POST /sink
+activate CLI 
+activate Export 
+Export->Export: Validate
+Export->DB: Save
+CLI<--Export: Response
+deactivate Export
+deactivate CLI
+end 
+
+group Sink.Delete API [Delete a sink[
+CLI->Export: DELETE /sink/{name}
+activate CLI
+activate Export 
+Export->Export: Validate
+Export->DB: Delete
+CLI<--Export: Response
+deactivate Export
+deactivate CLI
+end 
+
+group Sink.List API [List all sinks]
+CLI->Export: GET /sink
+activate CLI 
+activate Export 
+Export->Export: Validate
+Export->DB: List
+CLI<--Export: Response
+deactivate Export
+deactivate CLI
+end 
+
+group Sink.Get API [Get details of a sink]
+CLI->Export: GET /sink/{name}
+activate CLI 
+activate Export 
+Export->DB: Get
+CLI<--Export: Response
+deactivate Export
+deactivate CLI
+end 
+
+group Sink.Connect API
+CLI->Export: POST /sink/{name}/connect
+activate CLI 
+activate Export 
+Export->Export: Validate
+Export->DB: Save
+CLI<--Export: Response
+deactivate Export
+deactivate CLI
+end 
+
+group Sink.Disconnect API [Unlink app from sink]
+CLI->Export: DELETE /sink/{name}/disconnect
+activate CLI 
+activate Export 
+Export->Export: Validate
+Export->DB: Delete
+CLI<--Export: Response
+deactivate Export
+deactivate CLI
+end 
+
+group Results.Get API [Get results for a sink]
+Client->Export: Get /result/{sink}
+activate Client 
+activate Export 
+Export->DB: Get
+Client<--Export: Response
+deactivate Export
+deactivate Client
+end 
+
+group Results.Create API [Registers a new result-set]
+Client->Export: POST /result/{sink}
+activate Client 
+activate Export 
+Export->Export: Validate
+Export->DB: Save
+Client<--Export: Response
+deactivate Export
+deactivate Client
+end 
+
+
+group Results.Update API [Update Status]
+Client->Export: PATCH /result
+activate Client 
+activate Export 
+Export->DB: Save
+Client<--Export: Response
+deactivate Export
+deactivate Client
+end 
+
+group Results.Delete API [Update Status]
+Client->Export: DELETE /result/
+activate Client 
+activate Export 
+Export->DB: Mark for deletion
+Client<--Export: Response
+deactivate Export
+deactivate Client
+end 
+
+group Results.Delete API [Update Status]
+PACS->MIG: N-ACTION-RQ
+activate PACS
+MIG->Export: DELETE /result
+activate MIG 
+Export->DB: Mark for deletion
+MIG<--Export: Response
+deactivate MIG
+PACS<--MIG: N-ACTION-RSP
+deactivate PACS
+end 
