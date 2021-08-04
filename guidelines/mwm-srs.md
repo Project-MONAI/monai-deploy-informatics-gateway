@@ -39,10 +39,13 @@ For each requirement, the following attributes have been specified
 
 ## Definitions, Acronyms, Abbreviations
 
-| Term | Definition                                                                                                                                   |
-| ---- | -------------------------------------------------------------------------------------------------------------------------------------------- |
-| DDR  | Data Discovery Ruleset: a set of static rules defined by the users to determine if an incoming dataset meets the criteria of an application. |
-| DDS  | Data Discover Service: a service that applies all DDRs to incoming payloads                                                                  |
+| Term        | Definition                                                                                                                                                       |
+| ----------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| DDR         | Data Discovery Ruleset: a set of static rules defined by the users to determine if an incoming dataset meets the criteria of an application.                     |
+| DDS         | Data Discover Service: a service that applies all DDRs to incoming payloads                                                                                      |
+| Export Sink | An export sink is an user-configured sink where the results (application generated artifacts) are assigned to and later picked up by the export service clients. |
+| MIG         | MONAI Informatics Gateway                                                                                                                                        |
+| MWM         | MONAI Workload Manager                                                                                                                                           |
 
 ## Data Ingestion Requirements
 
@@ -52,7 +55,7 @@ An API must be provided to the data ingestion services, such as the Informatics 
 
 #### Background
 
-With the design of MONAI Deploy, the MWM does not interface with HIS/RIS directly but rather, through the Informatics Gateway (a data ingestion service). Therefore, APIs must be provided to interface any data ingestion services. This also allows the users of the platform to extend these APIs to interface their systems using different messaging protocols.
+With the design of MONAI Deploy, the MWM does not interface with HIS/RIS directly but rather, through the Informatics Gateway (a data ingestion & export service). Therefore, APIs must be provided to interface any data ingestion services. This also allows the users of the platform to extend these APIs to interface their systems using different messaging protocols.
 
 #### Verification Strategy
 
