@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Nvidia.Clara.Dicom.DicomWeb.Client.CLI": {
+      "commandName": "Project",
+      "commandLineArgs": "stow store -r http://clara-ds-01:8088/dicom-web/ -u clara -p clara! -i C:\\sc\\dicom\\SiemensBTO\\"
+    }
+  }
+}
