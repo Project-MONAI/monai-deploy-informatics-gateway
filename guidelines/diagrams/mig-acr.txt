@@ -1,0 +1,38 @@
+# Created at https://sequencediagram.org/
+title MONNAI Informatics Gateway - ACR
+
+fontawesome f0f8 "Hospital\nInformation Systems" as HIS
+fontawesome f233 "ACR API" as ACR
+participant "MIG Inference\nRequest Queue" as IRS
+database "MIG\nDatabase" as DB
+fontawesome f0a0 "MIG\nStorage" as DISK
+participant "MIG Data\nRetrieval Service" as DRS
+participant "MIG\nNotification Relay" as NR
+participant "MONAI Workload Manager\nPayloads API" as Payloads
+
+parallel 
+activate IRS
+activate DRS
+activate NR
+IRS->IRS: Startup 
+DRS->DRS: Startup
+NR->NR: Startup
+parallel off
+
+NR->DISK: Clear out an residuals
+IRS->DB: Query for pending jobs
+DRS->IRS: Query for pending jobs
+
+HIS->ACR: "POST /infernece"
+activate ACR
+ACR->ACR: Validate Request
+ACR->IRS: Enqueue Request
+HIS<--ACR: Response
+deactivate ACR
+IRS->DB: Save Request
+DRS->IRS: Dequeue & process request
+DRS->HIS: Query & retrieve via DICOMweb & FHIR
+DRS<--HIS: Response
+DRS->DISK: Save DICOM & FHIR
+DRS->NR: Notify data arrival
+NR->Payloads: Upload data to MWM

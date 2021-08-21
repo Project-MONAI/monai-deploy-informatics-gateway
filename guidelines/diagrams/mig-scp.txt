@@ -1,0 +1,41 @@
+# Created at https://sequencediagram.org/
+title MONNAI Informatics Gateway - SCP
+
+fontawesome f0f8 "Hospital\nDICOM Devices" as DICOM
+participant "MIG SCP" as SCP
+database "MIG\nDatabase" as DB
+fontawesome f0a0 "MIG\nStorage" as DISK
+participant "MIG\nNotification Relay" as NR
+participant "MONAI Workload Manager\nPayloads API" as Payloads
+
+activate NR
+NR->NR:Startup
+DISK<--NR:Clears out any residuals
+
+group C-ECHO
+DICOM->SCP:C-ECHO-REQ
+activate SCP
+
+SCP->DB: Query for \nconfigured\nsources
+SCP<--DB: Response
+SCP->SCP: Validate
+
+DICOM<--SCP: C-ECHO-RESP
+deactivate SCP
+end
+
+group C-STORE
+DICOM->SCP:C-STORE-RQ
+activate SCP
+SCP->DB: Query for \nconfigured\nsources
+SCP<--DB: Response
+SCP->DISK: Save DICOM instances
+SCP->NR: Notify of new instances 
+DICOM<--SCP: C-ECHO-RESP
+deactivate SCP
+
+NR->Payloads: Upload instances\nto MWM
+end
+
+
+deactivate NR
