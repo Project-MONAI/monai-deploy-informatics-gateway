@@ -15,6 +15,7 @@ using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using System;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
@@ -28,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger = new Mock<ILogger<MonaiAeChangedNotificationService>>();
         }
 
-        [Fact(DisplayName = "Workflow Test")]
+        [RetryFact(DisplayName = "Workflow Test")]
         public void WorkflowTest()
         {
             var service = new MonaiAeChangedNotificationService(_logger.Object);
@@ -48,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             observer.Verify(p => p.OnNext(It.IsAny<MonaiApplicationentityChangedEvent>()), Times.Never());
         }
 
-        [Fact(DisplayName = "Shall log when subscriber throws")]
+        [RetryFact(DisplayName = "Shall log when subscriber throws")]
         public void ShallLogWhenSubscriberThrows()
         {
             var service = new MonaiAeChangedNotificationService(_logger.Object);

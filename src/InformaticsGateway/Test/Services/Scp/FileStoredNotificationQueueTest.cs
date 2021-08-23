@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using System.Threading;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
@@ -39,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
         }
 
-        [Fact(DisplayName = "Shall load existing stored files from database")]
+        [RetryFact(DisplayName = "Shall load existing stored files from database")]
         public void ShallLoadExistingStoredFileRecords()
         {
             var existingFiles = new List<FileStorageInfo>
@@ -55,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger.VerifyLoggingMessageBeginsWith($"Adding existing file to queue", LogLevel.Debug, Times.Exactly(existingFiles.Count));
         }
 
-        [Fact(DisplayName = "Queue and Dequeue")]
+        [RetryFact(DisplayName = "Queue and Dequeue")]
         public void QueueAndDequeue()
         {
             var queue = new FileStoredNotificationQueue(_logger.Object, _serviceScopeFactory.Object);
@@ -68,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(expected, queuedItem);
         }
 
-        [Fact(DisplayName = "Dequeue - is cancellable")]
+        [RetryFact(DisplayName = "Dequeue - is cancellable")]
         public void Dequeue_CanBeCancelled()
         {
             var queue = new FileStoredNotificationQueue(_logger.Object, _serviceScopeFactory.Object);

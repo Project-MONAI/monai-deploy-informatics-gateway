@@ -24,6 +24,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
@@ -74,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region Get
 
-        [Fact(DisplayName = "Get - Shall return available source AETs")]
+        [RetryFact(DisplayName = "Get - Shall return available source AETs")]
         public async void Get_ShallReturnAllSourceAets()
         {
             var data = new List<SourceApplicationEntity>();
@@ -95,7 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.ToListAsync(), Times.Once());
         }
 
-        [Fact(DisplayName = "Get - Shall return problem on failure")]
+        [RetryFact(DisplayName = "Get - Shall return problem on failure")]
         public async void Get_ShallReturnProblemOnFailure()
         {
             _repository.Setup(p => p.ToListAsync()).Throws(new Exception("error"));
@@ -114,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region GetAeTitle
 
-        [Fact(DisplayName = "GetAeTitle - Shall return matching object")]
+        [RetryFact(DisplayName = "GetAeTitle - Shall return matching object")]
         public async void GetAeTitle_ReturnsAMatch()
         {
             var value = "AET";
@@ -133,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.FindAsync(value), Times.Once());
         }
 
-        [Fact(DisplayName = "GetAeTitle - Shall return 404 if not found")]
+        [RetryFact(DisplayName = "GetAeTitle - Shall return 404 if not found")]
         public async void GetAeTitle_Returns404IfNotFound()
         {
             var value = "AET";
@@ -145,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.FindAsync(value), Times.Once());
         }
 
-        [Fact(DisplayName = "GetAeTitle - Shall return problem on failure")]
+        [RetryFact(DisplayName = "GetAeTitle - Shall return problem on failure")]
         public async void GetAeTitle_ShallReturnProblemOnFailure()
         {
             var value = "AET";
@@ -167,7 +168,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region Create
 
-        [Fact(DisplayName = "GetAeTitle - Shall return problem on validation failure")]
+        [RetryFact(DisplayName = "GetAeTitle - Shall return problem on validation failure")]
         public async void Create_ShallReturnBadRequestWithBadJobProcessType()
         {
             var aeTitle = "TOOOOOOOOOOOOOOOOOOOOOOOLONG";
@@ -189,7 +190,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
-        [Fact(DisplayName = "Create - Shall return problem if failed to add")]
+        [RetryFact(DisplayName = "Create - Shall return problem if failed to add")]
         public async void Create_ShallReturnBadRequestOnAddFailure()
         {
             var aeTitle = "AET";
@@ -215,7 +216,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.AddAsync(It.IsAny<SourceApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [Fact(DisplayName = "Create - Shall return CreatedAtAction")]
+        [RetryFact(DisplayName = "Create - Shall return CreatedAtAction")]
         public async void Create_ShallReturnCreatedAtAction()
         {
             var aeTitle = "AET";
@@ -241,7 +242,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region Delete
 
-        [Fact(DisplayName = "GetAeTitle - Shall return deleted object")]
+        [RetryFact(DisplayName = "GetAeTitle - Shall return deleted object")]
         public async void Delete_ReturnsDeleted()
         {
             var value = "AET";
@@ -264,7 +265,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [Fact(DisplayName = "GetAeTitle - Shall return 404 if not found")]
+        [RetryFact(DisplayName = "GetAeTitle - Shall return 404 if not found")]
         public async void Delete_Returns404IfNotFound()
         {
             var value = "AET";
@@ -282,7 +283,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.FindAsync(value), Times.Once());
         }
 
-        [Fact(DisplayName = "Delete - Shall return problem on failure")]
+        [RetryFact(DisplayName = "Delete - Shall return problem on failure")]
         public async void Delete_ShallReturnProblemOnFailure()
         {
             var value = "AET";

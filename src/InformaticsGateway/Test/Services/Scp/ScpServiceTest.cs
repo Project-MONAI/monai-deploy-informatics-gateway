@@ -24,6 +24,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
@@ -63,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.Configuration).Returns(_configuration);
         }
 
-        [Fact(DisplayName = "StartAsync - shall stop application if failed to start SCP listner")]
+        [RetryFact(DisplayName = "StartAsync - shall stop application if failed to start SCP listner")]
         public void StartAsync_ShallStopApplicationIfListnerFailedToStart()
         {
             _configuration.Value.Dicom.Scp.Port = -1;
@@ -76,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _appLifetime.Verify(p => p.StopApplication(), Times.Once());
         }
 
-        [Fact(DisplayName = "StopAsync - shall be able to stop SCP listener")]
+        [RetryFact(DisplayName = "StopAsync - shall be able to stop SCP listener")]
         public void StopAsync_ShallBeAbleToStopListener()
         {
             var service = CreateService();
@@ -87,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(ServiceStatus.Stopped, service.Status);
         }
 
-        [Fact(DisplayName = "C-ECHO - Shall reject request if disabled")]
+        [RetryFact(DisplayName = "C-ECHO - Shall reject request if disabled")]
         public async Task CEcho_ShallRejectCEchoRequests()
         {
             _configuration.Value.Dicom.Scp.EnableVerification = false;
@@ -117,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-ECHO - Shall reject unknown calling AET")]
+        [RetryFact(DisplayName = "C-ECHO - Shall reject unknown calling AET")]
         public async Task CEcho_ShallRejecUnknownCallingAET()
         {
             _configuration.Value.Dicom.Scp.EnableVerification = true;
@@ -145,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-ECHO - Shall reject unknown called AET")]
+        [RetryFact(DisplayName = "C-ECHO - Shall reject unknown called AET")]
         public async Task CEcho_ShallRejecUnknownCalledAET()
         {
             _configuration.Value.Dicom.Scp.EnableVerification = true;
@@ -173,7 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-ECHO - Shall accept")]
+        [RetryFact(DisplayName = "C-ECHO - Shall accept")]
         public async Task CEcho_ShallAccept()
         {
             _configuration.Value.Dicom.Scp.EnableVerification = true;
@@ -196,7 +197,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-STORE - Shall reject when storage is low")]
+        [RetryFact(DisplayName = "C-STORE - Shall reject when storage is low")]
         public async Task CStore_ShallRejecOnLowStorageSpace()
         {
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
@@ -222,7 +223,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-STORE - OnCStoreRequest - InsufficientStorageAvailableException")]
+        [RetryFact(DisplayName = "C-STORE - OnCStoreRequest - InsufficientStorageAvailableException")]
         public async Task CStore_OnCStoreRequest_InsufficientStorageAvailableException()
         {
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
@@ -254,7 +255,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-STORE - OnCStoreRequest - IOException")]
+        [RetryFact(DisplayName = "C-STORE - OnCStoreRequest - IOException")]
         public async Task CStore_OnCStoreRequest_IoException()
         {
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
@@ -286,7 +287,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-STORE - OnCStoreRequest - Exception")]
+        [RetryFact(DisplayName = "C-STORE - OnCStoreRequest - Exception")]
         public async Task CStore_OnCStoreRequest_Exception()
         {
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
@@ -318,7 +319,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-STORE - OnCStoreRequest - Success")]
+        [RetryFact(DisplayName = "C-STORE - OnCStoreRequest - Success")]
         public async Task CStore_OnCStoreRequest_Success()
         {
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
@@ -350,7 +351,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(5000));
         }
 
-        [Fact(DisplayName = "C-STORE - Simulate client abort")]
+        [RetryFact(DisplayName = "C-STORE - Simulate client abort")]
         public async Task CStore_OnClientAbort()
         {
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);

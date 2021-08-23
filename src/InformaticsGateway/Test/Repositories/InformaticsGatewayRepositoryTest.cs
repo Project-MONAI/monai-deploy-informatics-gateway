@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Repositories
@@ -33,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
         }
 
-        [Fact(DisplayName = "AsQueryable - returns IQueryable")]
+        [RetryFact(DisplayName = "AsQueryable - returns IQueryable")]
         public void AsQueryable()
         {
             var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);
@@ -43,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             Assert.True(result is IQueryable<SourceApplicationEntity>);
         }
 
-        [Fact(DisplayName = "AsQueryable - returns List")]
+        [RetryFact(DisplayName = "AsQueryable - returns List")]
         public async Task ToListAsync()
         {
             var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);
@@ -53,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             Assert.True(result is List<SourceApplicationEntity>);
         }
 
-        [Fact(DisplayName = "FindAsync - lookup by key")]
+        [RetryFact(DisplayName = "FindAsync - lookup by key")]
         public async Task FindAsync()
         {
             var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);
@@ -66,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             Assert.Equal("5.5.5.5", result.HostIp);
         }
 
-        [Fact(DisplayName = "Update")]
+        [RetryFact(DisplayName = "Update")]
         public async Task Update()
         {
             var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);
@@ -83,7 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             Assert.Equal(result, updated);
         }
 
-        [Fact(DisplayName = "Remove")]
+        [RetryFact(DisplayName = "Remove")]
         public async Task Remove()
         {
             var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);
@@ -97,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             }
         }
 
-        [Fact(DisplayName = "AddAsync")]
+        [RetryFact(DisplayName = "AddAsync")]
         public async Task AddAsync()
         {
             var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);
@@ -120,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             }
         }
 
-        [Fact(DisplayName = "FirstOrDefault")]
+        [RetryFact(DisplayName = "FirstOrDefault")]
         public void FirstOrDefault()
         {
             var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);

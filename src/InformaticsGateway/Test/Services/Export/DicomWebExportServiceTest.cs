@@ -27,6 +27,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
@@ -76,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
         }
 
-        [Fact(DisplayName = "Constructor - throws on null params")]
+        [RetryFact(DisplayName = "Constructor - throws on null params")]
         public void Constructor_ThrowsOnNullParams()
         {
             Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(null, null, null, null, null, null, null));
@@ -88,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, _logger.Object, _configuration, _storageInfoProvider.Object, null));
         }
 
-        [Fact(DisplayName = " ExportDataBlockCallback - Returns null if inference request cannot be found")]
+        [RetryFact(DisplayName = " ExportDataBlockCallback - Returns null if inference request cannot be found")]
         public async Task ExportDataBlockCallback_ReturnsNullIfInferenceRequestCannotBeFound()
         {
             var service = new DicomWebExportService(
@@ -130,7 +131,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [Fact(DisplayName = " ExportDataBlockCallback - Returns null if inference request doesn't include a valid DICOMweb destination")]
+        [RetryFact(DisplayName = " ExportDataBlockCallback - Returns null if inference request doesn't include a valid DICOMweb destination")]
         public async Task ExportDataBlockCallback_ReturnsNullIfInferenceRequestContainsNoDicomWebDestination()
         {
             var service = new DicomWebExportService(
@@ -172,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [Fact(DisplayName = " ExportDataBlockCallback - Records STOW failures and report")]
+        [RetryFact(DisplayName = " ExportDataBlockCallback - Records STOW failures and report")]
         public async Task ExportDataBlockCallback_RecordsStowFailuresAndReportFailure()
         {
             var service = new DicomWebExportService(
@@ -238,7 +239,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [Theory(DisplayName = "Export completes entire data flow and reports status based on response StatusCode")]
+        [RetryTheory(DisplayName = "Export completes entire data flow and reports status based on response StatusCode")]
         [InlineData(HttpStatusCode.OK)]
         [InlineData(HttpStatusCode.Accepted)]
         [InlineData(HttpStatusCode.BadRequest)]

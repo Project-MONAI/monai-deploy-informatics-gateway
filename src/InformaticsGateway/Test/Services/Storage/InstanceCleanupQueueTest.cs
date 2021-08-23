@@ -16,6 +16,7 @@ using Moq;
 using System;
 using System.Collections.Generic;
 using System.Threading;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
@@ -33,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _queue = new InstanceCleanupQueue(_logger.Object);
         }
 
-        [Fact(DisplayName = "Queue - Shall throw if null")]
+        [RetryFact(DisplayName = "Queue - Shall throw if null")]
         public void Queue_ShallThrowOnNull()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
@@ -42,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             });
         }
 
-        [Fact(DisplayName = "Shall queue and dequeue items")]
+        [RetryFact(DisplayName = "Shall queue and dequeue items")]
         public void ShallQueueAndDequeueItems()
         {
             for (var i = 0; i < 10; i++)

@@ -1,0 +1,27 @@
+codecov:
+  require_ci_to_pass: yes
+  # token MUST be removed when we go public and regenerate a new token
+  token: 22c6d1aa-f26d-4b58-a29f-3b06d113aa04
+
+coverage:
+  precision: 5
+  round: down
+  range: "70...100"
+
+parsers:
+  gcov:
+    branch_detection:
+      conditional: yes
+      loop: yes
+      method: no
+      macro: no
+
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: false
+  require_base: no
+  require_head: yes
+
+fixes:
+  - "/home/runner/work/Informatics-Gateway/Informatics-Gateway/src/::src/"

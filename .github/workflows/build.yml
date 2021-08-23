@@ -1,0 +1,54 @@
+name: Default
+
+on:
+  push:
+    branches:
+    - main
+    - 'release/**'
+  pull_request:
+    branches:
+    - main
+    - 'release/**'
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Build
+      run: |
+        export VERSION=`cat VERSION`
+        ./build.sh
+        docker tag monai/informatics-gateway:$VERSION monai/informatics-gateway:${{ github.sha }}
+    - name: Scan image with Azure Container Scan
+      uses: Azure/container-scan@v0
+      with:
+        image-name: monai/informatics-gateway:${{ github.sha }}
+    - name: Scan image with Anchore
+      id: scan
+      uses: anchore/scan-action@v2
+      with:
+        image: monai/informatics-gateway:${{ github.sha }}
+        fail-build: true
+        severity-cutoff: high
+        acs-report-enable: true
+    # - name: upload Anchore scan SARIF report
+    #   uses: github/codeql-action/upload-sarif@v1
+    #   with:
+    #     sarif_file: ${{ steps.scan.outputs.sarif }}
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Run Unit Test
+      run: ./run-tests.sh
+      working-directory: ./src
+    - name: Upload CodeCov
+      run: |
+        bash <(curl -s https://codecov.io/bash) -f "*.codecov.xml" -s ./src/results -Z

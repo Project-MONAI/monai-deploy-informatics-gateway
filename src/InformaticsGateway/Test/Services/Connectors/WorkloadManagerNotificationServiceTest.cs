@@ -23,6 +23,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
@@ -44,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cleanupQueue = new Mock<IInstanceCleanupQueue>();
         }
 
-        [Fact(DisplayName = "Shall start/stop service")]
+        [RetryFact(DisplayName = "Shall start/stop service")]
         public async Task ShallStartStopService()
         {
             var service = new WorkloadManagerNotificationService(
@@ -63,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             Assert.Equal(ServiceStatus.Stopped, service.Status);
         }
 
-        [Fact(DisplayName = "Shall upload file and queue for delete")]
+        [RetryFact(DisplayName = "Shall upload file and queue for delete")]
         public async Task ShallUploadFileAndQueueForDelete()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -114,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             }
         }
 
-        [Fact(DisplayName = "Shall requeue file upon upload failure")]
+        [RetryFact(DisplayName = "Shall requeue file upon upload failure")]
         public async Task ShallRequeueFileUponUploadFailure()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -167,7 +168,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             }
         }
 
-        [Fact(DisplayName = "Shall queue for clean if file is missing")]
+        [RetryFact(DisplayName = "Shall queue for clean if file is missing")]
         public async Task ShallQueueForDeleteIfFileIsMissing()
         {
             var cancellationTokenSource = new CancellationTokenSource();

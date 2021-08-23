@@ -16,6 +16,7 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using System.IO.Abstractions;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
@@ -40,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
         }
 
-        [Fact(DisplayName = "Available free space")]
+        [RetryFact(DisplayName = "Available free space")]
         public void AvailableFreeSpace()
         {
             var totalSize = 10 * OneGB;
@@ -56,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _logger.VerifyLogging($"Storage Size: {totalSize:N0}. Reserved: {(9 * OneGB):N0}.", LogLevel.Information, Times.Once());
         }
 
-        [Fact(DisplayName = "Space is available...")]
+        [RetryFact(DisplayName = "Space is available...")]
         public void HasSpaceAvailableTo()
         {
             var totalSize = 10 * OneGB;
@@ -74,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _logger.VerifyLogging($"Storage Size: {totalSize:N0}. Reserved: {(OneGB):N0}. Available: {freeSpace:N0}.", LogLevel.Debug, Times.Never());
         }
 
-        [Fact(DisplayName = "Space usage is above watermark")]
+        [RetryFact(DisplayName = "Space usage is above watermark")]
         public void SpaceUsageAboveWatermark()
         {
             var totalSize = 10 * OneGB;
@@ -92,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _logger.VerifyLogging($"Storage Size: {totalSize:N0}. Reserved: {(9 * OneGB):N0}. Available: {freeSpace:N0}.", LogLevel.Information, Times.Exactly(3));
         }
 
-        [Fact(DisplayName = "Reserved space is low")]
+        [RetryFact(DisplayName = "Reserved space is low")]
         public void ReservedSpaceIsLow()
         {
             var totalSize = 10 * OneGB;

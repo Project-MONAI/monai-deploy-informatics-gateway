@@ -26,6 +26,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
@@ -79,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomScp.Start(_port);
         }
 
-        [Fact(DisplayName = "When no destination defined in Parameters")]
+        [RetryFact(DisplayName = "When no destination defined in Parameters")]
         public async Task ShallFailWhenNoDestinationIsDefined()
         {
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
@@ -114,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [Fact(DisplayName = "When destination is not configured")]
+        [RetryFact(DisplayName = "When destination is not configured")]
         public async Task ShallFailWhenDestinationIsNotConfigured()
         {
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
@@ -149,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [Fact(DisplayName = "Assocation rejected")]
+        [RetryFact(DisplayName = "Assocation rejected")]
         public async Task AssociationRejected()
         {
             var destination = new DestinationApplicationEntity { AeTitle = "ABC", Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
@@ -186,7 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [Fact(DisplayName = "C-STORE simulate abort")]
+        [RetryFact(DisplayName = "C-STORE simulate abort")]
         public async Task SimulateAbort()
         {
             _scpLogger.Invocations.Clear();
@@ -224,7 +225,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [Fact(DisplayName = "C-STORE Failure")]
+        [RetryFact(DisplayName = "C-STORE Failure")]
         public async Task CStoreFailure()
         {
             _scpLogger.Invocations.Clear();
@@ -263,7 +264,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [Fact(DisplayName = "C-STORe success")]
+        [RetryFact(DisplayName = "C-STORe success")]
         public async Task ExportCompletes()
         {
             _scpLogger.Invocations.Clear();

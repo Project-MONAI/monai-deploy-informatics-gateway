@@ -29,6 +29,7 @@ using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
@@ -88,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             });
         }
 
-        [Fact(DisplayName = "HandleCStoreRequest - Shall throw if AE Title not configured")]
+        [RetryFact(DisplayName = "HandleCStoreRequest - Shall throw if AE Title not configured")]
         public async Task HandleCStoreRequest_ShallThrowIfAENotConfigured()
         {
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
@@ -113,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
 
-        [Fact(DisplayName = "HandleCStoreRequest - Shall save instance and notify")]
+        [RetryFact(DisplayName = "HandleCStoreRequest - Shall save instance and notify")]
         public async Task HandleCStoreRequest_ShallSaveInstanceAndNotify()
         {
             var aet = "TESTAET";
@@ -164,7 +165,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(request.Dataset.GetSingleValue<string>(DicomTag.PatientID), dicom.Dataset.GetSingleValue<string>(DicomTag.PatientID));
         }
 
-        [Fact(DisplayName = "HandleCStoreRequest - Throws when available storage space is low")]
+        [RetryFact(DisplayName = "HandleCStoreRequest - Throws when available storage space is low")]
         public async Task HandleCStoreRequest_ThrowWhenOnLowStorageSpace()
         {
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
@@ -206,7 +207,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
         }
 
-        [Fact(DisplayName = "IsAeTitleConfigured")]
+        [RetryFact(DisplayName = "IsAeTitleConfigured")]
         public void IsAeTitleConfigured()
         {
             var aet = "TESTAET";
@@ -232,7 +233,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.False(manager.IsAeTitleConfigured("BAD"));
         }
 
-        [Fact(DisplayName = "GetService - Shall return request service")]
+        [RetryFact(DisplayName = "GetService - Shall return request service")]
         public void GetService_ShallReturnRequestedServicec()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
@@ -247,7 +248,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(manager.GetService<ILoggerFactory>(), _loggerFactory.Object);
         }
 
-        [Fact(DisplayName = "IsValidSource - False when AE is empty or white space")]
+        [RetryFact(DisplayName = "IsValidSource - False when AE is empty or white space")]
         public void IsValidSource_FalseWhenAEIsEmpty()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
@@ -263,7 +264,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.False(manager.IsValidSource("AAA", ""));
         }
 
-        [Fact(DisplayName = "IsValidSource - False when no matching source found")]
+        [RetryFact(DisplayName = "IsValidSource - False when no matching source found")]
         public void IsValidSource_FalseWhenNoMatchingSource()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
@@ -289,7 +290,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger.VerifyLoggingMessageBeginsWith($"Available source AET: SAE @ 1.2.3.4", LogLevel.Information, Times.Once());
         }
 
-        [Fact(DisplayName = "IsValidSource - False when IP does not match")]
+        [RetryFact(DisplayName = "IsValidSource - False when IP does not match")]
         public void IsValidSource_FalseWithMismatchIp()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
@@ -310,7 +311,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _sourceEntityRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()), Times.Once());
         }
 
-        [Fact(DisplayName = "IsValidSource - True")]
+        [RetryFact(DisplayName = "IsValidSource - True")]
         public void IsValidSource_True()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
@@ -331,7 +332,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _sourceEntityRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()), Times.Once());
         }
 
-        [Fact(DisplayName = "Shall handle AE change events")]
+        [RetryFact(DisplayName = "Shall handle AE change events")]
         public void ShallHandleAEChangeEvents()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,

@@ -21,6 +21,7 @@ using Monai.Deploy.InformaticsGateway.Services.Http;
 using Moq;
 using System;
 using System.Net;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
@@ -71,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region Status
 
-        [Fact(DisplayName = "Status -Unknown service status")]
+        [RetryFact(DisplayName = "Status -Unknown service status")]
         public void Status_ReturnsUnknownStatus()
         {
             _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
@@ -91,7 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             }
         }
 
-        [Fact(DisplayName = "Status -Shall return actual service status")]
+        [RetryFact(DisplayName = "Status -Shall return actual service status")]
         public void Status_ReturnsActualServiceStatus()
         {
             var monaiService = new Mock<IMonaiService>();
@@ -110,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             }
         }
 
-        [Fact(DisplayName = "Status - Shall return problem on failure")]
+        [RetryFact(DisplayName = "Status - Shall return problem on failure")]
         public void Status_ShallReturnProblemOnFailure()
         {
             _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
@@ -130,7 +131,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region Ready
 
-        [Fact(DisplayName = "Ready - Shall return Unhealthy")]
+        [RetryFact(DisplayName = "Ready - Shall return Unhealthy")]
         public void Ready_ShallReturnUnhealthy()
         {
             _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
@@ -146,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal((int)HttpStatusCode.ServiceUnavailable, objectResult.StatusCode);
         }
 
-        [Fact(DisplayName = "Ready - Shall return Healthy")]
+        [RetryFact(DisplayName = "Ready - Shall return Healthy")]
         public void Ready_ShallReturnHealthy()
         {
             var monaiService = new Mock<IMonaiService>();
@@ -161,7 +162,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal((int)HttpStatusCode.OK, objectResult.StatusCode);
         }
 
-        [Fact(DisplayName = "Ready - Shall return problem on failure")]
+        [RetryFact(DisplayName = "Ready - Shall return problem on failure")]
         public void Ready_ShallReturnProblemOnFailure()
         {
             _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))

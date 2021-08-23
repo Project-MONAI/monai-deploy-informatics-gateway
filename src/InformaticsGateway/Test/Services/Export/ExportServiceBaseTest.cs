@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
@@ -102,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
         }
 
-        [Fact(DisplayName = "Data flow test - no pending tasks")]
+        [RetryFact(DisplayName = "Data flow test - no pending tasks")]
         public async Task DataflowTest_NoPendingTasks()
         {
             var exportCalled = false;
@@ -131,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
 
-        [Fact(DisplayName = "Data flow test - insufficient storage space")]
+        [RetryFact(10, 10, DisplayName = "Data flow test - insufficient storage space")]
         public async Task DataflowTest_InsufficientStorageSpace()
         {
             var exportCalled = false;
@@ -158,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
 
-        [Fact(DisplayName = "Data flow test - payload download failure")]
+        [RetryFact(DisplayName = "Data flow test - payload download failure")]
         public async Task DataflowTest_PayloadDownloadFailure()
         {
             var exportCountdown = new CountdownEvent(1);
@@ -197,7 +198,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
 
-        [Theory(DisplayName = "Data flow test - completed entire data flow")]
+        [RetryTheory(10, 10, DisplayName = "Data flow test - completed entire data flow")]
         [InlineData(true)]
         [InlineData(false)]
         public async Task DataflowTest_CompletedEntireDataflow(bool exportShallFail)

@@ -24,6 +24,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
@@ -71,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             };
         }
 
-        [Fact(DisplayName = "NewInferenceRequest - shall return problem if input is invalid")]
+        [RetryFact(DisplayName = "NewInferenceRequest - shall return problem if input is invalid")]
         public void NewInferenceRequest_ShallReturnProblemIfInputIsInvalid()
         {
             var input = new InferenceRequest();
@@ -88,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(422, problem.Status);
         }
 
-        [Fact(DisplayName = "NewInferenceRequest - shall return problem if output is invalid")]
+        [RetryFact(DisplayName = "NewInferenceRequest - shall return problem if output is invalid")]
         public void NewInferenceRequest_ShallReturnProblemIfOutputIsInvalid()
         {
             var input = new InferenceRequest();
@@ -129,7 +130,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(422, problem.Status);
         }
 
-        [Fact(DisplayName = "NewInferenceRequest - shall return problem if same transactionId exits")]
+        [RetryFact(DisplayName = "NewInferenceRequest - shall return problem if same transactionId exits")]
         public void NewInferenceRequest_ShallReturnProblemIfSameTransactionIdExists()
         {
             _inferenceRequestRepository.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
@@ -178,7 +179,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(409, problem.Status);
         }
 
-        [Fact(DisplayName = "NewInferenceRequest - shall return problem if failed to creaet working dir")]
+        [RetryFact(DisplayName = "NewInferenceRequest - shall return problem if failed to creaet working dir")]
         public void NewInferenceRequest_ShallReturnProblemIfFailedToCreateWorkingDir()
         {
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()))
@@ -229,7 +230,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(500, problem.Status);
         }
 
-        [Fact(DisplayName = "NewInferenceRequest - shall return problem if failed to add job")]
+        [RetryFact(DisplayName = "NewInferenceRequest - shall return problem if failed to add job")]
         public void NewInferenceRequest_ShallReturnProblemIfFailedToAddJob()
         {
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
@@ -281,7 +282,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(500, problem.Status);
         }
 
-        [Fact(DisplayName = "NewInferenceRequest - shall accept inference request")]
+        [RetryFact(DisplayName = "NewInferenceRequest - shall accept inference request")]
         public void NewInferenceRequest_ShallAcceptInferenceRequest()
         {
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
@@ -333,7 +334,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(input.TransactionId, response.TransactionId);
         }
 
-        [Fact(DisplayName = "Status - return 404 if not found")]
+        [RetryFact(DisplayName = "Status - return 404 if not found")]
         public void Status_NotFound()
         {
             _inferenceRequestRepository.Setup(p => p.GetStatus(It.IsAny<string>()))
@@ -353,7 +354,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(404, problem.Status);
         }
 
-        [Fact(DisplayName = "Status - return 500 on error")]
+        [RetryFact(DisplayName = "Status - return 500 on error")]
         public void Status_ShallReturnProblemException()
         {
             _inferenceRequestRepository.Setup(p => p.GetStatus(It.IsAny<string>()))
@@ -373,7 +374,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(500, problem.Status);
         }
 
-        [Fact(DisplayName = "Status - returns 200")]
+        [RetryFact(DisplayName = "Status - returns 200")]
         public void Status_ReturnsStatus()
         {
             _inferenceRequestRepository.Setup(p => p.GetStatus(It.IsAny<string>()))
