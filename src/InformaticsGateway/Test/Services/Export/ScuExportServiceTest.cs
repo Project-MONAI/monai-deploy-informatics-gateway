@@ -264,7 +264,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [RetryFact(DisplayName = "C-STORe success")]
+        [RetryFact(10, 250, DisplayName = "C-STORe success")]
         public async Task ExportCompletes()
         {
             _scpLogger.Invocations.Clear();
