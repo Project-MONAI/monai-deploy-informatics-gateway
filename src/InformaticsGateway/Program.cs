@@ -10,12 +10,14 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
+using Karambolo.Extensions.Logging.File;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -65,6 +67,11 @@ namespace Monai.Deploy.InformaticsGateway
                     config
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                })
+                .ConfigureLogging((builderContext, configureLogging) =>
+                {
+                    configureLogging.AddConfiguration(builderContext.Configuration.GetSection("Logging"));
+                    configureLogging.AddFile(o => o.RootPath = AppContext.BaseDirectory);
                 })
                 .ConfigureServices((hostContext, services) =>
                 {

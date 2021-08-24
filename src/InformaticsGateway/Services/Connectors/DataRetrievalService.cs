@@ -124,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 try
                 {
                     request = await repository.Take(cancellationToken);
-                    using (_logger.BeginScope(new LogginDataDictionary<string, object> { { "TransactionId", request.TransactionId } }))
+                    using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } }))
                     {
                         _logger.Log(LogLevel.Information, "Processing inference request.");
                         await ProcessRequest(request, cancellationToken);

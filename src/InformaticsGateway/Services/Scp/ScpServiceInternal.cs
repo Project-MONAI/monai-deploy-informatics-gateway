@@ -136,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _associationId = Guid.NewGuid();
             _associationIdStr = $"#{_associationId} {association.RemoteHost}:{association.RemotePort}";
 
-            _loggerScope = _logger?.BeginScope(new LogginDataDictionary<string, object> { { "Association", _associationIdStr } });
+            _loggerScope = _logger?.BeginScope(new LoggingDataDictionary<string, object> { { "Association", _associationIdStr } });
             _logger?.Log(LogLevel.Information, "Association received from {0}:{1}", association.RemoteHost, association.RemotePort);
 
             if (!IsValidSourceAe(association.CallingAE, association.RemoteHost))
