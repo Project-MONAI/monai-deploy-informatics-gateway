@@ -158,7 +158,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Error querying Source Application Entity.", problem.Title);
+            Assert.Equal("Error querying DICOM sources.", problem.Title);
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
             _repository.Verify(p => p.FindAsync(value), Times.Once());
@@ -209,7 +209,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Error adding new Source Application Entity.", problem.Title);
+            Assert.Equal("Error adding new DICOM source.", problem.Title);
             Assert.Equal($"error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
 
@@ -302,7 +302,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Error deleting Source Application Entity.", problem.Title);
+            Assert.Equal("Error deleting DICOM source.", problem.Title);
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
             _repository.Verify(p => p.FindAsync(value), Times.Once());

@@ -51,6 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         private readonly string _payloadDirectory;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
+        public string ServiceName => "Space Reclaimer Service";
 
         public SpaceReclaimerService(
             IInstanceCleanupQueue taskQueue,

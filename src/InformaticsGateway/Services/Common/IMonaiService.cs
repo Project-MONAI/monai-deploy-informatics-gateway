@@ -22,5 +22,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
     public interface IMonaiService
     {
         ServiceStatus Status { get; set; }
+        string ServiceName { get; }
     }
 }

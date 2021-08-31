@@ -34,6 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IInstanceCleanupQueue _cleanupQueue;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
+        public string ServiceName => "Workload Manager Notification Service";
 
         public WorkloadManagerNotificationService(
             IWorkloadManagerApi workloadManagerApi,

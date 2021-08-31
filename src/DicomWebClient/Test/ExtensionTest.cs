@@ -41,16 +41,5 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             Assert.Contains(1, output);
             Assert.Contains(2, output);
         }
-
-        [Fact(DisplayName = "EnsureUriEndsWithSlash shall not append slash to end")]
-        public void EnsureUriEndsWithSlash_DoesNotAppendSlash()
-        {
-            Uri input = new Uri("http://1.2.3.4/api/");
-
-            var output = input.EnsureUriEndsWithSlash();
-
-            Assert.EndsWith("/", output.ToString());
-            Assert.False(output.ToString().EndsWith("//"));
-        }
     }
 }

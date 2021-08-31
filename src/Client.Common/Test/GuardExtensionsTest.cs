@@ -16,11 +16,10 @@
  */
 
 using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common;
 using System;
 using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
+namespace Monai.Deploy.InformaticsGateway.Client.Common.Test
 {
     public class GuardExtensionsTest
     {

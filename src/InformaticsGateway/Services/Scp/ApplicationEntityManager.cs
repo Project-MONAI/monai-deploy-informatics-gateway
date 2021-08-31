@@ -220,6 +220,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public void OnError(Exception error)
         {
+            _logger.Log(LogLevel.Error, error, "Error notifying observer.");
         }
 
         public void OnNext(MonaiApplicationentityChangedEvent applicationChangedEvent)

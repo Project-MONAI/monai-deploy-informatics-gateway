@@ -15,14 +15,23 @@
  * limitations under the License.
  */
 
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common;
 using System;
 using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
+namespace Monai.Deploy.InformaticsGateway.Client.Common.Test
 {
-    public class UriExtensionTest
+    public class UriExtensionsTest
     {
+        [Theory(DisplayName = "Ensure Uri ends with slash")]
+        [InlineData("http://abc.com", "http://abc.com/")]
+        [InlineData("http://abc.com/api", "http://abc.com/api/")]
+        public void EnsureUriEndsWithSlash(string input, object expected)
+        {
+            var uri = new Uri(input);
+
+            Assert.Equal(expected, uri.EnsureUriEndsWithSlash().ToString());
+        }
+
         [Fact(DisplayName = "EnsureUriEndsWithSlash shall throw when input is null")]
         public void EnsureUriEndsWithSlash_Null()
         {

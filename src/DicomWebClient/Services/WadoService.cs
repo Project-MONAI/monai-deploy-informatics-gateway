@@ -19,6 +19,7 @@ using Ardalis.GuardClauses;
 using Dicom;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common;
 using System;

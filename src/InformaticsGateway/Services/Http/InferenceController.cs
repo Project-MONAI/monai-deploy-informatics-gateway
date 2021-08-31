@@ -42,7 +42,7 @@ using System.Threading.Tasks;
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     public class InferenceController : ControllerBase
     {
         private readonly IInferenceRequestRepository _inferenceRequestRepository;
@@ -63,6 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         }
 
         [HttpGet("status/{transactionId}")]
+        [Produces("application/json")]
         public async Task<ActionResult> JobStatus(string transactionId)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
@@ -86,6 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         }
 
         [HttpPost]
+        [Produces("application/json")]
         public async Task<ActionResult> NewInferenceRequest([FromBody] InferenceRequest request)
         {
             Guard.Against.Null(request, nameof(request));

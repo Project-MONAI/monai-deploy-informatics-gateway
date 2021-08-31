@@ -2,10 +2,21 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Informatics Gateway CLI",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-cli",
+            "program": "${workspaceFolder}/src/CLI/bin/Debug/net5.0/linux-x64/mig-cli",
+            "args": ["aet", "add", "-a", "TEST", "--apps", "1,2,3"],
+            "cwd": "${workspaceFolder}/src/CLI/bin/Debug/net5.0/linux-x64",
+            "stopAtEntry": true,
+            "console": "internalConsole"
+        },
+        {
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes
             // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
-            "name": ".NET Core Launch (console)",
+            "name": "Informatics Gateway (Development)",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",

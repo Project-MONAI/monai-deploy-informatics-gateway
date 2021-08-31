@@ -10,10 +10,11 @@
 // limitations under the License.
 
 using Dicom;
+using Monai.Deploy.InformaticsGateway.Common;
 using System.Collections.Generic;
 using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.Common.Test
+namespace Monai.Deploy.InformaticsGateway.Test.Common
 {
     public class DicomExtensionsTest
     {

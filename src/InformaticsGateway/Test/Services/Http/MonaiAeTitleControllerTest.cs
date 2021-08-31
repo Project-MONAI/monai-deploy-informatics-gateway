@@ -184,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         [RetryTheory(DisplayName = "Create - Shall return BadRequest when validation fails")]
         [InlineData("AeTitleIsTooooooLooooong", "'AeTitleIsTooooooLooooong' is not a valid AE Title (source: MonaiApplicationEntity).")]
-        [InlineData("AET1", "MONAI AE Title AET1 already exists.")]
+        [InlineData("AET1", "A MONAI Application Entity with the same name 'AET1' already exists.")]
         public async void Create_ShallReturnBadRequestOnValidationFailure(string aeTitle, string errorMessage)
         {
             var data = new List<MonaiApplicationEntity>();
@@ -197,7 +197,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                     Applications = new List<string> { "A", "B" }
                 });
             }
-            _repository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
+            _repository.Setup(p => p.Any(It.IsAny<Func<MonaiApplicationEntity, bool>>())).Returns(aeTitle == "AET1");
 
             var monaiAeTitle = new MonaiApplicationEntity
             {

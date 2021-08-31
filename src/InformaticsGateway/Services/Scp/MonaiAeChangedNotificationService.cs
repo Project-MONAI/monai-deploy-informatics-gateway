@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log(LogLevel.Error, ex, "Error notifying observer.");
+                    observer.OnError(ex);
                 }
             }
         }

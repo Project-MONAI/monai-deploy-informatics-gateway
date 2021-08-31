@@ -24,10 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         public void MonaiApplicationEntity_ShallThrowOnNull()
         {
             MonaiApplicationEntity MonaiApplicationEntity = null;
-            Assert.Throws<ArgumentNullException>(() => MonaiApplicationEntity.IsValid(new List<string>(), out _));
-
-            MonaiApplicationEntity = new MonaiApplicationEntity();
-            Assert.Throws<ArgumentNullException>(() => MonaiApplicationEntity.IsValid(null, out _));
+            Assert.Throws<ArgumentNullException>(() => MonaiApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "MonaiApplicationEntity - invalid AE Title")]
@@ -35,18 +32,10 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         {
             var MonaiApplicationEntity = new MonaiApplicationEntity();
             MonaiApplicationEntity.AeTitle = "             ";
-            Assert.False(MonaiApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.False(MonaiApplicationEntity.IsValid(out _));
 
             MonaiApplicationEntity.AeTitle = "ABCDEFGHIJKLMNOPQRSTUVW";
-            Assert.False(MonaiApplicationEntity.IsValid(new List<string>(), out _));
-        }
-
-        [Fact(DisplayName = "MonaiApplicationEntity - invalid if already exists")]
-        public void MonaiApplicationEntity_InvalidIfAlreadyExists()
-        {
-            var MonaiApplicationEntity = new MonaiApplicationEntity();
-            MonaiApplicationEntity.AeTitle = "AET";
-            Assert.False(MonaiApplicationEntity.IsValid(new List<string>() { "AET" }, out _));
+            Assert.False(MonaiApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "MonaiApplicationEntity - valid")]
@@ -54,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         {
             var MonaiApplicationEntity = new MonaiApplicationEntity();
             MonaiApplicationEntity.AeTitle = "AET";
-            Assert.True(MonaiApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.True(MonaiApplicationEntity.IsValid(out _));
         }
 
         #endregion MonaiApplicationEntity.IsValid
@@ -65,10 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         public void DestinationApplicationEntity_ShallThrowOnNull()
         {
             DestinationApplicationEntity destinationApplicationEntity = null;
-            Assert.Throws<ArgumentNullException>(() => destinationApplicationEntity.IsValid(new List<string>(), out _));
-
-            destinationApplicationEntity = new DestinationApplicationEntity();
-            Assert.Throws<ArgumentNullException>(() => destinationApplicationEntity.IsValid(null, out _));
+            Assert.Throws<ArgumentNullException>(() => destinationApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "DestinationApplicationEntity - invalid AE Title")]
@@ -76,10 +62,10 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         {
             var destinationApplicationEntity = new DestinationApplicationEntity();
             destinationApplicationEntity.AeTitle = "             ";
-            Assert.False(destinationApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.False(destinationApplicationEntity.IsValid(out _));
 
             destinationApplicationEntity.AeTitle = "ABCDEFGHIJKLMNOPQRSTUVW";
-            Assert.False(destinationApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.False(destinationApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "DestinationApplicationEntity - invalid name")]
@@ -88,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var destinationApplicationEntity = new DestinationApplicationEntity();
             destinationApplicationEntity.Name = "     ";
             destinationApplicationEntity.AeTitle = "AET";
-            Assert.False(destinationApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.False(destinationApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "DestinationApplicationEntity - invalid host")]
@@ -98,7 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             destinationApplicationEntity.Name = "NAME";
             destinationApplicationEntity.HostIp = "     ";
             destinationApplicationEntity.AeTitle = "AET";
-            Assert.False(destinationApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.False(destinationApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "DestinationApplicationEntity - invalid port")]
@@ -110,19 +96,10 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             destinationApplicationEntity.AeTitle = "AET";
 
             destinationApplicationEntity.Port = 0;
-            Assert.False(destinationApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.False(destinationApplicationEntity.IsValid(out _));
 
             destinationApplicationEntity.Port = 65536;
-            Assert.False(destinationApplicationEntity.IsValid(new List<string>(), out _));
-        }
-
-        [Fact(DisplayName = "DestinationApplicationEntity - invalid if already exists")]
-        public void DestinationApplicationEntity_InvalidIfAlreadyExists()
-        {
-            var destinationApplicationEntity = new DestinationApplicationEntity();
-            destinationApplicationEntity.Name = "NAME";
-            destinationApplicationEntity.AeTitle = "AET";
-            Assert.False(destinationApplicationEntity.IsValid(new List<string>() { "NAME" }, out _));
+            Assert.False(destinationApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "DestinationApplicationEntity - valid")]
@@ -133,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             destinationApplicationEntity.AeTitle = "AET";
             destinationApplicationEntity.HostIp = "HOSTNAME";
             destinationApplicationEntity.Port = 104;
-            Assert.True(destinationApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.True(destinationApplicationEntity.IsValid(out _));
         }
 
         #endregion DestinationApplicationEntity.IsValid
@@ -144,10 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         public void SourceApplicationEntity_ShallThrowOnNull()
         {
             SourceApplicationEntity sourceApplicationEntity = null;
-            Assert.Throws<ArgumentNullException>(() => sourceApplicationEntity.IsValid(new List<string>(), out _));
-
-            sourceApplicationEntity = new SourceApplicationEntity();
-            Assert.Throws<ArgumentNullException>(() => sourceApplicationEntity.IsValid(null, out _));
+            Assert.Throws<ArgumentNullException>(() => sourceApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "DestinationApplicationEntity - invalid AE Title")]
@@ -155,10 +129,10 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         {
             var sourceApplicationEntity = new SourceApplicationEntity();
             sourceApplicationEntity.AeTitle = "             ";
-            Assert.False(sourceApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.False(sourceApplicationEntity.IsValid(out _));
 
             sourceApplicationEntity.AeTitle = "ABCDEFGHIJKLMNOPQRSTUVW";
-            Assert.False(sourceApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.False(sourceApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "DestinationApplicationEntity - invalid host")]
@@ -167,16 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var sourceApplicationEntity = new SourceApplicationEntity();
             sourceApplicationEntity.HostIp = "     ";
             sourceApplicationEntity.AeTitle = "AET";
-            Assert.False(sourceApplicationEntity.IsValid(new List<string>(), out _));
-        }
-
-        [Fact(DisplayName = "DestinationApplicationEntity - invalid if already exists")]
-        public void SourceApplicationEntity_InvalidIfAlreadyExists()
-        {
-            var sourceApplicationEntity = new SourceApplicationEntity();
-            sourceApplicationEntity.AeTitle = "AET";
-            sourceApplicationEntity.HostIp = "HOST";
-            Assert.False(sourceApplicationEntity.IsValid(new List<string>() { "AET" }, out _));
+            Assert.False(sourceApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "DestinationApplicationEntity - valid")]
@@ -185,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var sourceApplicationEntity = new SourceApplicationEntity();
             sourceApplicationEntity.AeTitle = "AET";
             sourceApplicationEntity.HostIp = "HOSTNAME";
-            Assert.True(sourceApplicationEntity.IsValid(new List<string>(), out _));
+            Assert.True(sourceApplicationEntity.IsValid(out _));
         }
 
         #endregion SourceApplicationEntity.IsValid

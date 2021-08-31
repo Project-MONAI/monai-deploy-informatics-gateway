@@ -28,37 +28,27 @@
 
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public static class ValidationExtensions
     {
-        public static bool IsValid(this MonaiApplicationEntity monaiApplicationEntity, IEnumerable<string> existingAeTitles, out IList<string> validationErrors)
+        public static bool IsValid(this MonaiApplicationEntity monaiApplicationEntity, out IList<string> validationErrors)
         {
             Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
-            Guard.Against.Null(existingAeTitles, nameof(existingAeTitles));
 
             validationErrors = new List<string>();
 
             var valid = true;
             valid &= IsAeTitleValid(monaiApplicationEntity.GetType().Name, monaiApplicationEntity.AeTitle, validationErrors);
 
-            if (existingAeTitles.Any(p => p.Equals(monaiApplicationEntity.AeTitle, StringComparison.Ordinal)))
-            {
-                validationErrors.Add($"MONAI AE Title {monaiApplicationEntity.AeTitle} already exists.");
-                valid = false;
-            }
-
             return valid;
         }
 
-        public static bool IsValid(this DestinationApplicationEntity destinationApplicationEntity, IEnumerable<string> existingDestinationNames, out IList<string> validationErrors)
+        public static bool IsValid(this DestinationApplicationEntity destinationApplicationEntity, out IList<string> validationErrors)
         {
             Guard.Against.Null(destinationApplicationEntity, nameof(destinationApplicationEntity));
-            Guard.Against.Null(existingDestinationNames, nameof(existingDestinationNames));
 
             validationErrors = new List<string>();
 
@@ -68,19 +58,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             valid &= IsValidHostNameIp(destinationApplicationEntity.AeTitle, destinationApplicationEntity.HostIp, validationErrors);
             valid &= IsPortValid(destinationApplicationEntity.GetType().Name, destinationApplicationEntity.Port, validationErrors);
 
-            if (existingDestinationNames.Any(p => p.Equals(destinationApplicationEntity.Name, StringComparison.Ordinal)))
-            {
-                validationErrors.Add($"Destination with name {destinationApplicationEntity.Name} already exists.");
-                valid = false;
-            }
-
             return valid;
         }
 
-        public static bool IsValid(this SourceApplicationEntity sourceApplicationEntity, IEnumerable<string> existingAeTitles, out IList<string> validationErrors)
+        public static bool IsValid(this SourceApplicationEntity sourceApplicationEntity, out IList<string> validationErrors)
         {
             Guard.Against.Null(sourceApplicationEntity, nameof(sourceApplicationEntity));
-            Guard.Against.Null(existingAeTitles, nameof(existingAeTitles));
 
             validationErrors = new List<string>();
 
@@ -88,11 +71,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             valid &= IsAeTitleValid(sourceApplicationEntity.GetType().Name, sourceApplicationEntity.AeTitle, validationErrors);
             valid &= IsValidHostNameIp(sourceApplicationEntity.AeTitle, sourceApplicationEntity.HostIp, validationErrors);
 
-            if (existingAeTitles.Any(p => p.Equals(sourceApplicationEntity.AeTitle, StringComparison.Ordinal)))
-            {
-                validationErrors.Add($"Source with AE Title {sourceApplicationEntity.AeTitle} already exists.");
-                valid = false;
-            }
             return valid;
         }
 

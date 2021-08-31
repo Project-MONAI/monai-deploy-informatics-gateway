@@ -58,6 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         protected override string Agent { get; }
         protected override int Concurrentcy { get; }
+        public override string ServiceName => "DICOMweb Export Service";
 
         public DicomWebExportService(
             ILoggerFactory loggerFactory,

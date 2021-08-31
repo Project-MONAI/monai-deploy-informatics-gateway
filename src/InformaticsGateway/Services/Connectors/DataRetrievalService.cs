@@ -65,6 +65,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public ServiceStatus Status { get; set; }
 
+        public string ServiceName => "Data Retrieval Service";
+
         public DataRetrievalService(
             ILoggerFactory loggerFactory,
             IHttpClientFactory httpClientFactory,

@@ -90,8 +90,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error querying Source Application Entity.");
-                return Problem(title: "Error querying Source Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.Log(LogLevel.Error, ex, "Error querying DICOM sources.");
+                return Problem(title: "Error querying DICOM sources.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
@@ -105,10 +105,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                if (!item.IsValid(_repository.AsQueryable().Select(p => p.AeTitle), out IList<string> validationErrors))
-                {
-                    throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
-                }
+                item.SetDefaultValues();
+                var q = _repository.AsQueryable().Select(p => p.Name.Equals(item.Name));
+                Validate(item);
 
                 await _repository.AddAsync(item);
                 await _repository.SaveChangesAsync();
@@ -121,21 +120,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error adding new Source Application Entity.");
-                return Problem(title: "Error adding new Source Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.Log(LogLevel.Error, ex, "Error adding new DICOM source.");
+                return Problem(title: "Error adding new DICOM source.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
-        [HttpDelete("{aeTitle}")]
+        [HttpDelete("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<SourceApplicationEntity>> Delete(string aeTitle)
+        public async Task<ActionResult<SourceApplicationEntity>> Delete(string name)
         {
             try
             {
-                var SourceApplicationEntity = await _repository.FindAsync(aeTitle);
+                var SourceApplicationEntity = await _repository.FindAsync(name);
                 if (SourceApplicationEntity is null)
                 {
                     return NotFound();
@@ -144,13 +143,29 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 _repository.Remove(SourceApplicationEntity);
                 await _repository.SaveChangesAsync();
 
-                _logger.Log(LogLevel.Information, $"DICOM source deleted AE Title={aeTitle}.");
+                _logger.Log(LogLevel.Information, $"DICOM source deleted {name}.");
                 return SourceApplicationEntity;
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error deleting Source Application Entity.");
-                return Problem(title: "Error deleting Source Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.Log(LogLevel.Error, ex, "Error deleting DICOM source.");
+                return Problem(title: "Error deleting DICOM source.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+            }
+        }
+
+        private void Validate(SourceApplicationEntity item)
+        {
+            if (_repository.Any(p => p.Name.Equals(item.Name)))
+            {
+                throw new ConfigurationException($"A DICOM source with the same name '{item.Name}' already exists.");
+            }
+            if (_repository.Any(p => item.AeTitle.Equals(p.AeTitle) && item.HostIp.Equals(p.HostIp)))
+            {
+                throw new ConfigurationException($"A DICOM source with the same AE Title '{item.AeTitle}' and host/IP address '{item.HostIp}' already exists.");
+            }
+            if (!item.IsValid(out IList<string> validationErrors))
+            {
+                throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
             }
         }
     }

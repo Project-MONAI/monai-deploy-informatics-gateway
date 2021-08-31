@@ -51,5 +51,16 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// Gets or set the host name or IP address of the AE Title.
         /// </summary>
         public string HostIp { get; set; }
+
+        public BaseApplicationEntity()
+        {
+            SetDefaultValues();
+        }
+
+        public void SetDefaultValues()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+                Name = AeTitle;
+        }
     }
 }
