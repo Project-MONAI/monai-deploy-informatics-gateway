@@ -27,11 +27,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.CLI", "CLI\Monai.Deploy.InformaticsGateway.CLI.csproj", "{B3F35969-BA8B-4863-BF0B-81032F5F48F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monai.Deploy.InformaticsGateway.Client", "Client\Monai.Deploy.InformaticsGateway.Client.csproj", "{61FC0E6E-C440-46DA-AC79-95517CA118AE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Client", "Client\Monai.Deploy.InformaticsGateway.Client.csproj", "{61FC0E6E-C440-46DA-AC79-95517CA118AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monai.Deploy.InformaticsGateway.Client.Common", "Client.Common\Monai.Deploy.InformaticsGateway.Client.Common.csproj", "{485B2D75-4A01-47F6-A359-59F88696D516}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Client.Common", "Client.Common\Monai.Deploy.InformaticsGateway.Client.Common.csproj", "{485B2D75-4A01-47F6-A359-59F88696D516}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Client.Common.Test", "Client.Common\Test\Monai.Deploy.InformaticsGateway.Client.Common.Test.csproj", "{06B4CB86-317A-41BA-9FEB-B9346E061254}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monai.Deploy.InformaticsGateway.Client.Test", "Client\Test\Monai.Deploy.InformaticsGateway.Client.Test.csproj", "{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -223,6 +225,18 @@ Global
 		{06B4CB86-317A-41BA-9FEB-B9346E061254}.Release|x64.Build.0 = Release|Any CPU
 		{06B4CB86-317A-41BA-9FEB-B9346E061254}.Release|x86.ActiveCfg = Release|Any CPU
 		{06B4CB86-317A-41BA-9FEB-B9346E061254}.Release|x86.Build.0 = Release|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Debug|x64.Build.0 = Debug|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Debug|x86.Build.0 = Debug|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|x64.ActiveCfg = Release|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|x64.Build.0 = Release|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|x86.ActiveCfg = Release|Any CPU
+		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

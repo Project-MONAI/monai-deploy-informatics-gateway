@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             {
                 var problem = await responseMessage.Content.ReadAsAsync<ProblemDetails>();
 
-                if (problem is not null)
+                if (problem?.Status != 0)
                 {
                     throw new ProblemException(problem);
                 }
@@ -44,15 +44,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 logger?.Log(LogLevel.Trace, ex, "Error reading server side problem.");
             }
 
-            try
-            {
-                var content = await responseMessage.Content.ReadAsStringAsync();
-                throw new Exception(content);
-            }
-            catch (System.Exception)
-            {
-                responseMessage.EnsureSuccessStatusCode();
-            }
+            var content = await responseMessage.Content.ReadAsStringAsync();
+            throw new HttpRequestException(content);
         }
     }
 }

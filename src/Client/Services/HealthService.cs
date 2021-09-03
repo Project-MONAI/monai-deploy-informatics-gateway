@@ -12,6 +12,7 @@
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -37,9 +38,9 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Guard.Against.Null(httpClient, nameof(httpClient));
         }
 
-        public async Task<string> Live(CancellationToken cancellationToken) => await LiveReady(cancellationToken);
+        public async Task<string> Live(CancellationToken cancellationToken) => await LiveReady("live", cancellationToken);
 
-        public async Task<string> Ready(CancellationToken cancellationToken) => await LiveReady(cancellationToken);
+        public async Task<string> Ready(CancellationToken cancellationToken) => await LiveReady("ready", cancellationToken);
 
         public async Task<HealthStatusResponse> Status(CancellationToken cancellationToken)
         {
@@ -50,23 +51,23 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
 
-        private async Task<string> LiveReady(CancellationToken cancellationToken)
+        private async Task<string> LiveReady(string uriPath, CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/live");
+            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/{uriPath}");
             try
             {
-                var response = await _httpClient.GetAsync($"{Route}/live", cancellationToken);
+                var response = await _httpClient.GetAsync($"{Route}/{uriPath}", cancellationToken);
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsStringAsync(cancellationToken);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;

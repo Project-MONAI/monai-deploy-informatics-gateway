@@ -11,6 +11,7 @@
 
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -55,41 +56,43 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
 
-        public async Task<T> Delete(string aeTitle, CancellationToken cancellationToken)
+        public async Task<T> Delete(string name, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(aeTitle, nameof(aeTitle));
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/{aeTitle}");
+            name = Uri.EscapeUriString(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/{name}");
             try
             {
-                var response = await _httpClient.DeleteAsync($"{Route}/{aeTitle}", cancellationToken);
+                var response = await _httpClient.DeleteAsync($"{Route}/{name}", cancellationToken);
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
 
-        public async Task<T> Get(string aeTitle, CancellationToken cancellationToken)
+        public async Task<T> Get(string name, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(aeTitle, nameof(aeTitle));
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/{aeTitle}");
+            name = Uri.EscapeUriString(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/{name}");
             try
             {
-                var response = await _httpClient.GetAsync($"{Route}/{aeTitle}", cancellationToken);
+                var response = await _httpClient.GetAsync($"{Route}/{name}", cancellationToken);
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
@@ -106,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 var list = await response.Content.ReadAsAsync<IEnumerable<T>>(cancellationToken);
                 return list.ToList().AsReadOnly();
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;

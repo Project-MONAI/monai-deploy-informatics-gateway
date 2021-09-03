@@ -9,22 +9,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Microsoft.Extensions.Logging;
-using System;
-using System.Net.Http;
+using System.Runtime.CompilerServices;
 
-namespace Monai.Deploy.InformaticsGateway.Client.Services
-{
-    internal abstract class ServiceBase
-    {
-        protected readonly HttpClient _httpClient;
-        protected readonly ILogger _logger;
-        protected string RequestServicePrefix { get; private set; } = string.Empty;
-
-        public ServiceBase(HttpClient httpClient, ILogger logger = null)
-        {
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _logger = logger;
-        }
-    }
-}
+[assembly: InternalsVisibleTo("Monai.Deploy.InformaticsGateway.Client.Test")]
