@@ -12,7 +12,7 @@
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.IO;
+using System.IO.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
@@ -32,23 +32,25 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     public class ConfigurationService : IConfigurationService
     {
         private readonly ILogger<ConfigurationService> _logger;
+        private readonly IFileSystem _fileSystem;
 
-        public ConfigurationService(ILogger<ConfigurationService> logger)
+        public ConfigurationService(ILogger<ConfigurationService> logger, IFileSystem fileSystem)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
         }
 
         public void CreateConfigDirectoryIfNotExist()
         {
-            if (!Directory.Exists(Common.MigDirectory))
+            if (!_fileSystem.Directory.Exists(Common.MigDirectory))
             {
-                Directory.CreateDirectory(Common.MigDirectory);
+                _fileSystem.Directory.CreateDirectory(Common.MigDirectory);
             }
         }
 
         public bool ConfigurationExists()
         {
-            return File.Exists(Common.CliConfigFilePath);
+            return _fileSystem.File.Exists(Common.CliConfigFilePath);
         }
 
         public ConfigurationOptions Load() => Load(false);
@@ -62,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                     this._logger.Log(LogLevel.Debug, "Loading configuration file from {0}", Common.CliConfigFilePath);
                 }
 
-                using (var file = File.OpenText(Common.CliConfigFilePath))
+                using (var file = _fileSystem.File.OpenText(Common.CliConfigFilePath))
                 {
                     var serializer = new JsonSerializer();
                     return serializer.Deserialize(file, typeof(ConfigurationOptions)) as ConfigurationOptions;
@@ -77,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         public void Save(ConfigurationOptions options)
         {
-            using (var file = File.CreateText(Common.CliConfigFilePath))
+            using (var file = _fileSystem.File.CreateText(Common.CliConfigFilePath))
             {
                 var serializer = new JsonSerializer();
                 serializer.Formatting = Formatting.Indented;

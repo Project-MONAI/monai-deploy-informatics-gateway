@@ -9,15 +9,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.CommandLine.Rendering;
+using System;
 
-namespace Monai.Deploy.InformaticsGateway.CLI
+namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
-    public static class ExtensionMethods
+    public interface IConfirmationPrompt
     {
-        public static TextSpan Underline(this string value) =>
-            new ContainerSpan(StyleSpan.UnderlinedOn(),
-                              new ContentSpan(value),
-                              StyleSpan.UnderlinedOff());
+        bool ShowConfirmationPrompt(string message);
+    }
+
+    internal class ConfirmationPrompt : IConfirmationPrompt
+    {
+        public bool ShowConfirmationPrompt(string message)
+        {
+            Console.Write($"{message} [y/N]");
+            var key = Console.ReadKey();
+            Console.WriteLine();
+            if (key.Key == ConsoleKey.Y)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

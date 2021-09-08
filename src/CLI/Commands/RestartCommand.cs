@@ -9,25 +9,54 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.CommandLine;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
+using System;
 using System.CommandLine.Invocation;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    public class RestartCommand : Command
+    public class RestartCommand : CommandBase
     {
-        public RestartCommand() : base("restart", "Restart the MONAI Informatics Gateway service")
+        public RestartCommand() : base("restart", $"Restart the {Strings.ApplicationName} service")
         {
-            this.Handler = CommandHandler.Create<IHost, bool>(RestartCommandHandler);
+            this.AddConfirmationOption();
+            this.Handler = CommandHandler.Create<IHost, bool, bool>(RestartCommandHandler);
         }
 
-        private static async Task RestartCommandHandler(IHost host, bool verbose)
+        private async Task<int> RestartCommandHandler(IHost host, bool yes, bool verbose)
         {
             var service = host.Services.GetRequiredService<IControlService>();
-            await service.Restart();
+            var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();
+            var logger = CreateLogger<RestartCommand>(host);
+
+            Guard.Against.Null(confirmation, nameof(confirmation), "Confirmation prompt is unavailable.");
+            Guard.Against.Null(service, nameof(service), "Control service is unavailable.");
+            Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
+
+            if (!yes)
+            {
+                if (!confirmation.ShowConfirmationPrompt($"Do you want to restart {Strings.ApplicationName}?"))
+                {
+                    logger.Log(LogLevel.Warning, "Action cancelled.");
+                    return ExitCodes.Restart_Cancelled;
+                }
+            }
+
+            try
+            {
+                await service.Restart();
+            }
+            catch (Exception ex)
+            {
+                logger.Log(LogLevel.Critical, $"Error restarting {Strings.ApplicationName}: {ex.Message}");
+                return ExitCodes.Restart_Error;
+            }
+            return ExitCodes.Success;
         }
     }
 }

@@ -24,36 +24,41 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 {
     public class StatusCommand : CommandBase
     {
-        public StatusCommand() : base("status", "MONAI Informatics Gateway service status")
+        public StatusCommand() : base("status", $"{Strings.ApplicationName} service status")
         {
             this.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(StatusCommandHandlerAsync);
         }
 
-        private async Task StatusCommandHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
+        private async Task<int> StatusCommandHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var configService = host.Services.GetRequiredService<IConfigurationService>();
-            var client = host.Services.GetRequiredService<InformaticsGatewayClient>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<StatusCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
             Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
-            Guard.Against.Null(client, nameof(client), "Informatics Gateway client is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             HealthStatusResponse response = null;
             try
             {
                 ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
 
-                this.LogVerbose(verbose, host, $"Connecting to Informatics Gateway at {config.Endpoint}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
                 this.LogVerbose(verbose, host, $"Retrieving service status...");
                 response = await client.Health.Status(cancellationToken);
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.Log(LogLevel.Critical, ex.Message);
+                return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
                 logger.Log(LogLevel.Critical, $"Error retrieving service status: {ex.Message}");
-                return;
+                return ExitCodes.Status_Error;
             }
 
             logger.Log(LogLevel.Information, $"Number of active DIMSE connections: {response.ActiveDimseConnections}");
@@ -62,6 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 logger.Log(LogLevel.Information, $"\t\t{service}: {response.Services[service]}");
             }
+            return ExitCodes.Success;
         }
     }
 }

@@ -12,6 +12,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
 using System;
 using System.CommandLine;
@@ -19,6 +20,7 @@ using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
 using System.CommandLine.Rendering;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
@@ -28,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private static async Task<int> Main(string[] args)
         {
             var verboseOption = new Option<bool>(new[] { "--verbose", "-v" }, () => false, "Show verbose output");
-            return await new CommandLineBuilder(new RootCommand("MONAI Deploy Informatics Gateway CLI"))
+            return await new CommandLineBuilder(new RootCommand($"{Strings.ApplicationName} CLI"))
                 .UseHost(
                     _ => Host.CreateDefaultBuilder(),
                     host =>
@@ -46,7 +48,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                         })
                         .ConfigureServices(services =>
                         {
+                            services.AddScoped<IFileSystem, FileSystem>();
+                            services.AddScoped<IConfirmationPrompt, ConfirmationPrompt>();
+                            services.AddScoped<IConsoleRegion, ConsoleRegion>();
                             services.AddHttpClient<InformaticsGatewayClient>();
+                            services.AddSingleton<IInformaticsGatewayClient>(p => p.GetRequiredService<InformaticsGatewayClient>());
                             services.AddSingleton<IConfigurationService, ConfigurationService>();
                             services.AddSingleton<IControlService, ControlService>();
                         });

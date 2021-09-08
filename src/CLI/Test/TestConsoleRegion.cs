@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,14 +9,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using System.IO;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
+using System.CommandLine.Rendering;
 
-namespace Monai.Deploy.InformaticsGateway.CLI
+namespace Monai.Deploy.InformaticsGateway.CLI.Test
 {
-    public class Common
+    internal class TestConsoleRegion : IConsoleRegion
     {
-        public static readonly string MigDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".mig");
-        public static readonly string CliConfigFilePath = Path.Combine(MigDirectory, "cli.config");
+        public Region GetDefaultConsoleRegion()
+        {
+            return new Region(0, 0, 100, 100, false);
+        }
     }
 }

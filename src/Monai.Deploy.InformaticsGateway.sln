@@ -33,7 +33,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Client.Common.Test", "Client.Common\Test\Monai.Deploy.InformaticsGateway.Client.Common.Test.csproj", "{06B4CB86-317A-41BA-9FEB-B9346E061254}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monai.Deploy.InformaticsGateway.Client.Test", "Client\Test\Monai.Deploy.InformaticsGateway.Client.Test.csproj", "{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Client.Test", "Client\Test\Monai.Deploy.InformaticsGateway.Client.Test.csproj", "{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.CLI.Test", "CLI\Test\Monai.Deploy.InformaticsGateway.CLI.Test.csproj", "{28099DFC-8937-4508-848C-35C99E56C121}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -237,6 +239,18 @@ Global
 		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|x64.Build.0 = Release|Any CPU
 		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|x86.ActiveCfg = Release|Any CPU
 		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}.Release|x86.Build.0 = Release|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Debug|x64.Build.0 = Debug|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Debug|x86.Build.0 = Debug|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Release|Any CPU.Build.0 = Release|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Release|x64.ActiveCfg = Release|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Release|x64.Build.0 = Release|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Release|x86.ActiveCfg = Release|Any CPU
+		{28099DFC-8937-4508-848C-35C99E56C121}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

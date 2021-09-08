@@ -48,19 +48,33 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
         }
 
-        protected ConfigurationOptions LoadConfiguration(bool verbose, IConfigurationService configurationService, InformaticsGatewayClient client)
+        protected ConfigurationOptions LoadConfiguration(bool verbose, IConfigurationService configurationService, IInformaticsGatewayClient client)
         {
             Guard.Against.Null(configurationService, nameof(configurationService));
             Guard.Against.Null(client, nameof(client));
 
+            var configuration = LoadConfiguration(verbose, configurationService);
+            client.ConfigureServiceUris(new Uri(configuration.Endpoint));
+            return configuration;
+        }
+
+        protected ConfigurationOptions LoadConfiguration(bool verbose, IConfigurationService configurationService)
+        {
+            Guard.Against.Null(configurationService, nameof(configurationService));
+
             if (configurationService.ConfigurationExists())
             {
                 var config = configurationService.Load(verbose);
-                client.ConfigureServiceUris(new Uri(config.Endpoint));
                 return config;
             }
 
-            throw new Exception("Informatics Gateway endpoint not configured.  Please run 'config` first.");
+            throw new ConfigurationException($"{Strings.ApplicationName} endpoint not configured.  Please run 'config` first.");
+        }
+
+        protected void AddConfirmationOption()
+        {
+            var confirmationOption = new Option<bool>(new[] { "-y", "--yes" }, "Automatic yes to prompts");
+            this.AddOption(confirmationOption);
         }
     }
 }

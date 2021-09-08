@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Common;
 using System;
@@ -80,33 +81,39 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(AddAeTitlehandlerAsync);
         }
 
-        private async Task ListAeTitlehandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
+        private async Task<int> ListAeTitlehandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();
             var configService = host.Services.GetRequiredService<IConfigurationService>();
-            var client = host.Services.GetRequiredService<InformaticsGatewayClient>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
+            var consoleRegion = host.Services.GetRequiredService<IConsoleRegion>();
             var logger = CreateLogger<AetCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
             Guard.Against.Null(console, nameof(console), "Console service is unavailable.");
             Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
-            Guard.Against.Null(client, nameof(client), "Informatics Gateway client is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
+            Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
             IReadOnlyList<MonaiApplicationEntity> items = null;
             try
             {
                 ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
-
-                this.LogVerbose(verbose, host, $"Connecting to Informatics Gateway at {config.Endpoint}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
                 this.LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
                 items = await client.MonaiScpAeTitle.List(cancellationToken);
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.Log(LogLevel.Critical, ex.Message);
+                return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
                 logger.Log(LogLevel.Critical, $"Error retrieving MONAI SCP AE Titles: {ex.Message}");
-                return;
+                return ExitCodes.MonaiScp_ErrorList;
             }
 
             if (items.IsNullOrEmpty())
@@ -128,51 +135,59 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 table.AddColumn(p => p.Name, new ContentView("Name".Underline()));
                 table.AddColumn(p => p.AeTitle, new ContentView("AE Title".Underline()));
                 table.AddColumn(p => p.Applications.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.Applications), new ContentView("Applications".Underline()));
-                table.Render(consoleRenderer, new Region(0, 0, Console.WindowWidth, Console.WindowHeight, false));
+                table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
             }
+            return ExitCodes.Success;
         }
 
-        private async Task RemoveAeTitlehandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
+        private async Task<int> RemoveAeTitlehandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
             this.LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
-            var client = host.Services.GetRequiredService<InformaticsGatewayClient>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<AetCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
             Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
-            Guard.Against.Null(client, nameof(client), "Informatics Gateway client is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             try
             {
                 ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
-                this.LogVerbose(verbose, host, $"Connecting to Informatics Gateway at {config.Endpoint}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
                 this.LogVerbose(verbose, host, $"Deleting MONAI SCP AE Title {name}...");
                 _ = await client.MonaiScpAeTitle.Delete(name, cancellationToken);
                 logger.Log(LogLevel.Information, $"MONAI SCP AE Title '{name}' deleted.");
             }
+            catch (ConfigurationException ex)
+            {
+                logger.Log(LogLevel.Critical, ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
             catch (Exception ex)
             {
                 logger.Log(LogLevel.Critical, $"Error deleting MONAI SCP AE Title {name}: {ex.Message}");
+                return ExitCodes.MonaiScp_ErrorDelete;
             }
+            return ExitCodes.Success;
         }
 
-        private async Task AddAeTitlehandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
+        private async Task<int> AddAeTitlehandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
             this.LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
-            var client = host.Services.GetRequiredService<InformaticsGatewayClient>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<AetCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
             Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
-            Guard.Against.Null(client, nameof(client), "Informatics Gateway client is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             try
             {
                 ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
 
-                this.LogVerbose(verbose, host, $"Connecting to Informatics Gateway at {config.Endpoint}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
                 var result = await client.MonaiScpAeTitle.Create(entity, cancellationToken);
 
                 logger.Log(LogLevel.Information, "New MONAI Deploy SCP Application Entity created:");
@@ -185,10 +200,17 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                     logger.Log(LogLevel.Warning, "Data received by this Application Entity will bypass Data Routing Service.");
                 }
             }
+            catch (ConfigurationException ex)
+            {
+                logger.Log(LogLevel.Critical, ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
             catch (Exception ex)
             {
                 logger.Log(LogLevel.Critical, $"Error creating MONAI SCP AE Title {entity.AeTitle}: {ex.Message}");
+                return ExitCodes.MonaiScp_ErrorCreate;
             }
+            return ExitCodes.Success;
         }
     }
 }
