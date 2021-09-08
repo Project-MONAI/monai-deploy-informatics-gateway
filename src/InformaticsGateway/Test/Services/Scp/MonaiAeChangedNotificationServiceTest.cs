@@ -16,7 +16,6 @@ using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using System;
 using xRetry;
-using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 {

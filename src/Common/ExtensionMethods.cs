@@ -34,17 +34,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
     public static class ExtensionMethods
     {
         /// <summary>
-        /// Extension method for checking a IEnumerable<T> is null.
-        /// </summary>
-        /// <param name="enumerable"></param>
-        /// <typeparam name="T"></typeparam>
-        /// <returns>true if null; false otherwise.</returns>
-        public static bool IsNull<T>(this IEnumerable<T> enumerable)
-        {
-            return (enumerable is null);
-        }
-
-        /// <summary>
         /// Extension method for checking a IEnumerable<T> is null or empty.
         /// </summary>
         /// <param name="enumerable"></param>

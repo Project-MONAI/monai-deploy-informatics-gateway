@@ -26,7 +26,6 @@
  * limitations under the License.
  */
 
-using Monai.Deploy.InformaticsGateway.Common;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -81,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
             if (string.IsNullOrWhiteSpace(Name))
                 Name = AeTitle;
 
-            if (Applications.IsNull())
+            if (Applications is null)
                 Applications = new List<string>();
         }
     }

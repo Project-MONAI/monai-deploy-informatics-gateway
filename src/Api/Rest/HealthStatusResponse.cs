@@ -26,6 +26,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
@@ -43,6 +44,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or sets status of the MONAI Informatics Gateway services.
         /// </summary>
-        public Dictionary<string, ServiceStatus> Services { get; set; } = new Dictionary<string, ServiceStatus>();
+        public Dictionary<string, ServiceStatus> Services { get; set; } = new Dictionary<string, ServiceStatus>(StringComparer.OrdinalIgnoreCase);
     }
 }

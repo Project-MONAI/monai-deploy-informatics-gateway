@@ -51,4 +51,4 @@ jobs:
       working-directory: ./src
     - name: Upload CodeCov
       run: |
-        bash <(curl -s https://codecov.io/bash) -f "*.codecov.xml" -s ./src/results -Z
+        bash <(curl -s https://codecov.io/bash) -f "*.codecov.xml" -s ./src/results -Z -t "$CODECOV_TOKEN"

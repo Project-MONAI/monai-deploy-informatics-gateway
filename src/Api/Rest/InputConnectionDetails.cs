@@ -48,6 +48,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceType.Algorithm" />.
         /// </summary>
         [JsonProperty(PropertyName = "id")]
-        public string PipelineId { get; set; }
+        public string Id { get; set; }
     }
 }

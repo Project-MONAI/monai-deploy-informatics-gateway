@@ -1,7 +1,5 @@
 codecov:
   require_ci_to_pass: yes
-  # token MUST be removed when we go public and regenerate a new token
-  token: 22c6d1aa-f26d-4b58-a29f-3b06d113aa04
 
 coverage:
   precision: 5

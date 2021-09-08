@@ -95,9 +95,10 @@ namespace Monai.Deploy.InformaticsGateway.Api
         {
             string filePath = System.IO.Path.Combine(storageRootPath, $"{correlationId}-{messageId}") + fileExtension;
             filePath = filePath.ToLowerInvariant();
+            var index = 1;
             while (_fileSystem.File.Exists(filePath))
             {
-                filePath = System.IO.Path.Combine(storageRootPath, $"{correlationId}-{messageId}-{System.DateTime.UtcNow.Millisecond}") + fileExtension;
+                filePath = System.IO.Path.Combine(storageRootPath, $"{correlationId}-{messageId}-{index++}") + fileExtension;
                 filePath = filePath.ToLowerInvariant();
             }
 

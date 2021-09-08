@@ -157,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
-            var retrievedFiles = new Dictionary<string, FileStorageInfo>();
+            var retrievedFiles = new Dictionary<string, FileStorageInfo>(StringComparer.OrdinalIgnoreCase);
             RestoreExistingInstances(inferenceRequest, retrievedFiles);
 
             foreach (var source in inferenceRequest.InputResources)
@@ -197,7 +197,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (inferenceRequest.Application is not null)
                 {
-                    retrievedFiles[key].SetApplications(inferenceRequest.Application.PipelineId);
+                    retrievedFiles[key].SetApplications(inferenceRequest.Application.Id);
                 }
                 _fileStoredNotificationQueue.Queue(retrievedFiles[key]);
             }
@@ -377,7 +377,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.NullOrWhiteSpace(queryValue, nameof(queryValue));
 
             _logger.Log(LogLevel.Information, $"Performing QIDO with {dicomTag}={queryValue}.");
-            var queryParams = new Dictionary<string, string>();
+            var queryParams = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
             queryParams.Add(dicomTag, queryValue);
 
             var studies = new List<RequestedStudy>();

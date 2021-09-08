@@ -376,7 +376,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _loggerInternal.VerifyLogging($"Aborted {DicomAbortSource.ServiceUser} with reason {DicomAbortReason.NotSpecified}", LogLevel.Warning, Times.Once());
         }
 
-
         private ScpService CreateService()
         {
             int tryCount = 0;
