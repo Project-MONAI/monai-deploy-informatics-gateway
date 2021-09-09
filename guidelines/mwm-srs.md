@@ -1,29 +1,25 @@
-# MONAI Workload Manager Requirements
+# MONAI Deploy Workload Manager Requirements
 
-![MONAI Workload Manager](./static/mwm.png)
+![MONAI Deploy Workload Manager](./static/mwm.png)
 
 ## Overview
 
-The MONAI Workload Manager (MWM) is the central hub for the MONAI Deploy platform for routing data from/to the applications and healthcare information systems (HIS)/radiological information system (RIS).
+The MONAI Deploy Workload Manager (MWM) is the central hub for the MONAI Deploy platform for routing data between the applications and DICOM devices, such as PACS, as well as EHR systems.
 
 MWM is responsible for routing data received by the data ingesting services to the data discovery service and associate the data to matching application. It is also responsible for monitoring application execution statuses and route any results produced by the applications back to HIS/RIS.
 
 ## Scope
 
-The scope of this document is limited to the MONAI Workload Manager. There are other subsystems of the MONAI Deploy platform such as [MONAI Informatics Gateway](https://github.com/Project-MONAI/Informatics-Gateway) (responsible for interoperability with external systems) and [MONAI App SDK](https://github.com/Project-MONAI/monai-app-sdk) (which provides the necessary APIs for the application developer to interact with the MWM). However, this requirements document does not address specifications belonging to those subsystems.
+The scope of this document is limited to the MONAI Deploy Workload Manager. There are other subsystems of the MONAI Deploy platform such as [MONAI Deploy Informatics Gateway](https://github.com/Project-MONAI/monai-deploy-informatics-gateway) (responsible for interoperability with external systems) and [MONAI App SDK](https://github.com/Project-MONAI/monai-app-sdk) (which provides the necessary APIs for the application developer to interact with the MWM). However, this requirements document does not address specifications belonging to those subsystems.
 
 ## Goal
 
-The goal for this proposal is to enlist, prioritize and provide clarity on the requirements for MONAI Workload Manager. Developers working on different software modules in MONAI Workload Manager SHALL use this specification as a guideline when designing and implementing software for the MONAI Workload Manager.
+The goal for this proposal is to enlist, prioritize and provide clarity on the requirements for MONAI Deploy Workload Manager. Developers working on different software modules in MONAI Deploy Workload Manager SHALL use this specification as a guideline when designing and implementing software for the MONAI Deploy Workload Manager.
 
-## Standard Language
-
-This document SHALL follow the guidance of [rfc
-2119](https://datatracker.ietf.org/doc/html/rfc2119) for terminology.
 
 ## Success Criteria
 
-Data SHALL be routed to the user-defined applications and results, if any, SHALL be routed back to configured HIS.
+Data SHALL be routed to the user-defined applications and results, if any, SHALL be routed back to configured destinations.
 
 ## Attributes of a Requirement
 
@@ -44,14 +40,14 @@ For each requirement, the following attributes have been specified
 | DDR         | Data Discovery Ruleset: a set of static rules defined by the users to determine if an incoming dataset meets the criteria of an application.                     |
 | DDS         | Data Discover Service: a service that applies all DDRs to incoming payloads                                                                                      |
 | Export Sink | An export sink is an user-configured sink where the results (application generated artifacts) are assigned to and later picked up by the export service clients. |
-| MIG         | MONAI Informatics Gateway                                                                                                                                        |
-| MWM         | MONAI Workload Manager                                                                                                                                           |
+| MIG         | MONAI Deploy Informatics Gateway                                                                                                                                        |
+| MWM         | MONAI Deploy Workload Manager                                                                                                                                           |
 
-## Data Ingestion Requirements
+## (DI) Data Ingestion Requirements
 
-### [REQ] MWM SHALL allow users to upload data
+### (DI001) [REQ] MWM SHALL allow users to upload data
 
-An API must be provided to the data ingestion services, such as the Informatics Gateway, to upload payloads to the data discovery service.
+An API MUST be provided to the data ingestion services, such as the Informatics Gateway, to upload payloads to the data discovery service.
 
 #### Background
 
@@ -63,11 +59,28 @@ Verify that payloads can be uploaded from data ingestion services and dispatched
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-### [REQ] MWM SHALL allow users to upload data and associate with one or more applications
 
-An API shall be provided to allow data to be uploaded and routed to one or more designated applications directly without using the data discovery service.
+### (DI002) [REQ] MWM SHALL allow users to notify data arrival via shared storages
+
+An API MUST be provided to the data ingestion services, such as the Informatics Gateway, to notify data has arrived at the shared storage. E.g. a mounted NAS volume or cloud storage services.
+
+#### Background
+
+Medical imaging data are relatively large and transfering data between devices take signaficant amount of time of any given workflow.  In order to reduce data traveling between services,
+
+#### Verification Strategy
+
+Verify that payloads can be uploaded from data ingestion services and dispatched to the data discovery service.
+
+#### Target Release
+
+MONAI Deploy Workload Manager R1
+
+### (DI003) [REQ] MWM SHALL allow users to upload data and associate with one or more applications
+
+An API SHALL be provided to allow data to be uploaded and routed to one or more designated applications directly without using the data discovery service.
 
 #### Background
 
@@ -79,15 +92,15 @@ Verify that payloads can be uploaded from a data ingestion service and then trig
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-### [REQ] MWM SHALL be able to discover applications deployed on MONAI App Server
+### (DI004) [REQ] MWM SHALL be able to discover applications deployed on MONAI App Server
 
-MWM shall discover applications deployed on the MONAI App Server and make them available to the data discovery service and export sinks.
+MWM SHALL discover applications deployed on the MONAI App Server and make them available to the data discovery service and export sinks.
 
 #### Background
 
-In order to associate user-defined data discovery rules with applications, users and MWM, itself must know all MONAI applications deployed on the platform. This also allows users to link each deployed applications to one or more export sinks.
+In order to associate user-defined data discovery rules with applications, users (system admins, workflow engineers) and MWM, itself must know all MONAI Deploy applications that are deployed on the platform. This also allows users to link each deployed applications to one or more export sinks.
 
 #### Verification Strategy
 
@@ -95,23 +108,13 @@ For a deployed application, it must be associable by the data discovery service 
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-## Data Discover Service/Rules Requirements
+## (DR) Data Discover Service/Rules Requirements
 
-### [REQ] MWM Data Discover Service (DDS) SHALL be able to filter data by DICOM headers
+### (DR001) [REQ] MWM Data Discover Service (DDS) SHALL be able to filter data by DICOM headers
 
-MWM DDS shall allow users to define filtering rules based on DICOM Attributes that do not require parsing pixel data using pre-built functions:
-
-- Equals
-- Contains
-- Greater
-- Greater-Than
-- Less
-- Less-Than
-- Not Equals
-- Not Contains
-- <regex>
+MWM DDS SHALL allow users to define filtering rules based on DICOM Attributes that do not require parsing pixel data.
 
 #### Background
 
@@ -123,30 +126,11 @@ Given a set of data discovery rules using the pre-built functions and a DICOM da
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-### [REQ] MWM Data Discover Service (DDS) SHALL be able to filter data by combining DICOM headers
+### (DR002) [REQ] MWM Data Discover Service (DDS) SHALL allow users to configure how long to wait for data before launching a job
 
-MWM DDS shall provide a mechanism so that users can combine two or more DICOM attribute based filtering rules using logical operators:
-
-- AND
-- OR
-
-#### Background
-
-Often in DICOM data filtering, users want to combine multiple attributes, e.g., any DICOM with Modality equals CT _OR_ SC to allow proprietary data that are stored in Secondary Capture along with CT to be processed.
-
-#### Verification Strategy
-
-Combine DICOM rules using the logical operators and a DICOM dataset, the data discovery service applies the rule set to select any data that matches the filtering criteria.
-
-#### Target Release
-
-MONAI Workload Manager R1
-
-### [REQ] MWM Data Discover Service (DDS) SHALL allow users to configure how long to wait for data before launching a job
-
-MWM DDS shall allow users to define a time range to wait for all data to be ready before launch the associated application(s)
+MWM DDS SHALL allow users to define a time range to wait for all data to be ready before launch the associated application(s)
 
 #### Background
 
@@ -158,11 +142,11 @@ Configure a rule set with a timeout and send data that meets the requirements of
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-### [REQ] MWM Data Discover Service (DDS) SHALL be able to filter data by FHIR data fields
+### (DR003) [REQ] MWM Data Discover Service (DDS) SHALL be able to filter data by FHIR data fields
 
-MWM DDS shall allow users to define filtering rules based on FHIR data attributes using pre-built functions, such as, equals, contains, greater, greater-than, less, less-than, etc...
+MWM DDS SHALL allow users to define filtering rules based on FHIR data attributes using pre-built functions, such as, equals, contains, greater, greater-than, less, less-than, etc...
 
 #### Background
 
@@ -174,11 +158,11 @@ Given a set of data discovery rules using the pre-built functions and some FHIR 
 
 #### Target Release
 
-MONAI Workload Manager R2
+MONAI Deploy Workload Manager R2
 
-### [REQ] MWM SHALL respect user-defined data discovery rules
+### (DR004) [REQ] MWM SHALL respect user-defined data discovery rules
 
-Data discovery service must apply all user-defined rules to the data arrived at the system.
+Data discovery service MUST apply all user-defined rules to the data arrived at the system.
 
 #### Background
 
@@ -190,11 +174,11 @@ Given a data discovery rule set and a dataset, the data discovery service applie
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-### [REQ] MWM SHALL be able to route incoming data to one or more applications
+### (DR005) [REQ] MWM SHALL be able to route incoming data to one or more applications
 
-A user-defined data discovery rule shall be associable with one or more deployed applications.
+A user-defined data discovery rule SHALL be associable with one or more deployed applications.
 
 #### Background
 
@@ -206,11 +190,11 @@ Deploy a rule set and associate it with two applications. Verify that both appli
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-## Data Export Requirements
+## (DX) Data Export Requirements
 
-### [REQ] MWM SHALL support multiple export sinks (destinations)
+### (DX001) [REQ] MWM SHALL support multiple export sinks (destinations)
 
 An export sink is an association of an application and a data export service that allows results generated by the application to be exported to designated destination.
 
@@ -224,11 +208,11 @@ Verify that applications can be linked to a sink.
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-### [REQ] MWM SHALL be able to route data to multiple sinks
+### (DX002) [REQ] MWM SHALL be able to route data to multiple sinks
 
-MWM shall allow multiple sinks to be linked to an application so output data can be exported to multiple destinations.
+MWM SHALL allow multiple sinks to be linked to an application so output data can be exported to multiple destinations.
 
 #### Background
 
@@ -240,11 +224,11 @@ Link a deployed application to multiple sinks.
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-### [REQ] MWM SHALL allow users to create custom sinks
+### (DX003) [REQ] MWM SHALL allow users to create custom sinks
 
-In order to support custom export services, MWM shall allow custom sinks to be created.
+In order to support custom export services, MWM SHALL allow custom sinks to be created.
 
 #### Background
 
@@ -256,13 +240,13 @@ Create an application to simulate an export service by implementing available AP
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
 ## Functional Requirements
 
-### [REQ] MWM shall provide a mechanism to develop plugins for discovering applications
+### (FR001) [REQ] MWM SHALL provide a mechanism to develop plugins for discovering applications
 
-Besides integrating MONAI App Server, MWM shall provide a mechanism to allow users to develop plugins to discover apps registered with an orchestration engine such as Argo.
+Besides integrating MONAI App Server, MWM SHALL provide a mechanism to allow users to develop plugins to discover apps registered with an orchestration engine such as Argo.
 
 #### Background
 
@@ -274,11 +258,11 @@ Verify by repeating the same workflow and same application on both MONAI App Ser
 
 #### Target Release
 
-MONAI Workload Manager R2
+MONAI Deploy Workload Manager R2
 
-### [REQ] MWM SHALL track status/states of all jobs initiated with orchestration engines
+### (FR002) [REQ] MWM SHALL track status/states of all jobs initiated with orchestration engines
 
-MWM shall track status/states of all the jobs that it has initiated so it can be used for reporting and allows other sub-components to react upon.
+MWM SHALL track status/states of all the jobs that it has initiated so it can be used for reporting and allows other sub-components to react upon.
 
 #### Background
 
@@ -290,11 +274,11 @@ Set up MWM with two orchestration engines, trigger a couple jobs and make sure s
 
 #### Target Release
 
-MONAI Workload Manager R1
+MONAI Deploy Workload Manager R1
 
-### [REQ] MWM SHALL provide a mechanism for clients to subscribe to notifications
+### (FR003) [REQ] MWM SHALL provide a mechanism for clients to subscribe to notifications
 
-MWM shall provide a mechanism so that users or clients can subscribe to the notification service to get job status or other system information.
+MWM SHALL provide a mechanism so that users or clients can subscribe to the notification service to get job status or other system information.
 
 #### Background
 
@@ -306,11 +290,11 @@ Send a data format into a test application that is not able to process that data
 
 #### Target Release
 
-MONAI Workload Manager R3
+MONAI Deploy Workload Manager R3
 
-### [REQ] MWM SHALL allow users to define storage cleanup rules
+### (FR004) [REQ] MWM SHALL allow users to define storage cleanup rules
 
-MWM shall provide functionalities on when the payloads can be removed from the MWM cache.
+MWM SHALL provide functionalities on when the payloads can be removed from the MWM cache.
 
 #### Background
 
@@ -322,11 +306,11 @@ Verify that payloads are removed based on users' configuration.
 
 #### Target Release
 
-MONAI Workload Manager R2
+MONAI Deploy Workload Manager R2
 
-### [REQ] MWM SHALL allow application outputs routed to other applications
+### (FR005) [REQ] MWM SHALL allow application outputs routed to other applications
 
-MWM shall allow output of an application to be routed back to other application(s).
+MWM SHALL allow output of an application to be routed back to other application(s).
 
 #### Background
 
@@ -338,4 +322,4 @@ Deploy and link a data filtering application and a main application. Verify that
 
 #### Target Release
 
-MONAI Workload Manager R2
+MONAI Deploy Workload Manager R2
