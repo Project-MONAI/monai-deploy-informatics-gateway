@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
         }
 
-        [RetryFact(DisplayName = "Constructor - throws on null params")]
+        [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]
         public void Constructor_ThrowsOnNullParams()
         {
             Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(null, null, null, null, null, null, null));
@@ -89,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, _logger.Object, _configuration, _storageInfoProvider.Object, null));
         }
 
-        [RetryFact(DisplayName = "ExportDataBlockCallback - Returns null if inference request cannot be found")]
+        [RetryFact(5, 250, DisplayName = "ExportDataBlockCallback - Returns null if inference request cannot be found")]
         public async Task ExportDataBlockCallback_ReturnsNullIfInferenceRequestCannotBeFound()
         {
             var service = new DicomWebExportService(
@@ -131,7 +131,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [RetryFact(DisplayName = "ExportDataBlockCallback - Returns null if inference request doesn't include a valid DICOMweb destination")]
+        [RetryFact(5, 250, DisplayName = "ExportDataBlockCallback - Returns null if inference request doesn't include a valid DICOMweb destination")]
         public async Task ExportDataBlockCallback_ReturnsNullIfInferenceRequestContainsNoDicomWebDestination()
         {
             var service = new DicomWebExportService(
@@ -173,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [RetryFact(DisplayName = "ExportDataBlockCallback - Records STOW failures and report")]
+        [RetryFact(5, 250, DisplayName = "ExportDataBlockCallback - Records STOW failures and report")]
         public async Task ExportDataBlockCallback_RecordsStowFailuresAndReportFailure()
         {
             var service = new DicomWebExportService(

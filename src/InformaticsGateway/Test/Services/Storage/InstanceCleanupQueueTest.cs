@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _queue = new InstanceCleanupQueue(_logger.Object);
         }
 
-        [RetryFact(DisplayName = "Queue - Shall throw if null")]
+        [RetryFact(5, 250, DisplayName = "Queue - Shall throw if null")]
         public void Queue_ShallThrowOnNull()
         {
             var exception = Assert.Throws<ArgumentNullException>(() =>
@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             });
         }
 
-        [RetryFact(DisplayName = "Shall queue and dequeue items")]
+        [RetryFact(5, 250, DisplayName = "Shall queue and dequeue items")]
         public void ShallQueueAndDequeueItems()
         {
             for (var i = 0; i < 10; i++)

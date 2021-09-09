@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger = new Mock<ILogger<MonaiAeChangedNotificationService>>();
         }
 
-        [RetryFact(DisplayName = "Workflow Test")]
+        [RetryFact(5, 250, DisplayName = "Workflow Test")]
         public void WorkflowTest()
         {
             var service = new MonaiAeChangedNotificationService(_logger.Object);
@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             observer.Verify(p => p.OnNext(It.IsAny<MonaiApplicationentityChangedEvent>()), Times.Never());
         }
 
-        [RetryFact(DisplayName = "Shall log when subscriber throws")]
+        [RetryFact(5, 250, DisplayName = "Shall log when subscriber throws")]
         public void ShallLogWhenSubscriberThrows()
         {
             var service = new MonaiAeChangedNotificationService(_logger.Object);

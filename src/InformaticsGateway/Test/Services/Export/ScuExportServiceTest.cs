@@ -80,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomScp.Start(_port);
         }
 
-        [RetryFact(DisplayName = "When no destination defined in Parameters")]
+        [RetryFact(10, 250, DisplayName = "When no destination defined in Parameters")]
         public async Task ShallFailWhenNoDestinationIsDefined()
         {
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
@@ -91,10 +91,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var bytes = new byte[10];
             _random.NextBytes(bytes);
 
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
+            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(tasks);
             _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
             _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(bytes));
+            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(bytes);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [RetryFact(DisplayName = "When destination is not configured")]
+        [RetryFact(10, 250, DisplayName = "When destination is not configured")]
         public async Task ShallFailWhenDestinationIsNotConfigured()
         {
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
@@ -126,10 +126,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _random.NextBytes(bytes);
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(default(DestinationApplicationEntity));
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
+            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(tasks);
             _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
             _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(bytes));
+            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(bytes);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
@@ -150,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [RetryFact(DisplayName = "Assocation rejected")]
+        [RetryFact(10, 250, DisplayName = "Assocation rejected")]
         public async Task AssociationRejected()
         {
             var destination = new DestinationApplicationEntity { AeTitle = "ABC", Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
@@ -163,10 +163,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
+            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(tasks);
             _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
             _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(bytes));
+            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(bytes);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
@@ -187,7 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [RetryFact(DisplayName = "C-STORE simulate abort")]
+        [RetryFact(10, 250, DisplayName = "C-STORE simulate abort")]
         public async Task SimulateAbort()
         {
             _scpLogger.Invocations.Clear();
@@ -201,10 +201,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
+            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(tasks);
             _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
             _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(bytes));
+            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(bytes);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
@@ -225,7 +225,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
         }
 
-        [RetryFact(DisplayName = "C-STORE Failure")]
+        [RetryFact(10, 250, DisplayName = "C-STORE Failure")]
         public async Task CStoreFailure()
         {
             _scpLogger.Invocations.Clear();
@@ -239,10 +239,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
+            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(tasks);
             _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
             _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(bytes));
+            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(bytes);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
@@ -279,10 +279,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
+            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).ReturnsAsync(tasks);
             _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
             _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(bytes));
+            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(bytes);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
