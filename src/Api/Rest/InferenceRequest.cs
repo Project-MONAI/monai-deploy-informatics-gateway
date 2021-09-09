@@ -56,12 +56,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         Queued,
 
         /// <summary>
-        /// The inference request is being processing by the MONAI Informatics Gateway.
+        /// The inference request is being processing by the MONAI Deploy Informatics Gateway.
         /// </summary>
         InProcess,
 
         /// <summary>
-        /// Indicates MONAI Informatics Gateway has downloaded all the specified resources and uploaded to the MONAI Workload Manager.
+        /// Indicates MONAI Deploy Informatics Gateway has downloaded all the specified resources and uploaded to the MONAI Workload Manager.
         /// </summary>
         Completed,
     }

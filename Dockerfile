@@ -22,7 +22,7 @@ RUN dotnet tool install --tool-path /tools dotnet-stack
 WORKDIR /app
 COPY . ./
 
-RUN echo "Building MONAI Informatics Gateway $Version ($FileVersion)..."
+RUN echo "Building MONAI Deploy Informatics Gateway $Version ($FileVersion)..."
 RUN dotnet publish -c Release -o out --nologo /p:Version=$Version /p:FileVersion=$FileVersion src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
 
 # Build runtime image

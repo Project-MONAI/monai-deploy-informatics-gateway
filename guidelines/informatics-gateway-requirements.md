@@ -1,15 +1,15 @@
-# MONAI Informatics Gateway Requirements
+# MONAI Deploy Informatics Gateway Requirements
 
 ## Overview
 
-The MONAI Informatics Gateway (MIG) is the integration point between healthcare information systems and the MONAI Deploy platform.  
+The MONAI Deploy Informatics Gateway (MIG) is the integration point between healthcare information systems and the MONAI Deploy platform.  
 
 ## Purpose
 
-This document defines the requirements for the MONAI Informatics Gateway.
+This document defines the requirements for the MONAI Deploy Informatics Gateway.
 
 ## Goal
-The goal for this proposal is to enlist, prioritize and provide clarity on the requirements for MONAI Informatics Gateway. Developers working on different software modules in MONAI Informatics Gateway SHALL use this specification as a guideline when designing and implementing software for the MONAI Informatics Gateway.
+The goal for this proposal is to enlist, prioritize and provide clarity on the requirements for MONAI Deploy Informatics Gateway. Developers working on different software modules in MONAI Deploy Informatics Gateway SHALL use this specification as a guideline when designing and implementing software for the MONAI Deploy Informatics Gateway.
 
 ## Standard Language
 This document SHALL follow the guidance of [rfc
@@ -35,7 +35,7 @@ For each requirement, the following attributes have been specified
 ## DICOM Requirements
 
 ### [REQ] MIG SHALL respond to Verification Requests (C-ECHO)
-A DICOM protocol similar to “ping” which allows remote to check the status of MONAI Informatics Gateway.
+A DICOM protocol similar to “ping” which allows remote to check the status of MONAI Deploy Informatics Gateway.
 
 #### Background
 C-ECHO is often used to test a connection between two DICOM endpoints after setup or when connection issues arises.
@@ -44,7 +44,7 @@ C-ECHO is often used to test a connection between two DICOM endpoints after setu
 Use a C-ECHO SCU to verify that the C-ECHO SCP service responds.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] MIG SHALL respond to DICOM Store Requests (C-STORE)
 MIG SHALL allow DICOM data to be received and stored via standard DICOM DIMSE C-STORE command.
@@ -56,7 +56,7 @@ C-STORE SCP enables receiving of DICOM files with other DICOM devices.
 Use a C-STORE SCU to send DICOM files to MIG's SCP.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] MIG SHALL be able to export DICOM via C-STORE
 MIG SHALL allow DICOM data to be sent via standard DICOM DIMSE C-STORE command. This allows sending processed results to configured remote DICOM entities.
@@ -68,7 +68,7 @@ Applications and/or algorithms often produce results in DICOM formats, e.g. a St
 Use a C-STORE SCP as a listener to receive DICOM files from MIG's SCU.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] MIG SHOULD support Storage Commitment
 MIG should support DICOM Storage Commitment service before deleting any associated data.
@@ -120,7 +120,7 @@ The QIDO-RS client enables MIG to query DICOMweb servers by specifying Accession
 Query a DICOMweb server using the client and ensure that results matches the input criteria.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] MIG SHALL be able to retrieve from DICOMweb services (WADO-RS)
 MIG SHALL be able to act as a DICOMweb client and retrieve DICOM objects via WADO-RS.
@@ -132,7 +132,7 @@ When WADO-RS is combined with an RESTful API, the users could easily trigger an 
 Retrieve DICOM data from a DICOMweb server.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] MIG SHALL be able to export to DICOMweb services (STOW-RS)
 MIG SHALL be able to act as a DICOMweb client and export DICOM objects via STOW-RS.
@@ -144,7 +144,7 @@ The STOW-RS client allows MIG to export DICOM results to external DICOMweb serve
 Export a DICOM object to a DICOMweb server using the DICOMweb STOW client.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] MIG SHALL be able to accept DICOMweb query requests (QIDO-RS)
 MIG SHALL be able to act as a DICOMweb server and allow users to search available DICOM objects hosted by the MONAI App Server.
@@ -190,7 +190,7 @@ The FHIR client enables users to specify FHIR resources to be retrieved EHR data
 Retrieve FHIR resources from a FHIR server.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ---
 
@@ -206,7 +206,7 @@ Often users would like to trigger an application using data from different data 
 Test by using the APIs and make sure data is retrieved as specified, application(s) is/are executed as configured and outputs the the specified targets.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ---
 
@@ -222,7 +222,7 @@ Often time, data becomes corrupted during transport. By logging DIMSE dataset, u
 Send a DICOM object and verify that DIMSE dataset is logged.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Anonymize logs
 MIG SHALL be able to hide any PHI in the logs.
@@ -234,7 +234,7 @@ Medical data often contain very sensitive and patients' personal information.  M
 Verify that no logs include any PHI or any piece of information can be used to trace back to a particular person.
 
 #### Target Release
-MONAI Informatics Gateway R2
+MONAI Deploy Informatics Gateway R2
 
 ### [REQ] Log Levels
 MIG SHOULD allow users to adjust log levels.
@@ -246,7 +246,7 @@ Software applications often run into unexpected states and verbose/trace logs ar
 Adjust to different log levels and verify that the log file contains only log entries pertain to the configured log level.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ---
 
@@ -261,7 +261,7 @@ Administrators may often name the AE Title based on geography of the device or p
 Verify that only the configured AE Title responds to the association request.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Listening port shall be configurable
 MIG SHALL allow users to configure the port for the DICOM TCP listening port.
@@ -273,7 +273,7 @@ There may often be many applications listening on different ports on the same sy
 Change the listening port of the SCP and verify that it could still receive C-ECHO requests.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Verification protocol shall be configurable
 MIG SHALL handle or ignore C-ECHO requests based on user configuration. 
@@ -285,7 +285,7 @@ Often users may want to disable response to C-ECHO requests similar to disabling
 Disable C-ECHO and verify that the SCP no longer responds to the C-ECHO requests but still accept C-STORE requests.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Store SCU AE Title shall be configurable
 MIG SHALL allow users to configure the SCU AE TItle.
@@ -297,7 +297,7 @@ Administrators may often name the AE Title based on geography of the device or p
 Change the SCU AE Title and verify that the export destination is responding to the updated AE Title.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Allow multiple remote (source) SCP to be configured
 MIG SHALL allow users to configure multiple remote (source) AETs.
@@ -309,7 +309,7 @@ There are often more than one DICOM devices in a hospital and MIG may often need
 Configure multiple DICOM sources and make sure that all DICOM sources can send data to MIG.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Allow multiple remote (destination) SCP to be configured
 MIG SHALL allow users to configure multiple remote (destination) AETs.
@@ -321,7 +321,7 @@ In some scenarios, results may need to be exported to multiple DICOM destination
 Configure multiple DICOM destinations and make sure that all DICOM destinations can be reached.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Configure number of concurrent associations
 MIG SHALL allow user to configure number of concurrent association that are allowed, per system.
@@ -333,7 +333,7 @@ Often time, DICOM devices, such as PACS, may initiate multiple associations conc
 Launch multiple store SCUs to send data to MIG and verify that all data has been received.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Received data from known DICOM sources
 MIG SHALL accept DICOM objects from known DICOM sources and reject if not configured.
@@ -345,7 +345,7 @@ To prevent receiving data from unknown DICOM sources, the system must be able to
 Send a C-ECHO request to MIG using an AE Title that is not configured on MIG and verify the the response is rejected with an appropriate reason.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1
 
 ### [REQ] Configurable retry logic
 MIG SHALL allow user to configure the maximum number of retries and delays in-between each retry when communicating with external systems/services.
@@ -357,4 +357,4 @@ Often time, DICOM query and retrieve may fail due to the fact that some modaliti
 Configure a data source, such as Orthanc, and make it unavailable after sending the inference request.  Monitor the logs and then start Orthanc after failure(s).  Verify that the specified dataset is retrieved entirely.
 
 #### Target Release
-MONAI Informatics Gateway R1
+MONAI Deploy Informatics Gateway R1

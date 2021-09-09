@@ -1,27 +1,27 @@
-# MONAI Informatics Gateway Software Architecture & Design
+# MONAI Deploy Informatics Gateway Software Architecture & Design
 
 ## Overview
 
-The MONAI Informatics Gateway (MIG) is the integration point between hospital information systems (HIS) and the MONAI Deploy platform. It enables interoperability between HIS and the MONAI Deploy platform by using commonly used standards in the healthcare industry.
+The MONAI Deploy Informatics Gateway (MIG) is the integration point between hospital information systems (HIS) and the MONAI Deploy platform. It enables interoperability between HIS and the MONAI Deploy platform by using commonly used standards in the healthcare industry.
 
 ### Purpose
 
-This document describes the detail designs derived from the requirements defined in [MONAI Informatics Gateway Requirements](informatics-gateway-requirements.md).
+This document describes the detail designs derived from the requirements defined in [MONAI Deploy Informatics Gateway Requirements](informatics-gateway-requirements.md).
 
 ### Scope
 
-The scope of this document is limited to the design of MONAI Informatics Gateway. This design document does not address any design decisions belonging to other subsystems, such as, MONAI App Server, MONAI Deploy Application SDK.
+The scope of this document is limited to the design of MONAI Deploy Informatics Gateway. This design document does not address any design decisions belonging to other subsystems, such as, MONAI App Server, MONAI Deploy Application SDK.
 
 ### Assumptions, Constraints, Dependencies
 
 1. No data validation is done on the received or retrieved dataset, including but not limited to, DICOM and FHIR. The data processing consumer/user shall validate incoming data as part of the workflow.
-1. MONAI Informatics Gateway is not intended for long term DICOM storage and does not support Storage Commitment Requests. See implementation details for each of the bundled job processors.
+1. MONAI Deploy Informatics Gateway is not intended for long term DICOM storage and does not support Storage Commitment Requests. See implementation details for each of the bundled job processors.
 
 ### Definitions, Acronyms, Abbreviations
 
 | Term            | Definition                                                                                                                                                                                      |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| MIG             | MONAI Informatics Gateway                                                                                                                                                                       |
+| MIG             | MONAI Deploy Informatics Gateway                                                                                                                                                                       |
 | MWM             | MONAI Workload Manager - A subsystem of the MONAI Deploy platform responsible for routing incoming data to one or more deployed applications and export any results produced by the applications to external HIS devices. |
 | AE              | [Application Entity](http://dicom.nema.org/medical/dicom/current/output/chtml/part02/sect_A.3.4.html)                                                                                           |
 | AE Title        | [Application Entity Title](http://dicom.nema.org/medical/dicom/current/output/chtml/part02/sect_A.3.4.html) (AET)                                                                               |
@@ -47,7 +47,7 @@ The scope of this document is limited to the design of MONAI Informatics Gateway
 
 The goal is to provide an easy integration path with hospital information systems and allow them to integrate image processing/inference workflows using MIG.
 
-MONAI Informatics Gateway is designed to follow communication and data standards in the healthcare industry to enable interoperability between HIS and the MONAI Deploy platform. Such standards are, but not limited to, DICOM, DICOMweb and FHIR.
+MONAI Deploy Informatics Gateway is designed to follow communication and data standards in the healthcare industry to enable interoperability between HIS and the MONAI Deploy platform. Such standards are, but not limited to, DICOM, DICOMweb and FHIR.
 
 ### API Surface Area
 MIG provides the following services for interacting with external devices and/or services.
@@ -225,7 +225,7 @@ The FHIR client does not perform any retries. However, the Data Retrieval compon
 
 ### Logging
 
-MONAI Informatics Gateway logs all actions it performs and tries to associate each action with an unique identifier for traceability.
+MONAI Deploy Informatics Gateway logs all actions it performs and tries to associate each action with an unique identifier for traceability.
 
 Different log levels are used and are defined in [LogLevel Enum](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel).
 

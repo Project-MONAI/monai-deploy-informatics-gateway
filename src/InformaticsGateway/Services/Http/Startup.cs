@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             services.AddControllers().AddNewtonsoftJson(opts => opts.SerializerSettings.Converters.Add(new StringEnumConverter()));
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MONAI Informatics Gateway", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MONAI Deploy Informatics Gateway", Version = "v1" });
             });
         }
 

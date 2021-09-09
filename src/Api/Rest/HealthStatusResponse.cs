@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         public int ActiveDimseConnections { get; set; }
 
         /// <summary>
-        /// Gets or sets status of the MONAI Informatics Gateway services.
+        /// Gets or sets status of the MONAI Deploy Informatics Gateway services.
         /// </summary>
         public Dictionary<string, ServiceStatus> Services { get; set; } = new Dictionary<string, ServiceStatus>(StringComparer.OrdinalIgnoreCase);
     }

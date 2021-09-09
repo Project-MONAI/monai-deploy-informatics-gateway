@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Information, "MONAI Informatics Gateway (SCP Service) {0} loading...",
+            _logger.Log(LogLevel.Information, "MONAI Deploy Informatics Gateway (SCP Service) {0} loading...",
                 Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version);
 
             try

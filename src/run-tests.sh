@@ -42,7 +42,7 @@ fi
 
 mkdir -p "$RESULTS_DIR"
 
-echo "##### Building MONAI Informatics Gateway..."
+echo "##### Building MONAI Deploy Informatics Gateway..."
 cd $TOP/src
 dotnet build Monai.Deploy.InformaticsGateway.sln
 

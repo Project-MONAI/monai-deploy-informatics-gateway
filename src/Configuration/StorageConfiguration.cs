@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         /// <summary>
         /// Gets or sets the watermark for disk usage with default value of 75%,
-        /// meaning that MONAI Informatics Gateway will stop accepting (C-STORE-RQ) associations,
+        /// meaning that MONAI Deploy Informatics Gateway will stop accepting (C-STORE-RQ) associations,
         /// stop exporting and stop retreiving data via DICOMweb when used disk space
         /// is above the watermark.
         /// </summary>
@@ -61,8 +61,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public uint Watermark { get; set; } = 75;
 
         /// <summary>
-        /// Gets or sets the reserved disk space for the MONAI Informatics Gateway with default value of 5GB.
-        /// MONAI Informatics Gateway will stop accepting (C-STORE-RQ) associations,
+        /// Gets or sets the reserved disk space for the MONAI Deploy Informatics Gateway with default value of 5GB.
+        /// MONAI Deploy Informatics Gateway will stop accepting (C-STORE-RQ) associations,
         /// stop exporting and stop retreiving data via DICOMweb when available disk space
         /// is less than the value.
         /// </summary>

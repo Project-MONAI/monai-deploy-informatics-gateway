@@ -40,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         IOptions<InformaticsGatewayConfiguration> Configuration { get; }
 
         /// <summary>
-        /// Gets whether MONAI Informatics Gateway can handle C-Store requests.
+        /// Gets whether MONAI Deploy Informatics Gateway can handle C-Store requests.
         /// </summary>
         /// <value></value>
         bool CanStore { get; }
