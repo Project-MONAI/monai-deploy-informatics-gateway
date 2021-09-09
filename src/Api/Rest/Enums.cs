@@ -1,0 +1,164 @@
+// Copyright 2021 MONAI Consortium
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//     http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/*
+ * Apache License, Version 2.0
+ * Copyright 2019-2021 NVIDIA Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+using System.Runtime.Serialization;
+
+namespace Monai.Deploy.InformaticsGateway.Api.Rest
+{
+    /// <summary>
+    /// Specifies then authentication/authorization type for a connection.
+    /// </summary>
+    public enum ConnectionAuthType
+    {
+        /// <summary>
+        /// No authentication required.
+        /// (Default) if not specified.
+        /// <para><c>JSON value</c>: <c>None</c></para>
+        /// </summary>
+        None,
+
+        /// <summary>
+        /// HTTP Basic access authentication.
+        /// <para><c>JSON value</c>: <c>Basic</c></para>
+        /// </summary>
+        Basic,
+
+        /// <summary>
+        /// OAuth 2.0 Bearer authentication/authorization.
+        /// <para><c>JSON value</c>: <c>Bearer</c></para>
+        /// </summary>
+        Bearer,
+    }
+
+    /// <summary>
+    /// Specifies the type of data source interface.
+    /// </summary>
+    public enum InputInterfaceType
+    {
+        /// <summary>
+        /// MONAI Deploy only - specifies a MONAI Application to trigger with the request
+        /// <para><c>JSON value</c>: <c>Algorithm</c></para>
+        /// </summary>
+        [EnumMember(Value = "Algorithm")]
+        Algorithm,
+
+        /// <summary>
+        /// Retrieves data using DICOMweb API
+        /// <para><c>JSON value</c>: <c>DICOMweb</c></para>
+        /// </summary>
+        [EnumMember(Value = "DICOMweb")]
+        DicomWeb,
+
+        /// <summary>
+        /// Retrieves data using TCP based DICOM DIMSE services
+        /// <para><c>JSON value</c>: <c>DIMSE</c></para>
+        /// </summary>
+        [EnumMember(Value = "DIMSE")]
+        Dimse,
+
+        /// <summary>
+        /// Retrieves data via FHIR.
+        /// <para><c>JSON value</c>: <c>FHIR</c></para>
+        /// </summary>
+        [EnumMember(Value = "FHIR")]
+        Fhir,
+    }
+
+    /// <summary>
+    /// Specifies type of inference request.
+    /// </summary>
+    public enum InferenceRequestType
+    {
+        /// <summary>
+        /// Unknown request type
+        /// </summary>
+        Unknown,
+
+        /// <summary>
+        /// Retrieves dataset specified using DICOM UIDs
+        /// <para><c>JSON value</c>: <c>DICOM_UID</c></para>
+        /// </summary>
+        [EnumMember(Value = "DICOM_UID")]
+        DicomUid,
+
+        /// <summary>
+        /// Queries the data source using Patient ID and retrieves any associated studies.
+        /// <para><c>JSON value</c>: <c>DICOM_PATIENT_ID</c></para>
+        /// </summary>
+        [EnumMember(Value = "DICOM_PATIENT_ID")]
+        DicomPatientId,
+
+        /// <summary>
+        /// Queries the data source using Accession Number and retrieves any associated studies.
+        /// <para><c>JSON value</c>: <c>ACCESSION_NUMBER</c></para>
+        /// </summary>
+        [EnumMember(Value = "ACCESSION_NUMBER")]
+        AccessionNumber,
+
+        /// <summary>
+        /// Retrieves data from a FHIR server using specified resource type and ID.
+        /// <para><c>JSON value</c>: <c>FHIR_RESOURCE</c></para>
+        /// </summary>
+        [EnumMember(Value = "FHIR_RESOURCE")]
+        FhireResource,
+    }
+
+    /// <summary>
+    /// Permitted operations for a data source
+    /// </summary>
+    public enum InputInterfaceOperations
+    {
+        /// <summary>
+        /// Query includes C-FIND, QIDO operations
+        /// <para><c>JSON value</c>: <c>QUERY</c></para>
+        /// </summary>
+        [EnumMember(Value = "QUERY")]
+        Query,
+
+        /// <summary>
+        /// Retrieve include C-MOVE, WADO operations
+        /// <para><c>JSON value</c>: <c>RETRIEVE</c></para>
+        /// </summary>
+        [EnumMember(Value = "RETRIEVE")]
+        Retrieve,
+
+        /// <summary>
+        /// DICOMweb WADO
+        /// <para><c>JSON value</c>: <c>WADO Retrieve</c></para>
+        /// </summary>
+        [EnumMember(Value = "WADO Retrieve")]
+        WadoRetrieve,
+
+        /// <summary>
+        /// Store includes C-STORE, STOW operations
+        /// <para><c>JSON value</c>: <c>STORE</c></para>
+        /// </summary>
+        [EnumMember(Value = "STORE")]
+        Store,
+    }
+}
