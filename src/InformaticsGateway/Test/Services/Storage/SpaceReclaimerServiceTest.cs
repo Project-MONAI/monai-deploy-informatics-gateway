@@ -56,12 +56,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 
             var cancellationTokenSource = new CancellationTokenSource();
             cancellationTokenSource.Cancel();
-            await Task.Run(async () =>
+            var task = Task.Run(async () =>
             {
                 await Task.Delay(150);
                 await _service.StopAsync(cancellationTokenSource.Token);
             });
             await _service.StartAsync(cancellationTokenSource.Token);
+            task.Wait();
 
             _queue.Verify(p => p.Dequeue(It.IsAny<CancellationToken>()), Times.Never());
             _logger.VerifyLogging("Cancellation requested.", LogLevel.Information, Times.Once());

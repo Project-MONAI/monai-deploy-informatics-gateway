@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             };
 
             await service.StartAsync(_cancellationTokenSource.Token);
-            dataflowCompleted.WaitOne(5000);
+            dataflowCompleted.WaitOne(3000);
 
             _workloadManagerApi.Verify(p => p.GetPendingJobs(_configuration.Value.Dicom.Scu.ExportSink, 10, It.IsAny<CancellationToken>()), Times.AtLeastOnce());
 

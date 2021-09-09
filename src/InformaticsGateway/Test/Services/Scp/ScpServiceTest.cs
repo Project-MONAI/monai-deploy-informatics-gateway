@@ -383,7 +383,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             do
             {
-                _configuration.Value.Dicom.Scp.Port = NextPort++;
+                _configuration.Value.Dicom.Scp.Port = Interlocked.Increment(ref NextPort);
                 if (service != null)
                 {
                     service.Dispose();

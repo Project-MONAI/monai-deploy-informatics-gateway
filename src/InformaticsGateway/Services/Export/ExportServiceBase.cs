@@ -125,23 +125,28 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     return;
                 }
 
+                var executionOptions = new ExecutionDataflowBlockOptions
+                {
+                    MaxDegreeOfParallelism = Concurrentcy,
+                    MaxMessagesPerTask = 1,
+                    CancellationToken = cancellationToken
+                };
+
                 var downloadActionBlock = new TransformManyBlock<string, TaskResponse>(
-                    async (agent) => await DownloadActionCallback(agent, cancellationToken));
+                    async (agent) => await DownloadActionCallback(agent, cancellationToken),
+                    executionOptions);
 
                 var downloadPayloadTransformBlock = new TransformBlock<TaskResponse, OutputJob>(
-                    async (task) => await DownloadPayloadBlockCallback(task, cancellationToken));
+                    async (task) => await DownloadPayloadBlockCallback(task, cancellationToken),
+                    executionOptions);
 
                 var exportActionBlock = new TransformBlock<OutputJob, OutputJob>(
                     async (task) => await ExportDataBlockCallback(task, cancellationToken),
-                    new ExecutionDataflowBlockOptions
-                    {
-                        MaxDegreeOfParallelism = Concurrentcy,
-                        MaxMessagesPerTask = 1,
-                        CancellationToken = cancellationToken
-                    });
+                    executionOptions);
 
                 var reportingActionBlock = new ActionBlock<OutputJob>(
-                    async (task) => await ReportingActionBlock(task, cancellationToken));
+                    async (task) => await ReportingActionBlock(task, cancellationToken),
+                    executionOptions);
 
                 var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
                 downloadActionBlock.LinkTo(downloadPayloadTransformBlock, linkOptions);
