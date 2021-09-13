@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 Console.SetOut(sw);
                 logger.Log(LogLevel.Trace, message);
                 var result = sw.ToString();
-                Assert.Equal($"{Output.Bright.Black("trce: ")}{message}\r\n", result);
+                Assert.Equal($"{Output.Bright.Black("trce: ")}{message}{Environment.NewLine}", result);
             }
         }
 
@@ -94,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 Console.SetOut(sw);
                 logger.Log(LogLevel.Debug, message);
                 var result = sw.ToString();
-                Assert.Equal($"{Output.Bright.Black("dbug: ")}{message}\r\n", result);
+                Assert.Equal($"{Output.Bright.Black("dbug: ")}{message}{Environment.NewLine}", result);
             }
         }
 
@@ -111,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 Console.SetOut(sw);
                 logger.Log(LogLevel.Information, message);
                 var result = sw.ToString();
-                Assert.Equal($"{Output.Bright.White("info: ")}{message}\r\n", result);
+                Assert.Equal($"{Output.Bright.White("info: ")}{message}{Environment.NewLine}", result);
             }
         }
 
@@ -130,7 +130,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 logger.Log(LogLevel.Warning, message);
                 sw.Flush();
                 var result = sw.ToString();
-                Assert.Equal($"{Output.Bright.Yellow("warn: ")}{Output.Bright.Yellow(message)}\r\n", result);
+                Assert.Equal($"{Output.Bright.Yellow("warn: ")}{Output.Bright.Yellow(message)}{Environment.NewLine}", result);
             }
         }
 
@@ -168,7 +168,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 logger.Log(LogLevel.Critical, message);
                 sw.Flush();
                 var result = sw.ToString();
-                Assert.Equal($"{Output.Bright.Red("crit: ")}{Output.Bright.Red(message)}\r\n", result);
+                Assert.Equal($"{Output.Bright.Red("crit: ")}{Output.Bright.Red(message)}{Environment.NewLine}", result);
             }
         }
     }
