@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
         }
 
-        [RetryFact(DisplayName = "Data flow test - no pending tasks")]
+        [RetryFact(5, 250, DisplayName = "Data flow test - no pending tasks")]
         public async Task DataflowTest_NoPendingTasks()
         {
             var exportCalled = false;
@@ -159,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
 
-        [RetryFact(DisplayName = "Data flow test - payload download failure")]
+        [RetryFact(5, 250, DisplayName = "Data flow test - payload download failure")]
         public async Task DataflowTest_PayloadDownloadFailure()
         {
             var exportCountdown = new CountdownEvent(1);

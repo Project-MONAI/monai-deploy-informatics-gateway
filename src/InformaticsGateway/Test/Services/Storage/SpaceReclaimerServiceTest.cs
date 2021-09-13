@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _service = new SpaceReclaimerService(_queue.Object, _logger.Object, _configuration, _fileSystem);
         }
 
-        [RetryFact(DisplayName = "Shall honor cancellation request")]
+        [RetryFact(5, 250, DisplayName = "Shall honor cancellation request")]
         public async Task ShallHonorCancellationRequest()
         {
             _queue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _logger.VerifyLogging("Cancellation requested.", LogLevel.Information, Times.Once());
         }
 
-        [RetryFact(DisplayName = "Shall delete files")]
+        [RetryFact(5, 250, DisplayName = "Shall delete files")]
         public async Task ShallDeleteFiles()
         {
             var files = new List<FileStorageInfo>() {
@@ -110,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _logger.VerifyLogging("Cancellation requested.", LogLevel.Information, Times.Once());
         }
 
-        [RetryFact(DisplayName = "Shall delete directories if empty")]
+        [RetryFact(5, 250, DisplayName = "Shall delete directories if empty")]
         public async Task ShallDeleteDirectoriesIfEmpty()
         {
             var files = new List<FileStorageInfo>() {

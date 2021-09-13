@@ -19,7 +19,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.IO.Abstractions" Version="13.2.43" />
+    <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
   </ItemGroup>
 
   <ItemGroup>
