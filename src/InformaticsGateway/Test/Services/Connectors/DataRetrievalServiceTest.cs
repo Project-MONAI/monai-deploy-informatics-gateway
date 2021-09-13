@@ -81,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
         }
 
-        [RetryFact(DisplayName = "Constructor")]
+        [RetryFact(5, 250, DisplayName = "Constructor")]
         public void ConstructorTest()
         {
             Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(null, null, null, null, null, null, null, null));
@@ -104,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _storageInfoProvider.Object);
         }
 
-        [RetryFact(DisplayName = "Cancellation token shall stop the service")]
+        [RetryFact(5, 250, DisplayName = "Cancellation token shall stop the service")]
         public async Task CancellationTokenShallCancelTheService()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -133,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
 
-        [RetryFact(DisplayName = "Insufficient storage space")]
+        [RetryFact(5, 250, DisplayName = "Insufficient storage space")]
         public async Task InsufficientStorageSpace()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -161,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
 
-        [RetryFact(DisplayName = "ProcessRequest - Shall restore previously retrieved DICOM files")]
+        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall restore previously retrieved DICOM files")]
         public async Task ProcessorRequest_ShallRestorePreviouslyRetrievedFiles()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -264,7 +264,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
 
-        [RetryFact(DisplayName = "ProcessRequest - Throws if no files found")]
+        [RetryFact(5, 250, DisplayName = "ProcessRequest - Throws if no files found")]
         public async Task ProcessorRequest_ThrowsIfNoFilesFound()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -391,7 +391,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
         }
 
-        [RetryFact(DisplayName = "ProcessRequest - Shall retrieve via DICOMweb with DICOM UIDs")]
+        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall retrieve via DICOMweb with DICOM UIDs")]
         public async Task ProcessorRequest_ShallRetrieveViaDicomWebWithDicomUid()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -531,7 +531,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Exactly(4));
         }
 
-        [RetryFact(DisplayName = "ProcessRequest - Shall query by PatientId and retrieve")]
+        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall query by PatientId and retrieve")]
         public async Task ProcessorRequest_ShallQueryByPatientIdAndRetrieve()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -656,7 +656,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Exactly(studyInstanceUids.Count));
         }
 
-        [RetryFact(DisplayName = "ProcessRequest - Shall query by AccessionNumber and retrieve")]
+        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall query by AccessionNumber and retrieve")]
         public async Task ProcessorRequest_ShallQueryByAccessionNumberAndRetrieve()
         {
             var cancellationTokenSource = new CancellationTokenSource();
@@ -781,7 +781,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Exactly(2));
         }
 
-        [RetryFact(DisplayName = "ProcessRequest - Shall retrieve FHIR resources")]
+        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall retrieve FHIR resources")]
         public async Task ProcessorRequest_ShallRetrieveFhirResources()
         {
             var cancellationTokenSource = new CancellationTokenSource();

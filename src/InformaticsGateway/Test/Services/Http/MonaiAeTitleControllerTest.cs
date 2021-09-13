@@ -89,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region Get
 
-        [RetryFact(DisplayName = "Get - Shall return available MONAI AETs")]
+        [RetryFact(5, 250, DisplayName = "Get - Shall return available MONAI AETs")]
         public async void Get_ShallReturnAllMonaiAets()
         {
             var data = new List<MonaiApplicationEntity>();
@@ -110,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.ToListAsync(), Times.Once());
         }
 
-        [RetryFact(DisplayName = "Get - Shall return problem on failure")]
+        [RetryFact(5, 250, DisplayName = "Get - Shall return problem on failure")]
         public async void Get_ShallReturnProblemOnFailure()
         {
             _repository.Setup(p => p.ToListAsync()).Throws(new Exception("error"));
@@ -129,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region GetAeTitle
 
-        [RetryFact(DisplayName = "GetAeTitle - Shall return matching object")]
+        [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return matching object")]
         public async void GetAeTitle_ReturnsAMatch()
         {
             var value = "AET";
@@ -148,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.FindAsync(value), Times.Once());
         }
 
-        [RetryFact(DisplayName = "GetAeTitle - Shall return 404 if not found")]
+        [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return 404 if not found")]
         public async void GetAeTitle_Returns404IfNotFound()
         {
             var value = "AET";
@@ -160,7 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.FindAsync(value), Times.Once());
         }
 
-        [RetryFact(DisplayName = "GetAeTitle - Shall return problem on failure")]
+        [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return problem on failure")]
         public async void GetAeTitle_ShallReturnProblemOnFailure()
         {
             var value = "AET";
@@ -218,7 +218,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
-        [RetryFact(DisplayName = "Create - Shall return problem if failed to add")]
+        [RetryFact(5, 250, DisplayName = "Create - Shall return problem if failed to add")]
         public async void Create_ShallReturnBadRequestOnAddFailure()
         {
             var aeTitle = "AET";
@@ -244,7 +244,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.AddAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [RetryFact(DisplayName = "Create - Shall return CreatedAtAction")]
+        [RetryFact(5, 250, DisplayName = "Create - Shall return CreatedAtAction")]
         public async void Create_ShallReturnCreatedAtAction()
         {
             var aeTitle = "AET";
@@ -272,7 +272,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region Delete
 
-        [RetryFact(DisplayName = "Delete - Shall return deleted object")]
+        [RetryFact(5, 250, DisplayName = "Delete - Shall return deleted object")]
         public async void Delete_ReturnsDeleted()
         {
             var value = "AET";
@@ -294,7 +294,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [RetryFact(DisplayName = "Delete - Shall return 404 if not found")]
+        [RetryFact(5, 250, DisplayName = "Delete - Shall return 404 if not found")]
         public async void Delete_Returns404IfNotFound()
         {
             var value = "AET";
@@ -311,7 +311,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.FindAsync(value), Times.Once());
         }
 
-        [RetryFact(DisplayName = "Delete - Shall return problem on failure")]
+        [RetryFact(5, 250, DisplayName = "Delete - Shall return problem on failure")]
         public async void Delete_ShallReturnProblemOnFailure()
         {
             var value = "AET";

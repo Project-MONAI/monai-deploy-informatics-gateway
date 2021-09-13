@@ -6,7 +6,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
 {
     public class AuthenticationHeaderValueExtensionsTest
     {
-        [RetryFact(DisplayName = "ConvertFrom - Basic")]
+        [RetryFact(5, 250, DisplayName = "ConvertFrom - Basic")]
         public void ConvertFromBasic()
         {
             var result = AuthenticationHeaderValueExtensions.ConvertFrom(Api.Rest.ConnectionAuthType.Basic, "test");
@@ -14,7 +14,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             Assert.Equal("test", result.Parameter);
         }
 
-        [RetryFact(DisplayName = "ConvertFrom - Bearer")]
+        [RetryFact(5, 250, DisplayName = "ConvertFrom - Bearer")]
         public void ConvertFromBearer()
         {
             var result = AuthenticationHeaderValueExtensions.ConvertFrom(Api.Rest.ConnectionAuthType.Bearer, "test");
@@ -22,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             Assert.Equal("test", result.Parameter);
         }
 
-        [RetryFact(DisplayName = "ConvertFrom - None")]
+        [RetryFact(5, 250, DisplayName = "ConvertFrom - None")]
         public void ConvertFromNone()
         {
             var result = AuthenticationHeaderValueExtensions.ConvertFrom(Api.Rest.ConnectionAuthType.None, "test");
