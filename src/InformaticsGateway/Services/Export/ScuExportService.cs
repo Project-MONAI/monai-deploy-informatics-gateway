@@ -105,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         protected override async Task<OutputJob> ExportDataBlockCallback(OutputJob outputJob, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LogginDataDictionary<string, object> { { "ExportTaskId", outputJob.ExportTaskId }, { "CorrelationId", outputJob.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", outputJob.ExportTaskId }, { "CorrelationId", outputJob.CorrelationId } });
 
             var manualResetEvent = new ManualResetEvent(false);
             DicomClient client = null;

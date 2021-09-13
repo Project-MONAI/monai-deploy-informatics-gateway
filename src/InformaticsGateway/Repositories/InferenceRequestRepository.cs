@@ -58,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
-            using var loggerScope = _logger.BeginScope(new LogginDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
             await Policy
                 .Handle<Exception>()
                 .WaitAndRetryAsync(
@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
-            using var loggerScope = _logger.BeginScope(new LogginDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
 
             if (status == InferenceRequestStatus.Success)
             {
@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
                 if (!(inferenceRequest is null))
                 {
-                    using var loggerScope = _logger.BeginScope(new LogginDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
+                    using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
                     inferenceRequest.State = InferenceRequestState.InProcess;
                     _logger.Log(LogLevel.Debug, $"Updating request {inferenceRequest.TransactionId} to InProgress.");
                     await Save(inferenceRequest);

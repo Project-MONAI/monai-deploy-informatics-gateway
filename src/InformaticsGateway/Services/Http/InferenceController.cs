@@ -95,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 return Problem(title: $"Invalid request", statusCode: (int)HttpStatusCode.UnprocessableEntity, detail: details);
             }
 
-            using var _ = _logger.BeginScope(new LogginDataDictionary<string, object> { { "TransactionId", request.TransactionId } });
+            using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } });
 
             if (_inferenceRequestRepository.Exists(request.TransactionId))
             {

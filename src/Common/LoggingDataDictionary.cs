@@ -31,7 +31,7 @@ using System.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    public class LogginDataDictionary<K, V> : Dictionary<K, V>
+    public class LoggingDataDictionary<K, V> : Dictionary<K, V>
     {
         public override string ToString()
         {

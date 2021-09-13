@@ -185,7 +185,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private async Task<OutputJob> DownloadPayloadBlockCallback(TaskResponse task, CancellationToken cancellationToken)
         {
             Guard.Against.Null(task, nameof(task));
-            using var loggerScope = _logger.BeginScope(new LogginDataDictionary<string, object> { { "ExportTaskId", task.ExportTaskId }, { "CorrelationId", task.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", task.ExportTaskId }, { "CorrelationId", task.CorrelationId } });
             var scope = _serviceScopeFactory.CreateScope();
             var workloadManager = scope.ServiceProvider.GetRequiredService<IWorkloadManagerApi>();
 
@@ -214,13 +214,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 return;
             }
 
-            using var loggerScope = _logger.BeginScope(new LogginDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
             await ReportStatus(job, cancellationToken);
         }
 
         protected async Task ReportStatus(OutputJob job, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LogginDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
 
             if (job is null)
             {
@@ -251,7 +251,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         protected async Task ReportFailure(TaskResponse job, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LogginDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
             try
             {
                 using var scope = _serviceScopeFactory.CreateScope();
