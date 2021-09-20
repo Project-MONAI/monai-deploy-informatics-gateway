@@ -26,6 +26,7 @@
  * limitations under the License.
  */
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -57,6 +58,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         [HttpGet("status")]
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<HealthStatusResponse> Status()
         {
             try
@@ -67,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     Services = _monaiServiceLocator.GetServiceStatus()
                 };
 
-                return response;
+                return Ok(response);
             }
             catch (Exception ex)
             {
@@ -78,6 +81,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         [HttpGet("ready")]
         [HttpGet("live")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Ready()
         {
             try

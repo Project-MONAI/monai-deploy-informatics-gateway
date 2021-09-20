@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         /// </summary>
         /// <param name="studyInstanceUid">Study Instance UID</param>
         /// <param name="transferSyntaxes">An array of supported transfer syntaxes. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</param>
-        /// <returns>A list of <see cref="DicomFile"/> containing DICOM instances for the study.</returns>
+        /// <returns>A list of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomFile.cs">DicomFile</see> containing DICOM instances for the study.</returns>
         IAsyncEnumerable<DicomFile> Retrieve(
             string studyInstanceUid,
             params DicomTransferSyntax[] transferSyntaxes);
@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         /// <summary>
         /// Retrieves the metadata of all instances specified in the study.
         /// </summary>
-        /// <typeparam name="T">T must be type of <see cref="DicomDataset"/> or <see cref="string"/></typeparam>
+        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
         /// <param name="studyInstanceUid">Study Instance UID</param>
         /// <returns>An enumerable of <c>T</c> containing DICOM instances for the study.</returns>
         IAsyncEnumerable<T> RetrieveMetadata<T>(
@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         /// <param name="studyInstanceUid">Study Instance UID</param>
         /// <param name="seriesInstanceUid">Series Instance UID</param>
         /// <param name="transferSyntaxes">An array of supported transfer syntaxes. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</param>
-        /// <returns>A list of <see cref="DicomFile"/> containing DICOM instances for the series.</returns>
+        /// <returns>A list of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomFile.cs">DicomFile</see> containing DICOM instances for the series.</returns>
         IAsyncEnumerable<DicomFile> Retrieve(
             string studyInstanceUid,
             string seriesInstanceUid,
@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         /// <summary>
         /// Retrieves the metadata of all instances specified in the study.
         /// </summary>
-        /// <typeparam name="T">T must be type of <see cref="DicomDataset"/> or <see cref="string"/></typeparam>
+        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
         /// <param name="studyInstanceUid">Study Instance UID</param>
         /// <param name="seriesInstanceUid">Series Instance UID</param>
         /// <returns>An enumerable of <c>T</c> containing DICOM instances for the series.</returns>
@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         /// <param name="seriesInstanceUid">Series Instance UID</param>
         /// <param name="sopInstanceUid">SOP Instance UID</param>
         /// <param name="transferSyntaxes">An array of supported transfer syntaxes. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</param>
-        /// <returns>A <see cref="DicomFile"/> representing the DICOM instance.</returns>
+        /// <returns>A <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomFile.cs">DicomFile</see> representing the DICOM instance.</returns>
         Task<DicomFile> Retrieve(
             string studyInstanceUid,
             string seriesInstanceUid,
@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         /// <summary>
         /// Retrieves the metadata of the specified DICOM instance.
         /// </summary>
-        /// <typeparam name="T">T must be type of <see cref="DicomDataset"/> or <see cref="string"/></typeparam>
+        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
         /// <param name="studyInstanceUid">Study Instance UID</param>
         /// <param name="seriesInstanceUid">Series Instance UID</param>
         /// <param name="sopInstanceUid">SOP Instance UID</param>
@@ -105,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         /// <param name="sopInstanceUid">SOP Instance UID</param>
         /// <param name="frameNumbers">The frames to retrieve within a multi-frame instance. (One-based indices)</param>
         /// <param name="transferSyntaxes">An array of supported transfer syntaxes. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</param>
-        /// <returns>A <see cref="DicomFile"/> representing the DICOM instance.</returns>
+        /// <returns>A <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomFile.cs">DicomFile</see> representing the DICOM instance.</returns>
         Task<DicomFile> Retrieve(
             string studyInstanceUid,
             string seriesInstanceUid,

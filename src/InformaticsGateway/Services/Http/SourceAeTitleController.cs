@@ -57,11 +57,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         [HttpGet]
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<SourceApplicationEntity>>> Get()
         {
             try
             {
-                return await _repository.ToListAsync();
+                return Ok(await _repository.ToListAsync());
             }
             catch (Exception ex)
             {
@@ -70,23 +72,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        [HttpGet("{aeTitle}")]
+        [HttpGet("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ActionName(nameof(GetAeTitle))]
-        public async Task<ActionResult<SourceApplicationEntity>> GetAeTitle(string aeTitle)
+        public async Task<ActionResult<SourceApplicationEntity>> GetAeTitle(string name)
         {
             try
             {
-                var SourceApplicationEntity = await _repository.FindAsync(aeTitle);
+                var sourceApplicationEntity = await _repository.FindAsync(name);
 
-                if (SourceApplicationEntity is null)
+                if (sourceApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
-                return SourceApplicationEntity;
+                return Ok(sourceApplicationEntity);
             }
             catch (Exception ex)
             {
@@ -112,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await _repository.AddAsync(item);
                 await _repository.SaveChangesAsync();
                 _logger.Log(LogLevel.Information, $"DICOM source added AE Title={item.AeTitle}, Host/IP={item.HostIp}.");
-                return CreatedAtAction(nameof(GetAeTitle), new { aeTitle = item.AeTitle }, item);
+                return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ConfigurationException ex)
             {
@@ -134,17 +137,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var SourceApplicationEntity = await _repository.FindAsync(name);
-                if (SourceApplicationEntity is null)
+                var sourceApplicationEntity = await _repository.FindAsync(name);
+                if (sourceApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
-                _repository.Remove(SourceApplicationEntity);
+                _repository.Remove(sourceApplicationEntity);
                 await _repository.SaveChangesAsync();
 
                 _logger.Log(LogLevel.Information, $"DICOM source deleted {name}.");
-                return SourceApplicationEntity;
+                return Ok(sourceApplicationEntity);
             }
             catch (Exception ex)
             {

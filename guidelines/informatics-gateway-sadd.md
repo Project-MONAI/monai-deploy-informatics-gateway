@@ -318,13 +318,13 @@ Refer to [ACR Inference API specs]() for detailed information.
 
 ### List Source AET Config API
 
-List all source AE Titles configured on the system.
+Returns a list of source AE Titles configured on the Informatics Gateway.
 
 #### URL
 
 `/config/source`
 
-#### Meethod
+#### Method
 
 `GET`
 

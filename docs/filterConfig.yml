@@ -1,0 +1,11 @@
+apiRules:
+- exclude:
+    hasAttribute:
+      uid: Newtonsoft.Json.JsonIgnoreAttribute
+- exclude:
+    uidRegex: ^FellowOakDicom\.Serialization\..*$
+    type: Type
+- exclude:
+    # inherited Object methods
+    uidRegex: ^System\.Object\..*$
+    type: Method

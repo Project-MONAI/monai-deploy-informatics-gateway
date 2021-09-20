@@ -56,11 +56,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         [HttpGet]
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<DestinationApplicationEntity>>> Get()
         {
             try
             {
-                return await _repository.ToListAsync();
+                return Ok(await _repository.ToListAsync());
             }
             catch (Exception ex)
             {
@@ -78,14 +80,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var DestinationApplicationEntity = await _repository.FindAsync(name);
+                var destinationApplicationEntity = await _repository.FindAsync(name);
 
-                if (DestinationApplicationEntity is null)
+                if (destinationApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
-                return DestinationApplicationEntity;
+                return Ok(destinationApplicationEntity);
             }
             catch (Exception ex)
             {
@@ -143,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await _repository.SaveChangesAsync();
 
                 _logger.Log(LogLevel.Information, $"DICOM destination deleted {name}.");
-                return destinationApplicationEntity;
+                return Ok(destinationApplicationEntity);
             }
             catch (Exception ex)
             {

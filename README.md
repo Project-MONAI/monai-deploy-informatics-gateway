@@ -24,5 +24,5 @@ export DOTNET_ENVIRONMENT=Development
 ### Building MONAI Deploy Informatics Gateway
 
 ```bash
-src$ dotnet build
+dotnet build
 ```

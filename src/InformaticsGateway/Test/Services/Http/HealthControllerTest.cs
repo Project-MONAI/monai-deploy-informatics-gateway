@@ -77,13 +77,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _serviceLocator.Setup(p => p.GetServiceStatus()).Returns(new Dictionary<string, ServiceStatus>() { { "Service", ServiceStatus.Unknown } });
 
             var result = _controller.Status();
-            var resposne = result.Value as HealthStatusResponse;
-            Assert.NotNull(resposne);
-            Assert.Equal(0, resposne.ActiveDimseConnections);
+            var okObjectResult = result.Result as OkObjectResult;
+            var response = okObjectResult.Value as HealthStatusResponse;
+            Assert.NotNull(response);
+            Assert.Equal(0, response.ActiveDimseConnections);
 
-            foreach (var service in resposne.Services.Keys)
+            foreach (var service in response.Services.Keys)
             {
-                Assert.Equal(ServiceStatus.Unknown, resposne.Services[service]);
+                Assert.Equal(ServiceStatus.Unknown, response.Services[service]);
             }
         }
 
@@ -93,13 +94,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _serviceLocator.Setup(p => p.GetServiceStatus()).Returns(new Dictionary<string, ServiceStatus>() { { "Service", ServiceStatus.Running } });
 
             var result = _controller.Status();
-            var resposne = result.Value as HealthStatusResponse;
-            Assert.NotNull(resposne);
-            Assert.Equal(0, resposne.ActiveDimseConnections);
+            var okObjectResult = result.Result as OkObjectResult;
+            var response = okObjectResult.Value as HealthStatusResponse;
+            Assert.NotNull(response);
+            Assert.Equal(0, response.ActiveDimseConnections);
 
-            foreach (var service in resposne.Services.Keys)
+            foreach (var service in response.Services.Keys)
             {
-                Assert.Equal(ServiceStatus.Running, resposne.Services[service]);
+                Assert.Equal(ServiceStatus.Running, response.Services[service]);
             }
         }
 
