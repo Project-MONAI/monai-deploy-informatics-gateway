@@ -36,19 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
     /// </summary>
     public class InferenceRequestException : Exception
     {
-        public InferenceRequestException()
-        {
-        }
-
         public InferenceRequestException(string message) : base(message)
-        {
-        }
-
-        public InferenceRequestException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected InferenceRequestException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }
