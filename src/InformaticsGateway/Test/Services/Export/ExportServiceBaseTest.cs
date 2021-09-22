@@ -30,7 +30,7 @@ using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 {
-    internal class TestExportService : ExportServiceBase
+    public class TestExportService : ExportServiceBase
     {
         public static string AgentName = "TestAgent";
 
@@ -39,8 +39,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         public bool ConvertReturnsEmpty = false;
         public bool ExportShallFail = false;
         protected override string Agent => AgentName;
-
         protected override int Concurrentcy => 1;
+        public override string ServiceName { get => "Test Export Service"; }
 
         public TestExportService(
             ILogger logger,

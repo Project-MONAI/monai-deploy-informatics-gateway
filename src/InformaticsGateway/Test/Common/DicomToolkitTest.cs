@@ -10,6 +10,7 @@
 // limitations under the License.
 
 using Dicom;
+using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.IO;
 using System.IO.Abstractions;
@@ -17,7 +18,7 @@ using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.Common.Test
+namespace Monai.Deploy.InformaticsGateway.Test.Common
 {
     public class DicomToolkitTest
     {

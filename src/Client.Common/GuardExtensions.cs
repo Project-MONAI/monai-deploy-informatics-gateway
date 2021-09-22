@@ -18,7 +18,7 @@
 using Ardalis.GuardClauses;
 using System;
 
-namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
+namespace Monai.Deploy.InformaticsGateway.Client.Common
 {
     public static class GuardExtensions
     {

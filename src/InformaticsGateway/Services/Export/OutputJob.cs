@@ -32,7 +32,7 @@ using System.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
-    internal class OutputJob : TaskResponse
+    public class OutputJob : TaskResponse
     {
         public byte[] FileContent { get; private set; }
 

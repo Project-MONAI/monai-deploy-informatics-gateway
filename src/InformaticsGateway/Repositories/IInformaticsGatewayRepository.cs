@@ -37,5 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         T FirstOrDefault(Func<T, bool> p);
 
         void Detach(T job);
+
+        bool Any(Func<T, bool> p);
     }
 }

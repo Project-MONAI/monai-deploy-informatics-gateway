@@ -34,7 +34,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -90,8 +89,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error querying Destination Application Entity.");
-                return Problem(title: "Error querying Destination Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.Log(LogLevel.Error, ex, "Error querying DICOM destinations.");
+                return Problem(title: "Error querying DICOM destinations.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
@@ -105,10 +104,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                if (!item.IsValid(_repository.AsQueryable().Select(p => p.Name), out IList<string> validationErrors))
-                {
-                    throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
-                }
+                item.SetDefaultValues();
+
+                Validate(item);
 
                 await _repository.AddAsync(item);
                 await _repository.SaveChangesAsync();
@@ -121,8 +119,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error adding new Destination Application Entity.");
-                return Problem(title: "Error adding new Destination Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.Log(LogLevel.Error, ex, "Error adding new DICOM destination.");
+                return Problem(title: "Error adding new DICOM destination.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
@@ -144,13 +142,29 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 _repository.Remove(destinationApplicationEntity);
                 await _repository.SaveChangesAsync();
 
-                _logger.Log(LogLevel.Information, $"DICOM destination deleted Name={destinationApplicationEntity.Name}.");
+                _logger.Log(LogLevel.Information, $"DICOM destination deleted {name}.");
                 return destinationApplicationEntity;
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error deleting Destination Application Entity.");
-                return Problem(title: "Error deleting Destination Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.Log(LogLevel.Error, ex, "Error deleting DICOM destination.");
+                return Problem(title: "Error deleting DICOM destination.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+            }
+        }
+
+        private void Validate(DestinationApplicationEntity item)
+        {
+            if (_repository.Any(p => p.Name.Equals(item.Name)))
+            {
+                throw new ConfigurationException($"A DICOM destination with the same name '{item.Name}' already exists.");
+            }
+            if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port)))
+            {
+                throw new ConfigurationException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
+            }
+            if (!item.IsValid(out IList<string> validationErrors))
+            {
+                throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
             }
         }
     }

@@ -27,12 +27,6 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         public string ResponseMessage { get; }
         public DicomDataset ResponseDataset { get; }
 
-        public DicomWebClientException(HttpStatusCode? statusCode, string responseMessage)
-        {
-            StatusCode = statusCode;
-            ResponseMessage = responseMessage;
-        }
-
         public DicomWebClientException(HttpStatusCode? statusCode, string responseMessage, Exception innerException)
             : base(responseMessage, innerException)
         {

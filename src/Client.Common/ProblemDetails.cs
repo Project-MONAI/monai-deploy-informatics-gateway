@@ -1,6 +1,6 @@
-﻿/*
+/*
  * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
+ * Copyright 2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,12 @@
  * limitations under the License.
  */
 
-using Ardalis.GuardClauses;
-using System;
-
-namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
+namespace Monai.Deploy.InformaticsGateway.Client.Common
 {
-    public static class UriExtensions
+    public class ProblemDetails
     {
-        public static Uri EnsureUriEndsWithSlash(this Uri input)
-        {
-            Guard.Against.MalformUri(input, nameof(input));
-
-            var str = input.ToString();
-
-            if (!string.IsNullOrWhiteSpace(str) && !str.EndsWith('/'))
-            {
-                return new Uri(str + '/');
-            }
-
-            return input;
-        }
+        public string Title { get; set; }
+        public int Status { get; set; }
+        public string Detail { get; set; }
     }
 }

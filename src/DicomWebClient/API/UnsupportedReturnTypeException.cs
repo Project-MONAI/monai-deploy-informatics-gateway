@@ -22,19 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 {
     public class UnsupportedReturnTypeException : Exception
     {
-        public UnsupportedReturnTypeException()
-        {
-        }
-
         public UnsupportedReturnTypeException(string message) : base(message)
-        {
-        }
-
-        public UnsupportedReturnTypeException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected UnsupportedReturnTypeException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

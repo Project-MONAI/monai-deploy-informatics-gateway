@@ -21,15 +21,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 {
     public class ResponseDecodeException : Exception
     {
-        public ResponseDecodeException()
-        {
-        }
-
         public ResponseDecodeException(string message) : base(message)
-        {
-        }
-
-        public ResponseDecodeException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

@@ -10,7 +10,6 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
-using Karambolo.Extensions.Logging.File;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -95,6 +94,7 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
 
+                    services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
                     services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
                     services.AddSingleton<IWorkloadManagerApi, WorkloadManagerApi>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();

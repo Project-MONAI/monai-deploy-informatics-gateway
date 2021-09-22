@@ -53,6 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private FoDicomNetwork.IDicomServer _server;
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
+        public string ServiceName => "DICOM SCP Service";
 
         public ScpService(IServiceScopeFactory serviceScopeFactory,
                                 IApplicationEntityManager applicationEntityManager,

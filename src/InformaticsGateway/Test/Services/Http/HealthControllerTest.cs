@@ -16,10 +16,12 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Moq;
 using System;
+using System.Collections.Generic;
 using System.Net;
 using xRetry;
 using Xunit;
@@ -29,16 +31,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
     public class HealthControllerTest
     {
         private HealthController _controller;
-        private Mock<IServiceProvider> _serviceProvider;
+        private Mock<IMonaiServiceLocator> _serviceLocator;
         private Mock<ProblemDetailsFactory> _problemDetailsFactory;
         private Mock<ILogger<HealthController>> _logger;
-        private IOptions<InformaticsGatewayConfiguration> _configuration;
 
         public HealthControllerTest()
         {
-            _serviceProvider = new Mock<IServiceProvider>();
+            _serviceLocator = new Mock<IMonaiServiceLocator>();
             _logger = new Mock<ILogger<HealthController>>();
-            _configuration = Options.Create(new InformaticsGatewayConfiguration());
 
             _problemDetailsFactory = new Mock<ProblemDetailsFactory>();
             _problemDetailsFactory.Setup(_ => _.CreateProblemDetails(
@@ -62,9 +62,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 });
 
             _controller = new HealthController(
-                 _configuration,
                  _logger.Object,
-                 _serviceProvider.Object)
+                 _serviceLocator.Object)
             {
                 ProblemDetailsFactory = _problemDetailsFactory.Object
             };
@@ -75,11 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Status - Unknown service status")]
         public void Status_ReturnsUnknownStatus()
         {
-            _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
-                    .Returns(() =>
-                    {
-                        return null;
-                    });
+            _serviceLocator.Setup(p => p.GetServiceStatus()).Returns(new Dictionary<string, ServiceStatus>() { { "Service", ServiceStatus.Unknown } });
 
             var result = _controller.Status();
             var resposne = result.Value as HealthStatusResponse;
@@ -95,10 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Status - Shall return actual service status")]
         public void Status_ReturnsActualServiceStatus()
         {
-            var monaiService = new Mock<IMonaiService>();
-            monaiService.Setup(p => p.Status).Returns(ServiceStatus.Running);
-            _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
-                    .Returns(monaiService.Object);
+            _serviceLocator.Setup(p => p.GetServiceStatus()).Returns(new Dictionary<string, ServiceStatus>() { { "Service", ServiceStatus.Running } });
 
             var result = _controller.Status();
             var resposne = result.Value as HealthStatusResponse;
@@ -114,8 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Status - Shall return problem on failure")]
         public void Status_ShallReturnProblemOnFailure()
         {
-            _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
-                    .Throws(new Exception("error"));
+            _serviceLocator.Setup(p => p.GetServiceStatus()).Throws(new Exception("error"));
 
             var result = _controller.Status();
             var objectResult = result.Result as ObjectResult;
@@ -134,11 +125,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Ready - Shall return Unhealthy")]
         public void Ready_ShallReturnUnhealthy()
         {
-            _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
-                    .Returns(() =>
-                    {
-                        return null;
-                    });
+            _serviceLocator.Setup(p => p.GetServiceStatus()).Returns(new Dictionary<string, ServiceStatus>() { { "Service", ServiceStatus.Stopped } });
 
             var readyResult = _controller.Ready();
             var objectResult = readyResult as ObjectResult;
@@ -150,10 +137,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Ready - Shall return Healthy")]
         public void Ready_ShallReturnHealthy()
         {
-            var monaiService = new Mock<IMonaiService>();
-            monaiService.Setup(p => p.Status).Returns(ServiceStatus.Running);
-            _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
-                    .Returns(monaiService.Object);
+            _serviceLocator.Setup(p => p.GetServiceStatus()).Returns(new Dictionary<string, ServiceStatus>() { { "Service", ServiceStatus.Running } });
 
             var readyResult = _controller.Ready();
             var objectResult = readyResult as ObjectResult;
@@ -165,8 +149,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Ready - Shall return problem on failure")]
         public void Ready_ShallReturnProblemOnFailure()
         {
-            _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>()))
-                    .Throws(new Exception("error"));
+            _serviceLocator.Setup(p => p.GetServiceStatus()).Throws(new Exception("error"));
 
             var result = _controller.Ready();
             var objectResult = result as ObjectResult;

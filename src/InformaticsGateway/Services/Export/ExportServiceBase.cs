@@ -45,7 +45,7 @@ using System.Threading.Tasks.Dataflow;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
-    internal abstract class ExportServiceBase : IHostedService, IMonaiService
+    public abstract class ExportServiceBase : IHostedService, IMonaiService
     {
         internal event EventHandler ReportActionStarted;
 
@@ -58,6 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         protected abstract string Agent { get; }
         protected abstract int Concurrentcy { get; }
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
+        public abstract string ServiceName { get; }
 
         public ExportServiceBase(
             ILogger logger,

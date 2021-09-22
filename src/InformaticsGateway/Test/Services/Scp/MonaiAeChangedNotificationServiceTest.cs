@@ -54,11 +54,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var service = new MonaiAeChangedNotificationService(_logger.Object);
             var observer = new Mock<IObserver<MonaiApplicationentityChangedEvent>>();
             observer.Setup(p => p.OnNext(It.IsAny<MonaiApplicationentityChangedEvent>())).Throws(new Exception());
+            observer.Setup(p => p.OnError(It.IsAny<Exception>()));
 
             var cancel = service.Subscribe(observer.Object);
             service.Notify(new MonaiApplicationentityChangedEvent(new MonaiApplicationEntity(), ChangedEventType.Added));
             observer.Verify(p => p.OnNext(It.IsAny<MonaiApplicationentityChangedEvent>()), Times.Once());
-            _logger.VerifyLogging("Error notifying observer.", LogLevel.Error, Times.Once());
+            observer.Verify(p => p.OnError(It.IsAny<Exception>()), Times.Once());
 
             observer.Reset();
             cancel.Dispose();

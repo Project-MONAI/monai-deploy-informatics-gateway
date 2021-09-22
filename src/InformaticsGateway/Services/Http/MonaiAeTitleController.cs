@@ -20,7 +20,6 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 
@@ -127,16 +126,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        [HttpDelete("{aeTitle}")]
+        [HttpDelete("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<MonaiApplicationEntity>> Delete(string aeTitle)
+        public async Task<ActionResult<MonaiApplicationEntity>> Delete(string name)
         {
             try
             {
-                var monaiApplicationEntity = await _repository.FindAsync(aeTitle);
+                var monaiApplicationEntity = await _repository.FindAsync(name);
                 if (monaiApplicationEntity is null)
                 {
                     return NotFound();
@@ -146,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await _repository.SaveChangesAsync();
 
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(monaiApplicationEntity, ChangedEventType.Deleted));
-                _logger.Log(LogLevel.Information, $"MONAI SCP AE Title deleted AE Title={aeTitle}.");
+                _logger.Log(LogLevel.Information, $"MONAI SCP Application Entity deleted {name}.");
                 return monaiApplicationEntity;
             }
             catch (Exception ex)
@@ -160,7 +159,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             Guard.Against.Null(item, nameof(item));
 
-            if (!item.IsValid(_repository.AsQueryable().Select(p => p.AeTitle), out IList<string> validationErrors))
+            if (_repository.Any(p => p.Name.Equals(item.Name)))
+            {
+                throw new ConfigurationException($"A MONAI Application Entity with the same name '{item.Name}' already exists.");
+            }
+            if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle)))
+            {
+                throw new ConfigurationException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
+            }
+            if (!item.IsValid(out IList<string> validationErrors))
             {
                 throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
             }

@@ -16,6 +16,7 @@
  */
 
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -64,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
             if (ex is ArgumentException) code = HttpStatusCode.BadRequest;
 
-            var result = JsonConvert.SerializeObject(new { error = ex.Message.Replace("\n", " ") });
+            var result = JsonConvert.SerializeObject(new ProblemDetails { Title = ex.Message, Detail = ex.ToString() });
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)code;
 

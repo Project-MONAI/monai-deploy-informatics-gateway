@@ -24,3 +24,10 @@ echo "Building Informatics Gateway Docker Image. VERSION=$VERSION, FILEVERSION=$
 pushd $SCRIPT_DIR
 docker build --tag monai/informatics-gateway:$VERSION --build-arg Version=$VERSION --build-arg FileVersion=$FILEVERSION . 
 popd
+
+pushd $SCRIPT_DIR/src/CLI
+# echo "Building Informatics Gateway CLI: win-x64"
+# dotnet publish -r win-x64 -c Release -o $SCRIPT_DIR/cli/win-x64
+echo "Building Informatics Gateway CLI: linux-x64"
+dotnet publish -r linux-x64 -c Release -o $SCRIPT_DIR/cli/linux-x64
+popd

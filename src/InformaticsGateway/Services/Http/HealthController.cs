@@ -26,13 +26,12 @@
  * limitations under the License.
  */
 
-using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using System;
 using System.Collections.Generic;
@@ -45,30 +44,27 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     [Route("[controller]")]
     public class HealthController : ControllerBase
     {
-        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly ILogger<HealthController> _logger;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly IMonaiServiceLocator _monaiServiceLocator;
 
         public HealthController(
-            IOptions<InformaticsGatewayConfiguration> configuration,
             ILogger<HealthController> logger,
-            IServiceProvider serviceProvider)
+            IMonaiServiceLocator monaiServiceLocator)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+            _monaiServiceLocator = monaiServiceLocator ?? throw new ArgumentNullException(nameof(monaiServiceLocator));
         }
 
         [HttpGet("status")]
+        [Produces("application/json")]
         public ActionResult<HealthStatusResponse> Status()
         {
             try
             {
-                var services = GetServiceStatus();
                 var response = new HealthStatusResponse
                 {
                     ActiveDimseConnections = ScpService.ActiveConnections,
-                    Services = services.Select((p) => new { p.Key.Name, p.Value }).ToDictionary(x => x.Name, x => x.Value)
+                    Services = _monaiServiceLocator.GetServiceStatus()
                 };
 
                 return response;
@@ -86,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var services = GetServiceStatus();
+                var services = _monaiServiceLocator.GetServiceStatus();
 
                 if (services.Values.Any((p) => p != ServiceStatus.Running))
                 {
@@ -100,45 +96,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 _logger.Log(LogLevel.Error, ex, $"Error collecting system status.");
                 return Problem(title: "Error collecting system status.", statusCode: (int)HttpStatusCode.InternalServerError, detail: ex.Message);
             }
-        }
-
-        private Dictionary<Type, ServiceStatus> GetServiceStatus()
-        {
-            var services = new Dictionary<Type, ServiceStatus>();
-            var serviceTypes = GetServices();
-            foreach (var type in serviceTypes)
-            {
-                services[type] = GetServiceStatus(type);
-            }
-            return services;
-        }
-
-        private static List<Type> GetServices()
-        {
-            var services = new List<Type>
-            {
-                // typeof(Disk.SpaceReclaimerService),
-                // typeof(Jobs.JobSubmissionService),
-                // typeof(Jobs.DataRetrievalService),
-                typeof(Scp.ScpService),
-                // typeof(Export.ScuExportService),
-                // typeof(Export.DicomWebExportService)
-            };
-            return services;
-        }
-
-        private ServiceStatus GetServiceStatus(Type type)
-        {
-            Guard.Against.Null(type, nameof(type));
-
-            var service = _serviceProvider.GetService(type) as IMonaiService;
-
-            if (service is null)
-            {
-                return ServiceStatus.Unknown;
-            }
-
-            return service.Status;
         }
     }
 }

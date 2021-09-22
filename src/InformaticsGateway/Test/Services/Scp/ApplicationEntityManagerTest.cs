@@ -124,7 +124,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 new MonaiApplicationEntity()
                 {
                     AeTitle = aet,
-                    Name =aet
+                    Name =aet,
+                    Applications = new List<string>(){ "AppA", "AppB", Guid.NewGuid().ToString() }
                 }
             };
             _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());

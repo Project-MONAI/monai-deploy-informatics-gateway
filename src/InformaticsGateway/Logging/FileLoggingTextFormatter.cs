@@ -9,19 +9,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Karambolo.Extensions.Logging.File;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.Text;
-using Karambolo.Extensions.Logging.File;
-using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Logging
 {
     public class FileLoggingTextFormatter : FileLogEntryTextBuilder
     {
         public static readonly FileLoggingTextFormatter Default = new FileLoggingTextFormatter();
-
-        
 
         protected override void AppendTimestamp(StringBuilder sb, DateTimeOffset timestamp)
         {
@@ -51,10 +49,16 @@ namespace Monai.Deploy.InformaticsGateway.Logging
             sb.AppendLine(message);
             sb.Replace(Environment.NewLine, " ", length, message.Length);
         }
-        
 
-        public override void BuildEntryText(StringBuilder sb, string categoryName, LogLevel logLevel, EventId eventId, string message, Exception exception,
-            IExternalScopeProvider scopeProvider, DateTimeOffset timestamp)
+        public override void BuildEntryText(
+            StringBuilder sb, 
+            string categoryName, 
+            LogLevel logLevel, 
+            EventId eventId, 
+            string message, 
+            Exception exception,
+            IExternalScopeProvider scopeProvider, 
+            DateTimeOffset timestamp)
         {
             AppendTimestamp(sb, timestamp);
 
