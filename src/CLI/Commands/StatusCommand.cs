@@ -33,20 +33,20 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             this.LogVerbose(verbose, host, "Configuring services...");
 
-            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var config = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<StatusCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
-            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             HealthStatusResponse response = null;
             try
             {
-                ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
+                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
                 this.LogVerbose(verbose, host, $"Retrieving service status...");
                 response = await client.Health.Status(cancellationToken);
             }

@@ -9,13 +9,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
 using System;
 using System.CommandLine;
 using System.CommandLine.Invocation;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
@@ -23,34 +26,68 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public ConfigCommand() : base("config", "Configure the CLI endpoint")
         {
-            var endpointOption = new Option<string>(new[] { "-e", "--endpoint" }, $"URL to the {Strings.ApplicationName} API. E.g. http://localhost:5000") { IsRequired = true };
-            this.AddOption(endpointOption);
+            AddCommandEndpoint();
+            AddCommandRunner();
 
-            this.Handler = CommandHandler.Create<ConfigurationOptions, IHost, bool>(ConfigCommandHandler);
-
-            SetupShowConfigCmmand();
+            SetupInitCommand();
+            SetupShowConfigCommand();
         }
 
-        private void SetupShowConfigCmmand()
+        private void AddCommandRunner()
+        {
+            var endpointCommand = new Command("runner", $"Default container runner/orchestration engine to run {Strings.ApplicationName}.");
+            this.Add(endpointCommand);
+
+            endpointCommand.AddArgument(new Argument<Runner>("runner"));
+            endpointCommand.Handler = CommandHandler.Create<Runner, IHost, bool>((Runner runner, IHost host, bool verbose) =>
+                ConfigUpdateHandler(runner, host, verbose, (IConfigurationService options) =>
+                {
+                    options.Runner = runner;
+                })
+            );
+        }
+
+        private void AddCommandEndpoint()
+        {
+            var endpointCommand = new Command("endpoint", $"URL to the {Strings.ApplicationName} API. E.g. http://localhost:5000");
+            this.Add(endpointCommand);
+
+            endpointCommand.AddArgument(new Argument<string>("uri"));
+            endpointCommand.Handler = CommandHandler.Create<string, IHost, bool>((string uri, IHost host, bool verbose) =>
+                ConfigUpdateHandler(uri, host, verbose, (IConfigurationService options) =>
+                {
+                    options.InformaticsGatewayServer = uri;
+                })
+            );
+        }
+
+        private void SetupInitCommand()
+        {
+            var listCommand = new Command("init", $"Initialize with default configuration options");
+            this.AddCommand(listCommand);
+
+            listCommand.Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(InitHandlerAsync);
+            this.AddConfirmationOption(listCommand);
+        }
+
+        private void SetupShowConfigCommand()
         {
             var showCommand = new Command("show", "Show configurations");
             this.AddCommand(showCommand);
 
-            showCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ShowConfiguratonHandler);
+            showCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ShowConfigurationHandler);
         }
 
-        private int ShowConfiguratonHandler(IHost host, bool verbose, CancellationToken cancellationToken)
+        private int ShowConfigurationHandler(IHost host, bool verbose, CancellationToken cancellationToken)
         {
             this.LogVerbose(verbose, host, "Configuring services...");
             var logger = CreateLogger<ConfigCommand>(host);
             var configService = host.Services.GetRequiredService<IConfigurationService>();
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
 
             try
             {
-                var service = host.Services.GetRequiredService<IConfigurationService>();
-                ConfigurationOptions config = LoadConfiguration(verbose, configService);
-
-                logger.Log(LogLevel.Information, $"Endpoint: {config.Endpoint}");
+                logger.Log(LogLevel.Information, $"Server: {configService.InformaticsGatewayServer}");
             }
             catch (Exception ex)
             {
@@ -60,19 +97,17 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             return ExitCodes.Success;
         }
 
-        private int ConfigCommandHandler(ConfigurationOptions options, IHost host, bool verbose)
+        private int ConfigUpdateHandler<T>(T argument, IHost host, bool verbose, Action<IConfigurationService> updater)
         {
             var logger = CreateLogger<ConfigCommand>(host);
+            var config = host.Services.GetRequiredService<IConfigurationService>();
+
+            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
 
             try
             {
-                options.Validate();
-                var service = host.Services.GetRequiredService<IConfigurationService>();
-                service.CreateConfigDirectoryIfNotExist();
-
-                var configuration = service.Load(verbose);
-                configuration.Endpoint = options.Endpoint;
-                service.Save(configuration);
+                updater(config);
+                logger.Log(LogLevel.Information, "Configuration updated successfully.");
             }
             catch (ArgumentNullException)
             {
@@ -82,6 +117,35 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 logger.Log(LogLevel.Error, ex.Message);
                 return ExitCodes.Config_ErrorSaving;
+            }
+            return ExitCodes.Success;
+        }
+
+        private async Task<int> InitHandlerAsync(IHost host, bool verbose, bool yes, CancellationToken cancellationToken)
+        {
+            var logger = CreateLogger<ConfigCommand>(host);
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(confirmation, nameof(confirmation), "Confirmation prompt is unavailable.");
+
+            if (!yes)
+            {
+                if (configService.IsConfigExists && !confirmation.ShowConfirmationPrompt($"Existing application configuration file already exists. Do you want to overwrite it?"))
+                {
+                    logger.Log(LogLevel.Warning, "Action cancelled.");
+                    return ExitCodes.Stop_Cancelled;
+                }
+            }
+
+            try
+            {
+                await configService.Initialize();
+            }
+            catch (Exception ex)
+            {
+                logger.Log(LogLevel.Error, ex.Message);
+                return ExitCodes.Config_ErrorInitializing;
             }
             return ExitCodes.Success;
         }

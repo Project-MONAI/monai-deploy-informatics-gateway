@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using System;
 using System.CommandLine.Invocation;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
@@ -25,10 +26,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public StartCommand() : base("start", $"Start the {Strings.ApplicationName} service")
         {
             this.AddConfirmationOption();
-            this.Handler = CommandHandler.Create<IHost, bool, bool>(StartCommandHandler);
+            this.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(StartCommandHandler);
         }
 
-        private async Task<int> StartCommandHandler(IHost host, bool yes, bool verbose)
+        private async Task<int> StartCommandHandler(IHost host, bool verbose, CancellationToken cancellationToken)
         {
             var service = host.Services.GetRequiredService<IControlService>();
             var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();
@@ -38,22 +39,13 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(service, nameof(service), "Control service is unavailable.");
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
 
-            if (!yes)
-            {
-                if (!confirmation.ShowConfirmationPrompt($"Do you want to restart {Strings.ApplicationName}?"))
-                {
-                    logger.Log(LogLevel.Warning, "Action cancelled.");
-                    return ExitCodes.Start_Cancelled;
-                }
-            }
-
             try
             {
-                await service.Start();
+                await service.Start(cancellationToken);
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error starting {Strings.ApplicationName}: {ex.Message}");
+                logger.Log(LogLevel.Critical, ex.Message);
                 return ExitCodes.Start_Error;
             }
             return ExitCodes.Success;

@@ -36,5 +36,20 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
                 throw new ArgumentException("invalid scheme in uri", parameterName);
             }
         }
+
+        public static void MalformUri(this IGuardClause guardClause, string input, string parameterName)
+        {
+            Guard.Against.NullOrWhiteSpace(input, parameterName);
+            Guard.Against.MalformUri(new Uri(input), parameterName);
+
+        }
+
+        public static void OutOfRangePort(this IGuardClause guardClause, int port, string parameterName)
+        {
+            if (port <= 0 || port > 65535)
+            {
+                throw new ArgumentException("invalid port number", parameterName);
+            }
+        }
     }
 }

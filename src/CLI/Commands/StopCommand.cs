@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using System;
 using System.CommandLine.Invocation;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
@@ -25,10 +26,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public StopCommand() : base("stop", $"Stop the {Strings.ApplicationName} service")
         {
             this.AddConfirmationOption();
-            this.Handler = CommandHandler.Create<IHost, bool, bool>(StopCommandHandler);
+            this.Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(StopCommandHandler);
         }
 
-        private async Task<int> StopCommandHandler(IHost host, bool yes, bool verbose)
+        private async Task<int> StopCommandHandler(IHost host, bool yes, bool verbose, CancellationToken cancellationToken)
         {
             var service = host.Services.GetRequiredService<IControlService>();
             var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();
@@ -40,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             if (!yes)
             {
-                if (!confirmation.ShowConfirmationPrompt($"Do you want to restart {Strings.ApplicationName}?"))
+                if (!confirmation.ShowConfirmationPrompt($"Do you want to stop {Strings.ApplicationName}?"))
                 {
                     logger.Log(LogLevel.Warning, "Action cancelled.");
                     return ExitCodes.Stop_Cancelled;
@@ -49,11 +50,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await service.Stop();
+                await service.Stop(cancellationToken);
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error stopping {Strings.ApplicationName}: {ex.Message}");
+                logger.Log(LogLevel.Critical, ex, ex.Message);
                 return ExitCodes.Stop_Error;
             }
             return ExitCodes.Success;

@@ -17,6 +17,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         public const int Config_NotConfigured = 100;
         public const int Config_ErrorSaving = 101;
+        public const int Config_ErrorInitializing = 102;
 
         public const int MonaiScp_ErrorList = 200;
         public const int MonaiScp_ErrorDelete = 201;

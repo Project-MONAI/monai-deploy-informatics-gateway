@@ -10,13 +10,16 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -28,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
     {
         private readonly BlockingCollection<FileStorageInfo> _workItems;
         private readonly ILogger<FileStoredNotificationQueue> _logger;
-        private readonly IInformaticsGatewayRepository<FileStorageInfo> _repository;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public FileStoredNotificationQueue(
             ILogger<FileStoredNotificationQueue> logger,
@@ -36,17 +39,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             _workItems = new BlockingCollection<FileStorageInfo>();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _repository = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<FileStorageInfo>>();
+            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             LoadExistingStoredFilesFromDatabase();
         }
 
         private void LoadExistingStoredFilesFromDatabase()
         {
-            foreach (var item in _repository.AsQueryable())
+            var repository = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<FileStorageInfo>>();
+            foreach (var item in repository.AsQueryable())
             {
-                //TODO: encrypt log?
                 _logger.Log(LogLevel.Debug, "Adding existing file to queue: {0}", item.FilePath);
-                this.Queue(item);
+                _workItems.Add(item);
             }
         }
 
@@ -54,12 +57,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// Queues a new instance of FileStorageInfo.
         /// </summary>
         /// <param name="file">Instance to be queued</param>
-        public void Queue(FileStorageInfo file)
+        public async Task Queue(FileStorageInfo file)
         {
             Guard.Against.Null(file, nameof(file));
+            var repository = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<FileStorageInfo>>();
+
+            await repository.AddAsync(file);
+            await repository.SaveChangesAsync();
 
             _workItems.Add(file);
-            _repository.AddAsync(file);
             _logger.Log(LogLevel.Debug, "File added to cleanup queue {0}. Queue size: {1}", file.FilePath, _workItems.Count);
         }
 
@@ -69,10 +75,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// </summary>
         /// <param name="cancellationToken">Instance of cancellation token</param>
         /// <returns>Instance of FileStorageInfo</returns>
-        public FileStorageInfo Dequeue(CancellationToken cancellationToken)
+        public async Task<FileStorageInfo> Dequeue(CancellationToken cancellationToken)
         {
             var item = _workItems.Take(cancellationToken);
-            _repository.Remove(item);
+            var repository = _serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<FileStorageInfo>>();
+            try
+            {
+                repository.Remove(item);
+                await repository.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                _logger.Log(LogLevel.Warning, $"Error deleting {item.FilePath} from database; conflict detected.");
+            }
             return item;
         }
     }

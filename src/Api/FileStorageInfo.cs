@@ -10,6 +10,7 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
+using System;
 using System.IO.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Api
@@ -20,6 +21,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
     public record FileStorageInfo
     {
         private readonly IFileSystem _fileSystem;
+
+        /// <summary>
+        /// Gets the unique ID of the file.
+        /// </summary>
+        public Guid Id { get; init; }
 
         /// <summary>
         /// Gets the correlation ID of the file.
@@ -44,7 +50,19 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public string[] Applications { get; private set; }
 
         /// <summary>
-        /// Gets or set the number of attempts to upload.
+        /// Gets or sets the DateTime that the file was received.
+        /// </summary>
+        /// <value></value>
+        public DateTime Received { get; set; }
+
+        /// <summary>
+        /// Gets or set database row versioning info.
+        /// </summary>
+        /// <value></value>
+        public byte[] Timestamp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the number of attempts to upload.
         /// </summary>
         public int TryCount { get; set; } = 0;
 
@@ -67,8 +85,10 @@ namespace Monai.Deploy.InformaticsGateway.Api
             }
 
             _fileSystem = fileSystem;
+            Id = Guid.NewGuid();
             CorrelationId = correlationId;
             StorageRootPath = storageRootPath;
+            Received = DateTime.UtcNow;
             FilePath = GenerateStoragePath(storageRootPath, correlationId, messageId, fileExtension);
         }
 

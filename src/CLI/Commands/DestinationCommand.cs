@@ -84,22 +84,22 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();
-            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var config = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var consoleRegion = host.Services.GetRequiredService<IConsoleRegion>();
             var logger = CreateLogger<DestinationCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
             Guard.Against.Null(console, nameof(console), "Console service is unavailable.");
-            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
             IReadOnlyList<DestinationApplicationEntity> items = null;
             try
             {
-                ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
+                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
                 this.LogVerbose(verbose, host, $"Retrieving DICOM destinations...");
                 items = await client.DicomDestinations.List(cancellationToken);
             }
@@ -137,18 +137,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private async Task<int> RemoveDestinationHandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
             this.LogVerbose(verbose, host, "Configuring services...");
-            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var config = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<DestinationCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
-            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             try
             {
-                ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
+                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
                 this.LogVerbose(verbose, host, $"Deleting DICOM destination {name}...");
                 _ = await client.DicomDestinations.Delete(name, cancellationToken);
                 logger.Log(LogLevel.Information, $"DICOM destination '{name}' deleted.");
@@ -164,19 +164,19 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private async Task<int> AddDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
             this.LogVerbose(verbose, host, "Configuring services...");
-            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var config = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<DestinationCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
-            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             try
             {
-                ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
+                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
                 var result = await client.DicomDestinations.Create(entity, cancellationToken);
 
                 logger.Log(LogLevel.Information, "New DICOM destination created:");

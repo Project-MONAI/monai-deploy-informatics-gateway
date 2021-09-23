@@ -9,22 +9,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Ardalis.GuardClauses;
-using System;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    public class ConfigurationOptions
+    public interface IContainerRunnerFactory
     {
-        public string Endpoint { get; set; }
-
-        public void Validate()
-        {
-            Guard.Against.NullOrEmpty(Endpoint, nameof(Endpoint));
-            if (!Uri.IsWellFormedUriString(Endpoint, UriKind.Absolute))
-            {
-                throw new ArgumentException($"--endpoint '{Endpoint}' is not a valid URI.");
-            }
-        }
+        IContainerRunner GetContainerRunner();
     }
 }

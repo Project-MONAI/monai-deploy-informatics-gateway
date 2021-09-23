@@ -51,9 +51,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
@@ -67,9 +66,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsStringAsync(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }

@@ -55,6 +55,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                             services.AddSingleton<IInformaticsGatewayClient>(p => p.GetRequiredService<InformaticsGatewayClient>());
                             services.AddSingleton<IConfigurationService, ConfigurationService>();
                             services.AddSingleton<IControlService, ControlService>();
+                            services.AddSingleton<IContainerRunnerFactory, ContainerRunnerFactory>();
+                            services.AddTransient<DockerRunner>();
+                            
                         });
                     })
                 .AddGlobalOption(verboseOption)

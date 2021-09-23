@@ -183,10 +183,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
             }
 
-            NotifyNewInstance(inferenceRequest, retrievedFiles);
+            await NotifyNewInstance(inferenceRequest, retrievedFiles);
         }
 
-        private void NotifyNewInstance(InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedFiles)
+        private async Task NotifyNewInstance(InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedFiles)
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
@@ -201,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     retrievedFiles[key].SetApplications(inferenceRequest.Application.Id);
                 }
-                _fileStoredNotificationQueue.Queue(retrievedFiles[key]);
+                await _fileStoredNotificationQueue.Queue(retrievedFiles[key]);
             }
         }
 

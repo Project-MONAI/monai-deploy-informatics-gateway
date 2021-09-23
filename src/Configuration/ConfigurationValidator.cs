@@ -115,9 +115,15 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         {
             var valid = true;
 
-            if (string.IsNullOrWhiteSpace(configuration.Endpoint))
+            if (string.IsNullOrWhiteSpace(configuration.RestEndpoint))
             {
-                _validationErrors.Add("MONAI Workload Manager API endpoint is not configured: InformaticsGateway>workloadManager>endpoint.");
+                _validationErrors.Add("MONAI Workload Manager API REST endpoint is not configured: InformaticsGateway>workloadManager>restEndpoint.");
+                valid = false;
+            }
+            
+            if (string.IsNullOrWhiteSpace(configuration.GrpcEndpoint))
+            {
+                _validationErrors.Add("MONAI Workload Manager API gRPC endpoint is not configured: InformaticsGateway>workloadManager>grpcEndpoint.");
                 valid = false;
             }
 

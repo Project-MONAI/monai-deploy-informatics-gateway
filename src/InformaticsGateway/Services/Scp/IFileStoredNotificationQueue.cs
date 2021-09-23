@@ -11,6 +11,7 @@
 
 using Monai.Deploy.InformaticsGateway.Api;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -23,13 +24,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// Queue a new file to be cleaned up.
         /// </summary>
         /// <param name="file">Path to the file to be removed.</param>
-        void Queue(FileStorageInfo file);
+        Task Queue(FileStorageInfo file);
 
         /// <summary>
         /// Dequeue a file from the queue for notifying and uploading to MONAI Workload Manager.
         /// The default implementation blocks the call until a file is available from the queue.
         /// </summary>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        FileStorageInfo Dequeue(CancellationToken cancellationToken);
+        Task<FileStorageInfo> Dequeue(CancellationToken cancellationToken);
     }
 }

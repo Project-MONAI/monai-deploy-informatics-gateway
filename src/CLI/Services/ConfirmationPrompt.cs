@@ -22,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
     {
         public bool ShowConfirmationPrompt(string message)
         {
-            Console.Write($"{message} [y/N]");
+            Console.Write($"{message} [y/N]: ");
             var key = Console.ReadKey();
             Console.WriteLine();
             if (key.Key == ConsoleKey.Y)

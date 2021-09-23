@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
@@ -25,15 +25,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 name: "FileStorageInfo",
                 columns: table => new
                 {
-                    FilePath = table.Column<string>(type: "TEXT", nullable: false),
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     CorrelationId = table.Column<string>(type: "TEXT", nullable: false),
                     StorageRootPath = table.Column<string>(type: "TEXT", nullable: false),
+                    FilePath = table.Column<string>(type: "TEXT", nullable: false),
                     Applications = table.Column<string>(type: "TEXT", nullable: true),
+                    Received = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Timestamp = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: true),
                     TryCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FileStorageInfo", x => x.FilePath);
+                    table.PrimaryKey("PK_FileStorageInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(

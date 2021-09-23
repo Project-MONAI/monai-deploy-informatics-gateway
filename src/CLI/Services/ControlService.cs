@@ -9,44 +9,78 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Ardalis.GuardClauses;
+using Docker.DotNet;
+using Docker.DotNet.Models;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
     public interface IControlService
     {
-        Task Start();
+        Task Start(CancellationToken cancellationToken = default);
 
-        Task Stop();
+        Task Stop(CancellationToken cancellationToken = default);
 
-        Task Restart();
+        Task Restart(CancellationToken cancellationToken = default);
     }
 
     public class ControlService : IControlService
     {
+        private readonly IContainerRunnerFactory _containerRunnerFactory;
         private readonly ILogger<ControlService> _logger;
+        private readonly IConfigurationService _configurationService;
 
-        public ControlService(ILogger<ControlService> logger)
+        public ControlService(IContainerRunnerFactory containerRunnerFactory, ILogger<ControlService> logger, IConfigurationService configService)
         {
+            _containerRunnerFactory = containerRunnerFactory ?? throw new ArgumentNullException(nameof(containerRunnerFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _configurationService = configService ?? throw new ArgumentNullException(nameof(configService));
         }
 
-        public async Task Restart()
+        public async Task Restart(CancellationToken cancellationToken = default)
         {
             await Stop();
-            await Start();
+            await Start(cancellationToken);
         }
 
-        public Task Start()
+        public async Task Start(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var runner = _containerRunnerFactory.GetContainerRunner();
+
+            var applicationVersion = await runner.GetApplicationVersion(cancellationToken);
+            var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken);
+
+            if (runnerState.IsRunning)
+            {
+                throw new Exception($"{Strings.ApplicationName} is already running in container ID {runnerState.IdShort}.");
+            }
+
+            await runner.StartApplication(applicationVersion, cancellationToken);
         }
 
-        public Task Stop()
+        public async Task Stop(CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var runner = _containerRunnerFactory.GetContainerRunner();
+            var applicationVersions = await runner.GetApplicationVersions(cancellationToken);
+
+            foreach (var applicationVersion in applicationVersions)
+            {
+                var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken);
+
+                if (runnerState.IsRunning)
+                {
+                    await runner.StopApplication(runnerState, cancellationToken);
+                    return;
+                }
+            }
+            _logger.Log(LogLevel.Warning, $"{Strings.ApplicationName} has not started. To start, execute `{System.AppDomain.CurrentDomain.FriendlyName} start`.");
         }
     }
 }
