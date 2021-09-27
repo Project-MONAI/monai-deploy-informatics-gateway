@@ -30,7 +30,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         }
 
         private async Task<int> StartCommandHandler(IHost host, bool verbose, CancellationToken cancellationToken)
-        {
+        {            
+            Guard.Against.Null(host, nameof(host));
+            
             var service = host.Services.GetRequiredService<IControlService>();
             var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();
             var logger = CreateLogger<StartCommand>(host);
@@ -42,6 +44,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             try
             {
                 await service.Start(cancellationToken);
+            }
+            catch (ControlException ex) when (ex.ErrorCode == ExitCodes.Start_Error_ApplicationAlreadyRunning)
+            {
+                logger.Log(LogLevel.Warning, ex.Message);
+                return ex.ErrorCode;
             }
             catch (Exception ex)
             {

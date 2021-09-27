@@ -78,25 +78,29 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> ListSourceHandlerAsync(SourceApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationTokena)
         {
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
+            
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();
-            var config = host.Services.GetRequiredService<IConfigurationService>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var consoleRegion = host.Services.GetRequiredService<IConsoleRegion>();
             var logger = CreateLogger<SourceCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
             Guard.Against.Null(console, nameof(console), "Console service is unavailable.");
-            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
             IReadOnlyList<SourceApplicationEntity> items = null;
             try
             {
-                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Retrieving DICOM sources...");
                 items = await client.DicomSources.List(cancellationTokena);
             }
@@ -137,19 +141,23 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> RemoveSourceHandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationTokena)
         {
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
-            var config = host.Services.GetRequiredService<IConfigurationService>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<SourceCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
-            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             try
             {
-                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Deleting DICOM source {name}...");
                 _ = await client.DicomSources.Delete(name, cancellationTokena);
                 logger.Log(LogLevel.Information, $"DICOM source '{name}' deleted.");
@@ -169,19 +177,23 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> AddSourceHandlerAsync(SourceApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationTokena)
         {
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
-            var config = host.Services.GetRequiredService<IConfigurationService>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<SourceCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
-            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             try
             {
-                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Creating new DICOM source {entity.AeTitle}...");
                 var result = await client.DicomSources.Create(entity, cancellationTokena);
 

@@ -9,11 +9,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Ardalis.GuardClauses;
+using System.IO;
+
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    internal static class Strings
+    public interface IEmbeddedResource
     {
-        public const string ApplicationName = "MONAI Deploy Informatics Gateway";
-        public const string WorkloadManagerName = "MONAI Deploy Workload Manager";
+        Stream GetManifestResourceStream(string name);
+    }
+
+    public class EmbeddedResource : IEmbeddedResource
+    {
+        public Stream GetManifestResourceStream(string name)
+        {
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            return this.GetType().Assembly.GetManifestResourceStream(Common.AppSettingsResourceName);
+        }
     }
 }

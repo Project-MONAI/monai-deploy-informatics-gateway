@@ -9,18 +9,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
+using Ardalis.GuardClauses;
+using Docker.DotNet;
+using Docker.DotNet.Models;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.GuardClauses;
-using Docker.DotNet;
-using Docker.DotNet.Models;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Common;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
@@ -28,15 +27,15 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         private readonly ILogger<DockerRunner> _logger;
         private readonly IConfigurationService _configurationService;
-        public readonly DockerClient _dockerClient;
         private readonly IFileSystem _fileSystem;
+        public readonly IDockerClient _dockerClient;
 
-        public DockerRunner(ILogger<DockerRunner> logger, IConfigurationService configurationService, IFileSystem fileSystem)
+        public DockerRunner(ILogger<DockerRunner> logger, IConfigurationService configurationService, IFileSystem fileSystem, IDockerClient dockerClient)
         {
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
             _configurationService = configurationService ?? throw new ArgumentNullException(nameof(configurationService));
-            _dockerClient = new DockerClientConfiguration().CreateClient();
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
+            _dockerClient = dockerClient ?? throw new ArgumentNullException(nameof(dockerClient));
         }
 
         public async Task<RunnerState> IsApplicationRunning(ImageVersion imageVersion, CancellationToken cancellationToken = default)
@@ -52,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                     [imageVersion.Id] = true
                 }
             };
-            var matches = await _dockerClient.Containers.ListContainersAsync(parameters);
+            var matches = await _dockerClient.Containers.ListContainersAsync(parameters, cancellationToken);
             if (matches is null || matches.Count() == 0)
             {
                 return new RunnerState { IsRunning = false };
@@ -61,21 +60,24 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             return new RunnerState { IsRunning = true, Id = matches.First().ID };
         }
 
-        public async Task<IList<ImageVersion>> GetApplicationVersions(CancellationToken cancellationToken = default)
+        public async Task<ImageVersion> GetLatestApplicationVersion(CancellationToken cancellationToken = default)
+            => await GetLatestApplicationVersion(_configurationService.Configurations.DockerImagePrefix, cancellationToken);
+
+        public async Task<ImageVersion> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default)
         {
-            _logger.Log(LogLevel.Debug, "Connecting to Docker...");
-            var parameters = new ImagesListParameters();
-            _logger.Log(LogLevel.Debug, "Retrieving images from Docker...");
-            var images = await _dockerClient.Images.ListImagesAsync(parameters, cancellationToken);
+            Guard.Against.NullOrWhiteSpace(version, nameof(version));
 
-            return images.Select(p => new ImageVersion { Version = p.RepoTags.First(), Id = p.ID }).ToList();
-
+            var results = await GetApplicationVersions(version, cancellationToken);
+            return results?.OrderByDescending(p => p.Created).FirstOrDefault();
         }
-        public async Task<ImageVersion> GetApplicationVersion(CancellationToken cancellationToken = default)
-            => await GetApplicationVersion(_configurationService.DockerImagePrefix, cancellationToken);
 
-        public async Task<ImageVersion> GetApplicationVersion(string label, CancellationToken cancellationToken = default)
+        public async Task<IList<ImageVersion>> GetApplicationVersions(CancellationToken cancellationToken = default)
+            => await GetApplicationVersions(_configurationService.Configurations.DockerImagePrefix, cancellationToken);
+
+        public async Task<IList<ImageVersion>> GetApplicationVersions(string label, CancellationToken cancellationToken = default)
         {
+            Guard.Against.NullOrWhiteSpace(label, nameof(label));
+
             _logger.Log(LogLevel.Debug, "Connecting to Docker...");
             var parameters = new ImagesListParameters();
             parameters.Filters = new Dictionary<string, IDictionary<string, bool>>
@@ -87,49 +89,42 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             };
             _logger.Log(LogLevel.Debug, "Retrieving images from Docker...");
             var images = await _dockerClient.Images.ListImagesAsync(parameters, cancellationToken);
-            var latestImage = images.OrderByDescending(p => p.Created).FirstOrDefault();
-            if (latestImage is null)
-            {
-                throw new Exception($"No {Strings.ApplicationName} Docker images with prefix `{label}` found.");
-            }
-            return new ImageVersion
-            {
-                Version = latestImage.RepoTags.FirstOrDefault(),
-                Id = latestImage.ID
-            };
+            return images?.Select(p => new ImageVersion { Version = p.RepoTags.First(), Id = p.ID, Created = p.Created }).ToList();
         }
 
-        public async Task StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default)
+        public async Task<bool> StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default)
         {
+            Guard.Against.Null(imageVersion, nameof(imageVersion));
+
             _logger.Log(LogLevel.Information, $"Creating container {Strings.ApplicationName} - {imageVersion.Version} ({imageVersion.IdShort})...");
             var createContainerParams = new CreateContainerParameters() { Image = imageVersion.Id, HostConfig = new HostConfig() };
 
             createContainerParams.ExposedPorts = new Dictionary<string, EmptyStruct>();
             createContainerParams.HostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
 
-            _logger.Log(LogLevel.Information, $"\tPort binding: {_configurationService.DicomListeningPort}/tcp");
-            createContainerParams.ExposedPorts.Add($"{_configurationService.DicomListeningPort}/tcp", new EmptyStruct());
-            createContainerParams.HostConfig.PortBindings.Add($"{_configurationService.DicomListeningPort}/tcp", new List<PortBinding> { new PortBinding { HostPort = $"{_configurationService.DicomListeningPort}" } });
+            _logger.Log(LogLevel.Information, $"\tPort binding: {_configurationService.Configurations.DicomListeningPort}/tcp");
+            createContainerParams.ExposedPorts.Add($"{_configurationService.Configurations.DicomListeningPort}/tcp", new EmptyStruct());
+            createContainerParams.HostConfig.PortBindings.Add($"{_configurationService.Configurations.DicomListeningPort}/tcp", new List<PortBinding> { new PortBinding { HostPort = $"{_configurationService.Configurations.DicomListeningPort}" } });
 
-            _logger.Log(LogLevel.Information, $"\tPort binding: {_configurationService.InformaticsGatewayServerPort}/tcp");
-            createContainerParams.ExposedPorts.Add($"{_configurationService.InformaticsGatewayServerPort}/tcp", new EmptyStruct());
-            createContainerParams.HostConfig.PortBindings.Add($"{_configurationService.InformaticsGatewayServerPort}/tcp", new List<PortBinding> { new PortBinding { HostPort = $"{_configurationService.InformaticsGatewayServerPort}" } });
+            _logger.Log(LogLevel.Information, $"\tPort binding: {_configurationService.Configurations.InformaticsGatewayServerPort}/tcp");
+            createContainerParams.ExposedPorts.Add($"{_configurationService.Configurations.InformaticsGatewayServerPort}/tcp", new EmptyStruct());
+            createContainerParams.HostConfig.PortBindings.Add($"{_configurationService.Configurations.InformaticsGatewayServerPort}/tcp", new List<PortBinding> { new PortBinding { HostPort = $"{_configurationService.Configurations.InformaticsGatewayServerPort}" } });
 
             createContainerParams.HostConfig.Mounts = new List<Mount>();
             _logger.Log(LogLevel.Information, $"\tMount (configuration file): {Common.ConfigFilePath} => {Common.MountedConfigFilePath}");
             createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = true, Source = Common.ConfigFilePath, Target = Common.MountedConfigFilePath });
 
-            _logger.Log(LogLevel.Information, $"\tMount (database file):      {_configurationService.HostDatabaseStorageMount} => {Common.MountedDatabasePath}");
-            _fileSystem.Directory.CreateDirectoryIfNotExists(Common.DatabaseDirectory);
-            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = Common.DatabaseDirectory, Target = Common.MountedDatabasePath });
+            _logger.Log(LogLevel.Information, $"\tMount (database file):      {_configurationService.Configurations.HostDatabaseStorageMount} => {Common.MountedDatabasePath}");
+            _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostDatabaseStorageMount);
+            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostDatabaseStorageMount, Target = Common.MountedDatabasePath });
 
-            _logger.Log(LogLevel.Information, $"\tMount (temporary storage):  {_configurationService.HostDataStorageMount} => {_configurationService.TempStoragePath}");
-            _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.HostDataStorageMount);
-            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.HostDataStorageMount, Target = _configurationService.TempStoragePath });
+            _logger.Log(LogLevel.Information, $"\tMount (temporary storage):  {_configurationService.Configurations.HostDataStorageMount} => {_configurationService.Configurations.TempStoragePath}");
+            _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostDataStorageMount);
+            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostDataStorageMount, Target = _configurationService.Configurations.TempStoragePath });
 
-            _logger.Log(LogLevel.Information, $"\tMount (application logs):   {_configurationService.HostLogsStorageMount} => {_configurationService.LogStoragePath}");
-            _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.HostLogsStorageMount);
-            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.HostLogsStorageMount, Target = _configurationService.LogStoragePath });
+            _logger.Log(LogLevel.Information, $"\tMount (application logs):   {_configurationService.Configurations.HostLogsStorageMount} => {_configurationService.Configurations.LogStoragePath}");
+            _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostLogsStorageMount);
+            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostLogsStorageMount, Target = _configurationService.Configurations.LogStoragePath });
 
             var response = await _dockerClient.Containers.CreateContainerAsync(createContainerParams, cancellationToken);
             _logger.Log(LogLevel.Debug, $"{Strings.ApplicationName} created with container ID {response.ID.Substring(0, 12)}");
@@ -143,18 +138,23 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             if (!await _dockerClient.Containers.StartContainerAsync(response.ID, containerStartParams, cancellationToken))
             {
                 _logger.Log(LogLevel.Error, $"Error starting container {response.ID.Substring(0, 12)}");
+                return false;
             }
             else
             {
                 _logger.Log(LogLevel.Information, $"{Strings.ApplicationName} started with container ID {response.ID.Substring(0, 12)}");
+                return true;
             }
         }
 
-        public async Task StopApplication(RunnerState runnerState, CancellationToken cancellationToken = default)
+        public async Task<bool> StopApplication(RunnerState runnerState, CancellationToken cancellationToken = default)
         {
+            Guard.Against.Null(runnerState, nameof(runnerState));
+
             _logger.Log(LogLevel.Debug, $"Stopping {Strings.ApplicationName} with container ID {runnerState.IdShort}.");
-            await _dockerClient.Containers.StopContainerAsync(runnerState.Id, new ContainerStopParameters() { WaitBeforeKillSeconds = 60 }, cancellationToken);
+            var result = await _dockerClient.Containers.StopContainerAsync(runnerState.Id, new ContainerStopParameters() { WaitBeforeKillSeconds = 60 }, cancellationToken);
             _logger.Log(LogLevel.Information, $"{Strings.ApplicationName} with container ID {runnerState.IdShort} stopped.");
+            return result;
         }
     }
 }

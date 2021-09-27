@@ -31,22 +31,25 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> StatusCommandHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(host, nameof(host));
+            
             this.LogVerbose(verbose, host, "Configuring services...");
 
-            var config = host.Services.GetRequiredService<IConfigurationService>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<StatusCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
-            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             HealthStatusResponse response = null;
             try
             {
-                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Retrieving service status...");
                 response = await client.Health.Status(cancellationToken);
             }

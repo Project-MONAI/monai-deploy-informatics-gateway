@@ -12,7 +12,6 @@
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;

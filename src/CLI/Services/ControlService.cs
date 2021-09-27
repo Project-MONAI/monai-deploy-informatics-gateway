@@ -9,14 +9,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Ardalis.GuardClauses;
-using Docker.DotNet;
-using Docker.DotNet.Models;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Common;
 using System;
-using System.Collections.Generic;
-using System.IO.Abstractions;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,18 +19,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 {
     public interface IControlService
     {
+        Task Restart(CancellationToken cancellationToken = default);
+
         Task Start(CancellationToken cancellationToken = default);
 
         Task Stop(CancellationToken cancellationToken = default);
-
-        Task Restart(CancellationToken cancellationToken = default);
     }
 
     public class ControlService : IControlService
     {
+        private readonly IConfigurationService _configurationService;
         private readonly IContainerRunnerFactory _containerRunnerFactory;
         private readonly ILogger<ControlService> _logger;
-        private readonly IConfigurationService _configurationService;
 
         public ControlService(IContainerRunnerFactory containerRunnerFactory, ILogger<ControlService> logger, IConfigurationService configService)
         {
@@ -54,33 +49,50 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var runner = _containerRunnerFactory.GetContainerRunner();
 
-            var applicationVersion = await runner.GetApplicationVersion(cancellationToken);
+            var applicationVersion = await runner.GetLatestApplicationVersion(cancellationToken);
+            if (applicationVersion is null)
+            {
+                throw new ControlException(ExitCodes.Start_Error_ApplicationNotFound, $"No {Strings.ApplicationName} Docker images with prefix `{_configurationService.Configurations.DockerImagePrefix}` found.");
+            }
             var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken);
 
             if (runnerState.IsRunning)
             {
-                throw new Exception($"{Strings.ApplicationName} is already running in container ID {runnerState.IdShort}.");
+                throw new ControlException(ExitCodes.Start_Error_ApplicationAlreadyRunning, $"{Strings.ApplicationName} is already running in container ID {runnerState.IdShort}.");
             }
 
             await runner.StartApplication(applicationVersion, cancellationToken);
         }
 
+        /// <summary>
+        /// Stops any running applications, including, previous releases/versions.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
         public async Task Stop(CancellationToken cancellationToken = default)
         {
             var runner = _containerRunnerFactory.GetContainerRunner();
             var applicationVersions = await runner.GetApplicationVersions(cancellationToken);
 
-            foreach (var applicationVersion in applicationVersions)
+            if (!applicationVersions.IsNullOrEmpty())
             {
-                var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken);
-
-                if (runnerState.IsRunning)
+                foreach (var applicationVersion in applicationVersions)
                 {
-                    await runner.StopApplication(runnerState, cancellationToken);
-                    return;
+                    var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken);
+
+                    _logger.Log(LogLevel.Debug, $"{Strings.ApplicationName} with container ID {runnerState.Id} running={runnerState.IsRunning}.");
+                    if (runnerState.IsRunning)
+                    {
+                        if (await runner.StopApplication(runnerState, cancellationToken))
+                        {
+                            _logger.Log(LogLevel.Information, $"{Strings.ApplicationName} with container ID {runnerState.Id} stopped.");
+                        }
+                        else
+                        {
+                            _logger.Log(LogLevel.Warning, $"Error may have occurred stopping {Strings.ApplicationName} with container ID {runnerState.Id}. Please verify with the applicatio state with {_configurationService.Configurations.Runner}.");
+                        }
+                    }
                 }
             }
-            _logger.Log(LogLevel.Warning, $"{Strings.ApplicationName} has not started. To start, execute `{System.AppDomain.CurrentDomain.FriendlyName} start`.");
         }
     }
 }

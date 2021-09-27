@@ -3,7 +3,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=aspnetcore,dotnetcore,visualstudio,visualstudiocode
 
 # MIG
-cli/
+/cli
 
 # Database
 *.db

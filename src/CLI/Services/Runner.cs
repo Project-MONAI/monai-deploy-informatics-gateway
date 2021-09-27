@@ -9,19 +9,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
-using Xunit;
-
-namespace Monai.Deploy.InformaticsGateway.CLI.Test
+namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    public class ConfigurationOptionsTest
+    public enum Runner
     {
-        [Fact(DisplayName = "Validate with malformed Uri")]
-        public void Validate_MalformedUri()
-        {
-            var options = new ConfigurationOptions { Endpoint = "http:///bad-uri" };
-
-            Assert.Throws<ArgumentException>(() => options.Validate());
-        }
+        Docker,
+        Kubernetes,
+        Helm,
     }
 }

@@ -41,7 +41,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
         {
             Guard.Against.NullOrWhiteSpace(input, parameterName);
             Guard.Against.MalformUri(new Uri(input), parameterName);
-
         }
 
         public static void OutOfRangePort(this IGuardClause guardClause, int port, string parameterName)

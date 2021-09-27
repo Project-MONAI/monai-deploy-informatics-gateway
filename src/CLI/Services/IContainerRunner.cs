@@ -9,7 +9,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -71,14 +70,27 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 return id.Substring(0, Math.Min(12, id.Length));
             }
         }
+
+        /// <summary>
+        /// Date tiem the image was created.
+        /// </summary>
+        public DateTime Created { get; set; }
     }
+
     public interface IContainerRunner
     {
         Task<RunnerState> IsApplicationRunning(ImageVersion imageVersion, CancellationToken cancellationToken = default);
+
+        Task<ImageVersion> GetLatestApplicationVersion(CancellationToken cancellationToken = default);
+
+        Task<ImageVersion> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default);
+
         Task<IList<ImageVersion>> GetApplicationVersions(CancellationToken cancellationToken = default);
-        Task<ImageVersion> GetApplicationVersion(CancellationToken cancellationToken = default);
-        Task<ImageVersion> GetApplicationVersion(string version, CancellationToken cancellationToken = default);
-        Task StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default);
-        Task StopApplication(RunnerState runnerState, CancellationToken cancellationToken = default);
+
+        Task<IList<ImageVersion>> GetApplicationVersions(string version, CancellationToken cancellationToken = default);
+
+        Task<bool> StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default);
+
+        Task<bool> StopApplication(RunnerState runnerState, CancellationToken cancellationToken = default);
     }
 }

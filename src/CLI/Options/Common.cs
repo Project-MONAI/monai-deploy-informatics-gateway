@@ -20,7 +20,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public static readonly string HomeDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         public static readonly string MigDirectory = Path.Combine(HomeDir, ".mig");
-        public static readonly string DatabaseDirectory = Path.Combine(MigDirectory, "database");
         public static readonly string ContainerApplicationRootPath = "/opt/monai/ig";
         public static readonly string MountedConfigFilePath = Path.Combine(ContainerApplicationRootPath, "appsettings.json");
         public static readonly string MountedDatabasePath = "/database";

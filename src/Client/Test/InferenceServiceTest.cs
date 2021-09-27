@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Client.Services;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using Newtonsoft.Json;
 using System;
@@ -91,8 +90,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.New(inferenceRequest, CancellationToken.None));
 
-            _logger.VerifyLogging("Error sending request", LogLevel.Error, Times.Once());
-
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }
 
@@ -154,8 +151,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             var service = new InferenceService(httpClient, _logger.Object);
 
             var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.Status(inferenceRequest.TransactionId, CancellationToken.None));
-
-            _logger.VerifyLogging("Error sending request", LogLevel.Error, Times.Once());
 
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }

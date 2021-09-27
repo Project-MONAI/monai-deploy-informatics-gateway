@@ -69,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
 
             var valid = new ConfigurationValidator(logger.Object).Validate("", config);
 
-            var validationMessage = $"MONAI Workload Manager API REST endpoint is not configured: InformaticsGateway>workloadManager>endpoint.";
+            var validationMessage = $"MONAI Workload Manager API REST endpoint is not configured: InformaticsGateway>workloadManager>restEndpoint.";
             Assert.Equal(validationMessage, valid.FailureMessage);
             logger.VerifyLogging(validationMessage, LogLevel.Error, Times.Once());
         }
@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
 
             var valid = new ConfigurationValidator(logger.Object).Validate("", config);
 
-            var validationMessage = $"MONAI Workload Manager API gRPC endpoint is not configured: InformaticsGateway>workloadManager>endpoint.";
+            var validationMessage = $"MONAI Workload Manager API gRPC endpoint is not configured: InformaticsGateway>workloadManager>grpcEndpoint.";
             Assert.Equal(validationMessage, valid.FailureMessage);
             logger.VerifyLogging(validationMessage, LogLevel.Error, Times.Once());
         }

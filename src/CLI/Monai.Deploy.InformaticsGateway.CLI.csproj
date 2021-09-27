@@ -33,7 +33,7 @@
     <ProjectReference Include="..\Client\Monai.Deploy.InformaticsGateway.Client.csproj" />
     <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <EmbeddedResource Include="..\InformaticsGateway\appsettings.json" Link="Resources\appsettings.json" />
   </ItemGroup>

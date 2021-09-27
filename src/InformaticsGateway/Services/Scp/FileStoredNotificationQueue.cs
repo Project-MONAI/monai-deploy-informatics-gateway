@@ -17,7 +17,6 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using System;
 using System.Collections.Concurrent;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

@@ -58,8 +58,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 .AddCommand(new StatusCommand());
             _paser = _commandLineBuilder.Build();
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
-            _configurationService.Setup(p => p.ConfigurationExists()).Returns(true);
-            _configurationService.Setup(p => p.Load(It.IsAny<bool>())).Returns(new ConfigurationOptions { Endpoint = "http://test" });
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupGet(p => p.IsConfigExists).Returns(true);
+            _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerUri).Returns(new Uri("http://test"));
+            _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerEndpoint).Returns("http://test");
         }
 
         [Fact(DisplayName = "status comand")]
@@ -100,6 +102,22 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             Assert.Equal(ExitCodes.Status_Error, exitCode);
 
             _logger.VerifyLoggingMessageBeginsWith("Error retrieving service status:", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "status comand configuration exception")]
+        public async Task SrcList_Command_ConfigurationException()
+        {
+            var command = "status";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
     }
 }

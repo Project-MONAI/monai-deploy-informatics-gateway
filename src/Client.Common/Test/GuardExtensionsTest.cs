@@ -50,11 +50,25 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common.Test
         [Fact(DisplayName = "MalformUri shall pass")]
         public void MalformUri_Valid()
         {
-            Uri input = new Uri("http://www.contoso.com/api/123");
+            string input = "http://www.contoso.com/api/123";
             Guard.Against.MalformUri(input, nameof(input));
 
             Uri input2 = new Uri("https://www.contoso.com/api/123");
             Guard.Against.MalformUri(input, nameof(input2));
+        }
+
+        [Fact(DisplayName = "OutOfRangePort")]
+        public void OutOfRangePort()
+        {
+            int input = 100;
+            Guard.Against.OutOfRangePort(input, nameof(input));
+            input = 65535;
+            Guard.Against.OutOfRangePort(input, nameof(input));
+
+            input = 0;
+            Assert.Throws<ArgumentException>(() => Guard.Against.OutOfRangePort(input, nameof(input)));
+            input = 65536;
+            Assert.Throws<ArgumentException>(() => Guard.Against.OutOfRangePort(input, nameof(input)));
         }
     }
 }

@@ -83,25 +83,28 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> ListAeTitlehandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();
-            var config = host.Services.GetRequiredService<IConfigurationService>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var consoleRegion = host.Services.GetRequiredService<IConsoleRegion>();
             var logger = CreateLogger<AetCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
             Guard.Against.Null(console, nameof(console), "Console service is unavailable.");
-            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
             IReadOnlyList<MonaiApplicationEntity> items = null;
             try
             {
-                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
                 items = await client.MonaiScpAeTitle.List(cancellationToken);
             }
@@ -142,19 +145,23 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> RemoveAeTitlehandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
-            var config = host.Services.GetRequiredService<IConfigurationService>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<AetCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
-            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             try
             {
-                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Deleting MONAI SCP AE Title {name}...");
                 _ = await client.MonaiScpAeTitle.Delete(name, cancellationToken);
                 logger.Log(LogLevel.Information, $"MONAI SCP AE Title '{name}' deleted.");
@@ -174,20 +181,24 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> AddAeTitlehandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
-            var config = host.Services.GetRequiredService<IConfigurationService>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<AetCommand>(host);
 
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
-            Guard.Against.Null(config, nameof(config), "Configuration service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
             try
             {
-                client.ConfigureServiceUris(config.InformaticsGatewayServerUri);
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.InformaticsGatewayServer}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 var result = await client.MonaiScpAeTitle.Create(entity, cancellationToken);
 
                 logger.Log(LogLevel.Information, "New MONAI Deploy SCP Application Entity created:");

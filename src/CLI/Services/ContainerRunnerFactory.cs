@@ -9,9 +9,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
-using System;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
@@ -29,12 +28,13 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public IContainerRunner GetContainerRunner()
         {
             var scope = _serviceScopeFactory.CreateScope();
-            switch (_configurationService.Runner)
+            switch (_configurationService.Configurations.Runner)
             {
                 case Runner.Docker:
                     return scope.ServiceProvider.GetRequiredService<DockerRunner>();
+
                 default:
-                    throw new NotSupportedException($"The configured runner isn't yet supported '{_configurationService.Runner}'");
+                    throw new NotImplementedException($"The configured runner isn't yet supported '{_configurationService.Configurations.Runner}'");
             }
         }
     }

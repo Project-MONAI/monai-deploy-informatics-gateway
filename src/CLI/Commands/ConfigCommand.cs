@@ -28,9 +28,39 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             AddCommandEndpoint();
             AddCommandRunner();
+            AddCommandWorkloadManagerRest();
+            AddCommandWorkloadManagerGrpc();
 
             SetupInitCommand();
             SetupShowConfigCommand();
+        }
+
+        private void AddCommandWorkloadManagerGrpc()
+        {
+            var wmgrpcCommand = new Command("wmgrpc", $"RESTful endpoint for the {Strings.WorkloadManagerName}.");
+            this.Add(wmgrpcCommand);
+
+            wmgrpcCommand.AddArgument(new Argument<string>("uri"));
+            wmgrpcCommand.Handler = CommandHandler.Create<string, IHost, bool>((string uri, IHost host, bool verbose) =>
+                ConfigUpdateHandler(uri, host, verbose, (IConfigurationService options) =>
+                {
+                    options.Configurations.WorkloadManagerGrpcEndpoint = uri;
+                })
+            );
+        }
+
+        private void AddCommandWorkloadManagerRest()
+        {
+            var wmRestCommand = new Command("wmrest", $"RESTful endpoint for the {Strings.WorkloadManagerName}.");
+            this.Add(wmRestCommand);
+
+            wmRestCommand.AddArgument(new Argument<string>("uri"));
+            wmRestCommand.Handler = CommandHandler.Create<string, IHost, bool>((string uri, IHost host, bool verbose) =>
+                ConfigUpdateHandler(uri, host, verbose, (IConfigurationService options) =>
+                {
+                    options.Configurations.WorkloadManagerRestEndpoint = uri;
+                })
+            );
         }
 
         private void AddCommandRunner()
@@ -42,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             endpointCommand.Handler = CommandHandler.Create<Runner, IHost, bool>((Runner runner, IHost host, bool verbose) =>
                 ConfigUpdateHandler(runner, host, verbose, (IConfigurationService options) =>
                 {
-                    options.Runner = runner;
+                    options.Configurations.Runner = runner;
                 })
             );
         }
@@ -56,7 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             endpointCommand.Handler = CommandHandler.Create<string, IHost, bool>((string uri, IHost host, bool verbose) =>
                 ConfigUpdateHandler(uri, host, verbose, (IConfigurationService options) =>
                 {
-                    options.InformaticsGatewayServer = uri;
+                    options.Configurations.InformaticsGatewayServerEndpoint = uri;
                 })
             );
         }
@@ -80,6 +110,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private int ShowConfigurationHandler(IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
             var logger = CreateLogger<ConfigCommand>(host);
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -87,18 +119,35 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                logger.Log(LogLevel.Information, $"Server: {configService.InformaticsGatewayServer}");
+                CheckConfiguration(configService);
+                logger.Log(LogLevel.Information, $"Informatics Gateway API: {configService.Configurations.InformaticsGatewayServerEndpoint}");
+                logger.Log(LogLevel.Information, $"DICOM SCP Listening Port: {configService.Configurations.DicomListeningPort}");
+                logger.Log(LogLevel.Information, $"Container Runner: {configService.Configurations.Runner}");
+                logger.Log(LogLevel.Information, $"Host:");
+                logger.Log(LogLevel.Information, $"   Database storage mount: {configService.Configurations.HostDatabaseStorageMount}");
+                logger.Log(LogLevel.Information, $"   Data storage mount: {configService.Configurations.HostDataStorageMount}");
+                logger.Log(LogLevel.Information, $"   Logs storage mount: {configService.Configurations.HostLogsStorageMount}");
+                logger.Log(LogLevel.Information, $"Workload Manager:");
+                logger.Log(LogLevel.Information, $"   REST API: {configService.Configurations.WorkloadManagerRestEndpoint}");
+                logger.Log(LogLevel.Information, $"   gRPC API: {configService.Configurations.WorkloadManagerGrpcEndpoint}");
+            }
+            catch (ConfigurationException)
+            {
+                return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
                 logger.Log(LogLevel.Error, ex.Message);
-                return ExitCodes.Config_NotConfigured;
+                return ExitCodes.Config_ErrorShowing;
             }
             return ExitCodes.Success;
         }
 
         private int ConfigUpdateHandler<T>(T argument, IHost host, bool verbose, Action<IConfigurationService> updater)
         {
+            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(updater, nameof(updater));
+            
             var logger = CreateLogger<ConfigCommand>(host);
             var config = host.Services.GetRequiredService<IConfigurationService>();
 
@@ -106,10 +155,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
+                CheckConfiguration(config);
                 updater(config);
                 logger.Log(LogLevel.Information, "Configuration updated successfully.");
             }
-            catch (ArgumentNullException)
+            catch (ConfigurationException)
             {
                 return ExitCodes.Config_NotConfigured;
             }
@@ -123,6 +173,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> InitHandlerAsync(IHost host, bool verbose, bool yes, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(host, nameof(host));
+            
             var logger = CreateLogger<ConfigCommand>(host);
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();
@@ -140,7 +192,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await configService.Initialize();
+                await configService.Initialize(cancellationToken);
             }
             catch (Exception ex)
             {

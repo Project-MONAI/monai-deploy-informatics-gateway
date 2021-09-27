@@ -12,7 +12,6 @@
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using System;
 using xRetry;
