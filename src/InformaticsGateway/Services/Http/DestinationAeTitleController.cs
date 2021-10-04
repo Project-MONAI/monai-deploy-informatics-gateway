@@ -40,7 +40,7 @@ using System.Threading.Tasks;
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
-    [Route("config/[controller]")]
+    [Route("config/destination")]
     public class DestinationAeTitleController : ControllerBase
     {
         private readonly ILogger<DestinationAeTitleController> _logger;

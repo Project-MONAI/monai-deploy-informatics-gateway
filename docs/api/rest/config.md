@@ -1,8 +1,8 @@
 # Configuration APIs
 
-The _configuration_ endpoint provide the following APIs to configured the Informatics Gateway.
+The _configuration_ endpoint provides the following APIs to configured the Informatics Gateway.
 
-## GET /config/monaiaetitle
+## GET /config/ae
 
 Returns a list of MONAI Deploy SCP Application Entity Titles configured on the Informatics Gateway.
 
@@ -23,7 +23,7 @@ Response Content Type: JSON - Array of [MonaiApplicationEntity](xref:Monai.Deplo
 ### Example Request
 
 ```bash
-curl --location --request GET 'http://localhost:5000/config/monaiaetitle'
+curl --location --request GET 'http://localhost:5000/config/ae'
 ```
 
 ### Example Response
@@ -31,7 +31,7 @@ curl --location --request GET 'http://localhost:5000/config/monaiaetitle'
 ```json
 [
   {
-    "name": "brain-tummor",
+    "name": "brain-tumor",
     "aeTitle": "BrainTumorModel",
     "applications": ["brain-tumor", "b75cd27a-068a-4f9c-b3da-e5d4ea08c55a"]
   },
@@ -45,7 +45,7 @@ curl --location --request GET 'http://localhost:5000/config/monaiaetitle'
 
 ---
 
-## GET /config/monaiaetitle/{name}
+## GET /config/ae/{name}
 
 Returns configurations for the specified MONAI SCP AE Title.
 
@@ -68,14 +68,14 @@ Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.Informa
 ### Example Request
 
 ```bash
-curl --location --request GET 'http://localhost:5000/config/monaiaetitle/brain-tummor'
+curl --location --request GET 'http://localhost:5000/config/ae/brain-tumor'
 ```
 
 ### Example Response
 
 ```json
 {
-  "name": "brain-tummor",
+  "name": "brain-tumor",
   "aeTitle": "BrainTumorModel",
   "applications": ["brain-tumor", "b75cd27a-068a-4f9c-b3da-e5d4ea08c55a"]
 }
@@ -83,7 +83,7 @@ curl --location --request GET 'http://localhost:5000/config/monaiaetitle/brain-t
 
 ---
 
-## POST /config/monaiaetitle
+## POST /config/ae
 
 Creates a new MONAI SCP Application Entity to accept DICOM instances.
 
@@ -108,12 +108,12 @@ Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.Informa
 ### Example Request
 
 ```bash
-curl --location --request POST 'http://localhost:5000/config/monaiaetitle/' \
+curl --location --request POST 'http://localhost:5000/config/ae/' \
 --header 'Content-Type: application/json' \
 --data-raw '{
         "name": "breast-tumor",
         "aeTitle": "BREASTV1",
-        "application": [
+        "applications": [
             "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
         ]
     }
@@ -132,7 +132,7 @@ curl --location --request POST 'http://localhost:5000/config/monaiaetitle/' \
 
 ---
 
-## DELETE /config/monaiaetitle/{name}
+## DELETE /config/ae/{name}
 
 Deletes the specified MONAI SCP Application Entity.
 
@@ -155,7 +155,7 @@ Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.Informa
 ### Example Request
 
 ```bash
-curl --location --request DELETE 'http://localhost:5000/config/monaiaetitle/breast-tumor'
+curl --location --request DELETE 'http://localhost:5000/config/ae/breast-tumor'
 ```
 
 ### Example Response
@@ -170,7 +170,7 @@ curl --location --request DELETE 'http://localhost:5000/config/monaiaetitle/brea
 
 ---
 
-## GET /config/sourceaetitle
+## GET /config/source
 
 Returns a list of calling (source) AE Titles configured on the Informatics Gateway.
 
@@ -190,7 +190,7 @@ Response Content Type: JSON - Array of [SourceApplicationEntity](xref:Monai.Depl
 ### Example Request
 
 ```bash
-curl --location --request GET 'http://localhost:5000/config/sourceaetitle'
+curl --location --request GET 'http://localhost:5000/config/source'
 ```
 
 ### Example Response
@@ -212,7 +212,7 @@ curl --location --request GET 'http://localhost:5000/config/sourceaetitle'
 
 ---
 
-## GET /config/sourceaetitle/{name}
+## GET /config/source/{name}
 
 Returns configurations for the specified calling (source) AET.
 
@@ -235,7 +235,7 @@ Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.Inform
 ### Example Request
 
 ```bash
-curl --location --request GET 'http://localhost:5000/config/sourceaetitle/USEAST'
+curl --location --request GET 'http://localhost:5000/config/source/USEAST'
 ```
 
 ### Example Response
@@ -250,7 +250,7 @@ curl --location --request GET 'http://localhost:5000/config/sourceaetitle/USEAST
 
 ---
 
-## POST /config/sourceaetitle
+## POST /config/source
 
 Adds a new calling (source) AE Title to Informatics Gateway to allow DICOM instances from the IP address & AE Title specified.
 
@@ -272,7 +272,7 @@ Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.Inform
 ### Example Request
 
 ```bash
-curl --location --request POST 'http://localhost:5000/config/sourceaetitle' \
+curl --location --request POST 'http://localhost:5000/config/source' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name": "USEAST",
@@ -293,7 +293,7 @@ curl --location --request POST 'http://localhost:5000/config/sourceaetitle' \
 
 ---
 
-## DELETE /config/sourceaetitle/{name}
+## DELETE /config/source/{name}
 
 Deletes the specified calling (Source) AE Title to stop accepting requests from it.
 
@@ -316,7 +316,7 @@ Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.Inform
 ### Example Request
 
 ```bash
-curl --location --request DELETE 'http://localhost:5000/config/sourceaetitle/USEAST'
+curl --location --request DELETE 'http://localhost:5000/config/source/USEAST'
 ```
 
 ### Example Response
@@ -331,7 +331,7 @@ curl --location --request DELETE 'http://localhost:5000/config/sourceaetitle/USE
 
 ---
 
-## GET /config/destinationaetitle
+## GET /config/destination
 
 Returns a list of destination AE titles configured on the system.
 
@@ -351,7 +351,7 @@ Response Content Type: JSON - Array of [DestinationApplicationEntity](xref:Monai
 ### Example Request
 
 ```bash
-curl --location --request GET 'http://localhost:5000/config/destinationaetitle'
+curl --location --request GET 'http://localhost:5000/config/destination'
 ```
 
 ### Example Response
@@ -375,7 +375,7 @@ curl --location --request GET 'http://localhost:5000/config/destinationaetitle'
 
 ---
 
-## GET /config/destinationaetitle/{name}
+## GET /config/destination/{name}
 
 Retrieves the named destination AE Title.
 
@@ -398,7 +398,7 @@ Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.I
 ### Example Request
 
 ```bash
-curl --location --request GET 'http://localhost:5000/config/destinationaetitle/USEAST'
+curl --location --request GET 'http://localhost:5000/config/destination/USEAST'
 ```
 
 ### Example Response
@@ -414,7 +414,7 @@ curl --location --request GET 'http://localhost:5000/config/destinationaetitle/U
 
 ---
 
-## POST /config/destinationaetitle
+## POST /config/destination
 
 Adds a new DICOM destination AET to allow results to be exported to.
 
@@ -436,7 +436,7 @@ Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.I
 ### Example Request
 
 ```bash
-curl --location --request POST 'http://localhost:5000/config/destinationaetitle' \
+curl --location --request POST 'http://localhost:5000/config/destination' \
 --header 'Content-Type: application/json' \
 --data-raw '{
     "name": "USEAST",
@@ -459,7 +459,7 @@ curl --location --request POST 'http://localhost:5000/config/destinationaetitle'
 
 ---
 
-## DELETE /config/destinationaetitle/{name}
+## DELETE /config/destination/{name}
 
 Deletes a Destination AE Title.
 
@@ -482,7 +482,7 @@ Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.I
 ### Example Request
 
 ```bash
-curl --location --request DELETE 'http://localhost:5000/config/monaiaetitle/USEAST'
+curl --location --request DELETE 'http://localhost:5000/config/ae/USEAST'
 ```
 
 ### Example Response

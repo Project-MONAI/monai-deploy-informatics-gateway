@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
-    [Route("config/[controller]")]
+    [Route("config/ae")]
     public class MonaiAeTitleController : ControllerBase
     {
         private readonly IServiceProvider _serviceProvider;

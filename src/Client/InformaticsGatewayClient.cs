@@ -54,9 +54,9 @@ namespace Monai.Deploy.InformaticsGateway.Client
 
             Health = new HealthService(_httpClient, _logger);
             Inference = new InferenceService(_httpClient, _logger);
-            MonaiScpAeTitle = new AeTitleService<MonaiApplicationEntity>("config/monaiaetitle", _httpClient, _logger);
-            DicomSources = new AeTitleService<SourceApplicationEntity>("config/sourceaetitle", _httpClient, _logger);
-            DicomDestinations = new AeTitleService<DestinationApplicationEntity>("config/destinationaetitle", _httpClient, _logger);
+            MonaiScpAeTitle = new AeTitleService<MonaiApplicationEntity>("config/ae", _httpClient, _logger);
+            DicomSources = new AeTitleService<SourceApplicationEntity>("config/source", _httpClient, _logger);
+            DicomDestinations = new AeTitleService<DestinationApplicationEntity>("config/destination", _httpClient, _logger);
         }
 
         /// <inheritdoc/>
