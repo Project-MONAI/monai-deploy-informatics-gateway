@@ -22,7 +22,7 @@ The scope of this document is limited to the design of MONAI Deploy Informatics 
 | Term            | Definition                                                                                                                                                                                      |
 | --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | MIG             | MONAI Deploy Informatics Gateway                                                                                                                                                                       |
-| MWM             | MONAI Workload Manager - A subsystem of the MONAI Deploy platform responsible for routing incoming data to one or more deployed applications and export any results produced by the applications to external HIS devices. |
+| MWM             | MONAI Workflow Manager - A subsystem of the MONAI Deploy platform responsible for routing incoming data to one or more deployed applications and export any results produced by the applications to external HIS devices. |
 | AE              | [Application Entity](http://dicom.nema.org/medical/dicom/current/output/chtml/part02/sect_A.3.4.html)                                                                                           |
 | AE Title        | [Application Entity Title](http://dicom.nema.org/medical/dicom/current/output/chtml/part02/sect_A.3.4.html) (AET)                                                                               |
 | DICOM           | [Digital Imaging and Communications in Medicine](https://www.dicomstandard.org/)                                                                                                                |
@@ -85,7 +85,7 @@ A unique identifier (UUID) is generated for data flow correlation purposes upon 
 
 If enabled, the AET verifies the calling AET by validating the source IP address and the calling AE Title against allowed sources.
 
-Accepted DICOM instances are uploaded to MONAI Workload Manager (MWM) for further processing.
+If enabled, the AET verifies the calling AET by validating the source IP address and the calling AE Title against allowed sources.
 
 The C-ECHO (verification) service can be enabled or disabled based on configuration.
 
