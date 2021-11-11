@@ -63,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             {
                 var response = await _httpClient.GetAsync($"{Route}/{uriPath}", cancellationToken);
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
-                return await response.Content.ReadAsStringAsync(cancellationToken);
+                return await response.Content.ReadAsStringAsync();
             }
             catch
             {

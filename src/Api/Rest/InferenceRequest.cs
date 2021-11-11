@@ -286,7 +286,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                 }
             }
 
-            details = string.Join(' ', errors);
+            details = string.Join(" ", errors);
             return errors.Count == 0;
         }
 

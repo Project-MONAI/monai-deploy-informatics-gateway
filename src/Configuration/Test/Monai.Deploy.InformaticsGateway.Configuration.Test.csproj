@@ -11,10 +11,10 @@
  <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Monai.Deploy.InformaticsGateway.Configuration.Test</RootNamespace>
-
-    <IsPackable>false</IsPackable>
+	<PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+	<IsPackable>false</IsPackable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="Moq" Version="4.16.1" />
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="13.2.47" />
     <PackageReference Include="xunit" Version="2.4.1" />

@@ -21,6 +21,7 @@ using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
 using System.CommandLine.Rendering;
+using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
 
@@ -36,17 +37,17 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                     _ => Host.CreateDefaultBuilder(),
                     host =>
                     {
-                        host.ConfigureLogging((context, logging) =>
-                        {
-                            var invocationContext = context.GetInvocationContext();
-                            var verboseEnabled = invocationContext.ParseResult.ValueForOption(verboseOption);
-                            logging.ClearProviders();
+                        _ = host.ConfigureLogging((context, logging) =>
+                          {
+                              var invocationContext = context.GetInvocationContext();
+                              var verboseEnabled = invocationContext.ParseResult.ValueForOption(verboseOption);
+                              logging.ClearProviders();
 
-                            logging.AddInformaticsGatewayConsole(options => options.MinimumLogLevel = verboseEnabled ? LogLevel.Trace : LogLevel.Information)
-                                .AddFilter("Microsoft", LogLevel.None)
-                                .AddFilter("System", LogLevel.None)
-                                .AddFilter("*", LogLevel.Trace);
-                        })
+                              _ = logging.AddInformaticsGatewayConsole(options => options.MinimumLogLevel = verboseEnabled ? LogLevel.Trace : LogLevel.Information)
+                                  .AddFilter("Microsoft", LogLevel.None)
+                                  .AddFilter("System", LogLevel.None)
+                                  .AddFilter("*", LogLevel.Trace);
+                          })
                         .ConfigureServices(services =>
                         {
                             services.AddScoped<IFileSystem, FileSystem>();
