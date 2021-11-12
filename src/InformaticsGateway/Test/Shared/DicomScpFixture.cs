@@ -1,5 +1,7 @@
-﻿using Dicom;
-using Dicom.Network;
+﻿using FellowOakDicom;
+using FellowOakDicom.Imaging.Codec;
+using FellowOakDicom.Log;
+using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
@@ -13,7 +15,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
         internal static string AETITLE = "STORESCP";
         private IDicomServer _server;
         public static DicomStatus DicomStatus { get; set; } = DicomStatus.Success;
-        public static ILogger Logger { get; set; }
+        public static Microsoft.Extensions.Logging.ILogger Logger { get; set; }
 
         public DicomScpFixture()
         {
@@ -23,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
         {
             if (_server is null)
             {
-                _server = DicomServer.Create<CStoreSCP>(
+                _server = DicomServerFactory.Create<CStoreSCP>(
                     NetworkManager.IPv4Any,
                     port);
 
@@ -50,8 +52,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
                DicomTransferSyntax.ImplicitVRLittleEndian
         };
 
-        public CStoreSCP(INetworkStream stream, Encoding fallbackEncoding, Dicom.Log.Logger log)
-            : base(stream, fallbackEncoding, log)
+        public CStoreSCP(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
+                : base(stream, fallbackEncoding, log, logManager, network, transcoder)
         {
         }
 
@@ -92,19 +94,20 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
         {
         }
 
-        public DicomCStoreResponse OnCStoreRequest(DicomCStoreRequest request)
+        public Task<DicomCStoreResponse> OnCStoreRequestAsync(DicomCStoreRequest request)
         {
             DicomScpFixture.Logger.LogInformation($"Instance received {request.SOPInstanceUID.UID}");
-            return new DicomCStoreResponse(request, DicomScpFixture.DicomStatus);
+            return Task.FromResult(new DicomCStoreResponse(request, DicomScpFixture.DicomStatus));
         }
 
-        public void OnCStoreRequestException(string tempFileName, Exception e)
+        public Task OnCStoreRequestExceptionAsync(string tempFileName, Exception e)
         {
+            return Task.CompletedTask;
         }
 
-        public DicomCEchoResponse OnCEchoRequest(DicomCEchoRequest request)
+        public Task<DicomCEchoResponse> OnCEchoRequestAsync(DicomCEchoRequest request)
         {
-            return new DicomCEchoResponse(request, DicomStatus.Success);
+            return Task.FromResult(new DicomCEchoResponse(request, DicomStatus.Success));
         }
     }
 }

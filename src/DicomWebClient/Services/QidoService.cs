@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             AppendAdditionalFields(queries, fieldsToInclude);
             AppendQueryOptions(queries, fuzzyMatching, limit, offset);
 
-            var searchUri = new Uri($"{studyUri}{(queries.Count > 0 ? "?" : "")}{string.Join('&', queries)}", UriKind.Relative);
+            var searchUri = new Uri($"{studyUri}{(queries.Count > 0 ? "?" : "")}{string.Join("&", queries)}", UriKind.Relative);
             await foreach (var metadata in GetMetadata<T>(searchUri))
             {
                 yield return metadata;

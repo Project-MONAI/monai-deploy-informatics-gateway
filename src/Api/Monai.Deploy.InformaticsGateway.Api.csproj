@@ -12,9 +12,10 @@
 
   <PropertyGroup>
     <RootNamespace>Monai.Deploy.InformaticsGateway.Api</RootNamespace>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Dicom;
+using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.IO;
@@ -68,13 +68,21 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             dicomFile.FileMetaInfo.MediaStorageSOPInstanceUID = DicomUIDGenerator.GenerateDerivedFromUUID();
             dicomFile.FileMetaInfo.MediaStorageSOPClassUID = DicomUIDGenerator.GenerateDerivedFromUUID();
 
-            var directory = _fileSystem.Path.GetDirectoryName(filename);
-            _fileSystem.Directory.CreateDirectoryIfNotExists(directory);
-            using var stream = _fileSystem.File.Create(filename);
+            var fileSystem = new FileSystem();
+            var directory = fileSystem.Path.GetDirectoryName(filename);
+            fileSystem.Directory.CreateDirectoryIfNotExists(directory);
+            using var stream = fileSystem.File.Create(filename);
             dicomFile.Save(stream);
+            stream.Close();
 
-            var dicomToolkit = new DicomToolkit(_fileSystem);
-            dicomToolkit.Open(filename);
+            var dicomToolkit = new DicomToolkit(fileSystem);
+            var openedDicomFile = dicomToolkit.Open(filename);
+
+            Assert.NotNull(openedDicomFile);
+            Assert.Equal(dicomFile.FileMetaInfo.TransferSyntax, openedDicomFile.FileMetaInfo.TransferSyntax);
+            Assert.Equal(dicomFile.FileMetaInfo.MediaStorageSOPInstanceUID, openedDicomFile.FileMetaInfo.MediaStorageSOPInstanceUID);
+            Assert.Equal(dicomFile.FileMetaInfo.MediaStorageSOPClassUID, openedDicomFile.FileMetaInfo.MediaStorageSOPClassUID);
+            Assert.Equal(dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID), openedDicomFile.Dataset.GetString(DicomTag.SOPInstanceUID));
         }
 
         [Fact(DisplayName = "TryGetString - missing DICOM tag")]
@@ -136,7 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             random.NextBytes(bytes);
 
             var dicomToolkit = new DicomToolkit(_fileSystem);
-            Assert.Throws<DicomDataException>(() => (dicomToolkit.Load(bytes)));
+            Assert.Throws<DicomFileException>(() => (dicomToolkit.Load(bytes)));
         }
 
         [Fact(DisplayName = "Load - returns DicomFile")]

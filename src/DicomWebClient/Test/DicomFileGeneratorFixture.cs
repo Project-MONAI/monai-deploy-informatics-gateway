@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-using Dicom;
+using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         private string GenerateInstancesAsJson(DicomUID studyUid, DicomUID seriesUid = null, DicomUID instanceUid = null)
         {
             var dicomDataset = GenerateDicomDataset(studyUid, seriesUid, instanceUid, null);
-            return JsonConvert.SerializeObject(dicomDataset, new JsonDicomConverter());
+            return DicomJson.ConvertDicomToJson(dicomDataset);
         }
 
         private async Task<byte[]> GenerateInstance(DicomUID studyUid, DicomUID seriesUid = null, DicomUID instanceUid = null, DicomTransferSyntax transferSynx = null)

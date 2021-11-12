@@ -17,6 +17,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,7 +34,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
-    <PackageReference Include="fo-dicom.NetCore" Version="4.0.8" />
+    <PackageReference Include="fo-dicom" Version="5.0.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />

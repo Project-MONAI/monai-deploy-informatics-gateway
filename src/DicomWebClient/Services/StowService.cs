@@ -16,8 +16,8 @@
  */
 
 using Ardalis.GuardClauses;
-using Dicom;
-using Dicom.IO.Writer;
+using FellowOakDicom;
+using FellowOakDicom.IO.Writer;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using System;
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             {
                 foreach (Stream stream in streams)
                 {
-                    await stream.DisposeAsync().ConfigureAwait(false);
+                    stream.Dispose();
                 }
             }
         }

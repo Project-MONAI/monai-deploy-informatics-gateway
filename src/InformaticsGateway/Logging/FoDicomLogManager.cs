@@ -16,7 +16,7 @@
  */
 
 using Ardalis.GuardClauses;
-using Dicom.Log;
+using FellowOakDicom.Log;
 using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Logging

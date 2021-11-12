@@ -9,7 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Dicom;
+using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -907,16 +907,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
         private HttpResponseMessage GenerateQueryResult(DicomTag dicomTag, string queryValue, List<string> studyInstanceUids)
         {
-            var set = new List<DicomDataset>();
+            var set = new List<string>();
             foreach (var studyInstanceUid in studyInstanceUids)
             {
                 var dataset = new DicomDataset();
                 dataset.Add(dicomTag, queryValue);
                 dataset.Add(DicomTag.StudyInstanceUID, studyInstanceUid);
-                set.Add(dataset);
+                set.Add(DicomJson.ConvertDicomToJson(dataset));
             }
-
-            var json = JsonConvert.SerializeObject(set, new JsonDicomConverter());
+            var json = JsonConvert.SerializeObject(set);
             var stringContent = new StringContent(json);
             return new HttpResponseMessage(System.Net.HttpStatusCode.OK) { Content = stringContent };
         }
@@ -931,13 +930,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             content.Add(byteContent);
             return new HttpResponseMessage() { Content = content };
         }
-
-        //private async IAsyncEnumerable<DicomFile> GenerateInstance(string studyInstanceUid, string seriesInstanceUid = null)
-        //{
-        //    yield return InstanceGenerator.GenerateDicomFile(studyInstanceUid, seriesInstanceUid, fileSystem: _fileSystem);
-
-        //    await Task.CompletedTask;
-        //}
 
         private void BlockUntilCancelled(CancellationToken token)
         {

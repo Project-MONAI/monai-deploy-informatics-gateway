@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-using Dicom.Network;
+using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;

@@ -27,7 +27,7 @@
  */
 
 using Ardalis.GuardClauses;
-using Dicom;
+using FellowOakDicom;
 using System.IO;
 using System.IO.Abstractions;
 using System.Threading.Tasks;

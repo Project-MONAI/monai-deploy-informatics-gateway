@@ -16,7 +16,7 @@
  */
 
 using Ardalis.GuardClauses;
-using Dicom;
+using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
@@ -88,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
                 }
                 else if (typeof(T) == typeof(DicomDataset))
                 {
-                    var dataset = JsonConvert.DeserializeObject<DicomDataset>(item.ToString(), new JsonDicomConverter());
+                    var dataset = DicomJson.ConvertJsonToDicom(item.ToString());
                     yield return (T)(object)dataset;
                 }
             }

@@ -21,13 +21,12 @@ using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
 using System.CommandLine.Rendering;
-using System.Diagnostics.CodeAnalysis;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    partial class Program
+    internal partial class Program
     {
         private static async Task<int> Main(string[] args)
         {

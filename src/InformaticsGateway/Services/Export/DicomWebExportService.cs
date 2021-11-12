@@ -27,7 +27,7 @@
  */
 
 using Ardalis.GuardClauses;
-using Dicom;
+using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;

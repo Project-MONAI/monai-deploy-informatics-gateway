@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-using Dicom;
+using FellowOakDicom;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

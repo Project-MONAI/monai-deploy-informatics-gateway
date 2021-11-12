@@ -26,6 +26,10 @@
  * limitations under the License.
  */
 
+using FellowOakDicom;
+using FellowOakDicom.Imaging.Codec;
+using FellowOakDicom.Log;
+using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Common;
 using System;
@@ -33,9 +37,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using FoDicom = Dicom;
-using FoDicomLog = Dicom.Log;
-using FoDicomNetwork = Dicom.Network;
+using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -43,26 +45,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
     /// A new instance of <c>ScpServiceInternal</c> is created for every new association.
     /// </summary>
     internal class ScpServiceInternal :
-        FoDicomNetwork.DicomService,
-        FoDicomNetwork.IDicomServiceProvider,
-        FoDicomNetwork.IDicomCEchoProvider,
-        FoDicomNetwork.IDicomCStoreProvider
+        DicomService,
+        IDicomServiceProvider,
+        IDicomCEchoProvider,
+        IDicomCStoreProvider
     {
-        private ILogger _logger;
+        private Microsoft.Extensions.Logging.ILogger _logger;
         private IApplicationEntityManager _associationDataProvider;
         private IDisposable _loggerScope;
         private Guid _associationId;
         private string _associationIdStr;
 
-        public ScpServiceInternal(FoDicomNetwork.INetworkStream stream, Encoding fallbackEncoding, FoDicomLog.Logger log)
-            : base(stream, fallbackEncoding, log)
+        public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
+                : base(stream, fallbackEncoding, log, logManager, network, transcoder)
         {
         }
 
-        public FoDicomNetwork.DicomCEchoResponse OnCEchoRequest(FoDicomNetwork.DicomCEchoRequest request)
+        public Task<DicomCEchoResponse> OnCEchoRequestAsync(DicomCEchoRequest request)
         {
             _logger?.Log(LogLevel.Information, $"C-ECH request received");
-            return new FoDicomNetwork.DicomCEchoResponse(request, FoDicomNetwork.DicomStatus.Success);
+            return Task.FromResult(new DicomCEchoResponse(request, DicomStatus.Success));
         }
 
         public void OnConnectionClosed(Exception exception)
@@ -76,37 +78,38 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             Interlocked.Decrement(ref ScpService.ActiveConnections);
         }
 
-        public FoDicomNetwork.DicomCStoreResponse OnCStoreRequest(FoDicomNetwork.DicomCStoreRequest request)
+        public async Task<DicomCStoreResponse> OnCStoreRequestAsync(DicomCStoreRequest request)
         {
             try
             {
                 _logger?.Log(LogLevel.Information, "Transfer syntax used: {0}", request.TransferSyntax);
-                _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, _associationId);
-                return new FoDicomNetwork.DicomCStoreResponse(request, FoDicomNetwork.DicomStatus.Success);
+                await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, _associationId);
+                return new DicomCStoreResponse(request, DicomStatus.Success);
             }
             catch (InsufficientStorageAvailableException ex)
             {
                 _logger?.Log(LogLevel.Error, "Failed to process C-STORE request, out of storage space: {ex}", ex);
-                return new FoDicomNetwork.DicomCStoreResponse(request, FoDicomNetwork.DicomStatus.ResourceLimitation);
+                return new DicomCStoreResponse(request, DicomStatus.ResourceLimitation);
             }
             catch (System.IO.IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
             {
                 _logger?.Log(LogLevel.Error, "Failed to process C-STORE request, out of storage space: {ex}", ex);
-                return new FoDicomNetwork.DicomCStoreResponse(request, FoDicomNetwork.DicomStatus.ResourceLimitation);
+                return new DicomCStoreResponse(request, DicomStatus.ResourceLimitation);
             }
             catch (Exception ex)
             {
                 _logger?.Log(LogLevel.Error, "Failed to process C-STORE request: {ex}", ex);
-                return new FoDicomNetwork.DicomCStoreResponse(request, FoDicomNetwork.DicomStatus.ProcessingFailure);
+                return new DicomCStoreResponse(request, DicomStatus.ProcessingFailure);
             }
         }
 
-        public void OnCStoreRequestException(string tempFileName, Exception e)
+        public Task OnCStoreRequestExceptionAsync(string tempFileName, Exception e)
         {
             _logger?.Log(LogLevel.Error, e, "Exception handling C-STORE Request");
+            return Task.CompletedTask;
         }
 
-        public void OnReceiveAbort(FoDicomNetwork.DicomAbortSource source, FoDicomNetwork.DicomAbortReason reason)
+        public void OnReceiveAbort(DicomAbortSource source, DicomAbortReason reason)
         {
             _logger?.Log(LogLevel.Warning, "Aborted {0} with reason {1}", source, reason);
         }
@@ -121,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             return SendAssociationReleaseResponseAsync();
         }
 
-        public Task OnReceiveAssociationRequestAsync(FoDicomNetwork.DicomAssociation association)
+        public Task OnReceiveAssociationRequestAsync(DicomAssociation association)
         {
             Interlocked.Increment(ref ScpService.ActiveConnections);
             _associationDataProvider = UserState as IApplicationEntityManager;
@@ -142,42 +145,42 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             if (!IsValidSourceAe(association.CallingAE, association.RemoteHost))
             {
                 return SendAssociationRejectAsync(
-                    FoDicomNetwork.DicomRejectResult.Permanent,
-                    FoDicomNetwork.DicomRejectSource.ServiceUser,
-                    FoDicomNetwork.DicomRejectReason.CallingAENotRecognized);
+                    DicomRejectResult.Permanent,
+                    DicomRejectSource.ServiceUser,
+                    DicomRejectReason.CallingAENotRecognized);
             }
 
             if (!IsValidCalledAe(association.CalledAE))
             {
                 return SendAssociationRejectAsync(
-                    FoDicomNetwork.DicomRejectResult.Permanent,
-                    FoDicomNetwork.DicomRejectSource.ServiceUser,
-                    FoDicomNetwork.DicomRejectReason.CalledAENotRecognized);
+                    DicomRejectResult.Permanent,
+                    DicomRejectSource.ServiceUser,
+                    DicomRejectReason.CalledAENotRecognized);
             }
 
             foreach (var pc in association.PresentationContexts)
             {
-                if (pc.AbstractSyntax == FoDicom.DicomUID.Verification)
+                if (pc.AbstractSyntax == DicomUID.Verification)
                 {
                     if (!_associationDataProvider.Configuration.Value.Dicom.Scp.EnableVerification)
                     {
                         _logger?.Log(LogLevel.Warning, "Verification service is disabled: rejecting association");
                         return SendAssociationRejectAsync(
-                            FoDicomNetwork.DicomRejectResult.Permanent,
-                            FoDicomNetwork.DicomRejectSource.ServiceUser,
-                            FoDicomNetwork.DicomRejectReason.ApplicationContextNotSupported
+                            DicomRejectResult.Permanent,
+                            DicomRejectSource.ServiceUser,
+                            DicomRejectReason.ApplicationContextNotSupported
                         );
                     }
                     pc.AcceptTransferSyntaxes(_associationDataProvider.Configuration.Value.Dicom.Scp.VerificationServiceTransferSyntaxes.ToDicomTransferSyntaxArray());
                 }
-                else if (pc.AbstractSyntax.StorageCategory != FoDicom.DicomStorageCategory.None)
+                else if (pc.AbstractSyntax.StorageCategory != DicomStorageCategory.None)
                 {
                     if (!_associationDataProvider.CanStore)
                     {
                         return SendAssociationRejectAsync(
-                            FoDicomNetwork.DicomRejectResult.Permanent,
-                            FoDicomNetwork.DicomRejectSource.ServiceUser,
-                            FoDicomNetwork.DicomRejectReason.NoReasonGiven);
+                            DicomRejectResult.Permanent,
+                            DicomRejectSource.ServiceUser,
+                            DicomRejectReason.NoReasonGiven);
                     }
                     // Accept any proposed TS
                     pc.AcceptTransferSyntaxes(pc.GetTransferSyntaxes().ToArray());
