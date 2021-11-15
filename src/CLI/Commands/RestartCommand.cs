@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using System;
 using System.CommandLine.Invocation;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
@@ -25,11 +26,13 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public RestartCommand() : base("restart", $"Restart the {Strings.ApplicationName} service")
         {
             this.AddConfirmationOption();
-            this.Handler = CommandHandler.Create<IHost, bool, bool>(RestartCommandHandler);
+            this.Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(RestartCommandHandler);
         }
 
-        private async Task<int> RestartCommandHandler(IHost host, bool yes, bool verbose)
+        private async Task<int> RestartCommandHandler(IHost host, bool yes, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(host, nameof(host));
+            
             var service = host.Services.GetRequiredService<IControlService>();
             var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();
             var logger = CreateLogger<RestartCommand>(host);
@@ -49,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await service.Restart();
+                await service.Restart(cancellationToken);
             }
             catch (Exception ex)
             {

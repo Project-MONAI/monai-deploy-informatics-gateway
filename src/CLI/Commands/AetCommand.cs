@@ -83,6 +83,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> ListAeTitlehandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();
@@ -100,8 +102,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             IReadOnlyList<MonaiApplicationEntity> items = null;
             try
             {
-                ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
                 items = await client.MonaiScpAeTitle.List(cancellationToken);
             }
@@ -142,6 +145,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> RemoveAeTitlehandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
@@ -153,8 +159,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Deleting MONAI SCP AE Title {name}...");
                 _ = await client.MonaiScpAeTitle.Delete(name, cancellationToken);
                 logger.Log(LogLevel.Information, $"MONAI SCP AE Title '{name}' deleted.");
@@ -174,6 +181,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> AddAeTitlehandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
+
             this.LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
@@ -185,9 +195,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 var result = await client.MonaiScpAeTitle.Create(entity, cancellationToken);
 
                 logger.Log(LogLevel.Information, "New MONAI Deploy SCP Application Entity created:");

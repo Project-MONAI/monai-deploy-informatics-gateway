@@ -26,7 +26,7 @@ RUN echo "Building MONAI Deploy Informatics Gateway $Version ($FileVersion)..."
 RUN dotnet publish -c Release -o out --nologo /p:Version=$Version /p:FileVersion=$FileVersion src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/runtime:5.0-focal
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-focal
 
 ENV DEBIAN_FRONTEND=noninteractive
 

@@ -11,12 +11,19 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
     public class Common
     {
-        public static readonly string MigDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".mig");
-        public static readonly string CliConfigFilePath = Path.Combine(MigDirectory, "cli.config");
+        public static readonly string HomeDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        public static readonly string MigDirectory = Path.Combine(HomeDir, ".mig");
+        public static readonly string ContainerApplicationRootPath = "/opt/monai/ig";
+        public static readonly string MountedConfigFilePath = Path.Combine(ContainerApplicationRootPath, "appsettings.json");
+        public static readonly string MountedDatabasePath = "/database";
+        public static readonly string ConfigFilePath = Path.Combine(MigDirectory, "appsettings.json");
+        public static readonly string AppSettingsResourceName = $"{Assembly.GetEntryAssembly().GetTypes().First().Namespace}.Resources.appsettings.json";
     }
 }

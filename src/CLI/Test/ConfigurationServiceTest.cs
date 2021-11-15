@@ -10,13 +10,13 @@
 // limitations under the License.
 
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.CLI.Test
@@ -25,17 +25,30 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
     {
         private readonly Mock<ILogger<ConfigurationService>> _logger;
         private readonly Mock<IFileSystem> _fileSystem;
+        private readonly Mock<IEmbeddedResource> _embeddedResource;
 
         public ConfigurationServiceTest()
         {
             _logger = new Mock<ILogger<ConfigurationService>>();
             _fileSystem = new Mock<IFileSystem>();
+            _embeddedResource = new Mock<IEmbeddedResource>();
+        }
+
+        [Fact(DisplayName = "ConfigurationServiceTest constructor")]
+        public void ConfigurationServiceTest_Constructor()
+        {
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(_logger.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(_logger.Object, _fileSystem.Object, null));
+
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            Assert.NotNull(svc.Configurations);
         }
 
         [Fact(DisplayName = "CreateConfigDirectoryIfNotExist creates directory")]
         public void CreateConfigDirectoryIfNotExist_CreateDirectory()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
 
             _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(false);
             svc.CreateConfigDirectoryIfNotExist();
@@ -46,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         [Fact(DisplayName = "CreateConfigDirectoryIfNotExist skips creating directory")]
         public void CreateConfigDirectoryIfNotExist_SkipsCreation()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
 
             _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(true);
             svc.CreateConfigDirectoryIfNotExist();
@@ -54,91 +67,69 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _fileSystem.Verify(p => p.Directory.CreateDirectory(It.IsAny<string>()), Times.Never());
         }
 
-        [Fact(DisplayName = "ConfigurationExists")]
+        [Fact(DisplayName = "IsInitialized")]
+        public void IsInitialized()
+        {
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+
+            _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(true);
+            _fileSystem.Setup(p => p.File.Exists(It.IsAny<string>())).Returns(true);
+            Assert.True(svc.IsInitialized);
+            _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(false);
+            Assert.False(svc.IsInitialized);
+        }
+
+        [Fact(DisplayName = "IsConfigExists")]
         public void ConfigurationExists()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
 
             _fileSystem.Setup(p => p.File.Exists(It.IsAny<string>())).Returns(true);
-            Assert.True(svc.ConfigurationExists());
+            Assert.True(svc.IsConfigExists);
             _fileSystem.Setup(p => p.File.Exists(It.IsAny<string>())).Returns(false);
-            Assert.False(svc.ConfigurationExists());
+            Assert.False(svc.IsConfigExists);
         }
 
-        [Fact(DisplayName = "Load verbose logging")]
-        public void Load_Verbose()
+        [Fact(DisplayName = "Initialize with missing config resource")]
+        public void Initialize_ShallThrowWhenConfigReousrceIsMissing()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object);
+            _embeddedResource.Setup(p => p.GetManifestResourceStream(It.IsAny<string>())).Returns(default(Stream));
 
-            var stream = new System.IO.StringWriter();
-            var config = new ConfigurationOptions { Endpoint = "http://test" };
-            var json = JsonConvert.SerializeObject(config);
-            _fileSystem.Setup(p => p.File.OpenText(It.IsAny<string>())).Returns(new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(json))));
-
-            var result = svc.Load(true);
-
-            Assert.Equal(config.Endpoint, result.Endpoint);
-            _logger.VerifyLogging(LogLevel.Debug, Times.AtLeastOnce());
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            Assert.ThrowsAsync<ConfigurationException>(async () => await svc.Initialize(CancellationToken.None));
         }
 
-        [Fact(DisplayName = "Load no verbose logging")]
-        public void Load_NoVerbose()
+        [Fact(DisplayName = "Initialize creates the config file")]
+        public async Task Initialize_CreatesTheConfigFile()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object);
+            var testString = "hello world";
+            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(testString));
+            var mockStream = new Mock<Stream>();
+            byte[] bytesWritten = null;
 
-            var stream = new System.IO.StringWriter();
-            var config = new ConfigurationOptions { Endpoint = "http://test" };
-            var json = JsonConvert.SerializeObject(config);
-            _fileSystem.Setup(p => p.File.OpenText(It.IsAny<string>())).Returns(new StreamReader(new MemoryStream(Encoding.UTF8.GetBytes(json))));
-
-            var result = svc.Load();
-
-            Assert.Equal(config.Endpoint, result.Endpoint);
-            _logger.VerifyLogging(LogLevel.Debug, Times.Never());
-        }
-
-        [Fact(DisplayName = "Load throws")]
-        public void Load_Throws()
-        {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object);
-
-            using var stream = new System.IO.StringWriter();
-            _fileSystem.Setup(p => p.File.OpenText(It.IsAny<string>())).Throws(new Exception("error"));
-
-            var result = svc.Load();
-
-            Assert.NotNull(result);
-            Assert.Null(result.Endpoint);
-            _logger.VerifyLogging(LogLevel.Warning, Times.Once());
-            _logger.VerifyLogging(LogLevel.Debug, Times.Never());
-        }
-
-        [Fact(DisplayName = "Save")]
-        public void Save()
-        {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object);
-            var config = new ConfigurationOptions { Endpoint = "http://test" };
-
-            byte[] bytes = null;
-            using (var ms = new MemoryStream())
-            {
-                using (var sw = new StreamWriter(ms))
+            mockStream.Setup(p => p.FlushAsync(It.IsAny<CancellationToken>()));
+            mockStream.Setup(p => p.Close());
+            mockStream.Setup(p => p.CanWrite).Returns(true);
+            mockStream.Setup(s => s.WriteAsync(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
+                .Callback((byte[] bytes, int offset, int count, CancellationToken cancellationToken) =>
                 {
-                    _fileSystem.Setup(p => p.File.CreateText(It.IsAny<string>())).Returns(sw);
-                    svc.Save(config);
-                    bytes = ms.ToArray();
-                }
-            }
+                    bytesWritten = new byte[bytes.Length];
+                    bytes.CopyTo(bytesWritten, 0);
+                });
 
-            ConfigurationOptions result;
-            using (var ms = new MemoryStream(bytes))
-            {
-                var serializer = new JsonSerializer();
-                using var streamReader = new StreamReader(ms);
-                result = serializer.Deserialize(streamReader, typeof(ConfigurationOptions)) as ConfigurationOptions;
-            }
-            Assert.NotNull(result);
-            Assert.Equal(config.Endpoint, result.Endpoint);
+            _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(true);
+            _fileSystem.Setup(p => p.FileStream.Create(It.IsAny<string>(), It.IsAny<FileMode>())).Returns(mockStream.Object);
+            _embeddedResource.Setup(p => p.GetManifestResourceStream(It.IsAny<string>())).Returns(memoryStream);
+
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            await svc.Initialize(CancellationToken.None);
+
+            _embeddedResource.Verify(p => p.GetManifestResourceStream(Common.AppSettingsResourceName), Times.Once());
+            _fileSystem.Verify(p => p.FileStream.Create(Common.ConfigFilePath, FileMode.Create), Times.Once());
+            mockStream.Verify(p => p.FlushAsync(It.IsAny<CancellationToken>()), Times.Once());
+            mockStream.Verify(p => p.Close(), Times.Once());
+
+            Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
         }
     }
 }

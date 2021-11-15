@@ -159,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
             response.TransactionId = item.TransactionId;
 
-            return response;
+            return await Task.FromResult(response);
         }
 
         private async Task Save(InferenceRequest inferenceRequest)

@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Docker.DotNet;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -55,6 +56,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                             services.AddSingleton<IInformaticsGatewayClient>(p => p.GetRequiredService<InformaticsGatewayClient>());
                             services.AddSingleton<IConfigurationService, ConfigurationService>();
                             services.AddSingleton<IControlService, ControlService>();
+                            services.AddSingleton<IContainerRunnerFactory, ContainerRunnerFactory>();
+                            services.AddSingleton<IEmbeddedResource, EmbeddedResource>();
+                            services.AddTransient<DockerRunner>();
+                            services.AddTransient<IDockerClient>(p => new DockerClientConfiguration().CreateClient());
                         });
                     })
                 .AddGlobalOption(verboseOption)

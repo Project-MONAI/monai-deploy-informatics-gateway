@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
@@ -26,11 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public static ILoggingBuilder AddInformaticsGatewayConsole(this ILoggingBuilder builder, Action<ConsoleLoggerConfiguration> configure)
         {
-            if (configure is null)
-            {
-                throw new ArgumentNullException(nameof(configure));
-            }
-
+            Guard.Against.Null(configure, nameof(configure));
+            
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleLoggerProvider>());
             LoggerProviderOptions.RegisterProviderOptions<ConsoleLoggerConfiguration, ConsoleLoggerProvider>(builder.Services);
 

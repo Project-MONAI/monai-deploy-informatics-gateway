@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
-    [Route("config/[controller]")]
+    [Route("config/ae")]
     public class MonaiAeTitleController : ControllerBase
     {
         private readonly IServiceProvider _serviceProvider;
@@ -60,7 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                return await _repository.ToListAsync();
+                return Ok(await _repository.ToListAsync());
             }
             catch (Exception ex)
             {
@@ -69,24 +69,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        [HttpGet("{aeTitle}")]
+        [HttpGet("{name}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ActionName(nameof(GetAeTitle))]
-        public async Task<ActionResult<MonaiApplicationEntity>> GetAeTitle(string aeTitle)
+        public async Task<ActionResult<MonaiApplicationEntity>> GetAeTitle(string name)
         {
             try
             {
-                var monaiApplicationEntity = await _repository.FindAsync(aeTitle);
+                var monaiApplicationEntity = await _repository.FindAsync(name);
 
                 if (monaiApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
-                return monaiApplicationEntity;
+                return Ok(monaiApplicationEntity);
             }
             catch (Exception ex)
             {
@@ -113,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await _repository.SaveChangesAsync();
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(item, ChangedEventType.Added));
                 _logger.Log(LogLevel.Information, $"MONAI SCP AE Title added AE Title={item.AeTitle}.");
-                return CreatedAtAction(nameof(GetAeTitle), new { aeTitle = item.AeTitle }, item);
+                return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ConfigurationException ex)
             {
@@ -146,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(monaiApplicationEntity, ChangedEventType.Deleted));
                 _logger.Log(LogLevel.Information, $"MONAI SCP Application Entity deleted {name}.");
-                return monaiApplicationEntity;
+                return Ok(monaiApplicationEntity);
             }
             catch (Exception ex)
             {

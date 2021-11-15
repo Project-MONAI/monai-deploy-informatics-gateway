@@ -7,7 +7,7 @@
             "request": "launch",
             "preLaunchTask": "build-cli",
             "program": "${workspaceFolder}/src/CLI/bin/Debug/net5.0/linux-x64/mig-cli",
-            "args": ["aet", "add", "-a", "TEST", "--apps", "1,2,3"],
+            "args": ["config", "endpoint", "http://localhost:4500"],
             "cwd": "${workspaceFolder}/src/CLI/bin/Debug/net5.0/linux-x64",
             "stopAtEntry": true,
             "console": "internalConsole"

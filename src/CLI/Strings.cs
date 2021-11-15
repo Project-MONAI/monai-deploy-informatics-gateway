@@ -14,5 +14,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     internal static class Strings
     {
         public const string ApplicationName = "MONAI Deploy Informatics Gateway";
+        public const string WorkloadManagerName = "MONAI Deploy Workload Manager";
     }
 }

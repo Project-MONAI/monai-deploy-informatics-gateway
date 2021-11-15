@@ -12,12 +12,15 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
+using System;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -31,9 +34,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         private readonly Parser _paser;
         private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly Mock<ILogger> _logger;
+        private readonly Mock<IConfirmationPrompt> _confirmationPrompt;
 
         public ConfigCommandTest()
         {
+            _confirmationPrompt = new Mock<IConfirmationPrompt>();
             _loggerFactory = new Mock<ILoggerFactory>();
             _logger = new Mock<ILogger>();
             _configurationService = new Mock<IConfigurationService>();
@@ -44,6 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                     {
                         host.ConfigureServices(services =>
                         {
+                            services.AddSingleton<IConfirmationPrompt>(p => _confirmationPrompt.Object);
                             services.AddSingleton<ILoggerFactory>(p => _loggerFactory.Object);
                             services.AddSingleton<IConfigurationService>(p => _configurationService.Object);
                         });
@@ -58,10 +64,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         {
             var command = "config";
             var result = _paser.Parse(command);
-            Assert.Equal("Option '-e' is required.", result.Errors.First().Message);
+            Assert.Equal("Required command was not provided.", result.Errors.First().Message);
 
             int exitCode = await _paser.InvokeAsync(command);
-            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+            Assert.Equal(ExitCodes.Success, exitCode);
         }
 
         [Fact(DisplayName = "config show comand when not yet configured")]
@@ -71,15 +77,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _configurationService.Setup(p => p.ConfigurationExists()).Returns(false);
-            _configurationService.Setup(p => p.Load(It.IsAny<bool>())).Returns(new ConfigurationOptions { Endpoint = "http://test" });
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
 
             int exitCode = await _paser.InvokeAsync(command);
 
             Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
-
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Never());
         }
 
         [Fact(DisplayName = "config show comand ")]
@@ -89,37 +91,215 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _configurationService.Setup(p => p.ConfigurationExists()).Returns(true);
-            _configurationService.Setup(p => p.Load(It.IsAny<bool>())).Returns(new ConfigurationOptions { Endpoint = "http://test" });
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerEndpoint).Returns("http://test");
+            _configurationService.SetupGet(p => p.Configurations.DicomListeningPort).Returns(100);
+            _configurationService.SetupGet(p => p.Configurations.Runner).Returns(Runner.Docker);
+            _configurationService.SetupGet(p => p.Configurations.HostDatabaseStorageMount).Returns("DB");
+            _configurationService.SetupGet(p => p.Configurations.HostDataStorageMount).Returns("Data");
+            _configurationService.SetupGet(p => p.Configurations.HostLogsStorageMount).Returns("Logs");
+            _configurationService.SetupGet(p => p.Configurations.WorkloadManagerRestEndpoint).Returns("REST");
+            _configurationService.SetupGet(p => p.Configurations.WorkloadManagerGrpcEndpoint).Returns("GRPC");
 
             int exitCode = await _paser.InvokeAsync(command);
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
-
-            _logger.VerifyLogging("Endpoint: http://test", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Informatics Gateway API: http://test", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("DICOM SCP Listening Port: 100", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Container Runner: Docker", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Host:", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("   Database storage mount: DB", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("   Data storage mount: Data", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("   Logs storage mount: Logs", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Workload Manager:", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("   REST API: REST", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("   gRPC API: GRPC", LogLevel.Information, Times.Once());
         }
 
-        [Fact(DisplayName = "config with options")]
-        public async Task Config_Command_WithOptions()
+        [Fact(DisplayName = "config show comand exception")]
+        public async Task ConfigShow_Command_Exception()
         {
-            var command = "config -e http://new";
+            var command = "config show";
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _configurationService.Setup(p => p.Load(It.IsAny<bool>())).Returns(new ConfigurationOptions { Endpoint = "http://old" });
-            _configurationService.Setup(p => p.CreateConfigDirectoryIfNotExist());
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerEndpoint).Throws(new System.Exception("error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_ErrorShowing, exitCode);
+        }
+
+        [Fact(DisplayName = "config wgrpc command")]
+        public async Task ConfigWmGrpc_Command()
+        {
+            var command = "config wmgrpc http://test:123";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            var callbackResult = string.Empty;
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupSet<string>(p => p.Configurations.WorkloadManagerGrpcEndpoint = It.IsAny<string>())
+                .Callback(value => callbackResult = value);
 
             int exitCode = await _paser.InvokeAsync(command);
 
             Assert.Equal(ExitCodes.Success, exitCode);
+            Assert.Equal("http://test:123", callbackResult);
+        }
 
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
-            _configurationService.Verify(p => p.CreateConfigDirectoryIfNotExist(), Times.Once());
-            _configurationService.Verify(p => p.Save(It.Is<ConfigurationOptions>(
-                    c => c.Endpoint.Equals("http://new"))), Times.Once());
+        [Fact(DisplayName = "config wgrest command")]
+        public async Task ConfigWmRest_Command()
+        {
+            var command = "config wmrest http://test:123";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            var callbackResult = string.Empty;
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupSet<string>(p => p.Configurations.WorkloadManagerRestEndpoint = It.IsAny<string>())
+                .Callback(value => callbackResult = value);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+            Assert.Equal("http://test:123", callbackResult);
+        }
+
+        [Fact(DisplayName = "config runner command")]
+        public async Task ConfigRunner_Command()
+        {
+            var command = "config runner helm";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            var callbackResult = Runner.Docker;
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupSet<Runner>(p => p.Configurations.Runner = It.IsAny<Runner>())
+                .Callback(value => callbackResult = value);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+            Assert.Equal(Runner.Helm, callbackResult);
+        }
+
+        [Fact(DisplayName = "config endpoint command")]
+        public async Task ConfigEndpoint_Command()
+        {
+            var command = "config endpoint http://test:123";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            var callbackResult = string.Empty;
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupSet<string>(p => p.Configurations.InformaticsGatewayServerEndpoint = It.IsAny<string>())
+                .Callback(value => callbackResult = value);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+            Assert.Equal("http://test:123", callbackResult);
+        }
+
+        [Fact(DisplayName = "config endpoint command exception")]
+        public async Task ConfigEndpoint_Command_Exception()
+        {
+            var command = "config endpoint http://test:123";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            var callbackResult = string.Empty;
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupSet<string>(p => p.Configurations.InformaticsGatewayServerEndpoint = It.IsAny<string>())
+                .Throws(new Exception("error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_ErrorSaving, exitCode);
+        }
+
+        [Fact(DisplayName = "config endpoint command config exception")]
+        public async Task ConfigEndpoint_Command_CopnfigException()
+        {
+            var command = "config endpoint http://test:123";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            var callbackResult = string.Empty;
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+        }
+
+        [Fact(DisplayName = "config init command")]
+        public async Task ConfigInit_Command()
+        {
+            var command = "config init";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            _configurationService.SetupGet(p => p.IsConfigExists).Returns(false);
+            _configurationService.Setup(p => p.Initialize(It.IsAny<CancellationToken>()));
+
+            int exitCode = await _paser.InvokeAsync(command);
+            Assert.Equal(ExitCodes.Success, exitCode);
+            _configurationService.Verify(p => p.Initialize(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "config init command bypass prompt")]
+        public async Task ConfigInit_Command_BypassPrompt()
+        {
+            var command = "config init -y";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            _configurationService.Setup(p => p.Initialize(It.IsAny<CancellationToken>()));
+
+            int exitCode = await _paser.InvokeAsync(command);
+            Assert.Equal(ExitCodes.Success, exitCode);
+            _configurationService.Verify(p => p.Initialize(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "config init command exception")]
+        public async Task ConfigInit_Command_Exception()
+        {
+            var command = "config init -y";
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            _configurationService.Setup(p => p.Initialize(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+            Assert.Equal(ExitCodes.Config_ErrorInitializing, exitCode);
+            _configurationService.Verify(p => p.Initialize(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "config init command cancelled")]
+        public async Task ConfigInit_Command_Cancelled()
+        {
+            var command = "config init";
+            _confirmationPrompt.Setup(p => p.ShowConfirmationPrompt(It.IsAny<string>())).Returns(false);
+            _configurationService.SetupGet(p => p.IsConfigExists).Returns(true);
+
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            int exitCode = await _paser.InvokeAsync(command);
+            Assert.Equal(ExitCodes.Stop_Cancelled, exitCode);
         }
     }
 }

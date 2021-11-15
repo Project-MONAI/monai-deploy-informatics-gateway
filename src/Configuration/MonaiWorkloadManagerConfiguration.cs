@@ -18,10 +18,16 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public static int DefaultClientTimeout = 300;
 
         /// <summary>
-        /// Gets or sets the URI of the Platform API.
+        /// Gets or sets the URI of the Workload Manager RESTful API.
         /// </summary>
-        [JsonProperty(PropertyName = "endpoint")]
-        public string Endpoint { get; set; }
+        [JsonProperty(PropertyName = "restEndpoint")]
+        public string RestEndpoint { get; set; }
+
+        /// <summary>
+        /// Gets or sets the URI of the Workload Manager gRPC API.
+        /// </summary>
+        [JsonProperty(PropertyName = "grpcEndpoint")]
+        public string GrpcEndpoint { get; set; }
 
         /// <summary>
         /// Gets or sets maximum number of concurrent uploads to the Paylodas Service.

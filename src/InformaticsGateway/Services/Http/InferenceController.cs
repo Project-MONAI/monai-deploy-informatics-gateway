@@ -27,6 +27,7 @@
  */
 
 using Ardalis.GuardClauses;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -64,6 +65,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         [HttpGet("status/{transactionId}")]
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> JobStatus(string transactionId)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
@@ -88,6 +92,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         [HttpPost]
         [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> NewInferenceRequest([FromBody] InferenceRequest request)
         {
             Guard.Against.Null(request, nameof(request));

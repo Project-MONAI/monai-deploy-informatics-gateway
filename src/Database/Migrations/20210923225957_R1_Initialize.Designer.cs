@@ -9,7 +9,7 @@ using Monai.Deploy.InformaticsGateway.Database;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20210819223503_R1_Initialize")]
+    [Migration("20210923225957_R1_Initialize")]
     partial class R1_Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -41,7 +41,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.FileStorageInfo", b =>
                 {
-                    b.Property<string>("FilePath")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Applications")
@@ -51,14 +52,26 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Received")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("StorageRootPath")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<byte[]>("Timestamp")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("BLOB");
+
                     b.Property<int>("TryCount")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("FilePath");
+                    b.HasKey("Id");
 
                     b.ToTable("FileStorageInfo");
                 });

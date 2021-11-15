@@ -51,13 +51,13 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         }
 
         public override void BuildEntryText(
-            StringBuilder sb, 
-            string categoryName, 
-            LogLevel logLevel, 
-            EventId eventId, 
-            string message, 
+            StringBuilder sb,
+            string categoryName,
+            LogLevel logLevel,
+            EventId eventId,
+            string message,
             Exception exception,
-            IExternalScopeProvider scopeProvider, 
+            IExternalScopeProvider scopeProvider,
             DateTimeOffset timestamp)
         {
             AppendTimestamp(sb, timestamp);

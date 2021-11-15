@@ -25,7 +25,9 @@ using System.Net.Http.Headers;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 {
-    /// <inheritdoc/>
+    /// <summary>
+    /// A DICOMweb client for sending HTTP requests and receiving HTTP responses from a DICOMweb server.
+    /// </summary>
     public class DicomWebClient : IDicomWebClient
     {
         private readonly HttpClient _httpClient;
