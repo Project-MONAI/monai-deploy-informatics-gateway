@@ -1,13 +1,9 @@
 ﻿using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Moq;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Repositories

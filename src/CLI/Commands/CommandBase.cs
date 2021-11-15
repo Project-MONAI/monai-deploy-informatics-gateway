@@ -14,7 +14,6 @@ using Crayon;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Client;
 using System;
 using System.CommandLine;
 
@@ -28,12 +27,17 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         protected ILogger CreateLogger<T>(IHost host)
         {
+            Guard.Against.Null(host, nameof(host));
+            
             var loggerFactory = host.Services.GetService<ILoggerFactory>();
             return loggerFactory?.CreateLogger<T>();
         }
 
         protected void LogVerbose(bool verbose, IHost host, string message)
         {
+            Guard.Against.Null(host, nameof(host));
+            Guard.Against.NullOrWhiteSpace(message, nameof(message));
+
             if (verbose)
             {
                 var logger = CreateLogger<CommandBase>(host);
@@ -48,33 +52,24 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
         }
 
-        protected ConfigurationOptions LoadConfiguration(bool verbose, IConfigurationService configurationService, IInformaticsGatewayClient client)
+        protected void AddConfirmationOption() => AddConfirmationOption(this);
+
+        protected void AddConfirmationOption(Command command)
         {
-            Guard.Against.Null(configurationService, nameof(configurationService));
-            Guard.Against.Null(client, nameof(client));
+            Guard.Against.Null(command, nameof(command));
 
-            var configuration = LoadConfiguration(verbose, configurationService);
-            client.ConfigureServiceUris(new Uri(configuration.Endpoint));
-            return configuration;
-        }
-
-        protected ConfigurationOptions LoadConfiguration(bool verbose, IConfigurationService configurationService)
-        {
-            Guard.Against.Null(configurationService, nameof(configurationService));
-
-            if (configurationService.ConfigurationExists())
-            {
-                var config = configurationService.Load(verbose);
-                return config;
-            }
-
-            throw new ConfigurationException($"{Strings.ApplicationName} endpoint not configured.  Please run 'config` first.");
-        }
-
-        protected void AddConfirmationOption()
-        {
             var confirmationOption = new Option<bool>(new[] { "-y", "--yes" }, "Automatic yes to prompts");
-            this.AddOption(confirmationOption);
+            command.AddOption(confirmationOption);
+        }
+
+        protected void CheckConfiguration(IConfigurationService configService)
+        {
+            Guard.Against.Null(configService, nameof(configService));
+            
+            if (!configService.IsInitialized)
+            {
+                throw new ConfigurationException($"Please execute `{AppDomain.CurrentDomain.FriendlyName} config init` to intialize Informatics Gateway.");
+            }
         }
     }
 }

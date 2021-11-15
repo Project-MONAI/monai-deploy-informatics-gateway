@@ -9,11 +9,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Monai.Deploy.InformaticsGateway.CLI
-{
-    internal static class Strings
-    {
-        public const string ApplicationName = "MONAI Deploy Informatics Gateway";
-        public const string WorkloadManagerName = "MONAI Deploy Workload Manager";
-    }
-}
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Monai.Deploy.InformaticsGateway.CLI.Test")]

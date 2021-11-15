@@ -14,7 +14,7 @@ using System;
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
     [Serializable]
-    internal class ConfigurationException : Exception
+    public class ConfigurationException : Exception
     {
         public ConfigurationException(string message) : base(message)
         {

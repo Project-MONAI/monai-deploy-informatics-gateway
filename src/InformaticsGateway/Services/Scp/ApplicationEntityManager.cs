@@ -134,15 +134,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             _fileSystem.Directory.CreateDirectoryIfNotExists(info.StorageRootPath);
 
-            //TODO: encrypt
             await SaveDicomInstance(request, info.FilePath);
 
-            NotifyStoredInstance(info);
+            await NotifyStoredInstance(info);
         }
 
-        private void NotifyStoredInstance(FileStorageInfo file)
+        private async Task NotifyStoredInstance(FileStorageInfo file)
         {
-            _fileStoredNotificationQueue.Queue(file);
+            await _fileStoredNotificationQueue.Queue(file);
             _logger.Log(LogLevel.Information, $"Instance queued for upload: {file.FilePath}");
         }
 

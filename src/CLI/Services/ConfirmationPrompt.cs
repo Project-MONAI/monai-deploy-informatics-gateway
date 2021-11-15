@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Ardalis.GuardClauses;
 using System;
 
 namespace Monai.Deploy.InformaticsGateway.CLI.Services
@@ -22,7 +23,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
     {
         public bool ShowConfirmationPrompt(string message)
         {
-            Console.Write($"{message} [y/N]");
+            Guard.Against.NullOrWhiteSpace(message, nameof(message));
+
+            Console.Write($"{message} [y/N]: ");
             var key = Console.ReadKey();
             Console.WriteLine();
             if (key.Key == ConsoleKey.Y)

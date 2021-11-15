@@ -18,6 +18,7 @@ using System;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -56,20 +57,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
         }
 
-        [Fact(DisplayName = "start comand - cancelled")]
-        public async Task Start_Command_Cancelled()
-        {
-            var command = "start";
-            var result = _paser.Parse(command);
-            Assert.Equal(0, result.Errors.Count);
-
-            _confirmationPrompt.Setup(p => p.ShowConfirmationPrompt(It.IsAny<string>())).Returns(false);
-            int exitCode = await _paser.InvokeAsync(command);
-            Assert.Equal(ExitCodes.Start_Cancelled, exitCode);
-
-            _controlService.Verify(p => p.Start(), Times.Never());
-        }
-
         [Fact(DisplayName = "start comand - confirmed")]
         public async Task Start_Command_Confirmed()
         {
@@ -81,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Start(), Times.Once());
+            _controlService.Verify(p => p.Start(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "start comand -y")]
@@ -94,7 +81,22 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Start(), Times.Once());
+            _controlService.Verify(p => p.Start(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "start comand -y control excception")]
+        public async Task Start_Command_Auto_ControlException()
+        {
+            var command = "start -y";
+            var result = _paser.Parse(command);
+            Assert.Equal(0, result.Errors.Count);
+
+            _controlService.Setup(p => p.Start(It.IsAny<CancellationToken>())).Throws(new ControlException(ExitCodes.Start_Error_ApplicationAlreadyRunning, "error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+            Assert.Equal(ExitCodes.Start_Error_ApplicationAlreadyRunning, exitCode);
+
+            _controlService.Verify(p => p.Start(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "start comand -y excception")]
@@ -104,12 +106,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _controlService.Setup(p => p.Start()).Throws(new Exception("error"));
+            _controlService.Setup(p => p.Start(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Start_Error, exitCode);
 
-            _controlService.Verify(p => p.Start(), Times.Once());
+            _controlService.Verify(p => p.Start(It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

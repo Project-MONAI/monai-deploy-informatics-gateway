@@ -12,7 +12,6 @@
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using System;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -51,9 +50,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
@@ -67,9 +65,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsStringAsync(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }

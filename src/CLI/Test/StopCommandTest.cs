@@ -18,6 +18,7 @@ using System;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -67,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Stop_Cancelled, exitCode);
 
-            _controlService.Verify(p => p.Stop(), Times.Never());
+            _controlService.Verify(p => p.Stop(It.IsAny<CancellationToken>()), Times.Never());
         }
 
         [Fact(DisplayName = "stop comand - confirmed")]
@@ -81,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Stop(), Times.Once());
+            _controlService.Verify(p => p.Stop(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "stop comand -y")]
@@ -94,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Stop(), Times.Once());
+            _controlService.Verify(p => p.Stop(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "stop comand -y excception")]
@@ -104,12 +105,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _controlService.Setup(p => p.Stop()).Throws(new Exception("error"));
+            _controlService.Setup(p => p.Stop(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Stop_Error, exitCode);
 
-            _controlService.Verify(p => p.Stop(), Times.Once());
+            _controlService.Verify(p => p.Stop(It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

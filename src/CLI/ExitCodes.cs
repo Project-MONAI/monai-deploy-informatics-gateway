@@ -17,6 +17,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         public const int Config_NotConfigured = 100;
         public const int Config_ErrorSaving = 101;
+        public const int Config_ErrorInitializing = 102;
+        public const int Config_ErrorShowing = 103;
 
         public const int MonaiScp_ErrorList = 200;
         public const int MonaiScp_ErrorDelete = 201;
@@ -35,6 +37,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         public static int Start_Cancelled = 600;
         public static int Start_Error = 601;
+        public static int Start_Error_ApplicationNotFound = 602;
+        public static int Start_Error_ApplicationAlreadyRunning = 603;
 
         public static int Stop_Cancelled = 700;
         public static int Stop_Error = 701;

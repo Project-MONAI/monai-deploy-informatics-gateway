@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _cleanupQueue = cleanupQueue ?? throw new ArgumentNullException(nameof(cleanupQueue));
         }
 
-        private void BackgroundProcessing(CancellationToken stoppingToken)
+        private async Task BackgroundProcessing(CancellationToken stoppingToken)
         {
             _logger.Log(LogLevel.Information, "MONAI Workload Manager Notification Hosted Service is running.");
             while (!stoppingToken.IsCancellationRequested)
@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 FileStorageInfo file = null;
                 try
                 {
-                    file = _taskQueue.Dequeue(stoppingToken);
+                    file = await _taskQueue.Dequeue(stoppingToken);
 
                     if (file is null) continue; // likely canceled
 
@@ -85,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     if (file is not null)
                     {
                         file.TryCount++;
-                        _taskQueue.Queue(file);
+                        await _taskQueue.Queue(file);
                     }
                 }
             }
@@ -99,7 +99,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             if (!_fileSystem.File.Exists(file.FilePath))
             {
-                //TODO: encrypt log
                 _logger.Log(LogLevel.Warning, "Unable to upload file {0}; file may have been deleted.", file.FilePath);
                 return;
             }
@@ -118,12 +117,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            var task = Task.Run(() =>
+            Status = ServiceStatus.Running;
+
+            var task = Task.Run(async () =>
             {
-                BackgroundProcessing(cancellationToken);
+                await BackgroundProcessing(cancellationToken);
             });
 
-            Status = ServiceStatus.Running;
             if (task.IsCompleted)
                 return task;
             return Task.CompletedTask;

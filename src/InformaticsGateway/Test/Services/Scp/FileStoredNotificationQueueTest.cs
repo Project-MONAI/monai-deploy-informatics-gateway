@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using xRetry;
 using Xunit;
 
@@ -57,27 +58,27 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         }
 
         [RetryFact(5, 250, DisplayName = "Queue and Dequeue")]
-        public void QueueAndDequeue()
+        public async Task QueueAndDequeue()
         {
             var queue = new FileStoredNotificationQueue(_logger.Object, _serviceScopeFactory.Object);
 
             var expected = new FileStorageInfo(Guid.NewGuid().ToString(), "/storage", "message1", ".ext", _fileSystem);
-            queue.Queue(expected);
+            await queue.Queue(expected);
 
             var cancellationTokenSource = new CancellationTokenSource();
-            var queuedItem = queue.Dequeue(cancellationTokenSource.Token);
+            var queuedItem = await queue.Dequeue(cancellationTokenSource.Token);
             Assert.Equal(expected, queuedItem);
         }
 
         [RetryFact(5, 250, DisplayName = "Dequeue - is cancellable")]
-        public void Dequeue_CanBeCancelled()
+        public async Task Dequeue_CanBeCancelled()
         {
             var queue = new FileStoredNotificationQueue(_logger.Object, _serviceScopeFactory.Object);
 
             var cancellationTokenSource = new CancellationTokenSource();
             cancellationTokenSource.CancelAfter(50);
 
-            Assert.Throws<OperationCanceledException>(() => queue.Dequeue(cancellationTokenSource.Token));
+            await Assert.ThrowsAsync<OperationCanceledException>(async () => await queue.Dequeue(cancellationTokenSource.Token));
         }
     }
 }

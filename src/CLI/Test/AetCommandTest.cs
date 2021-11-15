@@ -66,8 +66,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _paser = _commandLineBuilder.Build();
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
-            _configurationService.Setup(p => p.ConfigurationExists()).Returns(true);
-            _configurationService.Setup(p => p.Load(It.IsAny<bool>())).Returns(new ConfigurationOptions { Endpoint = "http://test" });
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupGet(p => p.IsConfigExists).Returns(true);
+            _configurationService.Setup(p => p.Configurations.InformaticsGatewayServerUri).Returns(new Uri("http://test"));
+            _configurationService.Setup(p => p.Configurations.InformaticsGatewayServerEndpoint).Returns("http://test");
         }
 
         [Fact(DisplayName = "aet comand")]
@@ -108,8 +110,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(
                 p => p.MonaiScpAeTitle.Create(
@@ -128,12 +128,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.MonaiScp_ErrorCreate, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.Create(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error creating MONAI SCP AE Title", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "aet add comand configuration exception")]
+        public async Task AetAdd_Command_ConfigurationException()
+        {
+            var command = "aet add -n MyName -a MyAET --apps App MyCoolApp TheApp";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "aet remove comand")]
@@ -152,8 +166,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.Delete(It.Is<string>(o => o.Equals(name)), It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -169,12 +181,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.MonaiScp_ErrorDelete, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error deleting MONAI SCP AE Title", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "aet list comand configuration exception")]
+        public async Task AetRemove_Command_ConfigurationException()
+        {
+            var command = "aet rm -n MyName";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "aet list comand")]
@@ -198,8 +224,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -215,12 +239,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.MonaiScp_ErrorList, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error retrieving MONAI SCP AE Titles", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "aet list comand configuration exception")]
+        public async Task AetList_Command_ConfigurationException()
+        {
+            var command = "aet list";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "aet list comand empty")]
@@ -234,8 +272,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Once());
 

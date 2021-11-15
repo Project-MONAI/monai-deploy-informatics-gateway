@@ -31,6 +31,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> StatusCommandHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(host, nameof(host));
+            
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -44,9 +46,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             HealthStatusResponse response = null;
             try
             {
-                ConfigurationOptions config = LoadConfiguration(verbose, configService, client);
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {config.Endpoint}...");
+                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 this.LogVerbose(verbose, host, $"Retrieving service status...");
                 response = await client.Health.Status(cancellationToken);
             }

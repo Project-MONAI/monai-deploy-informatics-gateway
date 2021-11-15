@@ -1,12 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Moq;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Logging
@@ -28,9 +24,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Logging
 
             var formatter = FileLoggingTextFormatter.Default;
             formatter.BuildEntryText(
-                sb, cateogry, LogLevel.Information, eventId, message, 
+                sb, cateogry, LogLevel.Information, eventId, message,
                 exception, scopeProvider, timestamp);
-
 
             var result = sb.ToString();
             Assert.Contains(timestamp.ToLocalTime().ToString("o", CultureInfo.InvariantCulture), result);

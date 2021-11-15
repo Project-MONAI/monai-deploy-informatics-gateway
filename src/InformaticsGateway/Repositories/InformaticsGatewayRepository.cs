@@ -45,14 +45,14 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
         public async Task<List<T>> ToListAsync()
         {
-            return await _informaticsGatewayContext.Set<T>().ToListAsync();
+            return await _informaticsGatewayContext.Set<T>().ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<T> FindAsync(params object[] keyValues)
         {
             Guard.Against.Null(keyValues, nameof(keyValues));
 
-            return await _informaticsGatewayContext.FindAsync<T>(keyValues);
+            return await _informaticsGatewayContext.FindAsync<T>(keyValues).ConfigureAwait(false);
         }
 
         public EntityEntry<T> Update(T entity)
@@ -71,14 +71,14 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            return await _informaticsGatewayContext.SaveChangesAsync(cancellationToken);
+            return await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<EntityEntry<T>> AddAsync(T item, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(item, nameof(item));
 
-            return await _informaticsGatewayContext.AddAsync(item, cancellationToken);
+            return await _informaticsGatewayContext.AddAsync(item, cancellationToken).ConfigureAwait(false);
         }
 
         public T FirstOrDefault(Func<T, bool> func)
