@@ -1,5 +1,5 @@
 # Created at https://sequencediagram.org/
-title MONNAI Informatics Gateway - SCP
+title MONAI Informatics Gateway - SCP
 
 fontawesome f0f8 "Hospital\nDICOM Devices" as DICOM
 
