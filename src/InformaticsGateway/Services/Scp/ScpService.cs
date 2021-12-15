@@ -26,20 +26,19 @@
  * limitations under the License.
  */
 
-using Dicom;
+using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using FoDicomNetwork = Dicom.Network;
+using FoDicomNetwork = FellowOakDicom.Network;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -63,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _serviceScope = serviceScopeFactory.CreateScope();
             _associationDataProvider = applicationEntityManager ?? throw new ArgumentNullException(nameof(applicationEntityManager));
 
-            var logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>().CaptureFoDicomLogs();
+            var logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>();
 
             _logger = logginFactory.CreateLogger<ScpService>();
             _appLifetime = appLifetime ?? throw new ArgumentNullException(nameof(appLifetime));
@@ -85,18 +84,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             try
             {
                 _logger.Log(LogLevel.Information, "Starting SCP Service.");
-                var options = new FoDicomNetwork.DicomServiceOptions
-                {
-                    IgnoreUnsupportedTransferSyntaxChange = true,
-                    LogDimseDatasets = _configuration.Value.Dicom.Scp.LogDimseDatasets,
-                    MaxClientsAllowed = _configuration.Value.Dicom.Scp.MaximumNumberOfAssociations
-                };
-
-                _server = FoDicomNetwork.DicomServer.Create<ScpServiceInternal>(
+                _server = FoDicomNetwork.DicomServerFactory.Create<ScpServiceInternal>(
                     FoDicomNetwork.NetworkManager.IPv4Any,
                     _configuration.Value.Dicom.Scp.Port,
-                    options: options,
                     userState: _associationDataProvider);
+
+                _server.Options.IgnoreUnsupportedTransferSyntaxChange = true;
+                _server.Options.LogDimseDatasets = _configuration.Value.Dicom.Scp.LogDimseDatasets;
+                _server.Options.MaxClientsAllowed = _configuration.Value.Dicom.Scp.MaximumNumberOfAssociations;
 
                 if (_server.Exception != null)
                 {

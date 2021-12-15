@@ -36,6 +36,9 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
     /// </summary>
     public class ScpConfiguration
     {
+        public const bool DefaultLogDimseDatasets = false;
+        public const int DefaultMaximumNumberOfAssociations = 25;
+
         /// <summary>
         /// Gets or sets Port number to be used for SCP service.
         /// </summary>
@@ -46,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets maximum number of simultaneous DICOM associations for the SCP service.
         /// </summary>
         [JsonProperty(PropertyName = "maximumNumberOfAssociations")]
-        public int MaximumNumberOfAssociations { get; set; } = 25;
+        public int MaximumNumberOfAssociations { get; set; } = DefaultMaximumNumberOfAssociations;
 
         /// <summary>
         /// Gets or sets wheather or not to enable verification (C-ECHO) service
@@ -64,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets whether or not to write command and data datasets to the log.
         /// </summary>
         [JsonProperty(PropertyName = "logDimseDatasets")]
-        public bool LogDimseDatasets { get; set; } = false;
+        public bool LogDimseDatasets { get; set; } = DefaultLogDimseDatasets;
 
         public IList<string> VerificationServiceTransferSyntaxes = new List<string> {
                     "1.2.840.10008.1.2.1", //Explicit VR Little Endian

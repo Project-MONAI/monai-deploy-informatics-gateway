@@ -9,7 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Dicom;
+using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Common;
 using System.Collections.Generic;
 using Xunit;

@@ -22,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
     {
         protected static HttpClient SetupHttpClientMock(string baseUrl, string expectedUrl, HttpMethod httpMethod, HttpResponseMessage httpResponse)
         {
-            expectedUrl = Uri.EscapeUriString(expectedUrl);
+            expectedUrl = Uri.EscapeDataString(expectedUrl);
             var mockHandler = new Mock<HttpMessageHandler>();
             mockHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",

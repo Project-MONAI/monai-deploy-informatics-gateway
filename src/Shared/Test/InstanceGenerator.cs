@@ -9,8 +9,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Dicom;
-using Dicom.Network;
+using FellowOakDicom;
+using FellowOakDicom.Network;
 using System.IO;
 using System.IO.Abstractions;
 

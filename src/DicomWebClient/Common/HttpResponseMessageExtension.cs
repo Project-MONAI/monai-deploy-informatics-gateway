@@ -16,7 +16,7 @@
  */
 
 using Ardalis.GuardClauses;
-using Dicom;
+using FellowOakDicom;
 using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using System;

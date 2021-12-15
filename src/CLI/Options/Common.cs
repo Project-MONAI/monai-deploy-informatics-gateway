@@ -24,6 +24,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public static readonly string MountedConfigFilePath = Path.Combine(ContainerApplicationRootPath, "appsettings.json");
         public static readonly string MountedDatabasePath = "/database";
         public static readonly string ConfigFilePath = Path.Combine(MigDirectory, "appsettings.json");
-        public static readonly string AppSettingsResourceName = $"{Assembly.GetEntryAssembly().GetTypes().First().Namespace}.Resources.appsettings.json";
+        public static readonly string AppSettingsResourceName = $"{typeof(Program).Namespace}.Resources.appsettings.json";
     }
 }

@@ -9,7 +9,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Dicom;
+using FellowOakDicom;
+using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -195,7 +196,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             var tasks = ExportServiceBaseTest.GenerateTaskResponse(1);
-            DicomScpFixture.DicomStatus = Dicom.Network.DicomStatus.ResourceLimitation;
+            DicomScpFixture.DicomStatus = DicomStatus.ResourceLimitation;
             var bytes = new byte[10];
             _random.NextBytes(bytes);
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
@@ -233,7 +234,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             var tasks = ExportServiceBaseTest.GenerateTaskResponse(1);
-            DicomScpFixture.DicomStatus = Dicom.Network.DicomStatus.ResourceLimitation;
+            DicomScpFixture.DicomStatus = DicomStatus.ResourceLimitation;
             var bytes = new byte[10];
             _random.NextBytes(bytes);
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
@@ -259,7 +260,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _logger.VerifyLogging($"Task marked as failed.", LogLevel.Warning, Times.AtLeastOnce());
             _logger.VerifyLogging("Association accepted.", LogLevel.Information, Times.AtLeastOnce());
-            _logger.VerifyLogging($"Failed to export job {tasks.First().ExportTaskId} with error {Dicom.Network.DicomStatus.ResourceLimitation}", LogLevel.Error, Times.AtLeastOnce());
+            _logger.VerifyLogging($"Failed to export job {tasks.First().ExportTaskId} with error {DicomStatus.ResourceLimitation}", LogLevel.Error, Times.AtLeastOnce());
             _scpLogger.VerifyLogging($"Instance received {sopInstanceUid}", LogLevel.Information, Times.AtLeastOnce());
             await StopAndVerify(service);
         }
@@ -272,7 +273,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             var tasks = ExportServiceBaseTest.GenerateTaskResponse(1);
-            DicomScpFixture.DicomStatus = Dicom.Network.DicomStatus.Success;
+            DicomScpFixture.DicomStatus = DicomStatus.Success;
 
             var bytes = new byte[10];
             _random.NextBytes(bytes);

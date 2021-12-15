@@ -27,7 +27,8 @@
  */
 
 using Ardalis.GuardClauses;
-using Dicom.Network;
+using FellowOakDicom.Network;
+using FellowOakDicom.Network.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -42,7 +43,6 @@ using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using DicomClient = Dicom.Network.Client.DicomClient;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
@@ -109,11 +109,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", outputJob.ExportTaskId }, { "CorrelationId", outputJob.CorrelationId } });
 
             var manualResetEvent = new ManualResetEvent(false);
-            DicomClient client = null;
+            IDicomClient client = null;
             try
             {
                 var destination = LookupDestination(outputJob);
-                client = new DicomClient(
+                client = DicomClientFactory.Create(
                     destination.HostIp,
                     destination.Port,
                     false,
@@ -123,12 +123,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 client.AssociationAccepted += (sender, args) => _logger.Log(LogLevel.Information, "Association accepted.");
                 client.AssociationRejected += (sender, args) => _logger.Log(LogLevel.Warning, "Association rejected.");
                 client.AssociationReleased += (sender, args) => _logger.Log(LogLevel.Information, "Association release.");
+                client.ServiceOptions.LogDataPDUs = _scuConfiguration.LogDataPdus;
+                client.ServiceOptions.LogDimseDatasets = _scuConfiguration.LogDimseDatasets;
 
-                client.Options = new DicomServiceOptions
-                {
-                    LogDataPDUs = _scuConfiguration.LogDataPdus,
-                    LogDimseDatasets = _scuConfiguration.LogDimseDatasets
-                };
                 client.NegotiateAsyncOps();
                 GenerateRequests(outputJob, client, manualResetEvent);
                 _logger.Log(LogLevel.Information, "Sending job to {0}@{1}:{2}", destination.AeTitle, destination.HostIp, destination.Port);
@@ -148,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void GenerateRequests(
             OutputJob job,
-            DicomClient client,
+            IDicomClient client,
             ManualResetEvent manualResetEvent)
         {
             try
@@ -180,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private void HandleCStoreException(Exception ex, OutputJob job, DicomClient client)
+        private void HandleCStoreException(Exception ex, OutputJob job, IDicomClient client)
         {
             var exception = ex;
 

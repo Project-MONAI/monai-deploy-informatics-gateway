@@ -9,7 +9,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Dicom.Network;
+using FellowOakDicom.Network;
+using FellowOakDicom.Network.Client;
+using FellowOakDicom.Network.Client.EventArguments;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -100,9 +102,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCEchoRequest());
-            client.AssociationRejected += (object sender, Dicom.Network.Client.EventArguments.AssociationRejectedEventArgs e) =>
+            client.AssociationRejected += (object sender, AssociationRejectedEventArgs e) =>
             {
                 countdownEvent.Signal();
             };
@@ -115,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             _loggerInternal.VerifyLogging($"Verification service is disabled: rejecting association", LogLevel.Warning, Times.Once());
 
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(1000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-ECHO - Shall reject unknown calling AET")]
@@ -130,9 +132,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCEchoRequest());
-            client.AssociationRejected += (object sender, Dicom.Network.Client.EventArguments.AssociationRejectedEventArgs e) =>
+            client.AssociationRejected += (object sender, AssociationRejectedEventArgs e) =>
             {
                 countdownEvent.Signal();
             };
@@ -143,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(DicomRejectSource.ServiceUser, exception.RejectSource);
             Assert.Equal(DicomRejectResult.Permanent, exception.RejectResult);
 
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(1000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-ECHO - Shall reject unknown called AET")]
@@ -158,9 +160,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCEchoRequest());
-            client.AssociationRejected += (object sender, Dicom.Network.Client.EventArguments.AssociationRejectedEventArgs e) =>
+            client.AssociationRejected += (object sender, AssociationRejectedEventArgs e) =>
             {
                 countdownEvent.Signal();
             };
@@ -171,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(DicomRejectSource.ServiceUser, exception.RejectSource);
             Assert.Equal(DicomRejectResult.Permanent, exception.RejectResult);
 
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(1000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-ECHO - Shall accept")]
@@ -186,15 +188,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCEchoRequest());
-            client.AssociationAccepted += (object sender, Dicom.Network.Client.EventArguments.AssociationAcceptedEventArgs e) =>
+            client.AssociationAccepted += (object sender, AssociationAcceptedEventArgs e) =>
             {
                 countdownEvent.Signal();
             };
 
             await client.SendAsync();
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(1000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-STORE - Shall reject when storage is low")]
@@ -207,9 +209,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile()));
-            client.AssociationRejected += (object sender, Dicom.Network.Client.EventArguments.AssociationRejectedEventArgs e) =>
+            client.AssociationRejected += (object sender, AssociationRejectedEventArgs e) =>
             {
                 countdownEvent.Signal();
             };
@@ -220,7 +222,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(DicomRejectSource.ServiceUser, exception.RejectSource);
             Assert.Equal(DicomRejectResult.Permanent, exception.RejectResult);
 
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(2000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - InsufficientStorageAvailableException")]
@@ -234,7 +236,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
             await client.AddRequestAsync(request);
             client.AssociationAccepted += (sender, e) =>
@@ -252,7 +254,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
 
             await client.SendAsync();
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(2000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - IOException")]
@@ -266,7 +268,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
             await client.AddRequestAsync(request);
             client.AssociationAccepted += (sender, e) =>
@@ -284,7 +286,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
 
             await client.SendAsync();
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(2000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - Exception")]
@@ -298,7 +300,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
             await client.AddRequestAsync(request);
             client.AssociationAccepted += (sender, e) =>
@@ -316,7 +318,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
 
             await client.SendAsync();
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(2000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - Success")]
@@ -330,7 +332,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
             await client.AddRequestAsync(request);
             client.AssociationAccepted += (sender, e) =>
@@ -348,7 +350,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
 
             await client.SendAsync();
-            Assert.True(countdownEvent.Wait(5000));
+            Assert.True(countdownEvent.Wait(2000));
         }
 
         [RetryFact(5, 250, DisplayName = "C-STORE - Simulate client abort")]
@@ -362,7 +364,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
 
-            var client = new Dicom.Network.Client.DicomClient("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
             await client.AddRequestAsync(request);
             client.AssociationAccepted += (sender, e) =>
@@ -371,8 +373,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 countdownEvent.Signal();
             };
 
-            await client.SendAsync(_cancellationTokenSource.Token, Dicom.Network.Client.DicomClientCancellationMode.ImmediatelyAbortAssociation);
-            Assert.True(countdownEvent.Wait(5000));
+            await client.SendAsync(_cancellationTokenSource.Token, DicomClientCancellationMode.ImmediatelyAbortAssociation);
+            Assert.True(countdownEvent.Wait(2000));
             _loggerInternal.VerifyLogging($"Aborted {DicomAbortSource.ServiceUser} with reason {DicomAbortReason.NotSpecified}", LogLevel.Warning, Times.Once());
         }
 
@@ -390,7 +392,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     Thread.Sleep(100);
                 }
                 service = new ScpService(_serviceScopeFactory.Object, _associationDataProvider.Object, _appLifetime.Object, _configuration);
-                var task = service.StartAsync(_cancellationTokenSource.Token);
+                _ = service.StartAsync(_cancellationTokenSource.Token);
             } while (service.Status != ServiceStatus.Running && tryCount++ < 5);
 
             Assert.Equal(ServiceStatus.Running, service.Status);

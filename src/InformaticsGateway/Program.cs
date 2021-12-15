@@ -94,6 +94,7 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
 
+                    services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
                     services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
                     services.AddSingleton<IWorkloadManagerApi, WorkloadManagerApi>();
@@ -106,20 +107,20 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<DicomWebExportService>();
                     services.AddSingleton<DataRetrievalService>();
 
-                    var timeout = GetConfigAndConvertToMinutes(hostContext.Configuration, "InformaticsGateway:dicomWeb:clientTimeout", DicomWebConfiguration.DefaultClientTimeout);
+                    var timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:dicomWeb:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
-                        .AddHttpClient("dicomweb", configure => configure.Timeout = TimeSpan.FromSeconds(timeout))
-                        .SetHandlerLifetime(TimeSpan.FromSeconds(timeout));
+                        .AddHttpClient("dicomweb", configure => configure.Timeout = timeout)
+                        .SetHandlerLifetime(timeout);
 
-                    timeout = GetConfigAndConvertToMinutes(hostContext.Configuration, "InformaticsGateway:workloadManager:clientTimeout", MonaiWorkloadManagerConfiguration.DefaultClientTimeout);
+                    timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:workloadManager:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
-                        .AddHttpClient("wm", configure => configure.Timeout = TimeSpan.FromSeconds(timeout))
-                        .SetHandlerLifetime(TimeSpan.FromSeconds(timeout));
+                        .AddHttpClient("wm", configure => configure.Timeout = timeout)
+                        .SetHandlerLifetime(timeout);
 
-                    timeout = GetConfigAndConvertToMinutes(hostContext.Configuration, "InformaticsGateway:fhir:clientTimeout", FhirConfiguration.DefaultClientTimeout);
+                    timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:fhir:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
-                        .AddHttpClient("fhir", configure => configure.Timeout = TimeSpan.FromSeconds(timeout))
-                        .SetHandlerLifetime(TimeSpan.FromSeconds(timeout));
+                        .AddHttpClient("fhir", configure => configure.Timeout = timeout)
+                        .SetHandlerLifetime(timeout);
 
                     services.AddHostedService<WorkloadManagerNotificationService>(p => p.GetService<WorkloadManagerNotificationService>());
                     services.AddHostedService<SpaceReclaimerService>(p => p.GetService<SpaceReclaimerService>());

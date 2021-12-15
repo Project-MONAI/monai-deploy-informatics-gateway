@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-using Dicom;
+using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Moq;
 using Moq.Protected;

@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-using Dicom;
+using FellowOakDicom;
 using System.Collections.Generic;
 
 namespace Monai.Deploy.InformaticsGateway.Common

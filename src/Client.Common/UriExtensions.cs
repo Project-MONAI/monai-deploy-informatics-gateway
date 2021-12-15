@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
 
             var str = input.ToString();
 
-            if (!string.IsNullOrWhiteSpace(str) && !str.EndsWith('/'))
+            if (!string.IsNullOrWhiteSpace(str) && !str.EndsWith("/"))
             {
                 return new Uri(str + '/');
             }

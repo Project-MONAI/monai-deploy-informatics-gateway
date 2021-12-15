@@ -21,6 +21,10 @@ First, export the following environment variable before executing `dotnet run`:
 export DOTNET_ENVIRONMENT=Development
 ```
 
+```powershell
+$env:DOTNET_ENVIRONMENT="Development"
+```
+
 ### Building MONAI Deploy Informatics Gateway
 
 ```bash

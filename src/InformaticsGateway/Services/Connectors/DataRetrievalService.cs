@@ -27,7 +27,7 @@
  */
 
 using Ardalis.GuardClauses;
-using Dicom;
+using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -504,7 +504,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
                 SaveFile(file, instance);
                 retrievedInstance.Add(instance.FilePath, instance);
-                _logger.Log(LogLevel.Debug, "$Instance saved in {instance.FilePath}.");
+                _logger.Log(LogLevel.Debug, $"Instance saved in {instance.FilePath}.");
             }
         }
 

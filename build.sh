@@ -29,5 +29,5 @@ pushd $SCRIPT_DIR/src/CLI
 # echo "Building Informatics Gateway CLI: win-x64"
 # dotnet publish -r win-x64 -c Release -o $SCRIPT_DIR/cli/win-x64
 echo "Building Informatics Gateway CLI: linux-x64"
-dotnet publish -r linux-x64 -c Release -o $SCRIPT_DIR/cli/linux-x64
+dotnet publish --self-contained -r linux-x64 -c Release -o $SCRIPT_DIR/cli/linux-x64
 popd

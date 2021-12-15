@@ -15,32 +15,18 @@
  * limitations under the License.
  */
 
-using Dicom.Log;
-using Microsoft.Extensions.Logging;
-
 namespace Monai.Deploy.InformaticsGateway.Logging
 {
     public static class LoggingExtensions
     {
-        public static ILoggerFactory CaptureFoDicomLogs(this ILoggerFactory factory)
-        {
-            if (factory is null)
-            {
-                throw new System.ArgumentNullException(nameof(factory));
-            }
-
-            LogManager.SetImplementation(new FoDicomLogManager(factory));
-            return factory;
-        }
-
-        public static Microsoft.Extensions.Logging.LogLevel ToMicrosoftExtensionsLogLevel(this global::Dicom.Log.LogLevel dicomLogLevel)
+        public static Microsoft.Extensions.Logging.LogLevel ToMicrosoftExtensionsLogLevel(this FellowOakDicom.Log.LogLevel dicomLogLevel)
         {
             return dicomLogLevel switch
             {
-                global::Dicom.Log.LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
-                global::Dicom.Log.LogLevel.Fatal => Microsoft.Extensions.Logging.LogLevel.Critical,
-                global::Dicom.Log.LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
-                global::Dicom.Log.LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
+                FellowOakDicom.Log.LogLevel.Error => Microsoft.Extensions.Logging.LogLevel.Error,
+                FellowOakDicom.Log.LogLevel.Fatal => Microsoft.Extensions.Logging.LogLevel.Critical,
+                FellowOakDicom.Log.LogLevel.Info => Microsoft.Extensions.Logging.LogLevel.Information,
+                FellowOakDicom.Log.LogLevel.Warning => Microsoft.Extensions.Logging.LogLevel.Warning,
                 _ => Microsoft.Extensions.Logging.LogLevel.Debug
             };
         }
