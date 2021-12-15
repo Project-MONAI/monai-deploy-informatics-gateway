@@ -441,3 +441,18 @@ Configure MIG to use different grouping and send multiple DICOM datasets to the 
 #### Target Release
 
 MONAI Deploy Informatics Gateway R1
+
+### [REQ-FNC-05] MIG SHALL notify users of system events
+
+#### Background
+
+Given that Informatics Gateway depends on several external services that may likely be unavailable due to unexpected circumstances,
+the system shall actively notify users when such events occur. In addition, other non-critical system events and statistical data may also be collected and reported to the users.
+
+#### Verification Strategy
+
+Setup notification service, make one of the dependencies unavailable, and expect Informatics Gateway to notify the subscribers.
+
+#### Target Release
+
+MONAI Deploy Informatics Gateway R2
