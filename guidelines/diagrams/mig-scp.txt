@@ -1,41 +1,65 @@
 # Created at https://sequencediagram.org/
-title MONNAI Informatics Gateway - SCP
+title MONAI Informatics Gateway - SCP
 
 fontawesome f0f8 "Hospital\nDICOM Devices" as DICOM
-participant "MIG SCP" as SCP
-database "MIG\nDatabase" as DB
-fontawesome f0a0 "MIG\nStorage" as DISK
-participant "MIG\nNotification Relay" as NR
-participant "MONAI Workload Manager\nPayloads API" as Payloads
 
-activate NR
-NR->NR:Startup
-DISK<--NR:Clears out any residuals
+participantgroup #00CC66 Informatics\nGateway
+participant "DICOM SCP" as SCP
+participant "Payload Assembler" as PA
+participant "Payload Notification" as PN
+end 
+
+participantgroup #FF9966 Virtual\nStorage
+database "Database" as DB
+fontawesome f0a0 "Storage" as DISK
+end 
+
+participantgroup #FFFF99 Pub-Sub\nService
+participant "PubSub" as PS
+end
+
 
 group C-ECHO
-DICOM->SCP:C-ECHO-REQ
+DICOM->SCP:C-ECHO-RQ
+activate DICOM
 activate SCP
 
 SCP->DB: Query for \nconfigured\nsources
 SCP<--DB: Response
 SCP->SCP: Validate
 
-DICOM<--SCP: C-ECHO-RESP
+DICOM<--SCP: C-ECHO-RSP
 deactivate SCP
+deactivate DICOM
 end
 
 group C-STORE
 DICOM->SCP:C-STORE-RQ
 activate SCP
+activate DICOM
 SCP->DB: Query for \nconfigured\nsources
 SCP<--DB: Response
-SCP->DISK: Save DICOM instances
-SCP->NR: Notify of new instances 
-DICOM<--SCP: C-ECHO-RESP
+SCP->SCP: Validate
+SCP->DISK: Save to disk
+SCP->SCP: Extract DICOM headers
+activate SCP
+SCP->DB: Save instance info with DICOM headers
 deactivate SCP
-
-NR->Payloads: Upload instances\nto MWM
+SCP->PA: Notify data arrival
+activate PA
+PA->PA: Queue instance
+activate PA
+SCP<--PA: Response
+deactivate PA
+PA->PA: Wait for complete patient/study/series &\nAssemble payload
+DICOM<--SCP: C-STORE-RSP
+deactivate SCP
+deactivate DICOM
+PA->DB: Update payload information
+PA->PN: Queue Payload ready message
+activate PN
+PA<--PN: Response
+deactivate PA
+PN->PS: Publish new workflow request
+PN<--PS: Response
 end
-
-
-deactivate NR

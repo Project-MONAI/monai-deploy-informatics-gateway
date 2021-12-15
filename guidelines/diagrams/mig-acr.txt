@@ -1,38 +1,58 @@
 # Created at https://sequencediagram.org/
-title MONNAI Informatics Gateway - ACR
+title MONAI Informatics Gateway - SCP
 
-fontawesome f0f8 "Hospital\nInformation Systems" as HIS
-fontawesome f233 "ACR API" as ACR
-participant "MIG Inference\nRequest Queue" as IRS
-database "MIG\nDatabase" as DB
-fontawesome f0a0 "MIG\nStorage" as DISK
-participant "MIG Data\nRetrieval Service" as DRS
-participant "MIG\nNotification Relay" as NR
-participant "MONAI Workload Manager\nPayloads API" as Payloads
+fontawesome f0f8 "Hospital\nDevices" as HIS
 
-parallel 
-activate IRS
-activate DRS
-activate NR
-IRS->IRS: Startup 
-DRS->DRS: Startup
-NR->NR: Startup
-parallel off
+participantgroup #00CC66 Informatics\nGateway
+participant "ACR API" as ACR
+participant "Inference Request\nQueue" as IRQ
+participant "Data Retrieval Service" as DRS
+participant "Payload Assembler" as PA
+participant "Payload Notification" as PN
+end 
 
-NR->DISK: Clear out an residuals
-IRS->DB: Query for pending jobs
-DRS->IRS: Query for pending jobs
+participantgroup #FF9966 Virtual\nStorage
+database "Database" as DB
+fontawesome f0a0 "Storage" as DISK
+end 
 
-HIS->ACR: "POST /infernece"
+participantgroup #FFFF99 Pub-Sub\nService
+participant "PubSub" as PS
+end
+
+HIS->ACR: POST /infernece
 activate ACR
 ACR->ACR: Validate Request
-ACR->IRS: Enqueue Request
+ACR->IRQ: Enqueue Request
+IRQ->DB: Save Request
 HIS<--ACR: Response
 deactivate ACR
-IRS->DB: Save Request
-DRS->IRS: Dequeue & process request
-DRS->HIS: Query & retrieve via DICOMweb & FHIR
+DRS->IRQ: Dequeue
+DRS<--IRQ: Response
+activate DRS
+DRS->DRS: Process request
+activate DRS
+DRS->HIS: Query & retrieve via DICOMweb
 DRS<--HIS: Response
-DRS->DISK: Save DICOM & FHIR
-DRS->NR: Notify data arrival
-NR->Payloads: Upload data to MWM
+DRS->DISK: Save DICOM
+DRS->DRS: Extract DICOM headers
+DRS->DB: Save instance info with DICOM headers
+DRS->HIS: Query & retrieve via FHIR
+DRS<--HIS: Response
+DRS->DISK: Save FHIR
+DRS->DB: Save resource info with headers
+
+DRS->PA: Notify data arrival
+activate PA
+PA->PA: Queue instance
+activate PA
+DRS<--PA: Response
+deactivate PA
+deactivate DRS
+PA->DB: Update payload information
+PA->PN: Queue Payload ready message
+activate PN
+PA<--PN: Response
+deactivate PA
+PN->PS: Publish new workflow request
+PN<--PS: Response

@@ -1,38 +1,64 @@
-# Created at https://sequencediagram.org/
-title MONNAI Informatics Gateway - Export
+#https://sequencediagram.org/
+title Export Results
 
-participant "MIG Export Watcher" as EW
-participant "MONAI Workload Manager\nExport API" as EA
+participantgroup #00CC66 Informatics\nGateway
+participant "SCU Export Watcher" as EW
+participant "SCU Export" as SCU
+participant "FHIR Export" as FHIR
+participant "DICOMweb Export" as DICOMWEB
 
-participant "MIG FHIR Service" as FHIR
-participant "MIG SCU Service" as SCU
-database "MIG\nDatabase" as DB
+end 
+
+participantgroup #6699FF Workflow\nManager
+participant "Export API" as EA
+end 
+
+participantgroup #FF9966 Virtual\nStorage
+fontawesome f0a0 "Storage" as DISK
+database "Database" as DB
+end
+
+participantgroup #FFFF99 Pub-Sub\nService
+participant "PubSub" as PS
+end
+
 fontawesome f0f8 "Hospital\nInformation Systems" as HIS
 
 
+EW->PS: Subscribe to new export task events
 activate EW
-EW->EA: Query for pending export tasks
+EW<--PS: Response
+
+PS->EW: Notify new export task event
+activate EW
+
+EW->DISK: Load results
 
 alt case DICOM
-EW<--EA: Response DICOM Dataset
-EW->SCU: Queue DiCOM export task
-else case ACR
-EW<--EA: Response ACR Request
-EW->DB: Query original request for export settings
-EW<--DB: Response
 EW->SCU: Queue DICOM export task
-EW->FHIR: Queue ACR export task
-else case FHIR
-EW<--EA: Response FHIR Resource
-EW->FHIR:Queue ACR export task
-end
-SCU->DB: Query for destination AET info
-SCU<--DB: Response
-SCU->HIS: C-STORE-REQ
+SCU->HIS: C-STORE-RQ
+activate SCU
+activate HIS
 SCU<--HIS: C-STORE-RSP
-SCU->EA: Update export task status
-FHIR->DB: Query for FHIR service endpoint
-FHIR<--DB: Response
-FHIR->HIS: POST /resource/...
+deactivate HIS
+deactivate SCU
+else case FHIR
+EW->FHIR: Queue FHIR export task
+FHIR->HIS: HTTP POST FHIR Resource
 FHIR<--HIS: Response
-FHIR->EA: Update export task status
+
+else case DICOMweb
+EW->DICOMWEB: Queue DICOMweb export task
+DICOMWEB->HIS: DICOMWeb STOW-RS
+DICOMWEB<--HIS: Resposne
+end
+
+EW->EA: Update export task state
+activate EA
+EA->DB: Update task state
+EW<--EA: Response
+deactivate EA
+deactivate EW
+
+
+
