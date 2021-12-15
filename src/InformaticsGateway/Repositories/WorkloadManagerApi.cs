@@ -27,22 +27,22 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
         public Task<IList<TaskResponse>> GetPendingJobs(string agent, int count, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.FromResult(default(IList<TaskResponse>));
         }
 
         public Task ReportFailure(Guid taskId, bool retryLater, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task ReportSuccess(Guid taskId, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
 
         public Task Upload(FileStorageInfo file, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            return Task.CompletedTask;
         }
     }
 }

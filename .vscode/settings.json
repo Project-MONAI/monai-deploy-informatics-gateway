@@ -1,4 +1,10 @@
 {
     "dotnet-test-explorer.testProjectPath": "**/*Test.@(csproj|vbproj|fsproj)",
     "dotnet-test-explorer.autoWatch": true,
+    "cSpell.words": [
+        "Monai",
+        "MONAI",
+        "QIDO",
+        "WADO"
+    ],
 }

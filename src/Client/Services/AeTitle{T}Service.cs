@@ -56,9 +56,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
@@ -74,9 +73,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
@@ -92,9 +90,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
@@ -109,9 +106,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 var list = await response.Content.ReadAsAsync<IEnumerable<T>>(cancellationToken);
                 return list.ToList().AsReadOnly();
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }

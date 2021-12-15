@@ -28,10 +28,13 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToArray());
             var jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
-            builder.HasKey(j => j.FilePath);
 
+            builder.HasKey(j => j.Id);
+            builder.Property(j => j.FilePath).IsRequired();
             builder.Property(j => j.CorrelationId).IsRequired();
             builder.Property(j => j.StorageRootPath).IsRequired();
+            builder.Property(j => j.Received).IsRequired();
+            builder.Property(j => j.Timestamp).IsRowVersion();
 
             builder.Property(j => j.Applications).HasConversion(
                         v => JsonConvert.SerializeObject(v, jsonSerializerSettings),

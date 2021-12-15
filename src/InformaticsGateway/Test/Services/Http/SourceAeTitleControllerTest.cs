@@ -92,7 +92,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Setup(p => p.ToListAsync()).Returns(Task.FromResult(data));
 
             var result = await _controller.Get();
-            Assert.Equal(data.Count, result.Value.Count());
+            var okObjectResult = result.Result as OkObjectResult;
+            var response = okObjectResult.Value as IEnumerable<SourceApplicationEntity>;
+            Assert.Equal(data.Count, response.Count());
             _repository.Verify(p => p.ToListAsync(), Times.Once());
         }
 
@@ -129,8 +131,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 }));
 
             var result = await _controller.GetAeTitle(value);
-            Assert.NotNull(result.Value);
-            Assert.Equal(value, result.Value.AeTitle);
+            var okObjectResult = result.Result as OkObjectResult;
+            var response = okObjectResult.Value as SourceApplicationEntity;
+            Assert.Equal(value, response.AeTitle);
             _repository.Verify(p => p.FindAsync(value), Times.Once());
         }
 
@@ -258,8 +261,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()));
 
             var result = await _controller.Delete(value);
-            Assert.NotNull(result.Value);
-            Assert.Equal(value, result.Value.AeTitle);
+            var okObjectResult = result.Result as OkObjectResult;
+            var response = okObjectResult.Value as SourceApplicationEntity;
+            Assert.Equal(value, response.AeTitle);
             _repository.Verify(p => p.FindAsync(value), Times.Once());
             _repository.Verify(p => p.Remove(entity), Times.Once());
             _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());

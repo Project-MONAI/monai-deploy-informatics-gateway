@@ -2,8 +2,14 @@
 # Created by https://www.toptal.com/developers/gitignore/api/aspnetcore,dotnetcore,visualstudio,visualstudiocode
 # Edit at https://www.toptal.com/developers/gitignore?templates=aspnetcore,dotnetcore,visualstudio,visualstudiocode
 
+# MIG
+/cli
+
 # Database
 *.db
+
+# docfx temp files
+_site/
 
 ### ASPNETCore ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -29,6 +35,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+MSBuild_Logs/
 
 # Visual Studio 2015 cache/options directory
 .vs/

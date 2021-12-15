@@ -80,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _workloadManagerApi.Setup(p => p.Upload(It.IsAny<FileStorageInfo>(), It.IsAny<CancellationToken>()));
             _cleanupQueue.Setup(p => p.Queue(It.IsAny<FileStorageInfo>()));
             _taskQueue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
-                .Returns(() =>
+                .ReturnsAsync(() =>
                 {
                     if (stack.Count > 0)
                     {
@@ -132,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cleanupQueue.Setup(p => p.Queue(It.IsAny<FileStorageInfo>()));
             _taskQueue.Setup(p => p.Queue(It.IsAny<FileStorageInfo>()));
             _taskQueue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
-                .Returns(() =>
+                .ReturnsAsync(() =>
                 {
                     if (stack.Count > 0)
                     {
@@ -184,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _workloadManagerApi.Setup(p => p.Upload(It.IsAny<FileStorageInfo>(), It.IsAny<CancellationToken>()));
             _cleanupQueue.Setup(p => p.Queue(It.IsAny<FileStorageInfo>()));
             _taskQueue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
-                .Returns(() =>
+                .ReturnsAsync(() =>
                 {
                     if (stack.Count > 0)
                     {

@@ -11,7 +11,6 @@
 
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using System;
 using System.Net.Http;
 using System.Net.Http.Formatting;
 using System.Threading;
@@ -44,9 +43,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<InferenceRequestResponse>(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }
@@ -60,9 +58,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
                 return await response.Content.ReadAsAsync<InferenceStatusResponse>(cancellationToken);
             }
-            catch (Exception ex)
+            catch
             {
-                _logger.Log(LogLevel.Error, ex, "Error sending request");
                 throw;
             }
         }

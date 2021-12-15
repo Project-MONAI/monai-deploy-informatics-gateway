@@ -10,34 +10,33 @@
 // limitations under the License.
 
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using System;
+using System.IO;
 using System.IO.Abstractions;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    public interface IConfigurationService
-    {
-        void CreateConfigDirectoryIfNotExist();
-
-        bool ConfigurationExists();
-
-        ConfigurationOptions Load();
-
-        ConfigurationOptions Load(bool verbose);
-
-        void Save(ConfigurationOptions options);
-    }
-
     public class ConfigurationService : IConfigurationService
     {
         private readonly ILogger<ConfigurationService> _logger;
         private readonly IFileSystem _fileSystem;
+        private readonly IEmbeddedResource _embeddedResource;
 
-        public ConfigurationService(ILogger<ConfigurationService> logger, IFileSystem fileSystem)
+        public bool IsInitialized => _fileSystem.Directory.Exists(Common.MigDirectory) && IsConfigExists;
+
+        public bool IsConfigExists => _fileSystem.File.Exists(Common.ConfigFilePath);
+
+        public IConfigurationOptionAccessor Configurations { get; }
+
+        public ConfigurationService(ILogger<ConfigurationService> logger, IFileSystem fileSystem, IEmbeddedResource embeddedResource)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
+            _embeddedResource = embeddedResource ?? throw new ArgumentNullException(nameof(embeddedResource));
+            Configurations = new ConfigurationOptionAccessor(fileSystem);
         }
 
         public void CreateConfigDirectoryIfNotExist()
@@ -48,45 +47,25 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
         }
 
-        public bool ConfigurationExists()
+        public async Task Initialize(CancellationToken cancellationToken)
         {
-            return _fileSystem.File.Exists(Common.CliConfigFilePath);
-        }
+            _logger.Log(LogLevel.Debug, $"Reading default application configurations...");
+            using var stream = _embeddedResource.GetManifestResourceStream(Common.AppSettingsResourceName);
 
-        public ConfigurationOptions Load() => Load(false);
-
-        public ConfigurationOptions Load(bool verbose)
-        {
-            try
+            if (stream is null)
             {
-                if (verbose)
-                {
-                    this._logger.Log(LogLevel.Debug, "Loading configuration file from {0}", Common.CliConfigFilePath);
-                }
-
-                using (var file = _fileSystem.File.OpenText(Common.CliConfigFilePath))
-                {
-                    var serializer = new JsonSerializer();
-                    return serializer.Deserialize(file, typeof(ConfigurationOptions)) as ConfigurationOptions;
-                }
+                _logger.Log(LogLevel.Debug, $"Available manifest names {string.Join(",", Assembly.GetExecutingAssembly().GetManifestResourceNames())}");
+                throw new ConfigurationException($"Default configuration file could not be loaded, please reinstall the CLI.");
             }
-            catch (Exception)
+            CreateConfigDirectoryIfNotExist();
+
+            _logger.Log(LogLevel.Information, $"Saving appsettings.json to {Common.ConfigFilePath}...");
+            using (var fileStream = _fileSystem.FileStream.Create(Common.ConfigFilePath, FileMode.Create))
             {
-                this._logger.Log(LogLevel.Warning, "Existing configuration file may be corrupted, createing a new one.");
-                return new ConfigurationOptions();
+                await stream.CopyToAsync(fileStream, cancellationToken);
+                await fileStream.FlushAsync(cancellationToken);
             }
-        }
-
-        public void Save(ConfigurationOptions options)
-        {
-            using (var file = _fileSystem.File.CreateText(Common.CliConfigFilePath))
-            {
-                var serializer = new JsonSerializer();
-                serializer.Formatting = Formatting.Indented;
-                serializer.Serialize(file, options);
-            }
-
-            this._logger.Log(LogLevel.Information, $"Configuration file {Common.CliConfigFilePath} updated successfully.");
+            this._logger.Log(LogLevel.Information, $"{Common.ConfigFilePath} updated successfully.");
         }
     }
 }

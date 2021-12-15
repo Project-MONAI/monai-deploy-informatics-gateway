@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -10,21 +10,21 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
-using System;
+using System.IO;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    public class ConfigurationOptions
+    public interface IEmbeddedResource
     {
-        public string Endpoint { get; set; }
+        Stream GetManifestResourceStream(string name);
+    }
 
-        public void Validate()
+    public class EmbeddedResource : IEmbeddedResource
+    {
+        public Stream GetManifestResourceStream(string name)
         {
-            Guard.Against.NullOrEmpty(Endpoint, nameof(Endpoint));
-            if (!Uri.IsWellFormedUriString(Endpoint, UriKind.Absolute))
-            {
-                throw new ArgumentException($"--endpoint '{Endpoint}' is not a valid URI.");
-            }
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            return this.GetType().Assembly.GetManifestResourceStream(Common.AppSettingsResourceName);
         }
     }
 }

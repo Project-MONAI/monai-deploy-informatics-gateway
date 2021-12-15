@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
     }
 
     /// <summary>
-    /// A DICOMweb client for sending HTTP requests and receiving HTTP responses from a DICOMweb server.
+    /// Interface for the DICOMweb client.
     /// </summary>
     public interface IDicomWebClient
     {

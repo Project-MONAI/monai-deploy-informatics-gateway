@@ -11,7 +11,6 @@
 
 using Monai.Deploy.InformaticsGateway.Api;
 using System;
-using System.Collections.Generic;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration.Test

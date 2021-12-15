@@ -18,6 +18,7 @@ using System;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -67,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Restart_Cancelled, exitCode);
 
-            _controlService.Verify(p => p.Restart(), Times.Never());
+            _controlService.Verify(p => p.Restart(It.IsAny<CancellationToken>()), Times.Never());
         }
 
         [Fact(DisplayName = "restart comand - confirmed")]
@@ -81,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Restart(), Times.Once());
+            _controlService.Verify(p => p.Restart(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "restart comand -y")]
@@ -94,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Restart(), Times.Once());
+            _controlService.Verify(p => p.Restart(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "restart comand -y excception")]
@@ -104,12 +105,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _controlService.Setup(p => p.Restart()).Throws(new Exception("error"));
+            _controlService.Setup(p => p.Restart(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Restart_Error, exitCode);
 
-            _controlService.Verify(p => p.Restart(), Times.Once());
+            _controlService.Verify(p => p.Restart(It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

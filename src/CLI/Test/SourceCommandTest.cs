@@ -66,8 +66,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _paser = _commandLineBuilder.Build();
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
-            _configurationService.Setup(p => p.ConfigurationExists()).Returns(true);
-            _configurationService.Setup(p => p.Load(It.IsAny<bool>())).Returns(new ConfigurationOptions { Endpoint = "http://test" });
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupGet(p => p.IsConfigExists).Returns(true);
+            _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerUri).Returns(new Uri("http://test"));
+            _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerEndpoint).Returns("http://test");
         }
 
         [Fact(DisplayName = "src comand")]
@@ -106,8 +108,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(
                 p => p.DicomSources.Create(
@@ -126,12 +126,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.SourceAe_ErrorCreate, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomSources.Create(It.IsAny<SourceApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error creating DICOM source", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "src add comand configuration exception")]
+        public async Task SrcAdd_Command_ConfigurationException()
+        {
+            var command = "src add -n MyName -a MyAET --apps App MyCoolApp TheApp";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "src remove comand")]
@@ -150,8 +164,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomSources.Delete(It.Is<string>(o => o.Equals(name)), It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -167,12 +179,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.SourceAe_ErrorDelete, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomSources.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error deleting DICOM source", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "src remove comand configuration exception")]
+        public async Task SrcRemove_Command_ConfigurationException()
+        {
+            var command = "src rm -n MyName";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "src list comand")]
@@ -196,8 +222,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomSources.List(It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -213,12 +237,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.SourceAe_ErrorList, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomSources.List(It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error retrieving DICOM sources", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "src list comand configuration exception")]
+        public async Task SrcList_Command_ConfigurationException()
+        {
+            var command = "src list";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "src list comand empty")]
@@ -232,8 +270,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomSources.List(It.IsAny<CancellationToken>()), Times.Once());
 

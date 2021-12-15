@@ -5,10 +5,7 @@ using Monai.Deploy.InformaticsGateway.Services.Http;
 using Moq;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -42,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Empty(body);
         }
 
-        [Fact(DisplayName ="InvokeAsync - Handles Exception")]
+        [Fact(DisplayName = "InvokeAsync - Handles Exception")]
         public async Task InvokeAsync_HandlesExcption()
         {
             var context = new DefaultHttpContext();

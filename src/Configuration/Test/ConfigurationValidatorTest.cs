@@ -61,15 +61,28 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             logger.VerifyLogging(validationMessage, LogLevel.Error, Times.Once());
         }
 
-        [Fact(DisplayName = "ConfigurationValidator test with missing Workload Manager endpoint")]
-        public void ServicesWithMissingPlatformEndpoint()
+        [Fact(DisplayName = "ConfigurationValidator test with missing Workload Manager RESTful endpoint")]
+        public void ServicesWithMissingPlatformRestEndpoint()
         {
             var config = MockValidConfiguration();
-            config.WorkloadManager.Endpoint = null;
+            config.WorkloadManager.RestEndpoint = null;
 
             var valid = new ConfigurationValidator(logger.Object).Validate("", config);
 
-            var validationMessage = $"MONAI Workload Manager API endpoint is not configured: InformaticsGateway>workloadManager>endpoint.";
+            var validationMessage = $"MONAI Workload Manager API REST endpoint is not configured: InformaticsGateway>workloadManager>restEndpoint.";
+            Assert.Equal(validationMessage, valid.FailureMessage);
+            logger.VerifyLogging(validationMessage, LogLevel.Error, Times.Once());
+        }
+
+        [Fact(DisplayName = "ConfigurationValidator test with missing Workload Manager gRPC endpoint")]
+        public void ServicesWithMissingPlatformGrpcEndpoint()
+        {
+            var config = MockValidConfiguration();
+            config.WorkloadManager.GrpcEndpoint = null;
+
+            var valid = new ConfigurationValidator(logger.Object).Validate("", config);
+
+            var validationMessage = $"MONAI Workload Manager API gRPC endpoint is not configured: InformaticsGateway>workloadManager>grpcEndpoint.";
             Assert.Equal(validationMessage, valid.FailureMessage);
             logger.VerifyLogging(validationMessage, LogLevel.Error, Times.Once());
         }
@@ -103,7 +116,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         private InformaticsGatewayConfiguration MockValidConfiguration()
         {
             var config = new InformaticsGatewayConfiguration();
-            config.WorkloadManager.Endpoint = "http://1.2.3.4:8080/bla-bla";
+            config.WorkloadManager.RestEndpoint = "http://1.2.3.4:8080/bla-bla";
+            config.WorkloadManager.GrpcEndpoint = "http://1.2.3.4:8081/bla-bla";
             config.Dicom.Scp.RejectUnknownSources = true;
             config.Storage.Watermark = 50;
             return config;

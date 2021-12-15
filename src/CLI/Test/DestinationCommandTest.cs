@@ -66,8 +66,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _paser = _commandLineBuilder.Build();
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
-            _configurationService.Setup(p => p.ConfigurationExists()).Returns(true);
-            _configurationService.Setup(p => p.Load(It.IsAny<bool>())).Returns(new ConfigurationOptions { Endpoint = "http://test" });
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
+            _configurationService.SetupGet(p => p.IsConfigExists).Returns(true);
+            _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerUri).Returns(new Uri("http://test"));
+            _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerEndpoint).Returns("http://test");
         }
 
         [Fact(DisplayName = "dst comand")]
@@ -108,8 +110,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(
                 p => p.DicomDestinations.Create(
@@ -128,12 +128,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.DestinationAe_ErrorCreate, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.Create(It.IsAny<DestinationApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error creating DICOM destination", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "dst add comand configuration exception")]
+        public async Task DstAdd_Command_ConfigurationException()
+        {
+            var command = "dst add -n MyName -a MyAET --apps App MyCoolApp TheApp";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "dst remove comand")]
@@ -152,8 +166,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.Delete(It.Is<string>(o => o.Equals(name)), It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -169,12 +181,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.DestinationAe_ErrorDelete, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error deleting DICOM destination", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "dst remove comand configuration exception")]
+        public async Task DstRemove_Command_ConfigurationException()
+        {
+            var command = "dst rm -n MyName";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "dst list comand")]
@@ -199,8 +225,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -216,12 +240,26 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.DestinationAe_ErrorList, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error retrieving DICOM destinations", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "dst list comand configuration exception")]
+        public async Task DstList_Command_ConfigurationException()
+        {
+            var command = "dst list";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "dst list comand empty")]
@@ -235,8 +273,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _configurationService.Verify(p => p.ConfigurationExists(), Times.Once());
-            _configurationService.Verify(p => p.Load(It.IsAny<bool>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Once());
 

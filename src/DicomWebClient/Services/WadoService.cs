@@ -194,7 +194,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
         }
 
         /// <inheritdoc />
-        public async Task<DicomFile> Retrieve(
+        public Task<DicomFile> Retrieve(
             string studyInstanceUid,
             string seriesInstanceUid,
             string sopInstanceUid,

@@ -13,7 +13,6 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Client.Services;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -97,8 +96,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.Create(aet, CancellationToken.None));
 
-            _logger.VerifyLogging("Error sending request", LogLevel.Error, Times.Once());
-
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }
 
@@ -164,8 +161,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.Get(aet.Name, CancellationToken.None));
 
-            _logger.VerifyLogging("Error sending request", LogLevel.Error, Times.Once());
-
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }
 
@@ -230,8 +225,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 
             var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.Delete(aet.Name, CancellationToken.None));
-
-            _logger.VerifyLogging("Error sending request", LogLevel.Error, Times.Once());
 
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }
@@ -306,8 +299,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 
             var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.List(CancellationToken.None));
-
-            _logger.VerifyLogging("Error sending request", LogLevel.Error, Times.Once());
 
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }
