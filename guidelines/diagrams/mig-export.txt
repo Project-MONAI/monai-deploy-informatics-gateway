@@ -32,9 +32,7 @@ EW<--PS: Response
 PS->EW: Notify new export task event
 activate EW
 
-EW->EA: Download results
-EA->DISK: Load results
-EW<--EA: Stream response
+EW->DISK: Load results
 
 alt case DICOM
 EW->SCU: Queue DICOM export task
