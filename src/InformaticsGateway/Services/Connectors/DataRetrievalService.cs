@@ -52,7 +52,7 @@ using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
-    public class DataRetrievalService : IHostedService, IMonaiService
+    internal class DataRetrievalService : IHostedService, IMonaiService
     {
         private readonly ILoggerFactory _loggerFactory;
         private readonly IHttpClientFactory _httpClientFactory;
@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IFileSystem _fileSystem;
         private readonly IDicomToolkit _dicomToolkit;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IFileStoredNotificationQueue _fileStoredNotificationQueue;
+        private readonly IPayloadAssembler _fileStoredNotificationQueue;
 
         public ServiceStatus Status { get; set; }
 
@@ -74,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             IFileSystem fileSystem,
             IDicomToolkit dicomToolkit,
             IServiceScopeFactory serviceScopeFactory,
-            IFileStoredNotificationQueue fileStoredNotificationQueue,
+            IPayloadAssembler fileStoredNotificationQueue,
             IStorageInfoProvider storageInfoProvider)
         {
             _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
@@ -199,9 +199,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (inferenceRequest.Application is not null)
                 {
-                    retrievedFiles[key].SetApplications(inferenceRequest.Application.Id);
+                    retrievedFiles[key].SetWorkflows(inferenceRequest.Application.Id);
                 }
-                await _fileStoredNotificationQueue.Queue(retrievedFiles[key]);
+                 _fileStoredNotificationQueue.Queue(inferenceRequest.TransactionId, retrievedFiles[key]);
             }
         }
 

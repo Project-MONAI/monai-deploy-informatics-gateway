@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         private MockFileSystem _fileSystem;
         private Mock<HttpMessageHandler> _handlerMock;
         private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
-        private readonly Mock<IFileStoredNotificationQueue> _fileStoredNotificationQueue;
+        private readonly Mock<IPayloadAssembler> _fileStoredNotificationQueue;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
 
         public DataRetrievalServiceTest()
@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _fileSystem = new MockFileSystem();
             _loggerDicomWebClient = new Mock<ILogger<DicomWebClient>>();
             _storageInfoProvider = new Mock<IStorageInfoProvider>();
-            _fileStoredNotificationQueue = new Mock<IFileStoredNotificationQueue>();
+            _fileStoredNotificationQueue = new Mock<IPayloadAssembler>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns((string type) =>
@@ -242,7 +242,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 .Returns(new HttpClient(_handlerMock.Object));
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
             _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _fileStoredNotificationQueue.Setup(p => p.Queue(It.IsAny<FileStorageInfo>()));
+            _fileStoredNotificationQueue.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()));
 
             var store = new DataRetrievalService(
                 _loggerFactory.Object,
@@ -259,7 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             BlockUntilCancelled(cancellationTokenSource.Token);
 
             _logger.VerifyLoggingMessageBeginsWith($"Restored previously retrieved instance", LogLevel.Debug, Times.Exactly(5));
-            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Exactly(5));
+            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(5));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
@@ -388,7 +388,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()), Times.Never());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
+            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Never());
         }
 
         [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall retrieve via DICOMweb with DICOM UIDs")]
@@ -528,7 +528,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()), Times.Exactly(4));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Exactly(4));
+            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(4));
         }
 
         [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall query by PatientId and retrieve")]
@@ -653,7 +653,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()), Times.Exactly(studyInstanceUids.Count));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Exactly(studyInstanceUids.Count));
+            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(studyInstanceUids.Count));
         }
 
         [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall query by AccessionNumber and retrieve")]
@@ -778,7 +778,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()), Times.Exactly(studyInstanceUids.Count));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Exactly(2));
+            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(2));
         }
 
         [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall retrieve FHIR resources")]
@@ -902,7 +902,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Exactly(2));
+            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(2));
         }
 
         private HttpResponseMessage GenerateQueryResult(DicomTag dicomTag, string queryValue, List<string> studyInstanceUids)

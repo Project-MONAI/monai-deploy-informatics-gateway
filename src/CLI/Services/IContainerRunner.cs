@@ -14,7 +14,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Monai.Deploy.InformaticsGateway.CLI
+namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     /// <summary>
     /// Represents the state of a running application in the orchestration engine.

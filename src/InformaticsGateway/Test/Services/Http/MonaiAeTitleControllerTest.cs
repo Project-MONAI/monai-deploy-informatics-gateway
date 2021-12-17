@@ -99,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 {
                     AeTitle = $"AET{i}",
                     Name = $"AET{i}",
-                    Applications = new List<string> { "A", "B" }
+                    Workflows = new List<string> { "A", "B" }
                 });
             }
 
@@ -141,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 {
                     AeTitle = value,
                     Name = value,
-                    Applications = new List<string> { "A", "B" }
+                    Workflows = new List<string> { "A", "B" }
                 }));
 
             var result = await _controller.GetAeTitle(value);
@@ -198,7 +198,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 {
                     AeTitle = $"AET{i}",
                     Name = $"AET{i}",
-                    Applications = new List<string> { "A", "B" }
+                    Workflows = new List<string> { "A", "B" }
                 });
             }
             _repository.Setup(p => p.Any(It.IsAny<Func<MonaiApplicationEntity, bool>>())).Returns(aeTitle == "AET1");
@@ -207,7 +207,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             {
                 Name = aeTitle,
                 AeTitle = aeTitle,
-                Applications = new List<string> { "A", "B" }
+                Workflows = new List<string> { "A", "B" }
             };
 
             var result = await _controller.Create(monaiAeTitle);
@@ -230,7 +230,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             {
                 Name = aeTitle,
                 AeTitle = aeTitle,
-                Applications = new List<string> { "A", "B" }
+                Workflows = new List<string> { "A", "B" }
             };
 
             _repository.Setup(p => p.AddAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
@@ -256,7 +256,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             {
                 Name = aeTitle,
                 AeTitle = aeTitle,
-                Applications = new List<string> { "A", "B" }
+                Workflows = new List<string> { "A", "B" }
             };
 
             _aeChangedNotificationService.Setup(p => p.Notify(It.IsAny<MonaiApplicationentityChangedEvent>()));

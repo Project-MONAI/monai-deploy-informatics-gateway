@@ -14,6 +14,7 @@ using Crayon;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
 using System;
 using System.CommandLine;
 

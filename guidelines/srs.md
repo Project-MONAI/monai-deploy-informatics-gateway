@@ -266,7 +266,7 @@ Initiates a new inference requesting using ACR-DSI drafted API. This API retriev
 
 `/inference`
 
-##### Meethod
+##### Method
 
 `POST`
 
@@ -294,7 +294,7 @@ Refer to [ACR Inference API specs]() for detailed information.
 
 `/inference/{transactionId}`
 
-##### Meethod
+##### Method
 
 `GET`
 
@@ -312,184 +312,15 @@ Refer to [ACR Inference API specs]() for detailed information.
 
 ### Health API
 
-#### URL
-
-`/health/live`
-`/health/ready`
-
-#### Meethod
-
-`GET`
-
-#### Success Response
-
-- Code: `200`
-  Content: `{ "status": "UP", "checks": { "SCP": { "status": "UP" } ... } }`
-- Code: `503`
-
-  Content: `{ "status": "OUT_OF_SERVICE", "checks": { "SCP": { "status": "UP" } } }`
+[Health API](../docs/api/rest/health.md)
 
 ---
 
-### List Source AET Config API
+### Config API
 
-List all source AE Titles configured on the system.
-
-#### URL
-
-`/config/source`
-
-#### Meethod
-
-`GET`
-
-#### Success Response
-
-- Code: `200`
-  Content: `[{"name": "USEAST", "hostIp": "10.20.3.4", "aeTitle": "MYPACS" },...]`
-- Code: `500`: Server error.
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.
-
-### Add Source AET Config API
-
-Adds a new source AE Title.
-
-#### URL
-
-`/config/source`
-
-#### Meethod
-
-`POST`
-
-##### Data Params
-
-```
-{
-    "name": "USEAST",
-  "hostIp": "10.20.3.4",
-  "aeTitle": "MYPACS"
-}
-```
-
-#### Success Response
-
-- Code: `201`: AE Title created successfully.
-  Content: `{"name": "USEAST", "hostIp": "10.20.3.4", "aeTitle": "MYPACS" }`
-- Code: `400`: Validation error.
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with validation error details.
-
-- Code: `500`: Server error.
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.
-
-### Delete Source AET Config API
-
-Deletes a source AE Title.
-
-#### URL
-
-`/config/source/{name}`
-
-#### Meethod
-
-`DELETE`
-
-#### Success Response
-
-- Code: `201`: AE Title deleted.
-  Content: `{"name": "USEAST", "hostIp": "10.20.3.4", "aeTitle": "MYPACS" }`
-- Code: `404`: AE Title not found.
-
-  Content: None
-
-- Code: `500`: Server error.
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.
+[Config API](../docs/api/rest/config.md)
 
 ---
-
-### List Destination AET Config API
-
-List all destination AE Titles configured on the system.
-
-#### URL
-
-`/config/destination`
-
-#### Meethod
-
-`GET`
-
-#### Success Response
-
-- Code: `200`
-  Content: `[{"name": "USEAST", "hostIp": "10.20.3.4", port: 104, "aeTitle": "MYPACS" },...]`
-- Code: `500`: Server error.
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.
-
-### Add Destination AET Config API
-
-Adds a new destination AE Title.
-
-#### URL
-
-`/config/destination`
-
-#### Meethod
-
-`POST`
-
-##### Data Params
-
-```
-{
-    "name": "USEAST",
-  "hostIp": "10.20.3.4",
-    "port": 104,
-  "aeTitle": "MYPACS"
-}
-```
-
-#### Success Response
-
-- Code: `201`: AE Title created successfully.
-  Content: `{"name": "USEAST", "hostIp": "10.20.3.4", "port": 104, "aeTitle": "MYPACS" }`
-- Code: `400`: Validation error.
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with validation error details.
-
-- Code: `500`: Server error.
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.
-
-### Delete Destination AET Config API
-
-Deletes a destination AE Title.
-
-#### URL
-
-`/config/destination/{name}`
-
-#### Meethod
-
-`DELETE`
-
-#### Success Response
-
-- Code: `201`: AE Title deleted.
-  Content: `{"name": "USEAST", "hostIp": "10.20.3.4", "port": 104, "aeTitle": "MYPACS" }`
-- Code: `404`: AE Title not found.
-
-  Content: None
-
-- Code: `500`: Server error.
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.
-
 
 ### Storage & Subsystems
 

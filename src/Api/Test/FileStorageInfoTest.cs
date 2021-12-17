@@ -10,6 +10,7 @@
 // limitations under the License.
 
 using System;
+using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
 using Xunit;
 
@@ -17,7 +18,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
 {
     public class FileStorageInfoTest
     {
-        [Fact(DisplayName = "Algorithm shall return null if no algorithm is defined")]
+        [Fact(DisplayName = "Shall prepend dot to file extension")]
         public void ShallPrependDotToFileExtension()
         {
             var correlationId = Guid.NewGuid().ToString();
@@ -28,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             Assert.Equal($"{root}{correlationId}-{messagId}.txt", fileStorageInfo.FilePath);
         }
 
-        [Fact(DisplayName = "Algorithm shall return null if no algorithm is defined")]
+        [Fact(DisplayName = "Shall prevent overwriting existing files")]
         public void ShallAppendRandomValueToPreventOverwritingExistingFiles()
         {
             var correlationId = Guid.NewGuid().ToString();
@@ -40,6 +41,27 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, fileExtension, mockFileSystem);
 
             Assert.NotEqual($"{root}{correlationId}-{messagId}{fileExtension}", fileStorageInfo.FilePath);
+        }
+
+        [Fact(DisplayName = "Shall copy workflows")]
+        public void ShallCloneWorkflows()
+        {
+            var correlationId = Guid.NewGuid().ToString();
+            var root = "/";
+            var messagId = Guid.NewGuid().ToString();
+            var fileExtension = ".txt";
+            var mockFileSystem = new MockFileSystem();
+            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, fileExtension, mockFileSystem);
+
+            var workflows = new List<string>() { "A", "B", "C" };
+            fileStorageInfo.SetWorkflows(workflows.ToArray());
+
+            workflows.Clear();
+            Assert.Equal(3, fileStorageInfo.Workflows.Length);
+            Assert.Collection(fileStorageInfo.Workflows,
+                item => item.Equals("A"),
+                item => item.Equals("B"),
+                item => item.Equals("C"));
         }
     }
 }

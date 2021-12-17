@@ -9,7 +9,7 @@ using Monai.Deploy.InformaticsGateway.Database;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20210923225957_R1_Initialize")]
+    [Migration("20211216184705_R1_Initialize")]
     partial class R1_Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -45,9 +45,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Applications")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CorrelationId")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -71,6 +68,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<int>("TryCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Workflows")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("FileStorageInfo");
@@ -85,7 +85,17 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Applications")
+                    b.Property<string>("Grouping")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("IgnoredSopClasses")
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint>("Timeout")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Workflows")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Name");

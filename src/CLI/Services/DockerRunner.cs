@@ -21,7 +21,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Monai.Deploy.InformaticsGateway.CLI
+namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     public class DockerRunner : IContainerRunner
     {

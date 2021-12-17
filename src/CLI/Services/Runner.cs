@@ -9,7 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-namespace Monai.Deploy.InformaticsGateway.CLI
+namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     public enum Runner
     {

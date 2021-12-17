@@ -12,6 +12,7 @@
 using Docker.DotNet;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Moq;
 using System;
 using System.IO.Abstractions;
