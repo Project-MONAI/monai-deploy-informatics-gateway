@@ -10,16 +10,12 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -27,24 +23,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
     /// An in-memory queue for providing any files/DICOM instances received by the Informatics Gateway to
     /// other internal services.
     /// </summary>
-    internal sealed partial class PayloadAssembler : IPayloadAssembler
+    internal sealed partial class PayloadAssembler : IPayloadAssembler, IDisposable
     {
-        private const int DEFAULT_TIMEOUT = 5;
-        private static readonly object SyncRoot = new object();
+        internal const int DEFAULT_TIMEOUT = 5;
         private readonly BlockingCollection<Payload> _workItems;
         private readonly ILogger<PayloadAssembler> _logger;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
-        private Dictionary<string, Payload> _payloads;
+        private ConcurrentDictionary<string, Lazy<Payload>> _payloads;
         private System.Timers.Timer _timer;
 
         public PayloadAssembler(
-            ILogger<PayloadAssembler> logger,
-            IServiceScopeFactory serviceScopeFactory)
+            ILogger<PayloadAssembler> logger)
         {
             _workItems = new BlockingCollection<Payload>();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            _payloads = new Dictionary<string, Payload>();
+            _payloads = new ConcurrentDictionary<string, Lazy<Payload>>();
 
             _timer = new System.Timers.Timer(1000);
             _timer.AutoReset = false;
@@ -52,18 +44,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _timer.Enabled = true;
         }
 
-
         /// <summary>
         /// Queues a new instance of FileStorageInfo to the bucket with default timeout of 5 seconds.
         /// </summary>
+        /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
         public void Queue(string bucket, FileStorageInfo file) => Queue(bucket, file, DEFAULT_TIMEOUT);
-
 
         /// <summary>
         /// Queues a new instance of FileStorageInfo.
         /// </summary>
+        /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
+        /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
         public void Queue(string bucket, FileStorageInfo file, uint timeout)
         {
             Guard.Against.Null(file, nameof(file));
@@ -93,19 +86,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 foreach (var key in _payloads.Keys)
                 {
                     _logger.Log(LogLevel.Trace, $"Checking elapsed time for key: {key}.");
-                    var payload = _payloads[key];
-                    lock (SyncRoot)
+                    var payload = _payloads[key].Value;
+                    if (payload.HasTimedOut)
                     {
-                        if (payload.HasTimedOut)
+                        if (payload.Count == 0)
                         {
-                            if (payload.Count == 0)
+                            _logger.Log(LogLevel.Warning, $"Something's wrong, found no instances in collection with key={key}");
+                            continue;
+                        }
+                        else
+                        {
+                            if (_payloads.TryRemove(key, out _))
                             {
-                                _logger.Log(LogLevel.Warning, $"Something's wrong, found no instances in collection with key={key}");
-                                continue;
+                                _workItems.Add(payload);
+                                _logger.Log(LogLevel.Information, $"Bucket {key} sent to processing queue.");
                             }
                             else
                             {
-                                _workItems.Add(payload);
+                                _logger.Log(LogLevel.Warning, $"Error removing bucket {key} from collection.");
                             }
                         }
                     }
@@ -117,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error scanning collection for timeout collections.");
+                _logger.Log(LogLevel.Error, ex, "Error scanning timeout collections.");
             }
             finally
             {
@@ -127,14 +125,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private Payload CreateOrGetPayload(string key, uint timeout)
         {
-            lock (SyncRoot)
-            {
-                if (!_payloads.ContainsKey(key))
-                {
-                    _payloads.Add(key, new Payload(key, timeout));
-                }
-                return _payloads[key];
-            }
+            var payload = _payloads.GetOrAdd(key, x => new Lazy<Payload>(() => new Payload(key, timeout))).Value;
+            _logger.Log(LogLevel.Information, $"Bucket {key} created with timeout {timeout}s.");
+            return payload;
+        }
+
+        public void Dispose()
+        {
+            _payloads.Clear();
+            _timer.Stop();
         }
     }
 }

@@ -34,6 +34,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
         }
 
+        [Fact(DisplayName = "Constructor")]
+        public void Constructor()
+        {
+            Assert.Throws<ArgumentNullException>(() => new InformaticsGatewayRepository<SourceApplicationEntity>(null));
+        }
+
         [RetryFact(5, 250, DisplayName = "AsQueryable - returns IQueryable")]
         public void AsQueryable()
         {
@@ -131,6 +137,28 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
 
             var doesNotexist = repo.FirstOrDefault(p => p.AeTitle == "ABC");
             Assert.Null(doesNotexist);
+        }
+
+        [RetryFact(5, 250, DisplayName = "Detach")]
+        public async Task Detach()
+        {
+            var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);
+
+            var toBeModified = await repo.FindAsync("AET1");
+            repo.Detach(toBeModified);
+            toBeModified.Name = "TEST";
+
+            var existing = await repo.FindAsync("AET1");
+            Assert.NotEqual(existing.Name, toBeModified.Name);
+        }
+
+        [RetryFact(5, 250, DisplayName = "Any")]
+        public void Any()
+        {
+            var repo = new InformaticsGatewayRepository<SourceApplicationEntity>(_serviceScopeFactory.Object);
+
+            var all = repo.Any(p => p.Name.StartsWith("AET"));
+            Assert.True(all);
         }
     }
 

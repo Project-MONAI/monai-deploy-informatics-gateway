@@ -147,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             Guard.Against.Null(host, nameof(host));
             Guard.Against.Null(updater, nameof(updater));
-            
+
             var logger = CreateLogger<ConfigCommand>(host);
             var config = host.Services.GetRequiredService<IConfigurationService>();
 
@@ -174,7 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private async Task<int> InitHandlerAsync(IHost host, bool verbose, bool yes, CancellationToken cancellationToken)
         {
             Guard.Against.Null(host, nameof(host));
-            
+
             var logger = CreateLogger<ConfigCommand>(host);
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();

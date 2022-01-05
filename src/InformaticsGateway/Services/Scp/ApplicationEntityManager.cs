@@ -1,3 +1,4 @@
+using System.IO.Pipes;
 // Copyright 2021 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,7 +42,6 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using System;
 using System.Collections.Concurrent;
 using System.IO.Abstractions;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
@@ -126,13 +126,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
             }
 
-            var info = new DicomFileStorageInfo(associationId.ToString(), Configuration.Value.Storage.TemporaryDataDirFullPath, request.MessageID.ToString(), _fileSystem);
+            var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
+            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), _fileSystem);
 
             info.PatientId = request.Dataset.GetSingleValue<string>(DicomTag.PatientID);
             info.StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
             info.SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
             info.SopInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
-
 
             using (_logger.BeginScope("SOPInstanceUID={0}", info.SopInstanceUid))
             {

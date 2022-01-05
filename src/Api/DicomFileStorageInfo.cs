@@ -10,7 +10,6 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
-using System;
 using System.IO.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Api
@@ -26,7 +25,6 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public string SeriesInstanceUid { get; set; }
         public string SopInstanceUid { get; set; }
 
-
         public DicomFileStorageInfo() { }
 
         public DicomFileStorageInfo(string correlationId,
@@ -40,7 +38,6 @@ namespace Monai.Deploy.InformaticsGateway.Api
                                     IFileSystem fileSystem)
             : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, fileSystem)
         {
-
         }
 
         protected override string GenerateStoragePath()

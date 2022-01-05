@@ -11,7 +11,6 @@
 
 using Monai.Deploy.InformaticsGateway.Api;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {

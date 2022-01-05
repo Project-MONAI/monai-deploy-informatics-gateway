@@ -201,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     retrievedFiles[key].SetWorkflows(inferenceRequest.Application.Id);
                 }
-                 _fileStoredNotificationQueue.Queue(inferenceRequest.TransactionId, retrievedFiles[key]);
+                _fileStoredNotificationQueue.Queue(inferenceRequest.TransactionId, retrievedFiles[key]);
             }
         }
 

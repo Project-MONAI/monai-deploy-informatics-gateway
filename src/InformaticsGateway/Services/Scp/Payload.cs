@@ -36,11 +36,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             RetryCount = 0;
         }
 
-        public void AddInstance(FileStorageInfo value)
+        public new void Add(FileStorageInfo value)
         {
             Guard.Against.Null(value, nameof(value));
 
-            Add(value);
+            base.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
         }

@@ -9,20 +9,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Ardalis.GuardClauses;
-using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
-using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using System;
-using System.Collections.Concurrent;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
@@ -50,7 +43,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             IDicomToolkit dicomToolkit,
             ILogger<ApplicationEntityHandler> logger)
         {
-
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _configuration = monaiApplicationEntity ?? throw new ArgumentNullException(nameof(monaiApplicationEntity));
             _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
@@ -61,7 +53,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         }
 
         ~ApplicationEntityHandler() => Dispose(false);
-
 
         public void Dispose()
         {
@@ -95,13 +86,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             await SaveDicomInstance(request, info.FilePath);
 
-            _payloadAssembler.Queue(_configuration.Grouping, info, _configuration.Timeout);
-        }
-
-
-        private async Task NotifyStoredInstance(FileStorageInfo file)
-        {
-            _logger.Log(LogLevel.Information, $"Instance queued for upload: {file.FilePath}");
+            var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
+            if (request.Dataset.TryGetSingleValue<string>(dicomTag, out string key))
+            {
+                _payloadAssembler.Queue(key, info, _configuration.Timeout);
+            }
         }
 
         private async Task SaveDicomInstance(DicomCStoreRequest request, string filename)

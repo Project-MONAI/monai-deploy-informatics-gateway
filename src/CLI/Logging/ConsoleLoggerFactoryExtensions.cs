@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public static ILoggingBuilder AddInformaticsGatewayConsole(this ILoggingBuilder builder, Action<ConsoleLoggerConfiguration> configure)
         {
             Guard.Against.Null(configure, nameof(configure));
-            
+
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ConsoleLoggerProvider>());
             LoggerProviderOptions.RegisterProviderOptions<ConsoleLoggerConfiguration, ConsoleLoggerProvider>(builder.Services);
 

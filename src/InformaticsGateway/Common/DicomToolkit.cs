@@ -84,6 +84,8 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         public DicomFile Load(byte[] fileContent)
         {
+            Guard.Against.NullOrEmpty(fileContent, nameof(fileContent));
+
             using var stream = new MemoryStream(fileContent);
             var dicomFile = DicomFile.Open(stream);
             if (dicomFile is null)

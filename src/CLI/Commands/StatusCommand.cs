@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private async Task<int> StatusCommandHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
             Guard.Against.Null(host, nameof(host));
-            
+
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var configService = host.Services.GetRequiredService<IConfigurationService>();
