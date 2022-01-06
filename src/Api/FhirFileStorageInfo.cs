@@ -10,7 +10,7 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
-using FellowOakDicom;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
 using System.IO.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Api
@@ -18,42 +18,40 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// <summary>
     /// Provides basic information for a DICOM instance and storage hierarchy/path.
     /// </summary>
-    public record DicomFileStorageInfo : FileStorageInfo
+    public record FhirFileStorageInfo : FileStorageInfo
     {
-        public static readonly string FILE_EXTENSION = ".dcm";
-        public string PatientId { get; set; }
-        public string StudyInstanceUid { get; set; }
-        public string SeriesInstanceUid { get; set; }
-        public string SopInstanceUid { get; set; }
+        const string DirectoryPath = "ehr";
 
-        public DicomFileStorageInfo() { }
+        public string ResourceType { get; set; }
 
-        public DicomFileStorageInfo(string correlationId,
-                                    string storageRootPath,
-                                    string messageId)
-            : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, new FileSystem()) { }
+        public FhirFileStorageInfo() { }
 
-        public DicomFileStorageInfo(string correlationId,
+        public FhirFileStorageInfo(string correlationId,
                                     string storageRootPath,
                                     string messageId,
+                                    FhirStorageFormat fhirFileFormat)
+            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? ".json" : ".xml", new FileSystem()) { }
+
+        public FhirFileStorageInfo(string correlationId,
+                                    string storageRootPath,
+                                    string messageId,
+                                    FhirStorageFormat fhirFileFormat,
                                     IFileSystem fileSystem)
-            : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, fileSystem)
+            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? ".json" : ".xml", fileSystem)
         {
         }
 
         protected override string GenerateStoragePath()
         {
-            Guard.Against.NullOrWhiteSpace(PatientId, nameof(PatientId));
-            Guard.Against.NullOrWhiteSpace(StudyInstanceUid, nameof(StudyInstanceUid));
-            Guard.Against.NullOrWhiteSpace(SeriesInstanceUid, nameof(SeriesInstanceUid));
-            Guard.Against.NullOrWhiteSpace(SopInstanceUid, nameof(SopInstanceUid));
+            Guard.Against.NullOrWhiteSpace(ResourceType, nameof(ResourceType));
+            Guard.Against.NullOrWhiteSpace(MessageId, nameof(MessageId));
 
-            string filePath = System.IO.Path.Combine(StorageRootPath, PatientId, StudyInstanceUid, SeriesInstanceUid, SopInstanceUid) + FileExtension;
+            string filePath = System.IO.Path.Combine(StorageRootPath, DirectoryPath, ResourceType, MessageId) + FileExtension;
             filePath = filePath.ToLowerInvariant();
             var index = 1;
             while (FileSystem.File.Exists(filePath))
             {
-                filePath = System.IO.Path.Combine(StorageRootPath, PatientId, StudyInstanceUid, SeriesInstanceUid, $"{SopInstanceUid}-{index++}") + FileExtension;
+                filePath = System.IO.Path.Combine(StorageRootPath, DirectoryPath, ResourceType, $"{MessageId}-{index++}") + FileExtension;
                 filePath = filePath.ToLowerInvariant();
             }
 

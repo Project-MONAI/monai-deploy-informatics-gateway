@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IFileSystem _fileSystem;
         private readonly IDicomToolkit _dicomToolkit;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IPayloadAssembler _fileStoredNotificationQueue;
+        private readonly IPayloadAssembler _payloadAssembler;
 
         public ServiceStatus Status { get; set; }
 
@@ -74,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             IFileSystem fileSystem,
             IDicomToolkit dicomToolkit,
             IServiceScopeFactory serviceScopeFactory,
-            IPayloadAssembler fileStoredNotificationQueue,
+            IPayloadAssembler payloadAssembler,
             IStorageInfoProvider storageInfoProvider)
         {
             _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _fileStoredNotificationQueue = fileStoredNotificationQueue ?? throw new ArgumentNullException(nameof(fileStoredNotificationQueue));
+            _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
             _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
         }
 
@@ -164,6 +164,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             foreach (var source in inferenceRequest.InputResources)
             {
+                _logger.Log(LogLevel.Information, $"Processing input source '{source.Interface}' from {source.ConnectionDetails.Uri}");
                 switch (source.Interface)
                 {
                     case InputInterfaceType.DicomWeb:
@@ -171,7 +172,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         break;
 
                     case InputInterfaceType.Fhir:
-                        _logger.Log(LogLevel.Information, $"Processing input source '{source.Interface}' from {source.ConnectionDetails.Uri}");
                         await RetrieveViaFhir(inferenceRequest, source, retrievedFiles);
                         break;
 
@@ -201,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     retrievedFiles[key].SetWorkflows(inferenceRequest.Application.Id);
                 }
-                _fileStoredNotificationQueue.Queue(inferenceRequest.TransactionId, retrievedFiles[key]);
+                _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key]);
             }
         }
 
@@ -261,7 +261,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var httpClient = _httpClientFactory.CreateClient("fhir");
             httpClient.DefaultRequestHeaders.Clear();
             httpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
-            _fileSystem.Directory.CreateDirectory(storagePath);
+            _fileSystem.Directory.CreateDirectoryIfNotExists(storagePath);
 
             FhirResource resource = null;
             try
@@ -283,6 +283,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             catch (Exception ex)
             {
                 _logger.Log(LogLevel.Error, ex, $"Error retrieving FHIR resource {resource?.Type}/{resource?.Id}");
+                throw;
             }
         }
 
@@ -315,7 +316,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                var file = new FileStorageInfo(transactionId, storagePath, $"{resource.Type}-{resource.Id}", $".{fhirFormat}");
+                var file = new FhirFileStorageInfo(transactionId, storagePath, resource.Id, fhirFormat, _fileSystem) { ResourceType = resource.Type };
+                _fileSystem.Directory.CreateDirectoryIfNotExists(_fileSystem.Path.GetDirectoryName(file.FilePath));
                 await _fileSystem.File.WriteAllTextAsync(file.FilePath, json);
                 retrievedResources.Add(file.FilePath, file);
                 return true;
@@ -470,7 +472,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.Log(LogLevel.Information, $"Retrieving instance {sopInstanceUid}");
                     var file = await dicomWebClient.Wado.Retrieve(studyInstanceUid, series.SeriesInstanceUid, sopInstanceUid);
                     if (file is null) continue;
-                    var fileStorageInfo = new FileStorageInfo(transactionId, storagePath, count.ToString(), ".dcm");
+                    var fileStorageInfo = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(), _fileSystem);
+                    PopulateHeaders(fileStorageInfo, file);
                     if (retrievedInstance.ContainsKey(fileStorageInfo.FilePath))
                     {
                         _logger.Log(LogLevel.Warning, $"Instance '{fileStorageInfo.FilePath}' already retrieved/stored.");
@@ -495,7 +498,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             await foreach (var file in files)
             {
                 count++;
-                var instance = new FileStorageInfo(transactionId, storagePath, count.ToString(), ".dcm");
+                var instance = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(), _fileSystem);
+                PopulateHeaders(instance, file);
+
                 if (retrievedInstance.ContainsKey(instance.FilePath))
                 {
                     _logger.Log(LogLevel.Warning, $"Instance '{instance.FilePath}' already retrieved/stored.");
@@ -506,6 +511,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 retrievedInstance.Add(instance.FilePath, instance);
                 _logger.Log(LogLevel.Debug, $"Instance saved in {instance.FilePath}.");
             }
+        }
+
+        private void PopulateHeaders(DicomFileStorageInfo instance, DicomFile dicomFile)
+        {
+            instance.PatientId = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
+            instance.StudyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
+            instance.SeriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
+            instance.SopInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
         }
 
         private void SaveFile(DicomFile file, FileStorageInfo instanceStorageInfo)

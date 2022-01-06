@@ -99,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                             if (_payloads.TryRemove(key, out _))
                             {
                                 _workItems.Add(payload);
-                                _logger.Log(LogLevel.Information, $"Bucket {key} sent to processing queue.");
+                                _logger.Log(LogLevel.Information, $"Bucket {key} sent to processing queue with {payload.Count} files.");
                             }
                             else
                             {

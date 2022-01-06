@@ -63,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.Once());
             Assert.Single(result);
-            _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue with {result.Count} files", LogLevel.Information, Times.Once());
         }
     }
 }
