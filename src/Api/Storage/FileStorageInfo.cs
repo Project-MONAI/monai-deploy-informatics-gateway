@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,12 +13,12 @@ using Ardalis.GuardClauses;
 using System;
 using System.IO.Abstractions;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
     /// <summary>
     /// Provides basic information for a DICOM instance and storage hierarchy/path.
     /// </summary>
-    internal record FileStorageInfo
+    public record FileStorageInfo
     {
         private string _filePath;
         protected string MessageId { get; init; }
@@ -39,6 +39,11 @@ namespace Monai.Deploy.InformaticsGateway.Common
         public string CorrelationId { get; init; }
 
         /// <summary>
+        /// Gets or sets the source of the file.
+        /// </summary>
+        public string Source { get; init; }
+
+        /// <summary>
         /// Gets the root path to the storage location.
         /// </summary>
         public string StorageRootPath { get; init; }
@@ -57,6 +62,33 @@ namespace Monai.Deploy.InformaticsGateway.Common
                 return _filePath;
             }
             set => _filePath = value;
+        }
+
+        /// <summary>
+        /// Gets the file path to be stored on the shared storage.
+        /// </summary>
+        public string UploadPath
+        {
+            get
+            {
+                var path = FilePath.Substring(StorageRootPath.Length);
+                if (FileSystem.Path.IsPathRooted(path))
+                {
+                    return path.Substring(1);
+                }
+                return path;
+            }
+        }
+
+        /// <summary>
+        /// Gets the filename to be used on the shared storage.
+        /// </summary>
+        public string UploadFilename
+        {
+            get
+            {
+                return FileSystem.Path.GetFileName(FilePath);
+            }
         }
 
         /// <summary>
@@ -81,17 +113,33 @@ namespace Monai.Deploy.InformaticsGateway.Common
         /// </summary>
         public int TryCount { get; set; } = 0;
 
+        /// <summary>
+        /// Gets or sets the content type of the file.
+        /// </summary>
+        public string ContentType { get; set; }
+
         public FileStorageInfo() { }
 
-        public FileStorageInfo(string correlationId, string storageRootPath, string messageId, string fileExtension)
-            : this(correlationId, storageRootPath, messageId, fileExtension, new FileSystem()) { }
+        public FileStorageInfo(string correlationId,
+                               string storageRootPath,
+                               string messageId,
+                               string fileExtension,
+                               string source)
+            : this(correlationId, storageRootPath, messageId, fileExtension, source, new FileSystem()) { }
 
-        public FileStorageInfo(string correlationId, string storageRootPath, string messageId, string fileExtension, IFileSystem fileSystem)
+        public FileStorageInfo(string correlationId,
+                               string storageRootPath,
+                               string messageId,
+                               string fileExtension,
+                               string source,
+                               IFileSystem fileSystem)
         {
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
             Guard.Against.NullOrWhiteSpace(storageRootPath, nameof(storageRootPath));
             Guard.Against.NullOrWhiteSpace(messageId, nameof(messageId));
             Guard.Against.NullOrWhiteSpace(fileExtension, nameof(fileExtension));
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
+
             Guard.Against.Null(fileSystem, nameof(fileSystem));
 
             if (fileExtension[0] != '.')
@@ -102,6 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
             FileSystem = fileSystem;
             MessageId = messageId;
             FileExtension = fileExtension;
+            Source = source;
 
             Id = Guid.NewGuid();
             CorrelationId = correlationId;

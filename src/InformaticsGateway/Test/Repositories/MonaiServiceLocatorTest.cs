@@ -35,7 +35,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                 items => items.ServiceName.Equals("ScpService"),
                 items => items.ServiceName.Equals("SpaceReclaimerService"),
                 items => items.ServiceName.Equals("DicomWebExportService"),
-                items => items.ServiceName.Equals("ScuExportService"));
+                items => items.ServiceName.Equals("ScuExportService"),
+                items => items.ServiceName.Equals("PayloadNotificationService"));
         }
 
         [Fact(DisplayName = "GetServiceStatus")]
@@ -44,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             var serviceLocator = new MonaiServiceLocator(_serviceProvider.Object);
             var result = serviceLocator.GetServiceStatus();
 
-            Assert.Equal(5, result.Count());
+            Assert.Equal(6, result.Count());
             foreach (var svc in result.Keys)
             {
                 Assert.Equal(ServiceStatus.Running, result[svc]);

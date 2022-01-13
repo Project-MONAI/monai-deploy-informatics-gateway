@@ -34,6 +34,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
             modelBuilder.ApplyConfiguration(new SourceApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DestinationApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new InferenceRequestConfiguration());
+
+            modelBuilder.ApplyConfiguration(new PayloadConfiguration());
         }
     }
 }

@@ -28,7 +28,7 @@
 
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using System.Collections.Concurrent;
 using System.Threading;
 

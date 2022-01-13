@@ -11,6 +11,7 @@
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
     <PackageReference Include="fo-dicom" Version="5.0.1" />
     <PackageReference Include="System.IO.Abstractions" Version="13.2.47" />
+    <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -10,37 +10,80 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Scp
+namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
-    internal class Payload : List<FileStorageInfo>, IDisposable
+    public class Payload : IDisposable
     {
+        public enum PayloadState
+        {
+            /// <summary>
+            /// Payload created and waiting for files to be added.
+            /// </summary>
+            Created,
+
+            /// <summary>
+            /// Payload is ready or in the uplaod stage.
+            /// </summary>
+            Upload,
+
+            /// <summary>
+            /// Payload is ready to be published for processing.
+            /// </summary>
+            Notify
+        }
+
         public const int MAX_RETRY = 3;
-        private Stopwatch _lastReceived;
-        public uint Timeout { get; }
-        public string Key { get; }
+
+        private readonly Guid _id;
+        private readonly Stopwatch _lastReceived;
+
+        public Guid Id => _id;
+
+        public uint Timeout { get; init; }
+
+        public string Key { get; init; }
+
         public int RetryCount { get; set; }
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
 
+        public PayloadState State { get; set; }
+
+        public IList<FileStorageInfo> Files { get; }
+
+        public int Count { get => Files.Count; }
+
+        public IEnumerable<string> Workflows
+        {
+            get
+            {
+                return Files.SelectMany(x => x.Workflows).Distinct();
+            }
+        }
+
         public Payload(string key, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
+
+            _id = Guid.NewGuid();
             _lastReceived = new Stopwatch();
             Key = key;
             Timeout = timeout;
             RetryCount = 0;
+            State = PayloadState.Created;
+            Files = new List<FileStorageInfo>();
         }
 
-        public new void Add(FileStorageInfo value)
+        public void Add(FileStorageInfo value)
         {
             Guard.Against.Null(value, nameof(value));
 
-            base.Add(value);
+            Files.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
         }
@@ -55,10 +98,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             return ++RetryCount < MAX_RETRY;
         }
 
+        public void ResetRetry()
+        {
+            RetryCount = 0;
+        }
+
         public void Dispose()
         {
             _lastReceived.Stop();
-            Clear();
+            Files.Clear();
         }
     }
 }

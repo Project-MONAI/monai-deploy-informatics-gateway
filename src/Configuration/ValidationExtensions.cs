@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -36,7 +36,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public static class ValidationExtensions
     {
-        static readonly DicomTag[] AllowedGroupingTags = new[] { DicomTag.PatientID, DicomTag.StudyInstanceUID, DicomTag.SeriesInstanceUID };
+        private static readonly DicomTag[] AllowedGroupingTags = new[] { DicomTag.PatientID, DicomTag.StudyInstanceUID, DicomTag.SeriesInstanceUID };
+
         public static bool IsValid(this MonaiApplicationEntity monaiApplicationEntity, out IList<string> validationErrors)
         {
             Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
@@ -64,14 +65,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
                 }
                 validationErrors?.Add($"'{grouping}' is not a valid DICOM tag (source: {source}).");
                 return false;
-
             }
             catch (DicomDataException ex)
             {
                 validationErrors?.Add($"'{grouping}' is not a valid DICOM tag (source: {source}, error: {ex.Message}).");
                 return false;
             }
-
         }
 
         public static bool IsValid(this DestinationApplicationEntity destinationApplicationEntity, out IList<string> validationErrors)

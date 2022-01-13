@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -10,13 +10,12 @@
 // limitations under the License.
 
 using FellowOakDicom.Network;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using System;
-using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -59,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
             if (request.Dataset.TryGetSingleValue<string>(dicomTag, out string key))
             {
-                _payloadAssembler.Queue(key, info, _configuration.Timeout);
+                await _payloadAssembler.Queue(key, info, _configuration.Timeout);
             }
         }
 

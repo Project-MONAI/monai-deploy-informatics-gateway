@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -49,9 +49,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// Handles the C-Store request.
         /// </summary>
         /// <param name="request">Instance of <see cref="Dicom.Network.DicomCStoreRequest" />.</param>
+        /// <param name="calledAeTitle">Called AE Title to be associated with the call.</param>
         /// <param name="calledAeTitle">Calling AE Title to be associated with the call.</param>
         /// <param name="associationId">Unique association ID.</param>
-        Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, Guid associationId);
+        Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId);
 
         /// <summary>
         /// Checks if a MONAI AET is configured.

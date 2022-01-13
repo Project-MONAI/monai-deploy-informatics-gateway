@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using System.Threading;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage

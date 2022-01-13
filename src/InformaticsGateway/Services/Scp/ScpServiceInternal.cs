@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             try
             {
                 _logger?.Log(LogLevel.Information, "Transfer syntax used: {0}", request.TransferSyntax);
-                await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, _associationId);
+                await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId);
                 return new DicomCStoreResponse(request, DicomStatus.Success);
             }
             catch (InsufficientStorageAvailableException ex)

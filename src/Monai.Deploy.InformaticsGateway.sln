@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30114.105
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32014.148
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway", "InformaticsGateway\Monai.Deploy.InformaticsGateway.csproj", "{5F7BF552-40CD-4B57-BD26-728BDC207AC6}"
 EndProject
@@ -36,6 +36,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Client.Test", "Client\Test\Monai.Deploy.InformaticsGateway.Client.Test.csproj", "{E1583FDB-9DC1-46E7-BB14-AFC2A7608600}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.CLI.Test", "CLI\Test\Monai.Deploy.InformaticsGateway.CLI.Test.csproj", "{28099DFC-8937-4508-848C-35C99E56C121}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Storage.MinIo", "Storage\MinIo\Monai.Deploy.InformaticsGateway.Storage.MinIo.csproj", "{18CC4631-8E97-47E7-A89F-01A54BBFED94}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -251,6 +253,18 @@ Global
 		{28099DFC-8937-4508-848C-35C99E56C121}.Release|x64.Build.0 = Release|Any CPU
 		{28099DFC-8937-4508-848C-35C99E56C121}.Release|x86.ActiveCfg = Release|Any CPU
 		{28099DFC-8937-4508-848C-35C99E56C121}.Release|x86.Build.0 = Release|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Debug|x64.Build.0 = Debug|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Debug|x86.Build.0 = Debug|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Release|x64.ActiveCfg = Release|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Release|x64.Build.0 = Release|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Release|x86.ActiveCfg = Release|Any CPU
+		{18CC4631-8E97-47E7-A89F-01A54BBFED94}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

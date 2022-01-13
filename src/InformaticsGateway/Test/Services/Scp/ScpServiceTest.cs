@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -231,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new InsufficientStorageAvailableException());
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new InsufficientStorageAvailableException());
 
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
@@ -263,7 +263,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new IOException { HResult = 0x27 });
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new IOException { HResult = 0x27 });
 
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
@@ -295,7 +295,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new Exception());
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new Exception());
 
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
@@ -327,7 +327,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<Guid>()));
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
 
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
@@ -359,7 +359,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<Guid>()));
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
 
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();

@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,10 +9,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using System.Threading;
+using System.Threading.Tasks;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Scp
+namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
     /// <summary>
     /// Interface of the Instance Stored Notification Service
@@ -24,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// </summary>
         /// <param name="bucket">The bucket group the file belongs to.</param>
         /// <param name="file">Path to the file to be added to the payload bucket.</param>
-        void Queue(string bucket, FileStorageInfo file);
+        Task Queue(string bucket, FileStorageInfo file);
 
         /// <summary>
         /// Queue a new file for the spcified payload bucket.
@@ -32,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// <param name="bucket">The bucket group the file belongs to.</param>
         /// <param name="file">Path to the file to be added to the payload bucket.</param>
         /// <param name="timeout">Number of seconds to wait for additional files.</param>
-        void Queue(string bucket, FileStorageInfo file, uint timeout);
+        Task Queue(string bucket, FileStorageInfo file, uint timeout);
 
         /// <summary>
         /// Dequeue a payload from the queue for the message broker to notify subscribers.

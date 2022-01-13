@@ -33,7 +33,6 @@ using Xunit;
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 {
     public class ScuExportServiceTest : IClassFixture<DicomScpFixture>
-
     {
         private readonly Mock<ILogger<ScuExportService>> _logger;
         private readonly Mock<ILogger> _scpLogger;
