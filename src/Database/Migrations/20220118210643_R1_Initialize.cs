@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
+#nullable disable
+
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     public partial class R1_Initialize : Migration
@@ -19,24 +21,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DestinationApplicationEntities", x => x.Name);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FileStorageInfo",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    CorrelationId = table.Column<string>(type: "TEXT", nullable: false),
-                    StorageRootPath = table.Column<string>(type: "TEXT", nullable: false),
-                    FilePath = table.Column<string>(type: "TEXT", nullable: false),
-                    Workflows = table.Column<string>(type: "TEXT", nullable: true),
-                    Received = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Timestamp = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: true),
-                    TryCount = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FileStorageInfo", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -76,6 +60,22 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payload",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Timeout = table.Column<uint>(type: "INTEGER", nullable: false),
+                    Key = table.Column<string>(type: "TEXT", nullable: false),
+                    RetryCount = table.Column<int>(type: "INTEGER", nullable: false),
+                    State = table.Column<int>(type: "INTEGER", nullable: false),
+                    Files = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payload", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SourceApplicationEntities",
                 columns: table => new
                 {
@@ -95,13 +95,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 name: "DestinationApplicationEntities");
 
             migrationBuilder.DropTable(
-                name: "FileStorageInfo");
-
-            migrationBuilder.DropTable(
                 name: "InferenceRequest");
 
             migrationBuilder.DropTable(
                 name: "MonaiApplicationEntities");
+
+            migrationBuilder.DropTable(
+                name: "Payload");
 
             migrationBuilder.DropTable(
                 name: "SourceApplicationEntities");

@@ -92,12 +92,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         }
 
         [Fact(DisplayName = "Initialize with missing config resource")]
-        public void Initialize_ShallThrowWhenConfigReousrceIsMissing()
+        public async Task Initialize_ShallThrowWhenConfigReousrceIsMissing()
         {
             _embeddedResource.Setup(p => p.GetManifestResourceStream(It.IsAny<string>())).Returns(default(Stream));
 
             var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
-            Assert.ThrowsAsync<ConfigurationException>(async () => await svc.Initialize(CancellationToken.None));
+            await Assert.ThrowsAsync<ConfigurationException>(async () => await svc.Initialize(CancellationToken.None));
         }
 
         [Fact(DisplayName = "Initialize creates the config file")]

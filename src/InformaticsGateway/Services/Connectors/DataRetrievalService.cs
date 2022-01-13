@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -31,14 +31,13 @@ using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Polly;
 using System;
@@ -183,10 +182,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
             }
 
-            await NotifyNewInstance(inferenceRequest, retrievedFiles);
+            NotifyNewInstance(inferenceRequest, retrievedFiles);
         }
 
-        private async Task NotifyNewInstance(InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedFiles)
+        private void NotifyNewInstance(InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedFiles)
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
@@ -204,8 +203,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key]);
             }
         }
-
-        #region Data Retrieval
 
         private void RestoreExistingInstances(InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedInstances)
         {
@@ -225,6 +222,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 _logger.Log(LogLevel.Debug, $"Restored previously retrieved instance {instance.FilePath}");
             }
         }
+
+        #region Data Retrieval
 
         private async Task RetrieveViaFhir(InferenceRequest inferenceRequest, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedResources)
         {
@@ -316,7 +315,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             if (response.IsSuccessStatusCode)
             {
                 var json = await response.Content.ReadAsStringAsync();
-                var file = new FhirFileStorageInfo(transactionId, storagePath, resource.Id, fhirFormat, _fileSystem) { ResourceType = resource.Type };
+                var file = new FhirFileStorageInfo(transactionId, storagePath, resource.Id, fhirFormat, transactionId, _fileSystem) { ResourceType = resource.Type };
                 _fileSystem.Directory.CreateDirectoryIfNotExists(_fileSystem.Path.GetDirectoryName(file.FilePath));
                 await _fileSystem.File.WriteAllTextAsync(file.FilePath, json);
                 retrievedResources.Add(file.FilePath, file);
@@ -472,7 +471,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.Log(LogLevel.Information, $"Retrieving instance {sopInstanceUid}");
                     var file = await dicomWebClient.Wado.Retrieve(studyInstanceUid, series.SeriesInstanceUid, sopInstanceUid);
                     if (file is null) continue;
-                    var fileStorageInfo = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(), _fileSystem);
+                    var fileStorageInfo = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(), transactionId, _fileSystem);
                     PopulateHeaders(fileStorageInfo, file);
                     if (retrievedInstance.ContainsKey(fileStorageInfo.FilePath))
                     {
@@ -498,7 +497,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             await foreach (var file in files)
             {
                 count++;
-                var instance = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(), _fileSystem);
+                var instance = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(), transactionId, _fileSystem);
                 PopulateHeaders(instance, file);
 
                 if (retrievedInstance.ContainsKey(instance.FilePath))

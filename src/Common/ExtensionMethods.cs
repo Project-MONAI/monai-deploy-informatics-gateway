@@ -26,8 +26,11 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
@@ -71,6 +74,20 @@ namespace Monai.Deploy.InformaticsGateway.Common
                 input = input.Replace(c.ToString(), "");
             }
             return input;
+        }
+
+        /// <summary>
+        /// Extension for ActionBlock to delay post of an object to be processed.
+        /// </summary>
+        /// <typeparam name="TInput">Type of object to be post to the actio. block</typeparam>
+        /// <param name="actionBlock">Instance of <c>ActionBlock</c></param>
+        /// <param name="input">Object to be posted</param>
+        /// <param name="delay">Time to wait before posting</param>
+        /// <returns></returns>
+        public static async Task<bool> Post<TInput>(this ActionBlock<TInput> actionBlock, TInput input, TimeSpan delay)
+        {
+            await Task.Delay(delay);
+            return actionBlock.Post(input);
         }
     }
 }

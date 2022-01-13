@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -18,6 +18,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
@@ -27,6 +28,7 @@ using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.InformaticsGateway.Storage;
 using System;
 using System.IO;
 using System.IO.Abstractions;
@@ -94,6 +96,15 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
 
+                    services.AddSingleton<MinIoStorageService>();
+                    services.AddSingleton<IStorageService>(implementationFactory =>
+                    {
+                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
+                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
+                        var logger = implementationFactory.GetService<ILogger<Program>>();
+                        return DynamicServiceLocator.LocateService<IStorageService>(serviceProvider, logger, options.Value.Storage.StorageService);
+                    });
+
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
                     services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
@@ -105,6 +116,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<ScuExportService>();
                     services.AddSingleton<DicomWebExportService>();
                     services.AddSingleton<DataRetrievalService>();
+                    services.AddSingleton<PayloadNotificationService>();
 
                     var timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:dicomWeb:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
@@ -126,21 +138,12 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddHostedService<ScpService>(p => p.GetService<ScpService>());
                     services.AddHostedService<ScuExportService>(p => p.GetService<ScuExportService>());
                     services.AddHostedService<DicomWebExportService>(p => p.GetService<DicomWebExportService>());
+                    services.AddHostedService<PayloadNotificationService>(p => p.GetService<PayloadNotificationService>());
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.CaptureStartupErrors(true);
                     webBuilder.UseStartup<Startup>();
                 });
-
-        private static double GetConfigAndConvertToMinutes(IConfiguration configuration, string key, int defaultValue)
-        {
-            var configSection = configuration.GetSection(key);
-            if (Int32.TryParse(configSection?.Value, out int value))
-            {
-                return value;
-            }
-            return defaultValue;
-        }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -16,9 +16,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.Shared.Test;
@@ -106,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             var exception = await Assert.ThrowsAsync<ArgumentException>(async () =>
             {
-                await manager.HandleCStoreRequest(request, "BADAET", Guid.NewGuid());
+                await manager.HandleCStoreRequest(request, "BADAET", "CallingAET", Guid.NewGuid());
             });
 
             Assert.Equal("Called AE Title 'BADAET' is not configured", exception.Message);
@@ -143,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                                                        _dicomToolkit);
 
             var request = GenerateRequest();
-            await manager.HandleCStoreRequest(request, aet, Guid.NewGuid());
+            await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
 
             _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
@@ -189,7 +191,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                                                        _dicomToolkit);
 
             var request = GenerateRequest();
-            await manager.HandleCStoreRequest(request, aet, Guid.NewGuid());
+            await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
 
             _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
@@ -242,7 +244,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             await Assert.ThrowsAsync<InsufficientStorageAvailableException>(async () =>
             {
-                await manager.HandleCStoreRequest(request, aet, Guid.NewGuid());
+                await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
             });
 
             _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());

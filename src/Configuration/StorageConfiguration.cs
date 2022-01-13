@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -70,6 +70,38 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [JsonProperty(PropertyName = "reserveSpaceGB")]
         public uint ReserveSpaceGB { get; set; } = 5;
 
+        /// <summary>
+        /// Gets or sets the a fully qualified type name used for storage access.
+        /// The spcified type must implement <typeparam name="Monai.Deploy.InformaticsGateway.Api.Storage.StorageBase">StorageBase</typeparam>.
+        /// The default storage service configured in MinIO.
+        /// </summary>
+
+        [JsonProperty(PropertyName = "storageService")]
+        public string StorageService { get; set; } = "Monai.Deploy.InformaticsGateway.Storage.MinIoStorageService, Monai.Deploy.InformaticsGateway.Storage.MinIo";
+
+        /// <summary>
+        /// Gets or sets credentials used to access the storage service.
+        /// </summary>
+        [JsonProperty(PropertyName = "storageServiceCredentials")]
+        public StorageServiceCredentials StorageServiceCredentials { get; set; }
+
+        /// <summary>
+        /// Gets or sets retry options relate to processing payloads & uploading payloads to the storage service.
+        /// </summary>
+        [JsonProperty(PropertyName = "reties")]
+        public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
+
+        /// <summary>
+        /// Gets or set whether to use secured connection to the storage service.  Default is true.
+        /// </summary>
+        [JsonProperty(PropertyName = "securedConnection")]
+        public bool SecuredConnection { get; set; } = true;
+
+        /// <summary>
+        /// Gets or set number of threads used for payload upload. DDefault is 1;
+        /// </summary>
+        public int Concurrentcy { get; set; } = 1;
+
         [JsonIgnore]
         public string TemporaryDataDirFullPath
         {
@@ -78,5 +110,11 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
                 return _fileSystem.Path.GetFullPath(Temporary);
             }
         }
+
+        /// <summary>
+        /// Gets or sets the name of the bucket where payloads are uploaded to.
+        /// </summary>
+        [JsonProperty(PropertyName = "storageServiceBucketName")]
+        public string StorageServiceBucketName { get; set; }
     }
 }

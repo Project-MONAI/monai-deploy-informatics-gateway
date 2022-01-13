@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -12,14 +12,15 @@
 using Ardalis.GuardClauses;
 using System.IO.Abstractions;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
     /// <summary>
     /// Provides basic information for a DICOM instance and storage hierarchy/path.
     /// </summary>
-    internal record DicomFileStorageInfo : FileStorageInfo
+    public sealed record DicomFileStorageInfo : FileStorageInfo
     {
         public static readonly string FILE_EXTENSION = ".dcm";
+        public static readonly string CONTENT_TYPE = "application/dicom";
         public string StudyInstanceUid { get; set; }
         public string SeriesInstanceUid { get; set; }
         public string SopInstanceUid { get; set; }
@@ -28,15 +29,21 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         public DicomFileStorageInfo(string correlationId,
                                     string storageRootPath,
-                                    string messageId)
-            : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, new FileSystem()) { }
+                                    string messageId,
+                                    string source)
+            : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, source, new FileSystem())
+        {
+            this.ContentType = CONTENT_TYPE;
+        }
 
         public DicomFileStorageInfo(string correlationId,
                                     string storageRootPath,
                                     string messageId,
+                                    string source,
                                     IFileSystem fileSystem)
-            : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, fileSystem)
+            : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, source, fileSystem)
         {
+            this.ContentType = CONTENT_TYPE;
         }
 
         protected override string GenerateStoragePath()
