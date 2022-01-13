@@ -9,7 +9,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Collections.Generic;
@@ -22,7 +21,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
     /// Interface for MONAI Workload Manager APIs
     /// TODO: Preliminary APIs
     /// </summary>
-    public interface IWorkloadManagerApi
+    internal interface IWorkloadManagerApi
     {
         Task Upload(FileStorageInfo file, CancellationToken cancellationToken);
 

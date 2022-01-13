@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
@@ -28,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            payloadAssembler.Queue("A", new Api.FileStorageInfo());
+            payloadAssembler.Queue("A", new FileStorageInfo());
 
             _logger.VerifyLogging($"Bucket A created with timeout {PayloadAssembler.DEFAULT_TIMEOUT}s.", LogLevel.Information, Times.Once());
             payloadAssembler.Dispose();
@@ -42,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            payloadAssembler.Queue("A", new Api.FileStorageInfo());
+            payloadAssembler.Queue("A", new FileStorageInfo());
 
             payloadAssembler.Dispose();
             _cancellationTokenSource.Cancel();
@@ -56,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         {
             var payloadAssembler = new PayloadAssembler(_logger.Object);
 
-            payloadAssembler.Queue("A", new Api.FileStorageInfo(), 1);
+            payloadAssembler.Queue("A", new FileStorageInfo(), 1);
             await Task.Delay(1001);
             var result = payloadAssembler.Dequeue(_cancellationTokenSource.Token);
             payloadAssembler.Dispose();

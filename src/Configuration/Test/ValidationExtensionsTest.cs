@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
 using System;
 using Xunit;
@@ -22,27 +23,46 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         [Fact(DisplayName = "MonaiApplicationEntity - throw when null")]
         public void MonaiApplicationEntity_ShallThrowOnNull()
         {
-            MonaiApplicationEntity MonaiApplicationEntity = null;
-            Assert.Throws<ArgumentNullException>(() => MonaiApplicationEntity.IsValid(out _));
+            MonaiApplicationEntity monaiApplicationEntity = null;
+            Assert.Throws<ArgumentNullException>(() => monaiApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "MonaiApplicationEntity - invalid AE Title")]
         public void MonaiApplicationEntity_InvalidWhenAeTitleIsEmpty()
         {
-            var MonaiApplicationEntity = new MonaiApplicationEntity();
-            MonaiApplicationEntity.AeTitle = "             ";
-            Assert.False(MonaiApplicationEntity.IsValid(out _));
+            var monaiApplicationEntity = new MonaiApplicationEntity();
+            monaiApplicationEntity.AeTitle = "             ";
+            Assert.False(monaiApplicationEntity.IsValid(out _));
 
-            MonaiApplicationEntity.AeTitle = "ABCDEFGHIJKLMNOPQRSTUVW";
-            Assert.False(MonaiApplicationEntity.IsValid(out _));
+            monaiApplicationEntity.AeTitle = "ABCDEFGHIJKLMNOPQRSTUVW";
+            Assert.False(monaiApplicationEntity.IsValid(out _));
+        }
+
+        [Fact(DisplayName = "MonaiApplicationEntity - unsupported dicom tag for grouping")]
+        public void MonaiApplicationEntity_UnsupportedGrouping()
+        {
+            var monaiApplicationEntity = new MonaiApplicationEntity();
+            monaiApplicationEntity.AeTitle = "AET";
+            monaiApplicationEntity.Grouping = DicomTag.PagePositionID.ToString();
+            Assert.False(monaiApplicationEntity.IsValid(out _));
+        }
+
+        [Fact(DisplayName = "MonaiApplicationEntity - invalid dicom tag for grouping")]
+        public void MonaiApplicationEntity_InvlalidGrouping()
+        {
+            var monaiApplicationEntity = new MonaiApplicationEntity();
+            monaiApplicationEntity.AeTitle = "AET";
+            monaiApplicationEntity.Grouping = "12345678";
+            Assert.False(monaiApplicationEntity.IsValid(out _));
         }
 
         [Fact(DisplayName = "MonaiApplicationEntity - valid")]
         public void MonaiApplicationEntity_Valid()
         {
-            var MonaiApplicationEntity = new MonaiApplicationEntity();
-            MonaiApplicationEntity.AeTitle = "AET";
-            Assert.True(MonaiApplicationEntity.IsValid(out _));
+            var monaiApplicationEntity = new MonaiApplicationEntity();
+            monaiApplicationEntity.AeTitle = "AET";
+            monaiApplicationEntity.Grouping = DicomTag.StudyInstanceUID.ToString();
+            Assert.True(monaiApplicationEntity.IsValid(out _));
         }
 
         #endregion MonaiApplicationEntity.IsValid

@@ -30,11 +30,13 @@ using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public static class ValidationExtensions
     {
+        static readonly DicomTag[] AllowedGroupingTags = new[] { DicomTag.PatientID, DicomTag.StudyInstanceUID, DicomTag.SeriesInstanceUID };
         public static bool IsValid(this MonaiApplicationEntity monaiApplicationEntity, out IList<string> validationErrors)
         {
             Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
@@ -44,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             var valid = true;
             valid &= IsAeTitleValid(monaiApplicationEntity.GetType().Name, monaiApplicationEntity.AeTitle, validationErrors);
             valid &= IsValidDicomTag(monaiApplicationEntity.GetType().Name, monaiApplicationEntity.Grouping, validationErrors);
-            
+
             return valid;
         }
 
@@ -54,8 +56,15 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
             try
             {
-                DicomTag.Parse(grouping);
-                return true;
+                var dicomTag = DicomTag.Parse(grouping);
+
+                if (AllowedGroupingTags.Contains(dicomTag))
+                {
+                    return true;
+                }
+                validationErrors?.Add($"'{grouping}' is not a valid DICOM tag (source: {source}).");
+                return false;
+
             }
             catch (DicomDataException ex)
             {

@@ -9,12 +9,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.Api.Test
+namespace Monai.Deploy.InformaticsGateway.Test.Common
 {
     public class DicomFileStorageInfoTest
     {
@@ -27,13 +28,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             var mockFileSystem = new MockFileSystem();
             var fileStorageInfo = new DicomFileStorageInfo(correlationId, root, messagId, mockFileSystem);
 
-            fileStorageInfo.PatientId = "Patient";
             fileStorageInfo.StudyInstanceUid = "Study";
             fileStorageInfo.SeriesInstanceUid = "Series";
             fileStorageInfo.SopInstanceUid = "Sop";
             var existingFilePath = Path.Combine(
                     root,
-                    fileStorageInfo.PatientId,
                     fileStorageInfo.StudyInstanceUid,
                     fileStorageInfo.SeriesInstanceUid,
                     fileStorageInfo.SopInstanceUid) + ".dcm";

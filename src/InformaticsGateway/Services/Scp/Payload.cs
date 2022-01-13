@@ -10,7 +10,7 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             return _lastReceived.Elapsed;
         }
 
-        public bool IncrementAndRetry()
+        public bool CanRetry()
         {
             return ++RetryCount < MAX_RETRY;
         }

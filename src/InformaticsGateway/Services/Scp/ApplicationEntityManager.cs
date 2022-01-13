@@ -48,7 +48,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal class ApplicationEntityManager : IApplicationEntityManager, IDisposable, IObserver<MonaiApplicationentityChangedEvent>
     {
-        private readonly object _syncRoot = new object();
         private readonly IHostApplicationLifetime _applicationLifetime;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IServiceScope _serviceScope;
@@ -129,14 +128,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
             var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), _fileSystem);
 
-            info.PatientId = request.Dataset.GetSingleValue<string>(DicomTag.PatientID);
             info.StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
             info.SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
             info.SopInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
 
             using (_logger.BeginScope("SOPInstanceUID={0}", info.SopInstanceUid))
             {
-                _logger.Log(LogLevel.Information, "Patient ID: {PatientId}", info.PatientId);
                 _logger.Log(LogLevel.Information, "Study Instance UID: {StudyInstanceUid}", info.StudyInstanceUid);
                 _logger.Log(LogLevel.Information, "Series Instance UID: {SeriesInstanceUid}", info.SeriesInstanceUid);
                 _logger.Log(LogLevel.Information, "Storage File Path: {InstanceStorageFullPath}", info.FilePath);
@@ -176,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                var handler = new ApplicationEntityHandler(_serviceScopeFactory, entity, _storageInfoProvider, _payloadAssembler, _fileSystem, _dicomToolkit, _loggerFactory.CreateLogger<ApplicationEntityHandler>());
+                var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _dicomToolkit, _loggerFactory.CreateLogger<ApplicationEntityHandler>());
                 if (!_aeTitles.TryAdd(entity.AeTitle, handler))
                 {
                     _logger.Log(LogLevel.Error, $"AE Title {0} could not be added to CStore Manager.  Already exits: {1}", entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));

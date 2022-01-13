@@ -22,53 +22,23 @@ using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
-    internal class ApplicationEntityHandler : IDisposable
+    internal class ApplicationEntityHandler
     {
-        private readonly object _syncRoot = new object();
-        private bool _disposed = false;
-        private IServiceScopeFactory _serviceScopeFactory;
         private MonaiApplicationEntity _configuration;
-        private IStorageInfoProvider _storageInfoProvider;
         private IPayloadAssembler _payloadAssembler;
-        private IFileSystem _fileSystem;
         private IDicomToolkit _dicomToolkit;
         private ILogger<ApplicationEntityHandler> _logger;
 
         public ApplicationEntityHandler(
-            IServiceScopeFactory serviceScopeFactory,
             MonaiApplicationEntity monaiApplicationEntity,
-            IStorageInfoProvider storageInfoProvider,
             IPayloadAssembler payloadAssembler,
-            IFileSystem fileSystem,
             IDicomToolkit dicomToolkit,
             ILogger<ApplicationEntityHandler> logger)
         {
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _configuration = monaiApplicationEntity ?? throw new ArgumentNullException(nameof(monaiApplicationEntity));
-            _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
-            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
-
-        ~ApplicationEntityHandler() => Dispose(false);
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                }
-                _disposed = true;
-            }
         }
 
         internal async Task HandleInstance(DicomCStoreRequest request, DicomFileStorageInfo info)
@@ -97,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             _logger.Log(LogLevel.Debug, $"Preparing to save {filename}");
             await _dicomToolkit.Save(request.File, filename);
-            _logger.Log(LogLevel.Information, $"Instanced saved {filename}");
+            _logger.Log(LogLevel.Information, $"Instance saved {filename}");
         }
     }
 }

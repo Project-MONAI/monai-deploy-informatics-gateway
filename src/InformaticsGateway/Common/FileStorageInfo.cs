@@ -13,12 +13,12 @@ using Ardalis.GuardClauses;
 using System;
 using System.IO.Abstractions;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Common
 {
     /// <summary>
     /// Provides basic information for a DICOM instance and storage hierarchy/path.
     /// </summary>
-    public record FileStorageInfo
+    internal record FileStorageInfo
     {
         private string _filePath;
         protected string MessageId { get; init; }

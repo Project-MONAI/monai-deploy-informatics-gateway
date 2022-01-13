@@ -10,7 +10,7 @@
 // limitations under the License.
 
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Moq;
 using System;

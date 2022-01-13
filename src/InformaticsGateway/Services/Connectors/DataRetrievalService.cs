@@ -515,7 +515,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private void PopulateHeaders(DicomFileStorageInfo instance, DicomFile dicomFile)
         {
-            instance.PatientId = dicomFile.Dataset.GetSingleValue<string>(DicomTag.PatientID);
             instance.StudyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
             instance.SeriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
             instance.SopInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);

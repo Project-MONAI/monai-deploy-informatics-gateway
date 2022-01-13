@@ -146,7 +146,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             await manager.HandleCStoreRequest(request, aet, Guid.NewGuid());
 
             _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Patient ID: {request.Dataset.GetSingleValue<string>(DicomTag.PatientID)}", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
 
@@ -193,12 +192,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             await manager.HandleCStoreRequest(request, aet, Guid.NewGuid());
 
             _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Patient ID: {request.Dataset.GetSingleValue<string>(DicomTag.PatientID)}", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Instance saved", LogLevel.Information, Times.Once());
 
             _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());

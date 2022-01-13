@@ -11,7 +11,7 @@
 
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

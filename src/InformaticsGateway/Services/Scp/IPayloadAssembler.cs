@@ -9,7 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using System.Threading;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
@@ -23,14 +23,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// Queue a new file for the spcified payload bucket.
         /// </summary>
         /// <param name="bucket">The bucket group the file belongs to.</param>
-        /// <param name="file">Path to the file to be removed.</param>
+        /// <param name="file">Path to the file to be added to the payload bucket.</param>
         void Queue(string bucket, FileStorageInfo file);
 
         /// <summary>
         /// Queue a new file for the spcified payload bucket.
         /// </summary>
         /// <param name="bucket">The bucket group the file belongs to.</param>
-        /// <param name="file">Path to the file to be removed.</param>
+        /// <param name="file">Path to the file to be added to the payload bucket.</param>
         /// <param name="timeout">Number of seconds to wait for additional files.</param>
         void Queue(string bucket, FileStorageInfo file, uint timeout);
 
