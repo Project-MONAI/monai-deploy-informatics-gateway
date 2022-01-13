@@ -9,6 +9,7 @@ participant "Inference Request\nQueue" as IRQ
 participant "Data Retrieval Service" as DRS
 participant "Payload Assembler" as PA
 participant "Payload Notification" as PN
+fontawesome f0a0 "Temporary Storage" as TS
 end 
 
 participantgroup #FF9966 Virtual\nStorage
@@ -34,12 +35,12 @@ DRS->DRS: Process request
 activate DRS
 DRS->HIS: Query & retrieve via DICOMweb
 DRS<--HIS: Response
-DRS->DISK: Save DICOM
+DRS->TS: Save DICOM
 DRS->DRS: Extract DICOM headers
 DRS->DB: Save instance info with DICOM headers
 DRS->HIS: Query & retrieve via FHIR
 DRS<--HIS: Response
-DRS->DISK: Save FHIR
+DRS->TS: Save FHIR
 DRS->DB: Save resource info with headers
 
 DRS->PA: Notify data arrival
@@ -54,5 +55,6 @@ PA->PN: Queue Payload ready message
 activate PN
 PA<--PN: Response
 deactivate PA
+PN->DISK: Upload files associated with the payload
 PN->PS: Publish new workflow request
 PN<--PS: Response
