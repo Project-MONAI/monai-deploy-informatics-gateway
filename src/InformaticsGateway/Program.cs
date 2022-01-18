@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.AddSingleton<ConfigurationValidator>();
                     services.AddSingleton<IInstanceCleanupQueue, InstanceCleanupQueue>();
-                    services.AddSingleton<IFileStoredNotificationQueue, FileStoredNotificationQueue>();
+                    services.AddSingleton<IPayloadAssembler, PayloadAssembler>();
 
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
@@ -100,7 +100,6 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<IWorkloadManagerApi, WorkloadManagerApi>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();
                     services.AddSingleton<IApplicationEntityManager, ApplicationEntityManager>();
-                    services.AddSingleton<WorkloadManagerNotificationService>();
                     services.AddSingleton<SpaceReclaimerService>();
                     services.AddSingleton<ScpService>();
                     services.AddSingleton<ScuExportService>();
@@ -122,7 +121,6 @@ namespace Monai.Deploy.InformaticsGateway
                         .AddHttpClient("fhir", configure => configure.Timeout = timeout)
                         .SetHandlerLifetime(timeout);
 
-                    services.AddHostedService<WorkloadManagerNotificationService>(p => p.GetService<WorkloadManagerNotificationService>());
                     services.AddHostedService<SpaceReclaimerService>(p => p.GetService<SpaceReclaimerService>());
                     services.AddHostedService<DataRetrievalService>(p => p.GetService<DataRetrievalService>());
                     services.AddHostedService<ScpService>(p => p.GetService<ScpService>());

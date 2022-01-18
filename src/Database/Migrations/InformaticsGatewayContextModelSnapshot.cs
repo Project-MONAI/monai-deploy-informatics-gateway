@@ -43,9 +43,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Applications")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("CorrelationId")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -69,6 +66,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<int>("TryCount")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Workflows")
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.ToTable("FileStorageInfo");
@@ -83,7 +83,17 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Applications")
+                    b.Property<string>("Grouping")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("IgnoredSopClasses")
+                        .HasColumnType("TEXT");
+
+                    b.Property<uint>("Timeout")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Workflows")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Name");

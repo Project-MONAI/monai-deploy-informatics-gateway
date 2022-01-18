@@ -80,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             Guard.Against.Null(entity, nameof(entity));
             Guard.Against.Null(host, nameof(host));
-            
+
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();

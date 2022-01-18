@@ -14,6 +14,7 @@ using Crayon;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
 using System;
 using System.CommandLine;
 
@@ -28,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         protected ILogger CreateLogger<T>(IHost host)
         {
             Guard.Against.Null(host, nameof(host));
-            
+
             var loggerFactory = host.Services.GetService<ILoggerFactory>();
             return loggerFactory?.CreateLogger<T>();
         }
@@ -65,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         protected void CheckConfiguration(IConfigurationService configService)
         {
             Guard.Against.Null(configService, nameof(configService));
-            
+
             if (!configService.IsInitialized)
             {
                 throw new ConfigurationException($"Please execute `{AppDomain.CurrentDomain.FriendlyName} config init` to intialize Informatics Gateway.");

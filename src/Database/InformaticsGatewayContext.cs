@@ -33,7 +33,6 @@ namespace Monai.Deploy.InformaticsGateway.Database
             modelBuilder.ApplyConfiguration(new MonaiApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new SourceApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DestinationApplicationEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new FileStorageInfoConfiguration());
             modelBuilder.ApplyConfiguration(new InferenceRequestConfiguration());
         }
     }

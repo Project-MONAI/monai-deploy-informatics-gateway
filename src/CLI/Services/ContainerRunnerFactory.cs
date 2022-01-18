@@ -12,7 +12,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace Monai.Deploy.InformaticsGateway.CLI
+namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     public class ContainerRunnerFactory : IContainerRunnerFactory
     {

@@ -9,28 +9,36 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     /// <summary>
     /// Interface of the Instance Stored Notification Service
     /// </summary>
-    public interface IFileStoredNotificationQueue
+    internal interface IPayloadAssembler
     {
         /// <summary>
-        /// Queue a new file to be cleaned up.
+        /// Queue a new file for the spcified payload bucket.
         /// </summary>
-        /// <param name="file">Path to the file to be removed.</param>
-        Task Queue(FileStorageInfo file);
+        /// <param name="bucket">The bucket group the file belongs to.</param>
+        /// <param name="file">Path to the file to be added to the payload bucket.</param>
+        void Queue(string bucket, FileStorageInfo file);
 
         /// <summary>
-        /// Dequeue a file from the queue for notifying and uploading to MONAI Workload Manager.
+        /// Queue a new file for the spcified payload bucket.
+        /// </summary>
+        /// <param name="bucket">The bucket group the file belongs to.</param>
+        /// <param name="file">Path to the file to be added to the payload bucket.</param>
+        /// <param name="timeout">Number of seconds to wait for additional files.</param>
+        void Queue(string bucket, FileStorageInfo file, uint timeout);
+
+        /// <summary>
+        /// Dequeue a payload from the queue for the message broker to notify subscribers.
         /// The default implementation blocks the call until a file is available from the queue.
         /// </summary>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        Task<FileStorageInfo> Dequeue(CancellationToken cancellationToken);
+        Payload Dequeue(CancellationToken cancellationToken);
     }
 }

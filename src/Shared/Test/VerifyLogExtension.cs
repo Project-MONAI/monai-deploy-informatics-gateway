@@ -12,9 +12,11 @@
 using Microsoft.Extensions.Logging;
 using Moq;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Monai.Deploy.InformaticsGateway.Shared.Test
 {
+    [ExcludeFromCodeCoverage]
     public static class VerifyLogExtension
     {
         public static Mock<ILogger> VerifyLoggingMessageEndsWith(this Mock<ILogger> logger, string expectedMessage, LogLevel expectedLogLevel = LogLevel.Debug, Times? times = null)

@@ -13,14 +13,18 @@ using Ardalis.GuardClauses;
 using System;
 using System.IO.Abstractions;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Common
 {
     /// <summary>
     /// Provides basic information for a DICOM instance and storage hierarchy/path.
     /// </summary>
-    public record FileStorageInfo
+    internal record FileStorageInfo
     {
-        private readonly IFileSystem _fileSystem;
+        private string _filePath;
+        protected string MessageId { get; init; }
+        protected string FileExtension { get; init; }
+
+        protected IFileSystem FileSystem { get; init; }
 
         /// <summary>
         /// Gets the unique ID of the file.
@@ -42,12 +46,23 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// <summary>
         /// Gets the full path to the instance.
         /// </summary>
-        public string FilePath { get; init; }
+        public string FilePath
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_filePath))
+                {
+                    _filePath = GenerateStoragePath();
+                };
+                return _filePath;
+            }
+            set => _filePath = value;
+        }
 
         /// <summary>
-        /// Gets a list of applications designated for the file.
+        /// Gets a list of workflows designated for the file.
         /// </summary>
-        public string[] Applications { get; private set; }
+        public string[] Workflows { get; private set; }
 
         /// <summary>
         /// Gets or sets the DateTime that the file was received.
@@ -84,41 +99,38 @@ namespace Monai.Deploy.InformaticsGateway.Api
                 fileExtension = $".{fileExtension}";
             }
 
-            _fileSystem = fileSystem;
+            FileSystem = fileSystem;
+            MessageId = messageId;
+            FileExtension = fileExtension;
+
             Id = Guid.NewGuid();
             CorrelationId = correlationId;
             StorageRootPath = storageRootPath;
             Received = DateTime.UtcNow;
-            FilePath = GenerateStoragePath(storageRootPath, correlationId, messageId, fileExtension);
         }
 
         /// <summary>
-        /// Application to be launched on MONAI Workload Manager, ignoring data routing agent.
+        /// Workflows to be launched on MONAI Workload Manager, ignoring data routing agent.
         /// </summary>
-        /// <param name="applications">List applications.</param>
-        public void SetApplications(params string[] applications)
+        /// <param name="workflows">List of workflows.</param>
+        public void SetWorkflows(params string[] workflows)
         {
-            Guard.Against.NullOrEmpty(applications, nameof(applications));
+            Guard.Against.NullOrEmpty(workflows, nameof(workflows));
 
-            Applications = applications.Clone() as string[];
+            Workflows = workflows.Clone() as string[];
         }
 
         /// <summary>
         /// Generated the storage path for a file.
         /// </summary>
-        /// <param name="storageRootPath">The directory path where the file stored.</param>
-        /// <param name="correlationId">The correlation ID identifies the source of the file.  Use internally generated association ID for SCP received DICOM instances or Transaction ID for ACR retrieved files.</param>
-        /// <param name="messageId">An unique identifier for the file.</param>
-        /// <param name="fileExtension">File extension for the file.</param>
-        /// <returns></returns>
-        private string GenerateStoragePath(string storageRootPath, string correlationId, string messageId, string fileExtension)
+        protected virtual string GenerateStoragePath()
         {
-            string filePath = System.IO.Path.Combine(storageRootPath, $"{correlationId}-{messageId}") + fileExtension;
+            string filePath = System.IO.Path.Combine(StorageRootPath, $"{CorrelationId}-{MessageId}") + FileExtension;
             filePath = filePath.ToLowerInvariant();
             var index = 1;
-            while (_fileSystem.File.Exists(filePath))
+            while (FileSystem.File.Exists(filePath))
             {
-                filePath = System.IO.Path.Combine(storageRootPath, $"{correlationId}-{messageId}-{index++}") + fileExtension;
+                filePath = System.IO.Path.Combine(StorageRootPath, $"{CorrelationId}-{MessageId}-{index++}") + FileExtension;
                 filePath = filePath.ToLowerInvariant();
             }
 

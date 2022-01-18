@@ -70,13 +70,24 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.AddOption(nameOption);
             var aeTitleOption = new Option<string>(new string[] { "-a", "--aetitle" }, "AE Title of the SCP") { IsRequired = true };
             addCommand.AddOption(aeTitleOption);
-            var appsOption = new Option<string[]>(new string[] { "--apps" }, () => Array.Empty<string>(), "A space separated list of application names or IDs to be associated with the SCP AE Title")
+            var groupingOption = new Option<string>(new string[] { "-g", "--grouping" }, getDefaultValue: () => "0020,000D", "DICOM tag used to group instances") { IsRequired = false };
+            addCommand.AddOption(groupingOption);
+            var timeoutOption = new Option<uint>(new string[] { "-t", "--timeout" }, getDefaultValue: () => 5, "Timeout, in seconds, to wait for instances") { IsRequired = false };
+            addCommand.AddOption(timeoutOption);
+            var workflowsOption = new Option<string[]>(new string[] { "-w", "--workflows" }, () => Array.Empty<string>(), "A space separated list of workflow names or IDs to be associated with the SCP AE Title")
             {
                 AllowMultipleArgumentsPerToken = true,
                 IsRequired = false,
-                Name = "--applications"
+                Name = "--workflows"
             };
-            addCommand.AddOption(appsOption);
+            addCommand.AddOption(workflowsOption);
+            var ignoredSopsOption = new Option<string[]>(new string[] { "-i", "--ignored-sops" }, () => Array.Empty<string>(), "A space separated list of SOP Class UIDs to be ignoredS")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+                Name = "--ignored-sops"
+            };
+            addCommand.AddOption(ignoredSopsOption);
 
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(AddAeTitlehandlerAsync);
         }
@@ -137,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 };
                 table.AddColumn(p => p.Name, new ContentView("Name".Underline()));
                 table.AddColumn(p => p.AeTitle, new ContentView("AE Title".Underline()));
-                table.AddColumn(p => p.Applications.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.Applications), new ContentView("Applications".Underline()));
+                table.AddColumn(p => p.Workflows.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.Workflows), new ContentView("Workflows".Underline()));
                 table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
             }
             return ExitCodes.Success;
@@ -204,11 +215,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 logger.Log(LogLevel.Information, "New MONAI Deploy SCP Application Entity created:");
                 logger.Log(LogLevel.Information, "\tName:     {0}", result.Name);
                 logger.Log(LogLevel.Information, "\tAE Title: {0}", result.AeTitle);
+                logger.Log(LogLevel.Information, "\tGrouping: {0}", result.Grouping);
+                logger.Log(LogLevel.Information, "\tTimeout: {0}s", result.Timeout);
 
-                if (result.Applications.Any())
+                if (result.Workflows.Any())
                 {
-                    logger.Log(LogLevel.Information, "\tApplications:{0}", string.Join(',', result.Applications));
+                    logger.Log(LogLevel.Information, "\tWorkflows:{0}", string.Join(',', result.Workflows));
                     logger.Log(LogLevel.Warning, "Data received by this Application Entity will bypass Data Routing Service.");
+                }
+                if (result.IgnoredSopClasses.Any())
+                {
+                    logger.Log(LogLevel.Information, "\tIgnored SOP Classes:{0}", string.Join(',', result.IgnoredSopClasses));
+                    logger.Log(LogLevel.Warning, "Instances with matching SOP class UIDs are accepted but dropped.");
                 }
             }
             catch (ConfigurationException ex)

@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Repositories
 {
-    public class WorkloadManagerApi : IWorkloadManagerApi
+    internal class WorkloadManagerApi : IWorkloadManagerApi
     {
         public Task<byte[]> Download(string applicaton, Guid fileId, CancellationToken cancellationToken)
         {

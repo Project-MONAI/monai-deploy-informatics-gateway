@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             {
                 AeTitle = "Test",
                 Name = "Test Name",
-                Applications = new System.Collections.Generic.List<string>() { "A", "B" }
+                Workflows = new System.Collections.Generic.List<string>() { "A", "B" }
             };
 
             var json = JsonConvert.SerializeObject(aet);
@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             Assert.Equal(aet.AeTitle, result.AeTitle);
             Assert.Equal(aet.Name, result.Name);
-            Assert.Equal(aet.Applications, result.Applications);
+            Assert.Equal(aet.Workflows, result.Workflows);
         }
 
         [Fact(DisplayName = "AE Title - Create returns a problem")]
@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             {
                 AeTitle = "Test",
                 Name = "Test Name",
-                Applications = new System.Collections.Generic.List<string>() { "A", "B" }
+                Workflows = new System.Collections.Generic.List<string>() { "A", "B" }
             };
 
             var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails

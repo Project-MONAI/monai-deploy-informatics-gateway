@@ -86,7 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         [Fact(DisplayName = "aet add comand")]
         public async Task AetAdd_Command()
         {
-            var command = "aet add -n MyName -a MyAET --apps App MyCoolApp TheApp";
+            var command = "aet add -n MyName -a MyAET --workflows App MyCoolApp TheApp";
             var result = _paser.Parse(command);
             Assert.Equal(ExitCodes.Success, result.Errors.Count);
 
@@ -94,11 +94,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             {
                 Name = result.CommandResult.Children[0].Tokens[0].Value,
                 AeTitle = result.CommandResult.Children[1].Tokens[0].Value,
-                Applications = result.CommandResult.Children[2].Tokens.Select(p => p.Value).ToList()
+                Workflows = result.CommandResult.Children[2].Tokens.Select(p => p.Value).ToList()
             };
             Assert.Equal("MyName", entity.Name);
             Assert.Equal("MyAET", entity.AeTitle);
-            Assert.Collection(entity.Applications,
+            Assert.Collection(entity.Workflows,
                 item => item.Equals("App"),
                 item => item.Equals("MyCoolApp"),
                 item => item.Equals("TheApp"));
@@ -113,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
             _informaticsGatewayClient.Verify(
                 p => p.MonaiScpAeTitle.Create(
-                    It.Is<MonaiApplicationEntity>(o => o.AeTitle == entity.AeTitle && o.Name == entity.Name && Enumerable.SequenceEqual(o.Applications, entity.Applications)),
+                    It.Is<MonaiApplicationEntity>(o => o.AeTitle == entity.AeTitle && o.Name == entity.Name && Enumerable.SequenceEqual(o.Workflows, entity.Workflows)),
                     It.IsAny<CancellationToken>()), Times.Once());
         }
 
@@ -214,7 +214,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             {
                 Name = "MyName",
                 AeTitle = "MyAET",
-                Applications = new List<string>() { "MyApp1", "MyCoolApp" }
+                Workflows = new List<string>() { "MyApp1", "MyCoolApp" }
             };
 
             _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()))

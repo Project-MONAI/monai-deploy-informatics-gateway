@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     CorrelationId = table.Column<string>(type: "TEXT", nullable: false),
                     StorageRootPath = table.Column<string>(type: "TEXT", nullable: false),
                     FilePath = table.Column<string>(type: "TEXT", nullable: false),
-                    Applications = table.Column<string>(type: "TEXT", nullable: true),
+                    Workflows = table.Column<string>(type: "TEXT", nullable: true),
                     Received = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Timestamp = table.Column<byte[]>(type: "BLOB", rowVersion: true, nullable: true),
                     TryCount = table.Column<int>(type: "INTEGER", nullable: false)
@@ -65,7 +65,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 {
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     AeTitle = table.Column<string>(type: "TEXT", nullable: false),
-                    Applications = table.Column<string>(type: "TEXT", nullable: true)
+                    Grouping = table.Column<string>(type: "TEXT", nullable: false),
+                    Workflows = table.Column<string>(type: "TEXT", nullable: true),
+                    IgnoredSopClasses = table.Column<string>(type: "TEXT", nullable: true),
+                    Timeout = table.Column<uint>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

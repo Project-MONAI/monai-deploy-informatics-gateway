@@ -1,3 +1,4 @@
+using System.IO.Pipes;
 // Copyright 2021 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,6 +28,7 @@
  */
 
 using Ardalis.GuardClauses;
+using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,24 +42,22 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using System;
 using System.Collections.Concurrent;
 using System.IO.Abstractions;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal class ApplicationEntityManager : IApplicationEntityManager, IDisposable, IObserver<MonaiApplicationentityChangedEvent>
     {
-        private readonly object _syncRoot = new object();
         private readonly IHostApplicationLifetime _applicationLifetime;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IServiceScope _serviceScope;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<ApplicationEntityManager> _logger;
         private readonly ILoggerFactory _loggerFactory;
-        private readonly ConcurrentDictionary<string, MonaiApplicationEntity> _aeTitles;
+        private readonly ConcurrentDictionary<string, ApplicationEntityHandler> _aeTitles;
         private readonly IDisposable _unsubscriberForMonaiAeChangedNotificationService;
         private readonly IStorageInfoProvider _storageInfoProvider;
-        private readonly IFileStoredNotificationQueue _fileStoredNotificationQueue;
+        private readonly IPayloadAssembler _payloadAssembler;
         private readonly IFileSystem _fileSystem;
         private readonly IDicomToolkit _dicomToolkit;
         private bool _disposed = false;
@@ -72,24 +72,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        public ApplicationEntityManager(
-            IHostApplicationLifetime applicationLifetime,
-            IServiceScopeFactory serviceScopeFactory,
-            IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
-            IOptions<InformaticsGatewayConfiguration> configuration,
-            IStorageInfoProvider storageInfoProvider,
-            IFileStoredNotificationQueue fileStoredNotificationQueue,
-            IFileSystem fileSystem,
-            IDicomToolkit dicomToolkit)
+        public ApplicationEntityManager(IHostApplicationLifetime applicationLifetime,
+                                        IServiceScopeFactory serviceScopeFactory,
+                                        IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
+                                        IOptions<InformaticsGatewayConfiguration> configuration,
+                                        IStorageInfoProvider storageInfoProvider,
+                                        IPayloadAssembler payloadAssembler,
+                                        IFileSystem fileSystem,
+                                        IDicomToolkit dicomToolkit)
         {
             _applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
 
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
-            _fileStoredNotificationQueue = fileStoredNotificationQueue ?? throw new ArgumentNullException(nameof(fileStoredNotificationQueue));
+            _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
+
             _serviceScope = serviceScopeFactory.CreateScope();
             _serviceProvider = _serviceScope.ServiceProvider;
 
@@ -97,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger = _loggerFactory.CreateLogger<ApplicationEntityManager>();
 
             _unsubscriberForMonaiAeChangedNotificationService = monaiAeChangedNotificationService.Subscribe(this);
-            _aeTitles = new ConcurrentDictionary<string, MonaiApplicationEntity>();
+            _aeTitles = new ConcurrentDictionary<string, ApplicationEntityHandler>();
             _applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
 
             InitializeMonaiAeTitles();
@@ -125,32 +125,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
             }
 
-            var info = new FileStorageInfo(associationId.ToString(), Configuration.Value.Storage.TemporaryDataDirFullPath, request.MessageID.ToString(), ".dcm", _fileSystem);
+            var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
+            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), _fileSystem);
 
-            if (_aeTitles[calledAeTitle].Applications.Any())
+            info.StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
+            info.SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
+            info.SopInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
+
+            using (_logger.BeginScope("SOPInstanceUID={0}", info.SopInstanceUid))
             {
-                info.SetApplications(_aeTitles[calledAeTitle].Applications.ToArray());
+                _logger.Log(LogLevel.Information, "Study Instance UID: {StudyInstanceUid}", info.StudyInstanceUid);
+                _logger.Log(LogLevel.Information, "Series Instance UID: {SeriesInstanceUid}", info.SeriesInstanceUid);
+                _logger.Log(LogLevel.Information, "Storage File Path: {InstanceStorageFullPath}", info.FilePath);
+
+                await _aeTitles[calledAeTitle].HandleInstance(request, info);
             }
-
-            _fileSystem.Directory.CreateDirectoryIfNotExists(info.StorageRootPath);
-
-            await SaveDicomInstance(request, info.FilePath);
-
-            await NotifyStoredInstance(info);
-        }
-
-        private async Task NotifyStoredInstance(FileStorageInfo file)
-        {
-            await _fileStoredNotificationQueue.Queue(file);
-            _logger.Log(LogLevel.Information, $"Instance queued for upload: {file.FilePath}");
-        }
-
-        private async Task SaveDicomInstance(DicomCStoreRequest request, string filename)
-        {
-            //TODO: log to encrypted log
-            _logger.Log(LogLevel.Debug, $"Preparing to save {filename}");
-            await _dicomToolkit.Save(request.File, filename);
-            _logger.Log(LogLevel.Information, $"Instanced saved {filename}");
         }
 
         public bool IsAeTitleConfigured(string calledAe)
@@ -184,7 +173,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             using (var scope = _serviceScopeFactory.CreateScope())
             {
-                if (!_aeTitles.TryAdd(entity.AeTitle, entity))
+                var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _dicomToolkit, _loggerFactory.CreateLogger<ApplicationEntityHandler>());
+                if (!_aeTitles.TryAdd(entity.AeTitle, handler))
                 {
                     _logger.Log(LogLevel.Error, $"AE Title {0} could not be added to CStore Manager.  Already exits: {1}", entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));
                 }

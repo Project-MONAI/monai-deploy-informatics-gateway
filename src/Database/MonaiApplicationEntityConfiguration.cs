@@ -51,7 +51,14 @@ namespace Monai.Deploy.InformaticsGateway.Database
             builder.HasKey(j => j.Name);
 
             builder.Property(j => j.AeTitle).IsRequired();
-            builder.Property(j => j.Applications)
+            builder.Property(j => j.Timeout).IsRequired();
+            builder.Property(j => j.Grouping).IsRequired();
+            builder.Property(j => j.Workflows)
+                .HasConversion(
+                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
+                        v => JsonConvert.DeserializeObject<List<string>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(valueComparer);
+            builder.Property(j => j.IgnoredSopClasses)
                 .HasConversion(
                         v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
                         v => JsonConvert.DeserializeObject<List<string>>(v, jsonSerializerSettings))

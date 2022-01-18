@@ -12,7 +12,7 @@
 using Ardalis.GuardClauses;
 using System.IO;
 
-namespace Monai.Deploy.InformaticsGateway.CLI
+namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     public interface IEmbeddedResource
     {

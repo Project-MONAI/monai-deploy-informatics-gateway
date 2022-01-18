@@ -16,7 +16,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.IO.Abstractions;
 
-namespace Monai.Deploy.InformaticsGateway.CLI
+namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     public interface IConfigurationOptionAccessor
     {

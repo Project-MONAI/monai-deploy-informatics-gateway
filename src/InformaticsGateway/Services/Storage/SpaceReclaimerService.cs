@@ -30,8 +30,8 @@ using Ardalis.GuardClauses;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Polly;
@@ -43,7 +43,7 @@ using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
 {
-    public class SpaceReclaimerService : IHostedService, IMonaiService
+    internal class SpaceReclaimerService : IHostedService, IMonaiService
     {
         private readonly ILogger<SpaceReclaimerService> _logger;
         private readonly IInstanceCleanupQueue _taskQueue;

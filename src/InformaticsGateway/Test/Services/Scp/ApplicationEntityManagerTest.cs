@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         private Mock<ILoggerFactory> _loggerFactory;
         private Mock<ILogger<ApplicationEntityManager>> _logger;
         private Mock<ILogger<MonaiAeChangedNotificationService>> _loggerNotificationService;
-        private Mock<IFileStoredNotificationQueue> _fileStoredNotificationQueue;
+        private Mock<IPayloadAssembler> _fileStoredNotificationQueue;
 
         private IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
         private Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>> _applicationEntityRepository;
@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _serviceScope = new Mock<IServiceScope>();
             _loggerFactory = new Mock<ILoggerFactory>();
             _logger = new Mock<ILogger<ApplicationEntityManager>>();
-            _fileStoredNotificationQueue = new Mock<IFileStoredNotificationQueue>();
+            _fileStoredNotificationQueue = new Mock<IPayloadAssembler>();
             _loggerNotificationService = new Mock<ILogger<MonaiAeChangedNotificationService>>();
             _monaiAeChangedNotificationService = new MonaiAeChangedNotificationService(_loggerNotificationService.Object);
             _applicationEntityRepository = new Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
@@ -114,8 +114,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
 
-        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall save instance and notify")]
-        public async Task HandleCStoreRequest_ShallSaveInstanceAndNotify()
+        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall ignored matching SOP Classes")]
+        public async Task HandleCStoreRequest_ShallIgnoredMatchingSopClasses()
         {
             var aet = "TESTAET";
 
@@ -125,13 +125,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 {
                     AeTitle = aet,
                     Name =aet,
-                    Applications = new List<string>(){ "AppA", "AppB", Guid.NewGuid().ToString() }
+                    Workflows = new List<string>(){ "AppA", "AppB", Guid.NewGuid().ToString() },
+                    IgnoredSopClasses = new List<string>{ DicomUID.SecondaryCaptureImageStorage.UID }
                 }
             };
             _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
             _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _fileStoredNotificationQueue.Setup(p => p.Queue(It.IsAny<FileStorageInfo>()));
+            _fileStoredNotificationQueue.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()));
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -145,14 +146,61 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             await manager.HandleCStoreRequest(request, aet, Guid.NewGuid());
 
             _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Instance queued for upload", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
+
+            _logger.VerifyLoggingMessageBeginsWith($"Instance ignored due to matching SOP Class UID {DicomUID.SecondaryCaptureImageStorage.UID}", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Never());
+            _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
 
             _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Once());
+
+            var fileSystem = _fileSystem as MockFileSystem;
+            Assert.Empty(fileSystem.AllFiles);
+        }
+
+        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall save instance and notify")]
+        public async Task HandleCStoreRequest_ShallSaveInstanceAndNotify()
+        {
+            var aet = "TESTAET";
+
+            var data = new List<MonaiApplicationEntity>()
+            {
+                new MonaiApplicationEntity()
+                {
+                    AeTitle = aet,
+                    Name =aet,
+                    Workflows = new List<string>(){ "AppA", "AppB", Guid.NewGuid().ToString() }
+                }
+            };
+            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
+            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
+            _fileStoredNotificationQueue.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()));
+            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
+                                                       _serviceScopeFactory.Object,
+                                                       _monaiAeChangedNotificationService,
+                                                       _connfiguration,
+                                                       _storageInfoProvider.Object,
+                                                       _fileStoredNotificationQueue.Object,
+                                                       _fileSystem,
+                                                       _dicomToolkit);
+
+            var request = GenerateRequest();
+            await manager.HandleCStoreRequest(request, aet, Guid.NewGuid());
+
+            _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
+
+            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Instance saved", LogLevel.Information, Times.Once());
+
+            _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
+            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
+            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
 
             var fileSystem = _fileSystem as MockFileSystem;
             Assert.Single(fileSystem.AllFiles);
@@ -205,7 +253,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
-            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
+            _fileStoredNotificationQueue.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Never());
         }
 
         [RetryFact(5, 250, DisplayName = "IsAeTitleConfigured")]

@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
 using System;
 using System.CommandLine.Invocation;
@@ -32,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private async Task<int> StatusCommandHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
             Guard.Against.Null(host, nameof(host));
-            
+
             this.LogVerbose(verbose, host, "Configuring services...");
 
             var configService = host.Services.GetRequiredService<IConfigurationService>();

@@ -28,13 +28,13 @@
 
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using System.Collections.Concurrent;
 using System.Threading;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
 {
-    public class InstanceCleanupQueue : IInstanceCleanupQueue
+    internal class InstanceCleanupQueue : IInstanceCleanupQueue
     {
         private readonly BlockingCollection<FileStorageInfo> _workItems;
         private readonly ILogger<InstanceCleanupQueue> _logger;

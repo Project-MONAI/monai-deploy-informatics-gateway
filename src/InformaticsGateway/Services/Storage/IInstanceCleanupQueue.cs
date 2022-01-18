@@ -26,7 +26,7 @@
  * limitations under the License.
  */
 
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using System.Threading;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
     /// <summary>
     /// Interface of Instance Cleanup Queue
     /// </summary>
-    public interface IInstanceCleanupQueue
+    internal interface IInstanceCleanupQueue
     {
         /// <summary>
         /// Queue a new file to be cleaned up.

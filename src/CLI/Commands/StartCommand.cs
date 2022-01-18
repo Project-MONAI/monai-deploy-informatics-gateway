@@ -30,9 +30,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         }
 
         private async Task<int> StartCommandHandler(IHost host, bool verbose, CancellationToken cancellationToken)
-        {            
+        {
             Guard.Against.Null(host, nameof(host));
-            
+
             var service = host.Services.GetRequiredService<IControlService>();
             var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();
             var logger = CreateLogger<StartCommand>(host);
