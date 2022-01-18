@@ -71,6 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// <summary>
         /// Gets or sets the DICOM tag used to group the instances.
         /// Defaults to 0020,000D (Study Instance UID).
+        /// Valid DICOM Tags: > Study Instance UID (0020,000D) and Series Instance UID (0020,000E).
         /// </summary>
         public string Grouping { get; set; } = "0020,000D";
 

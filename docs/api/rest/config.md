@@ -92,6 +92,10 @@ Creates a new MONAI SCP Application Entity to accept DICOM instances.
 > [!Note]
 > The MONAI SCP AE Title must be unique.
 
+
+> [!Note]
+> DICOM tag used for `grouping` allows either Study Instance UID (0020,000D) or Series Instance UID (0020,000E).
+
 ### Parameters
 
 Please see the [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity)
