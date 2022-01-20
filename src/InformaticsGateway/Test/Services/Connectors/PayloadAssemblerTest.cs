@@ -128,6 +128,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             int callCount = 0;
             _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>())).Callback(() =>
             {
+                if (callCount == _options.Value.Storage.Retries.DelaysMilliseconds.Length + 1)
+                {
+                    _cancellationTokenSource.Cancel();
+                }
                 if (callCount++ != 0)
                 {
                     throw new Exception("error");
@@ -137,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
 
             await payloadAssembler.Queue("A", new FileStorageInfo(), 1);
-            await Task.Delay(1501);
+            _cancellationTokenSource.Token.WaitHandle.WaitOne();
             payloadAssembler.Dispose();
 
             _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.Once());
@@ -154,9 +158,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var result = payloadAssembler.Dequeue(_cancellationTokenSource.Token);
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.AtLeastOnce());
             Assert.Single(result.Files);
-            _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue with {result.Count} files", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue with {result.Count} files", LogLevel.Information, Times.AtLeastOnce());
         }
     }
 }
