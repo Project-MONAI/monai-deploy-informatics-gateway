@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway
             host.Run();
         }
 
-        private static void InitializeDatabase(IHost host)
+        internal static void InitializeDatabase(IHost host)
         {
             Guard.Against.Null(host, nameof(host));
 
@@ -102,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway
                         var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
                         var serviceProvider = implementationFactory.GetService<IServiceProvider>();
                         var logger = implementationFactory.GetService<ILogger<Program>>();
-                        return DynamicServiceLocator.LocateService<IStorageService>(serviceProvider, logger, options.Value.Storage.StorageService);
+                        return serviceProvider.LocateService<IStorageService>(logger, options.Value.Storage.StorageService);
                     });
 
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();

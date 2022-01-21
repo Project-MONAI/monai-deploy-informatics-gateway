@@ -57,6 +57,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
         }
 
+        [Fact(DisplayName = "PayloadAssembler_Constructor")]
+        public void PayloadAssembler_Constructor()
+        {
+            Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(_options, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(_options, _logger.Object, null));
+        }
+
         [RetryFact(DisplayName = "PayloadAssembler shall queue items using default timeout")]
         public async Task PayloadAssembler_ShallQueueWithDefaultTimeout()
         {
@@ -144,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.AtLeastOnce());
             _logger.VerifyLoggingMessageBeginsWith($"Error processing payload", LogLevel.Warning, Times.AtLeastOnce());
         }
 
