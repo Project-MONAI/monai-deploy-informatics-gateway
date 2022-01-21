@@ -13,22 +13,24 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using System;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Storage
+namespace Monai.Deploy.InformaticsGateway.Common
 {
-    internal class DynamicServiceLocator
+    internal static class IServiceProviderExtensions
     {
-        internal static TInterface LocateService<TInterface>(IServiceProvider serviceProvider, ILogger<Program> logger, string fullyQualifiedTypeString)
+        internal static TInterface LocateService<TInterface>(this IServiceProvider serviceProvider, ILogger<Program> logger, string fullyQualifiedTypeString)
         {
             var type = Type.GetType(fullyQualifiedTypeString);
             if (type is null)
             {
+                logger.Log(LogLevel.Critical, $"Type '{fullyQualifiedTypeString}' cannot be found.");
                 throw new ConfigurationException($"Type '{fullyQualifiedTypeString}' cannot be found.");
             }
 
             var instance = serviceProvider.GetService(type);
             if (instance is null)
             {
-                throw new ConfigurationException($"Instance '{fullyQualifiedTypeString}' cannot be created.");
+                logger.Log(LogLevel.Critical, $"Instance of '{fullyQualifiedTypeString}' cannot be found.");
+                throw new ConfigurationException($"Instance of '{fullyQualifiedTypeString}' cannot be found.");
             }
 
             return (TInterface)instance;

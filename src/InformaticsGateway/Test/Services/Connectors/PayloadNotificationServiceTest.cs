@@ -65,8 +65,19 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _options.Value.Storage.StorageServiceBucketName = "bucket";
         }
 
+        [Fact(DisplayName = "PayloadNotificationService_Constructor")]
+        public void PayloadNotificationService_Constructor()
+        {
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, null));
+        }
+
         [Fact(DisplayName = "Payload Notification Service shall stop processing when StopAsync is called")]
-        public void ShallStopProcessing()
+        public void PayloadNotificationService_ShallStopProcessing()
         {
             var payload = new Payload("test", 100) { State = Payload.PayloadState.Upload };
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
@@ -94,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [Fact(DisplayName = "Payload Notification Service shall restore payloads from database")]
-        public void ShallRestorePayloadsFromDatabase()
+        public void PayloadNotificationService_ShallRestorePayloadsFromDatabase()
         {
             var testData = new List<Payload>
             {
@@ -122,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [Fact(DisplayName = "Payload Notification Service shall prrocess payloads from payload assembler")]
-        public void ShallProcessPayloadsFromPayloadAssembler()
+        public void PayloadNotificationService_ShallProcessPayloadsFromPayloadAssembler()
         {
             var payload = new Payload("test", 100) { State = Payload.PayloadState.Upload };
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
@@ -142,7 +153,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [Fact(DisplayName = "Payload Notification Service shall upload files & retry on failure")]
-        public void ShalUploadFilesAndRetryOnFailure()
+        public void PayloadNotificationService_ShalUploadFilesAndRetryOnFailure()
         {
             _fileSystem.Setup(p => p.File.OpenRead(It.IsAny<string>())).Throws(new Exception("error"));
             _fileSystem.Setup(p => p.Path.IsPathRooted(It.IsAny<string>())).Callback((string path) => System.IO.Path.IsPathRooted(path));
@@ -183,7 +194,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [Fact(DisplayName = "Payload Notification Service shall upload files & publish")]
-        public void ShalUploadFilesAndPublish()
+        public void PayloadNotificationService_ShalUploadFilesAndPublish()
         {
             _fileSystem.Setup(p => p.File.OpenRead(It.IsAny<string>())).Returns(Stream.Null);
             _fileSystem.Setup(p => p.Path.IsPathRooted(It.IsAny<string>())).Callback((string path) => Path.IsPathRooted(path));
