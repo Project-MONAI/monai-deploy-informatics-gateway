@@ -34,12 +34,15 @@ curl --location --request GET 'http://localhost:5000/config/ae'
     "name": "brain-tumor",
     "aeTitle": "BrainTumorModel",
     "workflows": ["brain-tumor", "b75cd27a-068a-4f9c-b3da-e5d4ea08c55a"],
-    "grouping": "0010,0020",
+    "grouping": "0020,000D",
+    "timeout": 5,
     "ignoredSopClasses": ["1.2.840.10008.5.1.4.1.1.1.1"]
   },
   {
     "name": "liver-seg",
     "aeTitle": "LIVERSEG",
+    "grouping": "0020,000D",
+    "timeout": 5,
     "workflows": []
   }
 ]
@@ -79,6 +82,8 @@ curl --location --request GET 'http://localhost:5000/config/ae/brain-tumor'
 {
   "name": "brain-tumor",
   "aeTitle": "BrainTumorModel",
+  "grouping": "0020,000D",
+  "timeout": 5,
   "workflows": ["brain-tumor", "b75cd27a-068a-4f9c-b3da-e5d4ea08c55a"]
 }
 ```
@@ -92,9 +97,14 @@ Creates a new MONAI SCP Application Entity to accept DICOM instances.
 > [!Note]
 > The MONAI SCP AE Title must be unique.
 
-
 > [!Note]
 > DICOM tag used for `grouping` allows either Study Instance UID (0020,000D) or Series Instance UID (0020,000E).
+> The default is set to Study Instance UID (0020,000D) if not specified.
+
+> [!Note]
+> `timeout` is number of seconds the AE Title would wait between each instance before assembling a payload and publishing
+> a workflow request. It is recommended to calculate this value based on the network speed and the maximum size of each
+> DICOM instance.
 
 ### Parameters
 
@@ -119,6 +129,7 @@ curl --location --request POST 'http://localhost:5000/config/ae/' \
 --data-raw '{
         "name": "breast-tumor",
         "aeTitle": "BREASTV1",
+        "timeout": 5,
         "workflows": [
             "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
         ]

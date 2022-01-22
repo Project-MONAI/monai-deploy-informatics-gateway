@@ -64,7 +64,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             valid &= IsDicomScuConfigValid(options.Dicom.Scu);
             valid &= IsDicomWebValid(options.DicomWeb);
             valid &= IsFhirValid(options.Fhir);
-            valid &= IsWorkloadManagerValid(options.WorkloadManager);
             valid &= IsStorageValid(options.Storage);
 
             _validationErrors.ForEach(p => _logger.Log(LogLevel.Error, p));
@@ -108,29 +107,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             var valid = true;
 
             valid &= IsValueInRange("InformaticsGateway>fhir>clientTimeout.", 1, Int32.MaxValue, configuration.ClientTimeoutSeconds);
-            return valid;
-        }
-
-        private bool IsWorkloadManagerValid(MonaiWorkloadManagerConfiguration configuration)
-        {
-            var valid = true;
-
-            if (string.IsNullOrWhiteSpace(configuration.RestEndpoint))
-            {
-                _validationErrors.Add("MONAI Workload Manager API REST endpoint is not configured: InformaticsGateway>workloadManager>restEndpoint.");
-                valid = false;
-            }
-
-            if (string.IsNullOrWhiteSpace(configuration.GrpcEndpoint))
-            {
-                _validationErrors.Add("MONAI Workload Manager API gRPC endpoint is not configured: InformaticsGateway>workloadManager>grpcEndpoint.");
-                valid = false;
-            }
-
-            valid &= IsValueInRange("InformaticsGateway>workloadManager>parallelUploads.", 1, Int32.MaxValue, configuration.ClientTimeoutSeconds);
-            valid &= IsValueInRange("InformaticsGateway>workloadManager>maxRetries.", 1, Int32.MaxValue, configuration.ClientTimeoutSeconds);
-            valid &= IsValueInRange("InformaticsGateway>workloadManager>retryDelaySeconds.", 1, Int32.MaxValue, configuration.ClientTimeoutSeconds);
-            valid &= IsValueInRange("InformaticsGateway>workloadManager>clientTimeout.", 1, Int32.MaxValue, configuration.ClientTimeoutSeconds);
             return valid;
         }
 

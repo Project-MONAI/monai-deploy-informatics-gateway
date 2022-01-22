@@ -71,9 +71,9 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public uint ReserveSpaceGB { get; set; } = 5;
 
         /// <summary>
-        /// Gets or sets the a fully qualified type name used for storage access.
+        /// Gets or sets the a fully qualified type name of the storage service.
         /// The spcified type must implement <typeparam name="Monai.Deploy.InformaticsGateway.Api.Storage.StorageBase">StorageBase</typeparam>.
-        /// The default storage service configured in MinIO.
+        /// The default storage service configured is MinIO.
         /// </summary>
 
         [JsonProperty(PropertyName = "storageService")]
@@ -86,7 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public StorageServiceCredentials StorageServiceCredentials { get; set; }
 
         /// <summary>
-        /// Gets or sets retry options relate to processing payloads & uploading payloads to the storage service.
+        /// Gets or sets retry options relate to processing payloads and uploading payloads to the storage service.
         /// </summary>
         [JsonProperty(PropertyName = "reties")]
         public RetryConfiguration Retries { get; set; } = new RetryConfiguration();

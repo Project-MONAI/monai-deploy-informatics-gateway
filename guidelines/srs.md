@@ -260,53 +260,7 @@ The following APIs are supported to interact with the ACR-DSI API:
 
 #### Inference API
 
-Initiates a new inference requesting using ACR-DSI drafted API. This API retrieves the specified DICOM dataset and FHIR dataset and
-
-##### URL
-
-`/inference`
-
-##### Method
-
-`POST`
-
-##### Data Params
-
-Refer to [ACR Inference API specs]() for detailed information.
-
-##### Success Response
-
-- Code: `200`
-
-  Content: `{ transactionId: "...", correlationId: "..." }`
-
-- Code: `422`
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with validation errors.
-
-- Code: `500`
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with error details.
-
-#### Inference Status API
-
-##### URL
-
-`/inference/{transactionId}`
-
-##### Method
-
-`GET`
-
-##### Success Response
-
-- Code: `200`
-
-  Content: TBD
-
-- Code: `500`
-
-  Content: A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with error details.
+[Inference API](../docs/api/rest/inference.md)
 
 ---
 
@@ -326,17 +280,20 @@ Refer to [ACR Inference API specs]() for detailed information.
 
 #### Data Storage
 
-MIG stores all received & retrieved medical records in a virtual storage device configured by the system administrators.  The storage layer is configurable, and access to the virtual storage device is made through an abstraction layer to enable migrating from one environment to another. E.g., an on-premises with a single system may have a disk drive, or a NAS volume mounted.  On the other hand, cloud vendor-provided storage services may simplify the deployment in a cloud environment.
+![Storage](diagrams/storage.png)
 
-##### Storage Abstraction Layer API
+MIG stores all received & retrieved medical records first in the temporary storage before the dataset is assembled (grouped) by the `Payload Assembler` based on the AE Title's configuration.  Once data is assembled into a `Payload` object, MIG uploads all the files to the virtual storage device specified in the configuration file.
 
-- Factory
-  - Create(Type, ConnectionString)
-- List(Path)
-- Get(Path)
-- GetProperties(Path)
-- Put(Path, Bytes[])
-- Delete(Path)
+MIG ships with [MinIO](https://min.io/) as the default storage service provider given that it supports local, on-prem and cloud storage solutions.  However, the default storage service can be easily replaced by implementing the [Monai.Deploy.InformaticsGateway.Api.Storage.IStorageService](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/IStorageService.cs) interface. This enables users to extend MIG to meet their needs.
+
+
+#### Retry Logic
+
+(REQ-FNC-01) Data uploading to the shared storage includes built-in retry logic with the following defaults:
+
+| Action | Retry Delay    | Maximum Retries |
+| ------ | -------------- | --------------- |
+| Upload | 250, 500, 1000 | 3               |
 
 #### Subsystem Communication
 
@@ -344,18 +301,13 @@ Informatics Gateway and the Workflow Manager follow the publisher-subscriber pat
 
 ##### Message Broker Abstraction Layer API
 
-- Factory
-  - CreatePublisher(Type, ConnectionString, Topic)
-  - CreateSubscriber(Type, ConnectionString, Topic, Queue)
-- Publisher
-  - Publish(Message)
-- Subscriber
-  - Subscribe(Action<MessageReceivedEventArgs>)
-  - Ackowledge(string acknowledgeToekn)
+TBD
 
 ##### Published Events
+
 - Workflow Request event
 
 ##### Subscribed Events
+
 - Export task event
 - Workflow Manager out of disk event
