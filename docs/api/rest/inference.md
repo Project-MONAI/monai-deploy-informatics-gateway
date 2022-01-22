@@ -9,8 +9,8 @@ The inference endpoint provides a RESTful interface for triggering a new inferen
 > The inference API is extended based on the draft created by the ACR (American College of Radiology).
 > Please refer to [ACR's Platform-Model Communication for AI](https://www.acrdsi.org/-/media/DSI/Files/ACR-DSI-Model-API.pdf)
 > for more information.
-> 
-## POST /api/inference
+
+## POST /inference
 
 Triggers a new inference job using the specified DICOM dataset from the specified data sources.
 
@@ -46,7 +46,7 @@ Response Content Type: JSON - [InferenceRequestResponse](xref:Monai.Deploy.Infor
 
 ---
 
-## GET /api/inference/status/{transactionId}
+## GET /inference/status/{transactionId}
 
 Returns status of an inference request.
 

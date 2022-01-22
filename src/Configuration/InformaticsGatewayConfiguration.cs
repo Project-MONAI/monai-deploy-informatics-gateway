@@ -54,13 +54,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public StorageConfiguration Storage { get; set; }
 
         /// <summary>
-        /// Represents the <c>workloadManager</c> section of the configuration file.
-        /// </summary>
-        /// <value></value>
-        [JsonProperty(PropertyName = "workloadManager")]
-        public MonaiWorkloadManagerConfiguration WorkloadManager { get; set; }
-
-        /// <summary>
         /// Represents the <c>dicomWeb</c> section of the configuration file.
         /// </summary>
         /// <value></value>
@@ -84,7 +77,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         {
             Dicom = new DicomConfiguration();
             Storage = new StorageConfiguration();
-            WorkloadManager = new MonaiWorkloadManagerConfiguration();
             DicomWeb = new DicomWebConfiguration();
             Fhir = new FhirConfiguration();
             Export = new DataExportConfiguration();

@@ -29,12 +29,12 @@ INTRO
 
 ### DICOM SCP
 
-The *DICOM SCP Service* accepts standard DICOM C-ECHO and C-STORE commands, which receive DICOM instances for processing. The received instances are stored immediately to the configured temporary storage location (`InformaticsGateway>storage>temporary`) and then uploaded to the [MONAI Deploy Workload Manager](https://github.com/Project-MONAI/monai-deploy-workload-manager). All DICOM instances are stored on disk as-is using the original transfer syntax described in
+The *DICOM SCP Service* accepts standard DICOM C-ECHO and C-STORE commands, which receive DICOM instances for processing. The received instances are stored immediately to the configured temporary storage location (`InformaticsGateway>storage>temporary`) and then uploaded to the [MONAI Deploy Workflow Manager](https://github.com/Project-MONAI/monai-deploy-workflow-manager). All DICOM instances are stored on disk as-is using the original transfer syntax described in
 the [DICOM Interface](./compliance/dicom.md#dicom-scp) section. The MONAI Deploy application developer must handle any encoding/decoding of the DICOM files within the applications. Please refer to the [MONAI Deploy App SDK](https://github.com/Project-MONAI/monai-deploy-app-sdk) for further information.
 
 ### DICOM SCU
 
-The *DICOM SCU Service* enables users to export application-generated DICOM results to external DICOM devices. It queries the `Results.Get` API from the [MONAI Deploy Workload Manager](https://github.com/Project-MONAI/monai-deploy-workload-manager) to retrieve user-generated DICOM results assigned to the `MONAISCU` sink (`InformaticsGateway/dicom/scu/sink`).
+The *DICOM SCU Service* enables users to export application-generated DICOM results to external DICOM devices. It queries the `Results.Get` API from the [MONAI Deploy Workflow Manager](https://github.com/Project-MONAI/monai-deploy-workflow-manager) to retrieve user-generated DICOM results assigned to the `MONAISCU` sink (`InformaticsGateway/dicom/scu/sink`).
 
 > [!Note]
 > DICOM instances are sent as-is; no codec conversion is done as part of the SCU process. 
@@ -42,4 +42,4 @@ The *DICOM SCU Service* enables users to export application-generated DICOM resu
 
 ### ACR DSI API
 
-The ACR DSI API enables users to trigger inference requests via RESTful calls, utilizing DICOMweb & FHIR to retrieve data specified in the request.  Upon data retrieval, the Informatics Gateway forwards the data to the [MONAI Deploy Workload Manager](https://github.com/Project-MONAI/monai-deploy-workload-manager) for job scheduling.
+The ACR DSI API enables users to trigger inference requests via RESTful calls, utilizing DICOMweb & FHIR to retrieve data specified in the request.  Upon data retrieval, the Informatics Gateway forwards the data to the [MONAI Deploy Workflow Manager](https://github.com/Project-MONAI/monai-deploy-workflow-manager) for job scheduling.

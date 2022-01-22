@@ -15,7 +15,8 @@ The configuration file is a JSON formatted file used to control the behaviors an
   "InformaticsGateway": "configuration options for the Informatics Gateway & its internal services",
   "Logging": "logging configuration options",
   "Kestrel": "web server configuration options. See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-5.0",
-  "AllowedHosts": "host filtering option.  See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/host-filtering?view=aspnetcore-5.0"
+  "AllowedHosts": "host filtering option.  See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/host-filtering?view=aspnetcore-5.0",
+  "Cli": "configurations used by the CLI"
 }
 ```
 

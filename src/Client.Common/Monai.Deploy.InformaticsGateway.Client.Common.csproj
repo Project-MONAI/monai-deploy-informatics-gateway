@@ -16,6 +16,7 @@
     <RootNamespace>Monai.Deploy.InformaticsGateway.Client.Common</RootNamespace>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsTrimmable>true</IsTrimmable>
+    <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <ItemGroup>
