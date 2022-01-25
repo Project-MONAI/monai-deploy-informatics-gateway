@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -31,6 +31,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -186,6 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private async Task<OutputJob> DownloadPayloadBlockCallback(TaskResponse task, CancellationToken cancellationToken)
         {
             Guard.Against.Null(task, nameof(task));
+
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", task.ExportTaskId }, { "CorrelationId", task.CorrelationId } });
             var scope = _serviceScopeFactory.CreateScope();
             var workloadManager = scope.ServiceProvider.GetRequiredService<IWorkloadManagerApi>();

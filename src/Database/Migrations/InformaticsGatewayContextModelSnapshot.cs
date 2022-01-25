@@ -130,6 +130,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("CorrelationId")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Files")
                         .HasColumnType("TEXT");
 

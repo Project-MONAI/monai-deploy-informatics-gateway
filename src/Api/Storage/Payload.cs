@@ -66,13 +66,16 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             }
         }
 
-        public Payload(string key, uint timeout)
+        public string CorrelationId { get; init; }
+
+        public Payload(string key, string correlationId, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
             _id = Guid.NewGuid();
             _lastReceived = new Stopwatch();
             Key = key;
+            CorrelationId = correlationId;
             Timeout = timeout;
             RetryCount = 0;
             State = PayloadState.Created;
