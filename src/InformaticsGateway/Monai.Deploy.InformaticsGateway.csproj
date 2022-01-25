@@ -49,6 +49,7 @@
         <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
         <ProjectReference Include="..\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
         <ProjectReference Include="..\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
+        <ProjectReference Include="..\MessageBroker\RabbitMq\Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq.csproj" />
         <ProjectReference Include="..\Storage\MinIo\Monai.Deploy.InformaticsGateway.Storage.MinIo.csproj" />
     </ItemGroup>
 

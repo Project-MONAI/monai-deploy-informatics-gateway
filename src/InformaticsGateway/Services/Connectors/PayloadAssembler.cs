@@ -101,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(file, nameof(file));
 
-            var payload = await CreateOrGetPayload(bucket, timeout);
+            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, timeout);
             payload.Add(file);
             _logger.Log(LogLevel.Information, $"File added to bucket {payload.Key}. Queue size: {payload.Count}");
         }
@@ -177,13 +177,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task<Payload> CreateOrGetPayload(string key, uint timeout)
+        private async Task<Payload> CreateOrGetPayload(string key, string correationId, uint timeout)
         {
             return await _payloads.GetOrAdd(key, x => new AsyncLazy<Payload>(async () =>
             {
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                var newPayload = new Payload(key, timeout);
+                var newPayload = new Payload(key, correationId, timeout);
                 await newPayload.AddPayaloadToDatabase(_options.Value.Storage.Retries.RetryDelays, _logger, repository);
                 _logger.Log(LogLevel.Information, $"Bucket {key} created with timeout {timeout}s.");
                 return newPayload;

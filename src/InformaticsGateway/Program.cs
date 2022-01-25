@@ -18,10 +18,12 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Export;
@@ -103,6 +105,24 @@ namespace Monai.Deploy.InformaticsGateway
                         var serviceProvider = implementationFactory.GetService<IServiceProvider>();
                         var logger = implementationFactory.GetService<ILogger<Program>>();
                         return serviceProvider.LocateService<IStorageService>(logger, options.Value.Storage.StorageService);
+                    });
+
+                    services.AddSingleton<RabbitMqMessagePublisherService>();
+                    services.AddSingleton<IMessageBrokerPublisherService>(implementationFactory =>
+                    {
+                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
+                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
+                        var logger = implementationFactory.GetService<ILogger<Program>>();
+                        return serviceProvider.LocateService<IMessageBrokerPublisherService>(logger, options.Value.Messaging.PublisherService);
+                    });
+
+                    services.AddSingleton<RabbitMqMessageSubscriberService>();
+                    services.AddSingleton<IMessageBrokerSubscriberService>(implementationFactory =>
+                    {
+                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
+                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
+                        var logger = implementationFactory.GetService<ILogger<Program>>();
+                        return serviceProvider.LocateService<IMessageBrokerSubscriberService>(logger, options.Value.Messaging.SubscriberService);
                     });
 
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();

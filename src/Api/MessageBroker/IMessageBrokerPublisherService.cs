@@ -9,19 +9,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Newtonsoft.Json;
+using System.Threading.Tasks;
 
-namespace Monai.Deploy.InformaticsGateway.Configuration
+namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
 {
-    public class StorageServiceCredentials
+    public interface IMessageBrokerPublisherService
     {
-        [JsonProperty(PropertyName = "endpoint")]
-        public string Endpoint { get; set; }
+        /// <summary>
+        /// Gets or sets the name of the storage service.
+        /// </summary>
+        string Name { get; }
 
-        [JsonProperty(PropertyName = "accessKey")]
-        public string AccessKey { get; set; }
-
-        [JsonProperty(PropertyName = "accessToken")]
-        public string AccessToken { get; set; }
+        /// <summary>
+        /// Publishes a message to the service.
+        /// </summary>
+        /// <param name="topic">Topic where the message is published to</param>
+        /// <param name="message">Message to be published</param>
+        /// <returns></returns>
+        Task Publish(string topic, Message message);
     }
 }

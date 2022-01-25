@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -73,6 +73,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [JsonProperty(PropertyName = "export")]
         public DataExportConfiguration Export { get; set; }
 
+        /// <summary>
+        /// Represents the <c>messaging</c> section of the configuration file.
+        /// </summary>
+        [JsonProperty(PropertyName = "messaging")]
+        public MessageBrokerConfiguration Messaging { get; set; }
+
         public InformaticsGatewayConfiguration()
         {
             Dicom = new DicomConfiguration();
@@ -80,6 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             DicomWeb = new DicomWebConfiguration();
             Fhir = new FhirConfiguration();
             Export = new DataExportConfiguration();
+            Messaging = new MessageBrokerConfiguration();
         }
     }
 }

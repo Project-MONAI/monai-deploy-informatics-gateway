@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -68,7 +68,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     Key = table.Column<string>(type: "TEXT", nullable: false),
                     RetryCount = table.Column<int>(type: "INTEGER", nullable: false),
                     State = table.Column<int>(type: "INTEGER", nullable: false),
-                    Files = table.Column<string>(type: "TEXT", nullable: true)
+                    Files = table.Column<string>(type: "TEXT", nullable: true),
+                    CorrelationId = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
