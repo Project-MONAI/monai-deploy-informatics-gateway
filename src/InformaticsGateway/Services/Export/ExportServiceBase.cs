@@ -32,14 +32,18 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Polly;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -48,18 +52,34 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
     public abstract class ExportServiceBase : IHostedService, IMonaiService
     {
+        private static readonly object SyncRoot = new object();
+
         internal event EventHandler ReportActionStarted;
 
         private readonly ILogger _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IStorageInfoProvider _storageInfoProvider;
-        private readonly DataExportConfiguration _dataExportConfiguration;
-        private System.Timers.Timer _workerTimer;
+        private readonly InformaticsGatewayConfiguration _configuration;
+        private readonly IMessageBrokerSubscriberService _messageSubscriber;
+        private readonly IMessageBrokerPublisherService _messagePublisher;
+        private readonly IServiceScope _scope;
+        private readonly Dictionary<string, ExportRequestMessage> _exportRequets;
+        private readonly string _exportQueueName;
+        private TransformManyBlock<ExportRequestMessage, ExportRequestDataMessage> _exportFlow;
 
-        protected abstract string Agent { get; }
+        public abstract string RoutingKey { get; }
         protected abstract int Concurrentcy { get; }
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
         public abstract string ServiceName { get; }
+
+        /// <summary>
+        /// Override the <c>ExportDataBlockCallback</c> method to customize export logic.
+        /// Must update <c>State</c> to either <c>Succeeded</c> or <c>Failed</c>.
+        /// </summary>
+        /// <param name="outputJob"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        protected abstract Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken);
 
         public ExportServiceBase(
             ILogger logger,
@@ -69,6 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+            _scope = _serviceScopeFactory.CreateScope();
 
             if (configuration is null)
             {
@@ -76,57 +97,38 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
 
             _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
-            _dataExportConfiguration = configuration.Value.Export;
-        }
+            _configuration = configuration.Value;
 
-        /// <summary>
-        /// Override the <c>ExportDataBlockCallback</c> method to customize export logic.
-        /// Must update <c>State</c> to either <c>Succeeded</c> or <c>Failed</c>.
-        /// </summary>
-        /// <param name="outputJob"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        protected abstract Task<OutputJob> ExportDataBlockCallback(OutputJob outputJob, CancellationToken cancellationToken);
+            _messageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
+            _messagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
+
+            _exportRequets = new Dictionary<string, ExportRequestMessage>();
+            _exportQueueName = _configuration.Messaging.Topics.ExportRequestQueue;
+        }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            SetupPolling(cancellationToken);
+            SetupExportFlow(cancellationToken);
+            SetupPolling();
 
             Status = ServiceStatus.Running;
-            _logger.LogInformation("Export Task Watcher Hosted Service started.");
+            _logger.LogInformation($"{ServiceName} started.");
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _workerTimer?.Stop();
-            _workerTimer = null;
-            _logger.LogInformation("Export Task Watcher Hosted Service is stopping.");
+            _logger.LogInformation($"{ServiceName} is stopping.");
+            _exportFlow.Complete();
+            _exportFlow.Completion.Wait(cancellationToken);
             Status = ServiceStatus.Stopped;
             return Task.CompletedTask;
         }
 
-        private void SetupPolling(CancellationToken cancellationToken)
-        {
-            _workerTimer = new System.Timers.Timer(_dataExportConfiguration.PollFrequencyMs);
-            _workerTimer.Elapsed += (sender, e) =>
-            {
-                WorkerTimerElapsed(cancellationToken);
-            };
-            _workerTimer.AutoReset = false;
-            _workerTimer.Start();
-        }
-
-        private void WorkerTimerElapsed(CancellationToken cancellationToken)
+        private void SetupExportFlow(CancellationToken cancellationToken)
         {
             try
             {
-                if (!_storageInfoProvider.HasSpaceAvailableForExport)
-                {
-                    _logger.Log(LogLevel.Warning, $"Export service paused due to insufficient storage space.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}.");
-                    return;
-                }
-
                 var executionOptions = new ExecutionDataflowBlockOptions
                 {
                     MaxDegreeOfParallelism = Concurrentcy,
@@ -134,31 +136,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     CancellationToken = cancellationToken
                 };
 
-                var downloadActionBlock = new TransformManyBlock<string, TaskResponse>(
-                    async (agent) => await DownloadActionCallback(agent, cancellationToken),
+                _exportFlow = new TransformManyBlock<ExportRequestMessage, ExportRequestDataMessage>(
+                    (exportRequest) => DownloadPayloadActionCallback(exportRequest, cancellationToken),
                     executionOptions);
 
-                var downloadPayloadTransformBlock = new TransformBlock<TaskResponse, OutputJob>(
-                    async (task) => await DownloadPayloadBlockCallback(task, cancellationToken),
+                var exportActionBlock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
+                    async (exportDataRequest) =>
+                    {
+                        if (exportDataRequest.IsFailed) return exportDataRequest;
+                        return await ExportDataBlockCallback(exportDataRequest, cancellationToken);
+                    },
                     executionOptions);
 
-                var exportActionBlock = new TransformBlock<OutputJob, OutputJob>(
-                    async (task) => await ExportDataBlockCallback(task, cancellationToken),
-                    executionOptions);
-
-                var reportingActionBlock = new ActionBlock<OutputJob>(
-                    async (task) => await ReportingActionBlock(task, cancellationToken),
-                    executionOptions);
+                var reportingActionBlock = new ActionBlock<ExportRequestDataMessage>(ReportingActionBlock, executionOptions);
 
                 var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
-                downloadActionBlock.LinkTo(downloadPayloadTransformBlock, linkOptions);
-                downloadPayloadTransformBlock.LinkTo(exportActionBlock, linkOptions);
+
+                _exportFlow.LinkTo(exportActionBlock, linkOptions);
                 exportActionBlock.LinkTo(reportingActionBlock, linkOptions);
 
-                downloadActionBlock.Post(Agent);
-                downloadActionBlock.Complete();
-                reportingActionBlock.Completion.Wait();
-                _logger.Log(LogLevel.Trace, "Export Service completed timer routine.");
+                _logger.Log(LogLevel.Information, $"{ServiceName} completed workflow setup.");
             }
             catch (AggregateException ex)
             {
@@ -171,101 +168,138 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 _logger.Log(LogLevel.Error, ex, "Error processing export task.");
             }
-            finally
+        }
+
+        private void SetupPolling()
+        {
+            _messageSubscriber.Subscribe(RoutingKey, _exportQueueName, OnMessageReceivedCallback);
+            _logger.Log(LogLevel.Information, $"{ServiceName} subscribed to {RoutingKey} messages.");
+        }
+
+        private void OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
+        {
+            if (!_storageInfoProvider.HasSpaceAvailableForExport)
             {
-                _workerTimer?.Start();
+                _logger.Log(LogLevel.Warning, $"Export service paused due to insufficient storage space.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}.");
+                _messageSubscriber.Reject(eventArgs.Message);
+                return;
             }
+            var exportRequest = eventArgs.Message.ConvertTo<ExportRequestMessage>();
+            exportRequest.MessageId = eventArgs.Message.MessageId;
+
+            _exportRequets.Add(exportRequest.ExportTaskId, exportRequest);
+            _exportFlow.Post(exportRequest);
         }
 
-        private async Task<IEnumerable<TaskResponse>> DownloadActionCallback(string agent, CancellationToken cancellationToken)
+        private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestMessage exportRequest, CancellationToken cancellationToken)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-            var resultsService = scope.ServiceProvider.GetRequiredService<IWorkloadManagerApi>();
-            return await resultsService.GetPendingJobs(agent, 10, cancellationToken);
-        }
-
-        private async Task<OutputJob> DownloadPayloadBlockCallback(TaskResponse task, CancellationToken cancellationToken)
-        {
-            Guard.Against.Null(task, nameof(task));
-
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", task.ExportTaskId }, { "CorrelationId", task.CorrelationId } });
+            Guard.Against.Null(exportRequest, nameof(exportRequest));
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequest.ExportTaskId }, { "CorrelationId", exportRequest.CorrelationId } });
             var scope = _serviceScopeFactory.CreateScope();
-            var workloadManager = scope.ServiceProvider.GetRequiredService<IWorkloadManagerApi>();
+            var storageService = scope.ServiceProvider.GetRequiredService<IStorageService>();
 
-            try
+            var exportRequestData = new ExportRequestDataMessage(exportRequest);
+            foreach (var file in exportRequest.Files)
             {
-                var file = await workloadManager.Download(task.ApplicationId, task.FileId, cancellationToken);
-                return new OutputJob(task, file);
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(LogLevel.Error, ex, "Failed to download file.");
-                await ReportFailure(task, cancellationToken);
-                return null;
+                try
+                {
+                    Policy
+                       .Handle<Exception>()
+                       .WaitAndRetry(
+                           _configuration.Export.Retries.RetryDelays,
+                           (exception, timeSpan, retryCount, context) =>
+                           {
+                               _logger.Log(LogLevel.Error, exception, $"Error downloading payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                           })
+                       .Execute(() =>
+                       {
+                           var task = storageService.GetObject(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
+                           {
+                               stream.Seek(0, System.IO.SeekOrigin.Begin);
+                               using var memoryStream = new MemoryStream();
+                               stream.CopyTo(memoryStream);
+                               exportRequestData.SetData(memoryStream.ToArray());
+                           }, cancellationToken);
+
+                           task.Wait();
+                       });
+                }
+                catch (Exception ex)
+                {
+                    var errorMessage = $"Error downloading payload: {ex.Message}.";
+                    _logger.Log(LogLevel.Error, ex, errorMessage);
+                    exportRequestData.SetFailed(errorMessage);
+                }
+
+                yield return exportRequestData;
             }
         }
 
-        private async Task ReportingActionBlock(OutputJob job, CancellationToken cancellationToken)
+        private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)
         {
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
+
+            var exportRequest = _exportRequets[exportRequestData.ExportTaskId];
+            lock (SyncRoot)
+            {
+                if (exportRequestData.IsFailed)
+                {
+                    exportRequest.FailedFiles++;
+                }
+                else
+                {
+                    exportRequest.SucceededFiles++;
+                }
+
+                if (exportRequestData.Messages.Any())
+                {
+                    exportRequest.AddErrorMessages(exportRequestData.Messages);
+                }
+
+                if (!exportRequest.IsCompleted)
+                {
+                    return;
+                }
+            }
+
+            _logger.Log(LogLevel.Information, $"Export task completed with {exportRequest.FailedFiles} failures out of {exportRequest.Files.Count()}");
+
             if (ReportActionStarted != null)
             {
+                _logger.Log(LogLevel.Debug, $"Calling ReportActionStarted callback.");
                 ReportActionStarted(this, null);
             }
 
-            if (job is null)
-            {
-                return;
-            }
+            var exportCompleteMessage = new ExportCompleteMessage(exportRequest);
+            var jsonMessage = new JsonMessage<ExportCompleteMessage>(exportCompleteMessage, exportRequest.CorrelationId, exportRequest.DeliveryTag);
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
-            await ReportStatus(job, cancellationToken);
-        }
+            Policy
+               .Handle<Exception>()
+               .WaitAndRetry(
+                   _configuration.Export.Retries.RetryDelays,
+                   (exception, timeSpan, retryCount, context) =>
+                   {
+                       _logger.Log(LogLevel.Error, exception, $"Error acknowledging message. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                   })
+               .Execute(() =>
+               {
+                   _logger.Log(LogLevel.Information, $"Sending acknowledgement.");
+                   _messageSubscriber.Acknowledge(jsonMessage);
+               });
 
-        protected async Task ReportStatus(OutputJob job, CancellationToken cancellationToken)
-        {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
-
-            if (job is null)
-            {
-                return;
-            }
-
-            using var scope = _serviceScopeFactory.CreateScope();
-            var workloadManager = scope.ServiceProvider.GetRequiredService<IWorkloadManagerApi>();
-
-            try
-            {
-                if (job.State == State.Succeeded)
-                {
-                    await workloadManager.ReportSuccess(job.ExportTaskId, cancellationToken);
-                    _logger.Log(LogLevel.Information, "Task marked as successful.");
-                }
-                else if (job.State == State.Failed)
-                {
-                    await workloadManager.ReportFailure(job.ExportTaskId, job.Retries > _dataExportConfiguration.MaximumRetries, cancellationToken);
-                    _logger.Log(LogLevel.Warning, "Task marked as failed.");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(LogLevel.Error, ex, "Failed to report status back to Results Service.");
-            }
-        }
-
-        protected async Task ReportFailure(TaskResponse job, CancellationToken cancellationToken)
-        {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", job.ExportTaskId }, { "CorrelationId", job.CorrelationId } });
-            try
-            {
-                using var scope = _serviceScopeFactory.CreateScope();
-                var workloadManager = scope.ServiceProvider.GetRequiredService<IWorkloadManagerApi>();
-                await workloadManager.ReportFailure(job.ExportTaskId, false, cancellationToken);
-                _logger.Log(LogLevel.Warning, $"Task {job.ExportTaskId} marked as failure and will not be retried.");
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(LogLevel.Warning, ex, "Failed to mark task {0} as failure.", job.ExportTaskId);
-            }
+            Policy
+               .Handle<Exception>()
+               .WaitAndRetry(
+                   _configuration.Export.Retries.RetryDelays,
+                   (exception, timeSpan, retryCount, context) =>
+                   {
+                       _logger.Log(LogLevel.Error, exception, $"Error publishing message. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                   })
+               .Execute(() =>
+               {
+                   _logger.Log(LogLevel.Information, $"Publishing export complete message.");
+                   _messagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
+               });
         }
     }
 }

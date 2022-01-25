@@ -36,7 +36,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
 {
     public static class ExtensionMethods
     {
-
         /// <summary>
         /// Extension method for checking a IEnumerable collection is null or empty.
         /// </summary>

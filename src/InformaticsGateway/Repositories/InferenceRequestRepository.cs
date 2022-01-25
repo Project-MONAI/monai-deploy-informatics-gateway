@@ -151,7 +151,6 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
             var response = new InferenceStatusResponse();
             var item = Get(transactionId);
-            //TODO: get status from WM
             if (item is null)
             {
                 return null;

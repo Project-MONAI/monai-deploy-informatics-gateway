@@ -159,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         }
 
         /// <summary>
-        /// Workflows to be launched on MONAI Workload Manager, ignoring data routing agent.
+        /// Workflows to be launched on MONAI Workflow Manager, ignoring data routing agent.
         /// </summary>
         /// <param name="workflows">List of workflows.</param>
         public void SetWorkflows(params string[] workflows)

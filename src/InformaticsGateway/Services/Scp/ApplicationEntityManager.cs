@@ -133,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             info.SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
             info.SopInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
 
-            using (_logger.BeginScope("SOPInstanceUID={0}", info.SopInstanceUid))
+            using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", info.SopInstanceUid }, { "Correlation ID", associationId } }))
             {
                 _logger.Log(LogLevel.Information, "Study Instance UID: {StudyInstanceUid}", info.StudyInstanceUid);
                 _logger.Log(LogLevel.Information, "Series Instance UID: {SeriesInstanceUid}", info.SeriesInstanceUid);

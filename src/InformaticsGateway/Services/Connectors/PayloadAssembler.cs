@@ -14,6 +14,7 @@ using DotNext.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -55,8 +56,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             RestoreFromDatabase();
 
-            _timer = new System.Timers.Timer(1000);
-            _timer.AutoReset = false;
+            _timer = new System.Timers.Timer(1000)
+            {
+                AutoReset = false,
+            };
             _timer.Elapsed += OnTimedEvent;
             _timer.Enabled = true;
         }
@@ -100,6 +103,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         public async Task Queue(string bucket, FileStorageInfo file, uint timeout)
         {
             Guard.Against.Null(file, nameof(file));
+
+            using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "Correlation ID", file.CorrelationId } });
 
             var payload = await CreateOrGetPayload(bucket, file.CorrelationId, timeout);
             payload.Add(file);

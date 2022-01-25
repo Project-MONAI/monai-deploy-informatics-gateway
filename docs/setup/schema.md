@@ -24,12 +24,14 @@ The configuration file is a JSON formatted file used to control the behaviors an
 
 The `InformaticsGateway` configuration section contains the following sub-sections:
 
-| Section  | Description                               | Reference                                                                                             |
-| -------- | ----------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| dicom    | DICOM DIMSE service configuration options | [DicomConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration)           |
-| dicomWeb | DICOMweb service configuration options    | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)     |
-| export   | Export service configuration options      | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration) |
-| fhir     | FHIR service configuration options        | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)             |
+| Section  | Description                                                                     | Reference                                                                                             |
+| -------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| dicom    | DICOM DIMSE service configuration options                                       | [DicomConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration)           |
+| dicomWeb | DICOMweb service configuration options                                          | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)     |
+| export   | Export service configuration options                                            | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration) |
+| fhir     | FHIR service configuration options                                              | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)             |
+| storage  | Storage configuration options including storage service & disk usage monitoring | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)       |
+| Cli      | Configuration used by the CLI                                                   | -                                                                                                     |
 
 ---
 
@@ -38,12 +40,12 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
 ```json
 {
   "ConnectionStrings": {
-    "InformaticsGatewayDatabase": "Data Source=mig.db"
+    "InformaticsGatewayDatabase": "Data Source=/database/mig.db"
   },
   "InformaticsGateway": {
     "dicom": {
       "scp": {
-        "port": 1104,
+        "port": 104,
         "logDimseDatasets": false,
         "rejectUnknownSources": true
       },
@@ -51,6 +53,23 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
         "aeTitle": "MonaiSCU",
         "logDimseDatasets": false,
         "logDataPDUs": false
+      }
+    },
+    "messaging": {
+      "publisherSettings": {
+        "endpoint": "localhost",
+        "username": "username",
+        "password": "password",
+        "virtualHost": "monaideploy",
+        "exchange": "monaideploy"
+      },
+      "subscriberSettings": {
+        "endpoint": "localhost",
+        "username": "username",
+        "password": "password",
+        "virtualHost": "monaideploy",
+        "exchange": "monaideploy",
+        "exportRequestQueue": "export_tasks"
       }
     },
     "storage": {
@@ -79,7 +98,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
       }
     },
     "File": {
-      "BasePath": "Logs",
+      "BasePath": "logs",
       "FileEncodingName": "utf-8",
       "DateFormat": "yyyyMMdd",
       "CounterFormat": "000",
@@ -97,11 +116,19 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
   "Kestrel": {
     "EndPoints": {
       "Http": {
-        "Url": "http://localhost:5000"
+        "Url": "http://+:5000"
       }
     }
   },
-  "AllowedHosts": "*"
+  "AllowedHosts": "*",
+  "Cli": {
+    "Runner": "Docker",
+    "HostDataStorageMount": "~/.mig/data",
+    "HostDatabaseStorageMount": "~/.mig/database",
+    "HostLogsStorageMount": "~/.mig/logs",
+    "InformaticsGatewayServerEndpoint": "http://localhost:5000",
+    "DockerImagePrefix": "monai/informatics-gateway"
+  }
 }
 ```
 
@@ -110,7 +137,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
 Informatics Gateway validates all configuration options at startup. Any provided values that are invalid or missing may cause the service to crash.
 
 > [!Note]
-> If you are running Informatics Gateway inside Kubernetes/Helm, you may see the `CrashLoopBack` error. To review the validation errors, simply run `kubectl logs <name-of-dicom-adapter-pod>`.
+> If the Informatics Gateway is running with Kubernetes/Helm and is reporting the `CrashLoopBack` error, it may be indicating a startup error due to misconfiguration, simply run `kubectl logs <name-of-dicom-adapter-pod>` to review the validation errors.
 
 ### Logging
 

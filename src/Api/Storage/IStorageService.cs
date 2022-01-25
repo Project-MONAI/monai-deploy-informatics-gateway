@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <param name="recursive">Whether to recurse into subdirectories</param>
         /// <param name="cancellationToken">Optional cancellation token. Defaults to default(CancellationToken)</param>
         /// <returns></returns>
-        IList<VirtualFileInfo> ListObjects(string bucketName, string? prefix = null, bool recursive = false, CancellationToken cancellationToken = default(CancellationToken));
+        IList<VirtualFileInfo> ListObjects(string bucketName, string? prefix = null, bool recursive = false, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Downloads an objects as stream.
@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <param name="callback">Action to be called when stream is ready</param>
         /// <param name="cancellationToken">Optional cancellation token. Defaults to default(CancellationToken)</param>
         /// <returns>Task</returns>
-        Task GetObject(string bucketName, string objectName, Action<Stream> callback, CancellationToken cancellationToken = default(CancellationToken));
+        Task GetObject(string bucketName, string objectName, Action<Stream> callback, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Uploads an object.
@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <param name="metadata">Metadata of the object</param>
         /// <param name="cancellationToken">Optional cancellation token. Defaults to default(CancellationToken)</param>
         /// <returns>Task</returns>
-        Task PutObject(string bucketName, string objectName, Stream data, long size, string contentType, Dictionary<string, string> metadata, CancellationToken cancellationToken = default(CancellationToken));
+        Task PutObject(string bucketName, string objectName, Stream data, long size, string contentType, Dictionary<string, string> metadata, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Copies content of an object from source to destination.
@@ -66,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <param name="destinationObjectName">Name of the object in the destination bucket</param>
         /// <param name="cancellationToken">Optional cancellation token. Defaults to default(CancellationToken)</param>
         /// <returns>Task</returns>
-        Task CopyObject(string sourceBucketName, string sourceObjectName, string destinationBucketName, string destinationObjectName, CancellationToken cancellationToken = default(CancellationToken));
+        Task CopyObject(string sourceBucketName, string sourceObjectName, string destinationBucketName, string destinationObjectName, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Removes an objects.
@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <param name="objectName">Name of the object in the bucket</param>
         /// <param name="cancellationToken">Optional cancellation token. Defaults to default(CancellationToken)</param>
         /// <returns>Task</returns>
-        Task RemoveObject(string bucketName, string objectName, CancellationToken cancellationToken = default(CancellationToken));
+        Task RemoveObject(string bucketName, string objectName, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Removes a list of objects.
@@ -84,6 +84,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <param name="objectNames">An enumerable of object names to be removed in the bucket</param>
         /// <param name="cancellationToken">Optional cancellation token. Defaults to default(CancellationToken)</param>
         /// <returns>Task</returns>
-        Task RemoveObjects(string bucketName, IEnumerable<string> objectNames, CancellationToken cancellationToken = default(CancellationToken));
+        Task RemoveObjects(string bucketName, IEnumerable<string> objectNames, CancellationToken cancellationToken = default);
     }
 }

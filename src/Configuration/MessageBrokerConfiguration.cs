@@ -84,6 +84,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets the topics for events published/subscribed by Informatics Gateway
         /// </summary>
         [JsonProperty(PropertyName = "topics")]
-        public MessageBrokerRoutingKeysConfiguration Topics { get; set; } = new MessageBrokerRoutingKeysConfiguration();
+        public MessageBrokerConfigurationKeys Topics { get; set; } = new MessageBrokerConfigurationKeys();
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -38,8 +38,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
     /// </summary>
     public class ConfigurationValidator : IValidateOptions<InformaticsGatewayConfiguration>
     {
-        private ILogger<ConfigurationValidator> _logger;
-        private List<string> _validationErrors;
+        private readonly ILogger<ConfigurationValidator> _logger;
+        private readonly List<string> _validationErrors;
 
         /// <summary>
         /// Initializes an instance of the <see cref="ConfigurationValidator"/> class.

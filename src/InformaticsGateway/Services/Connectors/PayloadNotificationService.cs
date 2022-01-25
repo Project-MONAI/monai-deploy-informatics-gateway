@@ -21,6 +21,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,6 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IMessageBrokerPublisherService _messageBrokerPublisherService;
+        private readonly IInstanceCleanupQueue _instanceCleanupQueue;
         private ActionBlock<Payload> _uploadQueue;
         private ActionBlock<Payload> _publishQueue;
 
@@ -70,7 +72,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                                           ILogger<PayloadNotificationService> logger,
                                           IOptions<InformaticsGatewayConfiguration> options,
                                           IServiceScopeFactory serviceScopeFactory,
-                                          IMessageBrokerPublisherService messageBrokerPublisherService)
+                                          IMessageBrokerPublisherService messageBrokerPublisherService,
+                                          IInstanceCleanupQueue instanceCleanupQueue)
         {
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
@@ -79,6 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _messageBrokerPublisherService = messageBrokerPublisherService ?? throw new ArgumentNullException(nameof(messageBrokerPublisherService));
+            _instanceCleanupQueue = instanceCleanupQueue ?? throw new ArgumentNullException(nameof(instanceCleanupQueue));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -93,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     });
 
             _publishQueue = new ActionBlock<Payload>(
-                    async (task) => await PublishPayloadActionBlock(task, cancellationToken),
+                    async (task) => await PublishPayloadActionBlock(task),
                     new ExecutionDataflowBlockOptions
                     {
                         MaxDegreeOfParallelism = 1,
@@ -124,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 try
                 {
                     payload = _payloadAssembler.Dequeue(cancellationToken);
-                    using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id } }))
+                    using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "Correlation ID", payload.CorrelationId } }))
                     {
                         _uploadQueue.Post(payload);
                         _logger.Log(LogLevel.Information, $"Payload {payload.Id} added to {ServiceName} for processing.");
@@ -190,6 +194,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 var item = payload.Files[index];
                 await UploadPayloadFile(payload, item, cancellationToken);
                 payload.Files.Remove(item);
+                _instanceCleanupQueue.Queue(item);
             }
         }
 
@@ -208,11 +213,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             await _storageService.PutObject(_options.Value.Storage.StorageServiceBucketName, uploadPath, stream, stream.Length, fileStorageInfo.ContentType, metadata, cancellationToken);
         }
 
-        private async Task PublishPayloadActionBlock(Payload payload, CancellationToken cancellationToken)
+        private async Task PublishPayloadActionBlock(Payload payload)
         {
             try
             {
-                await NotifyPayloadReady(payload, cancellationToken);
+                await NotifyPayloadReady(payload);
 
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
@@ -226,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     var action = await UpdatePayloadState(payload);
                     if (action == PayloadAction.Updated)
                     {
-                        await _publishQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1));
+                        await _publishQueue.Post(payload, _options.Value.Messaging.Retries.RetryDelays.ElementAt(payload.RetryCount - 1));
                         _logger.Log(LogLevel.Warning, ex, $"Failed to publish workflow request for payload {payload.Id}; added back to queue for retry.");
                     }
                 }
@@ -260,7 +265,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private Task NotifyPayloadReady(Payload payload, CancellationToken cancellationToken)
+        private Task NotifyPayloadReady(Payload payload)
         {
             _logger.Log(LogLevel.Debug, $"Generating workflow request message for payload {payload.Id}...");
             var message = new JsonMessage<WorkflowRequestMessage>(
@@ -270,10 +275,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     PayloadId = payload.Id,
                     Workflows = payload.Workflows,
                     FileCount = payload.Count,
+                    CorrelationId = payload.CorrelationId,
                 },
-                payload.CorrelationId);
+                payload.CorrelationId,
+                string.Empty);
 
             _logger.Log(LogLevel.Information, $"Publishing workflow request message ID={message.MessageId}...");
+
             var task = _messageBrokerPublisherService.Publish(
                 _options.Value.Messaging.Topics.WorkflowRequest,
                 message.ToMessage());

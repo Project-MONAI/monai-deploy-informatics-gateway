@@ -9,23 +9,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Xunit;
+using System;
+using System.Threading;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
 {
-    public class LoggingDataDictionaryTest
+    /// <summary>
+    /// Provides data for the subscribed event from a message broker.
+    /// </summary>
+    public class MessageReceivedEventArgs : EventArgs
     {
-        [Fact(DisplayName = "ToString")]
-        public void ToStringOverride()
-        {
-            var input = new LoggingDataDictionary<string, string>
-            {
-                { "A", "1" },
-                { "B", "2" },
-                { "C", "3" }
-            };
+        public Message Message { get; }
+        public CancellationToken CancellationToken { get; }
 
-            Assert.Equal("A=1, B=2, C=3", input.ToString());
+        public MessageReceivedEventArgs(Message message, CancellationToken cancellationToken)
+        {
+            Message = message;
+            CancellationToken = cancellationToken;
         }
     }
 }

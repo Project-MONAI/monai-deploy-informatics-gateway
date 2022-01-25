@@ -17,6 +17,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using System;
@@ -40,6 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         private readonly Mock<IInformaticsGatewayRepository<Payload>> _payloadRepository;
         private readonly Mock<IMessageBrokerPublisherService> _messageBrokerPublisherService;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
+        private readonly Mock<IInstanceCleanupQueue> _instanceCleanupQueue;
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         public PayloadNotificationServiceTest()
@@ -50,6 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger = new Mock<ILogger<PayloadNotificationService>>();
             _options = Options.Create(new InformaticsGatewayConfiguration());
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
+            _instanceCleanupQueue = new Mock<IInstanceCleanupQueue>();
             _payloadRepository = new Mock<IInformaticsGatewayRepository<Payload>>();
             _messageBrokerPublisherService = new Mock<IMessageBrokerPublisherService>();
             _cancellationTokenSource = new CancellationTokenSource();
@@ -71,13 +74,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [Fact(DisplayName = "PayloadNotificationService_Constructor")]
         public void PayloadNotificationService_Constructor()
         {
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(null, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, _serviceScopeFactory.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(null, null, null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, null, null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, _serviceScopeFactory.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, _serviceScopeFactory.Object, _messageBrokerPublisherService.Object, null));
         }
 
         [Fact(DisplayName = "Payload Notification Service shall stop processing when StopAsync is called")]
@@ -97,7 +101,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                                                          _logger.Object,
                                                          _options,
                                                          _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object);
+                                                         _messageBrokerPublisherService.Object,
+                                                         _instanceCleanupQueue.Object);
 
             service.StartAsync(_cancellationTokenSource.Token);
             service.StopAsync(_cancellationTokenSource.Token);
@@ -129,7 +134,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                                                          _logger.Object,
                                                          _options,
                                                          _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object);
+                                                         _messageBrokerPublisherService.Object,
+                                                         _instanceCleanupQueue.Object);
 
             service.StartAsync(_cancellationTokenSource.Token);
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
@@ -151,7 +157,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                                                          _logger.Object,
                                                          _options,
                                                          _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object);
+                                                         _messageBrokerPublisherService.Object,
+                                                         _instanceCleanupQueue.Object);
             _cancellationTokenSource.CancelAfter(100);
             service.StartAsync(_cancellationTokenSource.Token);
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
@@ -189,7 +196,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                                                          _logger.Object,
                                                          _options,
                                                          _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object);
+                                                         _messageBrokerPublisherService.Object,
+                                                         _instanceCleanupQueue.Object);
             _cancellationTokenSource.CancelAfter(1000);
             service.StartAsync(_cancellationTokenSource.Token);
 
@@ -199,10 +207,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLogging($"Failed to upload payload {payload.Id}; added back to queue for retry.", LogLevel.Warning, Times.Once());
             _logger.VerifyLogging($"Updating payload state={payload.State}, retries=1.", LogLevel.Error, Times.Once());
             _logger.VerifyLogging($"Reached maximum number of retries for payload {payload.Id}, giving up.", LogLevel.Error, Times.Once());
+
+            _instanceCleanupQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
         }
 
         [Fact(DisplayName = "Payload Notification Service shall publish workflow request & retry on failure")]
-        public void PayloadNotificationService_ShalPublishAndRetryOnFailure()
+        public void PayloadNotificationService_ShallPublishAndRetryOnFailure()
         {
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                .Callback(() => _cancellationTokenSource.Token.WaitHandle.WaitOne());
@@ -221,7 +231,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                                                          _logger.Object,
                                                          _options,
                                                          _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object);
+                                                         _messageBrokerPublisherService.Object,
+                                                         _instanceCleanupQueue.Object);
             _cancellationTokenSource.CancelAfter(1000);
             service.StartAsync(_cancellationTokenSource.Token);
 
@@ -268,7 +279,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                                                          _logger.Object,
                                                          _options,
                                                          _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object);
+                                                         _messageBrokerPublisherService.Object,
+                                                         _instanceCleanupQueue.Object);
             service.StartAsync(_cancellationTokenSource.Token);
 
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
@@ -278,6 +290,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLoggingMessageBeginsWith($"Workflow request published to {_options.Value.Messaging.Topics.WorkflowRequest}, message ID=", LogLevel.Information, Times.Once());
 
             _storageService.Verify(p => p.PutObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Once());
+
+            _instanceCleanupQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Once());
         }
     }
 }

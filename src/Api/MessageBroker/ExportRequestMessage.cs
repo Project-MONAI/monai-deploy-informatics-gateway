@@ -9,8 +9,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
 {
@@ -36,13 +36,54 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
         /// For DIMSE, the named DICOM destination.
         /// For ACR, the Transaction ID in the original inference request.
         /// </summary>
-        public string Target { get; set; }
+        public string Destination { get; set; }
 
         /// <summary>
         /// Gets or set the correation ID.
-        /// For DIMSE, the correlation ID is the UUID associated with the first DICOM association received. 
+        /// For DIMSE, the correlation ID is the UUID associated with the first DICOM association received.
         /// For ACR, use the Transaction ID in the original request.
         /// </summary>
         public string CorrelationId { get; set; }
+
+        /// <summary>
+        /// Gets or set number of files exported successfully.
+        /// </summary>
+        public int SucceededFiles { get; set; } = 0;
+
+        /// <summary>
+        /// Gets or sets number of files failed to export.
+        /// </summary>
+        public int FailedFiles { get; set; } = 0;
+
+        /// <summary>
+        /// Gets or sets the delivery tag or acknowledge token for the task.
+        /// </summary>
+        public string DeliveryTag { get; set; }
+
+        /// <summary>
+        /// Gets or sets the message ID set by the message broker.
+        /// </summary>
+        public string MessageId { get; set; }
+
+        /// <summary>
+        /// Gets wether the export task is completed or not based on file count.
+        /// </summary>
+        public bool IsCompleted
+        { get { return (SucceededFiles + FailedFiles) == Files.Count(); } }
+
+        /// <summary>
+        /// Gets or sets error messages related to this export task.
+        /// </summary>
+        public List<string> ErrorMessages { get; init; }
+
+        public ExportRequestMessage()
+        {
+            ErrorMessages = new List<string>();
+        }
+
+        public void AddErrorMessages(IList<string> errorMessages)
+        {
+            ErrorMessages.AddRange(errorMessages);
+        }
     }
 }

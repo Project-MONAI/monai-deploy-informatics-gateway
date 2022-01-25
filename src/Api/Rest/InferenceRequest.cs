@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         InProcess,
 
         /// <summary>
-        /// Indicates MONAI Deploy Informatics Gateway has downloaded all the specified resources and uploaded to the MONAI Workload Manager.
+        /// Indicates MONAI Deploy Informatics Gateway has completed processing the request.
         /// </summary>
         Completed,
     }
@@ -123,9 +123,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
 
         /// <summary>
         /// Gets or set a list of data sources to export results to.
-        /// In order to export via DICOMweb, an Export Sink must be created and connected to
-        /// the deployed application via the MONAI Workload Manager.
-        /// Followed by registering the results using the MONAI App SDK.
+        /// In order to export via DICOMweb, the workflow definition must instruct
+        /// the Workflow Manager to export to the DICOMweb Agent.
         /// </summary>
         [JsonProperty(PropertyName = "outputResources")]
         public IList<RequestOutputDataResource> OutputResources { get; set; }
@@ -223,7 +222,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                 InputMetadata.Inputs = new List<InferenceRequestDetails>();
             }
 
-            if (!(InputMetadata.Details is null))
+            if (InputMetadata.Details is not null)
             {
                 InputMetadata.Inputs.Add(InputMetadata.Details);
                 InputMetadata.Details = null;

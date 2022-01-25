@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             return _serviceProvider.GetService(type) as IMonaiService;
         }
 
-        private List<Type> LocateTypes()
+        private static List<Type> LocateTypes()
         {
             var serviceType = typeof(IMonaiService);
             var services = Assembly.GetExecutingAssembly().GetTypes()

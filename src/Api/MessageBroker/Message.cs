@@ -15,87 +15,58 @@ using System.Text;
 
 namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
 {
-    public sealed class JsonMessage<T> : MessageBase
+    public sealed class Message : MessageBase
     {
-        public static readonly string JsonApplicationType = "application/json";
-
         /// <summary>
         /// Body of the message.
         /// </summary>
-        public T Body { get; init; }
+        public byte[] Body { get; init; }
 
-        public JsonMessage(T body,
+        public Message(byte[] body,
+                       string bodyDescription,
+                       string contentType,
                        string correlationId,
                        string deliveryTag)
             : this(body,
-                   body.GetType().Name,
+                   bodyDescription,
                    Guid.NewGuid().ToString(),
                    Message.InformaticsGatewayApplicationId,
+                   contentType,
                    correlationId,
                    DateTime.UtcNow,
                    deliveryTag)
         {
         }
 
-        public JsonMessage(T body,
+        public Message(byte[] body,
                        string bodyDescription,
                        string messageId,
                        string applicationId,
+                       string contentType,
                        string correlationId,
                        DateTime creationDateTime,
                        string deliveryTag)
         {
-            if (body is null)
-            {
-                throw new ArgumentException($"'{nameof(body)}' cannot be null or empty.", nameof(body));
-            }
-            if (string.IsNullOrEmpty(bodyDescription))
-            {
-                throw new ArgumentException($"'{nameof(bodyDescription)}' cannot be null or empty.", nameof(bodyDescription));
-            }
-
-            if (string.IsNullOrWhiteSpace(messageId))
-            {
-                throw new ArgumentException($"'{nameof(messageId)}' cannot be null or empty.", nameof(messageId));
-            }
-
-            if (string.IsNullOrWhiteSpace(applicationId))
-            {
-                throw new ArgumentException($"'{nameof(applicationId)}' cannot be null or empty.", nameof(applicationId));
-            }
-
-            if (string.IsNullOrWhiteSpace(correlationId))
-            {
-                throw new ArgumentException($"'{nameof(correlationId)}' cannot be null or empty.", nameof(correlationId));
-            }
-
             Body = body;
             MessageDescription = bodyDescription;
             MessageId = messageId;
             ApplicationId = applicationId;
-            ContentType = JsonApplicationType;
+            ContentType = contentType;
             CorrelationId = correlationId;
             CreationDateTime = creationDateTime;
             DeliveryTag = deliveryTag;
         }
 
         /// <summary>
-        /// Converts <c>Body</c> to JSON and then binary[].
+        /// Converts <c>Body</c> from binary[] to JSON string and then the specified <c>T</c> type.
         /// </summary>
+        /// <typeparam name="T">Type to convert to</typeparam>
         /// <returns></returns>
-        public Message ToMessage()
+        public T ConvertTo<T>()
         {
-            var json = JsonConvert.SerializeObject(Body);
-
-            return new Message(
-                Encoding.UTF8.GetBytes(json),
-                Body.GetType().Name,
-                MessageId,
-                ApplicationId,
-                ContentType,
-                CorrelationId,
-                CreationDateTime,
-                DeliveryTag);
+            var json = Encoding.UTF8.GetString(Body);
+            var data = JsonConvert.DeserializeObject<T>(json);
+            return data;
         }
     }
 }

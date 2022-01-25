@@ -88,8 +88,10 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             using var channel = _connection.CreateModel();
             channel.ExchangeDeclare(_exchange, ExchangeType.Topic);
 
-            var propertiesDictionary = new Dictionary<string, object>();
-            propertiesDictionary.Add("CreationDateTime", message.CreationDateTime.ToString("o"));
+            var propertiesDictionary = new Dictionary<string, object>
+            {
+                { "CreationDateTime", message.CreationDateTime.ToString("o") }
+            };
 
             var properties = channel.CreateBasicProperties();
             properties.Persistent = true;

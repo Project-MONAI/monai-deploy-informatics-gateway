@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -75,16 +75,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         /// Gets the temporary storage path from appsettings.json.
         /// </summary>
         string TempStoragePath { get; }
-
-        /// <summary>
-        /// Gets or sets the endpoint to the gRPC API of the Workload Manager from appsettings.json.
-        /// </summary>
-        string WorkloadManagerGrpcEndpoint { get; set; }
-
-        /// <summary>
-        /// Gets or sets the endpoint to the RESTful API of the Workload Manager from appsettings.json.
-        /// </summary>
-        string WorkloadManagerRestEndpoint { get; set; }
     }
 
     public class ConfigurationOptionAccessor : IConfigurationOptionAccessor
@@ -223,36 +213,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             get
             {
                 return GetValueFromJsonPath<string>("InformaticsGateway.storage.temporary");
-            }
-        }
-
-        public string WorkloadManagerGrpcEndpoint
-        {
-            get
-            {
-                return GetValueFromJsonPath<string>("InformaticsGateway.workloadManager.grpcEndpoint");
-            }
-            set
-            {
-                Guard.Against.MalformUri(value, nameof(InformaticsGatewayServerEndpoint));
-                var jObject = ReadConfigurationFile();
-                jObject["InformaticsGateway"]["workloadManager"]["grpcEndpoint"] = value;
-                SaveConfigurationFile(jObject);
-            }
-        }
-
-        public string WorkloadManagerRestEndpoint
-        {
-            get
-            {
-                return GetValueFromJsonPath<string>("InformaticsGateway.workloadManager.restEndpoint");
-            }
-            set
-            {
-                Guard.Against.MalformUri(value, nameof(InformaticsGatewayServerEndpoint));
-                var jObject = ReadConfigurationFile();
-                jObject["InformaticsGateway"]["workloadManager"]["restEndpoint"] = value;
-                SaveConfigurationFile(jObject);
             }
         }
 

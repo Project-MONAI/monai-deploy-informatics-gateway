@@ -66,6 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             _logger.Log(LogLevel.Information, $"{Name} connecting to {_endpoint}/{_virtualHost}");
             _connection = _connectionFactory.CreateConnection();
             _channel = _connection.CreateModel();
+            _channel.ExchangeDeclare(_exchange, ExchangeType.Topic);
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
         }
 
@@ -83,11 +84,14 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             }
         }
 
-        public void Subscribe(string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback)
+        public void Subscribe(string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback, ushort prefetchCount = 0)
         {
             Guard.Against.NullOrWhiteSpace(topic, nameof(topic));
             Guard.Against.NullOrWhiteSpace(queue, nameof(queue));
             Guard.Against.Null(messageReceivedCallback, nameof(messageReceivedCallback));
+
+            _channel.QueueDeclare(queue: queue, durable: true, exclusive: false, autoDelete: false);
+            _channel.QueueBind(queue, _exchange, topic);
 
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (model, eventArgs) =>
@@ -98,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                     { "ApplicationId", eventArgs.BasicProperties.AppId }
                 });
 
-                _logger.Log(LogLevel.Information, $"Message received for topic {topic}.");
+                _logger.Log(LogLevel.Information, $"Message received from queue {queue} for {topic}.");
 
                 var messageReceivedEventArgs = new MessageReceivedEventArgs(
                  new Message(
@@ -108,24 +112,33 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                      applicationId: eventArgs.BasicProperties.AppId,
                      contentType: eventArgs.BasicProperties.ContentType,
                      correlationId: eventArgs.BasicProperties.CorrelationId,
-                     creationDateTime: DateTime.Parse(Encoding.UTF8.GetString((byte[])eventArgs.BasicProperties.Headers["CreationDateTime"]))),
-                 eventArgs.DeliveryTag.ToString(),
+                     creationDateTime: DateTime.Parse(Encoding.UTF8.GetString((byte[])eventArgs.BasicProperties.Headers["CreationDateTime"])),
+                     deliveryTag: eventArgs.DeliveryTag.ToString()),
                  new CancellationToken());
 
                 messageReceivedCallback(messageReceivedEventArgs);
             };
-
-            _channel.BasicConsume(topic, false, consumer);
+            _channel.BasicQos(0, prefetchCount, false);
+            _channel.BasicConsume(queue, false, consumer);
+            _logger.Log(LogLevel.Information, $"Listening for messages from {_endpoint}/{_virtualHost}. Exchange={_exchange}, Queue={queue}, Routing Key={topic}");
         }
 
-        public void Acknowledge(string messageId, string acknowledgeToken)
+        public void Acknowledge(MessageBase message)
         {
-            Guard.Against.NullOrWhiteSpace(messageId, nameof(messageId));
-            Guard.Against.NullOrWhiteSpace(acknowledgeToken, nameof(acknowledgeToken));
+            Guard.Against.Null(message, nameof(message));
 
-            _logger.Log(LogLevel.Information, $"Sending message acknowledgement for message {messageId}");
-            _channel.BasicAck(ulong.Parse(acknowledgeToken), multiple: false);
-            _logger.Log(LogLevel.Information, $"Ackowledge sent for message {messageId}");
+            _logger.Log(LogLevel.Information, $"Sending message acknowledgement for message {message.MessageId}");
+            _channel.BasicAck(ulong.Parse(message.DeliveryTag), multiple: false);
+            _logger.Log(LogLevel.Information, $"Ackowledge sent for message {message.MessageId}");
+        }
+
+        public void Reject(MessageBase message)
+        {
+            Guard.Against.Null(message, nameof(message));
+
+            _logger.Log(LogLevel.Information, $"Sending nack message {message.MessageId} and requeuing.");
+            _channel.BasicNack(ulong.Parse(message.DeliveryTag), multiple: false, requeue: true);
+            _logger.Log(LogLevel.Information, $"Nack message sent for message {message.MessageId}");
         }
 
         protected virtual void Dispose(bool disposing)

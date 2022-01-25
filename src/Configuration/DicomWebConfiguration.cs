@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,10 +24,17 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public int ClientTimeoutSeconds { get; set; } = DefaultClientTimeout;
 
         /// <summary>
-        /// Gets or sets the name of the export sink used for querying export tasks from MONAI Workload Manager.
+        /// Gets or sets the (postfix) name of the DICOMweb export agent used for receiving messages.
+        /// The agent name is combine with <see cref="MessageBrokerConfigurationKeys.ExportRequestPrefix"/>
+        /// for subscribing messages from the message broker service.
+        [JsonProperty(PropertyName = "agentName")]
+        public string AgentName { get; set; } = "monaidicomweb";
+
+        /// <summary>
+        /// Gets or sets the maximum number of simultaneous DICOMweb connections.
         /// </summary>
-        [JsonProperty(PropertyName = "sink")]
-        public string ExportSink { get; set; } = "MONAIDICOMweb";
+        [JsonProperty(PropertyName = "maximumNumberOfConnections")]
+        public int MaximumNumberOfConnection { get; set; } = 2;
 
         public DicomWebConfiguration()
         {

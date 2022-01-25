@@ -41,6 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         private readonly Guid _id;
         private readonly Stopwatch _lastReceived;
+        private int _fileCount;
 
         public Guid Id => _id;
 
@@ -56,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public IList<FileStorageInfo> Files { get; }
 
-        public int Count { get => Files.Count; }
+        public int Count { get => _fileCount; }
 
         public IEnumerable<string> Workflows
         {
@@ -74,6 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
             _id = Guid.NewGuid();
             _lastReceived = new Stopwatch();
+            _fileCount = 0;
             Key = key;
             CorrelationId = correlationId;
             Timeout = timeout;
@@ -89,6 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Files.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
+            _fileCount = Files.Count;
         }
 
         public TimeSpan ElapsedTime()

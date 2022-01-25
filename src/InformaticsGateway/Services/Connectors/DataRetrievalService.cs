@@ -339,7 +339,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var dicomWebClient = new DicomWebClient(_httpClientFactory.CreateClient("dicomweb"), _loggerFactory.CreateLogger<DicomWebClient>());
             dicomWebClient.ConfigureServiceUris(new Uri(source.ConnectionDetails.Uri, UriKind.Absolute));
 
-            if (!(authenticationHeaderValue is null))
+            if (authenticationHeaderValue is not null)
             {
                 dicomWebClient.ConfigureAuthentication(authenticationHeaderValue);
             }
@@ -381,8 +381,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.NullOrWhiteSpace(queryValue, nameof(queryValue));
 
             _logger.Log(LogLevel.Information, $"Performing QIDO with {dicomTag}={queryValue}.");
-            var queryParams = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            queryParams.Add(dicomTag, queryValue);
+            var queryParams = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { dicomTag, queryValue }
+            };
 
             var studies = new List<RequestedStudy>();
             await foreach (var result in dicomWebClient.Qido.SearchForStudies<DicomDataset>(queryParams))
@@ -513,7 +515,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private void PopulateHeaders(DicomFileStorageInfo instance, DicomFile dicomFile)
+        private static void PopulateHeaders(DicomFileStorageInfo instance, DicomFile dicomFile)
         {
             instance.StudyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
             instance.SeriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);

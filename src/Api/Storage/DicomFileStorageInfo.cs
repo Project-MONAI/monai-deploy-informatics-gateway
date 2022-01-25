@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                                     string source)
             : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, source, new FileSystem())
         {
-            this.ContentType = CONTENT_TYPE;
+            ContentType = CONTENT_TYPE;
         }
 
         public DicomFileStorageInfo(string correlationId,
@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                                     IFileSystem fileSystem)
             : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, source, fileSystem)
         {
-            this.ContentType = CONTENT_TYPE;
+            ContentType = CONTENT_TYPE;
         }
 
         protected override string GenerateStoragePath()
