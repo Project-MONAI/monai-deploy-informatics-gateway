@@ -29,7 +29,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Api
 {
     public class LoggingDataDictionary<K, V> : Dictionary<K, V>
     {

@@ -11,7 +11,7 @@ using Monai.Deploy.InformaticsGateway.Database;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20220118210643_R1_Initialize")]
+    [Migration("20220202191245_R1_Initialize")]
     partial class R1_Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,6 +130,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CorrelationId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Files")

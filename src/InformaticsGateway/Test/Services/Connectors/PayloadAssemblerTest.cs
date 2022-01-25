@@ -84,9 +84,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             var dataset = new List<Payload>
             {
-                new Payload("created-test", 10) { State = Payload.PayloadState.Created },
-                new Payload("upload-test", 10) { State = Payload.PayloadState.Upload },
-                new Payload("notify-test", 10) { State = Payload.PayloadState.Notify },
+                new Payload("created-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
+                new Payload("upload-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Upload },
+                new Payload("notify-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Notify },
             };
             _repository.Setup(p => p.AsQueryable()).Returns(dataset.AsQueryable());
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);

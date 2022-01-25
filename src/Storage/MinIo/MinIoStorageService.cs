@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Storage
             await _client.GetObjectAsync(bucketName, objectName, callback, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public IList<VirtualFileInfo> ListObjects(string bucketName, string prefix = null, bool recursive = false, CancellationToken cancellationToken = default)
+        public IList<VirtualFileInfo> ListObjects(string bucketName, string? prefix = null, bool recursive = false, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(bucketName, nameof(bucketName));
 

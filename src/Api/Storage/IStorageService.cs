@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <param name="recursive">Whether to recurse into subdirectories</param>
         /// <param name="cancellationToken">Optional cancellation token. Defaults to default(CancellationToken)</param>
         /// <returns></returns>
-        IList<VirtualFileInfo> ListObjects(string bucketName, string prefix = null, bool recursive = false, CancellationToken cancellationToken = default(CancellationToken));
+        IList<VirtualFileInfo> ListObjects(string bucketName, string? prefix = null, bool recursive = false, CancellationToken cancellationToken = default(CancellationToken));
 
         /// <summary>
         /// Downloads an objects as stream.
