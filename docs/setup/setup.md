@@ -68,7 +68,12 @@ For complete reference, please refer to the [Config API](../api/rest/config.md).
 ./mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55 -p 104
 ```
 
-This command above tell Informatics Gateway to accept instances from AT Title `PACSLA001` at IP `20.10.30.55` and port `104`.
+This command above tells Informatics Gateway to accept instances from AE Title `PACSLA001` at IP `20.10.30.55` and port `104`.
+
+
+> [!Note]
+> By default, Informatics Gateway blocks all unknown sources.  
+> To allow all unknown sources, set `dicom>scp>rejectUnknownSources` to `false` in `appsettings.json`.
 
 ## Export Processed Results
 
@@ -101,7 +106,7 @@ To change the temporary storage location, please locate `./InformaticsGateway/st
 > [!Note]
 > Before running Informatics Gateway, adjust the values of `watermarkPercent` and `reserveSpaceGB` based on
 > the expected number of studies and size of each study. The suggested value for `reserveSpaceGB` is 2x to 3x the
-> size of a single study multiplied by the number of configured Clara AE Titles.
+> size of a single study multiplied by the number of configured AE Titles.
 
 ### Shared Storage
 Informatics Gateway includes MinIO as the default storage service provider. To integrate with another storage service provider, please refer to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#data-storage) section of the SRS.
