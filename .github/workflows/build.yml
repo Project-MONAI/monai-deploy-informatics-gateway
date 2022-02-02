@@ -24,7 +24,7 @@ jobs:
         ./build.sh
         docker tag monai/informatics-gateway:$VERSION monai/informatics-gateway:${{ github.sha }}
     - name: Scan image with Azure Container Scan
-      uses: Azure/container-scan@v0
+      uses: Azure/container-scan@v0.1
       with:
         image-name: monai/informatics-gateway:${{ github.sha }}
     - name: Scan image with Anchore
