@@ -58,7 +58,7 @@ dotnet build
 For guidance on making a contribution, see the [contributing guidelines](https://github.com/Project-MONAI/monai-deploy/blob/main/CONTRIBUTING.md).
 
 ## Community
-To participate in the MONAI Deploy WG, please review <https://github.com/Project-MONAI/MONAI/wiki/Deploy-Working-Group>.
+To participate, please join the MONAI Deploy App SDK weekly meetings on the [calendar](https://calendar.google.com/calendar/u/0/embed?src=c_954820qfk2pdbge9ofnj5pnt0g@group.calendar.google.com&ctz=America/New_York) and review the [meeting notes](https://docs.google.com/document/d/1nw7JX-1kVaHiK8wBteM96xAWE3dh5wRUeC691bGuFjk/edit?usp=sharing).
 
 Join the conversation on Twitter [@ProjectMONAI](https://twitter.com/ProjectMONAI) or join our [Slack channel](https://forms.gle/QTxJq3hFictp31UM9).
 
