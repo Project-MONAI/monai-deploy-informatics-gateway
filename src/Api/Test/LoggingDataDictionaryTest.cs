@@ -1,7 +1,6 @@
-﻿using Monai.Deploy.InformaticsGateway.Common;
-using Xunit;
+﻿using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.Test.Common
+namespace Monai.Deploy.InformaticsGateway.Api
 {
     public class LoggingDataDictionaryTest
     {

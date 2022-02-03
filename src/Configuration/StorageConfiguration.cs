@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         /// <summary>
         /// Gets or sets the a fully qualified type name of the storage service.
-        /// The spcified type must implement <typeparam name="Monai.Deploy.InformaticsGateway.Api.Storage.StorageBase">StorageBase</typeparam>.
+        /// The spcified type must implement <typeparam name="Monai.Deploy.InformaticsGateway.Api.Storage.IStorageService">IStorageService</typeparam> interface.
         /// The default storage service configured is MinIO.
         /// </summary>
 
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets credentials used to access the storage service.
         /// </summary>
         [JsonProperty(PropertyName = "storageServiceCredentials")]
-        public StorageServiceCredentials StorageServiceCredentials { get; set; }
+        public ServiceCredentials StorageServiceCredentials { get; set; }
 
         /// <summary>
         /// Gets or sets retry options relate to processing payloads and uploading payloads to the storage service.
@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public bool SecuredConnection { get; set; } = true;
 
         /// <summary>
-        /// Gets or set number of threads used for payload upload. DDefault is 1;
+        /// Gets or set number of threads used for payload upload. Default is 1;
         /// </summary>
         public int Concurrentcy { get; set; } = 1;
 

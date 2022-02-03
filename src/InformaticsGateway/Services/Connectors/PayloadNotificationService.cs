@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -54,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly ILogger<PayloadNotificationService> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-
+        private readonly IMessageBrokerPublisherService _messageBrokerPublisherService;
         private ActionBlock<Payload> _uploadQueue;
         private ActionBlock<Payload> _publishQueue;
 
@@ -67,7 +69,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                                           IStorageService storageService,
                                           ILogger<PayloadNotificationService> logger,
                                           IOptions<InformaticsGatewayConfiguration> options,
-                                          IServiceScopeFactory serviceScopeFactory)
+                                          IServiceScopeFactory serviceScopeFactory,
+                                          IMessageBrokerPublisherService messageBrokerPublisherService)
         {
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
@@ -75,6 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+            _messageBrokerPublisherService = messageBrokerPublisherService ?? throw new ArgumentNullException(nameof(messageBrokerPublisherService));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -162,7 +166,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.Log(LogLevel.Information, $"Payload {payload.Id} ready to be published.");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 if (payload is not null)
                 {
@@ -171,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     if (action == PayloadAction.Updated)
                     {
                         await _uploadQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1));
-                        _logger.Log(LogLevel.Warning, $"Payload {payload.Id} added back to queue for retry.");
+                        _logger.Log(LogLevel.Warning, ex, $"Failed to upload payload {payload.Id}; added back to queue for retry.");
                     }
                 }
             }
@@ -209,13 +213,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             try
             {
                 await NotifyPayloadReady(payload, cancellationToken);
-                _logger.Log(LogLevel.Information, $"Payload {payload.Id} information published.");
 
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
                 await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 if (payload is not null)
                 {
@@ -224,7 +227,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     if (action == PayloadAction.Updated)
                     {
                         await _publishQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1));
-                        _logger.Log(LogLevel.Information, $"Payload {payload.Id} added back to queue for retry.");
+                        _logger.Log(LogLevel.Warning, ex, $"Failed to publish workflow request for payload {payload.Id}; added back to queue for retry.");
                     }
                 }
             }
@@ -259,7 +262,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private Task NotifyPayloadReady(Payload payload, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            _logger.Log(LogLevel.Debug, $"Generating workflow request message for payload {payload.Id}...");
+            var message = new JsonMessage<WorkflowRequestMessage>(
+                new WorkflowRequestMessage
+                {
+                    Bucket = _options.Value.Storage.StorageServiceBucketName,
+                    PayloadId = payload.Id,
+                    Workflows = payload.Workflows,
+                    FileCount = payload.Count,
+                },
+                payload.CorrelationId);
+
+            _logger.Log(LogLevel.Information, $"Publishing workflow request message ID={message.MessageId}...");
+            var task = _messageBrokerPublisherService.Publish(
+                _options.Value.Messaging.Topics.WorkflowRequest,
+                message.ToMessage());
+            _logger.Log(LogLevel.Information, $"Workflow request published to {_options.Value.Messaging.Topics.WorkflowRequest}, message ID={message.MessageId}.");
+            return task;
         }
 
         private void RestoreFromDatabase()

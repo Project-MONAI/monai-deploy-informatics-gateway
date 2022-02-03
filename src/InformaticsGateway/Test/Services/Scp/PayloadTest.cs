@@ -10,6 +10,7 @@
 // limitations under the License.
 
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using System;
 using System.Threading.Tasks;
 using xRetry;
 using Xunit;
@@ -21,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(DisplayName = "Payload shall be able to add new instance and reset timer")]
         public async Task Payload_AddsNewInstance()
         {
-            var payload = new Payload("key", 1);
+            var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
             payload.Add(new FileStorageInfo());
             await Task.Delay(500);
             Assert.False(payload.HasTimedOut);
@@ -34,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(DisplayName = "Payload shall not reset timer")]
         public async Task Payload_ShallNotResetTimer()
         {
-            var payload = new Payload("key", 1);
+            var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
             payload.Add(new FileStorageInfo());
             await Task.Delay(1000);
             Assert.True(payload.HasTimedOut);
@@ -43,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(DisplayName = "Payload shall allow retry up to 3 times")]
         public void Payload_ShallAllowRetryUpTo3Times()
         {
-            var payload = new Payload("key", 1);
+            var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
 
             Assert.True(payload.CanRetry());
             Assert.True(payload.CanRetry());
@@ -53,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(DisplayName = "Payload shall dispose timer")]
         public void Payload_ShallDisposeTimer()
         {
-            var payload = new Payload("key", 1);
+            var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
             payload.Add(new FileStorageInfo());
             Assert.Single(payload.Files);
             payload.Dispose();
