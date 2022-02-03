@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,7 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
@@ -25,7 +25,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             var correlationId = Guid.NewGuid().ToString();
             var root = "/";
             var messagId = Guid.NewGuid().ToString();
-            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, "txt");
+            var transactionId = Guid.NewGuid().ToString();
+            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, "txt", transactionId);
 
             Assert.Equal($"{root}{correlationId}-{messagId}.txt", fileStorageInfo.FilePath);
         }
@@ -36,10 +37,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             var correlationId = Guid.NewGuid().ToString();
             var root = "/";
             var messagId = Guid.NewGuid().ToString();
+            var transactionId = Guid.NewGuid().ToString();
             var fileExtension = ".txt";
             var mockFileSystem = new MockFileSystem();
             mockFileSystem.AddFile($"{root}{correlationId}-{messagId}{fileExtension}", new MockFileData("context"));
-            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, fileExtension, mockFileSystem);
+            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, fileExtension, transactionId, mockFileSystem);
 
             Assert.NotEqual($"{root}{correlationId}-{messagId}{fileExtension}", fileStorageInfo.FilePath);
         }
@@ -50,9 +52,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             var correlationId = Guid.NewGuid().ToString();
             var root = "/";
             var messagId = Guid.NewGuid().ToString();
+            var transactionId = Guid.NewGuid().ToString();
             var fileExtension = ".txt";
             var mockFileSystem = new MockFileSystem();
-            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, fileExtension, mockFileSystem);
+            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, fileExtension, transactionId, mockFileSystem);
 
             var workflows = new List<string>() { "A", "B", "C" };
             fileStorageInfo.SetWorkflows(workflows.ToArray());

@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Monai.Deploy.InformaticsGateway.Database;
 
+#nullable disable
+
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
@@ -13,8 +15,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
@@ -37,47 +38,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.ToTable("DestinationApplicationEntities");
                 });
 
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.FileStorageInfo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CorrelationId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FilePath")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("Received")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("StorageRootPath")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<byte[]>("Timestamp")
-                        .IsConcurrencyToken()
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("BLOB");
-
-                    b.Property<int>("TryCount")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Workflows")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FileStorageInfo");
-                });
-
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity", b =>
                 {
                     b.Property<string>("Name")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("TEXT")
+                        .HasColumnOrder(0);
 
                     b.Property<string>("AeTitle")
                         .IsRequired()
@@ -157,6 +122,33 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasKey("Name");
 
                     b.ToTable("SourceApplicationEntities");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Storage.Payload", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Files")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Key")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("RetryCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("State")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<uint>("Timeout")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Payload");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Monai.Deploy.InformaticsGateway": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "DOTNET_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

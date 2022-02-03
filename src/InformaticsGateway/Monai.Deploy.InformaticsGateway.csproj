@@ -1,4 +1,4 @@
-﻿<!-- Copyright 2021 MONAI Consortium
+﻿<!-- Copyright 2022 MONAI Consortium
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -23,9 +23,9 @@
 
     <ItemGroup>
         <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
-        <PackageReference Include="fo-dicom" Version="5.0.1" />
+        <PackageReference Include="DotNext.Threading" Version="4.1.3" />
+        <PackageReference Include="fo-dicom" Version="5.0.2" />
         <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.2.1" />
-        <PackageReference Include="fo-dicom" Version="5.0.1" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
@@ -49,6 +49,7 @@
         <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
         <ProjectReference Include="..\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
         <ProjectReference Include="..\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
+        <ProjectReference Include="..\Storage\MinIo\Monai.Deploy.InformaticsGateway.Storage.MinIo.csproj" />
     </ItemGroup>
 
     <ItemGroup>

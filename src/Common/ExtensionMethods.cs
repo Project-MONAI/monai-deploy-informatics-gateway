@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -26,18 +26,20 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
     public static class ExtensionMethods
     {
+
         /// <summary>
-        /// Extension method for checking a IEnumerable<T> is null or empty.
+        /// Extension method for checking a IEnumerable collection is null or empty.
         /// </summary>
-        /// <param name="enumerable"></param>
-        /// <typeparam name="T"></typeparam>
         /// <returns>true if null or empty; false otherwise.</returns>
         public static bool IsNullOrEmpty<T>(this IEnumerable<T> enumerable)
         {
@@ -71,6 +73,20 @@ namespace Monai.Deploy.InformaticsGateway.Common
                 input = input.Replace(c.ToString(), "");
             }
             return input;
+        }
+
+        /// <summary>
+        /// Extension for ActionBlock to delay post of an object to be processed.
+        /// </summary>
+        /// <typeparam name="TInput">Type of object to be post to the actio. block</typeparam>
+        /// <param name="actionBlock">Instance of <c>ActionBlock</c></param>
+        /// <param name="input">Object to be posted</param>
+        /// <param name="delay">Time to wait before posting</param>
+        /// <returns></returns>
+        public static async Task<bool> Post<TInput>(this ActionBlock<TInput> actionBlock, TInput input, TimeSpan delay)
+        {
+            await Task.Delay(delay);
+            return actionBlock.Post(input);
         }
     }
 }

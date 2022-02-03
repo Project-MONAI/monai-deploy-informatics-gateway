@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,12 +13,12 @@ using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using System.IO.Abstractions;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
     /// <summary>
     /// Provides basic information for a FHIR resource and storage hierarchy/path.
     /// </summary>
-    internal record FhirFileStorageInfo : FileStorageInfo
+    public sealed record FhirFileStorageInfo : FileStorageInfo
     {
         const string DirectoryPath = "ehr";
 
@@ -29,15 +29,17 @@ namespace Monai.Deploy.InformaticsGateway.Common
         public FhirFileStorageInfo(string correlationId,
                                     string storageRootPath,
                                     string messageId,
-                                    FhirStorageFormat fhirFileFormat)
-            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? ".json" : ".xml", new FileSystem()) { }
+                                    FhirStorageFormat fhirFileFormat,
+                                    string source)
+            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? ".json" : ".xml", source, new FileSystem()) { }
 
         public FhirFileStorageInfo(string correlationId,
                                     string storageRootPath,
                                     string messageId,
                                     FhirStorageFormat fhirFileFormat,
+                                    string source,
                                     IFileSystem fileSystem)
-            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? ".json" : ".xml", fileSystem)
+            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? ".json" : ".xml", source, fileSystem)
         {
         }
 

@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -33,7 +33,6 @@ using Xunit;
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 {
     public class ScuExportServiceTest : IClassFixture<DicomScpFixture>
-
     {
         private readonly Mock<ILogger<ScuExportService>> _logger;
         private readonly Mock<ILogger> _scpLogger;

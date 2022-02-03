@@ -1,5 +1,4 @@
-using System.IO.Pipes;
-// Copyright 2021 MONAI Consortium
+// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -35,9 +34,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using System;
 using System.Collections.Concurrent;
@@ -111,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
-        public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, Guid associationId)
+        public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
         {
             Guard.Against.Null(request, nameof(request));
 
@@ -126,7 +127,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
-            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), _fileSystem);
+            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), callingAeTitle, _fileSystem);
 
             info.StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
             info.SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
