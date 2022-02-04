@@ -55,8 +55,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             RestoreFromDatabase();
 
-            _timer = new System.Timers.Timer(1000);
-            _timer.AutoReset = false;
+            _timer = new System.Timers.Timer(1000)
+            {
+                AutoReset = false
+            };
             _timer.Elapsed += OnTimedEvent;
             _timer.Enabled = true;
         }

@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions.TestingHelpers;
 using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.Test.Common
+namespace Monai.Deploy.InformaticsGateway.Api.Test
 {
     public class FileStorageInfoTest
     {
@@ -29,6 +29,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, "txt", transactionId);
 
             Assert.Equal($"{root}{correlationId}-{messagId}.txt", fileStorageInfo.FilePath);
+            Assert.Equal($"{correlationId}-{messagId}.txt", fileStorageInfo.UploadPath);
+            Assert.Equal($"{correlationId}-{messagId}.txt", fileStorageInfo.UploadFilename);
         }
 
         [Fact(DisplayName = "Shall prevent overwriting existing files")]
@@ -66,6 +68,33 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
                 item => item.Equals("A"),
                 item => item.Equals("B"),
                 item => item.Equals("C"));
+        }
+
+        [Fact(DisplayName = "Shall remove root from upload path")]
+        public void ShallRemoveRootFromUploadPath()
+        {
+            var correlationId = Guid.NewGuid().ToString();
+            var root = "/test";
+            var messagId = Guid.NewGuid().ToString();
+            var transactionId = Guid.NewGuid().ToString();
+            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, "txt", transactionId);
+
+            Assert.Equal($"{correlationId}-{messagId}.txt", fileStorageInfo.UploadPath);
+            Assert.Equal($"{correlationId}-{messagId}.txt", fileStorageInfo.UploadFilename);
+        }
+
+        [Fact(DisplayName = "Shall return where data is stored for storage service")]
+        public void ShallReturnBlockStorageInfo()
+        {
+            var correlationId = Guid.NewGuid().ToString();
+            var root = "/test";
+            var messagId = Guid.NewGuid().ToString();
+            var transactionId = Guid.NewGuid().ToString();
+            var fileStorageInfo = new FileStorageInfo(correlationId, root, messagId, "txt", transactionId);
+
+            var blockStorage = fileStorageInfo.ToBlockStorageInfo("bucket");
+            Assert.Equal("bucket", blockStorage.Bucket);
+            Assert.Equal(fileStorageInfo.UploadPath, blockStorage.Path);
         }
     }
 }

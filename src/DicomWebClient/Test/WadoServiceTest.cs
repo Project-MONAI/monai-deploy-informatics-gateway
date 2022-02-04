@@ -1,4 +1,15 @@
-﻿/*
+﻿// Copyright 2022 MONAI Consortium
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//     http://www.apache.org/licenses/LICENSE-2.0
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+/*
  * Apache License, Version 2.0
  * Copyright 2019-2020 NVIDIA Corporation
  *
@@ -33,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
     public class WadoServiceTest : IClassFixture<DicomFileGeneratorFixture>
     {
         private const string BaseUri = "http://dummy/api/";
-        private DicomFileGeneratorFixture _fixture;
+        private readonly DicomFileGeneratorFixture _fixture;
 
         public WadoServiceTest(DicomFileGeneratorFixture fixture)
         {
@@ -75,9 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = await _fixture.GenerateInstances(2, studyUid, transferSynx: transferSyntax),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -110,9 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = await _fixture.GenerateInstances(1, studyUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -167,9 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(2, studyUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -202,9 +207,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(2, studyUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -276,9 +279,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = await _fixture.GenerateInstances(2, studyUid, seriesUid, transferSynx: transferSyntax),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -358,9 +359,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -394,9 +393,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -477,9 +474,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = await _fixture.GenerateInstances(2, studyUid, seriesUid, instanceUid, transferSynx: transferSyntax),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -509,9 +504,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = null
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -542,9 +535,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = new StringContent("")
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -632,9 +623,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(2, studyUid, seriesUid, instanceUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -664,9 +653,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -696,9 +683,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = null
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -728,9 +713,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = new StringContent("")
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -869,9 +852,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateByteData(),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 
@@ -901,9 +882,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateByteData(),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
 
             var wado = new WadoService(httpClient);
 

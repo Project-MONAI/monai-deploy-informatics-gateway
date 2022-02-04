@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 var path = FilePath[StorageRootPath.Length..];
                 if (FileSystem.Path.IsPathRooted(path))
                 {
-                    return path[1..];
+                    path = path[1..];
                 }
                 return path;
             }

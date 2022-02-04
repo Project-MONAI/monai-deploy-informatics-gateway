@@ -37,15 +37,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(FilePath))
-                {
-                    _ = FilePath;
-                };
-
+                _ = FilePath;
                 var path = DicomJsonFilePath[StorageRootPath.Length..];
                 if (FileSystem.Path.IsPathRooted(path))
                 {
-                    return path[1..];
+                    path = path[1..];
                 }
                 return path;
             }
@@ -58,18 +54,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 yield return FilePath;
                 yield return DicomJsonFilePath;
             }
-        }
-        
-
-        public DicomFileStorageInfo() { }
-
-        public DicomFileStorageInfo(string correlationId,
-                                    string storageRootPath,
-                                    string messageId,
-                                    string source)
-            : base(correlationId, storageRootPath, messageId, FilExtension, source, new FileSystem())
-        {
-            ContentType = DicomContentType;
         }
 
         public DicomFileStorageInfo(string correlationId,
