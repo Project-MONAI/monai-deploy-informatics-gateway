@@ -1,0 +1,250 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Setup | MONAI Deploy Informatics Gateway v0.0.0 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Setup | MONAI Deploy Informatics Gateway v0.0.0 ">
+    <meta name="generator" content="docfx 2.56.7.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/MONAI-logo-color.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="setup">Setup</h1>
+
+<p>This section outlines the steps to download and install Informatics Gateway using the CLI and Docker image.</p>
+<h2 id="runtime-requirements">Runtime Requirements</h2>
+<ul>
+<li>Docker 20.10.12 or higher</li>
+</ul>
+<p>For development requirements, please refer to <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway">README.md</a>.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="informatics-gateway-cli">Informatics Gateway CLI</h3>
+<p>TBD</p>
+<h3 id="informatics-gateway-docker-image">Informatics Gateway Docker Image</h3>
+<p>TBD</p>
+<h2 id="configure-informatics-gateway">Configure Informatics Gateway</h2>
+<p>Use the following command to initialize Informatics Gateway &amp; default configuration:</p>
+<pre><code class="lang-bash">./mig-cli config init
+./mig-cli config endpoint http://localhost:5000
+</code></pre>
+<p>This first command extract the default <code>appsettings.json</code> file into the home directory:</p>
+<ul>
+<li>Linux: <code>~/.mig/appsettings.json</code></li>
+<li>Windows: <code>C:\Users\[username]\.mig\appsettings.json</code></li>
+</ul>
+<p>This file is mapped into the Docker container and used by the Informatics Gateway when <code>mig-cli</code> is used to launch the application.</p>
+<p>For a complete reference of the <code>appsettings.jon</code>, please refer to <a href="schema.html">Configuration Schema</a>.</p>
+<p>The second command tells <code>mig-cli</code> where the endpoint is for the Informatics Gateway RESTful API.</p>
+<h2 id="startstop-informatics-gateway">Start/Stop Informatics Gateway</h2>
+<p>To start or stop Informatics Gateway, use one of the following commands:</p>
+<pre><code class="lang-bash">./mig-cli start
+./mig-cli stop
+</code></pre>
+<h2 id="enable-incoming-associations">Enable Incoming Associations</h2>
+<p>The next step is to configure Informatics Gateway enable receiving of DICOM instances from external DICOM devices.</p>
+<ol>
+<li>Configure a listening AE Title to receive instances:</li>
+</ol>
+<pre><code class="lang-bash">./mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
+</code></pre>
+<p>The command creates a new listening AE Title with AE Title <code>BrainAET</code>.  The listening AE Title
+will be grouping instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.</p>
+<p>For complete reference, please refer to the <a href="../api/rest/config.html">Config API</a>.</p>
+<ol start="2">
+<li>Enable receiving DICOM instances from an external DICOM devices:</li>
+</ol>
+<pre><code class="lang-bash">./mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55 -p 104
+</code></pre>
+<p>This command above tells Informatics Gateway to accept instances from AE Title <code>PACSLA001</code> at IP <code>20.10.30.55</code> and port <code>104</code>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>By default, Informatics Gateway blocks all unknown sources.<br>
+To allow all unknown sources, set <code>dicom&gt;scp&gt;rejectUnknownSources</code> to <code>false</code> in <code>appsettings.json</code>.</p>
+</div>
+<h2 id="export-processed-results">Export Processed Results</h2>
+<p>If exporting via DIMSE is required, add a DICOM destination:</p>
+<pre><code class="lang-bash">./mig-cli dst add -a WORKSTATION1 -h 100.200.10.20 -p 104
+</code></pre>
+<p>The command adds a DICOM export destination with AE Title <code>WORKSTATION1</code> at IP <code>100.200.10.20</code> and port <code>104</code>.</p>
+<h2 id="storage-consideration--configuration">Storage Consideration &amp; Configuration</h2>
+<p>Informatics Gateway operates on two storage locations. The first is for temporarily storing of the incoming data for data grouping. The second is where Informatics Gateway uploads grouped datasets to final storage shared by other MONAI Deploy sub-systems.</p>
+<h3 id="temporary-storage-of-incoming-dataset">Temporary Storage of Incoming Dataset</h3>
+<p>The temporary storage location, by default, is set to <code>/payloads</code> in the <code>appsettings.json</code> file.</p>
+<p>To change the temporary storage location, please locate <code>./InformaticsGateway/storage/temporary</code> property in the <code>appsettings.json</code> file.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Calculate the required temporary storage based on the number of studies and the size of each study.
+Please also consider the AE Title timeout if the AE Title needs to wait a long time before assembling &amp; uploading
+the payload for final storage.</p>
+</div>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Before running Informatics Gateway, adjust the values of <code>watermarkPercent</code> and <code>reserveSpaceGB</code> based on
+the expected number of studies and size of each study. The suggested value for <code>reserveSpaceGB</code> is 2x to 3x the
+size of a single study multiplied by the number of configured AE Titles.</p>
+</div>
+<h3 id="shared-storage">Shared Storage</h3>
+<p>Informatics Gateway includes MinIO as the default storage service provider. To integrate with another storage service provider, please refer to the <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#data-storage">Data Storage</a> section of the SRS.</p>
+<p>Please download and install MinIO by following the <a href="https://docs.min.io/docs/minio-quickstart-guide.html">quickstart guide</a>. Once MinIO is installed and configured, modify the storage configuration to enable communication between Informatics Gateway &amp; MinIO.</p>
+<p>Locate the storage section of the configuration in <code>appsettings.json</code>:</p>
+<pre><code class="lang-json">{
+  &quot;ConnectionStrings&quot;: {
+    &quot;InformaticsGatewayDatabase&quot;: &quot;Data Source=migdev.db&quot;
+  },
+  &quot;InformaticsGateway&quot;: {
+    &quot;dicom&quot;: { ... },
+    &quot;storage&quot;: {
+      &quot;storageServiceCredentials&quot;: {
+        &quot;endpoint&quot;: &quot;192.168.1.1:9000&quot;, # IP &amp; port to MinIO instance
+        &quot;accessKey&quot;: &quot;admin&quot;, # Access key or username 
+        &quot;accessToken&quot;: &quot;password&quot; # Access token or password 
+      },
+      &quot;storageService&quot;: &quot;Monai.Deploy.InformaticsGateway.Storage.MinIoStorageService, Monai.Deploy.InformaticsGateway.Storage.MinIo&quot;, # Fully qualified type name of the storage service 
+      &quot;securedConnection&quot;: false, # Indicates if a secured connection is required to access MinIO
+      &quot;storageServiceBucketName&quot;: &quot;igbucket&quot; # The name of the bucket where data is uploaded to
+    },
+    ...
+  }
+}
+</code></pre>
+<h3 id="message-broker">Message broker</h3>
+<p>Informatics Gateway communicates with other MONAI Deploy components through a message broker.  The default messaging service
+included is provided by <a href="https://www.rabbitmq.com/">RabbitMQ</a>. To integrate with another storage service provider, please refer
+to the <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#message-broker">Data Storage</a> section of the SRS.</p>
+<p>To use the default messaging service, please download and install RabbitMQ by following the
+<a href="https://www.rabbitmq.com/#getstarted">Get Started</a> page.</p>
+<p>Before launching Informatics Gateway, update <code>appsettings.json</code> to configure the publisher and subscriber settings.
+IG publishes all messages to an <em>exchange</em> under the specified <em>virtual host</em>. Therefore, please confirm the values before starting
+Informatics Gateway.</p>
+<pre><code class="lang-json">{
+  &quot;InformaticsGateway&quot;: {
+    &quot;messaging&quot;: {
+      &quot;publisherSettings&quot;: {
+        &quot;endpoint&quot;: &quot;localhost&quot;,
+        &quot;username&quot;: &quot;username&quot;,
+        &quot;password&quot;: &quot;password&quot;,
+        &quot;virtualHost&quot;: &quot;monaideploy&quot;,
+        &quot;exchange&quot;: &quot;monaideploy&quot;
+      },
+      &quot;subscriberSettings&quot;: {
+        &quot;endpoint&quot;: &quot;localhost&quot;,
+        &quot;username&quot;: &quot;username&quot;,
+        &quot;password&quot;: &quot;password&quot;,
+        &quot;virtualHost&quot;: &quot;monaideploy&quot;,
+        &quot;exchange&quot;: &quot;monaideploy&quot;,
+        &quot;exportRequestQueue&quot;: &quot;export_tasks&quot;
+      }
+    },
+  }
+}
+</code></pre>
+<h2 id="summary">Summary</h2>
+<p>TBD</p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/docs//#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
