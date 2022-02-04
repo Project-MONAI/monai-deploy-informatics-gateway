@@ -12,11 +12,11 @@
 [![Default](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/actions/workflows/build.yml)
 
 
-MONAI Deploy Informatics Gateway (MIG), handles the first and last step in a clinical data pipeline, the Input and Output (I/O). 
+MONAI Deploy Informatics Gateway (MIG) handles the first and last step in a clinical data pipeline, the Input, and Output (I/O).
 
-It uses standard protocols like DICOM and FHIR, stores studies and resources from the medical record system as payloads, and notifies the rest of the MONAI Deploy system, specifically the [MONAI Deploy Workflow Manager](https://github.com/Project-MONAI/monai-deploy-workflow-manager), that data is ready to be processed. 
+MIG uses standard protocols like DICOM and FHIR. It stores studies and resources from the medical record system as payloads. It then notifies the rest of the MONAI Deploy system, specifically the MONAI Deploy Workflow Manager, that data is ready to be processed.
 
-After inference is done, it receives the results and send them to the proper consumers, usually PACS or viewers for visualization, VNAs for storage, and EHRs (Electronic Healthcare Records).  
+After inference completes, MIG receives notifications for exporting the results to the proper consumers, usually PACS or viewers for visualization, VNAs for storage, and EHRs (Electronic Healthcare Records).
 
 ## Services
 
