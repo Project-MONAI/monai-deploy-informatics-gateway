@@ -8,7 +8,7 @@
           <Exclude>[coverlet.*.tests?]*,[*]Coverlet.Core*,[xunit.*]*,[Grpc.Core*]*,[System.*]*,[Microsoft.*]*</Exclude>
           <Include></Include>
           <ExcludeByAttribute></ExcludeByAttribute>
-          <ExcludeByFile>src/InformaticsGateway/Common/DicomToJsonConverter.cs</ExcludeByFile> <!-- Globbing filter -->
+          <ExcludeByFile></ExcludeByFile> <!-- Globbing filter -->
           <IncludeDirectory></IncludeDirectory>
           <SingleHit>false</SingleHit>
           <UseSourceLink>true</UseSourceLink>

@@ -23,6 +23,3 @@ comment:
 
 fixes:
   - "/home/runner/work/Informatics-Gateway/Informatics-Gateway/src/::src/"
-
-ignore:
-  - "src/InformaticsGateway/Common/DicomToJsonConverter.cs"

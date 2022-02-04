@@ -28,7 +28,9 @@
 
 using Ardalis.GuardClauses;
 using FellowOakDicom;
+using FellowOakDicom.Serialization;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Text.Json;
@@ -38,6 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
 {
     public class DicomToolkit : IDicomToolkit
     {
+        private static readonly IList<DicomVR> DicomVrsToIgnore = new List<DicomVR>() { DicomVR.OB, DicomVR.OD, DicomVR.OF, DicomVR.OL, DicomVR.OV, DicomVR.OW, DicomVR.UN };
         private readonly IFileSystem _fileSystem;
 
         public DicomToolkit(IFileSystem fileSystem)
@@ -111,9 +114,19 @@ namespace Monai.Deploy.InformaticsGateway.Common
             Guard.Against.Null(file, nameof(file));
 
             var options = new JsonSerializerOptions();
-            options.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: true, writeOtherValueTypes: writeOtherValueTypes));
+            options.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: true));
             options.WriteIndented = false;
-            return JsonSerializer.Serialize(file.Dataset, options);
+
+            if (writeOtherValueTypes)
+            {
+                return JsonSerializer.Serialize(file.Dataset, options);
+            }
+            else
+            {
+                var dataset = file.Dataset.Clone();
+                dataset.Remove(i => DicomVrsToIgnore.Contains(i.ValueRepresentation));
+                return JsonSerializer.Serialize(dataset, options);
+            }
         }
     }
 }
