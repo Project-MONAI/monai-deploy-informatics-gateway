@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,12 +9,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -22,9 +26,11 @@ using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using Moq.Protected;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using xRetry;
@@ -34,47 +40,58 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 {
     public class DicomWebExportServiceTest
     {
+        private readonly Mock<IStorageService> _storageService;
+        private readonly Mock<IMessageBrokerSubscriberService> _messageSubscriberService;
+        private readonly Mock<IMessageBrokerPublisherService> _messagePublisherService;
         private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly Mock<IHttpClientFactory> _httpClientFactory;
         private readonly Mock<IInferenceRequestRepository> _inferenceRequestStore;
         private readonly Mock<ILogger<DicomWebExportService>> _logger;
-        private readonly Mock<IWorkloadManagerApi> _workloadManagerApi;
+        private readonly Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private Mock<HttpMessageHandler> _handlerMock;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
-        private readonly Random _random;
 
         public DicomWebExportServiceTest()
         {
+            _storageService = new Mock<IStorageService>();
+            _messageSubscriberService = new Mock<IMessageBrokerSubscriberService>();
+            _messagePublisherService = new Mock<IMessageBrokerPublisherService>();
             _loggerFactory = new Mock<ILoggerFactory>();
             _httpClientFactory = new Mock<IHttpClientFactory>();
             _inferenceRequestStore = new Mock<IInferenceRequestRepository>();
             _logger = new Mock<ILogger<DicomWebExportService>>();
-            _workloadManagerApi = new Mock<IWorkloadManagerApi>();
+            _loggerDicomWebClient = new Mock<ILogger<DicomWebClient>>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
-            _configuration.Value.Export.PollFrequencyMs = 10;
             _storageInfoProvider = new Mock<IStorageInfoProvider>();
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _dicomToolkit = new Mock<IDicomToolkit>();
-            _random = new Random();
 
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider
                 .Setup(x => x.GetService(typeof(IInferenceRequestRepository)))
                 .Returns(_inferenceRequestStore.Object);
             serviceProvider
-                .Setup(x => x.GetService(typeof(IWorkloadManagerApi)))
-                .Returns(_workloadManagerApi.Object);
+                .Setup(x => x.GetService(typeof(IMessageBrokerPublisherService)))
+                .Returns(_messagePublisherService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IMessageBrokerSubscriberService)))
+                .Returns(_messageSubscriberService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IStorageService)))
+                .Returns(_storageService.Object);
 
             var scope = new Mock<IServiceScope>();
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
+
+            _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_loggerDicomWebClient.Object);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]
@@ -92,6 +109,30 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         [RetryFact(5, 250, DisplayName = "ExportDataBlockCallback - Returns null if inference request cannot be found")]
         public async Task ExportDataBlockCallback_ReturnsNullIfInferenceRequestCannotBeFound()
         {
+            var transactionId = Guid.NewGuid().ToString();
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
+
+            _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
+            _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(
+                p => p.Subscribe(It.IsAny<string>(),
+                                 It.IsAny<string>(),
+                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<ushort>()))
+                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                {
+                    messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
+                });
+
+            _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
+                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
+                {
+                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
+                });
+
+            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns((InferenceRequest)null);
+
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
                 _httpClientFactory.Object,
@@ -101,18 +142,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _storageInfoProvider.Object,
                 _dicomToolkit.Object);
 
-            var tasks = ExportServiceBaseTest.GenerateTaskResponse(1);
-
-            var bytes = new byte[10];
-            _random.NextBytes(bytes);
-
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
-            _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(bytes));
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns((InferenceRequest)null);
-
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
             {
@@ -120,20 +149,50 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             };
 
             await service.StartAsync(_cancellationTokenSource.Token);
-            dataflowCompleted.WaitOne(5000);
-
-            _workloadManagerApi.Verify(p => p.GetPendingJobs(_configuration.Value.DicomWeb.ExportSink, 10, It.IsAny<CancellationToken>()), Times.Once());
-
-            _workloadManagerApi.Verify(p => p.Download(tasks.First().ApplicationId, tasks.First().FileId, It.IsAny<CancellationToken>()), Times.AtLeastOnce());
-            _logger.VerifyLogging($"The specified job cannot be found in the inference request store and will not be exported.", LogLevel.Error, Times.AtLeastOnce());
-            _logger.VerifyLogging($"Task {tasks.First().ExportTaskId} marked as failure and will not be retried.", LogLevel.Warning, Times.AtLeastOnce());
-
+            Assert.True(dataflowCompleted.WaitOne(3000));
             await StopAndVerify(service);
+
+            _messagePublisherService.Verify(
+                p => p.Publish(It.IsAny<string>(),
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteMessage>()).Status == ExportStatus.Failure)), Times.Once());
+            _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
+            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+                                                              It.IsAny<string>(),
+                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<ushort>()), Times.Once());
+
+            _logger.VerifyLogging($"The specified inference request '{transactionId}' cannot be found and will not be exported.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "ExportDataBlockCallback - Returns null if inference request doesn't include a valid DICOMweb destination")]
         public async Task ExportDataBlockCallback_ReturnsNullIfInferenceRequestContainsNoDicomWebDestination()
         {
+            var transactionId = Guid.NewGuid().ToString();
+            var inferenceRequest = new InferenceRequest();
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
+
+            _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
+            _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(
+                p => p.Subscribe(It.IsAny<string>(),
+                                 It.IsAny<string>(),
+                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<ushort>()))
+                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                {
+                    messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
+                });
+
+            _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
+                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
+                {
+                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
+                });
+
+            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
+
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
                 _httpClientFactory.Object,
@@ -142,19 +201,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _configuration,
                 _storageInfoProvider.Object,
                 _dicomToolkit.Object);
-
-            var inferenceRequest = new InferenceRequest();
-
-            var bytes = new byte[10];
-            _random.NextBytes(bytes);
-
-            var tasks = ExportServiceBaseTest.GenerateTaskResponse(1);
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
-            _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(bytes));
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
@@ -163,28 +209,27 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             };
 
             await service.StartAsync(_cancellationTokenSource.Token);
-            dataflowCompleted.WaitOne(5000);
-
-            _workloadManagerApi.Verify(p => p.GetPendingJobs(_configuration.Value.DicomWeb.ExportSink, 10, It.IsAny<CancellationToken>()), Times.AtLeastOnce());
-            _workloadManagerApi.Verify(p => p.Download(tasks.First().ApplicationId, tasks.First().FileId, It.IsAny<CancellationToken>()), Times.AtLeastOnce());
-            _logger.VerifyLogging($"The inference request contains no `outputResources` nor any DICOMweb export destinations.", LogLevel.Error, Times.AtLeastOnce());
-            _logger.VerifyLogging($"Task {tasks.First().ExportTaskId} marked as failure and will not be retried.", LogLevel.Warning, Times.AtLeastOnce());
-
+            Assert.True(dataflowCompleted.WaitOne(3000));
             await StopAndVerify(service);
+
+            _messagePublisherService.Verify(
+                p => p.Publish(It.IsAny<string>(),
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteMessage>()).Status == ExportStatus.Failure)), Times.Once());
+            _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
+            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+                                                              It.IsAny<string>(),
+                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<ushort>()), Times.Once());
+
+            _logger.VerifyLogging($"The inference request contains no `outputResources` nor any DICOMweb export destinations.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "ExportDataBlockCallback - Records STOW failures and report")]
         public async Task ExportDataBlockCallback_RecordsStowFailuresAndReportFailure()
         {
-            var service = new DicomWebExportService(
-                _loggerFactory.Object,
-                _httpClientFactory.Object,
-                _serviceScopeFactory.Object,
-                _logger.Object,
-                _configuration,
-                _storageInfoProvider.Object,
-                _dicomToolkit.Object);
-
+            var transactionId = Guid.NewGuid().ToString();
+            var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var inferenceRequest = new InferenceRequest();
             inferenceRequest.OutputResources.Add(new RequestOutputDataResource
             {
@@ -197,17 +242,29 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 }
             });
 
-            var tasks = ExportServiceBaseTest.GenerateTaskResponse(1);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
-            var bytes = new byte[10];
-            _random.NextBytes(bytes);
+            _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
+            _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(
+                p => p.Subscribe(It.IsAny<string>(),
+                                 It.IsAny<string>(),
+                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<ushort>()))
+                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                {
+                    messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
+                });
 
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
-            _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(bytes));
+            _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
+                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
+                {
+                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
+                });
+
             _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
+            _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             _handlerMock = new Mock<HttpMessageHandler>();
             _handlerMock
@@ -221,30 +278,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
 
-            var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
-            {
-                dataflowCompleted.Set();
-            };
-
-            await service.StartAsync(_cancellationTokenSource.Token);
-            dataflowCompleted.WaitOne(5000);
-
-            _workloadManagerApi.Verify(p => p.GetPendingJobs(_configuration.Value.DicomWeb.ExportSink, 10, It.IsAny<CancellationToken>()), Times.Once());
-            _workloadManagerApi.Verify(p => p.Download(tasks.First().ApplicationId, tasks.First().FileId, It.IsAny<CancellationToken>()), Times.AtLeastOnce());
-
-            _logger.VerifyLogging($"Exporting data to {inferenceRequest.OutputResources.First().ConnectionDetails.Uri}.", LogLevel.Debug, Times.AtLeastOnce());
-            _logger.VerifyLogging($"Failed to export data to DICOMweb destination.", LogLevel.Error, Times.AtLeastOnce());
-
-            await StopAndVerify(service);
-        }
-
-        [RetryTheory(DisplayName = "Export completes entire data flow and reports status based on response StatusCode")]
-        [InlineData(HttpStatusCode.OK)]
-        [InlineData(HttpStatusCode.Accepted)]
-        [InlineData(HttpStatusCode.BadRequest)]
-        public async Task CompletesDataflow(HttpStatusCode httpStatusCode)
-        {
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
                 _httpClientFactory.Object,
@@ -254,7 +287,38 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _storageInfoProvider.Object,
                 _dicomToolkit.Object);
 
+            var dataflowCompleted = new ManualResetEvent(false);
+            service.ReportActionStarted += (sender, args) =>
+            {
+                dataflowCompleted.Set();
+            };
+
+            await service.StartAsync(_cancellationTokenSource.Token);
+            Assert.True(dataflowCompleted.WaitOne(3000));
+            await StopAndVerify(service);
+
+            _messagePublisherService.Verify(
+                p => p.Publish(It.IsAny<string>(),
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteMessage>()).Status == ExportStatus.Failure)), Times.Once());
+            _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
+            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+                                                              It.IsAny<string>(),
+                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<ushort>()), Times.Once());
+
+            _logger.VerifyLogging($"Exporting data to {inferenceRequest.OutputResources.First().ConnectionDetails.Uri}.", LogLevel.Debug, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Failed to store DICOM instances", LogLevel.Error, Times.Once());
+        }
+
+        [RetryTheory(DisplayName = "Export completes entire data flow and reports status based on response StatusCode")]
+        [InlineData(HttpStatusCode.OK)]
+        [InlineData(HttpStatusCode.Accepted)]
+        [InlineData(HttpStatusCode.BadRequest)]
+        public async Task CompletesDataflow(HttpStatusCode httpStatusCode)
+        {
             var url = "http://my-dicom-web.site";
+            var transactionId = Guid.NewGuid().ToString();
             var inferenceRequest = new InferenceRequest();
             inferenceRequest.OutputResources.Add(new RequestOutputDataResource
             {
@@ -267,20 +331,34 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 }
             });
 
-            var tasks = ExportServiceBaseTest.GenerateTaskResponse(1);
-            var bytes = new byte[10];
-            _random.NextBytes(bytes);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
-            _workloadManagerApi.Setup(p => p.GetPendingJobs(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(tasks));
-            _workloadManagerApi.Setup(p => p.ReportSuccess(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.ReportFailure(It.IsAny<Guid>(), It.IsAny<bool>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(true));
-            _workloadManagerApi.Setup(p => p.Download(It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
-                .Returns(Task.FromResult(bytes));
+            _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
+            _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(
+                p => p.Subscribe(It.IsAny<string>(),
+                                 It.IsAny<string>(),
+                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<ushort>()))
+                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                {
+                    messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
+                });
+
+            _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
+                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
+                {
+                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
+                });
+
             _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile());
 
-            var response = new HttpResponseMessage(httpStatusCode);
-            response.Content = new StringContent("result");
+            var response = new HttpResponseMessage(httpStatusCode)
+            {
+                Content = new StringContent("result")
+            };
 
             _handlerMock = new Mock<HttpMessageHandler>();
             _handlerMock
@@ -294,6 +372,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
 
+            var service = new DicomWebExportService(
+                _loggerFactory.Object,
+                _httpClientFactory.Object,
+                _serviceScopeFactory.Object,
+                _logger.Object,
+                _configuration,
+                _storageInfoProvider.Object,
+                _dicomToolkit.Object);
+
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionStarted += (sender, args) =>
             {
@@ -301,41 +388,60 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             };
 
             await service.StartAsync(_cancellationTokenSource.Token);
-            dataflowCompleted.WaitOne(5000);
+            Assert.True(dataflowCompleted.WaitOne(3000));
+            await StopAndVerify(service);
 
-            _workloadManagerApi.Verify(p => p.GetPendingJobs(_configuration.Value.DicomWeb.ExportSink, 10, It.IsAny<CancellationToken>()), Times.Once());
-            _workloadManagerApi.Verify(p => p.Download(tasks.First().ApplicationId, tasks.First().FileId, It.IsAny<CancellationToken>()), Times.AtLeastOnce());
+            _messagePublisherService.Verify(
+                p => p.Publish(It.IsAny<string>(),
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteMessage>()).Status == (httpStatusCode == HttpStatusCode.OK ? ExportStatus.Success : ExportStatus.Failure))), Times.Once());
+            _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
+            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+                                                              It.IsAny<string>(),
+                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<ushort>()), Times.Once());
 
             _logger.VerifyLogging($"Exporting data to {inferenceRequest.OutputResources.First().ConnectionDetails.Uri}.", LogLevel.Debug, Times.AtLeastOnce());
 
             if (httpStatusCode == HttpStatusCode.OK)
             {
-                _logger.VerifyLogging($"Task marked as successful.", LogLevel.Information, Times.AtLeastOnce());
+                _logger.VerifyLogging($"All data exported successfully.", LogLevel.Information, Times.Once());
             }
             else
             {
-                _logger.VerifyLogging($"Failed to export data to DICOMweb destination.", LogLevel.Error, Times.AtLeastOnce());
-                _logger.VerifyLogging($"Task marked as failed.", LogLevel.Warning, Times.AtLeastOnce());
+                _logger.VerifyLogging($"Failed to export to destination.", LogLevel.Error, Times.Once());
             }
 
             _handlerMock.Protected().Verify(
                "SendAsync",
-               Times.Exactly(1),
+               Times.AtLeastOnce(),
                ItExpr.Is<HttpRequestMessage>(req =>
                 req.Method == HttpMethod.Post &&
                 req.RequestUri.ToString().StartsWith($"{url}/studies/")),
                ItExpr.IsAny<CancellationToken>());
+        }
 
-            await StopAndVerify(service);
+        private static MessageReceivedEventArgs CreateMessageReceivedEventArgs(string transactionId)
+        {
+            var exportRequestMessage = new ExportRequestMessage
+            {
+                ExportTaskId = Guid.NewGuid().ToString(),
+                CorrelationId = Guid.NewGuid().ToString(),
+                Destination = transactionId,
+                Files = new[] { "file1" },
+                MessageId = Guid.NewGuid().ToString(),
+                WorkflowId = Guid.NewGuid().ToString(),
+            };
+            var jsonMessage = new JsonMessage<ExportRequestMessage>(exportRequestMessage, exportRequestMessage.CorrelationId, exportRequestMessage.DeliveryTag);
+
+            return new MessageReceivedEventArgs(jsonMessage.ToMessage(), CancellationToken.None);
         }
 
         private async Task StopAndVerify(DicomWebExportService service)
         {
             await service.StopAsync(_cancellationTokenSource.Token);
-            _workloadManagerApi.Invocations.Clear();
-            _logger.VerifyLogging($"Export Task Watcher Hosted Service is stopping.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{service.ServiceName} is stopping.", LogLevel.Information, Times.Once());
             Thread.Sleep(500);
-            _workloadManagerApi.Verify(p => p.GetPendingJobs(TestExportService.AgentName, 10, It.IsAny<CancellationToken>()), Times.Never());
         }
     }
 }

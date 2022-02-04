@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -28,39 +28,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             AddCommandEndpoint();
             AddCommandRunner();
-            AddCommandWorkloadManagerRest();
-            AddCommandWorkloadManagerGrpc();
 
             SetupInitCommand();
             SetupShowConfigCommand();
-        }
-
-        private void AddCommandWorkloadManagerGrpc()
-        {
-            var wmgrpcCommand = new Command("wmgrpc", $"RESTful endpoint for the {Strings.WorkloadManagerName}.");
-            this.Add(wmgrpcCommand);
-
-            wmgrpcCommand.AddArgument(new Argument<string>("uri"));
-            wmgrpcCommand.Handler = CommandHandler.Create<string, IHost, bool>((string uri, IHost host, bool verbose) =>
-                ConfigUpdateHandler(uri, host, verbose, (IConfigurationService options) =>
-                {
-                    options.Configurations.WorkloadManagerGrpcEndpoint = uri;
-                })
-            );
-        }
-
-        private void AddCommandWorkloadManagerRest()
-        {
-            var wmRestCommand = new Command("wmrest", $"RESTful endpoint for the {Strings.WorkloadManagerName}.");
-            this.Add(wmRestCommand);
-
-            wmRestCommand.AddArgument(new Argument<string>("uri"));
-            wmRestCommand.Handler = CommandHandler.Create<string, IHost, bool>((string uri, IHost host, bool verbose) =>
-                ConfigUpdateHandler(uri, host, verbose, (IConfigurationService options) =>
-                {
-                    options.Configurations.WorkloadManagerRestEndpoint = uri;
-                })
-            );
         }
 
         private void AddCommandRunner()
@@ -97,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             this.AddCommand(listCommand);
 
             listCommand.Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(InitHandlerAsync);
-            this.AddConfirmationOption(listCommand);
+            AddConfirmationOption(listCommand);
         }
 
         private void SetupShowConfigCommand()
@@ -112,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
             var logger = CreateLogger<ConfigCommand>(host);
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
@@ -127,9 +97,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 logger.Log(LogLevel.Information, $"   Database storage mount: {configService.Configurations.HostDatabaseStorageMount}");
                 logger.Log(LogLevel.Information, $"   Data storage mount: {configService.Configurations.HostDataStorageMount}");
                 logger.Log(LogLevel.Information, $"   Logs storage mount: {configService.Configurations.HostLogsStorageMount}");
-                logger.Log(LogLevel.Information, $"Workload Manager:");
-                logger.Log(LogLevel.Information, $"   REST API: {configService.Configurations.WorkloadManagerRestEndpoint}");
-                logger.Log(LogLevel.Information, $"   gRPC API: {configService.Configurations.WorkloadManagerGrpcEndpoint}");
             }
             catch (ConfigurationException)
             {
@@ -143,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             return ExitCodes.Success;
         }
 
-        private int ConfigUpdateHandler<T>(T argument, IHost host, bool verbose, Action<IConfigurationService> updater)
+        private static int ConfigUpdateHandler<T>(T argument, IHost host, bool verbose, Action<IConfigurationService> updater)
         {
             Guard.Against.Null(host, nameof(host));
             Guard.Against.Null(updater, nameof(updater));

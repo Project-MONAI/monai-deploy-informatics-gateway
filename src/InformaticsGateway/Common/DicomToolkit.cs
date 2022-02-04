@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -30,6 +30,7 @@ using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Text.Json;
@@ -39,6 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
 {
     public class DicomToolkit : IDicomToolkit
     {
+        private static readonly IList<DicomVR> DicomVrsToIgnore = new List<DicomVR>() { DicomVR.OB, DicomVR.OD, DicomVR.OF, DicomVR.OL, DicomVR.OV, DicomVR.OW, DicomVR.UN };
         private readonly IFileSystem _fileSystem;
 
         public DicomToolkit(IFileSystem fileSystem)
@@ -73,7 +75,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
             return file.Dataset.TryGetString(dicomTag, out value);
         }
-
 
         public async Task Save(DicomFile file, string filename, string metadataFilename, DicomJsonOptions dicomJsonOptions)
         {
@@ -110,10 +111,22 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         private static string ConvertDicomToJson(DicomFile file, bool writeOtherValueTypes)
         {
+            Guard.Against.Null(file, nameof(file));
+
             var options = new JsonSerializerOptions();
-            options.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: true, writeOtherValueTypes: writeOtherValueTypes));
+            options.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: true));
             options.WriteIndented = false;
-            return JsonSerializer.Serialize(file.Dataset, options);
+
+            if (writeOtherValueTypes)
+            {
+                return JsonSerializer.Serialize(file.Dataset, options);
+            }
+            else
+            {
+                var dataset = file.Dataset.Clone();
+                dataset.Remove(i => DicomVrsToIgnore.Contains(i.ValueRepresentation));
+                return JsonSerializer.Serialize(dataset, options);
+            }
         }
     }
 }

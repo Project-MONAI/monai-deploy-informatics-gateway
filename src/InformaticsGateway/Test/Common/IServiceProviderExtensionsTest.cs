@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -21,8 +21,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
 {
     public class IServiceProviderExtensionsTest
     {
-        private Mock<IServiceProvider> _serviceProvider;
-        private Mock<ILogger<Program>> _logger;
+        private readonly Mock<IServiceProvider> _serviceProvider;
+        private readonly Mock<ILogger<Program>> _logger;
 
         public IServiceProviderExtensionsTest()
         {

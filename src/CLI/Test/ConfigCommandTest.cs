@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -98,8 +98,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _configurationService.SetupGet(p => p.Configurations.HostDatabaseStorageMount).Returns("DB");
             _configurationService.SetupGet(p => p.Configurations.HostDataStorageMount).Returns("Data");
             _configurationService.SetupGet(p => p.Configurations.HostLogsStorageMount).Returns("Logs");
-            _configurationService.SetupGet(p => p.Configurations.WorkloadManagerRestEndpoint).Returns("REST");
-            _configurationService.SetupGet(p => p.Configurations.WorkloadManagerGrpcEndpoint).Returns("GRPC");
 
             int exitCode = await _paser.InvokeAsync(command);
 
@@ -112,9 +110,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLogging("   Database storage mount: DB", LogLevel.Information, Times.Once());
             _logger.VerifyLogging("   Data storage mount: Data", LogLevel.Information, Times.Once());
             _logger.VerifyLogging("   Logs storage mount: Logs", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("Workload Manager:", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("   REST API: REST", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("   gRPC API: GRPC", LogLevel.Information, Times.Once());
         }
 
         [Fact(DisplayName = "config show comand exception")]
@@ -130,44 +125,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
 
             Assert.Equal(ExitCodes.Config_ErrorShowing, exitCode);
-        }
-
-        [Fact(DisplayName = "config wgrpc command")]
-        public async Task ConfigWmGrpc_Command()
-        {
-            var command = "config wmgrpc http://test:123";
-
-            var result = _paser.Parse(command);
-            Assert.Equal(0, result.Errors.Count);
-
-            var callbackResult = string.Empty;
-            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
-            _configurationService.SetupSet<string>(p => p.Configurations.WorkloadManagerGrpcEndpoint = It.IsAny<string>())
-                .Callback(value => callbackResult = value);
-
-            int exitCode = await _paser.InvokeAsync(command);
-
-            Assert.Equal(ExitCodes.Success, exitCode);
-            Assert.Equal("http://test:123", callbackResult);
-        }
-
-        [Fact(DisplayName = "config wgrest command")]
-        public async Task ConfigWmRest_Command()
-        {
-            var command = "config wmrest http://test:123";
-
-            var result = _paser.Parse(command);
-            Assert.Equal(0, result.Errors.Count);
-
-            var callbackResult = string.Empty;
-            _configurationService.SetupGet(p => p.IsInitialized).Returns(true);
-            _configurationService.SetupSet<string>(p => p.Configurations.WorkloadManagerRestEndpoint = It.IsAny<string>())
-                .Callback(value => callbackResult = value);
-
-            int exitCode = await _paser.InvokeAsync(command);
-
-            Assert.Equal(ExitCodes.Success, exitCode);
-            Assert.Equal("http://test:123", callbackResult);
         }
 
         [Fact(DisplayName = "config runner command")]

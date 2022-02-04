@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -126,7 +126,6 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
                     services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
-                    services.AddSingleton<IWorkloadManagerApi, WorkloadManagerApi>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();
                     services.AddSingleton<IApplicationEntityManager, ApplicationEntityManager>();
                     services.AddSingleton<SpaceReclaimerService>();

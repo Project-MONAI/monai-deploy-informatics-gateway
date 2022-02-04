@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         [Fact(DisplayName = "Returns problem details")]
         public async Task ReturnProblemDetails()
         {
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -45,8 +45,10 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(problem);
 
-            var message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            message.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var message = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
             var exception = await Assert.ThrowsAsync<ProblemException>(async () => await message.EnsureSuccessStatusCodeWithProblemDetails());
 
@@ -57,8 +59,10 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         public async Task ReturnOtherErrors()
         {
             var logger = new Mock<ILogger>();
-            var message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            message.Content = new StringContent("error message", Encoding.UTF8, "application/json");
+            var message = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+            {
+                Content = new StringContent("error message", Encoding.UTF8, "application/json")
+            };
 
             var exception = await Assert.ThrowsAsync<HttpRequestException>(async () => await message.EnsureSuccessStatusCodeWithProblemDetails(logger.Object));
 
@@ -73,8 +77,10 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             var json = JsonConvert.SerializeObject(unhandledException);
 
             var logger = new Mock<ILogger>();
-            var message = new HttpResponseMessage(HttpStatusCode.InternalServerError);
-            message.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var message = new HttpResponseMessage(HttpStatusCode.InternalServerError)
+            {
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
             var exception = await Assert.ThrowsAsync<HttpRequestException>(async () => await message.EnsureSuccessStatusCodeWithProblemDetails(logger.Object));
 

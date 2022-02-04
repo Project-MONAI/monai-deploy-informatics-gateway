@@ -136,34 +136,43 @@ Locate the storage section of the configuration in `appsettings.json`:
   }
 }
 ```
-### DICOM JSON Model
 
-By default, Informatics Gateway stores all received and retrieved DICOM instances into JSON in additional to storing
-the original in DICOM part-10 format.  The JSON stored is as specified by the [DICOM JSON model](https://dicom.nema.org/dicom/2013/output/chtml/part18/sect_F.2.html)
-without the following VR types:
+### Message broker
 
-- OB
-- OD
-- OF
-- OL
-- OV
-- OW
-- UN
+Informatics Gateway communicates with other MONAI Deploy components through a message broker.  The default messaging service
+included is provided by [RabbitMQ](https://www.rabbitmq.com/). To integrate with another storage service provider, please refer 
+to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#message-broker) section of the SRS.
 
-This behavior may be changed in the configuration file:
+To use the default messaging service, please download and install RabbitMQ by following the
+[Get Started](https://www.rabbitmq.com/#getstarted) page. 
+
+Before launching Informatics Gateway, update `appsettings.json` to configure the publisher and subscriber settings.
+IG publishes all messages to an *exchange* under the specified *virtual host*. Therefore, please confirm the values before starting
+Informatics Gateway.
+
 ```json
 {
-
   "InformaticsGateway": {
-    "dicom": {
-      "writeDicomJson": "None|IgnoreOthers|Complete"
-    },   
-    ...
+    "messaging": {
+      "publisherSettings": {
+        "endpoint": "localhost",
+        "username": "username",
+        "password": "password",
+        "virtualHost": "monaideploy",
+        "exchange": "monaideploy"
+      },
+      "subscriberSettings": {
+        "endpoint": "localhost",
+        "username": "username",
+        "password": "password",
+        "virtualHost": "monaideploy",
+        "exchange": "monaideploy",
+        "exportRequestQueue": "export_tasks"
+      }
+    },
   }
 }
 ```
-
-Refer to the [DicomJsonOptions](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomJsonOptions) for complete description.
 
 ## Summary
 

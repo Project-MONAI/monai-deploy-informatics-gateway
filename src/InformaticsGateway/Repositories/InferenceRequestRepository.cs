@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -113,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             {
                 var inferenceRequest = _inferenceRequestRepository.FirstOrDefault(p => p.State == InferenceRequestState.Queued);
 
-                if (!(inferenceRequest is null))
+                if (inferenceRequest is not null)
                 {
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
                     inferenceRequest.State = InferenceRequestState.InProcess;
@@ -121,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
                     await Save(inferenceRequest);
                     return inferenceRequest;
                 }
-                await Task.Delay(250);
+                await Task.Delay(250, cancellationToken);
             }
 
             throw new OperationCanceledException("cancellation requsted");
@@ -151,7 +151,6 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
             var response = new InferenceStatusResponse();
             var item = Get(transactionId);
-            //TODO: get status from WM
             if (item is null)
             {
                 return null;

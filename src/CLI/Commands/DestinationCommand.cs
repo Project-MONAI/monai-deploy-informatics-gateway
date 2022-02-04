@@ -84,7 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(entity, nameof(entity));
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -103,8 +103,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                this.LogVerbose(verbose, host, $"Retrieving DICOM destinations...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Retrieving DICOM destinations...");
                 items = await client.DicomDestinations.List(cancellationToken);
             }
             catch (ConfigurationException ex)
@@ -148,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<DestinationCommand>(host);
@@ -161,8 +161,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                this.LogVerbose(verbose, host, $"Deleting DICOM destination {name}...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Deleting DICOM destination {name}...");
                 _ = await client.DicomDestinations.Delete(name, cancellationToken);
                 logger.Log(LogLevel.Information, $"DICOM destination '{name}' deleted.");
             }
@@ -184,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(entity, nameof(entity));
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<DestinationCommand>(host);
@@ -198,7 +198,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 var result = await client.DicomDestinations.Create(entity, cancellationToken);
 
                 logger.Log(LogLevel.Information, "New DICOM destination created:");

@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -33,17 +33,9 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
     public class DataExportConfiguration
     {
         /// <summary>
-        /// Gets or sets the maximum number of retries the export service shall perform on an
-        /// export task. Default 3 retries.
+        /// Gets or sets retry configuration for data export agents.
         /// </summary>
-        [JsonProperty(PropertyName = "maximumRetries")]
-        public int MaximumRetries { get; set; } = 3;
-
-        /// <summary>
-        /// Gets or sets the poll frequency for the export task service.
-        /// Defaults to 500ms.
-        /// </summary>
-        [JsonProperty(PropertyName = "pollFrequencyMs")]
-        public int PollFrequencyMs { get; set; } = 500;
+        [JsonProperty(PropertyName = "retries")]
+        public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
     }
 }
