@@ -66,10 +66,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     Timeout = table.Column<uint>(type: "INTEGER", nullable: false),
                     Key = table.Column<string>(type: "TEXT", nullable: false),
+                    DateTimeCreated = table.Column<DateTime>(type: "TEXT", nullable: false),
                     RetryCount = table.Column<int>(type: "INTEGER", nullable: false),
                     State = table.Column<int>(type: "INTEGER", nullable: false),
                     Files = table.Column<string>(type: "TEXT", nullable: true),
-                    CorrelationId = table.Column<string>(type: "TEXT", nullable: true)
+                    CorrelationId = table.Column<string>(type: "TEXT", nullable: true),
+                    UploadedFiles = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {

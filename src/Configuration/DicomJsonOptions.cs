@@ -11,7 +11,7 @@
 
 /*
  * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
+ * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,22 +26,23 @@
  * limitations under the License.
  */
 
-using FellowOakDicom;
-using Monai.Deploy.InformaticsGateway.Configuration;
-using System.Threading.Tasks;
-
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Configuration
 {
-    public interface IDicomToolkit
+    public enum DicomJsonOptions
     {
-        DicomFile Open(string path);
+        /// <summary>
+        /// Do not write DICOM to JSON
+        /// </summary>
+        None,
 
-        bool HasValidHeader(string path);
+        /// <summary>
+        /// Writes DICOM to JSON exception VR types of OB, OD, OF, OL, OV, OW, and UN.
+        /// </summary>
+        IgnoreOthers,
 
-        bool TryGetString(DicomFile file, DicomTag dicomTag, out string value);
-
-        Task Save(DicomFile file, string filename, string metadataFilename, DicomJsonOptions dicomJsonOptions);
-
-        DicomFile Load(byte[] fileContent);
+        /// <summary>
+        /// Writes DICOM to JSON
+        /// </summary>
+        Complete
     }
 }

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using System;
 using System.Linq;
@@ -23,21 +24,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal class ApplicationEntityHandler
     {
-        private MonaiApplicationEntity _configuration;
-        private IPayloadAssembler _payloadAssembler;
-        private IDicomToolkit _dicomToolkit;
-        private ILogger<ApplicationEntityHandler> _logger;
+        private readonly MonaiApplicationEntity _configuration;
+        private readonly IPayloadAssembler _payloadAssembler;
+        private readonly IDicomToolkit _dicomToolkit;
+        private readonly ILogger<ApplicationEntityHandler> _logger;
+        private readonly DicomJsonOptions _dicomJsonOptions;
 
         public ApplicationEntityHandler(
             MonaiApplicationEntity monaiApplicationEntity,
             IPayloadAssembler payloadAssembler,
             IDicomToolkit dicomToolkit,
-            ILogger<ApplicationEntityHandler> logger)
+            ILogger<ApplicationEntityHandler> logger,
+            DicomJsonOptions dicomJsonOptions)
         {
             _configuration = monaiApplicationEntity ?? throw new ArgumentNullException(nameof(monaiApplicationEntity));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _dicomJsonOptions = dicomJsonOptions;
         }
 
         internal async Task HandleInstance(DicomCStoreRequest request, DicomFileStorageInfo info)
@@ -53,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 info.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
-            await SaveDicomInstance(request, info.FilePath);
+            await SaveDicomInstance(request, info.FilePath, info.DicomJsonFilePath);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
             if (request.Dataset.TryGetSingleValue<string>(dicomTag, out string key))
@@ -62,10 +66,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        private async Task SaveDicomInstance(DicomCStoreRequest request, string filename)
+        private async Task SaveDicomInstance(DicomCStoreRequest request, string filename, string metadataFilename)
         {
             _logger.Log(LogLevel.Debug, $"Preparing to save {filename}");
-            await _dicomToolkit.Save(request.File, filename);
+            await _dicomToolkit.Save(request.File, filename, metadataFilename, _dicomJsonOptions);
             _logger.Log(LogLevel.Information, $"Instance saved {filename}");
         }
     }

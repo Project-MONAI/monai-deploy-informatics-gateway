@@ -11,6 +11,7 @@
 
 using Ardalis.GuardClauses;
 using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
@@ -71,10 +72,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         {
             get
             {
-                var path = FilePath.Substring(StorageRootPath.Length);
+                var path = FilePath[StorageRootPath.Length..];
                 if (FileSystem.Path.IsPathRooted(path))
                 {
-                    return path.Substring(1);
+                    return path[1..];
                 }
                 return path;
             }
@@ -117,6 +118,17 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or sets the content type of the file.
         /// </summary>
         public string ContentType { get; set; }
+
+        /// <summary>
+        /// Gets the file and any associated meta files.
+        /// </summary>
+        public virtual IEnumerable<string> FilePaths
+        {
+            get
+            {
+                yield return _filePath;
+            }
+        }
 
         public FileStorageInfo() { }
 
@@ -184,6 +196,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             }
 
             return filePath;
+        }
+
+        public virtual BlockStorageInfo ToBlockStorageInfo(string bucket)
+        {
+            return new BlockStorageInfo
+            {
+                Bucket = bucket,
+                Path = UploadPath,
+            };
         }
     }
 }
