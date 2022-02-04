@@ -21,6 +21,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -57,6 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IMessageBrokerPublisherService _messageBrokerPublisherService;
+        private readonly IInstanceCleanupQueue _instanceCleanupQueue;
         private ActionBlock<Payload> _uploadQueue;
         private ActionBlock<Payload> _publishQueue;
 
@@ -70,7 +72,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                                           ILogger<PayloadNotificationService> logger,
                                           IOptions<InformaticsGatewayConfiguration> options,
                                           IServiceScopeFactory serviceScopeFactory,
-                                          IMessageBrokerPublisherService messageBrokerPublisherService)
+                                          IMessageBrokerPublisherService messageBrokerPublisherService,
+                                          IInstanceCleanupQueue instanceCleanupQueue)
         {
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
@@ -79,6 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _messageBrokerPublisherService = messageBrokerPublisherService ?? throw new ArgumentNullException(nameof(messageBrokerPublisherService));
+            _instanceCleanupQueue = instanceCleanupQueue ?? throw new ArgumentNullException(nameof(instanceCleanupQueue));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -187,25 +191,33 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             for (var index = payload.Files.Count - 1; index >= 0; index--)
             {
-                var item = payload.Files[index];
-                await UploadPayloadFile(payload, item, cancellationToken);
-                payload.Files.Remove(item);
+                var file = payload.Files[index];
+
+                switch (file)
+                {
+                    case DicomFileStorageInfo dicom:
+                        await UploadPayloadFile(payload.Id, dicom.DicomJsonUploadPath, dicom.DicomJsonFilePath, dicom.Source, dicom.Workflows, dicom.ContentType, cancellationToken);
+                        break;
+                }
+                await UploadPayloadFile(payload.Id, file.UploadPath, file.FilePath, file.Source, file.Workflows, file.ContentType, cancellationToken);
+                payload.UploadedFiles.Add(file.ToBlockStorageInfo(_options.Value.Storage.StorageServiceBucketName));
+                payload.Files.Remove(file);
+                _instanceCleanupQueue.Queue(file);
             }
         }
 
-        private async Task UploadPayloadFile(Payload payload, FileStorageInfo fileStorageInfo, CancellationToken cancellationToken)
+        private async Task UploadPayloadFile(Guid payloadId, string uploadPath, string filePath, string source, string[] workflows, string contentType, CancellationToken cancellationToken)
         {
-            var uploadPath = Path.Combine(payload.Id.ToString(), fileStorageInfo.UploadPath);
-            _logger.Log(LogLevel.Debug, $"Uploading file {uploadPath} from payload {payload.Id} to storage service.");
-
-            var stream = _fileSystem.File.OpenRead(fileStorageInfo.FilePath);
+            uploadPath = Path.Combine(payloadId.ToString(), uploadPath);
+            _logger.Log(LogLevel.Debug, $"Uploading file {filePath} from payload {payloadId} to storage service.");
+            using var stream = _fileSystem.File.OpenRead(filePath);
             var metadata = new Dictionary<string, string>
                 {
-                    { FileMetadataKeys.Source, fileStorageInfo.Source },
-                    { FileMetadataKeys.Workflows, fileStorageInfo.Workflows.IsNullOrEmpty() ? string.Empty : string.Join(',', fileStorageInfo.Workflows) }
+                    { FileMetadataKeys.Source, source },
+                    { FileMetadataKeys.Workflows, workflows.IsNullOrEmpty() ? string.Empty : string.Join(',', workflows) }
                 };
 
-            await _storageService.PutObject(_options.Value.Storage.StorageServiceBucketName, uploadPath, stream, stream.Length, fileStorageInfo.ContentType, metadata, cancellationToken);
+            await _storageService.PutObject(_options.Value.Storage.StorageServiceBucketName, uploadPath, stream, stream.Length, contentType, metadata, cancellationToken);
         }
 
         private async Task PublishPayloadActionBlock(Payload payload, CancellationToken cancellationToken)
@@ -266,10 +278,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var message = new JsonMessage<WorkflowRequestMessage>(
                 new WorkflowRequestMessage
                 {
-                    Bucket = _options.Value.Storage.StorageServiceBucketName,
                     PayloadId = payload.Id,
                     Workflows = payload.Workflows,
                     FileCount = payload.Count,
+                    Timestamp = payload.DateTimeCreated
                 },
                 payload.CorrelationId);
 

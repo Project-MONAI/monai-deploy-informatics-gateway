@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -10,6 +10,9 @@
 // limitations under the License.
 
 using FellowOakDicom;
+using FellowOakDicom.Imaging;
+using FellowOakDicom.IO.Buffer;
+using FellowOakDicom.Serialization;
 using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.IO;
@@ -22,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
 {
     public class DicomToolkitTest
     {
-        private IFileSystem _fileSystem;
+        private readonly IFileSystem _fileSystem;
 
         public DicomToolkitTest()
         {
@@ -115,10 +118,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             Assert.Equal(expectedSop.UID, sopInstanceUId);
         }
 
-        [Fact(DisplayName = "Save - a valid DICOM file")]
-        public async Task Save_ValidFile()
+        [Fact(DisplayName = "Save - a valid DICOM file without json")]
+        public async Task Save_ValidFileWithoutJson()
         {
             var filename = Path.GetTempFileName();
+            var jsonFilename = $"{filename}.json";
             var dicomFile = new DicomFile();
             var expectedSop = DicomUIDGenerator.GenerateDerivedFromUUID();
             dicomFile.Dataset.Add(DicomTag.SOPInstanceUID, expectedSop);
@@ -127,13 +131,90 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             dicomFile.FileMetaInfo.MediaStorageSOPClassUID = DicomUIDGenerator.GenerateDerivedFromUUID();
 
             var dicomToolkit = new DicomToolkit(_fileSystem);
-            await dicomToolkit.Save(dicomFile, filename);
+            await dicomToolkit.Save(dicomFile, filename, jsonFilename, Configuration.DicomJsonOptions.None);
 
             var savedFile = dicomToolkit.Open(filename);
 
             Assert.NotNull(savedFile);
 
             Assert.Equal(expectedSop.UID, savedFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID));
+            Assert.False(_fileSystem.File.Exists(jsonFilename));
+        }
+
+        [Fact(DisplayName = "Save - a valid DICOM file without other value types")]
+        public async Task Save_ValidFileWithoutOtherValueTypes()
+        {
+            var filename = Path.GetTempFileName();
+            var jsonFilename = $"{filename}.json";
+            var dicomFile = new DicomFile();
+            var expectedSop = DicomUIDGenerator.GenerateDerivedFromUUID();
+            dicomFile.Dataset.Add(DicomTag.SOPInstanceUID, expectedSop);
+            dicomFile.FileMetaInfo.TransferSyntax = DicomTransferSyntax.ExplicitVRLittleEndian;
+            dicomFile.FileMetaInfo.MediaStorageSOPInstanceUID = DicomUIDGenerator.GenerateDerivedFromUUID();
+            dicomFile.FileMetaInfo.MediaStorageSOPClassUID = DicomUIDGenerator.GenerateDerivedFromUUID();
+
+            var dicomToolkit = new DicomToolkit(_fileSystem);
+            await dicomToolkit.Save(dicomFile, filename, jsonFilename, Configuration.DicomJsonOptions.IgnoreOthers);
+
+            var savedFile = dicomToolkit.Open(filename);
+
+            Assert.NotNull(savedFile);
+
+            Assert.Equal(expectedSop.UID, savedFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID));
+            Assert.True(_fileSystem.File.Exists(jsonFilename));
+
+            Assert.False(savedFile.Dataset.TryGetValues<byte[]>(DicomTag.PixelData, out _));
+        }
+
+        [Fact(DisplayName = "Save - a valid DICOM file with complete JSON")]
+        public async Task Save_ValidFileWithJson()
+        {
+            var filename = Path.GetTempFileName();
+            var jsonFilename = $"{filename}.json";
+            var dicomFile = new DicomFile();
+            var expectedSop = DicomUIDGenerator.GenerateDerivedFromUUID();
+            dicomFile.Dataset.Add(DicomTag.SOPInstanceUID, expectedSop);
+            dicomFile.Dataset.AddOrUpdate(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
+            dicomFile.Dataset.AddOrUpdate(DicomTag.Rows, (ushort)1);
+            dicomFile.Dataset.AddOrUpdate(DicomTag.Columns, (ushort)1);
+            dicomFile.Dataset.AddOrUpdate(DicomTag.BitsAllocated, (ushort)8);
+            dicomFile.FileMetaInfo.TransferSyntax = DicomTransferSyntax.ExplicitVRLittleEndian;
+            dicomFile.FileMetaInfo.MediaStorageSOPInstanceUID = DicomUIDGenerator.GenerateDerivedFromUUID();
+            dicomFile.FileMetaInfo.MediaStorageSOPClassUID = DicomUIDGenerator.GenerateDerivedFromUUID();
+
+            var random = new Random();
+            var pixels = new byte[3];
+            random.NextBytes(pixels);
+            var buffer = new MemoryByteBuffer(pixels);
+
+            var pixelData = DicomPixelData.Create(dicomFile.Dataset, true);
+            pixelData.BitsStored = 8;
+            pixelData.SamplesPerPixel = 3;
+            pixelData.HighBit = 7;
+            pixelData.PhotometricInterpretation = PhotometricInterpretation.Rgb;
+            pixelData.PixelRepresentation = 0;
+            pixelData.PlanarConfiguration = 0;
+            pixelData.Height = (ushort)1;
+            pixelData.Width = (ushort)1;
+            pixelData.AddFrame(buffer);
+
+            var dicomToolkit = new DicomToolkit(_fileSystem);
+            await dicomToolkit.Save(dicomFile, filename, jsonFilename, Configuration.DicomJsonOptions.Complete);
+
+            var savedFile = dicomToolkit.Open(filename);
+
+            Assert.NotNull(savedFile);
+
+            Assert.Equal(expectedSop.UID, savedFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID));
+            Assert.True(_fileSystem.File.Exists(jsonFilename));
+
+            var jsonToDicom = DicomJson.ConvertJsonToDicom(_fileSystem.File.ReadAllText(jsonFilename));
+            Assert.Equal(expectedSop.UID, jsonToDicom.GetSingleValue<string>(DicomTag.SOPInstanceUID));
+
+            var pixelDataFromJson = DicomPixelData.Create(jsonToDicom);
+            var pixelsFromJson = pixelDataFromJson.GetFrame(0).Data;
+
+            Assert.Equal(pixels, pixelsFromJson);
         }
 
         [Fact(DisplayName = "Load - throws when data is invalid")]

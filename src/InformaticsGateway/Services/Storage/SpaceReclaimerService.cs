@@ -115,11 +115,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                     })
                 .Execute(() =>
                 {
-                    _logger.Log(LogLevel.Debug, "Deleting file {0}", file);
-                    if (_fileSystem.File.Exists(file.FilePath))
+
+                    foreach (var filePath in file.FilePaths)
                     {
-                        _fileSystem.File.Delete(file.FilePath);
-                        _logger.Log(LogLevel.Debug, "File deleted {0}", file);
+                        _logger.Log(LogLevel.Debug, $"Deleting file {filePath}");
+                        if (_fileSystem.File.Exists(filePath))
+                        {
+                            _fileSystem.File.Delete(filePath);
+                            _logger.Log(LogLevel.Debug, $"File deleted {filePath}");
+                        }
                     }
 
                     try
@@ -147,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 try
                 {
-                    _logger.Log(LogLevel.Debug, "Deleting directory {0}", dirPath);
+                    _logger.Log(LogLevel.Debug, $"Deleting directory {dirPath}");
                     _fileSystem.Directory.Delete(dirPath);
                     RecursivelyRemoveDirectoriesIfEmpty(_fileSystem.Directory.GetParent(dirPath).FullName);
                 }

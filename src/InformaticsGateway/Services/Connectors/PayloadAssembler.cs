@@ -76,10 +76,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.Log(LogLevel.Information, $"Payload {payload.Id} restored from database.");
                     restored++;
                 }
-                else
-                {
-                    _logger.Log(LogLevel.Information, $"Failed to restore payload {payload.Id} from database.");
-                }
             }
             _logger.Log(LogLevel.Information, $"{restored} paylaods restored from database.");
         }

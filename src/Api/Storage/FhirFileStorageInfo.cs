@@ -20,7 +20,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     /// </summary>
     public sealed record FhirFileStorageInfo : FileStorageInfo
     {
-        const string DirectoryPath = "ehr";
+        public static readonly string JsonFilExtension = ".json";
+        public static readonly string XmlFilExtension = ".xml";
+        private static readonly string DirectoryPath = "ehr";
 
         public string ResourceType { get; set; }
 
@@ -31,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                                     string messageId,
                                     FhirStorageFormat fhirFileFormat,
                                     string source)
-            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? ".json" : ".xml", source, new FileSystem()) { }
+            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFilExtension, source, new FileSystem()) { }
 
         public FhirFileStorageInfo(string correlationId,
                                     string storageRootPath,
@@ -39,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                                     FhirStorageFormat fhirFileFormat,
                                     string source,
                                     IFileSystem fileSystem)
-            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? ".json" : ".xml", source, fileSystem)
+            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFilExtension, source, fileSystem)
         {
         }
 

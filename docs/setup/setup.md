@@ -136,7 +136,34 @@ Locate the storage section of the configuration in `appsettings.json`:
   }
 }
 ```
+### DICOM JSON Model
 
+By default, Informatics Gateway stores all received and retrieved DICOM instances into JSON in additional to storing
+the original in DICOM part-10 format.  The JSON stored is as specified by the [DICOM JSON model](https://dicom.nema.org/dicom/2013/output/chtml/part18/sect_F.2.html)
+without the following VR types:
+
+- OB
+- OD
+- OF
+- OL
+- OV
+- OW
+- UN
+
+This behavior may be changed in the configuration file:
+```json
+{
+
+  "InformaticsGateway": {
+    "dicom": {
+      "writeDicomJson": "None|IgnoreOthers|Complete"
+    },   
+    ...
+  }
+}
+```
+
+Refer to the [DicomJsonOptions](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomJsonOptions) for complete description.
 
 ## Summary
 
