@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>MONAI Deploy Informatics Gateway v0.0.0 | MONAI Deploy Informatics Gateway v0.0.0 </title>
+    <title>MONAI Deploy Informatics Gateway v0.1.0.112 | MONAI Deploy Informatics Gateway v0.1.0.112 </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="MONAI Deploy Informatics Gateway v0.0.0 | MONAI Deploy Informatics Gateway v0.0.0 ">
+    <meta name="title" content="MONAI Deploy Informatics Gateway v0.1.0.112 | MONAI Deploy Informatics Gateway v0.1.0.112 ">
     <meta name="generator" content="docfx 2.56.7.0">
     
     <link rel="shortcut icon" href="images/favicon.ico">
@@ -62,11 +62,13 @@
         <div class="article row grid">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="monai-deploy-informatics-gateway-v000">MONAI Deploy Informatics Gateway <small>v0.0.0</small></h1>
+<h1 id="monai-deploy-informatics-gateway-v010112">MONAI Deploy Informatics Gateway <small>v0.1.0.112</small></h1>
 
 <p><img src="images/MONAI-logo_color.svg" alt="NVIDIA"></p>
 <h2 id="introduction">Introduction</h2>
-<p>INTRO</p>
+<p>MONAI Deploy Informatics Gateway (MIG), handles the first and last step in a clinical data pipeline, the Input and Output (I/O).</p>
+<p>It uses standard protocols like DICOM and FHIR, stores studies and resources from the medical record system as payloads, and notifies the rest of the MONAI Deploy system, specifically the MONAI Deploy Workflow Manager, that data is ready to be processed.</p>
+<p>After inference is done, it receives the results and send them to the proper consumers, usually PACS or viewers for visualization, VNAs for storage, and EHRs (Electronic Healthcare Records).</p>
 <h2 id="requirements">Requirements</h2>
 <h3 id="development-requirements">Development Requirements</h3>
 <ul>
