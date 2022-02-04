@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,13 +27,19 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
         /// <param name="topic">Name of the topic to subscribe to</param>
         /// <param name="queue">Name of the queue to consume</param>
         /// <param name="messageReceivedCallback">Action to be performed when message is received</param>
-        void Subscribe(string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback);
+        /// <param name="prefetchCount">Number of unacknowledged messages to receive at once.  Defaults to 0.</param>
+        void Subscribe(string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback, ushort prefetchCount = 0);
 
         /// <summary>
         /// Acknowledge receiving of a message with the given token.
         /// </summary>
-        /// <param name="messageId">Orignial message ID</param>
-        /// <param name="acknowledgeToken">Token associated with the message</param>
-        void Acknowledge(string messageId, string acknowledgeToken);
+        /// <param name="message">Message to be acknowledged.</param>
+        void Acknowledge(MessageBase message);
+
+        /// <summary>
+        /// Rejects a messags.
+        /// </summary>
+        /// <param name="message">Message to be rejected.</param>
+        void Reject(MessageBase message);
     }
 }

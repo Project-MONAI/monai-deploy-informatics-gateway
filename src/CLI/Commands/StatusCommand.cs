@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
 
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
@@ -50,8 +50,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                this.LogVerbose(verbose, host, $"Retrieving service status...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Retrieving service status...");
                 response = await client.Health.Status(cancellationToken);
             }
             catch (ConfigurationException ex)

@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Repositories;
@@ -23,6 +24,11 @@ namespace Monai.Deploy.InformaticsGateway.Common
     {
         public static async Task UpdatePayload(this Payload payload, IEnumerable<TimeSpan> retryDelays, ILogger logger, IInformaticsGatewayRepository<Payload> repository)
         {
+            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.NullOrEmpty(retryDelays, nameof(retryDelays));
+            Guard.Against.Null(logger, nameof(logger));
+            Guard.Against.Null(repository, nameof(repository));
+
             await Policy
                .Handle<Exception>()
                .WaitAndRetryAsync(
@@ -41,6 +47,10 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         public static async Task AddPayaloadToDatabase(this Payload payload, IEnumerable<TimeSpan> retryDelays, ILogger logger, IInformaticsGatewayRepository<Payload> repository)
         {
+            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.NullOrEmpty(retryDelays, nameof(retryDelays));
+            Guard.Against.Null(logger, nameof(logger));
+            Guard.Against.Null(repository, nameof(repository));
             await Policy
                .Handle<Exception>()
                .WaitAndRetryAsync(
@@ -60,6 +70,11 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         public static async Task DeletePayload(this Payload payload, IEnumerable<TimeSpan> retryDelays, ILogger logger, IInformaticsGatewayRepository<Payload> repository)
         {
+            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.NullOrEmpty(retryDelays, nameof(retryDelays));
+            Guard.Against.Null(logger, nameof(logger));
+            Guard.Against.Null(repository, nameof(repository));
+
             await Policy
                .Handle<Exception>()
                .WaitAndRetryAsync(

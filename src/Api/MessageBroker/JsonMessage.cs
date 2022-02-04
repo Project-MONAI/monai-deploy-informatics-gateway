@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -25,13 +25,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
         public T Body { get; init; }
 
         public JsonMessage(T body,
-                       string correlationId)
+                       string correlationId,
+                       string deliveryTag)
             : this(body,
                    body.GetType().Name,
                    Guid.NewGuid().ToString(),
                    Message.InformaticsGatewayApplicationId,
                    correlationId,
-                   DateTime.UtcNow)
+                   DateTime.UtcNow,
+                   deliveryTag)
         {
         }
 
@@ -40,8 +42,33 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
                        string messageId,
                        string applicationId,
                        string correlationId,
-                       DateTime creationDateTime)
+                       DateTime creationDateTime,
+                       string deliveryTag)
         {
+            if (body is null)
+            {
+                throw new ArgumentException($"'{nameof(body)}' cannot be null or empty.", nameof(body));
+            }
+            if (string.IsNullOrEmpty(bodyDescription))
+            {
+                throw new ArgumentException($"'{nameof(bodyDescription)}' cannot be null or empty.", nameof(bodyDescription));
+            }
+
+            if (string.IsNullOrWhiteSpace(messageId))
+            {
+                throw new ArgumentException($"'{nameof(messageId)}' cannot be null or empty.", nameof(messageId));
+            }
+
+            if (string.IsNullOrWhiteSpace(applicationId))
+            {
+                throw new ArgumentException($"'{nameof(applicationId)}' cannot be null or empty.", nameof(applicationId));
+            }
+
+            if (string.IsNullOrWhiteSpace(correlationId))
+            {
+                throw new ArgumentException($"'{nameof(correlationId)}' cannot be null or empty.", nameof(correlationId));
+            }
+
             Body = body;
             MessageDescription = bodyDescription;
             MessageId = messageId;
@@ -49,6 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
             ContentType = JsonApplicationType;
             CorrelationId = correlationId;
             CreationDateTime = creationDateTime;
+            DeliveryTag = deliveryTag;
         }
 
         /// <summary>
@@ -66,7 +94,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
                 ApplicationId,
                 ContentType,
                 CorrelationId,
-                CreationDateTime);
+                CreationDateTime,
+                DeliveryTag);
         }
     }
 }

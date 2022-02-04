@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             Guard.Against.Null(file, nameof(file));
 
             _workItems.Add(file);
-            _logger.Log(LogLevel.Debug, "File added to cleanup queue {0}. Queue size: {1}", file, _workItems.Count);
+            _logger.Log(LogLevel.Debug, $"File added to cleanup queue {file}. Queue size: {_workItems.Count}");
         }
 
         public FileStorageInfo Dequeue(CancellationToken cancellationToken)

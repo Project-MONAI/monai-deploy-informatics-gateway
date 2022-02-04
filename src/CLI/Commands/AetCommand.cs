@@ -96,7 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -115,8 +115,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                this.LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
                 items = await client.MonaiScpAeTitle.List(cancellationToken);
             }
             catch (ConfigurationException ex)
@@ -159,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<AetCommand>(host);
@@ -172,8 +172,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                this.LogVerbose(verbose, host, $"Deleting MONAI SCP AE Title {name}...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Deleting MONAI SCP AE Title {name}...");
                 _ = await client.MonaiScpAeTitle.Delete(name, cancellationToken);
                 logger.Log(LogLevel.Information, $"MONAI SCP AE Title '{name}' deleted.");
             }
@@ -195,7 +195,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(entity, nameof(entity));
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<AetCommand>(host);
@@ -209,7 +209,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 var result = await client.MonaiScpAeTitle.Create(entity, cancellationToken);
 
                 logger.Log(LogLevel.Information, "New MONAI Deploy SCP Application Entity created:");

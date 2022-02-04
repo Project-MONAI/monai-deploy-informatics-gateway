@@ -1,4 +1,4 @@
-﻿// Copyright 2021-2022 MONAI Consortium
+// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
-    public class MessageBrokerRoutingKeysConfiguration
+    public class MessageBrokerConfigurationKeys
     {
         /// <summary>
         /// Gets or sets the topic for publishing workflow requests.
@@ -33,7 +33,14 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets the topic for publishing workflow requests.
         /// Defaults to `md_workflow_request`.
         /// </summary>
-        [JsonProperty(PropertyName = "exportRequest")]
-        public string ExportRequest { get; set; } = "md.export.request";
+        [JsonProperty(PropertyName = "exportRequestPrefix")]
+        public string ExportRequestPrefix { get; set; } = "md.export.request";
+
+        /// <summary>
+        /// Gets or sets the name of the request queue.
+        /// Defaults to `export_tasks`
+        /// </summary>
+        [JsonProperty(PropertyName = "exportRequestQueue")]
+        public string ExportRequestQueue { get; set; } = "export_tasks";
     }
 }

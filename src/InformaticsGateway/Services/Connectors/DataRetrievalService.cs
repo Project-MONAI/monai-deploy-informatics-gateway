@@ -1,4 +1,4 @@
-// Copyright 2022 MONAI Consortium
+// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -545,7 +545,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 .Execute(() =>
                 {
                     _logger.Log(LogLevel.Information, "Saving DICOM instance {path}.", instanceStorageInfo.FilePath);
-                    
                     _dicomToolkit.Save(file, instanceStorageInfo.FilePath, instanceStorageInfo.DicomJsonFilePath, _options.Value.Dicom.WriteDicomJson);
                     _logger.Log(LogLevel.Debug, "Instance saved successfully.");
                 });
