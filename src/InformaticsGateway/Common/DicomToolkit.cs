@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -28,8 +28,11 @@
 
 using Ardalis.GuardClauses;
 using FellowOakDicom;
+using FellowOakDicom.Serialization;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using System.IO;
 using System.IO.Abstractions;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Common
@@ -71,15 +74,25 @@ namespace Monai.Deploy.InformaticsGateway.Common
             return file.Dataset.TryGetString(dicomTag, out value);
         }
 
-        public async Task Save(DicomFile file, string path)
+
+        public async Task Save(DicomFile file, string filename, string metadataFilename, DicomJsonOptions dicomJsonOptions)
         {
             Guard.Against.Null(file, nameof(file));
-            Guard.Against.NullOrWhiteSpace(path, nameof(path));
+            Guard.Against.NullOrWhiteSpace(filename, nameof(filename));
 
-            var directory = _fileSystem.Path.GetDirectoryName(path);
+            var directory = _fileSystem.Path.GetDirectoryName(filename);
             _fileSystem.Directory.CreateDirectoryIfNotExists(directory);
-            using var stream = _fileSystem.File.Create(path);
+
+            using var stream = _fileSystem.File.Create(filename);
             await file.SaveAsync(stream);
+
+            if (dicomJsonOptions != DicomJsonOptions.None)
+            {
+                Guard.Against.NullOrWhiteSpace(metadataFilename, nameof(metadataFilename));
+
+                var json = ConvertDicomToJson(file, dicomJsonOptions == DicomJsonOptions.Complete);
+                await _fileSystem.File.AppendAllTextAsync(metadataFilename, json);
+            }
         }
 
         public DicomFile Load(byte[] fileContent)
@@ -93,6 +106,14 @@ namespace Monai.Deploy.InformaticsGateway.Common
                 throw new DicomDataException("Invalid DICOM content");
             }
             return dicomFile;
+        }
+
+        private static string ConvertDicomToJson(DicomFile file, bool writeOtherValueTypes)
+        {
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: true, writeOtherValueTypes: writeOtherValueTypes));
+            options.WriteIndented = false;
+            return JsonSerializer.Serialize(file.Dataset, options);
         }
     }
 }

@@ -48,6 +48,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public string Key { get; init; }
 
+        public DateTime DateTimeCreated { get; private set; }
+
         public int RetryCount { get; set; }
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
@@ -67,6 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         }
 
         public string CorrelationId { get; init; }
+        public IList<BlockStorageInfo> UploadedFiles { get; set; }
 
         public Payload(string key, string correlationId, uint timeout)
         {
@@ -80,6 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             RetryCount = 0;
             State = PayloadState.Created;
             Files = new List<FileStorageInfo>();
+            UploadedFiles = new List<BlockStorageInfo>();
         }
 
         public void Add(FileStorageInfo value)
@@ -89,6 +93,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Files.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
+
+            if(Files.Count == 1)
+            {
+                DateTimeCreated = value.Received;
+            }
         }
 
         public TimeSpan ElapsedTime()

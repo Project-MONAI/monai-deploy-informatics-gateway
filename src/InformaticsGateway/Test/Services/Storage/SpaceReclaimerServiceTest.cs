@@ -29,12 +29,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 {
     public class SpaceReclaimerServiceTest
     {
-        private Mock<ILogger<SpaceReclaimerService>> _logger;
-        private Mock<IInstanceCleanupQueue> _queue;
-        private CancellationTokenSource _cancellationTokenSource;
-        private IFileSystem _fileSystem;
-        private IOptions<InformaticsGatewayConfiguration> _configuration;
-        private SpaceReclaimerService _service;
+        private readonly Mock<ILogger<SpaceReclaimerService>> _logger;
+        private readonly Mock<IInstanceCleanupQueue> _queue;
+        private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly IFileSystem _fileSystem;
+        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
+        private readonly SpaceReclaimerService _service;
 
         public SpaceReclaimerServiceTest()
         {
@@ -54,14 +54,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _queue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                 .Returns(default(FileStorageInfo));
 
-            var cancellationTokenSource = new CancellationTokenSource();
-            cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Cancel();
             var task = Task.Run(async () =>
             {
                 await Task.Delay(150);
-                await _service.StopAsync(cancellationTokenSource.Token);
+                await _service.StopAsync(_cancellationTokenSource.Token);
             });
-            await _service.StartAsync(cancellationTokenSource.Token);
+            await _service.StartAsync(_cancellationTokenSource.Token);
             task.Wait();
 
             _queue.Verify(p => p.Dequeue(It.IsAny<CancellationToken>()), Times.Never());
@@ -83,7 +82,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
                 _fileSystem.File.Create(file.FilePath);
             }
 
-            var cancellationTokenSource = new CancellationTokenSource();
             var stack = new Stack<FileStorageInfo>(files);
             _queue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                 .Returns(() =>
@@ -91,12 +89,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
                     if (stack.TryPop(out FileStorageInfo result))
                         return result;
 
-                    cancellationTokenSource.Cancel();
+                    _cancellationTokenSource.Cancel();
                     return null;
                 });
 
-            await _service.StartAsync(cancellationTokenSource.Token);
-            while (!cancellationTokenSource.IsCancellationRequested)
+            await _service.StartAsync(_cancellationTokenSource.Token);
+            while (!_cancellationTokenSource.IsCancellationRequested)
                 Thread.Sleep(100);
 
             _queue.Verify(p => p.Dequeue(It.IsAny<CancellationToken>()), Times.AtLeast(3));
@@ -129,7 +127,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
                 _fileSystem.File.Create(file.FilePath);
             }
 
-            var cancellationTokenSource = new CancellationTokenSource();
             var stack = new Stack<FileStorageInfo>(files.Where(p => !p.FilePath.EndsWith("file3")));
             _queue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                 .Returns(() =>
@@ -137,12 +134,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
                     if (stack.TryPop(out FileStorageInfo result))
                         return result;
 
-                    cancellationTokenSource.Cancel();
+                    _cancellationTokenSource.Cancel();
                     return null;
                 });
 
-            await _service.StartAsync(cancellationTokenSource.Token);
-            while (!cancellationTokenSource.IsCancellationRequested)
+            await _service.StartAsync(_cancellationTokenSource.Token);
+            while (!_cancellationTokenSource.IsCancellationRequested)
                 Thread.Sleep(100);
 
             _queue.Verify(p => p.Dequeue(It.IsAny<CancellationToken>()), Times.AtLeast(7));

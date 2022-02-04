@@ -63,20 +63,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
 
         public Message(byte[] body,
                        string bodyDescription,
-                       string contentType,
-                       string correlationId)
-            : this(body,
-                   bodyDescription,
-                   Guid.NewGuid().ToString(),
-                   Message.InformaticsGatewayApplicationId,
-                   contentType,
-                   correlationId,
-                   DateTime.UtcNow)
-        {
-        }
-
-        public Message(byte[] body,
-                       string bodyDescription,
                        string messageId,
                        string applicationId,
                        string contentType,

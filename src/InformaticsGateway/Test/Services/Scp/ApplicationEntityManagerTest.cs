@@ -38,24 +38,23 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 {
     public class ApplicationEntityManagerTest
     {
-        private Mock<IHostApplicationLifetime> _hostApplicationLifetime;
-        private Mock<IServiceScopeFactory> _serviceScopeFactory;
-        private Mock<IServiceScope> _serviceScope;
+        private readonly Mock<IHostApplicationLifetime> _hostApplicationLifetime;
+        private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
+        private readonly Mock<IServiceScope> _serviceScope;
+        private readonly Mock<ILoggerFactory> _loggerFactory;
+        private readonly Mock<ILogger<ApplicationEntityManager>> _logger;
+        private readonly Mock<ILogger<MonaiAeChangedNotificationService>> _loggerNotificationService;
+        private readonly Mock<IPayloadAssembler> _fileStoredNotificationQueue;
 
-        private Mock<ILoggerFactory> _loggerFactory;
-        private Mock<ILogger<ApplicationEntityManager>> _logger;
-        private Mock<ILogger<MonaiAeChangedNotificationService>> _loggerNotificationService;
-        private Mock<IPayloadAssembler> _fileStoredNotificationQueue;
+        private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
+        private readonly Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>> _applicationEntityRepository;
+        private readonly Mock<IInformaticsGatewayRepository<SourceApplicationEntity>> _sourceEntityRepository;
+        private readonly IOptions<InformaticsGatewayConfiguration> _connfiguration;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
+        private readonly IFileSystem _fileSystem;
+        private readonly IDicomToolkit _dicomToolkit;
 
-        private IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
-        private Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>> _applicationEntityRepository;
-        private Mock<IInformaticsGatewayRepository<SourceApplicationEntity>> _sourceEntityRepository;
-        private IOptions<InformaticsGatewayConfiguration> _connfiguration;
-        private Mock<IStorageInfoProvider> _storageInfoProvider;
-        private IFileSystem _fileSystem;
-        private IDicomToolkit _dicomToolkit;
-
-        private IServiceProvider _serviceProvider;
+        private readonly IServiceProvider _serviceProvider;
 
         public ApplicationEntityManagerTest()
         {
@@ -205,7 +204,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
 
             var fileSystem = _fileSystem as MockFileSystem;
-            Assert.Single(fileSystem.AllFiles);
+            Assert.Single(fileSystem.AllFiles.Where(p => p.EndsWith(DicomFileStorageInfo.FilExtension)));
+            Assert.Single(fileSystem.AllFiles.Where(p => p.EndsWith(DicomFileStorageInfo.DicomJsonFileExtension)));
             var stream = fileSystem.File.OpenRead(fileSystem.AllFiles.First());
             var dicom = DicomFile.Open(stream, FileReadOption.ReadAll);
 
@@ -412,14 +412,16 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.False(manager.IsAeTitleConfigured("AE1"));
         }
 
-        private DicomCStoreRequest GenerateRequest()
+        private static DicomCStoreRequest GenerateRequest()
         {
-            var dataset = new DicomDataset();
-            dataset.Add(DicomTag.PatientID, "PID");
-            dataset.Add(DicomTag.StudyInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID());
-            dataset.Add(DicomTag.SeriesInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID());
-            dataset.Add(DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID());
-            dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage.UID);
+            var dataset = new DicomDataset
+            {
+                { DicomTag.PatientID, "PID" },
+                { DicomTag.StudyInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SeriesInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage.UID }
+            };
             var file = new DicomFile(dataset);
             return new DicomCStoreRequest(file);
         }

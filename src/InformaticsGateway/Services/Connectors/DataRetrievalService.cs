@@ -31,10 +31,12 @@ using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Repositories;
@@ -62,6 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IDicomToolkit _dicomToolkit;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IPayloadAssembler _payloadAssembler;
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         public ServiceStatus Status { get; set; }
 
@@ -75,7 +78,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             IDicomToolkit dicomToolkit,
             IServiceScopeFactory serviceScopeFactory,
             IPayloadAssembler payloadAssembler,
-            IStorageInfoProvider storageInfoProvider)
+            IStorageInfoProvider storageInfoProvider,
+            IOptions<InformaticsGatewayConfiguration> options)
         {
             _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
@@ -85,6 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
             _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -118,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 if (!_storageInfoProvider.HasSpaceAvailableToRetrieve)
                 {
                     _logger.Log(LogLevel.Warning, $"Data retrieval paused due to insufficient storage space.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}.");
-                    await Task.Delay(500);
+                    await Task.Delay(500, cancellationToken);
                     continue;
                 }
 
@@ -339,7 +344,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var dicomWebClient = new DicomWebClient(_httpClientFactory.CreateClient("dicomweb"), _loggerFactory.CreateLogger<DicomWebClient>());
             dicomWebClient.ConfigureServiceUris(new Uri(source.ConnectionDetails.Uri, UriKind.Absolute));
 
-            if (!(authenticationHeaderValue is null))
+            if (authenticationHeaderValue is not null)
             {
                 dicomWebClient.ConfigureAuthentication(authenticationHeaderValue);
             }
@@ -381,8 +386,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.NullOrWhiteSpace(queryValue, nameof(queryValue));
 
             _logger.Log(LogLevel.Information, $"Performing QIDO with {dicomTag}={queryValue}.");
-            var queryParams = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            queryParams.Add(dicomTag, queryValue);
+            var queryParams = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { dicomTag, queryValue }
+            };
 
             var studies = new List<RequestedStudy>();
             await foreach (var result in dicomWebClient.Qido.SearchForStudies<DicomDataset>(queryParams))
@@ -513,14 +520,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private void PopulateHeaders(DicomFileStorageInfo instance, DicomFile dicomFile)
+        private static void PopulateHeaders(DicomFileStorageInfo instance, DicomFile dicomFile)
         {
             instance.StudyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
             instance.SeriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
             instance.SopInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
         }
 
-        private void SaveFile(DicomFile file, FileStorageInfo instanceStorageInfo)
+        private void SaveFile(DicomFile file, DicomFileStorageInfo instanceStorageInfo)
         {
             Guard.Against.Null(file, nameof(file));
             Guard.Against.Null(instanceStorageInfo, nameof(instanceStorageInfo));
@@ -538,7 +545,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 .Execute(() =>
                 {
                     _logger.Log(LogLevel.Information, "Saving DICOM instance {path}.", instanceStorageInfo.FilePath);
-                    _dicomToolkit.Save(file, instanceStorageInfo.FilePath);
+                    
+                    _dicomToolkit.Save(file, instanceStorageInfo.FilePath, instanceStorageInfo.DicomJsonFilePath, _options.Value.Dicom.WriteDicomJson);
                     _logger.Log(LogLevel.Debug, "Instance saved successfully.");
                 });
         }

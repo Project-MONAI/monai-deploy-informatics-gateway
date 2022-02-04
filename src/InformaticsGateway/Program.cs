@@ -50,11 +50,9 @@ namespace Monai.Deploy.InformaticsGateway
         {
             Guard.Against.Null(host, nameof(host));
 
-            using (var serviceScope = host.Services.CreateScope())
-            {
-                var context = serviceScope.ServiceProvider.GetRequiredService<InformaticsGatewayContext>();
-                context.Database.Migrate();
-            }
+            using var serviceScope = host.Services.CreateScope();
+            var context = serviceScope.ServiceProvider.GetRequiredService<InformaticsGatewayContext>();
+            context.Database.Migrate();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
