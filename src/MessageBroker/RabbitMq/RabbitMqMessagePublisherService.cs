@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -88,8 +88,10 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             using var channel = _connection.CreateModel();
             channel.ExchangeDeclare(_exchange, ExchangeType.Topic);
 
-            var propertiesDictionary = new Dictionary<string, object>();
-            propertiesDictionary.Add("CreationDateTime", message.CreationDateTime.ToString("o"));
+            var propertiesDictionary = new Dictionary<string, object>
+            {
+                { "CreationDateTime", message.CreationDateTime.ToString("o") }
+            };
 
             var properties = channel.CreateBasicProperties();
             properties.Persistent = true;

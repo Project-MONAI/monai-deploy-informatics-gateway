@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -37,16 +37,16 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                     host =>
                     {
                         _ = host.ConfigureLogging((context, logging) =>
-                          {
-                              var invocationContext = context.GetInvocationContext();
-                              var verboseEnabled = invocationContext.ParseResult.ValueForOption(verboseOption);
-                              logging.ClearProviders();
+                        {
+                            var invocationContext = context.GetInvocationContext();
+                            var verboseEnabled = invocationContext.ParseResult.ValueForOption(verboseOption);
+                            logging.ClearProviders();
 
-                              _ = logging.AddInformaticsGatewayConsole(options => options.MinimumLogLevel = verboseEnabled ? LogLevel.Trace : LogLevel.Information)
-                                  .AddFilter("Microsoft", LogLevel.None)
-                                  .AddFilter("System", LogLevel.None)
-                                  .AddFilter("*", LogLevel.Trace);
-                          })
+                            _ = logging.AddInformaticsGatewayConsole(options => options.MinimumLogLevel = verboseEnabled ? LogLevel.Trace : LogLevel.Information)
+                                .AddFilter("Microsoft", LogLevel.None)
+                                .AddFilter("System", LogLevel.None)
+                                .AddFilter("*", LogLevel.Trace);
+                        })
                         .ConfigureServices(services =>
                         {
                             services.AddScoped<IFileSystem, FileSystem>();

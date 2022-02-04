@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -28,7 +28,6 @@
 
 using Ardalis.GuardClauses;
 using FellowOakDicom;
-using FellowOakDicom.Serialization;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using System.IO;
 using System.IO.Abstractions;
@@ -74,7 +73,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
             return file.Dataset.TryGetString(dicomTag, out value);
         }
 
-
         public async Task Save(DicomFile file, string filename, string metadataFilename, DicomJsonOptions dicomJsonOptions)
         {
             Guard.Against.Null(file, nameof(file));
@@ -110,6 +108,8 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         private static string ConvertDicomToJson(DicomFile file, bool writeOtherValueTypes)
         {
+            Guard.Against.Null(file, nameof(file));
+
             var options = new JsonSerializerOptions();
             options.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: true, writeOtherValueTypes: writeOtherValueTypes));
             options.WriteIndented = false;

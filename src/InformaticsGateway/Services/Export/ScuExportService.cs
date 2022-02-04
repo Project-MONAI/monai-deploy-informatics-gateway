@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -37,9 +37,8 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Newtonsoft.Json;
+using Polly;
 using System;
-using System.IO;
 using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,11 +49,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     {
         private readonly ILogger<ScuExportService> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly ScuConfiguration _scuConfiguration;
+        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IDicomToolkit _dicomToolkit;
 
-        protected override string Agent { get; }
         protected override int Concurrentcy { get; }
+        public override string RoutingKey { get; }
         public override string ServiceName => "DICOM Export Service";
 
         public ScuExportService(
@@ -65,92 +64,105 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             IDicomToolkit dicomToolkit)
             : base(logger, configuration, serviceScopeFactory, storageInfoProvider)
         {
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
-            if (dicomToolkit is null)
-            {
-                throw new ArgumentNullException(nameof(dicomToolkit));
-            }
-
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            _scuConfiguration = configuration.Value.Dicom.Scu;
-            _dicomToolkit = dicomToolkit;
-            Agent = _scuConfiguration.AeTitle;
-            Concurrentcy = _scuConfiguration.MaximumNumberOfAssociations;
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
+
+            RoutingKey = $"{configuration.Value.Messaging.Topics.ExportRequestPrefix}.{_configuration.Value.Dicom.Scu.AgentName}";
+            Concurrentcy = _configuration.Value.Dicom.Scu.MaximumNumberOfAssociations;
         }
 
-        private DestinationApplicationEntity LookupDestination(OutputJob outputJob)
+        protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(outputJob, nameof(outputJob));
-
-            if (string.IsNullOrEmpty(outputJob.Parameters))
-                throw new ConfigurationException("Task Parameter is missing destination");
-
-            var dest = JsonConvert.DeserializeObject<string>(outputJob.Parameters);
-
-            using var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
-            var destination = repository.FirstOrDefault(p => p.Name.Equals(dest, StringComparison.InvariantCultureIgnoreCase));
-
-            if (destination is null)
-            {
-                throw new ConfigurationException($"Specified destination '{dest}' does not exist");
-            }
-
-            return destination;
-        }
-
-        protected override async Task<OutputJob> ExportDataBlockCallback(OutputJob outputJob, CancellationToken cancellationToken)
-        {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", outputJob.ExportTaskId }, { "CorrelationId", outputJob.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
 
             var manualResetEvent = new ManualResetEvent(false);
             IDicomClient client = null;
+            DestinationApplicationEntity destination = null;
             try
             {
-                var destination = LookupDestination(outputJob);
+                destination = LookupDestination(exportRequestData);
+            }
+            catch (ConfigurationException ex)
+            {
+                _logger.Log(LogLevel.Error, ex, ex.Message);
+                exportRequestData.SetFailed(ex.Message);
+                return exportRequestData;
+            }
+
+            try
+            {
                 client = DicomClientFactory.Create(
                     destination.HostIp,
                     destination.Port,
                     false,
-                    _scuConfiguration.AeTitle,
+                    _configuration.Value.Dicom.Scu.AeTitle,
                     destination.AeTitle);
 
                 client.AssociationAccepted += (sender, args) => _logger.Log(LogLevel.Information, "Association accepted.");
                 client.AssociationRejected += (sender, args) => _logger.Log(LogLevel.Warning, "Association rejected.");
                 client.AssociationReleased += (sender, args) => _logger.Log(LogLevel.Information, "Association release.");
-                client.ServiceOptions.LogDataPDUs = _scuConfiguration.LogDataPdus;
-                client.ServiceOptions.LogDimseDatasets = _scuConfiguration.LogDimseDatasets;
+                client.ServiceOptions.LogDataPDUs = _configuration.Value.Dicom.Scu.LogDataPdus;
+                client.ServiceOptions.LogDimseDatasets = _configuration.Value.Dicom.Scu.LogDimseDatasets;
 
                 client.NegotiateAsyncOps();
-                GenerateRequests(outputJob, client, manualResetEvent);
-                _logger.Log(LogLevel.Information, "Sending job to {0}@{1}:{2}", destination.AeTitle, destination.HostIp, destination.Port);
-                await client.SendAsync(cancellationToken).ConfigureAwait(false);
-
-                manualResetEvent.WaitOne();
-                _logger.LogInformation("Job sent to {0} completed", destination.AeTitle);
+                if (GenerateRequests(exportRequestData, client, manualResetEvent))
+                {
+                    await Policy
+                       .Handle<Exception>()
+                       .WaitAndRetryAsync(
+                           _configuration.Value.Export.Retries.RetryDelays,
+                           (exception, timeSpan, retryCount, context) =>
+                           {
+                               _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                           })
+                       .ExecuteAsync(async () =>
+                       {
+                           _logger.Log(LogLevel.Information, $"Sending job to {destination.AeTitle}@{destination.HostIp}:{destination.Port}");
+                           await client.SendAsync(cancellationToken).ConfigureAwait(false);
+                           manualResetEvent.WaitOne();
+                           _logger.LogInformation($"Job sent to {destination.AeTitle} completed");
+                       });
+                }
             }
             catch (Exception ex)
             {
-                HandleCStoreException(ex, outputJob, client);
-                outputJob.State = State.Failed;
+                HandleCStoreException(ex, exportRequestData, client);
             }
 
-            return outputJob;
+            return exportRequestData;
         }
 
-        private void GenerateRequests(
-            OutputJob job,
+        private DestinationApplicationEntity LookupDestination(ExportRequestDataMessage exportRequestData)
+        {
+            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
+
+            if (string.IsNullOrWhiteSpace(exportRequestData.Destination))
+            {
+                throw new ConfigurationException("Export task does not have destination set.");
+            }
+
+            using var scope = _serviceScopeFactory.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
+            var destination = repository.FirstOrDefault(p => p.Name.Equals(exportRequestData.Destination, StringComparison.InvariantCultureIgnoreCase));
+
+            if (destination is null)
+            {
+                throw new ConfigurationException($"Specified destination '{exportRequestData.Destination}' does not exist");
+            }
+
+            return destination;
+        }
+
+        private bool GenerateRequests(
+            ExportRequestDataMessage exportRequestData,
             IDicomClient client,
             ManualResetEvent manualResetEvent)
         {
             try
             {
-                var dicomFile = _dicomToolkit.Load(job.FileContent);
+                var dicomFile = _dicomToolkit.Load(exportRequestData.FileContent);
 
                 var request = new DicomCStoreRequest(dicomFile);
 
@@ -158,26 +170,30 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 {
                     if (response.Status == DicomStatus.Success)
                     {
-                        _logger.Log(LogLevel.Information, "Job {0} sent successfully", job.ExportTaskId);
-                        job.State = State.Succeeded;
+                        _logger.Log(LogLevel.Information, "Job sent successfully.");
                     }
                     else
                     {
-                        _logger.Log(LogLevel.Error, $"Failed to export job {job.ExportTaskId} with error {response.Status}");
-                        job.State = State.Failed;
+                        var errorMessage = $"Failed to export with error {response.Status}";
+                        _logger.Log(LogLevel.Error, errorMessage);
+                        exportRequestData.SetFailed(errorMessage);
                     }
                     manualResetEvent.Set();
                 };
 
                 client.AddRequestAsync(request).ConfigureAwait(false);
+                return true;
             }
             catch (Exception exception)
             {
-                _logger.LogError("Error while adding DICOM C-STORE request: {0}", exception);
+                var errorMessage = $"Error while adding DICOM C-STORE request: {exception.Message}";
+                _logger.Log(LogLevel.Error, exception, errorMessage);
+                exportRequestData.SetFailed(errorMessage);
+                return false;
             }
         }
 
-        private void HandleCStoreException(Exception ex, OutputJob job, IDicomClient client)
+        private void HandleCStoreException(Exception ex, ExportRequestDataMessage exportRequestData, IDicomClient client)
         {
             var exception = ex;
 
@@ -186,22 +202,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 exception = exception.InnerException;
             }
 
+            var errorMessage = $"Job failed with error: {exception.Message}.";
+
             if (exception is DicomAssociationAbortedException abortEx)
             {
-                _logger.Log(LogLevel.Error, abortEx, "Association aborted with reason {0}.", abortEx.AbortReason);
+                errorMessage = $"Association aborted with reason {abortEx.AbortReason}.";
             }
             else if (exception is DicomAssociationRejectedException rejectEx)
             {
-                _logger.Log(LogLevel.Error, rejectEx, "Association rejected with reason {0}.", rejectEx.RejectReason);
+                errorMessage = $"Association rejected with reason {rejectEx.RejectReason}.";
             }
-            else if (exception is IOException && exception?.InnerException is SocketException socketException)
+            else if (exception is SocketException socketException)
             {
-                _logger.Log(LogLevel.Error, socketException, "Association aborted with error {0}.", socketException.Message);
+                errorMessage = $"Association aborted with error {socketException.Message}.";
             }
-            else
-            {
-                _logger.Log(LogLevel.Error, ex, "Job failed with error: {0}.", exception.Message);
-            }
+
+            _logger.Log(LogLevel.Error, ex, errorMessage);
+            exportRequestData.SetFailed(errorMessage);
         }
     }
 }

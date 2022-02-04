@@ -1,4 +1,4 @@
-﻿// Copyright 2020 - 2021 MONAI Consortium
+﻿// Copyright 2020 - 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,38 +27,53 @@
  */
 
 using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.Common;
-using System.Linq;
+using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
+using System.Collections.Generic;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
-    public class OutputJob : TaskResponse
+    public class ExportRequestDataMessage
     {
+        private readonly ExportRequestMessage _exportRequest;
+
         public byte[] FileContent { get; private set; }
+        public bool IsFailed { get; private set; }
+        public IList<string> Messages { get; init; }
 
-        public OutputJob(TaskResponse task, byte[] fileContent)
+        public string ExportTaskId
         {
-            Guard.Against.Null(task, nameof(task));
-            Guard.Against.Null(fileContent, nameof(fileContent));
-            FileContent = fileContent;
-
-            CopyBaseProperties(task);
+            get { return _exportRequest.ExportTaskId; }
         }
 
-        private void CopyBaseProperties(TaskResponse task)
+        public string CorrelationId
         {
-            var properties = task.GetType().GetProperties();
+            get { return _exportRequest.CorrelationId; }
+        }
 
-            properties.ToList().ForEach(property =>
-            {
-                var isPresent = GetType().GetProperty(property.Name);
-                if (isPresent != null)
-                {
-                    //If present get the value and map it
-                    var value = task.GetType().GetProperty(property.Name).GetValue(task, null);
-                    GetType().GetProperty(property.Name).SetValue(this, value, null);
-                }
-            });
+        public string Destination
+        {
+            get { return _exportRequest.Destination; }
+        }
+
+        public ExportRequestDataMessage(ExportRequestMessage exportRequest)
+        {
+            IsFailed = false;
+            Messages = new List<string>();
+
+            _exportRequest = exportRequest ?? throw new System.ArgumentNullException(nameof(exportRequest));
+        }
+
+        public void SetData(byte[] data)
+        {
+            Guard.Against.Null(data, nameof(data));
+            FileContent = data;
+        }
+
+        public void SetFailed(string errorMessage)
+        {
+            Guard.Against.NullOrWhiteSpace(errorMessage, nameof(errorMessage));
+            IsFailed = true; ;
+            Messages.Add(errorMessage);
         }
     }
 }

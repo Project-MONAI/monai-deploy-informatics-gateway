@@ -43,8 +43,8 @@ namespace Monai.Deploy.InformaticsGateway.Common
     /// <typeparam name="T"></typeparam>
     internal class Unsubscriber<T> : IDisposable
     {
-        private IList<IObserver<T>> _observers;
-        private IObserver<T> _observer;
+        private readonly IList<IObserver<T>> _observers;
+        private readonly IObserver<T> _observer;
 
         internal Unsubscriber(IList<IObserver<T>> observers, IObserver<T> observer)
         {

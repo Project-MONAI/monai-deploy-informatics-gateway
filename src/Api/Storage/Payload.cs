@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -41,6 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         private readonly Guid _id;
         private readonly Stopwatch _lastReceived;
+        private int _fileCount;
 
         public Guid Id => _id;
 
@@ -58,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public IList<FileStorageInfo> Files { get; }
 
-        public int Count { get => Files.Count; }
+        public int Count { get => _fileCount; }
 
         public IEnumerable<string> Workflows
         {
@@ -69,6 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         }
 
         public string CorrelationId { get; init; }
+
         public IList<BlockStorageInfo> UploadedFiles { get; set; }
 
         public Payload(string key, string correlationId, uint timeout)
@@ -77,6 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
             _id = Guid.NewGuid();
             _lastReceived = new Stopwatch();
+            _fileCount = 0;
             Key = key;
             CorrelationId = correlationId;
             Timeout = timeout;
@@ -93,8 +96,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Files.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
+            _fileCount = Files.Count;
 
-            if(Files.Count == 1)
+            if (Files.Count == 1)
             {
                 DateTimeCreated = value.Received;
             }

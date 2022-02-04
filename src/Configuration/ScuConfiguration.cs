@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -42,10 +42,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public string AeTitle { get; set; } = "MONAISCU";
 
         /// <summary>
-        /// Gets or sets the name of the export sink used for querying export tasks from MONAI Workload Manager.
+        /// Gets or sets the (postfix) name of the DIMSE export agent used for receiving messages.
+        /// The agent name is combine with <see cref="MessageBrokerConfigurationKeys.ExportRequestPrefix"/>
+        /// for subscribing messages from the message broker service.
         /// </summary>
-        [JsonProperty(PropertyName = "sink")]
-        public string ExportSink { get; set; } = "MONAISCU";
+        [JsonProperty(PropertyName = "agentName")]
+        public string AgentName { get; set; } = "monaiscu";
 
         /// <summary>
         /// Gets or sets whether or not to write message to log for each P-Data-TF PDU sent or received.

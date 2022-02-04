@@ -81,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(entity, nameof(entity));
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
 
             var console = host.Services.GetRequiredService<IConsole>();
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -100,8 +100,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                this.LogVerbose(verbose, host, $"Retrieving DICOM sources...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Retrieving DICOM sources...");
                 items = await client.DicomSources.List(cancellationTokena);
             }
             catch (ConfigurationException ex)
@@ -144,7 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<SourceCommand>(host);
@@ -157,8 +157,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                this.LogVerbose(verbose, host, $"Deleting DICOM source {name}...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Deleting DICOM source {name}...");
                 _ = await client.DicomSources.Delete(name, cancellationTokena);
                 logger.Log(LogLevel.Information, $"DICOM source '{name}' deleted.");
             }
@@ -180,7 +180,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(entity, nameof(entity));
             Guard.Against.Null(host, nameof(host));
 
-            this.LogVerbose(verbose, host, "Configuring services...");
+            LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
             var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
             var logger = CreateLogger<SourceCommand>(host);
@@ -193,8 +193,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(configService);
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
-                this.LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                this.LogVerbose(verbose, host, $"Creating new DICOM source {entity.AeTitle}...");
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Creating new DICOM source {entity.AeTitle}...");
                 var result = await client.DicomSources.Create(entity, cancellationTokena);
 
                 logger.Log(LogLevel.Information, "New DICOM source created:");

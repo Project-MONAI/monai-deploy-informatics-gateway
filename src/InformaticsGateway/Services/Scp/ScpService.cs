@@ -1,4 +1,4 @@
-// Copyright 2022 MONAI Consortium
+// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -42,7 +42,7 @@ using FoDicomNetwork = FellowOakDicom.Network;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
-    public class ScpService : IHostedService, IDisposable, IMonaiService
+    public sealed class ScpService : IHostedService, IDisposable, IMonaiService
     {
         internal static int ActiveConnections = 0;
         private readonly IServiceScope _serviceScope;

@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -23,9 +23,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 {
     public class InstanceCleanupQueueTest
     {
-        private Mock<ILogger<InstanceCleanupQueue>> _logger;
-        private InstanceCleanupQueue _queue;
-        private CancellationTokenSource _cancellationTokenSource;
+        private readonly Mock<ILogger<InstanceCleanupQueue>> _logger;
+        private readonly InstanceCleanupQueue _queue;
+        private readonly CancellationTokenSource _cancellationTokenSource;
 
         public InstanceCleanupQueueTest()
         {

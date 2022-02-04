@@ -1,4 +1,4 @@
-﻿// Copyright 2021 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             return _serviceProvider.GetService(type) as IMonaiService;
         }
 
-        private List<Type> LocateTypes()
+        private static List<Type> LocateTypes()
         {
             var serviceType = typeof(IMonaiService);
             var services = Assembly.GetExecutingAssembly().GetTypes()

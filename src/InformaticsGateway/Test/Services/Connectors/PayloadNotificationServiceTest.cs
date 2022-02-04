@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -207,12 +207,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLogging($"Failed to upload payload {payload.Id}; added back to queue for retry.", LogLevel.Warning, Times.Once());
             _logger.VerifyLogging($"Updating payload state={payload.State}, retries=1.", LogLevel.Error, Times.Once());
             _logger.VerifyLogging($"Reached maximum number of retries for payload {payload.Id}, giving up.", LogLevel.Error, Times.Once());
+
             _logger.VerifyLoggingMessageBeginsWith($"Uploading file ", LogLevel.Debug, Times.Exactly(2));
             _instanceCleanupQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
         }
 
         [Fact(DisplayName = "Payload Notification Service shall publish workflow request & retry on failure")]
-        public void PayloadNotificationService_ShalPublishAndRetryOnFailure()
+        public void PayloadNotificationService_ShallPublishAndRetryOnFailure()
         {
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                .Callback(() => _cancellationTokenSource.Token.WaitHandle.WaitOne());
@@ -259,6 +260,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Upload };
             payload.Add(new DicomFileStorageInfo("correlation", "/root", "1", "source", _fileSystem.Object) { StudyInstanceUid = "study", SeriesInstanceUid = "series", SopInstanceUid = "sop" });
             var filePath = payload.Files[0].FilePath;
+
             var uploadPath = Path.Combine(payload.Id.ToString(), payload.Files[0].UploadPath);
             var fileSent = false;
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
