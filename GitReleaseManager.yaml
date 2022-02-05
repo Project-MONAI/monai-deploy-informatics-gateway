@@ -1,0 +1,57 @@
+# Copyright 2021 MONAI Consortium
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+issue-labels-include:
+  - breaking
+  - feature
+  - enhancement
+  - bug
+  - documentation
+  - security
+issue-labels-exclude:
+  - build
+  - refactor
+  - testing
+issue-labels-alias:
+  - name: breaking
+    header: Breaking Change
+    plural: Breaking Changes
+  - name: feature
+    header: Feature
+    plural: Features
+  - name: enhancement
+    header: Enhancement
+    plural: Enhancements
+  - name: bug
+    header: Bug
+    plural: Bugs
+  - name: documentation
+    header: Documentation
+    plural: Documentation
+  - name: security
+    header: Security
+    plural: Security
+create:
+  include-sha-section: true
+  sha-section-heading: "SHA256 Hashes of the release artifacts"
+  sha-section-line-format: "- `{1}\t{0}`"
+  allow-update-to-published: false
+export:
+  include-created-date-in-title: true
+  created-date-string-format: MMMM dd, yyyy
+  perform-regex-removal: false
+close:
+  use-issue-comments: true
+  issue-comment: |-
+    :tada: This issue has been resolved in version {milestone} :tada:
+
+    The release is available on:
+    - [GitHub Release](https://github.com/{owner}/{repository}/releases/tag/{milestone})
