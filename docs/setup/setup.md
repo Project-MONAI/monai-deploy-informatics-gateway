@@ -137,6 +137,42 @@ Locate the storage section of the configuration in `appsettings.json`:
 }
 ```
 
+### Message broker
+
+Informatics Gateway communicates with other MONAI Deploy components through a message broker.  The default messaging service
+included is provided by [RabbitMQ](https://www.rabbitmq.com/). To integrate with another storage service provider, please refer 
+to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#message-broker) section of the SRS.
+
+To use the default messaging service, please download and install RabbitMQ by following the
+[Get Started](https://www.rabbitmq.com/#getstarted) page. 
+
+Before launching Informatics Gateway, update `appsettings.json` to configure the publisher and subscriber settings.
+IG publishes all messages to an *exchange* under the specified *virtual host*. Therefore, please confirm the values before starting
+Informatics Gateway.
+
+```json
+{
+  "InformaticsGateway": {
+    "messaging": {
+      "publisherSettings": {
+        "endpoint": "localhost",
+        "username": "username",
+        "password": "password",
+        "virtualHost": "monaideploy",
+        "exchange": "monaideploy"
+      },
+      "subscriberSettings": {
+        "endpoint": "localhost",
+        "username": "username",
+        "password": "password",
+        "virtualHost": "monaideploy",
+        "exchange": "monaideploy",
+        "exportRequestQueue": "export_tasks"
+      }
+    },
+  }
+}
+```
 
 ## Summary
 

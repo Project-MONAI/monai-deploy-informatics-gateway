@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -28,14 +28,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         public IContainerRunner GetContainerRunner()
         {
             var scope = _serviceScopeFactory.CreateScope();
-            switch (_configurationService.Configurations.Runner)
+            return _configurationService.Configurations.Runner switch
             {
-                case Runner.Docker:
-                    return scope.ServiceProvider.GetRequiredService<DockerRunner>();
-
-                default:
-                    throw new NotImplementedException($"The configured runner isn't yet supported '{_configurationService.Configurations.Runner}'");
-            }
+                Runner.Docker => scope.ServiceProvider.GetRequiredService<DockerRunner>(),
+                _ => throw new NotImplementedException($"The configured runner isn't yet supported '{_configurationService.Configurations.Runner}'"),
+            };
         }
     }
 }

@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
         private void TestHandler(IHost host, bool verbose)
         {
-            this.LogVerbose(verbose, host, "this is a test");
+            LogVerbose(verbose, host, "this is a test");
         }
     }
 }

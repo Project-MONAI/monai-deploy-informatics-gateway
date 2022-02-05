@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -13,9 +13,11 @@ using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
@@ -41,15 +43,16 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
     {
         private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly Mock<IHttpClientFactory> _httpClientFactory;
-        private Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
-        private Mock<ILogger<DataRetrievalService>> _logger;
-        private Mock<IInferenceRequestRepository> _inferenceRequestStore;
-        private Mock<IDicomToolkit> _dicomToolkit;
-        private MockFileSystem _fileSystem;
+        private readonly Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
+        private readonly Mock<ILogger<DataRetrievalService>> _logger;
+        private readonly Mock<IInferenceRequestRepository> _inferenceRequestStore;
+        private readonly Mock<IDicomToolkit> _dicomToolkit;
+        private readonly MockFileSystem _fileSystem;
         private Mock<HttpMessageHandler> _handlerMock;
         private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         public DataRetrievalServiceTest()
         {
@@ -63,6 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _storageInfoProvider = new Mock<IStorageInfoProvider>();
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
+            _options = Options.Create(new InformaticsGatewayConfiguration());
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns((string type) =>
             {
@@ -83,16 +87,17 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(5, 250, DisplayName = "Constructor")]
         public void ConstructorTest()
         {
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(null, null, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, null, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, _dicomToolkit.Object, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, _dicomToolkit.Object, _serviceScopeFactory.Object, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, _dicomToolkit.Object, _serviceScopeFactory.Object, _payloadAssembler.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(null, null, null, null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, null, null, null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, null, null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, _dicomToolkit.Object, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, _dicomToolkit.Object, _serviceScopeFactory.Object, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, _dicomToolkit.Object, _serviceScopeFactory.Object, _payloadAssembler.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_loggerFactory.Object, _httpClientFactory.Object, _logger.Object, _fileSystem, _dicomToolkit.Object, _serviceScopeFactory.Object, _payloadAssembler.Object, _storageInfoProvider.Object, null));
 
-            new DataRetrievalService(
+            _ = new DataRetrievalService(
                 _loggerFactory.Object,
                 _httpClientFactory.Object,
                 _logger.Object,
@@ -100,7 +105,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
         }
 
         [RetryFact(5, 250, DisplayName = "Cancellation token shall stop the service")]
@@ -119,7 +125,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
             Thread.Sleep(250);
@@ -148,7 +155,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
             Thread.Sleep(250);
@@ -251,7 +259,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -333,7 +342,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             request.ConfigureTemporaryStorageLocation(storagePath);
 
-            _dicomToolkit.Setup(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()));
+            _dicomToolkit.Setup(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DicomJsonOptions>()));
 
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
@@ -370,7 +379,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -384,7 +394,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.ToString().StartsWith($"{url}studies/")),
                ItExpr.IsAny<CancellationToken>());
 
-            _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()), Times.Never());
+            _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DicomJsonOptions>()), Times.Never());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Never());
@@ -475,7 +485,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             request.ConfigureTemporaryStorageLocation(storagePath);
 
-            _dicomToolkit.Setup(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()));
+            _dicomToolkit.Setup(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DicomJsonOptions>()));
 
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
@@ -510,7 +520,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -524,7 +535,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.ToString().StartsWith($"{url}studies/")),
                ItExpr.IsAny<CancellationToken>());
 
-            _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()), Times.Exactly(4));
+            _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DicomJsonOptions>()), Times.Exactly(4));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(4));
@@ -576,7 +587,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             request.ConfigureTemporaryStorageLocation(storagePath);
 
-            _dicomToolkit.Setup(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()));
+            _dicomToolkit.Setup(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DicomJsonOptions>()));
 
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
@@ -624,7 +635,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -649,7 +661,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                    ItExpr.IsAny<CancellationToken>());
             }
 
-            _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()), Times.Exactly(studyInstanceUids.Count));
+            _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DicomJsonOptions>()), Times.Exactly(studyInstanceUids.Count));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(studyInstanceUids.Count));
@@ -701,7 +713,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             request.ConfigureTemporaryStorageLocation(storagePath);
 
-            _dicomToolkit.Setup(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()));
+            _dicomToolkit.Setup(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DicomJsonOptions>()));
 
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
@@ -749,7 +761,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -774,7 +787,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                    ItExpr.IsAny<CancellationToken>());
             }
 
-            _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>()), Times.Exactly(studyInstanceUids.Count));
+            _dicomToolkit.Verify(p => p.Save(It.IsAny<DicomFile>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<DicomJsonOptions>()), Times.Exactly(studyInstanceUids.Count));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(2));
@@ -878,7 +891,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 _dicomToolkit.Object,
                 _serviceScopeFactory.Object,
                 _payloadAssembler.Object,
-                _storageInfoProvider.Object);
+                _storageInfoProvider.Object,
+                _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -904,14 +918,16 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(2));
         }
 
-        private HttpResponseMessage GenerateQueryResult(DicomTag dicomTag, string queryValue, List<string> studyInstanceUids)
+        private static HttpResponseMessage GenerateQueryResult(DicomTag dicomTag, string queryValue, List<string> studyInstanceUids)
         {
             var set = new List<string>();
             foreach (var studyInstanceUid in studyInstanceUids)
             {
-                var dataset = new DicomDataset();
-                dataset.Add(dicomTag, queryValue);
-                dataset.Add(DicomTag.StudyInstanceUID, studyInstanceUid);
+                var dataset = new DicomDataset
+                {
+                    { dicomTag, queryValue },
+                    { DicomTag.StudyInstanceUID, studyInstanceUid }
+                };
                 set.Add(DicomJson.ConvertDicomToJson(dataset));
             }
             var json = JsonConvert.SerializeObject(set);
@@ -919,7 +935,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             return new HttpResponseMessage(System.Net.HttpStatusCode.OK) { Content = stringContent };
         }
 
-        private HttpResponseMessage GenerateMultipartResponse()
+        private static HttpResponseMessage GenerateMultipartResponse()
         {
             var data = InstanceGenerator.GenerateDicomData();
             var content = new MultipartContent("related");
@@ -930,7 +946,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             return new HttpResponseMessage() { Content = content };
         }
 
-        private void BlockUntilCancelled(CancellationToken token)
+        private static void BlockUntilCancelled(CancellationToken token)
         {
             WaitHandle.WaitAll(new[] { token.WaitHandle });
         }

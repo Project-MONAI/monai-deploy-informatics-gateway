@@ -148,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
 
             var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
             cancellationSource.CancelAfter(100);
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await store.Take(cancellationSource.Token));
+            await Assert.ThrowsAsync<TaskCanceledException>(async () => await store.Take(cancellationSource.Token));
         }
 
         [RetryFact(5, 250, DisplayName = "Exists - throws if no arguments provided")]

@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             if (exception != null)
             {
-                _logger?.Log(LogLevel.Error, "Connection closed with exception: {0}", exception);
+                _logger?.Log(LogLevel.Error, exception, "Connection closed with exception.");
             }
 
             _loggerScope?.Dispose();
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             try
             {
-                _logger?.Log(LogLevel.Information, "Transfer syntax used: {0}", request.TransferSyntax);
+                _logger?.Log(LogLevel.Information, $"Transfer syntax used: {request.TransferSyntax}");
                 await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId);
                 return new DicomCStoreResponse(request, DicomStatus.Success);
             }
@@ -112,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public void OnReceiveAbort(DicomAbortSource source, DicomAbortReason reason)
         {
-            _logger?.Log(LogLevel.Warning, "Aborted {0} with reason {1}", source, reason);
+            _logger?.Log(LogLevel.Warning, $"Aborted {source} with reason {reason}");
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _associationIdStr = $"#{_associationId} {association.RemoteHost}:{association.RemotePort}";
 
             _loggerScope = _logger?.BeginScope(new LoggingDataDictionary<string, object> { { "Association", _associationIdStr } });
-            _logger?.Log(LogLevel.Information, "Association received from {0}:{1}", association.RemoteHost, association.RemotePort);
+            _logger?.Log(LogLevel.Information, $"Association received from {association.RemoteHost}:{association.RemotePort}");
 
             if (!IsValidSourceAe(association.CallingAE, association.RemoteHost))
             {

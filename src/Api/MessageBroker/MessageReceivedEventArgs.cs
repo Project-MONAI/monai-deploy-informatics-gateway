@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -20,13 +20,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
     public class MessageReceivedEventArgs : EventArgs
     {
         public Message Message { get; }
-        public string DeliveryTag { get; }
         public CancellationToken CancellationToken { get; }
 
-        public MessageReceivedEventArgs(Message message, string deliveryTag, CancellationToken cancellationToken)
+        public MessageReceivedEventArgs(Message message, CancellationToken cancellationToken)
         {
             Message = message;
-            DeliveryTag = deliveryTag;
             CancellationToken = cancellationToken;
         }
     }

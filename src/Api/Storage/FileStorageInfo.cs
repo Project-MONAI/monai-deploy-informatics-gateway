@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,6 +11,7 @@
 
 using Ardalis.GuardClauses;
 using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
@@ -71,10 +72,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         {
             get
             {
-                var path = FilePath.Substring(StorageRootPath.Length);
+                var path = FilePath[StorageRootPath.Length..];
                 if (FileSystem.Path.IsPathRooted(path))
                 {
-                    return path.Substring(1);
+                    path = path[1..];
                 }
                 return path;
             }
@@ -118,6 +119,17 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// </summary>
         public string ContentType { get; set; }
 
+        /// <summary>
+        /// Gets the file and any associated meta files.
+        /// </summary>
+        public virtual IEnumerable<string> FilePaths
+        {
+            get
+            {
+                yield return _filePath;
+            }
+        }
+
         public FileStorageInfo() { }
 
         public FileStorageInfo(string correlationId,
@@ -159,7 +171,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         }
 
         /// <summary>
-        /// Workflows to be launched on MONAI Workload Manager, ignoring data routing agent.
+        /// Workflows to be launched on MONAI Workflow Manager, ignoring data routing agent.
         /// </summary>
         /// <param name="workflows">List of workflows.</param>
         public void SetWorkflows(params string[] workflows)
@@ -184,6 +196,14 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             }
 
             return filePath;
+        }
+        public virtual BlockStorageInfo ToBlockStorageInfo(string bucket)
+        {
+            return new BlockStorageInfo
+            {
+                Bucket = bucket,
+                Path = UploadPath,
+            };
         }
     }
 }

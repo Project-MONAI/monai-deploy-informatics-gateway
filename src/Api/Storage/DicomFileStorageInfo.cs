@@ -1,4 +1,4 @@
-// Copyright 2022 MONAI Consortium
+// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -10,6 +10,7 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
@@ -19,21 +20,39 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     /// </summary>
     public sealed record DicomFileStorageInfo : FileStorageInfo
     {
-        public static readonly string FILE_EXTENSION = ".dcm";
-        public static readonly string CONTENT_TYPE = "application/dicom";
+        public static readonly string FilExtension = ".dcm";
+        public static readonly string DicomJsonFileExtension = ".json";
+        public static readonly string DicomContentType = "application/dicom";
+        public static readonly string DicomJsonContentType = "application/json";
         public string StudyInstanceUid { get; set; }
         public string SeriesInstanceUid { get; set; }
         public string SopInstanceUid { get; set; }
+        public string DicomJsonFilePath { get; set; }
 
-        public DicomFileStorageInfo() { }
-
-        public DicomFileStorageInfo(string correlationId,
-                                    string storageRootPath,
-                                    string messageId,
-                                    string source)
-            : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, source, new FileSystem())
+        /// <summary>
+        /// Gets the file path to be stored on the shared storage.
+        /// </summary>
+        public string DicomJsonUploadPath
         {
-            this.ContentType = CONTENT_TYPE;
+            get
+            {
+                _ = FilePath;
+                var path = DicomJsonFilePath[StorageRootPath.Length..];
+                if (FileSystem.Path.IsPathRooted(path))
+                {
+                    path = path[1..];
+                }
+                return path;
+            }
+        }
+
+        public override IEnumerable<string> FilePaths
+        {
+            get
+            {
+                yield return FilePath;
+                yield return DicomJsonFilePath;
+            }
         }
 
         public DicomFileStorageInfo(string correlationId,
@@ -41,9 +60,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                                     string messageId,
                                     string source,
                                     IFileSystem fileSystem)
-            : base(correlationId, storageRootPath, messageId, FILE_EXTENSION, source, fileSystem)
+            : base(correlationId, storageRootPath, messageId, FilExtension, source, fileSystem)
         {
-            this.ContentType = CONTENT_TYPE;
+            ContentType = DicomContentType;
         }
 
         protected override string GenerateStoragePath()
@@ -61,7 +80,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 filePath = filePath.ToLowerInvariant();
             }
 
+            DicomJsonFilePath = $"{filePath}{DicomJsonFileExtension}";
             return filePath;
+        }
+
+        public override BlockStorageInfo ToBlockStorageInfo(string bucket)
+        {
+            var blockStorage = base.ToBlockStorageInfo(bucket);
+            blockStorage.Metadata = DicomJsonUploadPath;
+            return blockStorage;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -24,7 +24,12 @@ namespace Monai.Deploy.InformaticsGateway.Database
     {
         public void Configure(EntityTypeBuilder<Payload> builder)
         {
-            var valueComparer = new ValueComparer<IList<FileStorageInfo>>(
+            var fileStorageInfoComparer = new ValueComparer<IList<FileStorageInfo>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList());
+
+            var blockStorageInfoComparer = new ValueComparer<IList<BlockStorageInfo>>(
                 (c1, c2) => c1.SequenceEqual(c2),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList());
@@ -41,7 +46,12 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 .HasConversion(
                         v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
                         v => JsonConvert.DeserializeObject<IList<FileStorageInfo>>(v, jsonSerializerSettings))
-                .Metadata.SetValueComparer(valueComparer);
+                .Metadata.SetValueComparer(fileStorageInfoComparer);
+            builder.Property(j => j.UploadedFiles)
+                .HasConversion(
+                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
+                        v => JsonConvert.DeserializeObject<IList<BlockStorageInfo>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(blockStorageInfoComparer);
         }
     }
 }

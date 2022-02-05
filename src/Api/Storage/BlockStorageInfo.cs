@@ -9,23 +9,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Threading.Tasks;
+using Newtonsoft.Json;
 
-namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
+namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
-    public interface IMessageBrokerPublisherService
+    public class BlockStorageInfo
     {
         /// <summary>
-        /// Gets or sets the name of the storage service.
+        /// Gets or sets the name of bucket where the file is stored.
         /// </summary>
-        string Name { get; }
+        [JsonProperty(PropertyName = "bucket")]
+        public string Bucket { get; set; }
 
         /// <summary>
-        /// Publishes a message to the service.
+        /// Gets or sets the root path to the file.
         /// </summary>
-        /// <param name="topic">Topic where the message is published to</param>
-        /// <param name="message">Message to be published</param>
-        /// <returns></returns>
-        Task Publish(string topic, Message message);
+        [JsonProperty(PropertyName = "path")]
+        public string Path { get; set; }
+
+        /// <summary>
+        /// Gets or sets the root path to the metadata file.
+        /// </summary>
+        [JsonProperty(PropertyName = "metadata")]
+        public string Metadata { get; set; }
     }
 }

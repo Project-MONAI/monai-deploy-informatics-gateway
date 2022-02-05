@@ -26,7 +26,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
         }
 
-        protected ILogger CreateLogger<T>(IHost host)
+        protected static ILogger CreateLogger<T>(IHost host)
         {
             Guard.Against.Null(host, nameof(host));
 
@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             return loggerFactory?.CreateLogger<T>();
         }
 
-        protected void LogVerbose(bool verbose, IHost host, string message)
+        protected static void LogVerbose(bool verbose, IHost host, string message)
         {
             Guard.Against.Null(host, nameof(host));
             Guard.Against.NullOrWhiteSpace(message, nameof(message));
@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         protected void AddConfirmationOption() => AddConfirmationOption(this);
 
-        protected void AddConfirmationOption(Command command)
+        protected static void AddConfirmationOption(Command command)
         {
             Guard.Against.Null(command, nameof(command));
 
@@ -63,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             command.AddOption(confirmationOption);
         }
 
-        protected void CheckConfiguration(IConfigurationService configService)
+        protected static void CheckConfiguration(IConfigurationService configService)
         {
             Guard.Against.Null(configService, nameof(configService));
 

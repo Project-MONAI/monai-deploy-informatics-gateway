@@ -27,6 +27,7 @@
  */
 
 using FellowOakDicom;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Common
@@ -39,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         bool TryGetString(DicomFile file, DicomTag dicomTag, out string value);
 
-        Task Save(DicomFile file, string path);
+        Task Save(DicomFile file, string filename, string metadataFilename, DicomJsonOptions dicomJsonOptions);
 
         DicomFile Load(byte[] fileContent);
     }

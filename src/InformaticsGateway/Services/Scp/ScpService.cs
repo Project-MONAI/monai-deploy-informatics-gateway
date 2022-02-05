@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -42,7 +42,7 @@ using FoDicomNetwork = FellowOakDicom.Network;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
-    public class ScpService : IHostedService, IDisposable, IMonaiService
+    public sealed class ScpService : IHostedService, IDisposable, IMonaiService
     {
         internal static int ActiveConnections = 0;
         private readonly IServiceScope _serviceScope;
@@ -67,19 +67,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger = logginFactory.CreateLogger<ScpService>();
             _appLifetime = appLifetime ?? throw new ArgumentNullException(nameof(appLifetime));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            var preloadDictionary = DicomDictionary.Default;
+            _ = DicomDictionary.Default;
         }
 
         public void Dispose()
         {
             _serviceScope.Dispose();
             _server?.Dispose();
+            GC.SuppressFinalize(this);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Information, "MONAI Deploy Informatics Gateway (SCP Service) {0} loading...",
-                Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version);
+            _logger.Log(LogLevel.Information, $"MONAI Deploy Informatics Gateway (SCP Service) {Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version} loading...");
 
             try
             {
@@ -100,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 }
 
                 Status = ServiceStatus.Running;
-                _logger.Log(LogLevel.Information, "SCP listening on port: {0}", _configuration.Value.Dicom.Scp.Port);
+                _logger.Log(LogLevel.Information, $"SCP listening on port: {_configuration.Value.Dicom.Scp.Port}");
             }
             catch (System.Exception ex)
             {

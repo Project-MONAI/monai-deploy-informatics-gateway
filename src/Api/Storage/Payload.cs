@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -41,12 +41,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         private readonly Guid _id;
         private readonly Stopwatch _lastReceived;
+        private int _fileCount;
 
         public Guid Id => _id;
 
         public uint Timeout { get; init; }
 
         public string Key { get; init; }
+
+        public DateTime DateTimeCreated { get; private set; }
 
         public int RetryCount { get; set; }
 
@@ -56,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public IList<FileStorageInfo> Files { get; }
 
-        public int Count { get => Files.Count; }
+        public int Count { get => _fileCount; }
 
         public IEnumerable<string> Workflows
         {
@@ -68,18 +71,22 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public string CorrelationId { get; init; }
 
+        public IList<BlockStorageInfo> UploadedFiles { get; set; }
+
         public Payload(string key, string correlationId, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
             _id = Guid.NewGuid();
             _lastReceived = new Stopwatch();
+            _fileCount = 0;
             Key = key;
             CorrelationId = correlationId;
             Timeout = timeout;
             RetryCount = 0;
             State = PayloadState.Created;
             Files = new List<FileStorageInfo>();
+            UploadedFiles = new List<BlockStorageInfo>();
         }
 
         public void Add(FileStorageInfo value)
@@ -89,6 +96,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Files.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
+            _fileCount = Files.Count;
+
+            if (Files.Count == 1)
+            {
+                DateTimeCreated = value.Received;
+            }
         }
 
         public TimeSpan ElapsedTime()

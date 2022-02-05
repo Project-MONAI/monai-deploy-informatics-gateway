@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -9,8 +9,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using Ardalis.GuardClauses;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System.Linq;
+
 namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
 {
+    public enum ExportStatus
+    {
+        Success = 0,
+        Failure,
+        PartialFailure,
+        Unknown
+    }
+
     public class ExportCompleteMessage
     {
         /// <summary>
@@ -26,11 +39,40 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
         /// <summary>
         /// Gets or sets the state of the export task.
         /// </summary>
-        public string Status { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public ExportStatus Status { get; set; }
 
         /// <summary>
         /// Gets or sets error messages, if any, when exporting.
         /// </summary>
         public string Message { get; set; }
+
+        [JsonConstructor]
+        public ExportCompleteMessage()
+        {
+            Status = ExportStatus.Unknown;
+        }
+
+        public ExportCompleteMessage(ExportRequestMessage exportRequest)
+        {
+            Guard.Against.Null(exportRequest, nameof(exportRequest));
+
+            WorkflowId = exportRequest.WorkflowId;
+            ExportTaskId = exportRequest.ExportTaskId;
+            Message = string.Join(System.Environment.NewLine, exportRequest.ErrorMessages);
+
+            if (exportRequest.FailedFiles == 0)
+            {
+                Status = ExportStatus.Success;
+            }
+            else if (exportRequest.FailedFiles == exportRequest.Files.Count())
+            {
+                Status = ExportStatus.Failure;
+            }
+            else
+            {
+                Status = ExportStatus.PartialFailure;
+            }
+        }
     }
 }

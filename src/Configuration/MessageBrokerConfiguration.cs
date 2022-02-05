@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -84,6 +84,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets the topics for events published/subscribed by Informatics Gateway
         /// </summary>
         [JsonProperty(PropertyName = "topics")]
-        public MessageBrokerRoutingKeysConfiguration Topics { get; set; } = new MessageBrokerRoutingKeysConfiguration();
+        public MessageBrokerConfigurationKeys Topics { get; set; } = new MessageBrokerConfigurationKeys();
     }
 }

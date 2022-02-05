@@ -1,4 +1,4 @@
-// Copyright 2022 MONAI Consortium
+// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -127,13 +127,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
-            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), callingAeTitle, _fileSystem);
+            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), callingAeTitle, _fileSystem)
+            {
+                StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID),
+                SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID),
+                SopInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID)
+            };
 
-            info.StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
-            info.SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
-            info.SopInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
-
-            using (_logger.BeginScope("SOPInstanceUID={0}", info.SopInstanceUid))
+            using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", info.SopInstanceUid }, { "Correlation ID", associationId } }))
             {
                 _logger.Log(LogLevel.Information, "Study Instance UID: {StudyInstanceUid}", info.StudyInstanceUid);
                 _logger.Log(LogLevel.Information, "Series Instance UID: {SeriesInstanceUid}", info.SeriesInstanceUid);
@@ -172,17 +173,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private void AddNewAeTitle(MonaiApplicationEntity entity)
         {
-            using (var scope = _serviceScopeFactory.CreateScope())
+            using var scope = _serviceScopeFactory.CreateScope();
+            var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _dicomToolkit, _loggerFactory.CreateLogger<ApplicationEntityHandler>(), Configuration.Value.Dicom.WriteDicomJson);
+            if (!_aeTitles.TryAdd(entity.AeTitle, handler))
             {
-                var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _dicomToolkit, _loggerFactory.CreateLogger<ApplicationEntityHandler>());
-                if (!_aeTitles.TryAdd(entity.AeTitle, handler))
-                {
-                    _logger.Log(LogLevel.Error, $"AE Title {0} could not be added to CStore Manager.  Already exits: {1}", entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));
-                }
-                else
-                {
-                    _logger.Log(LogLevel.Information, $"{entity.AeTitle} added to AE Title Manager");
-                }
+                _logger.Log(LogLevel.Error, $"AE Title {0} could not be added to CStore Manager.  Already exits: {1}", entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));
+            }
+            else
+            {
+                _logger.Log(LogLevel.Information, $"{entity.AeTitle} added to AE Title Manager");
             }
         }
 

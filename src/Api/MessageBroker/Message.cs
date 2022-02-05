@@ -1,4 +1,4 @@
-﻿// Copyright 2022 MONAI Consortium
+﻿// Copyright 2021-2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -15,45 +15,6 @@ using System.Text;
 
 namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
 {
-    public abstract class MessageBase
-    {
-        public static readonly string InformaticsGatewayApplicationId = "16988a78-87b5-4168-a5c3-2cfc2bab8e54";
-
-        /// <summary>
-        /// UUID for the message formatted with hyphens.
-        /// xxxxxxxx-xxxx-Mxxx-Nxxx-xxxxxxxxxxxx
-        /// </summary>
-        public string MessageId { get; init; }
-
-        /// <summary>
-        /// Content or MIME type of the message body.
-        /// </summary>
-        public string ContentType { get; init; }
-
-        /// <summary>
-        /// UUID of the application, in this case, the Informatics Gateway.
-        /// The UUID of Informatics Gateway is <code>16988a78-87b5-4168-a5c3-2cfc2bab8e54</code>.
-        /// </summary>
-        public string ApplicationId { get; init; }
-
-        /// <summary>
-        /// Correlation ID of the message.
-        /// For DIMSE connections, the ID generated during association is used.
-        /// For ACR inference requests, the Transaction ID provided in the request is used.
-        /// </summary>
-        public string CorrelationId { get; init; }
-
-        /// <summary>
-        /// Datetime the message is created.
-        /// </summary>
-        public DateTime CreationDateTime { get; init; }
-
-        /// <summary>
-        /// A short description of the type serialized in the message body.
-        /// </summary>
-        public string MessageDescription { get; init; }
-    }
-
     public sealed class Message : MessageBase
     {
         /// <summary>
@@ -64,14 +25,16 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
         public Message(byte[] body,
                        string bodyDescription,
                        string contentType,
-                       string correlationId)
+                       string correlationId,
+                       string deliveryTag)
             : this(body,
                    bodyDescription,
                    Guid.NewGuid().ToString(),
                    Message.InformaticsGatewayApplicationId,
                    contentType,
                    correlationId,
-                   DateTime.UtcNow)
+                   DateTime.UtcNow,
+                   deliveryTag)
         {
         }
 
@@ -81,7 +44,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
                        string applicationId,
                        string contentType,
                        string correlationId,
-                       DateTime creationDateTime)
+                       DateTime creationDateTime,
+                       string deliveryTag)
         {
             Body = body;
             MessageDescription = bodyDescription;
@@ -90,6 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
             ContentType = contentType;
             CorrelationId = correlationId;
             CreationDateTime = creationDateTime;
+            DeliveryTag = deliveryTag;
         }
 
         /// <summary>

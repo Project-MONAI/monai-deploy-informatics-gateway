@@ -46,5 +46,11 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// </summary>
         [JsonProperty(PropertyName = "scu")]
         public ScuConfiguration Scu { get; set; } = new ScuConfiguration();
+
+        /// <summary>
+        /// Gets or sets whether to write DICOM JSON file for each instance received.
+        /// </summary>
+        [JsonProperty(PropertyName = "writeDicomJson")]
+        public DicomJsonOptions WriteDicomJson { get; set; } = DicomJsonOptions.IgnoreOthers;
     }
 }
