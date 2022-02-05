@@ -35,6 +35,9 @@
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
     <PackageReference Include="fo-dicom" Version="5.0.1" />
+      <PackageReference Include="GitVersion.MsBuild" Version="5.8.1">
+          <PrivateAssets>All</PrivateAssets>
+      </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />
     <PackageReference Include="Microsoft.Net.Http.Headers" Version="2.2.8" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />

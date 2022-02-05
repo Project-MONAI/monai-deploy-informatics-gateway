@@ -11,9 +11,6 @@
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0-focal as build
 
-ARG Version=0.0.0
-ARG FileVersion=0.0.0.0
-
 # Install the tools
 RUN dotnet tool install --tool-path /tools dotnet-trace
 RUN dotnet tool install --tool-path /tools dotnet-dump
@@ -22,8 +19,8 @@ RUN dotnet tool install --tool-path /tools dotnet-stack
 WORKDIR /app
 COPY . ./
 
-RUN echo "Building MONAI Deploy Informatics Gateway $Version ($FileVersion)..."
-RUN dotnet publish -c Release -o out --nologo /p:Version=$Version /p:FileVersion=$FileVersion src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
+RUN echo "Building MONAI Deploy Informatics Gateway..."
+RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
