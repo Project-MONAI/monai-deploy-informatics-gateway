@@ -21,6 +21,9 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
+      <PackageReference Include="GitVersion.MsBuild" Version="5.8.1">
+          <PrivateAssets>All</PrivateAssets>
+      </PackageReference>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
