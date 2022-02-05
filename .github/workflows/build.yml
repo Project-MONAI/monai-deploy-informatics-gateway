@@ -1,70 +1,200 @@
-name: Default
+name: Build
 
 on:
+  # Trigger on pushes and on pull requests
   push:
-    branches:
-    - main
-    - 'release/**'
   pull_request:
-    branches:
-    - main
-    - 'release/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  BUILD_CONFIG: "Release"
+  SOLUTION: "Monai.Deploy.InformaticsGateway.sln"
+  TEST_RESULTS: "results/"
 
 jobs:
   build:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-dotnet@v1
-      with: 
-        dotnet-version: '6.0.x'
-    - name: Build
-      run: |
-        export VERSION=`cat VERSION`
-        ./build.sh
-        docker tag monai/informatics-gateway:$VERSION monai/informatics-gateway:${{ github.sha }}
-        docker images
-    - name: Scan image with Azure Container Scan
-      env:
-        TRIVY_TIMEOUT_SEC: 360s
-      uses: Azure/container-scan@v0.1
-      with:
-        image-name: monai/informatics-gateway:${{ github.sha }}
-    - name: Scan image with Anchore
-      id: scan
-      uses: anchore/scan-action@v2
-      with:
-        image: monai/informatics-gateway:${{ github.sha }}
-        fail-build: true
-        severity-cutoff: high
-        acs-report-enable: true
-    # - name: upload Anchore scan SARIF report
-    #   uses: github/codeql-action/upload-sarif@v1
-    #   with:
-    #     sarif_file: ${{ steps.scan.outputs.sarif }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+      # fail-fast: true
 
-  test:
-    timeout-minutes: 60
-    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+
+    outputs:
+      semVer: ${{ steps.gitversion.outputs.semVer }}
+      preReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}
+      majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
+
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '6.0.x'
-    - name: Run Unit Test
-      run: ./run-tests.sh
-      working-directory: ./src
-    - uses: codecov/codecov-action@v2
-      with:
-        token: ${{ secrets.CODECOV_TOKEN }} 
-        directory: ./src/results
-        files: "**/coverage.opencover.xml"
-        flags: unittests 
-        name: codecov-umbrella 
-        fail_ci_if_error: true 
-        verbose: true 
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool
+
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.11
+        with:
+          useConfigFile: true
+          configFilePath: .github/.gitversion.yml
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./src
+
+      - name: Build All
+        run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
+        working-directory: ./src
+
+      - name: Run Unit Test
+        run: dotnet test -c ${{ env.BUILD_CONFIG }} -v=minimal --results-directory "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings ${{ env.SOLUTION }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        working-directory: ./src
+
+      - uses: codecov/codecov-action@v2
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: "src/${{ env.TEST_RESULTS }}"
+          files: "**/coverage.opencover.xml"
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+
+      - name: Build CLI (linux-x64)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          mkdir ~/release
+          dotnet publish --self-contained -c ${{ env.BUILD_CONFIG }} -r linux-x64 -o cli/ src/CLI/Monai.Deploy.InformaticsGateway.CLI.csproj
+          pushd cli && rm *.pdb
+          zip -r ~/release/mig-cli-linux-x64.zip *
+          popd
+          ls -lR ~/release
+
+      - name: Build CLI (windows-x64)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          mkdir ~/release
+          dotnet publish --self-contained -c ${{ env.BUILD_CONFIG }} -r win-x64 -o cli/ src/CLI/Monai.Deploy.InformaticsGateway.CLI.csproj
+          pushd cli && rm *.pdb
+          Compress-Archive -Path * -DestinationPath ~/release/mig-cli-windows-x64.zip
+          popd
+          dir -r ~/release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: cli
+          path: ~/release
+          retention-days: 7
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1.12.0
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3.6.2
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{env.GitVersion_SemVer}}
+            type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2.9.0
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Scan image with Azure Container Scan
+        env:
+          TRIVY_TIMEOUT_SEC: 360s
+        uses: Azure/container-scan@v0.1
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          image-name: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+
+  release:
+    if: ${{ contains(github.ref, 'refs/heads/main')  }}
+    runs-on: ubuntu-latest
+    needs: build
+    env:
+      SEMVER: ${{ needs.build.outputs.semVer }}
+      PRERELEASELABEL: ${{ needs.build.outputs.preReleaseLabel }}
+      MAJORMINORPATCH: ${{ needs.build.outputs.majorMinorPatch }}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: cli
+          path: release/
+
+      - name: List artifacts
+        run: ls -lR release/
+
+      - name: Extract owner and repo
+        uses: jungwinter/split@v1
+        id: repo
+        with:
+          seperator: "/"
+          msg: ${{ github.repository }}
+
+      - name: Install GitReleaseManager
+        uses: gittools/actions/gitreleasemanager/setup@v0.9.11
+        with:
+          versionSpec: "0.13.x"
+
+      - name: Create release with GitReleaseManager
+        uses: gittools/actions/gitreleasemanager/create@v0.9.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ steps.repo.outputs._0 }}
+          repository: ${{ steps.repo.outputs._1 }}
+          milestone: ${{ env.MAJORMINORPATCH }}
+          name: "Release ${{ env.MAJORMINORPATCH }}"
+          assets: |
+            release/mig-cli-linux-x64.zip
+            release/mig-cli-windows-x64.zip
+
+      # - name: Publish release with GitReleaseManager
+      #   uses: gittools/actions/gitreleasemanager/publish@v0.9.11
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     owner: ${{ steps.repo.outputs._0 }}
+      #     repository: ${{ steps.repo.outputs._1 }}
+      #     tagName: ${{ env.MAJORMINORPATCH }}
+
+      # - name: Close release with GitReleaseManager
+      #   uses: gittools/actions/gitreleasemanager/close@v0.9.11
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     owner: ${{ steps.repo.outputs._0 }}
+      #     repository: ${{ steps.repo.outputs._1 }}
+      #     milestone: ${{ env.MAJORMINORPATCH }}

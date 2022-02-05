@@ -27,7 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             await Task.Delay(500);
             Assert.False(payload.HasTimedOut);
             payload.Add(new FileStorageInfo());
-            await Task.Delay(500);
+            await Task.Delay(450);
             Assert.False(payload.HasTimedOut);
             Assert.Equal("key", payload.Key);
         }
@@ -37,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
             payload.Add(new FileStorageInfo());
-            await Task.Delay(1000);
+            await Task.Delay(1001);
             Assert.True(payload.HasTimedOut);
         }
 
