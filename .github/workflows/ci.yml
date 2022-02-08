@@ -1,0 +1,300 @@
+# Copyright 2021-2022 MONAI Consortium
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: ci
+
+on:
+  # Triggers on pushes and on pull requests
+  push:
+    branches:
+    - main
+  pull_request:
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  BUILD_CONFIG: "Release"
+  SOLUTION: "Monai.Deploy.InformaticsGateway.sln"
+  TEST_RESULTS: "results/"
+
+jobs:
+  unit-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+      fail-fast: true
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./src
+
+      - name: Build All
+        run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
+        working-directory: ./src
+
+      - name: Run Unit Test
+        run: dotnet test -c ${{ env.BUILD_CONFIG }} -v=minimal --results-directory "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings ${{ env.SOLUTION }}
+        working-directory: ./src
+
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: "src/${{ env.TEST_RESULTS }}"
+          files: "**/coverage.opencover.xml"
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+  
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+      fail-fast: true
+
+    permissions:
+      contents: write
+      packages: write
+      checks: write
+      security-events: write
+
+    outputs:
+      semVer: ${{ steps.gitversion.outputs.semVer }}
+      preReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}
+      majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool
+
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.11
+        with:
+          useConfigFile: true
+          configFilePath: .github/.gitversion.yml
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./src
+
+      - name: Build All
+        run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
+        working-directory: ./src
+
+      - name: Build CLI (linux-x64)
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        run: |
+          mkdir ~/release
+          dotnet publish --self-contained -c ${{ env.BUILD_CONFIG }} -r linux-x64 -o cli/ src/CLI/Monai.Deploy.InformaticsGateway.CLI.csproj
+          pushd cli && rm *.pdb
+          zip -r ~/release/mig-cli-linux-x64.zip *
+          popd
+          ls -lR ~/release
+
+      - name: Build CLI (windows-x64)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          mkdir ~/release
+          dotnet publish --self-contained -c ${{ env.BUILD_CONFIG }} -r win-x64 -o cli/ src/CLI/Monai.Deploy.InformaticsGateway.CLI.csproj
+          pushd cli && rm *.pdb
+          Compress-Archive -Path * -DestinationPath ~/release/mig-cli-windows-x64.zip
+          popd
+          dir -r ~/release
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: cli
+          path: ~/release
+          retention-days: 7
+
+      - name: Log in to the Container registry
+        uses: docker/login-action@v1.12.0
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v3.6.2
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=${{env.GitVersion_SemVer}}
+            type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2.9.0
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Scan image with Azure Container Scan
+        env:
+          TRIVY_TIMEOUT_SEC: 360s
+        uses: Azure/container-scan@v0.1
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          image-name: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          
+      - name: Anchore container scan
+        id: anchore-scan
+        uses: anchore/scan-action@v3.2.0
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          fail-build: true
+          severity-cutoff: critical
+
+      - name: Upload Anchore scan SARIF report
+        uses: github/codeql-action/upload-sarif@v1
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          sarif_file: ${{ steps.anchore-scan.outputs.sarif }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Update docs version
+        run: |          
+          sed -i -e "s,v0.0.0,v$GitVersion_SemVer,g" ./docs/docfx.json
+          sed -i -e "s,v0.0.0,v$GitVersion_SemVer,g" ./docs/index.md
+
+      - uses: nikeee/docfx-action@v1.0.0
+        name: Build Docs
+        with:
+          args: docs/docfx.json
+
+      - name: Package docs
+        run: |
+          mkdir ~/release
+          pushd docs/_site
+          zip -r ~/release/mig-docs-${GitVersion_SemVer}.zip *
+          popd
+          ls -lR ~/release
+
+      - name: Upload docs
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: docs
+          path: ~/release
+          retention-days: 7
+
+  release:
+    if: ${{ contains(github.ref, 'refs/heads/main')  }}
+    runs-on: ubuntu-latest
+    needs: [build, unit-test, docs]
+    env:
+      SEMVER: ${{ needs.build.outputs.semVer }}
+      PRERELEASELABEL: ${{ needs.build.outputs.preReleaseLabel }}
+      MAJORMINORPATCH: ${{ needs.build.outputs.majorMinorPatch }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/download-artifact@v2
+        with:
+          path: release/
+
+      - name: List artifacts
+        run: ls -lR release/
+
+      - name: Extract owner and repo
+        uses: jungwinter/split@v1
+        id: repo
+        with:
+          seperator: "/"
+          msg: ${{ github.repository }}
+
+      - name: Install GitReleaseManager
+        uses: gittools/actions/gitreleasemanager/setup@v0.9.11
+        with:
+          versionSpec: "0.13.x"
+
+      - name: Create release with GitReleaseManager
+        uses: gittools/actions/gitreleasemanager/create@v0.9.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ steps.repo.outputs._0 }}
+          repository: ${{ steps.repo.outputs._1 }}
+          milestone: ${{ env.MAJORMINORPATCH }}
+          name: "Release ${{ env.MAJORMINORPATCH }}"
+          assets: |
+            release/mig-cli-linux-x64.zip
+            release/mig-cli-windows-x64.zip
+            release/mig-docs-${SEMVER}.zip
+
+      - name: Publish release with GitReleaseManager
+        uses: gittools/actions/gitreleasemanager/publish@v0.9.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ steps.repo.outputs._0 }}
+          repository: ${{ steps.repo.outputs._1 }}
+          tagName: ${{ env.MAJORMINORPATCH }}
+
+      - name: Close release with GitReleaseManager
+        uses: gittools/actions/gitreleasemanager/close@v0.9.11
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ steps.repo.outputs._0 }}
+          repository: ${{ steps.repo.outputs._1 }}
+          milestone: ${{ env.MAJORMINORPATCH }}
+
+      - name: Unzip docs
+        run: |
+          mkdir ~/docs
+          unzip release/mig-docs-${SEMVER}.zip -d ~/docs
+          ls -lR ~/docs
+
+      - name: Deploy Docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ~/docs
+          publish_branch: docs

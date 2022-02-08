@@ -28,6 +28,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
+using xRetry;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 {
@@ -71,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _options.Value.Storage.StorageServiceBucketName = "bucket";
         }
 
-        [Fact(DisplayName = "PayloadNotificationService_Constructor")]
+        [RetryFact(DisplayName = "PayloadNotificationService_Constructor")]
         public void PayloadNotificationService_Constructor()
         {
             Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(null, null, null, null, null, null, null, null));
@@ -84,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, _serviceScopeFactory.Object, _messageBrokerPublisherService.Object, null));
         }
 
-        [Fact(DisplayName = "Payload Notification Service shall stop processing when StopAsync is called")]
+        [RetryFact(DisplayName = "Payload Notification Service shall stop processing when StopAsync is called")]
         public void PayloadNotificationService_ShallStopProcessing()
         {
             var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Upload };
@@ -114,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLogging($"Uploading payload {payload.Id} to storage service at {_options.Value.Storage.StorageServiceBucketName}.", LogLevel.Information, Times.Never());
         }
 
-        [Fact(DisplayName = "Payload Notification Service shall restore payloads from database")]
+        [RetryFact(DisplayName = "Payload Notification Service shall restore payloads from database")]
         public void PayloadNotificationService_ShallRestorePayloadsFromDatabase()
         {
             var testData = new List<Payload>
@@ -144,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLogging($"2 payloads restored from database.", LogLevel.Information, Times.Once());
         }
 
-        [Fact(DisplayName = "Payload Notification Service shall prrocess payloads from payload assembler")]
+        [RetryFact(DisplayName = "Payload Notification Service shall prrocess payloads from payload assembler")]
         public void PayloadNotificationService_ShallProcessPayloadsFromPayloadAssembler()
         {
             var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Upload };
@@ -166,7 +167,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLogging($"Payload {payload.Id} added to {service.ServiceName} for processing.", LogLevel.Information, Times.AtLeastOnce());
         }
 
-        [Fact(DisplayName = "Payload Notification Service shall upload files & retry on failure")]
+        [RetryFact(DisplayName = "Payload Notification Service shall upload files & retry on failure")]
         public void PayloadNotificationService_ShalUploadFilesAndRetryOnFailure()
         {
             _fileSystem.Setup(p => p.File.OpenRead(It.IsAny<string>())).Throws(new Exception("error"));
@@ -212,7 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _instanceCleanupQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
         }
 
-        [Fact(DisplayName = "Payload Notification Service shall publish workflow request & retry on failure")]
+        [RetryFact(DisplayName = "Payload Notification Service shall publish workflow request & retry on failure")]
         public void PayloadNotificationService_ShallPublishAndRetryOnFailure()
         {
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
@@ -247,7 +248,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _instanceCleanupQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
         }
 
-        [Fact(DisplayName = "Payload Notification Service shall upload files & publish")]
+        [RetryFact(DisplayName = "Payload Notification Service shall upload files & publish")]
         public void PayloadNotificationService_ShalUploadFilesAndPublish()
         {
             _fileSystem.Setup(p => p.File.OpenRead(It.IsAny<string>())).Returns(Stream.Null);
