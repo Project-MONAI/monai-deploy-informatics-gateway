@@ -12,7 +12,7 @@ This document describes the detailed designs derived from the requirements defin
 
 ### Scope
 
-The scope of this document is limited to the design of MONAI Deploy Informatics Gateway. Therefore, this design document does not address any design decisions belonging to other subsystems, such as MONAI Workflow Manager, MONAI Deploy Application SDK.
+The scope of this document is limited to the design of MONAI Deploy Informatics Gateway. Therefore, this design document does not address any design decisions belonging to other subsystems, such as [MONAI Workflow Manager](https://github.com/Project-MONAI/monai-deploy-workflow-manager) and [MONAI Deploy Application SDK](https://github.com/Project-MONAI/monai-deploy-app-sdk).
 
 ### Assumptions, Constraints, Dependencies
 
