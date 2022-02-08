@@ -9,7 +9,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: build-release
+name: ci
 
 on:
   # Triggers on pushes and on pull requests
@@ -29,6 +29,45 @@ env:
   TEST_RESULTS: "results/"
 
 jobs:
+  unit-test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+      fail-fast: true
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./src
+
+      - name: Build All
+        run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
+        working-directory: ./src
+
+      - name: Run Unit Test
+        run: dotnet test -c ${{ env.BUILD_CONFIG }} -v=minimal --results-directory "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings ${{ env.SOLUTION }}
+        working-directory: ./src
+
+      - uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: "src/${{ env.TEST_RESULTS }}"
+          files: "**/coverage.opencover.xml"
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
+          verbose: true
+  
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -39,6 +78,8 @@ jobs:
     permissions:
       contents: write
       packages: write
+      checks: write
+      security-events: write
 
     outputs:
       semVer: ${{ steps.gitversion.outputs.semVer }}
@@ -72,22 +113,6 @@ jobs:
       - name: Build All
         run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
         working-directory: ./src
-
-      - name: Run Unit Test
-        run: dotnet test -c ${{ env.BUILD_CONFIG }} -v=minimal --results-directory "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings ${{ env.SOLUTION }}
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        working-directory: ./src
-
-      - uses: codecov/codecov-action@v2
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: "src/${{ env.TEST_RESULTS }}"
-          files: "**/coverage.opencover.xml"
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: true
-          verbose: true
 
       - name: Build CLI (linux-x64)
         if: ${{ matrix.os == 'ubuntu-latest' }}
@@ -150,15 +175,64 @@ jobs:
         if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
         with:
           image-name: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          
+      - name: Anchore container scan
+        id: anchore-scan
+        uses: anchore/scan-action@v3.2.0
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          fail-build: true
+          severity-cutoff: critical
+
+      - name: Upload Anchore scan SARIF report
+        uses: github/codeql-action/upload-sarif@v1
+        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        with:
+          sarif_file: ${{ steps.anchore-scan.outputs.sarif }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Update docs version
+        run: |          
+          sed -i -e "s,v0.0.0,v$GitVersion_SemVer,g" ./docs/docfx.json
+          sed -i -e "s,v0.0.0,v$GitVersion_SemVer,g" ./docs/index.md
+
+      - uses: nikeee/docfx-action@v1.0.0
+        name: Build Docs
+        with:
+          args: docs/docfx.json
+
+      - name: Package docs
+        run: |
+          mkdir ~/release
+          pushd docs/_site
+          zip -r ~/release/mig-docs-${GitVersion_SemVer}.zip *
+          popd
+          ls -lR ~/release
+
+      - name: Upload docs
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: docs
+          path: ~/release
+          retention-days: 7
 
   release:
     if: ${{ contains(github.ref, 'refs/heads/main')  }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, unit-test, docs]
     env:
       SEMVER: ${{ needs.build.outputs.semVer }}
       PRERELEASELABEL: ${{ needs.build.outputs.preReleaseLabel }}
       MAJORMINORPATCH: ${{ needs.build.outputs.majorMinorPatch }}
+
     steps:
       - uses: actions/checkout@v2
         with:
@@ -166,7 +240,6 @@ jobs:
 
       - uses: actions/download-artifact@v2
         with:
-          name: cli
           path: release/
 
       - name: List artifacts
@@ -195,6 +268,7 @@ jobs:
           assets: |
             release/mig-cli-linux-x64.zip
             release/mig-cli-windows-x64.zip
+            release/mig-docs-${SEMVER}.zip
 
       - name: Publish release with GitReleaseManager
         uses: gittools/actions/gitreleasemanager/publish@v0.9.11
@@ -211,3 +285,16 @@ jobs:
           owner: ${{ steps.repo.outputs._0 }}
           repository: ${{ steps.repo.outputs._1 }}
           milestone: ${{ env.MAJORMINORPATCH }}
+
+      - name: Unzip docs
+        run: |
+          mkdir ~/docs
+          unzip release/mig-docs-${SEMVER}.zip -d ~/docs
+          ls -lR ~/docs
+
+      - name: Deploy Docs
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ~/docs
+          publish_branch: docs
