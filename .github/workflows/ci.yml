@@ -189,7 +189,7 @@ jobs:
           mkdir ~/release
           dotnet publish --self-contained -c ${{ env.BUILD_CONFIG }} -r linux-x64 -o cli/ src/CLI/Monai.Deploy.InformaticsGateway.CLI.csproj
           pushd cli && rm *.pdb
-          zip -r ~/release/mig-cli-linux-x64.zip *
+          zip -r ~/release/mig-cli-${{ env.GitVersion_SemVer }}-linux-x64.zip *
           popd
           ls -lR ~/release
 
@@ -199,14 +199,14 @@ jobs:
           mkdir ~/release
           dotnet publish --self-contained -c ${{ env.BUILD_CONFIG }} -r win-x64 -o cli/ src/CLI/Monai.Deploy.InformaticsGateway.CLI.csproj
           pushd cli && rm *.pdb
-          Compress-Archive -Path * -DestinationPath ~/release/mig-cli-windows-x64.zip
+          Compress-Archive -Path * -DestinationPath ~/release/mig-cli-${{ env.GitVersion_SemVer }}-win-x64.zip
           popd
           dir -r ~/release
 
       - name: Upload CLI
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: cli
+          name: artifacts
           path: ~/release
           retention-days: 7
 
@@ -225,7 +225,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{env.GitVersion_SemVer}}
+            type=raw,value=${{ env.GitVersion_SemVer }}
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
 
       - name: Build and push Docker image
@@ -301,21 +301,21 @@ jobs:
         run: |
           mkdir ~/release
           pushd docs/_site
-          zip -r ~/release/mig-docs.zip *
+          zip -r ~/release/mig-docs-${{ env.GitVersion_SemVer }}.zip *
           popd
           ls -lR ~/release
 
       - name: Upload docs
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: docs
+          name: artifacts
           path: ~/release
           retention-days: 7
 
   release:
     if: ${{ contains(github.ref, 'refs/heads/main')  }}
     runs-on: ubuntu-latest
-    needs: [build, unit-test, docs]
+    needs: [calc-version, build, unit-test, docs]
     env:
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
       PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
@@ -327,11 +327,10 @@ jobs:
           fetch-depth: 0
 
       - uses: actions/download-artifact@v2
-        with:
-          path: release/
+        id: download
 
       - name: List artifacts
-        run: ls -lR release/
+        run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
 
       - name: Extract owner and repo
         uses: jungwinter/split@v1
@@ -352,11 +351,11 @@ jobs:
           owner: ${{ steps.repo.outputs._0 }}
           repository: ${{ steps.repo.outputs._1 }}
           milestone: ${{ env.MAJORMINORPATCH }}
-          name: "Release ${{ env.MAJORMINORPATCH }}"
+          name: "Release v${{ env.MAJORMINORPATCH }}"
           assets: |
-            release/cli/mig-cli-linux-x64.zip
-            release/cli/mig-cli-windows-x64.zip
-            release/docs/mig-docs.zip
+            artifacts/mig-cli-${{ env.SEMVER }}-linux-x64.zip
+            artifacts/mig-cli-${{ env.SEMVER }}-win-x64.zip
+            artifacts/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
         uses: gittools/actions/gitreleasemanager/publish@v0.9.11
