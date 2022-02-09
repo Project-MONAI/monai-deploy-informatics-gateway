@@ -14,8 +14,6 @@ name: ci
 on:
   # Triggers on pushes and on pull requests
   push:
-    branches:
-    - main
   pull_request:
 
   # Allows you to run this workflow manually from the Actions tab
@@ -377,13 +375,13 @@ jobs:
 
       - name: Unzip docs
         run: |
-          mkdir ~/docs
-          unzip artifacts/mig-docs-${{ env.SEMVER }}.zip -d ~/docs
-          ls -lR ~/docs
+          mkdir userguide
+          unzip artifacts/mig-docs-${{ env.SEMVER }}.zip -d userguide/
+          ls -lR userguide/
 
       - name: Deploy Docs
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ~/docs
+          publish_dir: userguide/
           publish_branch: docs
