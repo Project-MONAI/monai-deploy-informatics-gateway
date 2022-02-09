@@ -9,8 +9,7 @@
 
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
 [![codecov](https://codecov.io/gh/Project-MONAI/monai-deploy-informatics-gateway/branch/main/graph/badge.svg?token=34S8VI0XGD)](https://codecov.io/gh/Project-MONAI/monai-deploy-informatics-gateway)
-[![Default](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/actions/workflows/build.yml)
-
+[![ci](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/actions/workflows/ci.yml/badge.svg)](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/actions/workflows/ci.yml)
 
 MONAI Deploy Informatics Gateway (MIG) handles the first and last step in a clinical data pipeline, the Input, and Output (I/O).
 
