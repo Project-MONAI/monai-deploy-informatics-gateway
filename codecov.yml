@@ -5,6 +5,15 @@ coverage:
   precision: 5
   round: down
   range: "70...100"
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+        base: auto
+        if_not_found: success
+        informational: false
+        only_pulls: false
 
 parsers:
   gcov:

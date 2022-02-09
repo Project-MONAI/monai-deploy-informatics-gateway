@@ -33,7 +33,7 @@ Please refer to the latest [user guide](./docs/setup/setup.md) for installation 
 
 ### Development Requirements
 
-* [.NET 5 SDK](https://dotnet.microsoft.com/download/dotnet/5.0)
+* [.NET 6 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)
 
 During development, change any settings inside the `appsettings.Development.json` file.
 First, export the following environment variable before executing `dotnet run`:
