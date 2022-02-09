@@ -29,6 +29,29 @@ env:
   TEST_RESULTS: "results/"
 
 jobs:
+  calc-version:
+    runs-on: ubuntu-latest
+    
+    outputs:
+      semVer: ${{ steps.gitversion.outputs.semVer }}
+      preReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}
+      majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool
+
+      - name: Determine Version
+        id: gitversion
+        uses: gittools/actions/gitversion/execute@v0.9.11
+        with:
+          useConfigFile: true
+          configFilePath: .github/.gitversion.yml
+          
   unit-test:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -45,12 +68,20 @@ jobs:
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: "6.0.x"
+          
+      - name: Enable NuGet cache
+        uses: actions/cache@v2.1.7
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
 
       - name: Restore dependencies
         run: dotnet restore
         working-directory: ./src
 
-      - name: Build All
+      - name: Build Solution
         run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
         working-directory: ./src
 
@@ -70,6 +101,7 @@ jobs:
   
   build:
     runs-on: ${{ matrix.os }}
+    needs: [calc-version]
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -81,11 +113,6 @@ jobs:
       checks: write
       security-events: write
 
-    outputs:
-      semVer: ${{ steps.gitversion.outputs.semVer }}
-      preReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}
-      majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -96,21 +123,19 @@ jobs:
         with:
           dotnet-version: "6.0.x"
 
-      - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool
-
-      - name: Determine Version
-        id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.11
+      - name: Enable NuGet cache
+        uses: actions/cache@v2.1.7
         with:
-          useConfigFile: true
-          configFilePath: .github/.gitversion.yml
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
 
       - name: Restore dependencies
         run: dotnet restore
         working-directory: ./src
 
-      - name: Build All
+      - name: Build Solution
         run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
         working-directory: ./src
 
@@ -134,7 +159,7 @@ jobs:
           popd
           dir -r ~/release
 
-      - name: Upload Artifact
+      - name: Upload CLI
         uses: actions/upload-artifact@v2.3.1
         with:
           name: cli
@@ -143,7 +168,7 @@ jobs:
 
       - name: Log in to the Container registry
         uses: docker/login-action@v1.12.0
-        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
@@ -152,7 +177,7 @@ jobs:
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v3.6.2
-        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
@@ -161,10 +186,10 @@ jobs:
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2.9.0
-        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           context: .
-          push: true
+          push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
@@ -172,14 +197,14 @@ jobs:
         env:
           TRIVY_TIMEOUT_SEC: 360s
         uses: Azure/container-scan@v0.1
-        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           image-name: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
           
       - name: Anchore container scan
         id: anchore-scan
         uses: anchore/scan-action@v3.2.0
-        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
           fail-build: true
@@ -187,22 +212,41 @@ jobs:
 
       - name: Upload Anchore scan SARIF report
         uses: github/codeql-action/upload-sarif@v1
-        if: ${{ (github.event_name != 'pull_request') && (matrix.os == 'ubuntu-latest') }}
+        if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           sarif_file: ${{ steps.anchore-scan.outputs.sarif }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
   docs:
     runs-on: ubuntu-latest
+    needs: [calc-version]
+    env:
+      SEMVER: ${{ needs.calc-version.outputs.semVer }}
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+          
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: "6.0.x"
+
+      - name: Enable NuGet cache
+        uses: actions/cache@v2.1.7
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./src
 
       - name: Update docs version
         run: |          
-          sed -i -e "s,v0.0.0,v$GitVersion_SemVer,g" ./docs/docfx.json
-          sed -i -e "s,v0.0.0,v$GitVersion_SemVer,g" ./docs/index.md
+          sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/docfx.json
+          sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/index.md
 
       - uses: nikeee/docfx-action@v1.0.0
         name: Build Docs
@@ -213,7 +257,7 @@ jobs:
         run: |
           mkdir ~/release
           pushd docs/_site
-          zip -r ~/release/mig-docs-${GitVersion_SemVer}.zip *
+          zip -r ~/release/mig-docs-${SEMVER}.zip *
           popd
           ls -lR ~/release
 
@@ -229,9 +273,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, unit-test, docs]
     env:
-      SEMVER: ${{ needs.build.outputs.semVer }}
-      PRERELEASELABEL: ${{ needs.build.outputs.preReleaseLabel }}
-      MAJORMINORPATCH: ${{ needs.build.outputs.majorMinorPatch }}
+      SEMVER: ${{ needs.calc-version.outputs.semVer }}
+      PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
+      MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
 
     steps:
       - uses: actions/checkout@v2
@@ -266,9 +310,9 @@ jobs:
           milestone: ${{ env.MAJORMINORPATCH }}
           name: "Release ${{ env.MAJORMINORPATCH }}"
           assets: |
-            release/mig-cli-linux-x64.zip
-            release/mig-cli-windows-x64.zip
-            release/mig-docs-${SEMVER}.zip
+            release/cli/mig-cli-linux-x64.zip
+            release/cli/mig-cli-windows-x64.zip
+            release/docs/mig-docs-${SEMVER}.zip
 
       - name: Publish release with GitReleaseManager
         uses: gittools/actions/gitreleasemanager/publish@v0.9.11
