@@ -10,7 +10,7 @@
 # limitations under the License.
 
 assembly-versioning-scheme: MajorMinorPatchTag
-next-version: 0.1.0
+next-version: 0.0.1
 mode: ContinuousDelivery
 branches:
   main:
