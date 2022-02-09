@@ -12,11 +12,44 @@ For development requirements, please refer to [README.md](https://github.com/Pro
 
 ### Informatics Gateway CLI
 
-TBD
+Download & install Informatics Gateway CLI from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section of
+the repository and install it.
+
+#### On Linux
+
+```bash
+# Download the CLI
+curl -LO https://url-to-cli
+# Unzip the CLI
+unzip mig-cli-linux-0.1.0-x64.zip
+# Calculate the SHA256 checksum and compare with the one listed on the Releases page.
+sha256sum mig-cli
+# Install it in bin
+sudo mv mig-cli /usr/local/bin
+```
+
+#### On Windows
+
+```powershell
+# Download the CLI
+curl -LO https://url-to-cli
+# Unzip the CLI
+Expand-Archive -Path mig-cli-win-0.1.0-x64.zip
+# Calculate the SHA256 checksum and compare with the one listed on the Releases page.
+Get-FileHash mig-cli.exe
+```
 
 ### Informatics Gateway Docker Image
 
-TBD
+Navigate to the [monai-deploy-informatics-gateway package](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/pkgs/container/monai-deploy-informatics-gateway)
+page and locate the version to download.
+
+```bash
+# for the latest build
+docker pull ghcr.io/project-monai/monai-deploy-informatics-gateway:latest
+# or for a versioned build
+docker pull ghcr.io/project-monai/monai-deploy-informatics-gateway:0.1.0
+```
 
 ## Configure Informatics Gateway
 
@@ -25,6 +58,12 @@ Use the following command to initialize Informatics Gateway & default configurat
 ```bash
 ./mig-cli config init
 ./mig-cli config endpoint http://localhost:5000
+```
+
+
+```powershell
+mig-cli.exe config init
+mig-cli.exe config endpoint http://localhost:5000
 ```
 
 This first command extract the default `appsettings.json` file into the home directory:
@@ -47,6 +86,10 @@ To start or stop Informatics Gateway, use one of the following commands:
 ./mig-cli stop
 ```
 
+
+> [!Note]
+> To see available commands simply execute `./mig-cli` or `mig-cli.exe`.
+
 ## Enable Incoming Associations
 
 The next step is to configure Informatics Gateway enable receiving of DICOM instances from external DICOM devices.
@@ -60,7 +103,10 @@ The next step is to configure Informatics Gateway enable receiving of DICOM inst
 The command creates a new listening AE Title with AE Title `BrainAET`.  The listening AE Title
 will be grouping instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
 
-For complete reference, please refer to the [Config API](../api/rest/config.md).
+> [!Note]
+> `-grouping` is optional with default of 0020,000D.
+> `-t` is optional with default of 5 seconds.
+> For complete reference, please refer to the [Config API](../api/rest/config.md).
 
 2. Enable receiving DICOM instances from an external DICOM devices:
 
@@ -173,7 +219,3 @@ Informatics Gateway.
   }
 }
 ```
-
-## Summary
-
-TBD

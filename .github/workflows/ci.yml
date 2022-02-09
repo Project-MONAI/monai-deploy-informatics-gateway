@@ -376,7 +376,7 @@ jobs:
       - name: Unzip docs
         run: |
           mkdir ~/docs
-          unzip release/mig-docs.zip -d ~/docs
+          unzip artifacts/mig-docs-${{ env.SEMVER }}.zip -d ~/docs
           ls -lR ~/docs
 
       - name: Deploy Docs
