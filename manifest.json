@@ -1,0 +1,1438 @@
+{
+  "homepages": [],
+  "source_base_path": "/github/workspace/docs",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "Resource",
+      "output": {
+        "resource": {
+          "relative_path": "index.json"
+        }
+      },
+      "is_incremental": false
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/rest/config.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/rest/config.html",
+          "hash": "ZO0mtI9xP0pcySIDxUzJ5w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/rest/health.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/rest/health.html",
+          "hash": "RdPGvM/Rs3Vai9Qw1ZmJGA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/rest/inference.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/rest/inference.html",
+          "hash": "91XL5mjlO8A1r8XpmPBdyg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "6blCf8SfhsxYe8eHlIaicw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "changelog.md",
+      "output": {
+        ".html": {
+          "relative_path": "changelog.html",
+          "hash": "hxhY/DQjc0npvj/ExPjT7g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "compliance/dicom.md",
+      "output": {
+        ".html": {
+          "relative_path": "compliance/dicom.html",
+          "hash": "Eg/K6z+MOsa8AMYEFxs9kA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "compliance/open-source-licenses.md",
+      "output": {
+        ".html": {
+          "relative_path": "compliance/open-source-licenses.html",
+          "hash": "XEaNxGtc3M7SESua2sWqCg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "compliance/toc.md",
+      "output": {
+        ".html": {
+          "relative_path": "compliance/toc.html",
+          "hash": "oxrcTmm0X7AS357qTdKSrg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/MONAI-logo_color.svg",
+      "output": {
+        "resource": {
+          "relative_path": "images/MONAI-logo_color.svg"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/favicon.ico",
+      "output": {
+        "resource": {
+          "relative_path": "images/favicon.ico"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "jgh73Kw45Ef+2Wep/4Y+vQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html",
+          "hash": "W4BnzVEQaJW16bNA/6voYQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html",
+          "hash": "kY7iHeoAkuEfiS8Xnv78Cg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary-2.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary-2.html",
+          "hash": "lG5qXkuGRzJsuFydLLf/+g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportCompleteMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportCompleteMessage.html",
+          "hash": "SJvwzKpBsenujnBDZ8BdMQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportRequestMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportRequestMessage.html",
+          "hash": "VAE+VY9BWe2RWI7JXSRHbA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportStatus.html",
+          "hash": "xzBGcOXZdT9d1npZbMZQjw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.IMessageBrokerPublisherService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.IMessageBrokerPublisherService.html",
+          "hash": "1Fd9pYAOhPqN1+Jis4g/rw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.IMessageBrokerSubscriberService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.IMessageBrokerSubscriberService.html",
+          "hash": "PwNifvK1W+Ycw72aI3hTWA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.JsonMessage-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.JsonMessage-1.html",
+          "hash": "Bn/Q3Q5Wmh1OWMSyxYCG0g=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.Message.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.Message.html",
+          "hash": "vPflWFS9OUiOwk9kB+iFEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.MessageBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.MessageBase.html",
+          "hash": "Do9NwyPHHSmYYA6vbo7HAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.MessageReceivedEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.MessageReceivedEventArgs.html",
+          "hash": "LKDWz1/0/CP9HZ9P/jbgQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.WorkflowRequestMessage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.WorkflowRequestMessage.html",
+          "hash": "xoSVEEFSwXJdEm0z+ufDCw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MessageBroker.html",
+          "hash": "QowMnyLFfpeRofFnE2VciQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html",
+          "hash": "LBjylCeQRyN4SNJW2Q7Lgg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.ConnectionAuthType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.ConnectionAuthType.html",
+          "hash": "vkmD+LxJn0UU6oKnRe7SHQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.DicomWebConnectionDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.DicomWebConnectionDetails.html",
+          "hash": "qfLfgKSXgt92On2k9HWraw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.FhirResource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.FhirResource.html",
+          "hash": "3i5qCFZPccfmpTxnJxqJhg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.FhirStorageFormat.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.FhirStorageFormat.html",
+          "hash": "cZhlUVUShldnhCIDYOya1A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.FhirVersion.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.FhirVersion.html",
+          "hash": "DFxjDnVOIpr/8W+UsWesbg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.FileMetadataKeys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.FileMetadataKeys.html",
+          "hash": "tqTnD5GFzKVzK10wsNZxMw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.HealthStatusResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.HealthStatusResponse.html",
+          "hash": "nTcQNFqyOBOrdv1R5RZj8Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html",
+          "hash": "34/ymQ93pl7po6iov4HdcA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestDetails.html",
+          "hash": "Pox93pi3mGiOpOfh+rRq4Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestException.html",
+          "hash": "buIUP/7gcXtrwQtdt0Oa7w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.html",
+          "hash": "wxE4+6xmCBhATtTkvk+h4A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestResponse.html",
+          "hash": "8ab5OHS4YXQkHtb6yzqy4Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestState.html",
+          "hash": "UAHmGEPfUFLvJT478zPwwQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus.html",
+          "hash": "FADqMVrnUOsGmo0YUR54nQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestType.html",
+          "hash": "kebtORqpG5wcZvo7L5nsOg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceStatusResponse.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceStatusResponse.html",
+          "hash": "BgGeKohamyalbJ/G2nKq6Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InputConnectionDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InputConnectionDetails.html",
+          "hash": "3WKD//Ub1z0FXNBTg7zg0Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceOperations.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceOperations.html",
+          "hash": "C9tcwC3GHnFe1os+qt8GpA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceType.html",
+          "hash": "ddj3u7ubalf2aS8kjJ1DhQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestInputDataResource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestInputDataResource.html",
+          "hash": "Qq4uBkM6tskFnjr8FdS9dQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestOutputDataResource.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestOutputDataResource.html",
+          "hash": "U37v740cW5eRTvCy5QBh6A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestedInstance.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestedInstance.html",
+          "hash": "7MMzrX3jKqUraTmUtPSfjw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.html",
+          "hash": "gFmUdjD/VXv6UAQr4V/K5Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestedStudy.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.RequestedStudy.html",
+          "hash": "yEdv/IMcIqN0vrEBGDV8kw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.ServiceStatus.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.ServiceStatus.html",
+          "hash": "N7hmZnycjpJnHRPiiXsa/Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.html",
+          "hash": "jk579d2yd+YEJjMxUfkNUg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html",
+          "hash": "w3010vb7zbOs3XZGurcEdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.BlockStorageInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.BlockStorageInfo.html",
+          "hash": "vLKIi8nbKOZ/cbxMJcH/FA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.IStorageService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.IStorageService.html",
+          "hash": "0xwMHcy0ArlOLcMdzM7XTQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState.html",
+          "hash": "tUP2V7mJNNXV1gHM52ff9w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html",
+          "hash": "jE8jRYGEthAG0gFgyKa6Ng=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.VirtualFileInfo.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.VirtualFileInfo.html",
+          "hash": "S2xm5XZl2MeEUE2JI0G+rw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.html",
+          "hash": "sWWqI2/w7kOMmO/KDnvMhg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Api.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Api.html",
+          "hash": "v+bSvX8ZVTVr+4ktGWQJ+w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.GuardExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.GuardExtensions.html",
+          "hash": "UA8a2pXeWXZEJU3ujgUnAQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.ProblemDetails.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.ProblemDetails.html",
+          "hash": "PwSZEhlr0B+VBgoaPm4LQQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.ProblemException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.ProblemException.html",
+          "hash": "rJFFru2W5Vgj3sw5qUw+Rg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.UriExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.UriExtensions.html",
+          "hash": "jyEjXhoOVUPAJ7vnepbnRg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Common.html",
+          "hash": "zF4WND/rHFuUmhyF0F4wFg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.IInformaticsGatewayClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.IInformaticsGatewayClient.html",
+          "hash": "3OGIaZvA6AmY6TWtfblQaA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.InformaticsGatewayClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.InformaticsGatewayClient.html",
+          "hash": "i4kRFB1b194Bt7jQils2Xg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService-1.html",
+          "hash": "NhqHztDcv2NWQYbRAj8Zuw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IHealthService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IHealthService.html",
+          "hash": "gJVEcOajHeup/nnDoUs4Ag=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IInferenceService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IInferenceService.html",
+          "hash": "JICuVi2tVlgB85bMHv/C/w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.html",
+          "hash": "7QTwiBDjW+eD/nxSQTtawQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Client.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Client.html",
+          "hash": "qU0AtlEK0xUEqeuUf4CF4A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.html",
+          "hash": "o+krKwwVI25L3epvAnsLiQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Common.FileSystemExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Common.FileSystemExtensions.html",
+          "hash": "qo/XKKf2FQ3aEiCO/0/CyQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Common.html",
+          "hash": "8F/cqHp4lePu3aQiOg0qtw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ConfigurationException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ConfigurationException.html",
+          "hash": "OunAcOaDCYl5CGfzwb4NuQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.html",
+          "hash": "hpBr1KntSga+47jzZakT9w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration.html",
+          "hash": "Vi2z9gS+eSES4N/ccqDA2w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.html",
+          "hash": "ZFxyu7O4kJjAhvJ7fA5dUg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomJsonOptions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomJsonOptions.html",
+          "hash": "cSHHRLOXlA4Nw3RCJnJQow=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration.html",
+          "hash": "+EQCtUSusMkCTVH0tGpDGw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration.html",
+          "hash": "YhdskJtVAzgYNciCJCJ5cA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.html",
+          "hash": "MYGHlevta5PE8+/uiy7tIQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration.html",
+          "hash": "8YDWggN/mqQxOl5ZlBo8QQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.html",
+          "hash": "hHsf96gvwVjBBzR4FldPvg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.html",
+          "hash": "FYQb1EJJTFNxMmdrX2GXbw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.RetryConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.RetryConfiguration.html",
+          "hash": "vZI3CzU6/zDQqCr4y5aijQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ScpConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ScpConfiguration.html",
+          "hash": "Ye2MapVsHeHKUjBrQjJjuQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ScuConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ScuConfiguration.html",
+          "hash": "yM6Xjv7kwMbvyopXRn4aYA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ServiceCredentials.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ServiceCredentials.html",
+          "hash": "y2XhZVpFh4dyAnVnnEIwqg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html",
+          "hash": "Zh3a6/JB2EXRxwlj/Rz4ZQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ValidationExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ValidationExtensions.html",
+          "hash": "LAnIpmwGqukYyjeYI4qOhg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.html",
+          "hash": "3t1MONzhbFCcjL2LFuKawg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebClientException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebClientException.html",
+          "hash": "JQNRPCq/ydYNyIjH1SHBNQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebResponse-1.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebResponse-1.html",
+          "hash": "jMNZyaKl/TVZzaywXUp21w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebServiceType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebServiceType.html",
+          "hash": "J+bXYLGRHkV2qDheaPlmuw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IDicomWebClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IDicomWebClient.html",
+          "hash": "XgO/l5bKF0l/QRJjLVj6fw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IQidoService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IQidoService.html",
+          "hash": "Nan5oibXPQahSHBLklYlrw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IServiceBase.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IServiceBase.html",
+          "hash": "xatXVdwpW14/7D7p9Ez2oQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.html",
+          "hash": "smDL+GmVoSljG+vwApHkdA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.html",
+          "hash": "eLin521KSWqeE/o4brfFlQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.MimeMappings.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.MimeMappings.html",
+          "hash": "R28+Yz6sEFsjfq++q7sdBQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.MimeType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.MimeType.html",
+          "hash": "9bo6akw8oH41wdiy0RAzrA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.ResponseDecodeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.ResponseDecodeException.html",
+          "hash": "vvLtpYlFb5d7ZpT2KOPlPw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.UnsupportedReturnTypeException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.UnsupportedReturnTypeException.html",
+          "hash": "DEwY77S+6zobxK2MLIgN4w=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.html",
+          "hash": "AVIycIZ+jSfTjgWtbUAp7A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common.Extensions.html",
+          "hash": "JnRAqgll2fuyaN0ZXBWSkA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common.html",
+          "hash": "RBzVVnJVNAO7N9FpXgyNUw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.html",
+          "hash": "vvL4zt0x3S8bPnKoqij5hw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "obj/api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.html",
+          "hash": "3EMYWkacUmsx0dkt6qXQFg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "setup/schema.md",
+      "output": {
+        ".html": {
+          "relative_path": "setup/schema.html",
+          "hash": "xx/tRJRRpAstVWD0uemjqA=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "setup/setup.md",
+      "output": {
+        ".html": {
+          "relative_path": "setup/setup.html",
+          "hash": "nlcaim424fJjWr6oRuh3Tg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "setup/toc.md",
+      "output": {
+        ".html": {
+          "relative_path": "setup/toc.html",
+          "hash": "PTwyknHu9OHGvYnkKfrIig=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "cKI9KBaMQxS9BTkVS1oSDQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot build incrementally because last build info is missing.",
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0,
+        "full_build_reason_code": "NoAvailableBuildCache"
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 9,
+          "skipped_file_count": 0
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": false,
+          "incrementalPhase": "build",
+          "total_file_count": 99,
+          "skipped_file_count": 0
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": false,
+        "details": "Cannot support incremental post processing, the reason is: should not trace intermediate info.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
