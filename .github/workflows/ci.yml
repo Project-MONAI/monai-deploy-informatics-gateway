@@ -301,7 +301,7 @@ jobs:
         run: |
           mkdir ~/release
           pushd docs/_site
-          zip -r ~/release/mig-docs-${{ env.GitVersion_SemVer }}.zip *
+          zip -r ~/release/mig-docs-${{ env.SEMVER }}.zip *
           popd
           ls -lR ~/release
 
