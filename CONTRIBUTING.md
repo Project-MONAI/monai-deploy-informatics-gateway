@@ -73,7 +73,7 @@ An [EditorConfig](https://editorconfig.org "EditorConfig homepage") file (`.edit
 All source code files should start with this paragraph:
 
 ```
-// Copyright 2021-2022 MONAI Consortium
+// Copyright <YEAR FROM-YEAR TO> MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -189,7 +189,7 @@ All code changes must be done via [pull requests](https://help.github.com/en/git
 1. Create a new ticket or take a known ticket from [the issue list][issue list].
 1. Check if there's already a branch dedicated to the task.
 1. If the task has not been taken, [create a new branch in your fork](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request-from-a-fork) of the codebase named `[ticket_id]-[task_name]`.
-For example, branch name `{username}/19-ci-pipeline-setup` corresponds to issue #19. 
+For example, branch name `{username}/19-ci-pipeline-setup` corresponds to issue #19.
 1. Ideally, the new branch should be based on the latest `develop` branch.
 1. Make changes to the branch ([use detailed commit messages if possible](https://chris.beams.io/posts/git-commit/)).
 1. Make sure that new tests cover the changes and the changed codebase [passes all tests locally](#test-projects).
