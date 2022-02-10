@@ -1,10 +1,10 @@
 /* COLOR VARIABLES*/
 
 :root {
-    --header-bg-color: #76b900;
+    --header-bg-color: #03a3a3;
     --header-ft-color: #fff;
-    --highlight-light: #76b900;
-    --highlight-dark: #76b900;
+    --highlight-light: #03a3a3;
+    --highlight-dark: #03a3a3;
     --accent-dim: #e0e0e0;
     --accent-super-dim: #f3f3f3;
     --font-color: #34393e;
@@ -39,7 +39,7 @@ a:hover,
 a:focus {
     color: var(--highlight-light);
     text-decoration: none;
-    color: #569700;
+    color: #03a3a3;
     background-color: #eff7e0;
 }
 
