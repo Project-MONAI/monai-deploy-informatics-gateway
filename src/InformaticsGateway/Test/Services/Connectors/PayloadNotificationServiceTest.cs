@@ -296,6 +296,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _storageService.Verify(p => p.PutObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
 
             _instanceCleanupQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Once());
+
+            _messageBrokerPublisherService.Verify(p => p.Publish(It.Is<string>(p => p.Equals(_options.Value.Messaging.Topics.WorkflowRequest)), It.Is<Message>(p => p.ConvertTo<WorkflowRequestMessage>().Payload.Count == 1)), Times.Once());
         }
     }
 }
