@@ -91,21 +91,21 @@
 the repository and install it.</p>
 <h4 id="on-linux">On Linux</h4>
 <pre><code class="lang-bash"># Download the CLI
-curl -LO https://url-to-cli
+curl -LO https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases/download/0.1.0/mig-cli-0.1.0-linux-x64.zip
+# Calculate the SHA256 checksum and verify the output with the checksum on the Releases page.
+sha256sum mig-cli-0.1.0-linux-x64.zip
 # Unzip the CLI
-unzip mig-cli-linux-0.1.0-x64.zip
-# Calculate the SHA256 checksum and compare with the one listed on the Releases page.
-sha256sum mig-cli
+unzip mig-cli-0.1.0-linux-x64.zip
 # Install it in bin
 sudo mv mig-cli /usr/local/bin
 </code></pre>
 <h4 id="on-windows">On Windows</h4>
 <pre><code class="lang-powershell"># Download the CLI
-curl -LO https://url-to-cli
+curl -LO https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases/download/0.1.0/mig-cli-0.1.0-win-x64.zip
+# Calculate the SHA256 checksum and verify the output with the checksum on the Releases page.
+Get-FileHash mig-cli-0.1.0-win-x64.zip
 # Unzip the CLI
-Expand-Archive -Path mig-cli-win-0.1.0-x64.zip
-# Calculate the SHA256 checksum and compare with the one listed on the Releases page.
-Get-FileHash mig-cli.exe
+Expand-Archive -Path mig-cli-0.1.0-win-x64.zip
 </code></pre>
 <h3 id="informatics-gateway-docker-image">Informatics Gateway Docker Image</h3>
 <p>Navigate to the <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/pkgs/container/monai-deploy-informatics-gateway">monai-deploy-informatics-gateway package</a>
@@ -117,8 +117,8 @@ docker pull ghcr.io/project-monai/monai-deploy-informatics-gateway:0.1.0
 </code></pre>
 <h2 id="configure-informatics-gateway">Configure Informatics Gateway</h2>
 <p>Use the following command to initialize Informatics Gateway &amp; default configuration:</p>
-<pre><code class="lang-bash">./mig-cli config init
-./mig-cli config endpoint http://localhost:5000
+<pre><code class="lang-bash">mig-cli config init
+mig-cli config endpoint http://localhost:5000
 </code></pre>
 <pre><code class="lang-powershell">mig-cli.exe config init
 mig-cli.exe config endpoint http://localhost:5000
@@ -131,46 +131,10 @@ mig-cli.exe config endpoint http://localhost:5000
 <p>This file is mapped into the Docker container and used by the Informatics Gateway when <code>mig-cli</code> is used to launch the application.</p>
 <p>For a complete reference of the <code>appsettings.jon</code>, please refer to <a href="schema.html">Configuration Schema</a>.</p>
 <p>The second command tells <code>mig-cli</code> where the endpoint is for the Informatics Gateway RESTful API.</p>
-<h2 id="startstop-informatics-gateway">Start/Stop Informatics Gateway</h2>
-<p>To start or stop Informatics Gateway, use one of the following commands:</p>
-<pre><code class="lang-bash">./mig-cli start
-./mig-cli stop
-</code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p>To see available commands simply execute <code>./mig-cli</code> or <code>mig-cli.exe</code>.</p>
+<p>To see available commands simply execute <code>mig-cli</code> or <code>mig-cli.exe</code>.</p>
 </div>
-<h2 id="enable-incoming-associations">Enable Incoming Associations</h2>
-<p>The next step is to configure Informatics Gateway enable receiving of DICOM instances from external DICOM devices.</p>
-<ol>
-<li>Configure a listening AE Title to receive instances:</li>
-</ol>
-<pre><code class="lang-bash">./mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
-</code></pre>
-<p>The command creates a new listening AE Title with AE Title <code>BrainAET</code>.  The listening AE Title
-will be grouping instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p><code>-grouping</code> is optional with default of 0020,000D.
-<code>-t</code> is optional with default of 5 seconds.
-For complete reference, please refer to the <a href="../api/rest/config.html">Config API</a>.</p>
-</div>
-<ol start="2">
-<li>Enable receiving DICOM instances from an external DICOM devices:</li>
-</ol>
-<pre><code class="lang-bash">./mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55 -p 104
-</code></pre>
-<p>This command above tells Informatics Gateway to accept instances from AE Title <code>PACSLA001</code> at IP <code>20.10.30.55</code> and port <code>104</code>.</p>
-<div class="NOTE">
-<h5>Note</h5>
-<p>By default, Informatics Gateway blocks all unknown sources.<br>
-To allow all unknown sources, set <code>dicom&gt;scp&gt;rejectUnknownSources</code> to <code>false</code> in <code>appsettings.json</code>.</p>
-</div>
-<h2 id="export-processed-results">Export Processed Results</h2>
-<p>If exporting via DIMSE is required, add a DICOM destination:</p>
-<pre><code class="lang-bash">./mig-cli dst add -a WORKSTATION1 -h 100.200.10.20 -p 104
-</code></pre>
-<p>The command adds a DICOM export destination with AE Title <code>WORKSTATION1</code> at IP <code>100.200.10.20</code> and port <code>104</code>.</p>
 <h2 id="storage-consideration--configuration">Storage Consideration &amp; Configuration</h2>
 <p>Informatics Gateway operates on two storage locations. The first is for temporarily storing of the incoming data for data grouping. The second is where Informatics Gateway uploads grouped datasets to final storage shared by other MONAI Deploy sub-systems.</p>
 <h3 id="temporary-storage-of-incoming-dataset">Temporary Storage of Incoming Dataset</h3>
@@ -201,10 +165,10 @@ size of a single study multiplied by the number of configured AE Titles.</p>
     &quot;storage&quot;: {
       &quot;storageServiceCredentials&quot;: {
         &quot;endpoint&quot;: &quot;192.168.1.1:9000&quot;, # IP &amp; port to MinIO instance
-        &quot;accessKey&quot;: &quot;admin&quot;, # Access key or username 
-        &quot;accessToken&quot;: &quot;password&quot; # Access token or password 
+        &quot;accessKey&quot;: &quot;admin&quot;, # Access key or username
+        &quot;accessToken&quot;: &quot;password&quot; # Access token or password
       },
-      &quot;storageService&quot;: &quot;Monai.Deploy.InformaticsGateway.Storage.MinIoStorageService, Monai.Deploy.InformaticsGateway.Storage.MinIo&quot;, # Fully qualified type name of the storage service 
+      &quot;storageService&quot;: &quot;Monai.Deploy.InformaticsGateway.Storage.MinIoStorageService, Monai.Deploy.InformaticsGateway.Storage.MinIo&quot;, # Fully qualified type name of the storage service
       &quot;securedConnection&quot;: false, # Indicates if a secured connection is required to access MinIO
       &quot;storageServiceBucketName&quot;: &quot;igbucket&quot; # The name of the bucket where data is uploaded to
     },
@@ -243,6 +207,55 @@ Informatics Gateway.</p>
   }
 }
 </code></pre>
+<h2 id="startstop-informatics-gateway">Start/Stop Informatics Gateway</h2>
+<p>To start or stop Informatics Gateway, update the value of <code>DockerImagePrefix</code> in <code>appsettings.json</code> with the repository name of the Docker image:</p>
+<pre><code class="lang-json">{
+    ...,
+    &quot;Cli&quot;: {
+        &quot;DockerImagePrefix&quot;: &quot;ghcr.io/project-monai/monai-deploy-informatics-gateway&quot;
+    }
+}
+</code></pre>
+<p>Lastly, use one of the following commands start or stop Informatics Gateway:</p>
+<pre><code class="lang-bash">mig-cli start
+mig-cli stop
+</code></pre>
+<h2 id="enable-incoming-associations">Enable Incoming Associations</h2>
+<p>The next step is to configure Informatics Gateway enable receiving of DICOM instances from external DICOM devices.</p>
+<ol>
+<li>Configure a listening AE Title to receive instances:</li>
+</ol>
+<pre><code class="lang-bash">mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
+</code></pre>
+<p>The command creates a new listening AE Title with AE Title <code>BrainAET</code>.  The listening AE Title
+will be grouping instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p><code>-grouping</code> is optional with default of 0020,000D.
+<code>-t</code> is optional with default of 5 seconds.
+For complete reference, please refer to the <a href="../api/rest/config.html">Config API</a>.</p>
+</div>
+<ol start="2">
+<li>Enable receiving DICOM instances from an external DICOM devices:</li>
+</ol>
+<pre><code class="lang-bash">mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55
+</code></pre>
+<p>This command above tells Informatics Gateway to accept instances from AE Title <code>PACSLA001</code> at IP <code>20.10.30.55</code> and port <code>104</code>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>By default, Informatics Gateway blocks all unknown sources.
+To allow all unknown sources, set <code>dicom&gt;scp&gt;rejectUnknownSources</code> to <code>false</code> in <code>appsettings.json</code>.</p>
+</div>
+<div class="WARNING">
+<h5>Warning</h5>
+<p>Informatics Gateway validates both the source IP address and AE Title when <code>rejectUnknownSources</code> is set to <code>true</code>.
+When running Informatics Gateway in a container and data is coming from the localhost, the IP address may not be the host's IP address. In such a case, open the log file and locate the association that failed; the log should indicate the correct IP address under <code>Remote host</code>.</p>
+</div>
+<h2 id="export-processed-results">Export Processed Results</h2>
+<p>If exporting via DIMSE is required, add a DICOM destination:</p>
+<pre><code class="lang-bash">mig-cli dst add -a WORKSTATION1 -h 100.200.10.20 -p 104
+</code></pre>
+<p>The command adds a DICOM export destination with AE Title <code>WORKSTATION1</code> at IP <code>100.200.10.20</code> and port <code>104</code>.</p>
 </article>
           </div>
           
