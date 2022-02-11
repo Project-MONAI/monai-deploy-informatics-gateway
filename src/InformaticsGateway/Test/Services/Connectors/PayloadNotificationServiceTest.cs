@@ -259,7 +259,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 .Callback(() => _cancellationTokenSource.CancelAfter(500));
 
             var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Upload };
-            payload.Add(new DicomFileStorageInfo("correlation", "/root", "1", "source", _fileSystem.Object) { StudyInstanceUid = "study", SeriesInstanceUid = "series", SopInstanceUid = "sop" });
+            var instance = new DicomFileStorageInfo("correlation", "/root", "1", "source", _fileSystem.Object) { StudyInstanceUid = "study", SeriesInstanceUid = "series", SopInstanceUid = "sop" };
+            instance.SetWorkflows("workflow1", "workflow2");
+            payload.Add(instance);
             var filePath = payload.Files[0].FilePath;
 
             var uploadPath = Path.Combine(payload.Id.ToString(), payload.Files[0].UploadPath);
@@ -297,7 +299,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _instanceCleanupQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Once());
 
-            _messageBrokerPublisherService.Verify(p => p.Publish(It.Is<string>(p => p.Equals(_options.Value.Messaging.Topics.WorkflowRequest)), It.Is<Message>(p => p.ConvertTo<WorkflowRequestMessage>().Payload.Count == 1)), Times.Once());
+            _messageBrokerPublisherService.Verify(
+                p => p.Publish(
+                    It.Is<string>(p => p.Equals(_options.Value.Messaging.Topics.WorkflowRequest)),
+                    It.Is<Message>(p => p.ConvertTo<WorkflowRequestMessage>().Payload.Count == 1 && p.ConvertTo<WorkflowRequestMessage>().Workflows.Count() == 2))
+                , Times.Once());
         }
     }
 }

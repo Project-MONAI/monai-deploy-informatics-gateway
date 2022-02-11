@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            _configuration.Value.Export.Retries.RetryDelays,
                            (exception, timeSpan, retryCount, context) =>
                            {
-                               _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                               _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOM destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
                            })
                        .ExecuteAsync(async () =>
                        {

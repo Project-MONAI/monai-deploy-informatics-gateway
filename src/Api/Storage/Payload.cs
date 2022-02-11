@@ -10,6 +10,7 @@
 // limitations under the License.
 
 using Ardalis.GuardClauses;
+using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -61,13 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public int Count { get => _fileCount; }
 
-        public IEnumerable<string> Workflows
-        {
-            get
-            {
-                return Files.SelectMany(x => x.Workflows).Distinct();
-            }
-        }
+        public ISet<string> Workflows { get; private set; }
 
         public string CorrelationId { get; init; }
 
@@ -87,6 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             State = PayloadState.Created;
             Files = new List<FileStorageInfo>();
             UploadedFiles = new List<BlockStorageInfo>();
+            Workflows = new HashSet<string>();
         }
 
         public void Add(FileStorageInfo value)
@@ -97,6 +93,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             _lastReceived.Reset();
             _lastReceived.Start();
             _fileCount = Files.Count;
+
+            if (!value.Workflows.IsNullOrEmpty())
+            {
+                foreach (var workflow in value.Workflows)
+                {
+
+                    Workflows.Add(workflow);
+                }
+            }
 
             if (Files.Count == 1)
             {

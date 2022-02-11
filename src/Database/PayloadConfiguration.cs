@@ -33,6 +33,10 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 (c1, c2) => c1.SequenceEqual(c2),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList());
+            var workflowComparer = new ValueComparer<ISet<string>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToHashSet());
 
             var jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -52,6 +56,11 @@ namespace Monai.Deploy.InformaticsGateway.Database
                         v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
                         v => JsonConvert.DeserializeObject<IList<BlockStorageInfo>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(blockStorageInfoComparer);
+            builder.Property(j => j.Workflows)
+                .HasConversion(
+                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
+                        v => JsonConvert.DeserializeObject<ISet<string>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(workflowComparer);
         }
     }
 }
