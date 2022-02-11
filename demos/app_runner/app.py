@@ -112,6 +112,7 @@ class App():
         self._launch_applications(
             request_message, job_dir_input, job_dir_output)
         self._send_acknowledgement(method.delivery_tag)
+        self._logger.info(f"Waiting for events...")
 
     def _launch_applications(self, request_message, job_dir_input, job_dir_output):
         applications = request_message['workflows']
@@ -185,13 +186,14 @@ class App():
         self._pika_channel.start_consuming()
 
 
-def handler(signal_received, frame):
+def signal_handler(signal_received, frame):
     # Handle any cleanup here
     print('SIGINT or CTRL-C detected. Exiting gracefully')
     sys.exit(1)
 
 
 if __name__ == "__main__":
+    signal(SIGINT, signal_handler)
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
