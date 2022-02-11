@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright 2021 MONAI Consortium
+# Copyright 2022 MONAI Consortium
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -94,38 +94,33 @@ class App():
         job_dir_input = job_dir / "input"
         job_dir_output = job_dir / "output"
         if not os.path.exists(job_dir_input):
-            self._logger.info(f"Creating input directory for job {job_dir_input}")
+            self._logger.info(
+                f"Creating input directory for job {job_dir_input}")
             os.makedirs(job_dir_input)
 
         # note: in IG 0.1.1 or later, the bucket name can be found inside body.payload[]
         bucket = self._config['storage']['bucket']
-        file_list = self._storage_client.list_objects(bucket, prefix=request_message['payload_id'],
-                                                      recursive=True)
-        for file in file_list:
-            if self._config['ignore_json'] and file.object_name.endswith('json'):
-                self._logger.info(f'Skipping JSON file {file.object_name}...')
-                continue
+        try:
+            self._download_payload(request_message, job_dir_input, bucket)
+        except:
+            e = sys.exc_info()[0]
+            self._logger.error(
+                f'Failed to download payload for request.  Correlation ID={correlation_id}: {e}.')
+            self._send_acknowledgement(method.delivery_tag)
+            return
 
-            self._logger.info(f'Downloading file {file.object_name}...')
-            data = self._storage_client.get_object(bucket, file.object_name)
-            file_path = job_dir_input / os.path.dirname(file.object_name)
-            if not os.path.exists(file_path):
-                self._logger.info(f"Creating directory {file_path}")
-                os.makedirs(file_path)
+        self._launch_applications(
+            request_message, job_dir_input, job_dir_output)
+        self._send_acknowledgement(method.delivery_tag)
 
-            file_path = job_dir_input / file.object_name
-            with open(file_path, 'wb') as file_data:
-                for d in data.stream(32*1024):
-                    file_data.write(d)
-
-        self._logger.info(
-            f"Finished download payload {request_message['payload_id']}...")
-
+    def _launch_applications(self, request_message, job_dir_input, job_dir_output):
         applications = request_message['workflows']
         for application in applications:
-            app_output = job_dir_output / re.sub(r'[^\w\-_\. ]', '-', application)
+            app_output = job_dir_output / \
+                re.sub(r'[^\w\-_\. ]', '-', application)
             if not os.path.exists(app_output):
-                self._logger.info(f"Creating output directory for job {app_output}")
+                self._logger.info(
+                    f"Creating output directory for job {app_output}")
                 os.makedirs(app_output)
 
             argsd = {}
@@ -149,7 +144,36 @@ class App():
                 self._logger.info(f"\tInput:\t {job_dir_input}")
                 self._logger.info(f"\tOutput:\t {app_output}")
 
-        self._send_acknowledgement(method.delivery_tag)
+    def _download_payload(self, request_message, job_dir_input, bucket):
+        file_list = self._storage_client.list_objects(bucket, prefix=request_message['payload_id'],
+                                                      recursive=True)
+        for file in file_list:
+            if self._config['ignore_json'] and file.object_name.endswith('json'):
+                self._logger.info(f'Skipping JSON file {file.object_name}...')
+                continue
+
+            self._logger.info(f'Downloading file {file.object_name}...')
+
+            try:
+                data = self._storage_client.get_object(
+                    bucket, file.object_name)
+                file_path = job_dir_input / os.path.dirname(file.object_name)
+                if not os.path.exists(file_path):
+                    self._logger.info(f"Creating directory {file_path}")
+                    os.makedirs(file_path)
+
+                file_path = job_dir_input / file.object_name
+                with open(file_path, 'wb') as file_data:
+                    for d in data.stream(32*1024):
+                        file_data.write(d)
+            except:
+                raise
+            finally:
+                data.close()
+                data.release_conn()
+
+        self._logger.info(
+            f"Finished download payload {request_message['payload_id']}...")
 
     def _send_acknowledgement(self, delivery_tag):
         self._logger.info(f"Sending acknowledgement...")
@@ -168,7 +192,6 @@ def handler(signal_received, frame):
 
 
 if __name__ == "__main__":
-    signal(SIGINT, handler)
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
