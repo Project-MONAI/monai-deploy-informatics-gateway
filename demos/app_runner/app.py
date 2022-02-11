@@ -3,6 +3,7 @@
 import json
 import logging
 import os
+from signal import signal, SIGINT
 import sys
 from pathlib import Path
 from types import SimpleNamespace
@@ -31,7 +32,7 @@ class App():
 
         if not self._storage_client.bucket_exists(config['bucket']):
             raise f"Bucket '{config['bucket']}' does not exist"
-        
+
         if not os.path.exists(self._working_directory):
             self._logger.info(f"Creating working directory {self._working_directory}")
             os.makedirs(self._working_directory)
@@ -57,7 +58,7 @@ class App():
     def _load_config(self) -> None:
         with open('config.json', 'r') as f:
             self._config = json.load(f)
-        
+
         self._working_directory = Path(self._config['working_dir'])
         self._application = self._config['application']
 
@@ -79,48 +80,67 @@ class App():
         if not os.path.exists(job_dir_output):
             self._logger.info(f"Creating working directory for job {job_dir}")
             os.makedirs(job_dir_output)
-            
-        # note: in 0.1.1, the bucket name can be found inside body.payload[]
+
+        # note: in IG 0.1.1 or later, the bucket name can be found inside body.payload[]
         bucket=self._config['storage']['bucket']
         file_list = self._storage_client.list_objects(bucket, prefix=request_message['payload_id'],
                               recursive=True)
         for file in file_list:
-            if file.object_name.endswith('json'):
+            if self._config['ignore_json'] and file.object_name.endswith('json'):
                 self._logger.info(f'Skipping JSON file {file.object_name}...')
                 continue
-                
+
             self._logger.info(f'Downloading file {file.object_name}...')
             data = self._storage_client.get_object(bucket, file.object_name)
             file_path = job_dir_input / os.path.dirname(file.object_name)
             if not os.path.exists(file_path):
                 self._logger.info(f"Creating directory {file_path}")
                 os.makedirs(file_path)
-            
+
             file_path = job_dir_input / file.object_name
             with open(file_path, 'wb') as file_data:
                 for d in data.stream(32*1024):
                     file_data.write(d)
-        
+
         self._logger.info(f"Finished download payload {request_message['payload_id']}...")
-        
+
         argsd = {}
         argsd['map'] = self._application
         argsd['input'] = job_dir_input
         argsd['output'] =job_dir_output
         argsd['quiet'] = False
 
-        
+
         self._logger.info(f"Launching application {self._application}...")
+        self._logger.info(f"\tInput:\t {job_dir_input}...")
+        self._logger.info(f"\tOutput:\t {job_dir_output}...")
         args = SimpleNamespace(**argsd)
-        runner.main(args)
-        self._pika_channel.basic_ack(method.delivery_tag)
+        try:
+            runner.main(args)
+        except:
+            e = sys.exc_info()[0]
+            self._logger.error(f'{self._application} failed with {e}.')
+        else:
+            self._logger.info(f"\tInput:\t {job_dir_input}...")
+            self._logger.info(f"\tOutput:\t {job_dir_output}...")
+        finally:
+            self._logger.info(f"{self._application} completed. Sending acknowledgement...")
+            self._pika_channel.basic_ack(method.delivery_tag)
+            self._logger.info(f"{self._application} completed. Acknowledgement sent...")
 
     def run(self):
         self._logger.info('[*] Waiting for logs. To exit press CTRL+C')
         self._pika_channel.start_consuming()
 
 
+def handler(signal_received, frame):
+    # Handle any cleanup here
+    print('SIGINT or CTRL-C detected. Exiting gracefully')
+    sys.exit(1)
+
+
 if __name__ == "__main__":
+    signal(SIGINT, handler)
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s [%(levelname)s] %(message)s",
