@@ -11,13 +11,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 import json
 import logging
 import os
-from signal import signal, SIGINT
+import re
 import sys
 from pathlib import Path
+from signal import SIGINT, signal
 from types import SimpleNamespace
 
 import pika
@@ -39,14 +39,15 @@ class App():
             config['endpoint'],
             config['username'],
             config['password'],
-            secure=False # DEMO purposes only!!! Make sure to use a secure connection!!!
+            secure=False  # DEMO purposes only!!! Make sure to use a secure connection!!!
         )
 
         if not self._storage_client.bucket_exists(config['bucket']):
             raise f"Bucket '{config['bucket']}' does not exist"
 
         if not os.path.exists(self._working_directory):
-            self._logger.info(f"Creating working directory {self._working_directory}")
+            self._logger.info(
+                f"Creating working directory {self._working_directory}")
             os.makedirs(self._working_directory)
 
     def _init_messaging(self) -> None:
@@ -72,7 +73,6 @@ class App():
             self._config = json.load(f)
 
         self._working_directory = Path(self._config['working_dir'])
-        self._application = self._config['application']
 
     def _message_callback(self, ch, method, properties, body):
         correlation_id = properties.correlation_id
@@ -80,23 +80,27 @@ class App():
             f"Message received from application={properties.app_id}. Correlation ID={correlation_id}. Delivery tag={method.delivery_tag}. Topic={method.routing_key}")
 
         request_message = json.loads(body)
-        print(" body\t%r" % (request_message))
-        print(" properties\t%r" % (properties))
+
+        if 'workflows' not in request_message or len(request_message['workflows']) == 0:
+            self._logger.error(
+                f"No applications defined in the message body, skipping.")
+            self._send_acknowledgement(method.delivery_tag)
+            return
+
+        # print(" body\t%r" % (request_message))
+        # print(" properties\t%r" % (properties))
 
         job_dir = self._working_directory / correlation_id
         job_dir_input = job_dir / "input"
         job_dir_output = job_dir / "output"
         if not os.path.exists(job_dir_input):
-            self._logger.info(f"Creating working directory for job {job_dir}")
+            self._logger.info(f"Creating input directory for job {job_dir_input}")
             os.makedirs(job_dir_input)
-        if not os.path.exists(job_dir_output):
-            self._logger.info(f"Creating working directory for job {job_dir}")
-            os.makedirs(job_dir_output)
 
         # note: in IG 0.1.1 or later, the bucket name can be found inside body.payload[]
-        bucket=self._config['storage']['bucket']
+        bucket = self._config['storage']['bucket']
         file_list = self._storage_client.list_objects(bucket, prefix=request_message['payload_id'],
-                              recursive=True)
+                                                      recursive=True)
         for file in file_list:
             if self._config['ignore_json'] and file.object_name.endswith('json'):
                 self._logger.info(f'Skipping JSON file {file.object_name}...')
@@ -114,31 +118,43 @@ class App():
                 for d in data.stream(32*1024):
                     file_data.write(d)
 
-        self._logger.info(f"Finished download payload {request_message['payload_id']}...")
+        self._logger.info(
+            f"Finished download payload {request_message['payload_id']}...")
 
-        argsd = {}
-        argsd['map'] = self._application
-        argsd['input'] = job_dir_input
-        argsd['output'] =job_dir_output
-        argsd['quiet'] = False
+        applications = request_message['workflows']
+        for application in applications:
+            app_output = job_dir_output / re.sub(r'[^\w\-_\. ]', '-', application)
+            if not os.path.exists(app_output):
+                self._logger.info(f"Creating output directory for job {app_output}")
+                os.makedirs(app_output)
 
+            argsd = {}
+            argsd['map'] = application
+            argsd['input'] = job_dir_input
+            argsd['output'] = app_output
+            argsd['quiet'] = False
 
-        self._logger.info(f"Launching application {self._application}...")
-        self._logger.info(f"\tInput:\t {job_dir_input}...")
-        self._logger.info(f"\tOutput:\t {job_dir_output}...")
-        args = SimpleNamespace(**argsd)
-        try:
-            runner.main(args)
-        except:
-            e = sys.exc_info()[0]
-            self._logger.error(f'{self._application} failed with {e}.')
-        else:
+            self._logger.info(f"Launching application {application}...")
             self._logger.info(f"\tInput:\t {job_dir_input}...")
-            self._logger.info(f"\tOutput:\t {job_dir_output}...")
-        finally:
-            self._logger.info(f"{self._application} completed. Sending acknowledgement...")
-            self._pika_channel.basic_ack(method.delivery_tag)
-            self._logger.info(f"{self._application} completed. Acknowledgement sent...")
+            self._logger.info(f"\tOutput:\t {app_output}...")
+            args = SimpleNamespace(**argsd)
+            try:
+                runner.main(args)
+            except:
+                e = sys.exc_info()[0]
+                self._logger.error(f'{application} failed with {e}.')
+            else:
+                self._logger.info(
+                    f"Application {application} completed successfully.")
+                self._logger.info(f"\tInput:\t {job_dir_input}")
+                self._logger.info(f"\tOutput:\t {app_output}")
+
+        self._send_acknowledgement(method.delivery_tag)
+
+    def _send_acknowledgement(self, delivery_tag):
+        self._logger.info(f"Sending acknowledgement...")
+        self._pika_channel.basic_ack(delivery_tag)
+        self._logger.info(f"Acknowledgement sent...")
 
     def run(self):
         self._logger.info('[*] Waiting for logs. To exit press CTRL+C')

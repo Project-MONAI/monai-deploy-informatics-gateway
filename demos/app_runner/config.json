@@ -14,6 +14,5 @@
         "topic": "md.workflow.request"
     },
     "working_dir": "jobs/",
-    "application": "dcm-to-img:latest",
     "ignore_json": false
 }
