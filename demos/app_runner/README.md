@@ -7,7 +7,7 @@ This demo shows how an application integrates with the MONAI Deploy Informatics 
 
 ## Requirements
 
-- MONAI Deploy Informatics Gateway 0.1.0+
+- MONAI Deploy Informatics Gateway 0.1.1+
 - MONAI Deploy App SDK 0.2.1+
   - A MAP from the [examples](https://github.com/Project-MONAI/monai-deploy-app-sdk/tree/main/examples/apps/) or BYO MAP.
 - RabbitMQ configured and running
@@ -29,6 +29,22 @@ This demo shows how an application integrates with the MONAI Deploy Informatics 
 5. python app.py
 
 **Notes**: For MONAI Deploy App SDK 0.2.1, set `ignore_json` to `false` in the `config.json` file so DICOM JSON files are not downloaded.
+
+## Job Directory Structure
+
+Both retrieved input dataset and MAP generated output are stored under the `jobs/` directory which is configurable in the
+`config.json` file under `working_dir`.
+
+A subdirectory is created for each request received using the `correlation_id` specified in the payload.
+Given that one or more workflows can be specified in the payload, output generated from each MAP is stored under `jobs/{correlation_id}/output/{map_name}`.
+
+Sample output of `jobs` directory:
+```
+└── db61c4fc-b84e-4255-b40a-60254f93ca6f (correlation_id of the request)
+    ├── input
+    └── output
+        └── dcm-to-img-latest (name of the workflow/MAP)
+```
 
 ## Other Ideas
 
