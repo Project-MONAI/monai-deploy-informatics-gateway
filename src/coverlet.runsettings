@@ -5,7 +5,7 @@
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
           <Format>opencover</Format>          
-          <Exclude>[coverlet.*.tests?]*,[*]Coverlet.Core*,[xunit.*]*,[Grpc.Core*]*,[System.*]*,[Microsoft.*]*</Exclude>
+          <Exclude>[coverlet.*.tests?]*,[*]Coverlet.Core*,[xunit.*]*,[Grpc.Core*]*,[System.*]*,[Microsoft.*]*,[Integration.Test.*]*</Exclude>
           <Include></Include>
           <ExcludeByAttribute></ExcludeByAttribute>
           <ExcludeByFile></ExcludeByFile> <!-- Globbing filter -->
