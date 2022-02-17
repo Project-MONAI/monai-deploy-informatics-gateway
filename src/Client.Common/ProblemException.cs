@@ -1,4 +1,4 @@
-// Copyright 2021 MONAI Consortium
+// Copyright 2022 MONAI Consortium
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -11,7 +11,7 @@
 
 /*
  * Apache License, Version 2.0
- * Copyright 2021 NVIDIA Corporation
+ * Copyright 2022 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,18 +33,18 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
     [Serializable]
     public class ProblemException : Exception
     {
-        private readonly ProblemDetails _problemDetails;
+        public ProblemDetails ProblemDetails { get; private set; }
 
         public ProblemException(ProblemDetails problemDetails) : base(problemDetails.Detail)
         {
-            _problemDetails = problemDetails ?? throw new ArgumentNullException(nameof(problemDetails));
+            ProblemDetails = problemDetails ?? throw new ArgumentNullException(nameof(problemDetails));
         }
 
         public override string Message => this.ToString();
 
         public override string ToString()
         {
-            return $"HTTP Status: {_problemDetails.Status}. {_problemDetails.Detail}";
+            return $"HTTP Status: {ProblemDetails.Status}. {ProblemDetails.Detail}";
         }
     }
 }
