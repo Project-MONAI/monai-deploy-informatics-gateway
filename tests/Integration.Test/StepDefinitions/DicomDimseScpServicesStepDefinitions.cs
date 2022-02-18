@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dicomScu = dicomScu ?? throw new ArgumentNullException(nameof(dicomScu));
             _informaticsGatewayClient = informaticsGatewayClient ?? throw new ArgumentNullException(nameof(informaticsGatewayClient));
             _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
-            _informaticsGatewayClient.ConfigureServiceUris(_configuration.InformaticsGatewayOptions.ApiEndpoint);
+            _informaticsGatewayClient.ConfigureServiceUris(new Uri(_configuration.InformaticsGatewayOptions.ApiEndpoint));
             _dimseResponse = null;
         }
 
@@ -252,7 +252,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var minioClient = new MinioClient(_configuration.StorageServiceOptions.Endpoint, _configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
 
             var dicomSizes = _scenarioContext[KeyDicomSizes] as Dictionary<string, long>;
-            _rabbitMqHooks.MessageWaitHandle.Wait(MessageWaitTimeSpan);
+            _rabbitMqHooks.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
             var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
             messages.Should().NotBeNullOrEmpty();
 
@@ -292,7 +292,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
 
-            _rabbitMqHooks.MessageWaitHandle.Wait(MessageWaitTimeSpan);
+            _rabbitMqHooks.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
             var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
             var fileSpecs = _scenarioContext[KeyDicomFiles] as DicomInstanceGenerator.StudyGenerationSpecs;
 

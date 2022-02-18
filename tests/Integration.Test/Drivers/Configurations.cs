@@ -38,6 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             StudySpecs = LoadStudySpecs() ?? throw new NullReferenceException("study.json not found or empty.");
             _config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
                 .Build();
 
             LoadConfiguration();
@@ -143,7 +144,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         /// <summary>
         /// Gets the API endpoint of the Informatics Gateway.
         /// </summary>
-        public Uri ApiEndpoint => new Uri($"http://{Host}:{ApiPort}");
+        public string ApiEndpoint
+        {
+            get
+            {
+                return $"http://{Host}:{ApiPort}";
+            }
+        }
     }
 
     /// <summary>

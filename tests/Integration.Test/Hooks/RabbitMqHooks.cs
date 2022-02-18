@@ -23,7 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
     public sealed class RabbitMqHooks
     {
         internal static readonly string ScenarioContextKey = "MESSAAGES";
-        private readonly string QueueName = "TestQueue";
+        private readonly string QueueName = "workflow-queue";
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
         private readonly ScenarioContext _scenarioContext;
