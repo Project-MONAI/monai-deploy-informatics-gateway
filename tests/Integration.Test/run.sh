@@ -1,3 +1,14 @@
+# Copyright 2022 MONAI Consortium
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#     http://www.apache.org/licenses/LICENSE-2.0
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 #!/bin/bash
 
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
@@ -8,6 +19,7 @@ CONFIG_DIR="$SCRIPT_DIR/configs"
 EXIT=false
 METRICSFILE=$SCRIPT_DIR/metrics.log
 LOADDEV=
+STREAMID=
 
 export DATA_PATH="$RUN_DIR/ig/payloads/"
 set -euo pipefail
@@ -33,7 +45,7 @@ function check_status_code() {
 function env_setup() {
     if [[ $(docker-compose ps -q | wc -l) -ne 0 ]]; then
         info "Stopping existing services..."
-        docker-compose  $LOADDEV down
+        docker-compose $LOADDEV down
     fi
 
     if (dotnet tool list --global | grep livingdoc &>/dev/null)  ; then
@@ -111,6 +123,7 @@ function write_da_metrics() {
 function stream_da_metrics() {
     [ -f $METRICSFILE ] && sudo rm $METRICSFILE
     write_da_metrics &
+    STREAMID=$!
 }
 
 function run_test() {
@@ -140,8 +153,10 @@ function save_logs() {
 }
 
 function tear_down() {
+    info "Stop streaming metrics log..."
+    kill $STREAMID >/dev/null 2>&1
     info "Stopping services..."
-    docker-compose down --remove-orphans
+    docker-compose $LOADDEV down --remove-orphans
 }
 
 function main() {
