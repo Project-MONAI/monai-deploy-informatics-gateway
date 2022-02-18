@@ -263,7 +263,7 @@ jobs:
 
       - name: Integration Test
         env:
-          TAG: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          TAG: ${{ env.GitVersion_SemVer }}
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         run: |
           pushd tests/Integration.Test
