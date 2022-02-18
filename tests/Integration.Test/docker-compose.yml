@@ -1,0 +1,87 @@
+version: "3.7"
+services:
+  minio:
+    image: "minio/minio:latest"
+    command: server /data
+    hostname: minio
+    volumes:
+      - ${PWD}/.run/minio/data:/data
+      - ${PWD}/.run/minio/config:/root/.minio
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    networks:
+      - testrunner
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  createbuckets:
+    image: minio/mc
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      BUCKET_NAME: monai
+      ENDPOINT: http://minio:9000
+    depends_on:
+      minio:
+        condition: service_healthy
+    networks:
+      - testrunner
+    entrypoint: >
+      /bin/sh -c "
+      until (/usr/bin/mc config host add myminio $$ENDPOINT $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD) do echo '...waiting...' && sleep 1; done;
+      /usr/bin/mc mb myminio/$$BUCKET_NAME;
+      /usr/bin/mc policy set public myminio/$$BUCKET_NAME;
+      /usr/bin/mc ls myminio;
+      # exit 0
+      "
+
+  rabbitmq:
+    image: rabbitmq:latest
+    hostname: rabbitmq
+    ports:
+        - 5672:5672
+        - 15672:15672
+    volumes:
+        - ${PWD}/configs/rabbitmq.json:/etc/rabbitmq/definitions.json
+    environment:
+        RABBITMQ_DEFAULT_USER: rabbitmq
+        RABBITMQ_DEFAULT_PASS: qmtibbar
+        RABBITMQ_DEFAULT_VHOST: "/"
+    networks:
+        - testrunner
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  informatics-gateway:
+    image: "ghcr.io/project-monai/monai-deploy-informatics-gateway:${TAG}"
+    volumes:
+      - ${PWD}/configs/informatics-gateway.json:/opt/monai/ig/appsettings.json
+      - ${PWD}/.run/ig/payloads:/payloads
+      - ${PWD}/.run/ig/database:/database
+    ports:
+      - "104:104"
+      - "5000:5000"
+    networks:
+      - testrunner
+    depends_on:
+      minio:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    links:
+      - minio
+      - rabbitmq
+
+networks:
+  testrunner:
+    name: testrunner
+    driver: bridge

@@ -128,7 +128,7 @@ jobs:
         working-directory: ./src
 
       - name: Run Unit Test
-        run: dotnet test -c ${{ env.BUILD_CONFIG }} -v=minimal --results-directory "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings ${{ env.SOLUTION }}
+        run: dotnet test --filter FullyQualifiedName\!~Monai.Deploy.InformaticsGateway.Integration.Test  -c ${{ env.BUILD_CONFIG }} -v=minimal --results-directory "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings ${{ env.SOLUTION }}
         working-directory: ./src
 
       - uses: codecov/codecov-action@v2
@@ -258,6 +258,26 @@ jobs:
         with:
           sarif_file: ${{ steps.anchore-scan.outputs.sarif }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Integration Test
+        env:
+          TAG: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+        if: ${{ (matrix.os == 'ubuntu-latest') }}
+        run: |
+          pushd tests/Integration.Test
+          ./run.sh
+          popd
+
+      - name: Upload Integration Test Results
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: integration
+          path: |
+            tests/Integration.Test/LivingDoc.html
+            tests/Integration.Test/metrics.log
+            tests/Integration.Test/services.log
+          retention-days: 30
+
 
   docs:
     runs-on: ubuntu-latest
