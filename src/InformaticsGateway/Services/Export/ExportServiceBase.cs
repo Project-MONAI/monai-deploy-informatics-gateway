@@ -203,26 +203,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 try
                 {
+                    _logger.Log(LogLevel.Debug, $"Downloading file {file}...");
                     Policy
-                       .Handle<Exception>()
-                       .WaitAndRetry(
-                           _configuration.Export.Retries.RetryDelays,
-                           (exception, timeSpan, retryCount, context) =>
-                           {
-                               _logger.Log(LogLevel.Error, exception, $"Error downloading payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
-                           })
-                       .Execute(() =>
-                       {
-                           var task = storageService.GetObject(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
-                           {
-                               stream.Seek(0, System.IO.SeekOrigin.Begin);
-                               using var memoryStream = new MemoryStream();
-                               stream.CopyTo(memoryStream);
-                               exportRequestData.SetData(memoryStream.ToArray());
-                           }, cancellationToken);
-
-                           task.Wait();
-                       });
+                      .Handle<Exception>()
+                      .WaitAndRetry(
+                          _configuration.Export.Retries.RetryDelays,
+                          (exception, timeSpan, retryCount, context) =>
+                          {
+                              _logger.Log(LogLevel.Error, exception, $"Error downloading payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                          })
+                      .Execute(() =>
+                      {
+                          storageService.GetObject(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
+                          {
+                              _logger.Log(LogLevel.Debug, $"Copying file {file}...");
+                              using var memoryStream = new MemoryStream();
+                              stream.CopyTo(memoryStream);
+                              exportRequestData.SetData(memoryStream.ToArray());
+                              _logger.Log(LogLevel.Debug, $"File {file} ready for export...");
+                          }, cancellationToken).Wait();
+                      });
                 }
                 catch (Exception ex)
                 {
