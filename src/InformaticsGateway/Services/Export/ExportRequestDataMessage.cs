@@ -55,12 +55,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             get { return _exportRequest.Destination; }
         }
 
-        public ExportRequestDataMessage(ExportRequestMessage exportRequest)
+        public string Filename { get; }
+
+        public ExportRequestDataMessage(ExportRequestMessage exportRequest, string filename)
         {
             IsFailed = false;
             Messages = new List<string>();
 
             _exportRequest = exportRequest ?? throw new System.ArgumentNullException(nameof(exportRequest));
+            Filename = filename ?? throw new System.ArgumentNullException(nameof(filename));
         }
 
         public void SetData(byte[] data)

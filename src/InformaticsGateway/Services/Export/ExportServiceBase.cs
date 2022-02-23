@@ -63,12 +63,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IMessageBrokerSubscriberService _messageSubscriber;
         private readonly IMessageBrokerPublisherService _messagePublisher;
         private readonly IServiceScope _scope;
-        private readonly Dictionary<string, ExportRequestMessage> _exportRequets;
+        private readonly Dictionary<string, ExportRequestMessage> _exportRequests;
         private readonly string _exportQueueName;
         private TransformManyBlock<ExportRequestMessage, ExportRequestDataMessage> _exportFlow;
 
         public abstract string RoutingKey { get; }
-        protected abstract int Concurrentcy { get; }
+        protected abstract int Concurrency { get; }
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
         public abstract string ServiceName { get; }
 
@@ -102,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _messageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
             _messagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
 
-            _exportRequets = new Dictionary<string, ExportRequestMessage>();
+            _exportRequests = new Dictionary<string, ExportRequestMessage>();
             _exportQueueName = _configuration.Messaging.Topics.ExportRequestQueue;
         }
 
@@ -131,7 +131,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 var executionOptions = new ExecutionDataflowBlockOptions
                 {
-                    MaxDegreeOfParallelism = Concurrentcy,
+                    MaxDegreeOfParallelism = Concurrency,
                     MaxMessagesPerTask = 1,
                     CancellationToken = cancellationToken
                 };
@@ -184,11 +184,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 _messageSubscriber.Reject(eventArgs.Message);
                 return;
             }
-            var exportRequest = eventArgs.Message.ConvertTo<ExportRequestMessage>();
-            exportRequest.MessageId = eventArgs.Message.MessageId;
 
-            _exportRequets.Add(exportRequest.ExportTaskId, exportRequest);
-            _exportFlow.Post(exportRequest);
+            lock (SyncRoot)
+            {
+                var exportRequest = eventArgs.Message.ConvertTo<ExportRequestMessage>();
+                if (_exportRequests.ContainsKey(exportRequest.ExportTaskId))
+                {
+                    _logger.Log(LogLevel.Warning, $"The export request {exportRequest.ExportTaskId} is already queued for export.");
+                    return;
+                }
+
+                exportRequest.MessageId = eventArgs.Message.MessageId;
+                exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
+
+                _exportRequests.Add(exportRequest.ExportTaskId, exportRequest);
+                _exportFlow.Post(exportRequest);
+            }
         }
 
         private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestMessage exportRequest, CancellationToken cancellationToken)
@@ -198,31 +209,33 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             var scope = _serviceScopeFactory.CreateScope();
             var storageService = scope.ServiceProvider.GetRequiredService<IStorageService>();
 
-            var exportRequestData = new ExportRequestDataMessage(exportRequest);
             foreach (var file in exportRequest.Files)
             {
+                var exportRequestData = new ExportRequestDataMessage(exportRequest, file);
                 try
                 {
                     _logger.Log(LogLevel.Debug, $"Downloading file {file}...");
                     Policy
-                      .Handle<Exception>()
-                      .WaitAndRetry(
-                          _configuration.Export.Retries.RetryDelays,
-                          (exception, timeSpan, retryCount, context) =>
-                          {
-                              _logger.Log(LogLevel.Error, exception, $"Error downloading payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
-                          })
-                      .Execute(() =>
-                      {
-                          storageService.GetObject(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
-                          {
-                              _logger.Log(LogLevel.Debug, $"Copying file {file}...");
-                              using var memoryStream = new MemoryStream();
-                              stream.CopyTo(memoryStream);
-                              exportRequestData.SetData(memoryStream.ToArray());
-                              _logger.Log(LogLevel.Debug, $"File {file} ready for export...");
-                          }, cancellationToken).Wait();
-                      });
+                       .Handle<Exception>()
+                       .WaitAndRetry(
+                           _configuration.Export.Retries.RetryDelays,
+                           (exception, timeSpan, retryCount, context) =>
+                           {
+                               _logger.Log(LogLevel.Error, exception, $"Error downloading payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                           })
+                       .Execute(() =>
+                       {
+                           _logger.Log(LogLevel.Debug, $"Downloading {file}...");
+                           var task = storageService.GetObject(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
+                           {
+                               using var memoryStream = new MemoryStream();
+                               stream.CopyTo(memoryStream);
+                               exportRequestData.SetData(memoryStream.ToArray());
+                           }, cancellationToken);
+
+                           task.Wait();
+                           _logger.Log(LogLevel.Debug, $"File {file} ready for export.");
+                       });
                 }
                 catch (Exception ex)
                 {
@@ -239,7 +252,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
 
-            var exportRequest = _exportRequets[exportRequestData.ExportTaskId];
+            var exportRequest = _exportRequests[exportRequestData.ExportTaskId];
             lock (SyncRoot)
             {
                 if (exportRequestData.IsFailed)
@@ -300,6 +313,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    _logger.Log(LogLevel.Information, $"Publishing export complete message.");
                    _messagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
                });
+
+            lock(SyncRoot)
+            {
+                _exportRequests.Remove(exportRequestData.ExportTaskId);
+            }
         }
     }
 }

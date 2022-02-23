@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         public event EventHandler ExportDataBlockCalled;
 
         public bool ExportShallFail = false;
-        protected override int Concurrentcy => 1;
+        protected override int Concurrency => 1;
         public override string RoutingKey => AgentName;
         public override string ServiceName { get => "Test Export Service"; }
 
