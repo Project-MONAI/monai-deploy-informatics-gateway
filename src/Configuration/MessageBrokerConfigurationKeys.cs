@@ -35,12 +35,5 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// </summary>
         [JsonProperty(PropertyName = "exportRequestPrefix")]
         public string ExportRequestPrefix { get; set; } = "md.export.request";
-
-        /// <summary>
-        /// Gets or sets the name of the request queue.
-        /// Defaults to `export_tasks`
-        /// </summary>
-        [JsonProperty(PropertyName = "exportRequestQueue")]
-        public string ExportRequestQueue { get; set; } = "export_tasks";
     }
 }
