@@ -43,6 +43,13 @@ function check_status_code() {
 }
 
 function env_setup() {
+    set +u
+    if [ "$1" = "--dev" ] ; then
+        info "Using .env.dev..."
+        LOADDEV="--env-file .env.dev"
+    fi
+    set -u
+
     if [[ $(docker-compose ps -q | wc -l) -ne 0 ]]; then
         info "Stopping existing services..."
         docker-compose $LOADDEV down
@@ -56,19 +63,10 @@ function env_setup() {
         dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
     fi
 
-    info "Removing existing test data..."
-    [ -d $RUN_DIR ] && sudo rm -r $RUN_DIR
+    [ -d $RUN_DIR ] && info "Removing $RUN_DIR..." && sudo rm -r $RUN_DIR
     mkdir -p $RUN_DIR
 
-    info "Removing bin..."
-    [ -d $BIN_DIR ] && sudo rm -r $BIN_DIR
-
-    set +u
-    if [ "$1" = "--dev" ] ; then
-        info "Using .env.dev..."
-        LOADDEV="--env-file .env.dev"
-    fi
-    set -u
+    [ -d $BIN_DIR ] && info "Removing $BIN_DIR..." && sudo rm -r $BIN_DIR
 }
 
 function build() {
@@ -88,10 +86,13 @@ function start_services() {
     docker-compose $LOADDEV up -d --force-recreate
 
 
-    HOST_IP=$(docker network inspect testrunner | jq .[0].IPAM.Config[0].Gateway)
-    HOST_IP=$(sed -e 's/^"//' -e 's/"$//' <<<"$HOST_IP")
+    HOST_IP=$(docker network inspect testrunner | jq -r .[0].IPAM.Config[0].Gateway)
     info "Host IP = $HOST_IP"
     export HOST_IP
+
+    info "============================================="
+    docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep integrationtest_
+    info "============================================="
 
     set +e
     while true; do
@@ -130,7 +131,7 @@ function run_test() {
     pushd $TEST_DIR
     set +e
     info "Starting test runner..."
-    dotnet test -c Release
+    dotnet test -c Release 2>&1 | tee run.log
     EXITCODE=$?
     EXIT=true
     set -e

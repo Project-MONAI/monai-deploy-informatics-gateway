@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             }
             catch (DicomAssociationRejectedException ex)
             {
-                Console.WriteLine("Association Rejected: {0}", ex.Message);
+                _outputHelper.WriteLine("Association Rejected: {0}", ex.Message);
                 return DicomStatus.Cancel;
             }
         }
@@ -67,11 +67,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             var failureStatus = new List<DicomStatus>();
             foreach (var file in dicomFiles)
             {
-                // _outputHelper.WriteLine("Sending DICOM Instance: PID={0}, STUDY={1}, SOP={2}",
-                //     file.Dataset.GetSingleValueOrDefault(DicomTag.PatientID, "N/A"),
-                //     file.Dataset.GetSingleValueOrDefault(DicomTag.StudyInstanceUID, "N/A"),
-                //     file.Dataset.GetSingleValueOrDefault(DicomTag.SOPInstanceUID, "N/A"));
-
                 var cStoreRequest = new DicomCStoreRequest(file);
                 cStoreRequest.OnResponseReceived += (DicomCStoreRequest request, DicomCStoreResponse response) =>
                 {

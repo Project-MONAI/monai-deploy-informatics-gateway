@@ -46,13 +46,14 @@
     "Logging": {
       "LogLevel": {
         "Default": "Information",
-        "Dicom": "Information",
+        "FellowOakDicom": "Warning",
         "System": "Warning",
         "Microsoft": "Warning",
         "Microsoft.EntityFrameworkCore": "Warning",
         "Microsoft.Hosting.Lifetime": "Warning",
         "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker": "Error",
-        "Monai": "Information"
+        "Monai": "Information",
+        "Monai.Deploy.InformaticsGateway.Services.Export": "Trace"
       },
       "Console": {
         "FormatterName": "Simple",

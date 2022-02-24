@@ -10,6 +10,8 @@
 // limitations under the License.
 
 using System.Text;
+using FellowOakDicom;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
@@ -23,7 +25,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
     public sealed class RabbitMqHooks
     {
         internal static readonly string ScenarioContextKey = "MESSAAGES";
-        private readonly string QueueName = "workflow-queue";
+        private readonly string QueueNameWorkflowQueue = "workflow-queue";
+        private readonly string QueueNameExportQueue = "export-queue";
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
         private readonly ScenarioContext _scenarioContext;
@@ -55,8 +58,19 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
         }
 
-        [BeforeScenario("@messaging")]
-        public void BeforeScenarioWithTag()
+        [BeforeScenario("@messaging_export_complete")]
+        public void  BeforeMessagingExportComplete()
+        {
+            BeforeMessagingSubscribeTo(QueueNameExportQueue, _configurationKeys.ExportComplete);
+        }
+
+        [BeforeScenario("@messaging_workflow_request")]
+        public void BeforeMessagingWorkflowRequest()
+        {
+            BeforeMessagingSubscribeTo(QueueNameWorkflowQueue, _configurationKeys.WorkflowRequest);
+        }
+
+        private void BeforeMessagingSubscribeTo(string queue, string routingKey)
         {
             if (_scenarioContext.ContainsKey(ScenarioContextKey))
             {
@@ -67,19 +81,19 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
                 }
             }
             _scenarioContext.Add(ScenarioContextKey, new List<Message>());
-            _channel.QueueDeclare(queue: QueueName, durable: true, exclusive: false, autoDelete: false);
-            _channel.QueueBind(QueueName, _configuration.MessageBrokerOptions.Exchange, _configurationKeys.WorkflowRequest);
-            var messagesPurged = _channel.QueuePurge(QueueName);
-            _outputHelper.WriteLine($"{messagesPurged} messages purged from the queue {QueueName}.");
+            _channel.QueueDeclare(queue: queue, durable: true, exclusive: false, autoDelete: false);
+            _channel.QueueBind(queue, _configuration.MessageBrokerOptions.Exchange, routingKey);
+            var messagesPurged = _channel.QueuePurge(queue);
+            _outputHelper.WriteLine($"{messagesPurged} messages purged from the queue {queue}.");
 
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (model, eventArgs) =>
             {
-                _outputHelper.WriteLine($"Message received from queue {QueueName} for {_configurationKeys.WorkflowRequest}.");
+                _outputHelper.WriteLine($"Message received from queue {queue} for {routingKey}.");
 
                 var messsage = new Message(
                      body: eventArgs.Body.ToArray(),
-                     bodyDescription: _configurationKeys.WorkflowRequest,
+                     bodyDescription: routingKey,
                      messageId: eventArgs.BasicProperties.MessageId,
                      applicationId: eventArgs.BasicProperties.AppId,
                      contentType: eventArgs.BasicProperties.ContentType,
@@ -89,12 +103,35 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
                 (_scenarioContext[ScenarioContextKey] as IList<Message>)?.Add(messsage);
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
-                _outputHelper.WriteLine($"{_configurationKeys.WorkflowRequest} message received with correlation ID={messsage.CorrelationId}, delivery tag={messsage.DeliveryTag}");
+                _outputHelper.WriteLine($"{DateTime.UtcNow} - {routingKey} message received with correlation ID={messsage.CorrelationId}, delivery tag={messsage.DeliveryTag}");
                 MessageWaitHandle.Signal();
             };
             _channel.BasicQos(0, 0, false);
-            _consumerTag = _channel.BasicConsume(QueueName, false, consumer);
-            _outputHelper.WriteLine($"Listening for messages from {_configuration.MessageBrokerOptions.Endpoint}/{_configuration.MessageBrokerOptions.VirtualHost}. Exchange={_configuration.MessageBrokerOptions.Exchange}, Queue={QueueName}, Routing Key={_configurationKeys.WorkflowRequest}");
+            _consumerTag = _channel.BasicConsume(queue, false, consumer);
+            _outputHelper.WriteLine($"Listening for messages from {_configuration.MessageBrokerOptions.Endpoint}/{_configuration.MessageBrokerOptions.VirtualHost}. Exchange={_configuration.MessageBrokerOptions.Exchange}, Queue={queue}, Routing Key={routingKey}");
+
+        }
+
+        internal void Publish(string routingKey, Message message)
+        {
+            var propertiesDictionary = new Dictionary<string, object>
+            {
+                { "CreationDateTime", message.CreationDateTime.ToString("o") }
+            };
+
+            var properties = _channel.CreateBasicProperties();
+            properties.Persistent = true;
+            properties.ContentType = message.ContentType;
+            properties.MessageId = message.MessageId;
+            properties.AppId = message.ApplicationId;
+            properties.CorrelationId = message.CorrelationId;
+            properties.DeliveryMode = 2;
+
+            properties.Headers = propertiesDictionary;
+            _channel.BasicPublish(exchange: _configuration.MessageBrokerOptions.Exchange,
+                                 routingKey: routingKey,
+                                 basicProperties: properties,
+                                 body: message.Body);
         }
 
         [AfterScenario("@messaging")]

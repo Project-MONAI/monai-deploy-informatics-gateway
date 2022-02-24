@@ -46,5 +46,13 @@
         "instanceMax": 1,
         "sizeMin": 10000,
         "sizeMax": 20000
+    },
+    "Tiny": {
+        "seriesMin": 1,
+        "seriesMax": 1,
+        "instanceMin": 1,
+        "instanceMax": 1,
+        "sizeMin": 1,
+        "sizeMax": 2
     }
 }

@@ -21,5 +21,18 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
             return (Math.Abs(longRand % (maxValue - minValue)) + minValue);
         }
+
+        public static async Task<bool> WaitUntil(Func<bool> condition, TimeSpan timeout, int frequency = 250)
+        {
+            var waitTask = Task.Run(async () =>
+            {
+                while (!condition())
+                {
+                    await Task.Delay(frequency);
+                }
+            });
+
+            return waitTask == await Task.WhenAny(waitTask, Task.Delay(timeout));
+        }
     }
 }

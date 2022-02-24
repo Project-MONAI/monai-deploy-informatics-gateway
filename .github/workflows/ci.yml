@@ -276,6 +276,7 @@ jobs:
             tests/Integration.Test/LivingDoc.html
             tests/Integration.Test/metrics.log
             tests/Integration.Test/services.log
+            tests/Integration.Test/run.log
           retention-days: 30
 
 

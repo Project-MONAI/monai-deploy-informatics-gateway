@@ -16,8 +16,8 @@ services:
     command: server /data
     hostname: minio
     volumes:
-      - ${PWD}/.run/minio/data:/data
-      - ${PWD}/.run/minio/config:/root/.minio
+      - ./.run/minio/data:/data
+      - ./.run/minio/config:/root/.minio
     ports:
       - "9000:9000"
     environment:
@@ -59,7 +59,7 @@ services:
         - 5672:5672
         - 15672:15672
     volumes:
-        - ${PWD}/configs/rabbitmq.json:/etc/rabbitmq/definitions.json
+        - ./configs/rabbitmq.json:/etc/rabbitmq/definitions.json
     environment:
         RABBITMQ_DEFAULT_USER: rabbitmq
         RABBITMQ_DEFAULT_PASS: qmtibbar
@@ -75,9 +75,9 @@ services:
   informatics-gateway:
     image: "ghcr.io/project-monai/monai-deploy-informatics-gateway:${TAG}"
     volumes:
-      - ${PWD}/configs/informatics-gateway.json:/opt/monai/ig/appsettings.json
-      - ${PWD}/.run/ig/payloads:/payloads
-      - ${PWD}/.run/ig/database:/database
+      - ./configs/informatics-gateway.json:/opt/monai/ig/appsettings.json
+      - ./.run/ig/payloads:/payloads
+      - ./.run/ig/database:/database
     ports:
       - "104:104"
       - "5000:5000"

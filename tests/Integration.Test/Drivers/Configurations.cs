@@ -112,6 +112,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         /// </summary>
         /// <value></value>
         public string HostIp { get; set; }
+
+        /// <summary>
+        /// Gets or sets the name of the bucket test files are uploaded to.
+        /// </summary>
+        public string Bucket { get; set; }
     }
 
     public class InformaticsGatewaySettings
