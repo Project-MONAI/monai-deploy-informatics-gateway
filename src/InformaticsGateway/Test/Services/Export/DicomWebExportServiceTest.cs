@@ -143,7 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -203,7 +203,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -288,7 +288,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -382,7 +382,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
