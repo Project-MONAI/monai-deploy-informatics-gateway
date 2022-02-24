@@ -95,6 +95,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
 
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
+                    services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();
 
                     services.AddSingleton<MinIoStorageService>();
                     services.AddSingleton<IStorageService>(implementationFactory =>

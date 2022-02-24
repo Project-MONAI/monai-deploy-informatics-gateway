@@ -87,11 +87,10 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
         public void Subscribe(string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback, ushort prefetchCount = 0)
         {
             Guard.Against.NullOrWhiteSpace(topic, nameof(topic));
-            Guard.Against.NullOrWhiteSpace(queue, nameof(queue));
             Guard.Against.Null(messageReceivedCallback, nameof(messageReceivedCallback));
 
-            _channel.QueueDeclare(queue: queue, durable: true, exclusive: false, autoDelete: false);
-            _channel.QueueBind(queue, _exchange, topic);
+            var queueDeclareResult = _channel.QueueDeclare(queue: queue, durable: true, exclusive: false, autoDelete: false);
+            _channel.QueueBind(queueDeclareResult.QueueName, _exchange, topic);
 
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (model, eventArgs) =>
@@ -102,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                     { "ApplicationId", eventArgs.BasicProperties.AppId }
                 });
 
-                _logger.Log(LogLevel.Information, $"Message received from queue {queue} for {topic}.");
+                _logger.Log(LogLevel.Information, $"Message received from queue {queueDeclareResult.QueueName} for {topic}.");
 
                 var messageReceivedEventArgs = new MessageReceivedEventArgs(
                  new Message(
@@ -119,8 +118,8 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                 messageReceivedCallback(messageReceivedEventArgs);
             };
             _channel.BasicQos(0, prefetchCount, false);
-            _channel.BasicConsume(queue, false, consumer);
-            _logger.Log(LogLevel.Information, $"Listening for messages from {_endpoint}/{_virtualHost}. Exchange={_exchange}, Queue={queue}, Routing Key={topic}");
+            _channel.BasicConsume(queueDeclareResult.QueueName, false, consumer);
+            _logger.Log(LogLevel.Information, $"Listening for messages from {_endpoint}/{_virtualHost}. Exchange={_exchange}, Queue={queueDeclareResult.QueueName}, Routing Key={topic}");
         }
 
         public void Acknowledge(MessageBase message)

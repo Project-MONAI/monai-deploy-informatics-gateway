@@ -129,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -179,7 +179,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -233,7 +233,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -289,7 +289,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -345,7 +345,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -401,7 +401,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Throws(new Exception("error"));
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -457,7 +457,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };
@@ -512,7 +512,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var dataflowCompleted = new ManualResetEvent(false);
-            service.ReportActionStarted += (sender, args) =>
+            service.ReportActionCompleted += (sender, args) =>
             {
                 dataflowCompleted.Set();
             };

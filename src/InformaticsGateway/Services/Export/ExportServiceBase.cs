@@ -54,8 +54,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     {
         private static readonly object SyncRoot = new();
 
-        internal event EventHandler ReportActionStarted;
+        internal event EventHandler ReportActionCompleted;
 
+        private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly ILogger _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IStorageInfoProvider _storageInfoProvider;
@@ -64,8 +65,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IMessageBrokerPublisherService _messagePublisher;
         private readonly IServiceScope _scope;
         private readonly Dictionary<string, ExportRequestMessage> _exportRequests;
-        private readonly string _exportQueueName;
-        private TransformManyBlock<ExportRequestMessage, ExportRequestDataMessage> _exportFlow;
 
         public abstract string RoutingKey { get; }
         protected abstract int Concurrency { get; }
@@ -87,6 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             IServiceScopeFactory serviceScopeFactory,
             IStorageInfoProvider storageInfoProvider)
         {
+            _cancellationTokenSource = new CancellationTokenSource();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _scope = _serviceScopeFactory.CreateScope();
@@ -103,12 +103,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _messagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
 
             _exportRequests = new Dictionary<string, ExportRequestMessage>();
-            _exportQueueName = _configuration.Messaging.Topics.ExportRequestQueue;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            SetupExportFlow(cancellationToken);
             SetupPolling();
 
             Status = ServiceStatus.Running;
@@ -118,61 +116,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
+            _cancellationTokenSource.Cancel();
             _logger.LogInformation($"{ServiceName} is stopping.");
-            _exportFlow.Complete();
-            _exportFlow.Completion.Wait(cancellationToken);
             Status = ServiceStatus.Stopped;
             return Task.CompletedTask;
         }
 
-        private void SetupExportFlow(CancellationToken cancellationToken)
-        {
-            try
-            {
-                var executionOptions = new ExecutionDataflowBlockOptions
-                {
-                    MaxDegreeOfParallelism = Concurrency,
-                    MaxMessagesPerTask = 1,
-                    CancellationToken = cancellationToken
-                };
-
-                _exportFlow = new TransformManyBlock<ExportRequestMessage, ExportRequestDataMessage>(
-                    (exportRequest) => DownloadPayloadActionCallback(exportRequest, cancellationToken),
-                    executionOptions);
-
-                var exportActionBlock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
-                    async (exportDataRequest) =>
-                    {
-                        if (exportDataRequest.IsFailed) return exportDataRequest;
-                        return await ExportDataBlockCallback(exportDataRequest, cancellationToken);
-                    },
-                    executionOptions);
-
-                var reportingActionBlock = new ActionBlock<ExportRequestDataMessage>(ReportingActionBlock, executionOptions);
-
-                var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
-
-                _exportFlow.LinkTo(exportActionBlock, linkOptions);
-                exportActionBlock.LinkTo(reportingActionBlock, linkOptions);
-
-                _logger.Log(LogLevel.Information, $"{ServiceName} completed workflow setup.");
-            }
-            catch (AggregateException ex)
-            {
-                foreach (var iex in ex.InnerExceptions)
-                {
-                    _logger.Log(LogLevel.Error, iex, "Error occurred while exporting.");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.Log(LogLevel.Error, ex, "Error processing export task.");
-            }
-        }
-
         private void SetupPolling()
         {
-            _messageSubscriber.Subscribe(RoutingKey, _exportQueueName, OnMessageReceivedCallback);
+            _messageSubscriber.Subscribe(RoutingKey, String.Empty, OnMessageReceivedCallback);
             _logger.Log(LogLevel.Information, $"{ServiceName} subscribed to {RoutingKey} messages.");
         }
 
@@ -185,20 +137,63 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 return;
             }
 
-            lock (SyncRoot)
+            try
             {
-                var exportRequest = eventArgs.Message.ConvertTo<ExportRequestMessage>();
-                if (_exportRequests.ContainsKey(exportRequest.ExportTaskId))
+                var executionOptions = new ExecutionDataflowBlockOptions
                 {
-                    _logger.Log(LogLevel.Warning, $"The export request {exportRequest.ExportTaskId} is already queued for export.");
-                    return;
+                    MaxDegreeOfParallelism = Concurrency,
+                    MaxMessagesPerTask = 1,
+                    CancellationToken = _cancellationTokenSource.Token
+                };
+
+                var exportFlow = new TransformManyBlock<ExportRequestMessage, ExportRequestDataMessage>(
+                    (exportRequest) => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
+                    executionOptions);
+
+                var exportActionBlock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
+                    async (exportDataRequest) =>
+                    {
+                        if (exportDataRequest.IsFailed) return exportDataRequest;
+                        return await ExportDataBlockCallback(exportDataRequest, _cancellationTokenSource.Token);
+                    },
+                    executionOptions);
+
+                var reportingActionBlock = new ActionBlock<ExportRequestDataMessage>(ReportingActionBlock, executionOptions);
+
+                var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
+
+                exportFlow.LinkTo(exportActionBlock, linkOptions);
+                exportActionBlock.LinkTo(reportingActionBlock, linkOptions);
+
+                lock (SyncRoot)
+                {
+                    var exportRequest = eventArgs.Message.ConvertTo<ExportRequestMessage>();
+                    if (_exportRequests.ContainsKey(exportRequest.ExportTaskId))
+                    {
+                        _logger.Log(LogLevel.Warning, $"The export request {exportRequest.ExportTaskId} is already queued for export.");
+                        return;
+                    }
+
+                    exportRequest.MessageId = eventArgs.Message.MessageId;
+                    exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
+
+                    _exportRequests.Add(exportRequest.ExportTaskId, exportRequest);
+                    exportFlow.Post(exportRequest);
                 }
 
-                exportRequest.MessageId = eventArgs.Message.MessageId;
-                exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
-
-                _exportRequests.Add(exportRequest.ExportTaskId, exportRequest);
-                _exportFlow.Post(exportRequest);
+                exportFlow.Complete();
+                reportingActionBlock.Completion.Wait(_cancellationTokenSource.Token);
+            }
+            catch (AggregateException ex)
+            {
+                foreach (var iex in ex.InnerExceptions)
+                {
+                    _logger.Log(LogLevel.Error, iex, "Error occurred while exporting.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log(LogLevel.Error, ex, "Error processing export task.");
             }
         }
 
@@ -277,12 +272,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _logger.Log(LogLevel.Information, $"Export task completed with {exportRequest.FailedFiles} failures out of {exportRequest.Files.Count()}");
 
-            if (ReportActionStarted != null)
-            {
-                _logger.Log(LogLevel.Debug, $"Calling ReportActionStarted callback.");
-                ReportActionStarted(this, null);
-            }
-
             var exportCompleteMessage = new ExportCompleteMessage(exportRequest);
             var jsonMessage = new JsonMessage<ExportCompleteMessage>(exportCompleteMessage, exportRequest.CorrelationId, exportRequest.DeliveryTag);
 
@@ -317,6 +306,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             lock(SyncRoot)
             {
                 _exportRequests.Remove(exportRequestData.ExportTaskId);
+            }
+
+            if (ReportActionCompleted != null)
+            {
+                _logger.Log(LogLevel.Debug, $"Calling ReportActionCompleted callback.");
+                ReportActionCompleted(this, null);
             }
         }
     }
