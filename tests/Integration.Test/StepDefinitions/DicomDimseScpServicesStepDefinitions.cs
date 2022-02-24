@@ -23,6 +23,7 @@ using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
+using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Polly;
@@ -35,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     public class DicomDimseScpServicesStepDefinitions
     {
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
-        internal static readonly string KeyDicomSizes = "DICOM_SIZES";
+        internal static readonly string KeyDicomHashes = "DICOM_HASHES";
         internal static readonly string KeyDicomFiles = "DICOM_FILES";
         internal static readonly string KeyCalledAet = "CALLED_AET";
         internal static readonly string KeyDataGrouping = "DICOM_DATA_GROUPING";
@@ -210,29 +211,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 TimeSpan.FromSeconds(clientTimeoutSeconds));
 
             // Remove after sent to reduce memory usage
-            var dicomFileSize = new Dictionary<string, long>();
+            var dicomFileSize = new Dictionary<string, string>();
             foreach (var dicomFile in dicomFileSpec.Files)
             {
                 string key = GenerateDicomValidationKey(dicomFile.Dataset);
-                long pixelSize = CalculatePixelSize(dicomFile);
-                dicomFileSize[key] = pixelSize;
+                dicomFileSize[key] = dicomFile.CalculateHash();
             }
 
-            _scenarioContext[KeyDicomSizes] = dicomFileSize;
+            _scenarioContext[KeyDicomHashes] = dicomFileSize;
             dicomFileSpec.Files.Clear();
-        }
-
-        private static long CalculatePixelSize(DicomFile dicomFile)
-        {
-            var pixelData = DicomPixelData.Create(dicomFile.Dataset);
-            long pixelSize = 0;
-            for (int frame = 0; frame < pixelData.NumberOfFrames; frame++)
-            {
-                var buffer = pixelData.GetFrame(frame);
-                pixelSize += buffer.Size;
-            }
-
-            return pixelSize;
         }
 
         private static string GenerateDicomValidationKey(DicomDataset dicomDataset)
@@ -251,7 +238,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             var minioClient = new MinioClient(_configuration.StorageServiceOptions.Endpoint, _configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
 
-            var dicomSizes = _scenarioContext[KeyDicomSizes] as Dictionary<string, long>;
+            var dicomSizes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
             _rabbitMqHooks.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
             var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
             messages.Should().NotBeNullOrEmpty();
@@ -269,8 +256,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         memoryStream.Position = 0;
                         var dicomFile = DicomFile.Open(memoryStream);
                         dicomValidationKey = GenerateDicomValidationKey(dicomFile.Dataset);
-                        long pixelSize = CalculatePixelSize(dicomFile);
-                        dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(pixelSize);
+                        dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
                     });
 
                     await minioClient.GetObjectAsync(file.Bucket, $"{request.PayloadId}/{file.Metadata}", (stream) =>
