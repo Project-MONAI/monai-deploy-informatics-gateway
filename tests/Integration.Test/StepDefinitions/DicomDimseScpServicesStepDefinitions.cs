@@ -13,7 +13,6 @@ using System.Net;
 using System.Text;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
-using FellowOakDicom.Imaging;
 using FellowOakDicom.Network;
 using FellowOakDicom.Serialization;
 using FluentAssertions.Execution;

@@ -10,8 +10,6 @@
 // limitations under the License.
 
 using System.Text;
-using FellowOakDicom;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
@@ -59,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
         }
 
         [BeforeScenario("@messaging_export_complete")]
-        public void  BeforeMessagingExportComplete()
+        public void BeforeMessagingExportComplete()
         {
             BeforeMessagingSubscribeTo(QueueNameExportQueue, _configurationKeys.ExportComplete);
         }
@@ -109,7 +107,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _channel.BasicQos(0, 0, false);
             _consumerTag = _channel.BasicConsume(queue, false, consumer);
             _outputHelper.WriteLine($"Listening for messages from {_configuration.MessageBrokerOptions.Endpoint}/{_configuration.MessageBrokerOptions.VirtualHost}. Exchange={_configuration.MessageBrokerOptions.Exchange}, Queue={queue}, Routing Key={routingKey}");
-
         }
 
         internal void Publish(string routingKey, Message message)

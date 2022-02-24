@@ -9,12 +9,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System;
 using System.Net;
-using System.Threading.Tasks;
 using Ardalis.GuardClauses;
-using FellowOakDicom;
-using FellowOakDicom.Network;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
@@ -23,7 +19,6 @@ using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
-using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -151,7 +146,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _rabbitMqHooks.Publish(routingKey, message.ToMessage());
             _scenarioContext[KeyExportRequestMessage] = exportRequestMessage;
         }
-
 
         [Then(@"Informatics Gateway exports the studies to the DICOM SCP")]
         public async Task ThenExportTheInstancesToTheDicomScp()
