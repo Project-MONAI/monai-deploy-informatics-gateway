@@ -136,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                         var size = _random.NextLong(studySpec.SizeMinBytes, studySpec.SizeMaxBytes);
                         dicomFile = generator.GenerateNewInstance(size);
                         files.Add(dicomFile);
-                        if(!uniqueInstances.Add(dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID)))
+                        if (!uniqueInstances.Add(dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID)))
                         {
                             throw new Exception("Instance UID already exists, something's wrong here.");
                         }

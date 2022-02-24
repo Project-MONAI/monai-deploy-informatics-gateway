@@ -9,14 +9,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using FellowOakDicom;
 using FellowOakDicom.Imaging.Codec;
 using FellowOakDicom.Log;
 using FellowOakDicom.Network;
-using FellowOakDicom.Network.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -26,7 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
     {
         public FeatureContext Context { get; set; }
         public Dictionary<string, string> Instances { get; set; } = new Dictionary<string, string>();
-        public ISpecFlowOutputHelper OutputHelper {get;set;}
+        public ISpecFlowOutputHelper OutputHelper { get; set; }
     }
 
     internal class CStoreScp : DicomService, IDicomServiceProvider, IDicomCStoreProvider
@@ -63,7 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             try
             {
                 var key = request.File.GenerateFileName();
-                lock(SyncLock)
+                lock (SyncLock)
                 {
                     data.Instances.Add(key, request.File.CalculateHash());
                 }
@@ -106,6 +103,5 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
             return SendAssociationAcceptAsync(association);
         }
-
     }
 }

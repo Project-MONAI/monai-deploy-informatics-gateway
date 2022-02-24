@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             using var sha256Hash = SHA256.Create();
             var hash = sha256Hash.ComputeHash(bytes.ToArray());
             var sb = new StringBuilder();
-            foreach(var b in hash)
+            foreach (var b in hash)
             {
                 sb.Append(b.ToString("X2"));
             }
