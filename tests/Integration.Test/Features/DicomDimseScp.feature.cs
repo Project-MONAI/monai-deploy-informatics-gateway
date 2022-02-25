@@ -152,7 +152,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         [Xunit.InlineDataAttribute("CT", "1", new string[0])]
         [Xunit.InlineDataAttribute("MG", "2", new string[0])]
         [Xunit.InlineDataAttribute("US", "1", new string[0])]
-        [Xunit.InlineDataAttribute("TOMO", "1", new string[0])]
         public virtual void RespondToC_STORE_RQAndGroupDataByStudyInstanceUID(string modality, string count, string[] exampleTags)
         {
             string[] @__tags = new string[] {
@@ -225,7 +224,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         [Xunit.InlineDataAttribute("CT", "1", "2", new string[0])]
         [Xunit.InlineDataAttribute("MG", "1", "3", new string[0])]
         [Xunit.InlineDataAttribute("US", "1", "2", new string[0])]
-        [Xunit.InlineDataAttribute("TOMO", "1", "2", new string[0])]
         public virtual void RespondToC_STORE_RQAndGroupDataBySeriesInstanceUID(string modality, string study_Count, string series_Count, string[] exampleTags)
         {
             string[] @__tags = new string[] {

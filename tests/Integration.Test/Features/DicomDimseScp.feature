@@ -46,7 +46,7 @@ Feature: DICOM DIMSE SCP Services
             | CT       | 1     |
             | MG       | 2     |
             | US       | 1     |
-            | TOMO     | 1     |
+            # | TOMO     | 1     |
 
     @messaging_workflow_request @messaging
     Scenario Outline: Respond to C-STORE-RQ and group data by Series Instance UID
@@ -64,4 +64,4 @@ Feature: DICOM DIMSE SCP Services
             | CT       | 1           | 2            |
             | MG       | 1           | 3            |
             | US       | 1           | 2            |
-            | TOMO     | 1           | 2            |
+            # | TOMO     | 1           | 2            |

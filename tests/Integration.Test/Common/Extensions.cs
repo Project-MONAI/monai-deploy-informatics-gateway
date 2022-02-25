@@ -34,5 +34,27 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
             return waitTask == await Task.WhenAny(waitTask, Task.Delay(timeout));
         }
+
+        public static async Task<T> WaitUntilDataIsReady<T>(Func<Task<T>> action, Func<T, bool> condition, TimeSpan timeout, int frequency = 250)
+        {
+            var waitTask = Task.Run(async () =>
+            {
+                T result;
+                do
+                {
+                    result = await action();
+                } while (!condition(result));
+                return result;
+            });
+
+            if (waitTask == await Task.WhenAny(waitTask, Task.Delay(timeout)))
+            {
+                return waitTask.Result;
+            }
+            else
+            {
+                return default(T);
+            }
+        }
     }
 }

@@ -20,6 +20,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
     {
         public class StudyGenerationSpecs
         {
+            public List<string> StudyInstanceUids { get; set; }
             public int StudyCount { get; set; }
             public int SeriesPerStudyCount { get; set; }
             public int InstancePerSeries { get; set; }
@@ -84,29 +85,25 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         {
             var dataset = new DicomDataset();
             _baseDataset.CopyTo(dataset);
-            dataset.AddOrUpdate(DicomTag.SOPClassUID, sopClassUid);
-            dataset.AddOrUpdate(DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID());
+            dataset.AddOrUpdate(DicomTag.SOPClassUID, sopClassUid)
+                   .AddOrUpdate(DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID())
+                   .AddOrUpdate(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Monochrome2.Value)
+                   .AddOrUpdate(DicomTag.PixelRepresentation, (ushort)PixelRepresentation.Unsigned)
+                   .AddOrUpdate(DicomTag.PlanarConfiguration, (ushort)PlanarConfiguration.Interleaved)
+                   .AddOrUpdate<ushort>(DicomTag.Rows, Rows)
+                   .AddOrUpdate<ushort>(DicomTag.Columns, Columns)
+                   .AddOrUpdate<ushort>(DicomTag.BitsAllocated, 8)
+                   .AddOrUpdate<ushort>(DicomTag.BitsStored, 8)
+                   .AddOrUpdate<ushort>(DicomTag.HighBit, 7)
+                   .AddOrUpdate<ushort>(DicomTag.SamplesPerPixel, 1);
 
-            dataset.AddOrUpdate(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Monochrome1.Value);
-            dataset.AddOrUpdate(DicomTag.Rows, (ushort)Rows);
-            dataset.AddOrUpdate(DicomTag.Columns, (ushort)Columns);
-            dataset.AddOrUpdate(DicomTag.BitsAllocated, (ushort)8);
-
-            var frames = 1 + (size / Rows / Columns);
+            var frames = Math.Max(1, size / Rows / Columns);
+            var pixelData = DicomPixelData.Create(dataset, true);
             for (int frame = 0; frame < frames; frame++)
             {
-                var pixelData = DicomPixelData.Create(dataset, true);
-                pixelData.BitsStored = 8;
-                pixelData.SamplesPerPixel = 3;
-                pixelData.HighBit = 7;
-                pixelData.PhotometricInterpretation = PhotometricInterpretation.Monochrome1;
-                pixelData.PixelRepresentation = 0;
-                pixelData.PlanarConfiguration = 0;
-                pixelData.Height = (ushort)Rows;
-                pixelData.Width = (ushort)Columns;
                 pixelData.AddFrame(new MemoryByteBuffer(GeneratePixelData(Rows, Columns)));
             }
-
+            _outputHelper.WriteLine($"DICOM Instance created with {frames} frames.");
             return new DicomFile(dataset);
         }
 
@@ -119,8 +116,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             if (studySpec is null) throw new ArgumentNullException(nameof(studySpec));
 
             var instancesPerSeries = _random.Next(studySpec.InstanceMin, studySpec.InstanceMax);
-            var uniqueInstances = new HashSet<string>();
             var files = new List<DicomFile>();
+            var studyInstanceUids = new List<string>();
             DicomFile dicomFile = null;
 
             var generator = SetPatient(patientId);
@@ -128,6 +125,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             for (int study = 0; study < studiesPerPatient; study++)
             {
                 generator.GenerateNewStudy();
+                studyInstanceUids.Add(_baseDataset.GetString(DicomTag.StudyInstanceUID));
                 for (int series = 0; series < seriesPerStudy; series++)
                 {
                     generator.GenerateNewSeries();
@@ -136,10 +134,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                         var size = _random.NextLong(studySpec.SizeMinBytes, studySpec.SizeMaxBytes);
                         dicomFile = generator.GenerateNewInstance(size);
                         files.Add(dicomFile);
-                        if (!uniqueInstances.Add(dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID)))
-                        {
-                            throw new Exception("Instance UID already exists, something's wrong here.");
-                        }
                     }
                 }
                 _outputHelper.WriteLine("DICOM Instance: PID={0}, STUDY={1}",
@@ -153,7 +147,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                 InstancePerSeries = instancesPerSeries,
                 SeriesPerStudyCount = seriesPerStudy,
                 StudyCount = studiesPerPatient,
-                FileCount = files.Count
+                FileCount = files.Count,
+                StudyInstanceUids = studyInstanceUids
             };
         }
 

@@ -11,6 +11,7 @@
 
 using System.Configuration;
 using System.Reflection;
+using System.Text;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using TechTalk.SpecFlow.Infrastructure;
@@ -27,6 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         public MessageBrokerSettings MessageBrokerOptions { get; private set; }
         public Dictionary<string, StudySpec> StudySpecs { get; private set; }
         public StorageServiceSettings StorageServiceOptions { get; private set; }
+        public OrthancSettings OrthancOptions { get; private set; }
 
         public Configurations(ISpecFlowOutputHelper outputHelper)
         {
@@ -34,6 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             InformaticsGatewayOptions = new InformaticsGatewaySettings();
             MessageBrokerOptions = new MessageBrokerSettings();
             StorageServiceOptions = new StorageServiceSettings();
+            OrthancOptions = new OrthancSettings();
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             StudySpecs = LoadStudySpecs() ?? throw new NullReferenceException("study.json not found or empty.");
             _config = new ConfigurationBuilder()
@@ -64,33 +67,87 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _config.GetSection(nameof(InformaticsGatewaySettings)).Bind(InformaticsGatewayOptions);
             _config.GetSection(nameof(MessageBrokerSettings)).Bind(MessageBrokerOptions);
             _config.GetSection(nameof(StorageServiceSettings)).Bind(StorageServiceOptions);
+            _config.GetSection(nameof(OrthancSettings)).Bind(OrthancOptions);
 
             if (InformaticsGatewayOptions.TemporaryDataStore == "$DATA_PATH")
             {
                 InformaticsGatewayOptions.TemporaryDataStore = Environment.GetEnvironmentVariable("DATA_PATH") ?? throw new ConfigurationErrorsException("Environment variable 'DATA_PATH' is undefined.");
             }
-
             _outputHelper.WriteLine("Informatics Gateway data path = {0}", InformaticsGatewayOptions.TemporaryDataStore);
-            if (TestRunnerOptions.HostIp == "$HOST_IP")
+
+            var hostIp = Environment.GetEnvironmentVariable("HOST_IP");
+            if (hostIp is not null)
             {
-                TestRunnerOptions.HostIp = Environment.GetEnvironmentVariable("HOST_IP") ?? throw new ConfigurationErrorsException("Environment variable 'HOST_IP' is undefined.");
+                if (TestRunnerOptions.HostIp == "$HOST_IP")
+                {
+                    TestRunnerOptions.HostIp = hostIp;
+                }
+                _outputHelper.WriteLine("Test Runner Host/IP = {0}", TestRunnerOptions.HostIp);
+                if (InformaticsGatewayOptions.Host == "$HOST_IP")
+                {
+                    InformaticsGatewayOptions.Host = hostIp;
+                }
+                _outputHelper.WriteLine("Informatics Gateway Host/IP = {0}", InformaticsGatewayOptions.Host);
+                if (MessageBrokerOptions.Endpoint == "$HOST_IP")
+                {
+                    MessageBrokerOptions.Endpoint = hostIp;
+                }
+                _outputHelper.WriteLine("Message Broker Host/IP = {0}", MessageBrokerOptions.Endpoint);
+                if (StorageServiceOptions.Host == "$HOST_IP")
+                {
+                    StorageServiceOptions.Host = hostIp;
+                }
+                _outputHelper.WriteLine("Storage Service Host/IP = {0}", StorageServiceOptions.Host);
+                if (OrthancOptions.Host == "$HOST_IP")
+                {
+                    StorageServiceOptions.Host = hostIp;
+                }
+                _outputHelper.WriteLine("Orthanc Host/IP = {0}", StorageServiceOptions.Host);
+                if (OrthancOptions.DicomWebRoot.Contains("$HOST_IP"))
+                {
+                    OrthancOptions.DicomWebRoot = OrthancOptions.DicomWebRoot.Replace("$HOST_IP", hostIp);
+                }
+                _outputHelper.WriteLine("Orthanc DICOM web endpoint = {0}", OrthancOptions.DicomWebRoot);
             }
-            _outputHelper.WriteLine("Test Runner Host/IP = {0}", TestRunnerOptions.HostIp);
-            if (InformaticsGatewayOptions.Host == "$HOST_IP")
-            {
-                InformaticsGatewayOptions.Host = Environment.GetEnvironmentVariable("HOST_IP") ?? throw new ConfigurationErrorsException("Environment variable 'HOST_IP' is undefined.");
-            }
-            _outputHelper.WriteLine("Informatics Gateway Host/IP = {0}", TestRunnerOptions.HostIp);
-            if (MessageBrokerOptions.Endpoint == "$HOST_IP")
-            {
-                MessageBrokerOptions.Endpoint = Environment.GetEnvironmentVariable("HOST_IP") ?? throw new ConfigurationErrorsException("Environment variable 'HOST_IP' is undefined.");
-            }
-            _outputHelper.WriteLine("Message Broker Host/IP = {0}", TestRunnerOptions.HostIp);
-            if (StorageServiceOptions.Host == "$HOST_IP")
-            {
-                StorageServiceOptions.Host = Environment.GetEnvironmentVariable("HOST_IP") ?? throw new ConfigurationErrorsException("Environment variable 'HOST_IP' is undefined.");
-            }
-            _outputHelper.WriteLine("Storage Service Host/IP = {0}", TestRunnerOptions.HostIp);
+        }
+    }
+
+    public class OrthancSettings
+    {
+        /// <summary>
+        /// Gets or set host name or IP address the Orthanc instance.
+        /// </summary>
+        public string Host { get; set; }
+
+        /// <summary>
+        /// Gets or sets the DIMSE port of the Orthanc server.
+        /// </summary>
+        public int DimsePort { get; set; }
+
+        /// <summary>
+        /// Gets or sets the root URI of the Orthanc DICOMweb service.
+        /// </summary>
+        public string DicomWebRoot { get; set; }
+
+        /// <summary>
+        /// Gets or sets the root URI of the Orthanc DICOMweb service used by IG.
+        /// </summary>
+        public string DicomWebRootInternal { get; set; }
+
+        /// <summary>
+        /// Gets or sets the username to access Orthanc.
+        /// </summary>
+        public string Username { get; set; }
+
+        /// <summary>
+        /// Gets or sets the password to access Orthanc.
+        /// </summary>
+        public string Password { get; set; }
+
+        public string GetBase64EncodedAuthHeader()
+        {
+            var authToken = Encoding.ASCII.GetBytes($"{Username}:{Password}");
+            return Convert.ToBase64String(authToken);
         }
     }
 

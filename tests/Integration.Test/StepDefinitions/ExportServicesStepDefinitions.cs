@@ -10,12 +10,14 @@
 // limitations under the License.
 
 using System.Net;
+using System.Net.Http.Headers;
 using Ardalis.GuardClauses;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
@@ -28,9 +30,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     public class DicomDimseScuServicesStepDefinitions
     {
         internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(2);
+        internal static readonly TimeSpan DicomWebWaitTimeSpan = TimeSpan.FromMinutes(2);
+        internal static readonly string KeyPatientId = "PATIENT_ID";
         internal static readonly string KeyDicomHashes = "DICOM_FILES";
-        internal static readonly string KeyCalledAet = "CALLED_AET";
+        internal static readonly string KeyDestination = "EXPORT_DESTINATION";
         internal static readonly string KeyExportRequestMessage = "EXPORT_REQUEST-MESSAGE";
+        internal static readonly string KeyFileSpecs = "FILE_SPECS";
         private readonly FeatureContext _featureContext;
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;
@@ -64,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             DestinationApplicationEntity destination;
             try
             {
-                _scenarioContext[KeyCalledAet] = destination = await _informaticsGatewayClient.DicomDestinations.Create(new DestinationApplicationEntity
+                destination = await _informaticsGatewayClient.DicomDestinations.Create(new DestinationApplicationEntity
                 {
                     Name = ScpHooks.FeatureScpAeTitle,
                     AeTitle = ScpHooks.FeatureScpAeTitle,
@@ -76,14 +81,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             {
                 if (ex.ProblemDetails.Status == (int)HttpStatusCode.BadRequest && ex.ProblemDetails.Detail.Contains("already exists"))
                 {
-                    _scenarioContext[KeyCalledAet] = destination =
-                        await _informaticsGatewayClient.DicomDestinations.Get(ScpHooks.FeatureScpAeTitle, CancellationToken.None);
+                    destination = await _informaticsGatewayClient.DicomDestinations.Get(ScpHooks.FeatureScpAeTitle, CancellationToken.None);
                 }
                 else
                 {
                     throw;
                 }
             }
+            _scenarioContext[KeyDestination] = destination.Name;
         }
 
         [Given(@"(.*) (.*) studies for export")]
@@ -117,6 +122,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 await minioClient.PutObjectAsync(_configuration.TestRunnerOptions.Bucket, filename, stream, stream.Length);
             }
             _scenarioContext[KeyDicomHashes] = hashes;
+            _scenarioContext[KeyPatientId] = patientId;
+            _scenarioContext[KeyFileSpecs] = fileSpecs;
         }
 
         [When(@"a export request is sent for '([^']*)'")]
@@ -125,12 +132,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NullOrWhiteSpace(routingKey, nameof(routingKey));
 
             var dicomHashes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
-            var calledAet = _scenarioContext[KeyCalledAet] as DestinationApplicationEntity;
+
+            string destination = _scenarioContext[KeyDestination].ToString();
 
             var exportRequestMessage = new ExportRequestMessage
             {
                 CorrelationId = Guid.NewGuid().ToString(),
-                Destination = calledAet.Name,
+                Destination = destination,
                 ExportTaskId = Guid.NewGuid().ToString(),
                 Files = dicomHashes.Keys.ToList(),
                 MessageId = Guid.NewGuid().ToString(),
@@ -159,6 +167,39 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 (await Extensions.WaitUntil(() => data.Instances.ContainsKey(key), DicomScpWaitTimeSpan)).Should().BeTrue("{0} should be received", key);
                 data.Instances.Should().ContainKey(key).WhoseValue.Equals(dicomHashes[key]);
             }
+        }
+
+        [Then(@"Informatics Gateway exports the studies to Orthanc")]
+        public async Task ThenExportTheInstancesToOrthanc()
+        {
+            var dicomHashes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
+            var fileSpecs = _scenarioContext[KeyFileSpecs] as DicomInstanceGenerator.StudyGenerationSpecs;
+            var httpClient = new HttpClient();
+            var dicomWebClient = new DicomWebClient(httpClient, null);
+            dicomWebClient.ConfigureServiceUris(new Uri(_configuration.OrthancOptions.DicomWebRoot));
+            dicomWebClient.ConfigureAuthentication(new AuthenticationHeaderValue("Basic", _configuration.OrthancOptions.GetBase64EncodedAuthHeader()));
+            var result = await Extensions.WaitUntilDataIsReady<Dictionary<string, string>>(async () =>
+             {
+                 var actualHashes = new Dictionary<string, string>();
+                 try
+                 {
+                     int instanceFound = 0;
+                     await foreach (var dicomFile in dicomWebClient.Wado.Retrieve(fileSpecs.StudyInstanceUids[0]))
+                     {
+                         var key = dicomFile.GenerateFileName();
+                         var hash = dicomFile.CalculateHash();
+                         actualHashes.Add(key, hash);
+                         ++instanceFound;
+                     }
+                 }
+                 catch { }
+                 return actualHashes;
+             }, (Dictionary<string, string> expected) =>
+             {
+                 return expected.Count == dicomHashes.Count;
+             }, DicomWebWaitTimeSpan, 1000);
+
+            result.Should().NotBeNull().And.HaveCount(dicomHashes.Count);
         }
     }
 }
