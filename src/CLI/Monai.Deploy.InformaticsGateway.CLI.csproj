@@ -42,9 +42,9 @@
   <ItemGroup>
     <PackageReference Include="Crayon" Version="2.0.64" />
     <PackageReference Include="Docker.DotNet" Version="3.125.5" />
-      <PackageReference Include="GitVersion.MsBuild" Version="5.8.1">
-          <PrivateAssets>All</PrivateAssets>
-      </PackageReference>
+    <PackageReference Include="GitVersion.MsBuild" Version="5.8.2">
+        <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />

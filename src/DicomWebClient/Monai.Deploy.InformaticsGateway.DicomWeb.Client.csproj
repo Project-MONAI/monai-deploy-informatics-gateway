@@ -35,7 +35,7 @@ limitations under the License.
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
     <PackageReference Include="fo-dicom" Version="5.0.1" />
-    <PackageReference Include="GitVersion.MsBuild" Version="5.8.1">
+    <PackageReference Include="GitVersion.MsBuild" Version="5.8.2">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.7" />

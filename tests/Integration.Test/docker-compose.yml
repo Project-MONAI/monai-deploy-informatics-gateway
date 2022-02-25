@@ -27,8 +27,8 @@ services:
       - testrunner
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 30s
-      timeout: 20s
+      interval: 15s
+      timeout: 30s
       retries: 3
 
   createbuckets:
@@ -68,9 +68,28 @@ services:
         - testrunner
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 30s
+      interval: 15s
       timeout: 30s
       retries: 3
+
+  orthanc:
+    image: "jodogne/orthanc-plugins"
+    volumes:
+      - ${PWD}/configs/orthanc.json:/etc/orthanc/orthanc.json
+      - ${PWD}/.run/orthanc:/var/lib/orthanc/db/
+    ports:
+      - "1114:1114"
+      - "8089:8089"
+    environment:
+      VERBOSE_ENABLED: "true"
+    networks:
+      - testrunner
+    healthcheck:
+      test: ["CMD", "/probes/test-aliveness.py"]
+      start_period: 10s
+      retries: 3
+      interval: 15s
+      timeout: 30s
 
   informatics-gateway:
     image: "ghcr.io/project-monai/monai-deploy-informatics-gateway:${TAG}"

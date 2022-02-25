@@ -19,21 +19,19 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "3.9.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Xunit.TraitAttribute("Category", "scp")]
-    public partial class DICOMDIMSESCUServicesFeature : object, Xunit.IClassFixture<DICOMDIMSESCUServicesFeature.FixtureData>, System.IDisposable
+    public partial class DICOMwebExportServiceFeature : object, Xunit.IClassFixture<DICOMwebExportServiceFeature.FixtureData>, System.IDisposable
     {
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = new string[] {
-                "scp"};
+        private string[] _featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
-#line 1 "DicomDimseScu.feature"
+#line 1 "DicomWebExport.feature"
 #line hidden
         
-        public DICOMDIMSESCUServicesFeature(DICOMDIMSESCUServicesFeature.FixtureData fixtureData, Monai_Deploy_InformaticsGateway_Integration_Test_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
+        public DICOMwebExportServiceFeature(DICOMwebExportServiceFeature.FixtureData fixtureData, Monai_Deploy_InformaticsGateway_Integration_Test_XUnitAssemblyFixture assemblyFixture, Xunit.Abstractions.ITestOutputHelper testOutputHelper)
         {
             this._testOutputHelper = testOutputHelper;
             this.TestInitialize();
@@ -42,12 +40,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         public static void FeatureSetup()
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
-            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "DICOM DIMSE SCU Services", @"    This feature tests the DIMSE services provided by the Informatics Gateway as a SCU.
+            TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "DICOMweb Export Service", @"    This feature tests the DICOMweb export services provided by the Informatics Gateway.
+
     Requirements covered:
-    - [REQ-DCM-03] MIG SHALL be able to export DICOM via C-STORE
-    - [REQ-DCM-09] Store SCU AE Title shall be configurable
-    - [REQ-DCM-11] MIG SHALL support exporting data to multiple DICOM destinations", ProgrammingLanguage.CSharp, new string[] {
-                        "scp"});
+    - [REQ-DCW-03] MIG SHALL be able to export to DICOMweb services via STOW-RS
+    - [REQ-DCW-07] MIG SHALL support exporting data to multiple DICOMweb destinations", ProgrammingLanguage.CSharp, ((string[])(null)));
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -87,21 +84,23 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="Export to a DICOM device")]
-        [Xunit.TraitAttribute("FeatureTitle", "DICOM DIMSE SCU Services")]
-        [Xunit.TraitAttribute("Description", "Export to a DICOM device")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Export to a DICOMweb service")]
+        [Xunit.TraitAttribute("FeatureTitle", "DICOMweb Export Service")]
+        [Xunit.TraitAttribute("Description", "Export to a DICOMweb service")]
         [Xunit.TraitAttribute("Category", "messaging_export_complete")]
         [Xunit.TraitAttribute("Category", "messaging")]
-        [Xunit.InlineDataAttribute("MR", "1", new string[0])]
-        [Xunit.InlineDataAttribute("CT", "1", new string[0])]
-        [Xunit.InlineDataAttribute("MG", "1", new string[0])]
-        [Xunit.InlineDataAttribute("US", "1", new string[0])]
-        [Xunit.InlineDataAttribute("Tiny", "1", new string[0])]
-        public virtual void ExportToADICOMDevice(string modality, string count, string[] exampleTags)
+        [Xunit.TraitAttribute("Category", "sql_inject_acr_request")]
+        [Xunit.InlineDataAttribute("MR", new string[0])]
+        [Xunit.InlineDataAttribute("CT", new string[0])]
+        [Xunit.InlineDataAttribute("MG", new string[0])]
+        [Xunit.InlineDataAttribute("US", new string[0])]
+        [Xunit.InlineDataAttribute("Tiny", new string[0])]
+        public virtual void ExportToADICOMwebService(string modality, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "messaging_export_complete",
-                    "messaging"};
+                    "messaging",
+                    "sql_inject_acr_request"};
             if ((exampleTags != null))
             {
                 @__tags = System.Linq.Enumerable.ToArray(System.Linq.Enumerable.Concat(@__tags, exampleTags));
@@ -109,9 +108,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("modality", modality);
-            argumentsOfScenario.Add("count", count);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Export to a DICOM device", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 22
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Export to a DICOMweb service", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+#line 21
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -131,17 +129,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
+#line 22
+        testRunner.Given(string.Format("1 {0} studies for export", modality), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
 #line 23
-        testRunner.Given("a DICOM destination registered with Informatics Gateway", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+        testRunner.When("a export request is sent for \'md.export.request.monaidicomweb\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 24
-        testRunner.And(string.Format("{0} {1} studies for export", count, modality), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-#line 25
-        testRunner.When("a export request is sent for \'md.export.request.monaiscu\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line hidden
-#line 26
-        testRunner.Then("Informatics Gateway exports the studies to the DICOM SCP", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+        testRunner.Then("Informatics Gateway exports the studies to Orthanc", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
@@ -154,12 +149,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             
             public FixtureData()
             {
-                DICOMDIMSESCUServicesFeature.FeatureSetup();
+                DICOMwebExportServiceFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                DICOMDIMSESCUServicesFeature.FeatureTearDown();
+                DICOMwebExportServiceFeature.FeatureTearDown();
             }
         }
     }

@@ -299,7 +299,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 .Handle<AssertionFailedException>()
                 .WaitAndRetry(3, retryAttempt => TimeSpan.FromMilliseconds(150 * retryAttempt), (exception, retryCount, context) =>
                 {
-                    Console.WriteLine("Exception 'validating temporary data directory': {0}", exception.Message);
+                    _outputHelper.WriteLine("Exception 'validating temporary data directory': {0}", exception.Message);
                 })
                 .Execute(() =>
                 {

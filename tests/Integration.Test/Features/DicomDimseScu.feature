@@ -18,12 +18,10 @@ Feature: DICOM DIMSE SCU Services
     - [REQ-DCM-09] Store SCU AE Title shall be configurable
     - [REQ-DCM-11] MIG SHALL support exporting data to multiple DICOM destinations
 
-    Background: Setup AE Titles
-        Given a DICOM destination registered with Informatics Gateway
-
     @messaging_export_complete @messaging
     Scenario: Export to a DICOM device
-        Given <count> <modality> studies for export
+        Given a DICOM destination registered with Informatics Gateway
+        And <count> <modality> studies for export
         When a export request is sent for 'md.export.request.monaiscu'
         Then Informatics Gateway exports the studies to the DICOM SCP
 
@@ -33,5 +31,5 @@ Feature: DICOM DIMSE SCU Services
             | CT       | 1     |
             | MG       | 1     |
             | US       | 1     |
-            | TOMO     | 1     |
             | Tiny     | 1     |
+            # | TOMO     | 1     |
