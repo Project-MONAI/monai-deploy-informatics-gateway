@@ -103,7 +103,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             {
                 pixelData.AddFrame(new MemoryByteBuffer(GeneratePixelData(Rows, Columns)));
             }
-            _outputHelper.WriteLine($"DICOM Instance created with {frames} frames.");
             return new DicomFile(dataset);
         }
 

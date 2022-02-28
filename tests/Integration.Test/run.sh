@@ -20,6 +20,7 @@ EXIT=false
 METRICSFILE=$SCRIPT_DIR/metrics.log
 LOADDEV=
 STREAMID=
+export STUDYJSON="study.json"
 
 export DATA_PATH="$RUN_DIR/ig/payloads/"
 set -euo pipefail
@@ -43,10 +44,17 @@ function check_status_code() {
 }
 
 function env_setup() {
+    [ -d $RUN_DIR ] && info "Removing $RUN_DIR..." && sudo rm -r $RUN_DIR
+    mkdir -p $RUN_DIR
+
+    [ -d $BIN_DIR ] && info "Removing $BIN_DIR..." && sudo rm -r $BIN_DIR
+
     set +u
-    if [ "$1" = "--dev" ] ; then
+    if [ "$1" = "--dev" ]; then
         info "Using .env.dev..."
         LOADDEV="--env-file .env.dev"
+        info "Using study.json.dev..."
+        STUDYJSON="study.json.dev"
     fi
     set -u
 
@@ -55,36 +63,24 @@ function env_setup() {
         docker-compose $LOADDEV down
     fi
 
-    if (dotnet tool list --global | grep livingdoc &>/dev/null)  ; then
+    if (dotnet tool list --global | grep livingdoc &>/dev/null); then
         info "Upgrading SpecFlow.Plus.LivingDoc.CLI..."
         dotnet tool update --global SpecFlow.Plus.LivingDoc.CLI
     else
         info "Installing SpecFlow.Plus.LivingDoc.CLI..."
         dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
     fi
-
-    [ -d $RUN_DIR ] && info "Removing $RUN_DIR..." && sudo rm -r $RUN_DIR
-    mkdir -p $RUN_DIR
-
-    [ -d $BIN_DIR ] && info "Removing $BIN_DIR..." && sudo rm -r $BIN_DIR
 }
 
 function build() {
     pushd $SCRIPT_DIR
     info "Building test runner..."
     dotnet build -c Release
-
-    # info "Copying config files..."
-    # cp -vf $CONFIG_DIR/*.* $BIN_DIR/
-    # cp -vf $SCRIPT_DIR/configs/test-runner.json $BIN_DIR/SpecFlowPlusRunner/net5.0/appsettings.json
-    # cp -vf $BIN_DIR/libe_sqlite3.so $BIN_DIR/SpecFlowPlusRunner/net5.0/
-    popd
 }
 
 function start_services() {
     info "Starting dependencies docker-compose $LOADDEV up -d --force-recreate..."
     docker-compose $LOADDEV up -d --force-recreate
-
 
     HOST_IP=$(docker network inspect testrunner | jq -r .[0].IPAM.Config[0].Gateway)
     info "Host IP = $HOST_IP"
@@ -115,8 +111,8 @@ function write_da_metrics() {
     info "Streaming Informatics Gateway perf logs from container $CID to $METRICSFILE"
 
     until $EXIT; do
-        DATA=$(docker stats $CID  --no-stream --format "`date +%s`,{{.CPUPerc}},{{.MemUsage}},{{.NetIO}},{{.BlockIO}}")
-        echo $DATA >> $METRICSFILE
+        DATA=$(docker stats $CID --no-stream --format "$(date +%s),{{.CPUPerc}},{{.MemUsage}},{{.NetIO}},{{.BlockIO}}")
+        echo $DATA >>$METRICSFILE
         sleep 1
     done
 }
@@ -150,7 +146,7 @@ function generate_reports() {
 
 function save_logs() {
     info "Saving service log..."
-    docker-compose logs --no-color -t | sort -u -k 3  > "services.log"
+    docker-compose logs --no-color -t | sort -u -k 3 >"services.log"
 }
 
 function tear_down() {

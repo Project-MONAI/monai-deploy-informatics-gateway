@@ -39,13 +39,12 @@
     <ProjectReference Include="..\..\src\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="study.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
+  <Target Name="CopyTestConfigurations" AfterTargets="AfterBuild">
+    <PropertyGroup>
+      <STUDYJSON Condition=" '$(STUDYJSON)' == '' ">study.json</STUDYJSON>
+    </PropertyGroup>
+    <Message Importance="High" Text="Copying $(STUDYJSON) to $(OutDir)" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="appsettings.json" DestinationFolder="$(OutDir)" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(STUDYJSON)" DestinationFiles="$(OutDir)\study.json" />
+  </Target>
 </Project>

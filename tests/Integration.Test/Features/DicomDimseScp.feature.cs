@@ -86,9 +86,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         
         public virtual void FeatureBackground()
         {
-#line 24
-    #line hidden
 #line 25
+    #line hidden
+#line 26
         testRunner.Given("a calling AE Title \'TEST-RUNNER\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -106,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Response to C-ECHO-RQ", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 27
+#line 28
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -126,17 +126,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 24
+#line 25
     this.FeatureBackground();
 #line hidden
-#line 28
+#line 29
         testRunner.Given("a called AE Title named \'C-ECHO-TEST\' that groups by \'0020,000D\' for 5 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 29
+#line 30
         testRunner.When("a C-ECHO-RQ is sent to \'C-ECHO-TEST\' from \'TEST-RUNNER\' with timeout of 30 second" +
                         "s", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 30
+#line 31
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -166,7 +166,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             argumentsOfScenario.Add("modality", modality);
             argumentsOfScenario.Add("count", count);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Study Instance UID", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
-#line 33
+#line 34
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             bool isScenarioIgnored = default(bool);
@@ -186,29 +186,29 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 24
+#line 25
     this.FeatureBackground();
 #line hidden
-#line 34
+#line 35
         testRunner.Given("a called AE Title named \'C-STORE-STUDY\' that groups by \'0020,000D\' for 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 35
+#line 36
         testRunner.And(string.Format("{0} {1} studies", count, modality), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 36
+#line 37
         testRunner.When("a C-STORE-RQ is sent to \'Informatics Gateway\' with AET \'C-STORE-STUDY\' from \'TEST" +
                         "-RUNNER\' with timeout of 300 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 37
+#line 38
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 38
+#line 39
         testRunner.And(string.Format("{0} workflow requests sent to message broker", count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 39
+#line 40
         testRunner.And(string.Format("{0} studies are uploaded to storage service", count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 41
         testRunner.And("the temporary data directory has been cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -259,7 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 24
+#line 25
     this.FeatureBackground();
 #line hidden
 #line 52
