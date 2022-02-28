@@ -32,4 +32,3 @@ Feature: DICOM DIMSE SCU Services
             | MG       | 1     |
             | US       | 1     |
             | Tiny     | 1     |
-            # | TOMO     | 1     |

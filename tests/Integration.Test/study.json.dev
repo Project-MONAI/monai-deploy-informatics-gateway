@@ -2,16 +2,16 @@
     "MR": {
         "seriesMin": 1,
         "seriesMax": 2,
-        "instanceMin": 2,
-        "instanceMax": 4,
+        "instanceMin": 64,
+        "instanceMax": 128,
         "sizeMin": 0.36,
         "sizeMax": 2
     },
     "CT": {
         "seriesMin": 1,
         "seriesMax": 2,
-        "instanceMin": 2,
-        "instanceMax": 4,
+        "instanceMin": 60,
+        "instanceMax": 1000,
         "sizeMin": 0.5,
         "sizeMax": 1
     },
@@ -21,31 +21,31 @@
         "instanceMin": 1,
         "instanceMax": 1,
         "sizeMin": 5,
-        "sizeMax": 10
+        "sizeMax": 75
     },
     "TOMO": {
         "seriesMin": 4,
         "seriesMax": 8,
         "instanceMin": 1,
         "instanceMax": 1,
-        "sizeMin": 3,
-        "sizeMax": 8
+        "sizeMin": 300,
+        "sizeMax": 750
     },
     "US": {
         "seriesMin": 1,
         "seriesMax": 4,
         "instanceMin": 1,
         "instanceMax": 1,
-        "sizeMin": 2,
-        "sizeMax": 5
+        "sizeMin": 25,
+        "sizeMax": 100
     },
     "Pathology": {
         "seriesMin": 1,
         "seriesMax": 4,
         "instanceMin": 1,
         "instanceMax": 1,
-        "sizeMin": 10,
-        "sizeMax": 20
+        "sizeMin": 10000,
+        "sizeMax": 20000
     },
     "Tiny": {
         "seriesMin": 1,

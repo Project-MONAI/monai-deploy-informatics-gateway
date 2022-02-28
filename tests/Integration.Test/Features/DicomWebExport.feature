@@ -30,4 +30,3 @@ Feature: DICOMweb Export Service
             | MG       |
             | US       |
             | Tiny     |
-            # | TOMO     |
