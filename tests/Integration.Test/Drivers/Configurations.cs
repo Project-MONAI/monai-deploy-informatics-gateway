@@ -100,9 +100,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                 _outputHelper.WriteLine("Storage Service Host/IP = {0}", StorageServiceOptions.Host);
                 if (OrthancOptions.Host == "$HOST_IP")
                 {
-                    StorageServiceOptions.Host = hostIp;
+                    OrthancOptions.Host = hostIp;
                 }
-                _outputHelper.WriteLine("Orthanc Host/IP = {0}", StorageServiceOptions.Host);
+                _outputHelper.WriteLine("Orthanc Host/IP = {0}", OrthancOptions.Host);
                 if (OrthancOptions.DicomWebRoot.Contains("$HOST_IP"))
                 {
                     OrthancOptions.DicomWebRoot = OrthancOptions.DicomWebRoot.Replace("$HOST_IP", hostIp);

@@ -39,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         internal static readonly string KeyDicomFiles = "DICOM_FILES";
         internal static readonly string KeyCalledAet = "CALLED_AET";
         internal static readonly string KeyDataGrouping = "DICOM_DATA_GROUPING";
+        internal static readonly string KeyDimseResponse = "DIMSE_RESPONSE";
 
         internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
 
@@ -49,7 +50,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         private readonly DicomScu _dicomScu;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
         private readonly RabbitMqHooks _rabbitMqHooks;
-        private DicomStatus _dimseResponse;
 
         public DicomDimseScpServicesStepDefinitions(
             ScenarioContext scenarioContext,
@@ -68,7 +68,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _informaticsGatewayClient = informaticsGatewayClient ?? throw new ArgumentNullException(nameof(informaticsGatewayClient));
             _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
             _informaticsGatewayClient.ConfigureServiceUris(new Uri(_configuration.InformaticsGatewayOptions.ApiEndpoint));
-            _dimseResponse = null;
         }
 
         [Given(@"a calling AE Title '([^']*)'")]
@@ -174,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
             Guard.Against.NegativeOrZero(clientTimeoutSeconds, nameof(clientTimeoutSeconds));
 
-            _dimseResponse = await _dicomScu.CEcho(
+            _scenarioContext[KeyDimseResponse] = await _dicomScu.CEcho(
                 _configuration.InformaticsGatewayOptions.Host,
                 _configuration.InformaticsGatewayOptions.DimsePort,
                 callingAeTitle,
@@ -185,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Then(@"a successful response should be received")]
         public void ThenASuccessfulResponseShouldBeReceived()
         {
-            _dimseResponse.Should().Be(DicomStatus.Success);
+            (_scenarioContext[KeyDimseResponse] as DicomStatus).Should().Be(DicomStatus.Success);
         }
 
         [When(@"a C-STORE-RQ is sent to '([^']*)' with AET '([^']*)' from '([^']*)' with timeout of (.*) seconds")]
@@ -201,7 +200,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             var dicomFileSpec = _scenarioContext[KeyDicomFiles] as DicomInstanceGenerator.StudyGenerationSpecs;
             dicomFileSpec.Should().NotBeNull();
-            _dimseResponse = await _dicomScu.CStore(
+            _scenarioContext[KeyDimseResponse] = await _dicomScu.CStore(
                 host,
                 port,
                 callingAeTitle,
@@ -213,21 +212,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var dicomFileSize = new Dictionary<string, string>();
             foreach (var dicomFile in dicomFileSpec.Files)
             {
-                string key = GenerateDicomValidationKey(dicomFile.Dataset);
+                string key = dicomFile.GenerateFileName();
                 dicomFileSize[key] = dicomFile.CalculateHash();
             }
 
             _scenarioContext[KeyDicomHashes] = dicomFileSize;
             dicomFileSpec.Files.Clear();
-        }
-
-        private static string GenerateDicomValidationKey(DicomDataset dicomDataset)
-        {
-            var patientId = dicomDataset.GetSingleValue<string>(DicomTag.PatientID);
-            var studyInstanceUid = dicomDataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
-            var seriesInstanceUid = dicomDataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
-            var sopInstanceUId = dicomDataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
-            return $"{patientId}|{studyInstanceUid}|{seriesInstanceUid}|{sopInstanceUId}";
         }
 
         [Then(@"(.*) studies are uploaded to storage service")]
@@ -254,7 +244,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         stream.CopyTo(memoryStream);
                         memoryStream.Position = 0;
                         var dicomFile = DicomFile.Open(memoryStream);
-                        dicomValidationKey = GenerateDicomValidationKey(dicomFile.Dataset);
+                        dicomValidationKey = dicomFile.GenerateFileName();
                         dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
                     });
 
@@ -265,7 +255,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         var json = Encoding.UTF8.GetString(memoryStream.ToArray());
 
                         var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
-                        var key = GenerateDicomValidationKey(dicomFileFromJson);
+                        var key = dicomFileFromJson.GenerateFileName();
                         key.Should().Be(dicomValidationKey);
                     });
                 }
