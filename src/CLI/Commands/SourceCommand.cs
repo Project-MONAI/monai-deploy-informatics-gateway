@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public SourceCommand() : base("src", "Configure DICOM sources")
         {
-            this.AddAlias("source");
+            AddAlias("source");
 
             SetupAddSourceCommand();
             SetupRemoveSourceCommand();
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var listCommand = new Command("ls", "List all DICOM sources");
             listCommand.AddAlias("list");
-            this.AddCommand(listCommand);
+            AddCommand(listCommand);
 
             listCommand.Handler = CommandHandler.Create<SourceApplicationEntity, IHost, bool, CancellationToken>(ListSourceHandlerAsync);
         }
@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var removeCommand = new Command("rm", "Remove a DICOM source");
             removeCommand.AddAlias("del");
-            this.AddCommand(removeCommand);
+            AddCommand(removeCommand);
 
             var nameOption = new Option<string>(new string[] { "-n", "--name" }, "Name of the DICOM source") { IsRequired = true };
             removeCommand.AddOption(nameOption);
@@ -64,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private void SetupAddSourceCommand()
         {
             var addCommand = new Command("add", "Add a new DICOM source");
-            this.AddCommand(addCommand);
+            AddCommand(addCommand);
 
             var nameOption = new Option<string>(new string[] { "--name", "-n" }, "Name of the DICOM source") { IsRequired = false };
             addCommand.AddOption(nameOption);
@@ -198,9 +198,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 var result = await client.DicomSources.Create(entity, cancellationTokena);
 
                 logger.Log(LogLevel.Information, "New DICOM source created:");
-                logger.Log(LogLevel.Information, "\tName:            {0}", result.Name);
-                logger.Log(LogLevel.Information, "\tAE Title:        {0}", result.AeTitle);
-                logger.Log(LogLevel.Information, "\tHOST/IP Address: {0}", result.HostIp);
+                logger.Log(LogLevel.Information, $"\tName:            {result.Name}");
+                logger.Log(LogLevel.Information, $"\tAE Title:        {result.AeTitle}");
+                logger.Log(LogLevel.Information, $"\tHOST/IP Address: {result.HostIp}");
             }
             catch (ConfigurationException ex)
             {

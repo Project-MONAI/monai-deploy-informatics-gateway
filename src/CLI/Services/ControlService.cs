@@ -19,11 +19,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     public interface IControlService
     {
-        Task Restart(CancellationToken cancellationToken = default);
+        Task RestartService(CancellationToken cancellationToken = default);
 
-        Task Start(CancellationToken cancellationToken = default);
+        Task StartService(CancellationToken cancellationToken = default);
 
-        Task Stop(CancellationToken cancellationToken = default);
+        Task StopService(CancellationToken cancellationToken = default);
     }
 
     public class ControlService : IControlService
@@ -39,13 +39,13 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             _configurationService = configService ?? throw new ArgumentNullException(nameof(configService));
         }
 
-        public async Task Restart(CancellationToken cancellationToken = default)
+        public async Task RestartService(CancellationToken cancellationToken = default)
         {
-            await Stop();
-            await Start(cancellationToken);
+            await StopService().ConfigureAwait(false);
+            await StartService(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task Start(CancellationToken cancellationToken = default)
+        public async Task StartService(CancellationToken cancellationToken = default)
         {
             var runner = _containerRunnerFactory.GetContainerRunner();
 
@@ -61,28 +61,28 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
                 throw new ControlException(ExitCodes.Start_Error_ApplicationAlreadyRunning, $"{Strings.ApplicationName} is already running in container ID {runnerState.IdShort}.");
             }
 
-            await runner.StartApplication(applicationVersion, cancellationToken);
+            await runner.StartApplication(applicationVersion, cancellationToken).ConfigureAwait(false);
         }
 
         /// <summary>
         /// Stops any running applications, including, previous releases/versions.
         /// </summary>
         /// <param name="cancellationToken"></param>
-        public async Task Stop(CancellationToken cancellationToken = default)
+        public async Task StopService(CancellationToken cancellationToken = default)
         {
             var runner = _containerRunnerFactory.GetContainerRunner();
-            var applicationVersions = await runner.GetApplicationVersions(cancellationToken);
+            var applicationVersions = await runner.GetApplicationVersions(cancellationToken).ConfigureAwait(false);
 
             if (!applicationVersions.IsNullOrEmpty())
             {
                 foreach (var applicationVersion in applicationVersions)
                 {
-                    var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken);
+                    var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken).ConfigureAwait(false);
 
                     _logger.Log(LogLevel.Debug, $"{Strings.ApplicationName} with container ID {runnerState.Id} running={runnerState.IsRunning}.");
                     if (runnerState.IsRunning)
                     {
-                        if (await runner.StopApplication(runnerState, cancellationToken))
+                        if (await runner.StopApplication(runnerState, cancellationToken).ConfigureAwait(false))
                         {
                             _logger.Log(LogLevel.Information, $"{Strings.ApplicationName} with container ID {runnerState.Id} stopped.");
                         }

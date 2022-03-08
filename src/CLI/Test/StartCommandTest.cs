@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Start(It.IsAny<CancellationToken>()), Times.Once());
+            _controlService.Verify(p => p.StartService(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "start comand -y")]
@@ -81,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Start(It.IsAny<CancellationToken>()), Times.Once());
+            _controlService.Verify(p => p.StartService(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "start comand -y control excception")]
@@ -91,12 +91,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _controlService.Setup(p => p.Start(It.IsAny<CancellationToken>())).Throws(new ControlException(ExitCodes.Start_Error_ApplicationAlreadyRunning, "error"));
+            _controlService.Setup(p => p.StartService(It.IsAny<CancellationToken>())).Throws(new ControlException(ExitCodes.Start_Error_ApplicationAlreadyRunning, "error"));
 
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Start_Error_ApplicationAlreadyRunning, exitCode);
 
-            _controlService.Verify(p => p.Start(It.IsAny<CancellationToken>()), Times.Once());
+            _controlService.Verify(p => p.StartService(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "start comand -y excception")]
@@ -106,12 +106,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _controlService.Setup(p => p.Start(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
+            _controlService.Setup(p => p.StartService(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Start_Error, exitCode);
 
-            _controlService.Verify(p => p.Start(It.IsAny<CancellationToken>()), Times.Once());
+            _controlService.Verify(p => p.StartService(It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

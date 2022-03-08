@@ -90,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
-            var inferenceRequest = repository.Get(exportRequestData.Destination);
+            var inferenceRequest = repository.GetInferenceRequest(exportRequestData.Destination);
             if (inferenceRequest is null)
             {
                 var errorMessage = $"The specified inference request '{exportRequestData.Destination}' cannot be found and will not be exported.";

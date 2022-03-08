@@ -24,7 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         public Stream GetManifestResourceStream(string name)
         {
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            return this.GetType().Assembly.GetManifestResourceStream(Common.AppSettingsResourceName);
+            return GetType().Assembly.GetManifestResourceStream(Common.AppSettingsResourceName);
         }
     }
 }

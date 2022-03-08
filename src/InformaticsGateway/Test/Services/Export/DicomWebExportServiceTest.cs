@@ -131,7 +131,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
                 });
 
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns((InferenceRequest)null);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns((InferenceRequest)null);
 
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
@@ -191,7 +191,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
                 });
 
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
 
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
@@ -263,7 +263,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
                 });
 
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             _handlerMock = new Mock<HttpMessageHandler>();
@@ -352,7 +352,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
                 });
 
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile());
 
             var response = new HttpResponseMessage(httpStatusCode)

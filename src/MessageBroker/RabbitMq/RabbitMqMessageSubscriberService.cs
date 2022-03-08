@@ -17,6 +17,7 @@ using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using System.Globalization;
 using System.Text;
 
 namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
@@ -24,16 +25,12 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
     public class RabbitMqMessageSubscriberService : IMessageBrokerSubscriberService, IDisposable
     {
         private readonly ILogger<RabbitMqMessageSubscriberService> _logger;
-        private readonly MessageBrokerConfiguration _configuration;
         private readonly string _endpoint;
-        private readonly string _username;
-        private readonly string _password;
         private readonly string _virtualHost;
         private readonly string _exchange;
-        private readonly ConnectionFactory _connectionFactory;
         private readonly IConnection _connection;
         private readonly IModel _channel;
-        private bool disposedValue;
+        private bool _disposedValue;
 
         public string Name => "Rabbit MQ Subscriber";
 
@@ -46,25 +43,25 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             }
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _configuration = options.Value.Messaging;
+            var configuration = options.Value.Messaging;
 
-            ValidateConfiguration(_configuration);
-            _endpoint = _configuration.SubscriberSettings[ConfigurationKeys.EndPoint];
-            _username = _configuration.SubscriberSettings[ConfigurationKeys.Username];
-            _password = _configuration.SubscriberSettings[ConfigurationKeys.Password];
-            _virtualHost = _configuration.SubscriberSettings[ConfigurationKeys.VirtualHost];
-            _exchange = _configuration.SubscriberSettings[ConfigurationKeys.Exchange];
+            ValidateConfiguration(configuration);
+            _endpoint = configuration.SubscriberSettings[ConfigurationKeys.EndPoint];
+            var username = configuration.SubscriberSettings[ConfigurationKeys.Username];
+            var password = configuration.SubscriberSettings[ConfigurationKeys.Password];
+            _virtualHost = configuration.SubscriberSettings[ConfigurationKeys.VirtualHost];
+            _exchange = configuration.SubscriberSettings[ConfigurationKeys.Exchange];
 
-            _connectionFactory = new ConnectionFactory()
+            var connectionFactory = new ConnectionFactory()
             {
                 HostName = _endpoint,
-                UserName = _username,
-                Password = _password,
+                UserName = username,
+                Password = password,
                 VirtualHost = _virtualHost
             };
 
             _logger.Log(LogLevel.Information, $"{Name} connecting to {_endpoint}/{_virtualHost}");
-            _connection = _connectionFactory.CreateConnection();
+            _connection = connectionFactory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.ExchangeDeclare(_exchange, ExchangeType.Topic);
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
@@ -111,8 +108,8 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                      applicationId: eventArgs.BasicProperties.AppId,
                      contentType: eventArgs.BasicProperties.ContentType,
                      correlationId: eventArgs.BasicProperties.CorrelationId,
-                     creationDateTime: DateTime.Parse(Encoding.UTF8.GetString((byte[])eventArgs.BasicProperties.Headers["CreationDateTime"])),
-                     deliveryTag: eventArgs.DeliveryTag.ToString()),
+                     creationDateTime: DateTime.Parse(Encoding.UTF8.GetString((byte[])eventArgs.BasicProperties.Headers["CreationDateTime"]), CultureInfo.InvariantCulture),
+                     deliveryTag: eventArgs.DeliveryTag.ToString(CultureInfo.InvariantCulture)),
                  new CancellationToken());
 
                 messageReceivedCallback(messageReceivedEventArgs);
@@ -127,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             Guard.Against.Null(message, nameof(message));
 
             _logger.Log(LogLevel.Information, $"Sending message acknowledgement for message {message.MessageId}");
-            _channel.BasicAck(ulong.Parse(message.DeliveryTag), multiple: false);
+            _channel.BasicAck(ulong.Parse(message.DeliveryTag, CultureInfo.InvariantCulture), multiple: false);
             _logger.Log(LogLevel.Information, $"Ackowledge sent for message {message.MessageId}");
         }
 
@@ -136,13 +133,13 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             Guard.Against.Null(message, nameof(message));
 
             _logger.Log(LogLevel.Information, $"Sending nack message {message.MessageId} and requeuing.");
-            _channel.BasicNack(ulong.Parse(message.DeliveryTag), multiple: false, requeue: true);
+            _channel.BasicNack(ulong.Parse(message.DeliveryTag, CultureInfo.InvariantCulture), multiple: false, requeue: true);
             _logger.Log(LogLevel.Information, $"Nack message sent for message {message.MessageId}");
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -154,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                     }
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

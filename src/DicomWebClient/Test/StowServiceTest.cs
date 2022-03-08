@@ -34,8 +34,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
     public class StowServiceTest : IClassFixture<DicomFileGeneratorFixture>
     {
         private const string BaseUri = "http://dummy/api/";
-        private DicomFileGeneratorFixture _fixture;
-        private Mock<ILogger> _logger;
+        private readonly DicomFileGeneratorFixture _fixture;
+        private readonly Mock<ILogger> _logger;
 
         public StowServiceTest(DicomFileGeneratorFixture fixture)
         {
@@ -46,11 +46,6 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         [Fact(DisplayName = "Store - throws if input is null or empty")]
         public async Task Store_ShallThrowIfNoFilesSpecified()
         {
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK
-            };
-
             var httpClient = new HttpClient();
             var service = new StowService(httpClient, _logger.Object);
 
@@ -111,9 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = new StringContent(message)
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out var handlerMock, out var httpClient);
 
             var service = new StowService(httpClient, _logger.Object);
 

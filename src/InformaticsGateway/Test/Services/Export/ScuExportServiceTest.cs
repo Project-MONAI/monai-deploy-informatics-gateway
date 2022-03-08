@@ -205,7 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         public async Task AssociationRejected()
         {
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = "ABC", Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = "ABC", Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
@@ -261,7 +261,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = "ABORT", Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = "ABORT", Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -317,7 +317,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.AETITLE, Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -373,7 +373,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.AETITLE, Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -429,7 +429,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.AETITLE, Name = DicomScpFixture.AETITLE, HostIp = "UNKNOWNHOST123456789", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "UNKNOWNHOST123456789", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -484,7 +484,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.AETITLE, Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);

@@ -58,10 +58,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         public void IsValid_ShallReturnAllErrors()
         {
             var request = new InferenceRequest();
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
 
             request.InputResources.Add(new RequestInputDataResource { Interface = InputInterfaceType.Algorithm });
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false if no studies were defined")]
@@ -90,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                     Type = InferenceRequestType.DicomUid
                 }
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false if study contains no UID")]
@@ -125,7 +125,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                 }
                 }
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false if series contains no UID")]
@@ -167,7 +167,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                 }
                 }
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false if instance contains no instance")]
@@ -216,7 +216,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                     }
                 }
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false if missing patient ID")]
@@ -245,7 +245,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                     Type = InferenceRequestType.DicomPatientId
                 }
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false if no accession number were defined")]
@@ -274,7 +274,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                     Type = InferenceRequestType.AccessionNumber
                 }
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false for unknown request type")]
@@ -300,7 +300,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 Details = new InferenceRequestDetails()
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false without a valid credential")]
@@ -325,7 +325,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 Details = new InferenceRequestDetails()
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false with invalid uri")]
@@ -361,7 +361,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                     }
                 }
             };
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false with missing TransactionId")]
@@ -369,7 +369,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         {
             var request = MockGoodRequest();
             request.TransactionId = "";
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false with no resource defined for FHIR input")]
@@ -381,7 +381,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                 Type = InferenceRequestType.FhireResource
             };
 
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false with no resource type for a FHIR resource")]
@@ -397,7 +397,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                 }
             };
 
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false with malformed input FHIR URI")]
@@ -416,7 +416,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                 }
             });
 
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return false with malformed output FHIR URI")]
@@ -435,20 +435,22 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                 }
             });
 
-            Assert.False(request.IsValid(out string _));
+            Assert.False(request.IsValid(out var _));
         }
 
         [Fact(DisplayName = "IsValid shall return true with valid request")]
         public void IsValid_ShallReturnTrue()
         {
             var request = MockGoodRequest();
-            Assert.True(request.IsValid(out string _));
+            Assert.True(request.IsValid(out var _));
         }
 
-        private InferenceRequest MockGoodRequest()
+        private static InferenceRequest MockGoodRequest()
         {
-            var request = new InferenceRequest();
-            request.TransactionId = Guid.NewGuid().ToString();
+            var request = new InferenceRequest
+            {
+                TransactionId = Guid.NewGuid().ToString()
+            };
             request.InputResources.Add(new RequestInputDataResource
             {
                 Interface = InputInterfaceType.Algorithm,

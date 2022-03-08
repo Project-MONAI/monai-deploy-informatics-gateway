@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             var service = new ControlService(_containerRunnerFactory.Object, _logger.Object, _configurationService.Object);
 
-            var exception = await Assert.ThrowsAsync<ControlException>(async () => await service.Start());
+            var exception = await Assert.ThrowsAsync<ControlException>(async () => await service.StartService());
 
             Assert.Equal(ExitCodes.Start_Error_ApplicationNotFound, exception.ErrorCode);
         }
@@ -70,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             var service = new ControlService(_containerRunnerFactory.Object, _logger.Object, _configurationService.Object);
 
-            var exception = await Assert.ThrowsAsync<ControlException>(async () => await service.Start());
+            var exception = await Assert.ThrowsAsync<ControlException>(async () => await service.StartService());
 
             Assert.Equal(ExitCodes.Start_Error_ApplicationAlreadyRunning, exception.ErrorCode);
         }
@@ -88,7 +88,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             var service = new ControlService(_containerRunnerFactory.Object, _logger.Object, _configurationService.Object);
 
-            await service.Start();
+            await service.StartService();
+
+            _containerRunner.Verify(p => p.StartApplication(It.IsAny<ImageVersion>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "Stop - no running application")]
@@ -99,7 +101,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             var service = new ControlService(_containerRunnerFactory.Object, _logger.Object, _configurationService.Object);
 
-            await service.Stop();
+            await service.StopService();
+
+            _containerRunner.Verify(p => p.GetApplicationVersions(It.IsAny<CancellationToken>()), Times.Once());
+            _containerRunner.Verify(p => p.StopApplication(It.IsAny<RunnerState>(), It.IsAny<CancellationToken>()), Times.Never());
         }
 
         [Fact(DisplayName = "Stop - error stopping application")]
@@ -119,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             var service = new ControlService(_containerRunnerFactory.Object, _logger.Object, _configurationService.Object);
 
-            await service.Stop();
+            await service.StopService();
 
             _logger.VerifyLogging($"Error may have occurred stopping {Strings.ApplicationName} with container ID {data[0].Id}. Please verify with the applicatio state with {Runner.Docker}.", LogLevel.Warning, Times.Once());
         }
@@ -145,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             var service = new ControlService(_containerRunnerFactory.Object, _logger.Object, _configurationService.Object);
 
-            await service.Stop();
+            await service.StopService();
 
             _logger.VerifyLogging($"{Strings.ApplicationName} with container ID {data[0].Id} stopped.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"{Strings.ApplicationName} with container ID {data[1].Id} stopped.", LogLevel.Information, Times.Once());
@@ -174,7 +179,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             var service = new ControlService(_containerRunnerFactory.Object, _logger.Object, _configurationService.Object);
 
-            await service.Restart();
+            await service.RestartService();
+
+            _containerRunner.Verify(p => p.StartApplication(It.IsAny<ImageVersion>(), It.IsAny<CancellationToken>()), Times.Once());
+            _containerRunner.Verify(p => p.StopApplication(It.IsAny<RunnerState>(), It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

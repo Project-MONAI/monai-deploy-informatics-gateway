@@ -24,10 +24,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
     public class StorageInfoProviderTest
     {
         private const long OneGB = 1000000000;
-        private Mock<IFileSystem> _fileSystem;
-        private Mock<ILogger<StorageInfoProvider>> _logger;
-        private IOptions<InformaticsGatewayConfiguration> _configuration;
-        private Mock<IDriveInfo> _driveInfo;
+        private readonly Mock<IFileSystem> _fileSystem;
+        private readonly Mock<ILogger<StorageInfoProvider>> _logger;
+        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
+        private readonly Mock<IDriveInfo> _driveInfo;
 
         public StorageInfoProviderTest()
         {

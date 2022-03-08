@@ -127,13 +127,13 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             throw new OperationCanceledException("cancellation requsted");
         }
 
-        public InferenceRequest Get(string transactionId)
+        public InferenceRequest GetInferenceRequest(string transactionId)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             return _inferenceRequestRepository.FirstOrDefault(p => p.TransactionId.Equals(transactionId, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task<InferenceRequest> Get(Guid inferenceRequestId)
+        public async Task<InferenceRequest> GetInferenceRequest(Guid inferenceRequestId)
         {
             Guard.Against.NullOrEmpty(inferenceRequestId, nameof(inferenceRequestId));
             return await _inferenceRequestRepository.FindAsync(inferenceRequestId);
@@ -142,7 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         public bool Exists(string transactionId)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            return Get(transactionId) is not null;
+            return GetInferenceRequest(transactionId) is not null;
         }
 
         public async Task<InferenceStatusResponse> GetStatus(string transactionId)
@@ -150,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
 
             var response = new InferenceStatusResponse();
-            var item = Get(transactionId);
+            var item = GetInferenceRequest(transactionId);
             if (item is null)
             {
                 return null;

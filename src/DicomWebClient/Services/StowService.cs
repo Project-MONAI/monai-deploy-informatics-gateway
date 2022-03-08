@@ -78,13 +78,13 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
                     }
                     else
                     {
-                        _logger?.Log(LogLevel.Warning, $"Specified StudyInstanceUID {studyInstanceUid} does not match one in the file: {dicomFile}");
+                        Logger?.Log(LogLevel.Warning, $"Specified StudyInstanceUID {studyInstanceUid} does not match one in the file: {dicomFile}");
                     }
                 }
 
                 if (streams.Count == 0)
                 {
-                    _logger?.Log(LogLevel.Warning, "No DICOM files to upload.");
+                    Logger?.Log(LogLevel.Warning, "No DICOM files to upload.");
                     throw new ArgumentException("No matching DICOM files found or Study Instance UIDs do not match.");
                 }
 
@@ -121,11 +121,11 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             HttpResponseMessage response = null;
             try
             {
-                response = await _httpClient.SendAsync(message, cancellationToken).ConfigureAwait(false);
+                response = await HttpClient.SendAsync(message, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                _logger?.Log(LogLevel.Error, ex, "Failed to store DICOM instances.");
+                Logger?.Log(LogLevel.Error, ex, "Failed to store DICOM instances.");
                 throw new DicomWebClientException(response?.StatusCode, "Failed to store DICOM instances", ex);
             }
 
@@ -135,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             }
             catch (Exception ex)
             {
-                _logger?.Log(LogLevel.Error, ex, $"Failed to store DICOM instances with response code: {response.StatusCode}");
+                Logger?.Log(LogLevel.Error, ex, $"Failed to store DICOM instances with response code: {response.StatusCode}");
             }
 
             return await ParseContent(response).ConfigureAwait(false);
@@ -150,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             }
             catch (Exception ex)
             {
-                _logger?.Log(LogLevel.Error, ex, "Failed to parse response.");
+                Logger?.Log(LogLevel.Error, ex, "Failed to parse response.");
                 return new DicomWebResponse<string>(response.StatusCode, ex.Message);
             }
         }

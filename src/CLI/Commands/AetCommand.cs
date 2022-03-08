@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public AetCommand() : base("aet", "Configure SCP Application Entities")
         {
-            this.AddAlias("aetitle");
+            AddAlias("aetitle");
 
             SetupAddAetCommand();
             SetupRemoveAetCommand();
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var listCommand = new Command("ls", "List all SCP Application Entities");
             listCommand.AddAlias("list");
-            this.AddCommand(listCommand);
+            AddCommand(listCommand);
 
             listCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListAeTitlehandlerAsync);
         }
@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var removeCommand = new Command("rm", "Remove a SCP Application Entity");
             removeCommand.AddAlias("del");
-            this.AddCommand(removeCommand);
+            AddCommand(removeCommand);
 
             var nameOption = new Option<string>(new string[] { "-n", "--name" }, "Name of the SCP Application Entity") { IsRequired = true };
             removeCommand.AddOption(nameOption);
@@ -64,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private void SetupAddAetCommand()
         {
             var addCommand = new Command("add", "Add a new SCP Application Entity");
-            this.AddCommand(addCommand);
+            AddCommand(addCommand);
 
             var nameOption = new Option<string>(new string[] { "-n", "--name" }, "Name of the SCP Application Entity") { IsRequired = false };
             addCommand.AddOption(nameOption);
@@ -213,19 +213,19 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 var result = await client.MonaiScpAeTitle.Create(entity, cancellationToken);
 
                 logger.Log(LogLevel.Information, "New MONAI Deploy SCP Application Entity created:");
-                logger.Log(LogLevel.Information, "\tName:     {0}", result.Name);
-                logger.Log(LogLevel.Information, "\tAE Title: {0}", result.AeTitle);
-                logger.Log(LogLevel.Information, "\tGrouping: {0}", result.Grouping);
-                logger.Log(LogLevel.Information, "\tTimeout: {0}s", result.Timeout);
+                logger.Log(LogLevel.Information, $"\tName:     {result.Name}");
+                logger.Log(LogLevel.Information, $"\tAE Title: {result.AeTitle}");
+                logger.Log(LogLevel.Information, $"\tGrouping: {result.Grouping}");
+                logger.Log(LogLevel.Information, $"\tTimeout: {result.Grouping}s");
 
                 if (result.Workflows.Any())
                 {
-                    logger.Log(LogLevel.Information, "\tWorkflows:{0}", string.Join(',', result.Workflows));
+                    logger.Log(LogLevel.Information, $"\tWorkflows:{string.Join(',', result.Workflows)}");
                     logger.Log(LogLevel.Warning, "Data received by this Application Entity will bypass Data Routing Service.");
                 }
                 if (result.IgnoredSopClasses.Any())
                 {
-                    logger.Log(LogLevel.Information, "\tIgnored SOP Classes:{0}", string.Join(',', result.IgnoredSopClasses));
+                    logger.Log(LogLevel.Information, $"\tIgnored SOP Classes:{string.Join(',', result.IgnoredSopClasses)}");
                     logger.Log(LogLevel.Warning, "Instances with matching SOP class UIDs are accepted but dropped.");
                 }
             }

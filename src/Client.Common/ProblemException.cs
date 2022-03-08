@@ -27,6 +27,7 @@
  */
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Common
 {
@@ -35,12 +36,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
     {
         public ProblemDetails ProblemDetails { get; private set; }
 
-        public ProblemException(ProblemDetails problemDetails) : base(problemDetails.Detail)
+        public ProblemException(ProblemDetails problemDetails) : base(problemDetails?.Detail)
         {
             ProblemDetails = problemDetails ?? throw new ArgumentNullException(nameof(problemDetails));
         }
 
-        public override string Message => this.ToString();
+        protected ProblemException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
+
+        public override string Message => ToString();
 
         public override string ToString()
         {

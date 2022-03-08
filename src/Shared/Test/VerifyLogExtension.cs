@@ -51,6 +51,22 @@ namespace Monai.Deploy.InformaticsGateway.Shared.Test
             return logger;
         }
 
+        public static Mock<ILogger<T>> VerifyLoggingMessageBeginsWith<T>(this Mock<ILogger<T>> logger, string expectedMessage, LogLevel expectedLogLevel = LogLevel.Debug, Times? times = null)
+        {
+            times ??= Times.Once();
+
+            Func<object, Type, bool> state = (v, t) => v.ToString().StartsWith(expectedMessage);
+
+            logger.Verify(
+                x => x.Log(
+                    It.Is<LogLevel>(l => l == expectedLogLevel),
+                    It.IsAny<EventId>(),
+                    It.Is<It.IsAnyType>((v, t) => state(v, t)),
+                    It.IsAny<Exception>(),
+                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)), (Times)times);
+            return logger;
+        }
+
         public static Mock<ILogger> VerifyLogging(this Mock<ILogger> logger, string expectedMessage, LogLevel expectedLogLevel = LogLevel.Debug, Times? times = null)
         {
             times ??= Times.Once();
@@ -79,22 +95,6 @@ namespace Monai.Deploy.InformaticsGateway.Shared.Test
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)), (Times)times);
 
-            return logger;
-        }
-
-        public static Mock<ILogger<T>> VerifyLoggingMessageBeginsWith<T>(this Mock<ILogger<T>> logger, string expectedMessage, LogLevel expectedLogLevel = LogLevel.Debug, Times? times = null)
-        {
-            times ??= Times.Once();
-
-            Func<object, Type, bool> state = (v, t) => v.ToString().StartsWith(expectedMessage);
-
-            logger.Verify(
-                x => x.Log(
-                    It.Is<LogLevel>(l => l == expectedLogLevel),
-                    It.IsAny<EventId>(),
-                    It.Is<It.IsAnyType>((v, t) => state(v, t)),
-                    It.IsAny<Exception>(),
-                    It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)), (Times)times);
             return logger;
         }
 

@@ -15,7 +15,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public class DicomWebConfiguration
     {
-        public static int DefaultClientTimeout = 3600;
+        public static readonly int DefaultClientTimeout = 3600;
 
         /// <summary>
         /// Gets or sets the client connection timeout in seconds.

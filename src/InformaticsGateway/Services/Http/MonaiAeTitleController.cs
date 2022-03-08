@@ -13,7 +13,6 @@ using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
@@ -29,26 +28,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     [Route("config/ae")]
     public class MonaiAeTitleController : ControllerBase
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<MonaiAeTitleController> _logger;
         private readonly IInformaticsGatewayRepository<MonaiApplicationEntity> _repository;
-        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
-        private ConfigurationValidator _configurationValidator;
 
         public MonaiAeTitleController(
-            IServiceProvider serviceProvider,
             ILogger<MonaiAeTitleController> logger,
-            ConfigurationValidator configurationValidator,
-            IOptions<InformaticsGatewayConfiguration> configuration,
             IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
             IInformaticsGatewayRepository<MonaiApplicationEntity> repository)
         {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _configurationValidator = configurationValidator ?? throw new ArgumentNullException(nameof(configurationValidator));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _monaiAeChangedNotificationService = monaiAeChangedNotificationService ?? throw new ArgumentNullException(nameof(monaiAeChangedNotificationService));
         }
 
@@ -167,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 throw new ConfigurationException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
             }
-            if (!item.IsValid(out IList<string> validationErrors))
+            if (!item.IsValid(out var validationErrors))
             {
                 throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
             }

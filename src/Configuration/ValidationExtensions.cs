@@ -51,28 +51,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             return valid;
         }
 
-        public static bool IsValidDicomTag(string source, string grouping, IList<string> validationErrors = null)
-        {
-            Guard.Against.NullOrWhiteSpace(source, nameof(source));
-
-            try
-            {
-                var dicomTag = DicomTag.Parse(grouping);
-
-                if (AllowedGroupingTags.Contains(dicomTag))
-                {
-                    return true;
-                }
-                validationErrors?.Add($"'{grouping}' is not a valid DICOM tag (source: {source}).");
-                return false;
-            }
-            catch (DicomDataException ex)
-            {
-                validationErrors?.Add($"'{grouping}' is not a valid DICOM tag (source: {source}, error: {ex.Message}).");
-                return false;
-            }
-        }
-
         public static bool IsValid(this DestinationApplicationEntity destinationApplicationEntity, out IList<string> validationErrors)
         {
             Guard.Against.Null(destinationApplicationEntity, nameof(destinationApplicationEntity));
@@ -99,6 +77,28 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             valid &= IsValidHostNameIp(sourceApplicationEntity.AeTitle, sourceApplicationEntity.HostIp, validationErrors);
 
             return valid;
+        }
+
+        public static bool IsValidDicomTag(string source, string grouping, IList<string> validationErrors = null)
+        {
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
+
+            try
+            {
+                var dicomTag = DicomTag.Parse(grouping);
+
+                if (AllowedGroupingTags.Contains(dicomTag))
+                {
+                    return true;
+                }
+                validationErrors?.Add($"'{grouping}' is not a valid DICOM tag (source: {source}).");
+                return false;
+            }
+            catch (DicomDataException ex)
+            {
+                validationErrors?.Add($"'{grouping}' is not a valid DICOM tag (source: {source}, error: {ex.Message}).");
+                return false;
+            }
         }
 
         public static bool IsAeTitleValid(string source, string aeTitle, IList<string> validationErrors = null)

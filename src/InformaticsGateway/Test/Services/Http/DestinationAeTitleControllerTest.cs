@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Moq;
@@ -31,16 +30,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 {
     public class DestinationAeTitleControllerTest
     {
-        private DestinationAeTitleController _controller;
-        private Mock<ProblemDetailsFactory> _problemDetailsFactory;
-        private Mock<ILogger<DestinationAeTitleController>> _logger;
-        private Mock<ILogger<ConfigurationValidator>> _validationLogger;
-        private Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>> _repository;
+        private readonly DestinationAeTitleController _controller;
+        private readonly Mock<ProblemDetailsFactory> _problemDetailsFactory;
+        private readonly Mock<ILogger<DestinationAeTitleController>> _logger;
+        private readonly Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>> _repository;
 
         public DestinationAeTitleControllerTest()
         {
             _logger = new Mock<ILogger<DestinationAeTitleController>>();
-            _validationLogger = new Mock<ILogger<ConfigurationValidator>>();
 
             _problemDetailsFactory = new Mock<ProblemDetailsFactory>();
             _problemDetailsFactory.Setup(_ => _.CreateProblemDetails(
@@ -76,10 +73,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #region Get
 
         [RetryFact(5, 250, DisplayName = "Get - Shall return available destination AETs")]
-        public async void Get_ShallReturnAllDestinationAets()
+        public async Task Get_ShallReturnAllDestinationAets()
         {
             var data = new List<DestinationApplicationEntity>();
-            for (int i = 1; i <= 5; i++)
+            for (var i = 1; i <= 5; i++)
             {
                 data.Add(new DestinationApplicationEntity()
                 {
@@ -100,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         [RetryFact(5, 250, DisplayName = "Get - Shall return problem on failure")]
-        public async void Get_ShallReturnProblemOnFailure()
+        public async Task Get_ShallReturnProblemOnFailure()
         {
             _repository.Setup(p => p.ToListAsync()).Throws(new Exception("error"));
 
@@ -119,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #region GetAeTitle
 
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return matching object")]
-        public async void GetAeTitle_ReturnsAMatch()
+        public async Task GetAeTitle_ReturnsAMatch()
         {
             var value = "AET";
             _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(
@@ -139,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return 404 if not found")]
-        public async void GetAeTitle_Returns404IfNotFound()
+        public async Task GetAeTitle_Returns404IfNotFound()
         {
             var value = "AET";
             _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(default(DestinationApplicationEntity)));
@@ -151,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return problem on failure")]
-        public async void GetAeTitle_ShallReturnProblemOnFailure()
+        public async Task GetAeTitle_ShallReturnProblemOnFailure()
         {
             var value = "AET";
             _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Throws(new Exception("error"));
@@ -173,7 +170,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #region Create
 
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return problem on validation failure")]
-        public async void Create_ShallReturnBadRequestWithBadJobProcessType()
+        public async Task Create_ShallReturnBadRequestWithBadJobProcessType()
         {
             var aeTitle = "TOOOOOOOOOOOOOOOOOOOOOOOLONG";
             var aeTitles = new DestinationApplicationEntity
@@ -196,7 +193,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         [RetryFact(5, 250, DisplayName = "Create - Shall return problem if failed to add")]
-        public async void Create_ShallReturnBadRequestOnAddFailure()
+        public async Task Create_ShallReturnBadRequestOnAddFailure()
         {
             var aeTitle = "AET";
             var aeTitles = new DestinationApplicationEntity
@@ -223,7 +220,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         [RetryFact(5, 250, DisplayName = "Create - Shall return CreatedAtAction")]
-        public async void Create_ShallReturnCreatedAtAction()
+        public async Task Create_ShallReturnCreatedAtAction()
         {
             var aeTitle = "AET";
             var aeTitles = new DestinationApplicationEntity
@@ -250,7 +247,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #region Delete
 
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return deleted object")]
-        public async void Delete_ReturnsDeleted()
+        public async Task Delete_ReturnsDeleted()
         {
             var value = "AET";
             var entity = new DestinationApplicationEntity
@@ -274,14 +271,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return 404 if not found")]
-        public async void Delete_Returns404IfNotFound()
+        public async Task Delete_Returns404IfNotFound()
         {
             var value = "AET";
-            var entity = new DestinationApplicationEntity
-            {
-                AeTitle = value,
-                Name = value
-            };
             _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(default(DestinationApplicationEntity)));
 
             var result = await _controller.Delete(value);
@@ -291,7 +283,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         [RetryFact(5, 250, DisplayName = "Delete - Shall return problem on failure")]
-        public async void Delete_ShallReturnProblemOnFailure()
+        public async Task Delete_ShallReturnProblemOnFailure()
         {
             var value = "AET";
             var entity = new DestinationApplicationEntity

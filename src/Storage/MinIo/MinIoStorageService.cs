@@ -22,7 +22,6 @@ namespace Monai.Deploy.InformaticsGateway.Storage
     {
         private readonly ILogger<MinIoStorageService> _logger;
         private readonly MinioClient _client;
-        private readonly StorageConfiguration _configuration;
 
         public string Name => "MinIO Storage Service";
 
@@ -33,11 +32,11 @@ namespace Monai.Deploy.InformaticsGateway.Storage
                 throw new ArgumentNullException(nameof(options));
             }
 
-            _configuration = options.Value.Storage;
+            var configuration = options.Value.Storage;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _client = new MinioClient(_configuration.StorageServiceCredentials.Endpoint, _configuration.StorageServiceCredentials.AccessKey, _configuration.StorageServiceCredentials.AccessToken);
+            _client = new MinioClient(configuration.StorageServiceCredentials.Endpoint, configuration.StorageServiceCredentials.AccessKey, configuration.StorageServiceCredentials.AccessToken);
 
-            if (_configuration.SecuredConnection)
+            if (configuration.SecuredConnection)
             {
                 _client.WithSSL();
             }
@@ -62,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Storage
             await _client.GetObjectAsync(bucketName, objectName, callback, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public IList<VirtualFileInfo> ListObjects(string bucketName, string? prefix = null, bool recursive = false, CancellationToken cancellationToken = default)
+        public IList<VirtualFileInfo> ListObjects(string bucketName, string? prefix = "", bool recursive = false, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(bucketName, nameof(bucketName));
 

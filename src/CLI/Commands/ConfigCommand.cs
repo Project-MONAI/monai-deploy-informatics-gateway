@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private void AddCommandRunner()
         {
             var endpointCommand = new Command("runner", $"Default container runner/orchestration engine to run {Strings.ApplicationName}.");
-            this.Add(endpointCommand);
+            Add(endpointCommand);
 
             endpointCommand.AddArgument(new Argument<Runner>("runner"));
             endpointCommand.Handler = CommandHandler.Create<Runner, IHost, bool>((Runner runner, IHost host, bool verbose) =>
@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private void AddCommandEndpoint()
         {
             var endpointCommand = new Command("endpoint", $"URL to the {Strings.ApplicationName} API. E.g. http://localhost:5000");
-            this.Add(endpointCommand);
+            Add(endpointCommand);
 
             endpointCommand.AddArgument(new Argument<string>("uri"));
             endpointCommand.Handler = CommandHandler.Create<string, IHost, bool>((string uri, IHost host, bool verbose) =>
@@ -64,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private void SetupInitCommand()
         {
             var listCommand = new Command("init", $"Initialize with default configuration options");
-            this.AddCommand(listCommand);
+            AddCommand(listCommand);
 
             listCommand.Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(InitHandlerAsync);
             AddConfirmationOption(listCommand);
@@ -73,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private void SetupShowConfigCommand()
         {
             var showCommand = new Command("show", "Show configurations");
-            this.AddCommand(showCommand);
+            AddCommand(showCommand);
 
             showCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ShowConfigurationHandler);
         }

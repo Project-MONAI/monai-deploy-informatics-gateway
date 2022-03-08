@@ -39,15 +39,6 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
             params DicomTransferSyntax[] transferSyntaxes);
 
         /// <summary>
-        /// Retrieves the metadata of all instances specified in the study.
-        /// </summary>
-        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
-        /// <param name="studyInstanceUid">Study Instance UID</param>
-        /// <returns>An enumerable of <c>T</c> containing DICOM instances for the study.</returns>
-        IAsyncEnumerable<T> RetrieveMetadata<T>(
-            string studyInstanceUid);
-
-        /// <summary>
         /// Retrieves all DICOM instances secified in the series.
         /// </summary>
         /// <param name="studyInstanceUid">Study Instance UID</param>
@@ -58,17 +49,6 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
             string studyInstanceUid,
             string seriesInstanceUid,
             params DicomTransferSyntax[] transferSyntaxes);
-
-        /// <summary>
-        /// Retrieves the metadata of all instances specified in the study.
-        /// </summary>
-        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
-        /// <param name="studyInstanceUid">Study Instance UID</param>
-        /// <param name="seriesInstanceUid">Series Instance UID</param>
-        /// <returns>An enumerable of <c>T</c> containing DICOM instances for the series.</returns>
-        IAsyncEnumerable<T> RetrieveMetadata<T>(
-            string studyInstanceUid,
-            string seriesInstanceUid);
 
         /// <summary>
         /// Retrieves a DICOM instance.
@@ -83,19 +63,6 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
             string seriesInstanceUid,
             string sopInstanceUid,
             params DicomTransferSyntax[] transferSyntaxes);
-
-        /// <summary>
-        /// Retrieves the metadata of the specified DICOM instance.
-        /// </summary>
-        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
-        /// <param name="studyInstanceUid">Study Instance UID</param>
-        /// <param name="seriesInstanceUid">Series Instance UID</param>
-        /// <param name="sopInstanceUid">SOP Instance UID</param>
-        /// <returns>A <c>T</c> containing DICOM metadata for the instance.</returns>
-        Task<T> RetrieveMetadata<T>(
-            string studyInstanceUid,
-            string seriesInstanceUid,
-            string sopInstanceUid);
 
         /// <summary>
         /// Retrieves one or more frames from a multi-frame DICOM instance.
@@ -172,5 +139,38 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
             Uri bulkdataUri,
             Tuple<int, int?> byteRange = null,
             params DicomTransferSyntax[] transferSyntaxes);
+
+        /// <summary>
+        /// Retrieves the metadata of all instances specified in the study.
+        /// </summary>
+        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
+        /// <param name="studyInstanceUid">Study Instance UID</param>
+        /// <returns>An enumerable of <c>T</c> containing DICOM instances for the study.</returns>
+        IAsyncEnumerable<T> RetrieveMetadata<T>(
+            string studyInstanceUid);
+
+        /// <summary>
+        /// Retrieves the metadata of all instances specified in the study.
+        /// </summary>
+        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
+        /// <param name="studyInstanceUid">Study Instance UID</param>
+        /// <param name="seriesInstanceUid">Series Instance UID</param>
+        /// <returns>An enumerable of <c>T</c> containing DICOM instances for the series.</returns>
+        IAsyncEnumerable<T> RetrieveMetadata<T>(
+            string studyInstanceUid,
+            string seriesInstanceUid);
+
+        /// <summary>
+        /// Retrieves the metadata of the specified DICOM instance.
+        /// </summary>
+        /// <typeparam name="T">T must be type of <see href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</see> or <see href="https://docs.microsoft.com/dotnet/api/system.string">System.String</see>.</typeparam>
+        /// <param name="studyInstanceUid">Study Instance UID</param>
+        /// <param name="seriesInstanceUid">Series Instance UID</param>
+        /// <param name="sopInstanceUid">SOP Instance UID</param>
+        /// <returns>A <c>T</c> containing DICOM metadata for the instance.</returns>
+        Task<T> RetrieveMetadata<T>(
+            string studyInstanceUid,
+            string seriesInstanceUid,
+            string sopInstanceUid);
     }
 }

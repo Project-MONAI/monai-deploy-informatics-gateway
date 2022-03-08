@@ -15,6 +15,7 @@ using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Client.Services;
 using Moq;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
@@ -46,14 +47,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(aet);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "config/monaiaetitle";
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/monaiaetitle";
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.OK;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}", HttpMethod.Post, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Post, httpResponse);
 
             var service = new AeTitleService<MonaiApplicationEntity>(uriPath, httpClient, _logger.Object);
 
@@ -83,14 +86,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(problem);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "config/monaiaetitle";
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/monaiaetitle";
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.InternalServerError;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}", HttpMethod.Post, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Post, httpResponse);
 
             var service = new AeTitleService<MonaiApplicationEntity>(uriPath, httpClient, _logger.Object);
 
@@ -111,14 +116,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(aet);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "config/sourceaetitle";
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/sourceaetitle";
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.OK;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}/{aet.Name}", HttpMethod.Get, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Get, httpResponse);
 
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 
@@ -148,14 +155,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(problem);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "config/sourceaetitle";
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/sourceaetitle";
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.InternalServerError;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}/{aet.Name}", HttpMethod.Get, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Get, httpResponse);
 
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 
@@ -176,14 +185,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(aet);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "config/sourceaetitle";
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/sourceaetitle";
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.OK;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}/{aet.Name}", HttpMethod.Delete, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Delete, httpResponse);
 
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 
@@ -213,14 +224,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(problem);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "config/sourceaetitle";
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/sourceaetitle";
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.InternalServerError;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}/{aet.Name}", HttpMethod.Delete, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Delete, httpResponse);
 
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 
@@ -251,14 +264,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(list);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "config/destinationaetitle";
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/destinationaetitle";
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.OK;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}", HttpMethod.Get, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Get, httpResponse);
 
             var service = new AeTitleService<DestinationApplicationEntity>(uriPath, httpClient, _logger.Object);
 
@@ -287,14 +302,16 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(problem);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "config/destinationaetitle";
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/destinationaetitle";
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.InternalServerError;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}", HttpMethod.Get, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Get, httpResponse);
 
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 

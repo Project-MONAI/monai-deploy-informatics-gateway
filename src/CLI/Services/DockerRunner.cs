@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         private readonly ILogger<DockerRunner> _logger;
         private readonly IConfigurationService _configurationService;
         private readonly IFileSystem _fileSystem;
-        public readonly IDockerClient _dockerClient;
+        private readonly IDockerClient _dockerClient;
 
         public DockerRunner(ILogger<DockerRunner> logger, IConfigurationService configurationService, IFileSystem fileSystem, IDockerClient dockerClient)
         {

@@ -20,9 +20,12 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 {
     public class ServiceTestBase
     {
-        protected static HttpClient SetupHttpClientMock(string baseUrl, string expectedUrl, HttpMethod httpMethod, HttpResponseMessage httpResponse)
+        protected ServiceTestBase()
         {
-            expectedUrl = Uri.EscapeDataString(expectedUrl);
+        }
+
+        protected static HttpClient SetupHttpClientMock(Uri baseUri, HttpMethod httpMethod, HttpResponseMessage httpResponse)
+        {
             var mockHandler = new Mock<HttpMessageHandler>();
             mockHandler.Protected()
                 .Setup<Task<HttpResponseMessage>>("SendAsync",
@@ -32,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             return new HttpClient(mockHandler.Object)
             {
-                BaseAddress = new Uri(baseUrl)
+                BaseAddress = baseUri
             };
         }
     }

@@ -32,18 +32,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
     public class InferenceControllerTest
     {
         private readonly Mock<IInferenceRequestRepository> _inferenceRequestRepository;
-        private readonly InformaticsGatewayConfiguration _InformaticsGatewayConfiguration;
+        private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly Mock<ILogger<InferenceController>> _logger;
         private readonly Mock<IFileSystem> _fileSystem;
         private readonly InferenceController _controller;
-        private Mock<ProblemDetailsFactory> _problemDetailsFactory;
+        private readonly Mock<ProblemDetailsFactory> _problemDetailsFactory;
 
         public InferenceControllerTest()
         {
             _inferenceRequestRepository = new Mock<IInferenceRequestRepository>();
-            _InformaticsGatewayConfiguration = new InformaticsGatewayConfiguration();
-            _configuration = Options.Create(_InformaticsGatewayConfiguration);
+            _informaticsGatewayConfiguration = new InformaticsGatewayConfiguration();
+            _configuration = Options.Create(_informaticsGatewayConfiguration);
             _logger = new Mock<ILogger<InferenceController>>();
             _fileSystem = new Mock<IFileSystem>();
             _problemDetailsFactory = new Mock<ProblemDetailsFactory>();
@@ -75,8 +75,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "NewInferenceRequest - shall return problem if input is invalid")]
         public void NewInferenceRequest_ShallReturnProblemIfInputIsInvalid()
         {
-            var input = new InferenceRequest();
-            input.TransactionId = Guid.NewGuid().ToString();
+            var input = new InferenceRequest
+            {
+                TransactionId = Guid.NewGuid().ToString()
+            };
 
             var result = _controller.NewInferenceRequest(input);
 
@@ -92,29 +94,31 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "NewInferenceRequest - shall return problem if output is invalid")]
         public void NewInferenceRequest_ShallReturnProblemIfOutputIsInvalid()
         {
-            var input = new InferenceRequest();
-            input.TransactionId = Guid.NewGuid().ToString();
-            input.InputResources = new List<RequestInputDataResource>()
+            var input = new InferenceRequest
             {
-                new RequestInputDataResource
+                TransactionId = Guid.NewGuid().ToString(),
+                InputResources = new List<RequestInputDataResource>()
                 {
-                    Interface = InputInterfaceType.Algorithm,
-                    ConnectionDetails = new InputConnectionDetails()
-                },
-                new RequestInputDataResource
-                {
-                    Interface = InputInterfaceType.DicomWeb,
-                    ConnectionDetails = new InputConnectionDetails()
-                }
-            };
-            input.OutputResources = new List<RequestOutputDataResource>()
-            {
-                new RequestOutputDataResource
-                {
-                    Interface = InputInterfaceType.DicomWeb,
-                    ConnectionDetails = new InputConnectionDetails
+                    new RequestInputDataResource
                     {
-                         AuthType = ConnectionAuthType.Bearer
+                        Interface = InputInterfaceType.Algorithm,
+                        ConnectionDetails = new InputConnectionDetails()
+                    },
+                    new RequestInputDataResource
+                    {
+                        Interface = InputInterfaceType.DicomWeb,
+                        ConnectionDetails = new InputConnectionDetails()
+                    }
+                },
+                OutputResources = new List<RequestOutputDataResource>()
+                {
+                    new RequestOutputDataResource
+                    {
+                        Interface = InputInterfaceType.DicomWeb,
+                        ConnectionDetails = new InputConnectionDetails
+                        {
+                             AuthType = ConnectionAuthType.Bearer
+                        }
                     }
                 }
             };
@@ -135,35 +139,37 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         {
             _inferenceRequestRepository.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
 
-            var input = new InferenceRequest();
-            input.TransactionId = Guid.NewGuid().ToString();
-            input.InputResources = new List<RequestInputDataResource>()
+            var input = new InferenceRequest
             {
-                new RequestInputDataResource
+                TransactionId = Guid.NewGuid().ToString(),
+                InputResources = new List<RequestInputDataResource>()
                 {
-                    Interface = InputInterfaceType.Algorithm,
-                    ConnectionDetails = new InputConnectionDetails()
-                },
-                new RequestInputDataResource
-                {
-                    Interface = InputInterfaceType.DicomWeb,
-                    ConnectionDetails = new InputConnectionDetails
+                    new RequestInputDataResource
                     {
-                        Uri = "http://my.svc/api"
+                        Interface = InputInterfaceType.Algorithm,
+                        ConnectionDetails = new InputConnectionDetails()
+                    },
+                    new RequestInputDataResource
+                    {
+                        Interface = InputInterfaceType.DicomWeb,
+                        ConnectionDetails = new InputConnectionDetails
+                        {
+                            Uri = "http://my.svc/api"
+                        }
                     }
-                }
-            };
-            input.InputMetadata = new InferenceRequestMetadata
-            {
-                Details = new InferenceRequestDetails
+                },
+                InputMetadata = new InferenceRequestMetadata
                 {
-                    Type = InferenceRequestType.DicomUid,
-                    Studies = new List<RequestedStudy>
+                    Details = new InferenceRequestDetails
+                    {
+                        Type = InferenceRequestType.DicomUid,
+                        Studies = new List<RequestedStudy>
                     {
                         new RequestedStudy
                         {
                             StudyInstanceUid = "1"
                         }
+                    }
                     }
                 }
             };
@@ -186,35 +192,37 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 .Throws(new IOException());
             _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
 
-            var input = new InferenceRequest();
-            input.TransactionId = Guid.NewGuid().ToString();
-            input.InputResources = new List<RequestInputDataResource>()
+            var input = new InferenceRequest
             {
-                new RequestInputDataResource
+                TransactionId = Guid.NewGuid().ToString(),
+                InputResources = new List<RequestInputDataResource>()
                 {
-                    Interface = InputInterfaceType.Algorithm,
-                    ConnectionDetails = new InputConnectionDetails()
-                },
-                new RequestInputDataResource
-                {
-                    Interface = InputInterfaceType.DicomWeb,
-                    ConnectionDetails = new InputConnectionDetails
+                    new RequestInputDataResource
                     {
-                        Uri = "http://my.svc/api"
+                        Interface = InputInterfaceType.Algorithm,
+                        ConnectionDetails = new InputConnectionDetails()
+                    },
+                    new RequestInputDataResource
+                    {
+                        Interface = InputInterfaceType.DicomWeb,
+                        ConnectionDetails = new InputConnectionDetails
+                        {
+                            Uri = "http://my.svc/api"
+                        }
                     }
-                }
-            };
-            input.InputMetadata = new InferenceRequestMetadata
-            {
-                Details = new InferenceRequestDetails
+                },
+                InputMetadata = new InferenceRequestMetadata
                 {
-                    Type = InferenceRequestType.DicomUid,
-                    Studies = new List<RequestedStudy>
+                    Details = new InferenceRequestDetails
+                    {
+                        Type = InferenceRequestType.DicomUid,
+                        Studies = new List<RequestedStudy>
                     {
                         new RequestedStudy
                         {
                             StudyInstanceUid = "1"
                         }
+                    }
                     }
                 }
             };
@@ -238,35 +246,37 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _inferenceRequestRepository.Setup(p => p.Add(It.IsAny<InferenceRequest>()))
                 .Throws(new Exception("error"));
 
-            var input = new InferenceRequest();
-            input.TransactionId = Guid.NewGuid().ToString();
-            input.InputResources = new List<RequestInputDataResource>()
+            var input = new InferenceRequest
             {
-                new RequestInputDataResource
+                TransactionId = Guid.NewGuid().ToString(),
+                InputResources = new List<RequestInputDataResource>()
                 {
-                    Interface = InputInterfaceType.Algorithm,
-                    ConnectionDetails = new InputConnectionDetails()
-                },
-                new RequestInputDataResource
-                {
-                    Interface = InputInterfaceType.DicomWeb,
-                    ConnectionDetails = new InputConnectionDetails
+                    new RequestInputDataResource
                     {
-                        Uri = "http://my.svc/api"
+                        Interface = InputInterfaceType.Algorithm,
+                        ConnectionDetails = new InputConnectionDetails()
+                    },
+                    new RequestInputDataResource
+                    {
+                        Interface = InputInterfaceType.DicomWeb,
+                        ConnectionDetails = new InputConnectionDetails
+                        {
+                            Uri = "http://my.svc/api"
+                        }
                     }
-                }
-            };
-            input.InputMetadata = new InferenceRequestMetadata
-            {
-                Details = new InferenceRequestDetails
+                },
+                InputMetadata = new InferenceRequestMetadata
                 {
-                    Type = InferenceRequestType.DicomUid,
-                    Studies = new List<RequestedStudy>
+                    Details = new InferenceRequestDetails
+                    {
+                        Type = InferenceRequestType.DicomUid,
+                        Studies = new List<RequestedStudy>
                     {
                         new RequestedStudy
                         {
                             StudyInstanceUid = "1"
                         }
+                    }
                     }
                 }
             };
@@ -289,35 +299,37 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
             _inferenceRequestRepository.Setup(p => p.Add(It.IsAny<InferenceRequest>()));
 
-            var input = new InferenceRequest();
-            input.TransactionId = Guid.NewGuid().ToString();
-            input.InputResources = new List<RequestInputDataResource>()
+            var input = new InferenceRequest
             {
-                new RequestInputDataResource
+                TransactionId = Guid.NewGuid().ToString(),
+                InputResources = new List<RequestInputDataResource>()
                 {
-                    Interface = InputInterfaceType.Algorithm,
-                    ConnectionDetails = new InputConnectionDetails()
-                },
-                new RequestInputDataResource
-                {
-                    Interface = InputInterfaceType.DicomWeb,
-                    ConnectionDetails = new InputConnectionDetails
+                    new RequestInputDataResource
                     {
-                        Uri = "http://my.svc/api"
+                        Interface = InputInterfaceType.Algorithm,
+                        ConnectionDetails = new InputConnectionDetails()
+                    },
+                    new RequestInputDataResource
+                    {
+                        Interface = InputInterfaceType.DicomWeb,
+                        ConnectionDetails = new InputConnectionDetails
+                        {
+                            Uri = "http://my.svc/api"
+                        }
                     }
-                }
-            };
-            input.InputMetadata = new InferenceRequestMetadata
-            {
-                Details = new InferenceRequestDetails
+                },
+                InputMetadata = new InferenceRequestMetadata
                 {
-                    Type = InferenceRequestType.DicomUid,
-                    Studies = new List<RequestedStudy>
+                    Details = new InferenceRequestDetails
+                    {
+                        Type = InferenceRequestType.DicomUid,
+                        Studies = new List<RequestedStudy>
                     {
                         new RequestedStudy
                         {
                             StudyInstanceUid = "1"
                         }
+                    }
                     }
                 }
             };

@@ -55,7 +55,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private IApplicationEntityManager _associationDataProvider;
         private IDisposable _loggerScope;
         private Guid _associationId;
-        private string _associationIdStr;
 
         public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
                 : base(stream, fallbackEncoding, log, logManager, network, transcoder)
@@ -132,15 +131,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             if (_associationDataProvider is null)
             {
-                throw new ArgumentNullException("userState must be an instance of IAssociationDataProvider");
+                throw new ServiceException($"{nameof(UserState)} must be an instance of IAssociationDataProvider");
             }
 
             _logger = _associationDataProvider.GetLogger(Association.CalledAE);
 
             _associationId = Guid.NewGuid();
-            _associationIdStr = $"#{_associationId} {association.RemoteHost}:{association.RemotePort}";
+            var associationIdStr = $"#{_associationId} {association.RemoteHost}:{association.RemotePort}";
 
-            _loggerScope = _logger?.BeginScope(new LoggingDataDictionary<string, object> { { "Association", _associationIdStr } });
+            _loggerScope = _logger?.BeginScope(new LoggingDataDictionary<string, object> { { "Association", associationIdStr } });
             _logger?.Log(LogLevel.Information, $"Association received from {association.RemoteHost}:{association.RemotePort}");
 
             if (!IsValidSourceAe(association.CallingAE, association.RemoteHost))

@@ -42,9 +42,10 @@ using FoDicomNetwork = FellowOakDicom.Network;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
-    public sealed class ScpService : IHostedService, IDisposable, IMonaiService
+    internal sealed class ScpService : IHostedService, IDisposable, IMonaiService
     {
-        internal static int ActiveConnections = 0;
+        public static int ActiveConnections = 0;
+
         private readonly IServiceScope _serviceScope;
         private readonly IApplicationEntityManager _associationDataProvider;
         private readonly ILogger<ScpService> _logger;

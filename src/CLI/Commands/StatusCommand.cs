@@ -27,7 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public StatusCommand() : base("status", $"{Strings.ApplicationName} service status")
         {
-            this.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(StatusCommandHandlerAsync);
+            Handler = CommandHandler.Create<IHost, bool, CancellationToken>(StatusCommandHandlerAsync);
         }
 
         private async Task<int> StatusCommandHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
 
-            HealthStatusResponse response = null;
+            HealthStatusResponse response;
             try
             {
                 CheckConfiguration(configService);

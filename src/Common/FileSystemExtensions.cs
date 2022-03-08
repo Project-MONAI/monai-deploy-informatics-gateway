@@ -62,7 +62,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
             Guard.Against.NullOrWhiteSpace(path, nameof(path));
 
             var tryCount = 0;
-            generatedPath = string.Empty;
             do
             {
                 generatedPath = $"{path}-{DateTime.UtcNow.Millisecond}";

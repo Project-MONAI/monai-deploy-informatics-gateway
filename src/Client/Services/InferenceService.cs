@@ -36,11 +36,11 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
         public async Task<InferenceRequestResponse> New(InferenceRequest request, CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}");
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}");
             try
             {
-                var response = await _httpClient.PostAsync($"{Route}", request, new JsonMediaTypeFormatter(), cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
+                var response = await HttpClient.PostAsync($"{Route}", request, new JsonMediaTypeFormatter(), cancellationToken);
+                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
                 return await response.Content.ReadAsAsync<InferenceRequestResponse>(cancellationToken);
             }
             catch
@@ -51,11 +51,11 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
         public async Task<InferenceStatusResponse> Status(string transactionId, CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/status");
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/status");
             try
             {
-                var response = await _httpClient.GetAsync($"{Route}/{transactionId}", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
+                var response = await HttpClient.GetAsync($"{Route}/{transactionId}", cancellationToken);
+                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
                 return await response.Content.ReadAsAsync<InferenceStatusResponse>(cancellationToken);
             }
             catch

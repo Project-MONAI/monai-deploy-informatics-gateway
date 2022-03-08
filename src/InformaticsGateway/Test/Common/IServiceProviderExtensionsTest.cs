@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
         [Fact(DisplayName = "LocateService shall throw when instance of type cannot be found")]
         public void LocateService_ShallThrowWhenInstanceOfTypeCannotBeFound()
         {
-            var typeString = this.GetType().AssemblyQualifiedName;
+            var typeString = GetType().AssemblyQualifiedName;
             Assert.Throws<ConfigurationException>(() => _serviceProvider.Object.LocateService<object>(_logger.Object, typeString));
 
             _logger.VerifyLogging($"Instance of '{typeString}' cannot be found.", LogLevel.Critical, Times.Once());
@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
         {
             _serviceProvider.Setup(p => p.GetService(It.IsAny<Type>())).Returns(this);
 
-            var typeString = this.GetType().AssemblyQualifiedName;
+            var typeString = GetType().AssemblyQualifiedName;
             var instance = _serviceProvider.Object.LocateService<object>(_logger.Object, typeString);
 
             Assert.Equal(this, instance);

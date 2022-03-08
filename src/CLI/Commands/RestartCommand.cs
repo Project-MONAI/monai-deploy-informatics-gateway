@@ -25,8 +25,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public RestartCommand() : base("restart", $"Restart the {Strings.ApplicationName} service")
         {
-            this.AddConfirmationOption();
-            this.Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(RestartCommandHandler);
+            AddConfirmationOption();
+            Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(RestartCommandHandler);
         }
 
         private async Task<int> RestartCommandHandler(IHost host, bool yes, bool verbose, CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await service.Restart(cancellationToken);
+                await service.RestartService(cancellationToken);
             }
             catch (Exception ex)
             {

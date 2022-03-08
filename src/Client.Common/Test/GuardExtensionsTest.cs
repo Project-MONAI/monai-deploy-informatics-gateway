@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common.Test
         [Fact(DisplayName = "MalformUri shall throw with malformed input")]
         public void MalformUri_MalformedInput()
         {
-            Uri input = new Uri("http://www.contoso.com/path???/file name");
+            var input = new Uri("http://www.contoso.com/path???/file name");
 
             Assert.Throws<ArgumentException>(() => Guard.Against.MalformUri(input, nameof(input)));
         }
@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common.Test
         [Fact(DisplayName = "MalformUri shall throw if not http/https")]
         public void MalformUri_NoneHttpHttps()
         {
-            Uri input = new Uri("ftp://www.contoso.com/api/123");
+            var input = new Uri("ftp://www.contoso.com/api/123");
 
             Assert.Throws<ArgumentException>(() => Guard.Against.MalformUri(input, nameof(input)));
         }
@@ -50,17 +50,17 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common.Test
         [Fact(DisplayName = "MalformUri shall pass")]
         public void MalformUri_Valid()
         {
-            string input = "http://www.contoso.com/api/123";
-            Guard.Against.MalformUri(input, nameof(input));
+            var input = "http://www.contoso.com/api/123";
+            Assert.Null(Record.Exception(() => Guard.Against.MalformUri(input, nameof(input))));
 
-            Uri input2 = new Uri("https://www.contoso.com/api/123");
-            Guard.Against.MalformUri(input, nameof(input2));
+            var input2 = new Uri("https://www.contoso.com/api/123");
+            Assert.Null(Record.Exception(() => Guard.Against.MalformUri(input, nameof(input2))));
         }
 
         [Fact(DisplayName = "OutOfRangePort")]
         public void OutOfRangePort()
         {
-            int input = 100;
+            var input = 100;
             Guard.Against.OutOfRangePort(input, nameof(input));
             input = 65535;
             Guard.Against.OutOfRangePort(input, nameof(input));

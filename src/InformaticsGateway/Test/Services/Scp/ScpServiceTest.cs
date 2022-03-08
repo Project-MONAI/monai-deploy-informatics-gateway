@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 {
     public class ScpServiceTest
     {
-        private static int NextPort = 11100;
+        private static int s_nextPort = 11100;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<IApplicationEntityManager> _associationDataProvider;
@@ -380,12 +380,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
         private ScpService CreateService()
         {
-            int tryCount = 0;
+            var tryCount = 0;
             ScpService service = null;
 
             do
             {
-                _configuration.Value.Dicom.Scp.Port = Interlocked.Increment(ref NextPort);
+                _configuration.Value.Dicom.Scp.Port = Interlocked.Increment(ref s_nextPort);
                 if (service != null)
                 {
                     service.Dispose();

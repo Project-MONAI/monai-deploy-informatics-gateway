@@ -27,10 +27,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 {
     public class HealthControllerTest
     {
-        private HealthController _controller;
-        private Mock<IMonaiServiceLocator> _serviceLocator;
-        private Mock<ProblemDetailsFactory> _problemDetailsFactory;
-        private Mock<ILogger<HealthController>> _logger;
+        private readonly HealthController _controller;
+        private readonly Mock<IMonaiServiceLocator> _serviceLocator;
+        private readonly Mock<ProblemDetailsFactory> _problemDetailsFactory;
+        private readonly Mock<ILogger<HealthController>> _logger;
 
         public HealthControllerTest()
         {

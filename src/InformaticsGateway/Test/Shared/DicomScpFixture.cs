@@ -23,8 +23,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
 {
     public class DicomScpFixture : IDisposable
     {
-        internal static string AETITLE = "STORESCP";
+        internal static string s_aETITLE = "STORESCP";
         private IDicomServer _server;
+        private bool _disposedValue;
+
         public static DicomStatus DicomStatus { get; set; } = DicomStatus.Success;
         public static Microsoft.Extensions.Logging.ILogger Logger { get; set; }
 
@@ -36,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
         {
             if (_server is null)
             {
-                _server = DicomServerFactory.Create<CStoreSCP>(
+                _server = DicomServerFactory.Create<CStoreScp>(
                     NetworkManager.IPv4Any,
                     port);
 
@@ -47,17 +49,31 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
             }
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _server?.Dispose();
+                    _server = null;
+                }
+
+                _disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            _server?.Dispose();
-            _server = null;
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
     }
 
-    public class CStoreSCP : DicomService, IDicomServiceProvider, IDicomCStoreProvider, IDicomCEchoProvider
+    public class CStoreScp : DicomService, IDicomServiceProvider, IDicomCStoreProvider, IDicomCEchoProvider
     {
-        public CStoreSCP(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
+        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
                 : base(stream, fallbackEncoding, log, logManager, network, transcoder)
         {
         }
@@ -69,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
                 return SendAbortAsync(DicomAbortSource.ServiceUser, DicomAbortReason.NotSpecified);
             }
 
-            if (association.CalledAE != DicomScpFixture.AETITLE)
+            if (association.CalledAE != DicomScpFixture.s_aETITLE)
             {
                 return SendAssociationRejectAsync(
                     DicomRejectResult.Permanent,
@@ -93,10 +109,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Shared
 
         public void OnReceiveAbort(DicomAbortSource source, DicomAbortReason reason)
         {
+            // ignore
         }
 
         public void OnConnectionClosed(Exception exception)
         {
+            // ignore
         }
 
         public Task<DicomCStoreResponse> OnCStoreRequestAsync(DicomCStoreRequest request)

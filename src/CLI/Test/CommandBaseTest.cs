@@ -12,7 +12,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Shared.Test;
 using Moq;
 using System.CommandLine;
@@ -27,7 +26,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 {
     public class CommandBaseTest
     {
-        private readonly Mock<IConfigurationService> _configurationService;
         private readonly CommandLineBuilder _commandLineBuilder;
         private readonly Parser _paser;
         private readonly Mock<ILoggerFactory> _loggerFactory;
@@ -37,7 +35,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         {
             _loggerFactory = new Mock<ILoggerFactory>();
             _logger = new Mock<ILogger>();
-            _configurationService = new Mock<IConfigurationService>();
             _commandLineBuilder = new CommandLineBuilder()
                 .UseHost(
                     _ => Host.CreateDefaultBuilder(),
@@ -61,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            int exitCode = await _paser.InvokeAsync(command);
+            var exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(0, exitCode);
 
             _logger.VerifyLogging("this is a test", LogLevel.Debug, Times.Once());
@@ -72,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
     {
         public TestCommand() : base("test", "description")
         {
-            this.Handler = CommandHandler.Create<IHost, bool>(TestHandler);
+            Handler = CommandHandler.Create<IHost, bool>(TestHandler);
         }
 
         private void TestHandler(IHost host, bool verbose)

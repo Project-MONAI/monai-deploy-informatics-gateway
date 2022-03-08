@@ -49,11 +49,11 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         {
             Guard.Against.Null(item, nameof(item));
 
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}");
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}");
             try
             {
-                var response = await _httpClient.PostAsync<T>(Route, item, new JsonMediaTypeFormatter(), cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
+                var response = await HttpClient.PostAsync<T>(Route, item, new JsonMediaTypeFormatter(), cancellationToken);
+                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
             catch
@@ -66,11 +66,11 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         {
             name = Uri.EscapeUriString(name);
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/{name}");
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{name}");
             try
             {
-                var response = await _httpClient.DeleteAsync($"{Route}/{name}", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
+                var response = await HttpClient.DeleteAsync($"{Route}/{name}", cancellationToken);
+                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
             catch
@@ -83,11 +83,11 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         {
             name = Uri.EscapeUriString(name);
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/{name}");
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{name}");
             try
             {
-                var response = await _httpClient.GetAsync($"{Route}/{name}", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
+                var response = await HttpClient.GetAsync($"{Route}/{name}", cancellationToken);
+                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
                 return await response.Content.ReadAsAsync<T>(cancellationToken);
             }
             catch
@@ -98,11 +98,11 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
         public async Task<IReadOnlyList<T>> List(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}");
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}");
             try
             {
-                var response = await _httpClient.GetAsync(Route, cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
+                var response = await HttpClient.GetAsync(Route, cancellationToken);
+                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
                 var list = await response.Content.ReadAsAsync<IEnumerable<T>>(cancellationToken);
                 return list.ToList().AsReadOnly();
             }

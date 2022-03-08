@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
     public class QidoServiceTest : IClassFixture<DicomFileGeneratorFixture>
     {
         private const string BaseUri = "http://dummy/api/";
-        private DicomFileGeneratorFixture _fixture;
+        private readonly DicomFileGeneratorFixture _fixture;
 
         public QidoServiceTest(DicomFileGeneratorFixture fixture)
         {
@@ -52,9 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(1, studyUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out var handlerMock, out var httpClient);
 
             var qido = new QidoService(httpClient);
 
@@ -86,14 +84,14 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(1, studyUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out var handlerMock, out var httpClient);
 
             var qido = new QidoService(httpClient);
 
-            var queryParameters = new Dictionary<string, string>();
-            queryParameters.Add("11112222", "value");
+            var queryParameters = new Dictionary<string, string>
+            {
+                { "11112222", "value" }
+            };
 
             var count = 0;
             await foreach (var instance in qido.SearchForStudies<string>(queryParameters))
@@ -124,16 +122,18 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(1, studyUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out var handlerMock, out var httpClient);
 
             var qido = new QidoService(httpClient);
 
-            var queryParameters = new Dictionary<string, string>();
-            queryParameters.Add("11112222", "value");
-            var fields = new List<string>();
-            fields.Add("1234");
+            var queryParameters = new Dictionary<string, string>
+            {
+                { "11112222", "value" }
+            };
+            var fields = new List<string>
+            {
+                "1234"
+            };
 
             var count = 0;
             await foreach (var instance in qido.SearchForStudies<string>(queryParameters, fields))
@@ -165,16 +165,18 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = _fixture.GenerateInstancesAsJson(1, studyUid),
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out var handlerMock, out var httpClient);
 
             var qido = new QidoService(httpClient);
 
-            var queryParameters = new Dictionary<string, string>();
-            queryParameters.Add("11112222", "value");
-            var fields = new List<string>();
-            fields.Add("1234");
+            var queryParameters = new Dictionary<string, string>
+            {
+                { "11112222", "value" }
+            };
+            var fields = new List<string>
+            {
+                "1234"
+            };
 
             var count = 0;
             await foreach (var instance in qido.SearchForStudies<string>(queryParameters, fields, true, 1, 1))

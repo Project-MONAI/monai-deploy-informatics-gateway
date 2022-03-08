@@ -22,15 +22,11 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
     public class RabbitMqMessagePublisherService : IMessageBrokerPublisherService, IDisposable
     {
         private readonly ILogger<RabbitMqMessagePublisherService> _logger;
-        private readonly MessageBrokerConfiguration _configuration;
         private readonly string _endpoint;
-        private readonly string _username;
-        private readonly string _password;
         private readonly string _virtualHost;
         private readonly string _exchange;
-        private readonly ConnectionFactory _connectionFactory;
         private readonly IConnection _connection;
-        private bool disposedValue;
+        private bool _disposedValue;
 
         public string Name => "Rabbit MQ Publisher";
 
@@ -43,23 +39,23 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             }
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _configuration = options.Value.Messaging;
+            var configuration = options.Value.Messaging;
 
-            ValidateConfiguration(_configuration);
-            _endpoint = _configuration.PublisherSettings[ConfigurationKeys.EndPoint];
-            _username = _configuration.PublisherSettings[ConfigurationKeys.Username];
-            _password = _configuration.PublisherSettings[ConfigurationKeys.Password];
-            _virtualHost = _configuration.SubscriberSettings[ConfigurationKeys.VirtualHost];
-            _exchange = _configuration.SubscriberSettings[ConfigurationKeys.Exchange];
+            ValidateConfiguration(configuration);
+            _endpoint = configuration.PublisherSettings[ConfigurationKeys.EndPoint];
+            var username = configuration.PublisherSettings[ConfigurationKeys.Username];
+            var password = configuration.PublisherSettings[ConfigurationKeys.Password];
+            _virtualHost = configuration.SubscriberSettings[ConfigurationKeys.VirtualHost];
+            _exchange = configuration.SubscriberSettings[ConfigurationKeys.Exchange];
 
-            _connectionFactory = new ConnectionFactory()
+            var connectionFactory = new ConnectionFactory()
             {
                 HostName = _endpoint,
-                UserName = _username,
-                Password = _password,
+                UserName = username,
+                Password = password,
                 VirtualHost = _virtualHost
             };
-            _connection = _connectionFactory.CreateConnection();
+            _connection = connectionFactory.CreateConnection();
         }
 
         private void ValidateConfiguration(MessageBrokerConfiguration configuration)
@@ -112,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
                 if (disposing)
                 {
@@ -124,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                     }
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

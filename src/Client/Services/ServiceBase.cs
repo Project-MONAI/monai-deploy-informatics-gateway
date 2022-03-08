@@ -17,14 +17,14 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 {
     internal abstract class ServiceBase
     {
-        protected readonly HttpClient _httpClient;
-        protected readonly ILogger _logger;
+        protected readonly HttpClient HttpClient;
+        protected readonly ILogger Logger;
         protected string RequestServicePrefix { get; private set; } = string.Empty;
 
-        public ServiceBase(HttpClient httpClient, ILogger logger = null)
+        protected ServiceBase(HttpClient httpClient, ILogger logger = null)
         {
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _logger = logger;
+            HttpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            Logger = logger;
         }
     }
 }

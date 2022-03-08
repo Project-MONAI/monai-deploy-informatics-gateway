@@ -33,8 +33,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public DestinationCommand() : base("dst", "Configure DICOM destinations")
         {
-            this.AddAlias("dest");
-            this.AddAlias("destination");
+            AddAlias("dest");
+            AddAlias("destination");
 
             SetupAddDestinationCommand();
             SetupRemoveDestinationCommand();
@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var listCommand = new Command("ls", "List all DICOM destinations");
             listCommand.AddAlias("list");
-            this.AddCommand(listCommand);
+            AddCommand(listCommand);
 
             listCommand.Handler = CommandHandler.Create<DestinationApplicationEntity, IHost, bool, CancellationToken>(ListDestinationHandlerAsync);
         }
@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var removeCommand = new Command("rm", "Remove a DICOM destination");
             removeCommand.AddAlias("del");
-            this.AddCommand(removeCommand);
+            AddCommand(removeCommand);
 
             var nameOption = new Option<string>(new string[] { "-n", "--name" }, "Name of the DICOM destination") { IsRequired = true };
             removeCommand.AddOption(nameOption);
@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private void SetupAddDestinationCommand()
         {
             var addCommand = new Command("add", "Add a new DICOM destination");
-            this.AddCommand(addCommand);
+            AddCommand(addCommand);
 
             var nameOption = new Option<string>(new string[] { "--name", "-n" }, "Name of the DICOM destination") { IsRequired = false };
             addCommand.AddOption(nameOption);
@@ -201,11 +201,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 var result = await client.DicomDestinations.Create(entity, cancellationToken);
 
-                logger.Log(LogLevel.Information, "New DICOM destination created:");
-                logger.Log(LogLevel.Information, "\tName:            {0}", result.Name);
-                logger.Log(LogLevel.Information, "\tAE Title:        {0}", result.AeTitle);
-                logger.Log(LogLevel.Information, "\tHost/IP Address: {0}", result.HostIp);
-                logger.Log(LogLevel.Information, "\tPort:            {0}", result.Port);
+                logger.Log(LogLevel.Information, $"New DICOM destination created:");
+                logger.Log(LogLevel.Information, $"\tName:            {result.Name}");
+                logger.Log(LogLevel.Information, $"\tAE Title:        {result.AeTitle}");
+                logger.Log(LogLevel.Information, $"\tHost/IP Address: {result.HostIp}");
+                logger.Log(LogLevel.Information, $"\tPort:            {result.Port}");
             }
             catch (ConfigurationException ex)
             {

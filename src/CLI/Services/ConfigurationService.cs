@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
                 await stream.CopyToAsync(fileStream, cancellationToken);
                 await fileStream.FlushAsync(cancellationToken);
             }
-            this._logger.Log(LogLevel.Information, $"{Common.ConfigFilePath} updated successfully.");
+            _logger.Log(LogLevel.Information, $"{Common.ConfigFilePath} updated successfully.");
         }
     }
 }

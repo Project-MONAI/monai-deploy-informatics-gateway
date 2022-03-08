@@ -9,9 +9,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.ComponentModel;
 namespace System.Runtime.CompilerServices
 {
-    using System.ComponentModel;
 
     /// <summary>
     /// Reserved to be used by the compiler for tracking metadata.

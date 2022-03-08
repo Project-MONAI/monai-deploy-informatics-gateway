@@ -25,8 +25,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public StopCommand() : base("stop", $"Stop the {Strings.ApplicationName} service")
         {
-            this.AddConfirmationOption();
-            this.Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(StopCommandHandler);
+            AddConfirmationOption();
+            Handler = CommandHandler.Create<IHost, bool, bool, CancellationToken>(StopCommandHandler);
         }
 
         private async Task<int> StopCommandHandler(IHost host, bool yes, bool verbose, CancellationToken cancellationToken)
@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await service.Stop(cancellationToken);
+                await service.StopService(cancellationToken);
             }
             catch (Exception ex)
             {

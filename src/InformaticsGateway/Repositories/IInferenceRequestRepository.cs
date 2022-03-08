@@ -65,13 +65,13 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         /// <c>Get</c> returns the specified inference request.
         /// </summary>
         /// <param name="transactionId">The transactionId of the request.</param>
-        InferenceRequest Get(string transactionId);
+        InferenceRequest GetInferenceRequest(string transactionId);
 
         /// <summary>
         /// <c>Get</c> returns the specified inference request.
         /// </summary>
         /// <param name="inferenceRequestId">The internal ID of the request.</param>
-        Task<InferenceRequest> Get(Guid inferenceRequestId);
+        Task<InferenceRequest> GetInferenceRequest(Guid inferenceRequestId);
 
         /// <summary>
         /// <c>Exists</c> checks whether if an existing request with the same transaction ID exists.

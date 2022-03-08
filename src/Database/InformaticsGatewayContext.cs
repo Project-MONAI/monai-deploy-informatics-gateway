@@ -23,8 +23,6 @@ namespace Monai.Deploy.InformaticsGateway.Database
         public virtual DbSet<MonaiApplicationEntity> MonaiApplicationEntities { get; set; }
         public virtual DbSet<SourceApplicationEntity> SourceApplicationEntities { get; set; }
         public virtual DbSet<DestinationApplicationEntity> DestinationApplicationEntities { get; set; }
-        // public virtual DbSet<InferenceRequest> InferenceRequests { get; set; }
-        // public virtual DbSet<InferenceJob> InferenceJobs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

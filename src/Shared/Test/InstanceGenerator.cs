@@ -16,7 +16,7 @@ using System.IO.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Shared.Test
 {
-    public class InstanceGenerator
+    public static class InstanceGenerator
     {
         public static DicomCStoreRequest GenerateDicomCStoreRequest()
         {

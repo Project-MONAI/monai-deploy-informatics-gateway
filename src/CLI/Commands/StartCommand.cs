@@ -25,8 +25,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public StartCommand() : base("start", $"Start the {Strings.ApplicationName} service")
         {
-            this.AddConfirmationOption();
-            this.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(StartCommandHandler);
+            AddConfirmationOption();
+            Handler = CommandHandler.Create<IHost, bool, CancellationToken>(StartCommandHandler);
         }
 
         private async Task<int> StartCommandHandler(IHost host, bool verbose, CancellationToken cancellationToken)
@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await service.Start(cancellationToken);
+                await service.StartService(cancellationToken);
             }
             catch (ControlException ex) when (ex.ErrorCode == ExitCodes.Start_Error_ApplicationAlreadyRunning)
             {

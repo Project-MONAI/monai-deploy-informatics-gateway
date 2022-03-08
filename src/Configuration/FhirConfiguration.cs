@@ -15,7 +15,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public class FhirConfiguration
     {
-        public static int DefaultClientTimeout = 300;
+        public static readonly int DefaultClientTimeout = 300;
 
         /// <summary>
         /// Gets or sets the client connection timeout in seconds.
