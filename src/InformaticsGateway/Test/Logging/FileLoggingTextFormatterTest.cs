@@ -1,11 +1,11 @@
-﻿// Copyright 2021-2022, MONAI Consortium
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Logging;
 using System;
 using System.Globalization;
 using System.Text;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Logging

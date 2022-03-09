@@ -1,3 +1,7 @@
+<!--
+SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+ SPDX-License-Identifier: Apache License 2.0
+-->
 - [Introduction](#introduction)
   - [Communicate with us](#communicate-with-us)
 - [The contribution process](#the-contribution-process)

@@ -1,4 +1,7 @@
-﻿- name: REST API
+﻿# SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+# SPDX-License-Identifier: Apache License 2.0
+
+- name: REST API
   href: rest/toc.yml
 - name: .NET
   href: ../obj/api/dotnet/toc.yml
