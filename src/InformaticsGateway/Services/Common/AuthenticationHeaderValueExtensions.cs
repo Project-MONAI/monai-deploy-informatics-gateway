@@ -11,20 +11,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
     {
         public static AuthenticationHeaderValue ConvertFrom(ConnectionAuthType connectionAuthType, string authId)
         {
-            switch (connectionAuthType)
+            return connectionAuthType switch
             {
-                case ConnectionAuthType.Basic:
-                    return new AuthenticationHeaderValue("Basic", authId);
-
-                case ConnectionAuthType.Bearer:
-                    return new AuthenticationHeaderValue("Bearer", authId);
-
-                case ConnectionAuthType.None:
-                    return null;
-
-                default:
-                    throw new InferenceRequestException($"Unsupported ConnectionAuthType: {connectionAuthType}");
-            }
+                ConnectionAuthType.Basic => new AuthenticationHeaderValue("Basic", authId),
+                ConnectionAuthType.Bearer => new AuthenticationHeaderValue("Bearer", authId),
+                ConnectionAuthType.None => null,
+                _ => throw new InferenceRequestException($"Unsupported ConnectionAuthType: {connectionAuthType}"),
+            };
         }
     }
 }

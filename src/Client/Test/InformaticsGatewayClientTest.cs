@@ -24,7 +24,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         [Fact(DisplayName = "Contructor configures all services")]
         public void Contructor()
         {
-            var baseUri = new Uri("http://localhost:5000");
             var client = new InformaticsGatewayClient(_httpClient, _logger.Object);
 
             Assert.NotNull(client.MonaiScpAeTitle);

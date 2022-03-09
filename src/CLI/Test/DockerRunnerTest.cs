@@ -47,8 +47,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var runner = new DockerRunner(_logger.Object, _configurationService.Object, _fileSystem.Object, _dockerClient.Object);
             var data = new List<ImagesListResponse>
                 {
-                    new ImagesListResponse{ RepoTags = new List<string>{ "123"}, ID = $"sha256:{Guid.NewGuid().ToString("N")}", Created = DateTime.Now },
-                    new ImagesListResponse{ RepoTags = new List<string>{ "456"}, ID = $"sha256:{Guid.NewGuid().ToString("N")}", Created = DateTime.Now }
+                    new ImagesListResponse{ RepoTags = new List<string>{ "123"}, ID = $"sha256:{Guid.NewGuid():N}", Created = DateTime.Now },
+                    new ImagesListResponse{ RepoTags = new List<string>{ "456"}, ID = $"sha256:{Guid.NewGuid():N}", Created = DateTime.Now }
                 };
 
             _configurationService.SetupGet(p => p.Configurations.DockerImagePrefix).Returns("PREFIX");

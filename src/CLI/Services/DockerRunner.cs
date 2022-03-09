@@ -35,16 +35,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             Guard.Against.Null(imageVersion, nameof(imageVersion));
 
             _logger.Log(LogLevel.Debug, $"Checking for existing {Strings.ApplicationName} ({imageVersion.Version}) containers...");
-            var parameters = new ContainersListParameters();
-            parameters.Filters = new Dictionary<string, IDictionary<string, bool>>
+            var parameters = new ContainersListParameters
             {
-                ["ancestor"] = new Dictionary<string, bool>
+                Filters = new Dictionary<string, IDictionary<string, bool>>
                 {
-                    [imageVersion.Id] = true
+                    ["ancestor"] = new Dictionary<string, bool>
+                    {
+                        [imageVersion.Id] = true
+                    }
                 }
             };
-            var matches = await _dockerClient.Containers.ListContainersAsync(parameters, cancellationToken);
-            if (matches is null || matches.Count() == 0)
+            var matches = await _dockerClient.Containers.ListContainersAsync(parameters, cancellationToken).ConfigureAwait(false);
+            if (matches is null || matches.Count == 0)
             {
                 return new RunnerState { IsRunning = false };
             }
@@ -53,34 +55,36 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         }
 
         public async Task<ImageVersion> GetLatestApplicationVersion(CancellationToken cancellationToken = default)
-            => await GetLatestApplicationVersion(_configurationService.Configurations.DockerImagePrefix, cancellationToken);
+            => await GetLatestApplicationVersion(_configurationService.Configurations.DockerImagePrefix, cancellationToken).ConfigureAwait(false);
 
         public async Task<ImageVersion> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(version, nameof(version));
 
-            var results = await GetApplicationVersions(version, cancellationToken);
+            var results = await GetApplicationVersions(version, cancellationToken).ConfigureAwait(false);
             return results?.OrderByDescending(p => p.Created).FirstOrDefault();
         }
 
         public async Task<IList<ImageVersion>> GetApplicationVersions(CancellationToken cancellationToken = default)
-            => await GetApplicationVersions(_configurationService.Configurations.DockerImagePrefix, cancellationToken);
+            => await GetApplicationVersions(_configurationService.Configurations.DockerImagePrefix, cancellationToken).ConfigureAwait(false);
 
         public async Task<IList<ImageVersion>> GetApplicationVersions(string label, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(label, nameof(label));
 
             _logger.Log(LogLevel.Debug, "Connecting to Docker...");
-            var parameters = new ImagesListParameters();
-            parameters.Filters = new Dictionary<string, IDictionary<string, bool>>
+            var parameters = new ImagesListParameters
             {
-                ["reference"] = new Dictionary<string, bool>
+                Filters = new Dictionary<string, IDictionary<string, bool>>
                 {
-                    [label] = true
+                    ["reference"] = new Dictionary<string, bool>
+                    {
+                        [label] = true
+                    }
                 }
             };
             _logger.Log(LogLevel.Debug, "Retrieving images from Docker...");
-            var images = await _dockerClient.Images.ListImagesAsync(parameters, cancellationToken);
+            var images = await _dockerClient.Images.ListImagesAsync(parameters, cancellationToken).ConfigureAwait(false);
             return images?.Select(p => new ImageVersion { Version = p.RepoTags.First(), Id = p.ID, Created = p.Created }).ToList();
         }
 
@@ -118,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostLogsStorageMount);
             createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostLogsStorageMount, Target = _configurationService.Configurations.LogStoragePath });
 
-            var response = await _dockerClient.Containers.CreateContainerAsync(createContainerParams, cancellationToken);
+            var response = await _dockerClient.Containers.CreateContainerAsync(createContainerParams, cancellationToken).ConfigureAwait(false);
             _logger.Log(LogLevel.Debug, $"{Strings.ApplicationName} created with container ID {response.ID.Substring(0, 12)}");
             if (response.Warnings.Any())
             {
@@ -127,7 +131,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
             _logger.Log(LogLevel.Debug, $"Starting container {response.ID.Substring(0, 12)}...");
             var containerStartParams = new ContainerStartParameters();
-            if (!await _dockerClient.Containers.StartContainerAsync(response.ID, containerStartParams, cancellationToken))
+            if (!await _dockerClient.Containers.StartContainerAsync(response.ID, containerStartParams, cancellationToken).ConfigureAwait(false))
             {
                 _logger.Log(LogLevel.Error, $"Error starting container {response.ID.Substring(0, 12)}");
                 return false;
@@ -144,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             Guard.Against.Null(runnerState, nameof(runnerState));
 
             _logger.Log(LogLevel.Debug, $"Stopping {Strings.ApplicationName} with container ID {runnerState.IdShort}.");
-            var result = await _dockerClient.Containers.StopContainerAsync(runnerState.Id, new ContainerStopParameters() { WaitBeforeKillSeconds = 60 }, cancellationToken);
+            var result = await _dockerClient.Containers.StopContainerAsync(runnerState.Id, new ContainerStopParameters() { WaitBeforeKillSeconds = 60 }, cancellationToken).ConfigureAwait(false);
             _logger.Log(LogLevel.Information, $"{Strings.ApplicationName} with container ID {runnerState.IdShort} stopped.");
             return result;
         }

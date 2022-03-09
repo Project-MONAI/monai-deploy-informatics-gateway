@@ -36,17 +36,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 };
                 using (_logger.BeginScope(dictionary))
                 {
-                    await _next(context);
+                    await _next(context).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                _logger.LogError("HTTP error in request {0}: {1}", context.Request.Path, ex);
-                await HandleExceptionAsync(context, ex);
+                _logger.Log(LogLevel.Error, ex, $"HTTP error in request {context.Request.Path}.");
+                await HandleExceptionAsync(context, ex).ConfigureAwait(false);
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private static Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             var code = HttpStatusCode.InternalServerError; // 500 if unexpected
 

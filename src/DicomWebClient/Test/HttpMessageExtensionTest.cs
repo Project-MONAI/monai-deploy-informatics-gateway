@@ -19,7 +19,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
     {
         private const string PatientName = "DOE^JOHN";
 
-        private readonly byte[] ByteData = new byte[]
+        private readonly byte[] _byteData = new byte[]
         {
            0x01, 0x02, 0x03, 0x04, 0x05
         };
@@ -120,12 +120,14 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             Assert.Equal(PatientName, result.First().Dataset.GetString(DicomTag.PatientName));
         }
 
-        private async Task AddDicomFileContent(MultipartContent multipartContent)
+        private static async Task AddDicomFileContent(MultipartContent multipartContent)
         {
-            var dicomDataset = new DicomDataset(DicomTransferSyntax.ExplicitVRLittleEndian);
-            dicomDataset.Add(DicomTag.PatientName, PatientName);
-            dicomDataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
-            dicomDataset.Add(DicomTag.SOPInstanceUID, DicomUID.Generate());
+            var dicomDataset = new DicomDataset(DicomTransferSyntax.ExplicitVRLittleEndian)
+            {
+                { DicomTag.PatientName, PatientName },
+                { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage },
+                { DicomTag.SOPInstanceUID, DicomUID.Generate() }
+            };
             var dicomFile = new DicomFile(dicomDataset);
 
             using (var ms = new MemoryStream())
@@ -157,14 +159,14 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             AddByteArrayContent(multipartContent);
             message.Content = multipartContent;
 
-            var result = await message.ToBinaryData();
+            var result = await message.ToBinaryData().ConfigureAwait(false);
 
-            Assert.Equal(ByteData, result);
+            Assert.Equal(_byteData, result);
         }
 
         private void AddByteArrayContent(MultipartContent multipartContent)
         {
-            multipartContent.Add(new ByteArrayContent(ByteData));
+            multipartContent.Add(new ByteArrayContent(_byteData));
         }
 
         #endregion ToBinaryData Test

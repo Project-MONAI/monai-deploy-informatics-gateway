@@ -35,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 return;
             }
 
-            string message = formatter(state, exception);
+            var message = formatter(state, exception);
 
             if (exception != null)
             {

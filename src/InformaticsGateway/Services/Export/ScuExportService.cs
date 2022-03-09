@@ -99,12 +99,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            await client.SendAsync(cancellationToken).ConfigureAwait(false);
                            manualResetEvent.WaitOne();
                            _logger.LogInformation($"Job sent to {destination.AeTitle} completed");
-                       });
+                       }).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                HandleCStoreException(ex, exportRequestData, client);
+                HandleCStoreException(ex, exportRequestData);
             }
 
             return exportRequestData;
@@ -169,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private void HandleCStoreException(Exception ex, ExportRequestDataMessage exportRequestData, IDicomClient client)
+        private void HandleCStoreException(Exception ex, ExportRequestDataMessage exportRequestData)
         {
             var exception = ex;
 

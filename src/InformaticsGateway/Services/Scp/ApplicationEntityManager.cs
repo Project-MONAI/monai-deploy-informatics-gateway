@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -103,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
-            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), callingAeTitle, _fileSystem)
+            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(CultureInfo.InvariantCulture), callingAeTitle, _fileSystem)
             {
                 StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID),
                 SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID),
@@ -116,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 _logger.Log(LogLevel.Information, "Series Instance UID: {SeriesInstanceUid}", info.SeriesInstanceUid);
                 _logger.Log(LogLevel.Information, "Storage File Path: {InstanceStorageFullPath}", info.FilePath);
 
-                await _aeTitles[calledAeTitle].HandleInstance(request, info);
+                await _aeTitles[calledAeTitle].HandleInstance(request, info).ConfigureAwait(false);
             }
         }
 

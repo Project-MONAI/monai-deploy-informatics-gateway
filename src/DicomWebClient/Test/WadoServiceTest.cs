@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = await _fixture.GenerateInstances(2, studyUid, transferSynx: transferSyntax),
+                Content = await DicomFileGeneratorFixture.GenerateInstances(2, studyUid, transferSynx: transferSyntax),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -92,7 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = await _fixture.GenerateInstances(1, studyUid),
+                Content = await DicomFileGeneratorFixture.GenerateInstances(1, studyUid),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -147,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(2, studyUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(2, studyUid),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -180,7 +180,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(2, studyUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(2, studyUid),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -252,7 +252,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = await _fixture.GenerateInstances(2, studyUid, seriesUid, transferSynx: transferSyntax),
+                Content = await DicomFileGeneratorFixture.GenerateInstances(2, studyUid, seriesUid, transferSynx: transferSyntax),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -332,7 +332,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -366,7 +366,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -447,7 +447,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = await _fixture.GenerateInstances(2, studyUid, seriesUid, instanceUid, transferSynx: transferSyntax),
+                Content = await DicomFileGeneratorFixture.GenerateInstances(2, studyUid, seriesUid, instanceUid, transferSynx: transferSyntax),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -596,7 +596,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(2, studyUid, seriesUid, instanceUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(2, studyUid, seriesUid, instanceUid),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -626,7 +626,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(2, studyUid, seriesUid),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -825,7 +825,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateByteData(),
+                Content = DicomFileGeneratorFixture.GenerateByteData(),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);
@@ -855,7 +855,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateByteData(),
+                Content = DicomFileGeneratorFixture.GenerateByteData(),
             };
 
             GenerateHttpClient(response, out Mock<HttpMessageHandler> handlerMock, out HttpClient httpClient);

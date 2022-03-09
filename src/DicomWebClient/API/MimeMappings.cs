@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
     {
         public const string MultiPartRelated = "multipart/related";
 
-        public static readonly Dictionary<MimeType, string> MimeTypeMappings = new Dictionary<MimeType, string>()
+        public static readonly Dictionary<MimeType, string> MimeTypeMappings = new()
         {
             { MimeType.Dicom, "application/dicom" },
             { MimeType.DicomJson, "application/dicom+json" },
@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
             { MimeType.VideoMpeg2, "video/mpeg2" },
         };
 
-        public static readonly Dictionary<DicomUID, MimeType> SupportedMediaTypes = new Dictionary<DicomUID, MimeType>()
+        public static readonly Dictionary<DicomUID, MimeType> SupportedMediaTypes = new()
         {
             { DicomUID.ExplicitVRLittleEndian, MimeType.Dicom },
             { DicomUID.RLELossless, MimeType.Dicom },
@@ -71,8 +71,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
             { DicomUID.HEVCM10P51, MimeType.Dicom }
         };
 
-        public static readonly MediaTypeWithQualityHeaderValue MediaTypeApplicationDicom = new MediaTypeWithQualityHeaderValue(MimeTypeMappings[MimeType.Dicom]);
-        public static readonly MediaTypeWithQualityHeaderValue MediaTypeApplicationDicomJson = new MediaTypeWithQualityHeaderValue(MimeTypeMappings[MimeType.DicomJson]);
+        public static readonly MediaTypeWithQualityHeaderValue MediaTypeApplicationDicom = new(MimeTypeMappings[MimeType.Dicom]);
+        public static readonly MediaTypeWithQualityHeaderValue MediaTypeApplicationDicomJson = new(MimeTypeMappings[MimeType.DicomJson]);
 
         public static bool IsValidMediaType(DicomTransferSyntax transferSyntax)
         {

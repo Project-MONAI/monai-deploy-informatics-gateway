@@ -167,6 +167,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
 
     public class DatabaseFixture : IDisposable
     {
+        private bool _disposedValue;
+
         public InformaticsGatewayContext DbContext { get; }
 
         public DatabaseFixture()
@@ -174,11 +176,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             DbContext = GetDatabaseContext();
         }
 
-        public void Dispose()
-        {
-        }
 
-        public InformaticsGatewayContext GetDatabaseContext()
+        public static InformaticsGatewayContext GetDatabaseContext()
         {
             var options = new DbContextOptionsBuilder<InformaticsGatewayContext>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
@@ -187,7 +186,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             var databaseContext = new InformaticsGatewayContext(options);
             databaseContext.Database.EnsureDeleted();
             databaseContext.Database.EnsureCreated();
-            if (databaseContext.SourceApplicationEntities.Count() <= 0)
+            if (!databaseContext.SourceApplicationEntities.Any())
             {
                 for (int i = 1; i <= 10; i++)
                 {
@@ -202,6 +201,26 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             }
             databaseContext.SaveChanges();
             return databaseContext;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    DbContext.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

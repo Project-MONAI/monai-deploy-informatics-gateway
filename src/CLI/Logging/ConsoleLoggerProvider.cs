@@ -11,6 +11,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         private readonly ConcurrentDictionary<string, ConsoleLogger> _loggers;
         private readonly ConsoleLoggerConfiguration _configuration;
+        private bool _disposedValue;
 
         public ConsoleLoggerProvider(IOptions<ConsoleLoggerConfiguration> configuration)
         {
@@ -21,9 +22,25 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public ILogger CreateLogger(string categoryName)
             => _loggers.GetOrAdd(categoryName, name => new ConsoleLogger(name, _configuration));
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _loggers.Clear();
+
+                }
+
+                _disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            _loggers.Clear();
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            System.GC.SuppressFinalize(this);
         }
     }
 }

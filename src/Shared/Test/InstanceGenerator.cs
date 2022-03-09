@@ -33,12 +33,14 @@ namespace Monai.Deploy.InformaticsGateway.Shared.Test
             {
                 sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             }
-            var dataset = new DicomDataset();
-            dataset.Add(DicomTag.PatientID, "PID");
-            dataset.Add(DicomTag.StudyInstanceUID, studyInstanceUid ?? DicomUIDGenerator.GenerateDerivedFromUUID().UID);
-            dataset.Add(DicomTag.SeriesInstanceUID, seriesInstanceUid ?? DicomUIDGenerator.GenerateDerivedFromUUID().UID);
-            dataset.Add(DicomTag.SOPInstanceUID, sopInstanceUid);
-            dataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage.UID);
+            var dataset = new DicomDataset
+            {
+                { DicomTag.PatientID, "PID" },
+                { DicomTag.StudyInstanceUID, studyInstanceUid ?? DicomUIDGenerator.GenerateDerivedFromUUID().UID },
+                { DicomTag.SeriesInstanceUID, seriesInstanceUid ?? DicomUIDGenerator.GenerateDerivedFromUUID().UID },
+                { DicomTag.SOPInstanceUID, sopInstanceUid },
+                { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage.UID }
+            };
             return dataset;
         }
 

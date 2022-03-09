@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         public async Task Store_ShallThrowIfNoFilesMatchStudyInstanceUid()
         {
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID();
-            var instances = _fixture.GenerateDicomFiles(3, studyInstanceUid);
+            var instances = DicomFileGeneratorFixture.GenerateDicomFiles(3, studyInstanceUid);
 
             var httpClient = new HttpClient();
             var service = new StowService(httpClient, _logger.Object);
@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         public async Task Store_HandlesSendAsyncFailures()
         {
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID();
-            var instances = _fixture.GenerateDicomFiles(1, studyInstanceUid);
+            var instances = DicomFileGeneratorFixture.GenerateDicomFiles(1, studyInstanceUid);
 
             var handlerMock = new Mock<HttpMessageHandler>();
             handlerMock
@@ -85,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         public async Task Store_HandlesResponses(HttpStatusCode status, string message)
         {
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID();
-            var instances = _fixture.GenerateDicomFiles(3, studyInstanceUid);
+            var instances = DicomFileGeneratorFixture.GenerateDicomFiles(3, studyInstanceUid);
 
             var response = new HttpResponseMessage
             {

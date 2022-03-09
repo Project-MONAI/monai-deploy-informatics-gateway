@@ -93,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 dicomWebClient.ConfigureAuthentication(authenticationHeader);
 
                 _logger.Log(LogLevel.Debug, $"Exporting data to {destination.ConnectionDetails.Uri}.");
-                await ExportToDicomWebDestination(dicomWebClient, exportRequestData, destination, cancellationToken);
+                await ExportToDicomWebDestination(dicomWebClient, exportRequestData, destination, cancellationToken).ConfigureAwait(false);
             }
 
             return exportRequestData;
@@ -110,13 +110,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                        _configuration.Value.Export.Retries.RetryDelays,
                        (exception, timeSpan, retryCount, context) =>
                        {
-                           _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                           _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination {destination.ConnectionDetails.Uri}. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
                        })
                    .ExecuteAsync(async () =>
-                   {
-                       var result = await dicomWebClient.Stow.Store(new List<DicomFile> { dicomFile }, cancellationToken);
-                       CheckAndLogResult(result);
-                   });
+                       {
+                           var result = await dicomWebClient.Stow.Store(new List<DicomFile> { dicomFile }, cancellationToken).ConfigureAwait(false);
+                           CheckAndLogResult(result);
+                       }).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     break;
 
                 default:
-                    throw new Exception("Failed to export to destination.");
+                    throw new ServiceException("Failed to export to destination.");
             }
         }
     }

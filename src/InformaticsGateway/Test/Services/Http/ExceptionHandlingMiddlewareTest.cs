@@ -30,9 +30,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task InvokeAsync_ProceedsWithNextRequest()
         {
             var context = new DefaultHttpContext();
-            static Task next(HttpContext hc) => Task.CompletedTask;
+            static Task Next(HttpContext hc) => Task.CompletedTask;
 
-            var middleware = new ExceptionHandlingMiddleware(next, _loggerFactory.Object);
+            var middleware = new ExceptionHandlingMiddleware(Next, _loggerFactory.Object);
             context.Response.Body = new MemoryStream();
 
             await middleware.InvokeAsync(context);
@@ -46,9 +46,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task InvokeAsync_HandlesExcption()
         {
             var context = new DefaultHttpContext();
-            static Task next(HttpContext hc) => throw new Exception("bad");
+            static Task Next(HttpContext hc) => throw new Exception("bad");
 
-            var middleware = new ExceptionHandlingMiddleware(next, _loggerFactory.Object);
+            var middleware = new ExceptionHandlingMiddleware(Next, _loggerFactory.Object);
             context.Response.Body = new MemoryStream();
 
             await middleware.InvokeAsync(context);

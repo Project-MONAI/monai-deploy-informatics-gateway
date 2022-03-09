@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(1, studyUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(1, studyUid),
             };
 
             GenerateHttpClient(response, out var handlerMock, out var httpClient);
@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(1, studyUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(1, studyUid),
             };
 
             GenerateHttpClient(response, out var handlerMock, out var httpClient);
@@ -106,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(1, studyUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(1, studyUid),
             };
 
             GenerateHttpClient(response, out var handlerMock, out var httpClient);
@@ -149,7 +149,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var response = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = _fixture.GenerateInstancesAsJson(1, studyUid),
+                Content = DicomFileGeneratorFixture.GenerateInstancesAsJson(1, studyUid),
             };
 
             GenerateHttpClient(response, out var handlerMock, out var httpClient);

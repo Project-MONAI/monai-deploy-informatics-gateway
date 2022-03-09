@@ -11,11 +11,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 {
     public class FileLoggingTextFormatter : FileLogEntryTextBuilder
     {
-        public static readonly FileLoggingTextFormatter Default = new FileLoggingTextFormatter();
+        public static readonly FileLoggingTextFormatter Default = new();
 
         protected override void AppendTimestamp(StringBuilder sb, DateTimeOffset timestamp)
         {
-            sb.Append(timestamp.ToLocalTime().ToString("o", CultureInfo.InvariantCulture)).Append(" ");
+            sb.Append(timestamp.ToLocalTime().ToString("o", CultureInfo.InvariantCulture)).Append(' ');
         }
 
         protected override void AppendLogScopeInfo(StringBuilder sb, IExternalScopeProvider scopeProvider)
@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         protected override void AppendLogScope(StringBuilder sb, object scope)
         {
-            sb.Append("[").Append(scope).Append("]");
+            sb.Append('[').Append(scope).Append(']');
         }
 
         protected override void AppendMessage(StringBuilder sb, string message)

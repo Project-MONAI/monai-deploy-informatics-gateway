@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Net.Http;
@@ -72,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             var task = Task.Run(async () =>
             {
-                await BackgroundProcessing(cancellationToken);
+                await BackgroundProcessing(cancellationToken).ConfigureAwait(true);
             });
 
             Status = ServiceStatus.Running;
@@ -99,19 +100,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 if (!_storageInfoProvider.HasSpaceAvailableToRetrieve)
                 {
                     _logger.Log(LogLevel.Warning, $"Data retrieval paused due to insufficient storage space.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}.");
-                    await Task.Delay(500, cancellationToken);
+                    await Task.Delay(500, cancellationToken).ConfigureAwait(true);
                     continue;
                 }
 
                 InferenceRequest request = null;
                 try
                 {
-                    request = await repository.Take(cancellationToken);
+                    request = await repository.Take(cancellationToken).ConfigureAwait(false);
                     using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } }))
                     {
                         _logger.Log(LogLevel.Information, "Processing inference request.");
-                        await ProcessRequest(request, cancellationToken);
-                        await repository.Update(request, InferenceRequestStatus.Success);
+                        await ProcessRequest(request, cancellationToken).ConfigureAwait(false);
+                        await repository.Update(request, InferenceRequestStatus.Success).ConfigureAwait(false);
                         _logger.Log(LogLevel.Information, "Inference request completed and ready for job submission.");
                     }
                 }
@@ -128,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.Log(LogLevel.Error, ex, $"Error processing request: TransactionId = {request?.TransactionId}");
                     if (request != null)
                     {
-                        await repository.Update(request, InferenceRequestStatus.Fail);
+                        await repository.Update(request, InferenceRequestStatus.Fail).ConfigureAwait(false);
                     }
                 }
             }
@@ -149,11 +150,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 switch (source.Interface)
                 {
                     case InputInterfaceType.DicomWeb:
-                        await RetrieveViaDicomWeb(inferenceRequest, source, retrievedFiles);
+                        await RetrieveViaDicomWeb(inferenceRequest, source, retrievedFiles).ConfigureAwait(false);
                         break;
 
                     case InputInterfaceType.Fhir:
-                        await RetrieveViaFhir(inferenceRequest, source, retrievedFiles);
+                        await RetrieveViaFhir(inferenceRequest, source, retrievedFiles).ConfigureAwait(false);
                         break;
 
                     case InputInterfaceType.Algorithm:
@@ -218,7 +219,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     continue;
                 }
-                await RetrieveFhirResources(inferenceRequest.TransactionId, input, source, retrievedResources, inferenceRequest.StoragePath);
+                await RetrieveFhirResources(inferenceRequest.TransactionId, input, source, retrievedResources, inferenceRequest.StoragePath).ConfigureAwait(false);
             }
         }
 
@@ -258,7 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         retrievedResources,
                         storagePath,
                         requestDetails.FhirFormat,
-                        requestDetails.FhirAcceptHeader);
+                        requestDetails.FhirAcceptHeader).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -292,14 +293,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     {
                         _logger.Log(LogLevel.Error, result.Exception, $"Failed to retrieve resource {resource.Type}/{resource.Id} with status code {result.Result.StatusCode}, retry count={retryCount}.");
                     })
-                .ExecuteAsync(async () => await httpClient.SendAsync(request));
+                .ExecuteAsync(async () => await httpClient.SendAsync(request).ConfigureAwait(false)).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
+                var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var file = new FhirFileStorageInfo(transactionId, storagePath, resource.Id, fhirFormat, transactionId, _fileSystem) { ResourceType = resource.Type };
                 _fileSystem.Directory.CreateDirectoryIfNotExists(_fileSystem.Path.GetDirectoryName(file.FilePath));
-                await _fileSystem.File.WriteAllTextAsync(file.FilePath, json);
+                await _fileSystem.File.WriteAllTextAsync(file.FilePath, json).ConfigureAwait(false);
                 retrievedResources.Add(file.FilePath, file);
                 return true;
             }
@@ -330,17 +331,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 switch (input.Type)
                 {
                     case InferenceRequestType.DicomUid:
-                        await RetrieveStudies(inferenceRequest.TransactionId, dicomWebClient, input.Studies, inferenceRequest.StoragePath, retrievedInstance);
+                        await RetrieveStudies(inferenceRequest.TransactionId, dicomWebClient, input.Studies, inferenceRequest.StoragePath, retrievedInstance).ConfigureAwait(false);
                         break;
 
                     case InferenceRequestType.DicomPatientId:
-                        await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.PatientID.Group:X4}{DicomTag.PatientID.Element:X4}", input.PatientId);
+                        await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.PatientID.Group:X4}{DicomTag.PatientID.Element:X4}", input.PatientId).ConfigureAwait(false);
                         break;
 
                     case InferenceRequestType.AccessionNumber:
                         foreach (var accessionNumber in input.AccessionNumber)
                         {
-                            await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.AccessionNumber.Group:X4}{DicomTag.AccessionNumber.Element:X4}", accessionNumber);
+                            await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.AccessionNumber.Group:X4}{DicomTag.AccessionNumber.Element:X4}", accessionNumber).ConfigureAwait(false);
                         }
                         break;
 
@@ -387,7 +388,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             if (studies.Count != 0)
             {
-                await RetrieveStudies(transactionId, dicomWebClient, studies, inferenceRequest.StoragePath, retrievedInstance);
+                await RetrieveStudies(transactionId, dicomWebClient, studies, inferenceRequest.StoragePath, retrievedInstance).ConfigureAwait(false);
             }
             else
             {
@@ -408,11 +409,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     _logger.Log(LogLevel.Information, $"Retrieving study {study.StudyInstanceUid}");
                     var files = dicomWebClient.Wado.Retrieve(study.StudyInstanceUid);
-                    await SaveFiles(transactionId, files, storagePath, retrievedInstance);
+                    await SaveFiles(transactionId, files, storagePath, retrievedInstance).ConfigureAwait(false);
                 }
                 else
                 {
-                    await RetrieveSeries(transactionId, dicomWebClient, study, storagePath, retrievedInstance);
+                    await RetrieveSeries(transactionId, dicomWebClient, study, storagePath, retrievedInstance).ConfigureAwait(false);
                 }
             }
         }
@@ -430,11 +431,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     _logger.Log(LogLevel.Information, $"Retrieving series {series.SeriesInstanceUid}");
                     var files = dicomWebClient.Wado.Retrieve(study.StudyInstanceUid, series.SeriesInstanceUid);
-                    await SaveFiles(transactionId, files, storagePath, retrievedInstance);
+                    await SaveFiles(transactionId, files, storagePath, retrievedInstance).ConfigureAwait(false);
                 }
                 else
                 {
-                    await RetrieveInstances(transactionId, dicomWebClient, study.StudyInstanceUid, series, storagePath, retrievedInstance);
+                    await RetrieveInstances(transactionId, dicomWebClient, study.StudyInstanceUid, series, storagePath, retrievedInstance).ConfigureAwait(false);
                 }
             }
         }
@@ -453,9 +454,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 foreach (var sopInstanceUid in instance.SopInstanceUid)
                 {
                     _logger.Log(LogLevel.Information, $"Retrieving instance {sopInstanceUid}");
-                    var file = await dicomWebClient.Wado.Retrieve(studyInstanceUid, series.SeriesInstanceUid, sopInstanceUid);
+                    var file = await dicomWebClient.Wado.Retrieve(studyInstanceUid, series.SeriesInstanceUid, sopInstanceUid).ConfigureAwait(false);
                     if (file is null) continue;
-                    var fileStorageInfo = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(), transactionId, _fileSystem);
+                    var fileStorageInfo = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(CultureInfo.InvariantCulture), transactionId, _fileSystem);
                     PopulateHeaders(fileStorageInfo, file);
                     if (retrievedInstance.ContainsKey(fileStorageInfo.FilePath))
                     {
@@ -481,7 +482,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             await foreach (var file in files)
             {
                 count++;
-                var instance = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(), transactionId, _fileSystem);
+                var instance = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(CultureInfo.InvariantCulture), transactionId, _fileSystem);
                 PopulateHeaders(instance, file);
 
                 if (retrievedInstance.ContainsKey(instance.FilePath))

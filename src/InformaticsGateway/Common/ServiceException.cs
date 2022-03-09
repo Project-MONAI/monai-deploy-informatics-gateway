@@ -14,5 +14,9 @@ namespace Monai.Deploy.InformaticsGateway.Common
         public ServiceException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        public ServiceException()
+        {
+        }
     }
 }

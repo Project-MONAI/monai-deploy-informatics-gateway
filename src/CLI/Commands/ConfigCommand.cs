@@ -151,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await configService.Initialize(cancellationToken);
+                await configService.Initialize(cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
