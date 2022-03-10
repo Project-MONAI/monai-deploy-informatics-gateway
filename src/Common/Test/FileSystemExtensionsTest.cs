@@ -70,10 +70,18 @@ namespace Monai.Deploy.InformaticsGateway.Common.Test
         [Fact]
         public void TryGenerateDirectory_GeneratesADirectory()
         {
-            var fileSystem = new MockFileSystem();
+            var retry = 0;
+            var fileSystem = new Mock<IFileSystem>();
+            fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()))
+                .Callback(() =>
+                {
+                    if (++retry < 5) throw new System.IO.IOException();
+                });
 
-            Assert.True(fileSystem.Directory.TryGenerateDirectory("/some/path", out string generatedPath));
+            Assert.True(fileSystem.Object.Directory.TryGenerateDirectory("/some/path", out string generatedPath));
             Assert.StartsWith("/some/path-", generatedPath);
+
+            fileSystem.Verify(p => p.Directory.CreateDirectory(It.IsAny<string>()), Times.Exactly(5));
         }
     }
 }

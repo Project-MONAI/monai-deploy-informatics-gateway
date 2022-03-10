@@ -17,22 +17,22 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Ardalis.GuardClauses" Version="3.3.0" />
-        <PackageReference Include="DotNext.Threading" Version="4.1.3" />
+        <PackageReference Include="Ardalis.GuardClauses" Version="4.0.0" />
+        <PackageReference Include="DotNext.Threading" Version="4.3.0" />
         <PackageReference Include="fo-dicom" Version="5.0.2" />
         <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.2.1" />
-        <PackageReference Include="GitVersion.MsBuild" Version="5.8.2">
+        <PackageReference Include="GitVersion.MsBuild" Version="5.9.0">
             <PrivateAssets>All</PrivateAssets>
           </PackageReference>
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.1" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.3" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
         <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-        <PackageReference Include="Polly" Version="7.2.2" />
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+        <PackageReference Include="Polly" Version="7.2.3" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     </ItemGroup>
 
     <ItemGroup>

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Ardalis.GuardClauses;
-
+using Monai.Deploy.InformaticsGateway.Common;
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
     public class Payload : IDisposable
