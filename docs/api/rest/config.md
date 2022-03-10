@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-License-Identifier: Apache License 2.0
+-->
+
 # Configuration APIs
 
 The _configuration_ endpoint provides the following APIs to configured the Informatics Gateway.

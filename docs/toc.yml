@@ -1,3 +1,6 @@
+# SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+# SPDX-License-Identifier: Apache License 2.0
+
 - name: MONAI Deploy Informatics Gateway
   href: index.md
 - name: Get Started

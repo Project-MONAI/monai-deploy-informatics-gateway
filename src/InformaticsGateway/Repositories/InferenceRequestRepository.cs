@@ -1,39 +1,15 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Polly;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Repositories
 {
@@ -127,13 +103,13 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             throw new OperationCanceledException("cancellation requsted");
         }
 
-        public InferenceRequest Get(string transactionId)
+        public InferenceRequest GetInferenceRequest(string transactionId)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             return _inferenceRequestRepository.FirstOrDefault(p => p.TransactionId.Equals(transactionId, StringComparison.OrdinalIgnoreCase));
         }
 
-        public async Task<InferenceRequest> Get(Guid inferenceRequestId)
+        public async Task<InferenceRequest> GetInferenceRequest(Guid inferenceRequestId)
         {
             Guard.Against.NullOrEmpty(inferenceRequestId, nameof(inferenceRequestId));
             return await _inferenceRequestRepository.FindAsync(inferenceRequestId);
@@ -142,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         public bool Exists(string transactionId)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            return Get(transactionId) is not null;
+            return GetInferenceRequest(transactionId) is not null;
         }
 
         public async Task<InferenceStatusResponse> GetStatus(string transactionId)
@@ -150,7 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
 
             var response = new InferenceStatusResponse();
-            var item = Get(transactionId);
+            var item = GetInferenceRequest(transactionId);
             if (item is null)
             {
                 return null;

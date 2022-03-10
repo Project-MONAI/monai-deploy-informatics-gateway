@@ -1,27 +1,18 @@
-// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Ardalis.GuardClauses;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Repositories;
-using Monai.Deploy.InformaticsGateway.Services.Scp;
 using System;
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Scp;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -29,26 +20,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     [Route("config/ae")]
     public class MonaiAeTitleController : ControllerBase
     {
-        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<MonaiAeTitleController> _logger;
         private readonly IInformaticsGatewayRepository<MonaiApplicationEntity> _repository;
-        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
-        private ConfigurationValidator _configurationValidator;
 
         public MonaiAeTitleController(
-            IServiceProvider serviceProvider,
             ILogger<MonaiAeTitleController> logger,
-            ConfigurationValidator configurationValidator,
-            IOptions<InformaticsGatewayConfiguration> configuration,
             IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
             IInformaticsGatewayRepository<MonaiApplicationEntity> repository)
         {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _configurationValidator = configurationValidator ?? throw new ArgumentNullException(nameof(configurationValidator));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _monaiAeChangedNotificationService = monaiAeChangedNotificationService ?? throw new ArgumentNullException(nameof(monaiAeChangedNotificationService));
         }
 
@@ -167,7 +149,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 throw new ConfigurationException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
             }
-            if (!item.IsValid(out IList<string> validationErrors))
+            if (!item.IsValid(out var validationErrors))
             {
                 throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
             }

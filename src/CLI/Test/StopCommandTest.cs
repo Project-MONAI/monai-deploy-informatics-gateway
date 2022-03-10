@@ -1,25 +1,17 @@
-// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.CLI.Services;
-using Moq;
 using System;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Parsing;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
+using Moq;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.CLI.Test
@@ -68,7 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Stop_Cancelled, exitCode);
 
-            _controlService.Verify(p => p.Stop(It.IsAny<CancellationToken>()), Times.Never());
+            _controlService.Verify(p => p.StopService(It.IsAny<CancellationToken>()), Times.Never());
         }
 
         [Fact(DisplayName = "stop comand - confirmed")]
@@ -82,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Stop(It.IsAny<CancellationToken>()), Times.Once());
+            _controlService.Verify(p => p.StopService(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "stop comand -y")]
@@ -95,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Success, exitCode);
 
-            _controlService.Verify(p => p.Stop(It.IsAny<CancellationToken>()), Times.Once());
+            _controlService.Verify(p => p.StopService(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "stop comand -y excception")]
@@ -105,12 +97,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            _controlService.Setup(p => p.Stop(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
+            _controlService.Setup(p => p.StopService(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             int exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(ExitCodes.Stop_Error, exitCode);
 
-            _controlService.Verify(p => p.Stop(It.IsAny<CancellationToken>()), Times.Once());
+            _controlService.Verify(p => p.StopService(It.IsAny<CancellationToken>()), Times.Once());
         }
     }
 }

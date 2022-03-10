@@ -1,35 +1,11 @@
-// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-using Monai.Deploy.InformaticsGateway.Api.Rest;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
 
 namespace Monai.Deploy.InformaticsGateway.Repositories
 {
@@ -65,13 +41,13 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         /// <c>Get</c> returns the specified inference request.
         /// </summary>
         /// <param name="transactionId">The transactionId of the request.</param>
-        InferenceRequest Get(string transactionId);
+        InferenceRequest GetInferenceRequest(string transactionId);
 
         /// <summary>
         /// <c>Get</c> returns the specified inference request.
         /// </summary>
         /// <param name="inferenceRequestId">The internal ID of the request.</param>
-        Task<InferenceRequest> Get(Guid inferenceRequestId);
+        Task<InferenceRequest> GetInferenceRequest(Guid inferenceRequestId);
 
         /// <summary>
         /// <c>Exists</c> checks whether if an existing request with the same transaction ID exists.

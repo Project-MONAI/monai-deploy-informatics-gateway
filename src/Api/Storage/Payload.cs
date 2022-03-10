@@ -1,21 +1,12 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using Ardalis.GuardClauses;
+using Monai.Deploy.InformaticsGateway.Common;
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
     public class Payload : IDisposable
@@ -39,12 +30,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         }
 
         public const int MAX_RETRY = 3;
-
-        private readonly Guid _id;
         private readonly Stopwatch _lastReceived;
-        private int _fileCount;
+        private bool _disposedValue;
 
-        public Guid Id => _id;
+        public Guid Id { get; }
 
         public uint Timeout { get; init; }
 
@@ -60,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public IList<FileStorageInfo> Files { get; }
 
-        public int Count { get => _fileCount; }
+        public int Count { get; private set; }
 
         public ISet<string> Workflows { get; private set; }
 
@@ -72,9 +61,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
-            _id = Guid.NewGuid();
+            Id = Guid.NewGuid();
             _lastReceived = new Stopwatch();
-            _fileCount = 0;
+            Count = 0;
             Key = key;
             CorrelationId = correlationId;
             Timeout = timeout;
@@ -92,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Files.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
-            _fileCount = Files.Count;
+            Count = Files.Count;
 
             if (!value.Workflows.IsNullOrEmpty())
             {
@@ -124,10 +113,25 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             RetryCount = 0;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _lastReceived.Stop();
+                    Files.Clear();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            _lastReceived.Stop();
-            Files.Clear();
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

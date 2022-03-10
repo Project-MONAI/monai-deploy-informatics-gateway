@@ -1,20 +1,10 @@
-﻿/*
- * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
@@ -24,29 +14,26 @@ using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 {
     internal abstract class ServiceBase
     {
-        protected readonly HttpClient _httpClient;
-        protected readonly ILogger _logger;
+        protected readonly HttpClient HttpClient;
+        protected readonly ILogger Logger;
         protected string RequestServicePrefix { get; private set; } = string.Empty;
 
-        public ServiceBase(HttpClient httpClient, ILogger logger = null)
+        protected ServiceBase(HttpClient httpClient, ILogger logger = null)
         {
-            _httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-            _logger = logger;
+            HttpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+            Logger = logger;
         }
 
         public bool TryConfigureServiceUriPrefix(string uriPrefix)
         {
             Guard.Against.NullOrWhiteSpace(uriPrefix, nameof(uriPrefix));
 
-            if (_httpClient.BaseAddress is null)
+            if (HttpClient.BaseAddress is null)
             {
                 throw new InvalidOperationException("BaseAddress is not configured; call ConfigureServiceUris(...) first");
             }
@@ -54,14 +41,14 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             Uri newServiceUri = null;
             try
             {
-                newServiceUri = new Uri(_httpClient.BaseAddress, uriPrefix);
+                newServiceUri = new Uri(HttpClient.BaseAddress, uriPrefix);
                 Guard.Against.MalformUri(newServiceUri, nameof(uriPrefix));
                 RequestServicePrefix = $"{uriPrefix.Trim('/')}/";
                 return true;
             }
             catch (Exception ex)
             {
-                _logger?.LogWarning($"Invalid urlPrefix provided: {uriPrefix} ({newServiceUri})", ex);
+                Logger?.LogWarning($"Invalid urlPrefix provided: {uriPrefix} ({newServiceUri})", ex);
                 return false;
             }
         }
@@ -75,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
             var message = new HttpRequestMessage(HttpMethod.Get, uri);
             message.Headers.Add(HeaderNames.Accept, MimeMappings.MimeTypeMappings[MimeType.DicomJson]);
-            var response = await _httpClient.SendAsync(message).ConfigureAwait(false);
+            var response = await HttpClient.SendAsync(message).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);

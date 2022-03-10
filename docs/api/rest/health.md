@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-License-Identifier: Apache License 2.0
+-->
+
 # Health APIs
 
 The _health_ endpoint provides the following APIs to get statues of the internals of Informatics Gateway.

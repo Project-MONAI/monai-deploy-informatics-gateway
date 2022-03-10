@@ -1,31 +1,12 @@
-// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+using System;
+using System.Collections.Concurrent;
+using System.Globalization;
+using System.IO.Abstractions;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Network;
@@ -40,10 +21,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using System;
-using System.Collections.Concurrent;
-using System.IO.Abstractions;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -127,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
-            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), callingAeTitle, _fileSystem)
+            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(CultureInfo.InvariantCulture), callingAeTitle, _fileSystem)
             {
                 StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID),
                 SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID),
@@ -140,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 _logger.Log(LogLevel.Information, "Series Instance UID: {SeriesInstanceUid}", info.SeriesInstanceUid);
                 _logger.Log(LogLevel.Information, "Storage File Path: {InstanceStorageFullPath}", info.FilePath);
 
-                await _aeTitles[calledAeTitle].HandleInstance(request, info);
+                await _aeTitles[calledAeTitle].HandleInstance(request, info).ConfigureAwait(false);
             }
         }
 

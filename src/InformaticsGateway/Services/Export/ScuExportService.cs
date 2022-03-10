@@ -1,31 +1,11 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+using System;
+using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
 using FellowOakDicom.Network.Client;
@@ -38,10 +18,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Polly;
-using System;
-using System.Net.Sockets;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
@@ -123,12 +99,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            await client.SendAsync(cancellationToken).ConfigureAwait(false);
                            manualResetEvent.WaitOne();
                            _logger.LogInformation($"Job sent to {destination.AeTitle} completed");
-                       });
+                       }).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
             {
-                HandleCStoreException(ex, exportRequestData, client);
+                HandleCStoreException(ex, exportRequestData);
             }
 
             return exportRequestData;
@@ -193,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private void HandleCStoreException(Exception ex, ExportRequestDataMessage exportRequestData, IDicomClient client)
+        private void HandleCStoreException(Exception ex, ExportRequestDataMessage exportRequestData)
         {
             var exception = ex;
 

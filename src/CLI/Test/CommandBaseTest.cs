@@ -1,33 +1,23 @@
-﻿// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.CLI.Services;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
-using Moq;
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
 using System.CommandLine.Invocation;
 using System.CommandLine.Parsing;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Moq;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.CLI.Test
 {
     public class CommandBaseTest
     {
-        private readonly Mock<IConfigurationService> _configurationService;
         private readonly CommandLineBuilder _commandLineBuilder;
         private readonly Parser _paser;
         private readonly Mock<ILoggerFactory> _loggerFactory;
@@ -37,7 +27,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         {
             _loggerFactory = new Mock<ILoggerFactory>();
             _logger = new Mock<ILogger>();
-            _configurationService = new Mock<IConfigurationService>();
             _commandLineBuilder = new CommandLineBuilder()
                 .UseHost(
                     _ => Host.CreateDefaultBuilder(),
@@ -61,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             var result = _paser.Parse(command);
             Assert.Equal(0, result.Errors.Count);
 
-            int exitCode = await _paser.InvokeAsync(command);
+            var exitCode = await _paser.InvokeAsync(command);
             Assert.Equal(0, exitCode);
 
             _logger.VerifyLogging("this is a test", LogLevel.Debug, Times.Once());
@@ -72,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
     {
         public TestCommand() : base("test", "description")
         {
-            this.Handler = CommandHandler.Create<IHost, bool>(TestHandler);
+            Handler = CommandHandler.Create<IHost, bool>(TestHandler);
         }
 
         private void TestHandler(IHost host, bool verbose)

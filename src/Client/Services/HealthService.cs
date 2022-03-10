@@ -1,20 +1,12 @@
-﻿// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Ardalis.GuardClauses;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api.Rest;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Services
 {
@@ -43,11 +35,11 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
         public async Task<HealthStatusResponse> Status(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/status");
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/status");
             try
             {
-                var response = await _httpClient.GetAsync($"{Route}/status", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
+                var response = await HttpClient.GetAsync($"{Route}/status", cancellationToken);
+                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
                 return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken);
             }
             catch
@@ -58,11 +50,11 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
         private async Task<string> LiveReady(string uriPath, CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Debug, $"Sending request to {Route}/{uriPath}");
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{uriPath}");
             try
             {
-                var response = await _httpClient.GetAsync($"{Route}/{uriPath}", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(_logger);
+                var response = await HttpClient.GetAsync($"{Route}/{uriPath}", cancellationToken);
+                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
                 return await response.Content.ReadAsStringAsync();
             }
             catch

@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-License-Identifier: Apache License 2.0
+-->
+
 # DICOM Interface
 
 The following reference describes the connectivity capabilities of MONAI Deploy SDK out of the box.

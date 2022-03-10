@@ -1,31 +1,13 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,12 +23,6 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Polly;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
@@ -90,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
-            var inferenceRequest = repository.Get(exportRequestData.Destination);
+            var inferenceRequest = repository.GetInferenceRequest(exportRequestData.Destination);
             if (inferenceRequest is null)
             {
                 var errorMessage = $"The specified inference request '{exportRequestData.Destination}' cannot be found and will not be exported.";
@@ -117,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 dicomWebClient.ConfigureAuthentication(authenticationHeader);
 
                 _logger.Log(LogLevel.Debug, $"Exporting data to {destination.ConnectionDetails.Uri}.");
-                await ExportToDicomWebDestination(dicomWebClient, exportRequestData, destination, cancellationToken);
+                await ExportToDicomWebDestination(dicomWebClient, exportRequestData, destination, cancellationToken).ConfigureAwait(false);
             }
 
             return exportRequestData;
@@ -134,13 +110,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                        _configuration.Value.Export.Retries.RetryDelays,
                        (exception, timeSpan, retryCount, context) =>
                        {
-                           _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                           _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination {destination.ConnectionDetails.Uri}. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
                        })
                    .ExecuteAsync(async () =>
-                   {
-                       var result = await dicomWebClient.Stow.Store(new List<DicomFile> { dicomFile }, cancellationToken);
-                       CheckAndLogResult(result);
-                   });
+                       {
+                           var result = await dicomWebClient.Stow.Store(new List<DicomFile> { dicomFile }, cancellationToken).ConfigureAwait(false);
+                           CheckAndLogResult(result);
+                       }).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -160,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     break;
 
                 default:
-                    throw new Exception("Failed to export to destination.");
+                    throw new ServiceException("Failed to export to destination.");
             }
         }
     }
