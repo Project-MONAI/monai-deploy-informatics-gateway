@@ -101,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
             try
             {
-                await response.ToDicomAsyncEnumerable().FirstOrDefaultAsync();
+                return await response.ToDicomAsyncEnumerable().FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -237,7 +237,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
             try
             {
-                await GetMetadata<T>(instancMetadataUri).FirstOrDefaultAsync();
+                return await GetMetadata<T>(instancMetadataUri).FirstOrDefaultAsync();
             }
             catch (Exception ex) when (ex is not UnsupportedReturnTypeException)
             {
