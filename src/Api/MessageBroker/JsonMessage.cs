@@ -9,8 +9,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
 {
     public sealed class JsonMessage<T> : MessageBase
     {
-        public static readonly string JsonApplicationType = "application/json";
-
         /// <summary>
         /// Body of the message.
         /// </summary>
@@ -65,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
             MessageDescription = bodyDescription;
             MessageId = messageId;
             ApplicationId = applicationId;
-            ContentType = JsonApplicationType;
+            ContentType = MessageContentTypes.JsonApplicationType;
             CorrelationId = correlationId;
             CreationDateTime = creationDateTime;
             DeliveryTag = deliveryTag;

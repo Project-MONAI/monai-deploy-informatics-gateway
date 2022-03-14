@@ -57,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Client
             Guard.Against.MalformUri(uriRoot, nameof(uriRoot));
 
             _httpClient.BaseAddress = uriRoot;
+            _logger?.Log(LogLevel.Debug, $"Base address set to {uriRoot}");
         }
 
         /// <inheritdoc/>

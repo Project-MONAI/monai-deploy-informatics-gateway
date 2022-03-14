@@ -33,13 +33,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(confirmation, nameof(confirmation), "Confirmation prompt is unavailable.");
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
 
-            if (!yes)
+            if (!yes && !confirmation.ShowConfirmationPrompt($"Do you want to stop {Strings.ApplicationName}?"))
             {
-                if (!confirmation.ShowConfirmationPrompt($"Do you want to stop {Strings.ApplicationName}?"))
-                {
-                    logger.Log(LogLevel.Warning, "Action cancelled.");
-                    return ExitCodes.Stop_Cancelled;
-                }
+                logger.Log(LogLevel.Warning, "Action cancelled.");
+                return ExitCodes.Stop_Cancelled;
             }
 
             try

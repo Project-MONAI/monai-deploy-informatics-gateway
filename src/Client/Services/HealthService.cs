@@ -36,31 +36,17 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         public async Task<HealthStatusResponse> Status(CancellationToken cancellationToken)
         {
             Logger.Log(LogLevel.Debug, $"Sending request to {Route}/status");
-            try
-            {
-                var response = await HttpClient.GetAsync($"{Route}/status", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
-                return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken);
-            }
-            catch
-            {
-                throw;
-            }
+            var response = await HttpClient.GetAsync($"{Route}/status", cancellationToken);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
+            return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken);
         }
 
         private async Task<string> LiveReady(string uriPath, CancellationToken cancellationToken)
         {
             Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{uriPath}");
-            try
-            {
-                var response = await HttpClient.GetAsync($"{Route}/{uriPath}", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
-                return await response.Content.ReadAsStringAsync();
-            }
-            catch
-            {
-                throw;
-            }
+            var response = await HttpClient.GetAsync($"{Route}/{uriPath}", cancellationToken);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

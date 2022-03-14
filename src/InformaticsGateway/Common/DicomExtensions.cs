@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
+using System;
 using System.Collections.Generic;
 using FellowOakDicom;
 
@@ -20,7 +21,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
         {
             if (uids.IsNullOrEmpty())
             {
-                return null;
+                return Array.Empty<DicomTransferSyntax>();
             }
 
             var dicomTransferSyntaxes = new List<DicomTransferSyntax>();

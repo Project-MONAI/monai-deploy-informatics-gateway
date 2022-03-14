@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
@@ -18,6 +19,10 @@ namespace Monai.Deploy.InformaticsGateway.Common
         }
 
         public InsufficientStorageAvailableException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected InsufficientStorageAvailableException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

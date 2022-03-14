@@ -31,7 +31,6 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
         public Dictionary<string, ServiceStatus> GetServiceStatus()
         {
-            var services = new Dictionary<string, ServiceStatus>();
             return _runningServices.ToDictionary(k => k.ServiceName, v => v.Status);
         }
 

@@ -42,66 +42,38 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Guard.Against.Null(item, nameof(item));
 
             Logger.Log(LogLevel.Debug, $"Sending request to {Route}");
-            try
-            {
-                var response = await HttpClient.PostAsync<T>(Route, item, new JsonMediaTypeFormatter(), cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
-                return await response.Content.ReadAsAsync<T>(cancellationToken);
-            }
-            catch
-            {
-                throw;
-            }
+            var response = await HttpClient.PostAsync<T>(Route, item, new JsonMediaTypeFormatter(), cancellationToken);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
+            return await response.Content.ReadAsAsync<T>(cancellationToken);
         }
 
-        public async Task<T> Delete(string name, CancellationToken cancellationToken)
+        public async Task<T> Delete(string aeTitle, CancellationToken cancellationToken)
         {
-            name = Uri.EscapeUriString(name);
-            Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{name}");
-            try
-            {
-                var response = await HttpClient.DeleteAsync($"{Route}/{name}", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
-                return await response.Content.ReadAsAsync<T>(cancellationToken);
-            }
-            catch
-            {
-                throw;
-            }
+            aeTitle = Uri.EscapeUriString(aeTitle);
+            Guard.Against.NullOrWhiteSpace(aeTitle, nameof(aeTitle));
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{aeTitle}");
+            var response = await HttpClient.DeleteAsync($"{Route}/{aeTitle}", cancellationToken);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
+            return await response.Content.ReadAsAsync<T>(cancellationToken);
         }
 
-        public async Task<T> Get(string name, CancellationToken cancellationToken)
+        public async Task<T> Get(string aeTitle, CancellationToken cancellationToken)
         {
-            name = Uri.EscapeUriString(name);
-            Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{name}");
-            try
-            {
-                var response = await HttpClient.GetAsync($"{Route}/{name}", cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
-                return await response.Content.ReadAsAsync<T>(cancellationToken);
-            }
-            catch
-            {
-                throw;
-            }
+            aeTitle = Uri.EscapeUriString(aeTitle);
+            Guard.Against.NullOrWhiteSpace(aeTitle, nameof(aeTitle));
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{aeTitle}");
+            var response = await HttpClient.GetAsync($"{Route}/{aeTitle}", cancellationToken);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
+            return await response.Content.ReadAsAsync<T>(cancellationToken);
         }
 
         public async Task<IReadOnlyList<T>> List(CancellationToken cancellationToken)
         {
             Logger.Log(LogLevel.Debug, $"Sending request to {Route}");
-            try
-            {
-                var response = await HttpClient.GetAsync(Route, cancellationToken);
-                await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
-                var list = await response.Content.ReadAsAsync<IEnumerable<T>>(cancellationToken);
-                return list.ToList().AsReadOnly();
-            }
-            catch
-            {
-                throw;
-            }
+            var response = await HttpClient.GetAsync(Route, cancellationToken);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
+            var list = await response.Content.ReadAsAsync<IEnumerable<T>>(cancellationToken);
+            return list.ToList().AsReadOnly();
         }
     }
 }

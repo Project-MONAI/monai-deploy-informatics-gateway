@@ -215,16 +215,22 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                 errors.Add("'transactionId' is required.");
             }
 
-            if (InputResources.IsNullOrEmpty() ||
-                InputResources.Count(predicate => predicate.Interface != InputInterfaceType.Algorithm) == 0)
-            {
-                errors.Add("No 'inputResources' specified.");
-            }
-
             if (Application is null)
             {
                 errors.Add("No algorithm defined or more than one algorithms defined in 'inputResources'.  'inputResources' must include one algorithm/pipeline for the inference request.");
             }
+
+            ValidateInputResources(errors);
+            ValidateInputMetadata(errors);
+            ValidateOUtputResources(errors);
+
+            details = string.Join(" ", errors);
+            return errors.Count == 0;
+        }
+
+        private void ValidateOUtputResources(List<string> errors)
+        {
+            Guard.Against.Null(errors, nameof(errors));
 
             if (InputMetadata.Inputs.IsNullOrEmpty())
             {
@@ -236,6 +242,34 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                 {
                     CheckInputMetadataDetails(inputDetails, errors);
                 }
+            }
+        }
+
+        private void ValidateInputMetadata(List<string> errors)
+        {
+            Guard.Against.Null(errors, nameof(errors));
+
+            foreach (var output in OutputResources)
+            {
+                if (output.Interface == InputInterfaceType.DicomWeb)
+                {
+                    CheckDicomWebConnectionDetails("outputResources", errors, output.ConnectionDetails);
+                }
+                else if (output.Interface == InputInterfaceType.Fhir)
+                {
+                    CheckFhirConnectionDetails("outputResources", errors, output.ConnectionDetails);
+                }
+            }
+        }
+
+        private void ValidateInputResources(List<string> errors)
+        {
+            Guard.Against.Null(errors, nameof(errors));
+
+            if (InputResources.IsNullOrEmpty() ||
+                !InputResources.Any(predicate => predicate.Interface != InputInterfaceType.Algorithm))
+            {
+                errors.Add("No 'inputResources' specified.");
             }
 
             foreach (var input in InputResources)
@@ -249,21 +283,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                     CheckFhirConnectionDetails("inputResources", errors, input.ConnectionDetails);
                 }
             }
-
-            foreach (var output in OutputResources)
-            {
-                if (output.Interface == InputInterfaceType.DicomWeb)
-                {
-                    CheckDicomWebConnectionDetails("outputResources", errors, output.ConnectionDetails);
-                }
-                else if (output.Interface == InputInterfaceType.Fhir)
-                {
-                    CheckFhirConnectionDetails("outputResources", errors, output.ConnectionDetails);
-                }
-            }
-
-            details = string.Join(" ", errors);
-            return errors.Count == 0;
         }
 
         private void CheckInputMetadataDetails(InferenceRequestDetails details, List<string> errors)
@@ -271,41 +290,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             switch (details.Type)
             {
                 case InferenceRequestType.DicomUid:
-                    if (details.Studies.IsNullOrEmpty())
-                    {
-                        errors.Add("Request type is set to `DICOM_UID` but no `studies` defined.");
-                    }
-                    else
-                    {
-                        foreach (var study in details.Studies)
-                        {
-                            if (string.IsNullOrWhiteSpace(study.StudyInstanceUid))
-                            {
-                                errors.Add("`StudyInstanceUID` cannot be empty.");
-                            }
-
-                            if (study.Series is null) continue;
-
-                            foreach (var series in study.Series)
-                            {
-                                if (string.IsNullOrWhiteSpace(series.SeriesInstanceUid))
-                                {
-                                    errors.Add("`SeriesInstanceUID` cannot be empty.");
-                                }
-
-                                if (series.Instances is null) continue;
-
-                                foreach (var instance in series.Instances)
-                                {
-                                    if (instance.SopInstanceUid.IsNullOrEmpty() ||
-                                        instance.SopInstanceUid.Any(p => string.IsNullOrWhiteSpace(p)))
-                                    {
-                                        errors.Add("`SOPInstanceUID` cannot be empty.");
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    CheckInputMetadataWithTypDeicomUid(details, errors);
                     break;
 
                 case InferenceRequestType.DicomPatientId:
@@ -323,25 +308,66 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                     break;
 
                 case InferenceRequestType.FhireResource:
-                    if (details.Resources.IsNullOrEmpty())
-                    {
-                        errors.Add("Request type is set to `FHIR_RESOURCE` but no FHIR `resources` defined.");
-                    }
-                    else
-                    {
-                        foreach (var resource in details.Resources)
-                        {
-                            if (string.IsNullOrWhiteSpace(resource.Type))
-                            {
-                                errors.Add("A FHIR resource type cannot be empty.");
-                            }
-                        }
-                    }
+                    CheckInputMetadataWithTypeFhirResource(details, errors);
                     break;
 
                 default:
                     errors.Add($"'inputMetadata' does not yet support type '{details.Type}'.");
                     break;
+            }
+        }
+
+        private static void CheckInputMetadataWithTypeFhirResource(InferenceRequestDetails details, List<string> errors)
+        {
+            Guard.Against.Null(details, nameof(details));
+            Guard.Against.Null(errors, nameof(errors));
+
+            if (details.Resources.IsNullOrEmpty())
+            {
+                errors.Add("Request type is set to `FHIR_RESOURCE` but no FHIR `resources` defined.");
+            }
+            else
+            {
+                errors.AddRange(details.Resources.Where(resource => string.IsNullOrWhiteSpace(resource.Type)).Select(resource => "A FHIR resource type cannot be empty."));
+            }
+        }
+
+        private static void CheckInputMetadataWithTypDeicomUid(InferenceRequestDetails details, List<string> errors)
+        {
+            Guard.Against.Null(details, nameof(details));
+            Guard.Against.Null(errors, nameof(errors));
+
+            if (details.Studies.IsNullOrEmpty())
+            {
+                errors.Add("Request type is set to `DICOM_UID` but no `studies` defined.");
+            }
+            else
+            {
+                foreach (var study in details.Studies)
+                {
+                    if (string.IsNullOrWhiteSpace(study.StudyInstanceUid))
+                    {
+                        errors.Add("`StudyInstanceUID` cannot be empty.");
+                    }
+
+                    if (study.Series is null) continue;
+
+                    foreach (var series in study.Series)
+                    {
+                        if (string.IsNullOrWhiteSpace(series.SeriesInstanceUid))
+                        {
+                            errors.Add("`SeriesInstanceUID` cannot be empty.");
+                        }
+
+                        if (series.Instances is null) continue;
+                        errors.AddRange(
+                            series.Instances
+                                .Where(
+                                    instance => instance.SopInstanceUid.IsNullOrEmpty() ||
+                                    instance.SopInstanceUid.Any(p => string.IsNullOrWhiteSpace(p)))
+                                .Select(instance => "`SOPInstanceUID` cannot be empty."));
+                    }
+                }
             }
         }
 

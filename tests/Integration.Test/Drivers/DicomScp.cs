@@ -77,13 +77,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
         public Task OnCStoreRequestExceptionAsync(string tempFileName, Exception e)
         {
-            Console.WriteLine("Exception 'OnCStoreRequestExceptionAsync': {0}", e);
+            Console.WriteLine($"Exception 'OnCStoreRequestExceptionAsync': {e}");
             return Task.CompletedTask;
         }
 
         public void OnReceiveAbort(DicomAbortSource source, DicomAbortReason reason)
         {
-            Console.WriteLine("Exception 'OnReceiveAbort': source {0}, reason {1]", source, reason);
+            Console.WriteLine($"Exception 'OnReceiveAbort': source {source}, reason {reason}");
         }
 
         public Task OnReceiveAssociationReleaseRequestAsync()

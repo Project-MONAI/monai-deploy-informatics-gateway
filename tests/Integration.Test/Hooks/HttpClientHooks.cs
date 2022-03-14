@@ -36,10 +36,5 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _objectContainer.RegisterInstanceAs(_client);
             _objectContainer.RegisterInstanceAs(_informaticsGatewayClientLogger.Object);
         }
-
-        [AfterScenario]
-        public void AfterScenario()
-        {
-        }
     }
 }

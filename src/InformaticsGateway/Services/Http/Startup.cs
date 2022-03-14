@@ -38,11 +38,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "aspnet5 v1"));
             }
-            // app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            // app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

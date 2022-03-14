@@ -64,14 +64,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             var payloads = repository.AsQueryable().Where(p => p.State == Payload.PayloadState.Created);
             var restored = 0;
-            foreach (var payload in payloads)
+            foreach (var payload in payloads.Where(payload => _payloads.TryAdd(payload.Key, new AsyncLazy<Payload>(payload))))
             {
-                if (_payloads.TryAdd(payload.Key, new AsyncLazy<Payload>(payload)))
-                {
-                    _logger.Log(LogLevel.Information, $"Payload {payload.Id} restored from database.");
-                    restored++;
-                }
+                _logger.Log(LogLevel.Information, $"Payload {payload.Id} restored from database.");
+                restored++;
             }
+
             _logger.Log(LogLevel.Information, $"{restored} paylaods restored from database.");
         }
 

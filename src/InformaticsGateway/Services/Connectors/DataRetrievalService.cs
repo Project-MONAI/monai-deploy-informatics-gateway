@@ -150,11 +150,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 switch (source.Interface)
                 {
                     case InputInterfaceType.DicomWeb:
-                        await RetrieveViaDicomWeb(inferenceRequest, source, retrievedFiles).ConfigureAwait(false);
+                        await RetrieveViaDicomWeb(inferenceRequest, source, retrievedFiles, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case InputInterfaceType.Fhir:
-                        await RetrieveViaFhir(inferenceRequest, source, retrievedFiles).ConfigureAwait(false);
+                        await RetrieveViaFhir(inferenceRequest, source, retrievedFiles, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case InputInterfaceType.Algorithm:
@@ -208,13 +208,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         #region Data Retrieval
 
-        private async Task RetrieveViaFhir(InferenceRequest inferenceRequest, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedResources)
+        private async Task RetrieveViaFhir(InferenceRequest inferenceRequest, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedResources, CancellationToken cancellationToken)
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
             Guard.Against.Null(retrievedResources, nameof(retrievedResources));
 
             foreach (var input in inferenceRequest.InputMetadata.Inputs)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 if (input.Resources.IsNullOrEmpty())
                 {
                     continue;
@@ -311,7 +315,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task RetrieveViaDicomWeb(InferenceRequest inferenceRequest, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedInstance)
+        private async Task RetrieveViaDicomWeb(InferenceRequest inferenceRequest, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedInstance, CancellationToken cancellationToken)
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
             Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
@@ -328,20 +332,25 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             foreach (var input in inferenceRequest.InputMetadata.Inputs)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
+
                 switch (input.Type)
                 {
                     case InferenceRequestType.DicomUid:
-                        await RetrieveStudies(inferenceRequest.TransactionId, dicomWebClient, input.Studies, inferenceRequest.StoragePath, retrievedInstance).ConfigureAwait(false);
+                        await RetrieveStudies(inferenceRequest.TransactionId, dicomWebClient, input.Studies, inferenceRequest.StoragePath, retrievedInstance, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case InferenceRequestType.DicomPatientId:
-                        await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.PatientID.Group:X4}{DicomTag.PatientID.Element:X4}", input.PatientId).ConfigureAwait(false);
+                        await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.PatientID.Group:X4}{DicomTag.PatientID.Element:X4}", input.PatientId, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case InferenceRequestType.AccessionNumber:
                         foreach (var accessionNumber in input.AccessionNumber)
                         {
-                            await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.AccessionNumber.Group:X4}{DicomTag.AccessionNumber.Element:X4}", accessionNumber).ConfigureAwait(false);
+                            await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.AccessionNumber.Group:X4}{DicomTag.AccessionNumber.Element:X4}", accessionNumber, cancellationToken).ConfigureAwait(false);
                         }
                         break;
 
@@ -353,7 +362,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task QueryStudies(string transactionId, DicomWebClient dicomWebClient, InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedInstance, string dicomTag, string queryValue)
+        private async Task QueryStudies(string transactionId, DicomWebClient dicomWebClient, InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedInstance, string dicomTag, string queryValue, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             Guard.Against.Null(dicomWebClient, nameof(dicomWebClient));
@@ -388,7 +397,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             if (studies.Count != 0)
             {
-                await RetrieveStudies(transactionId, dicomWebClient, studies, inferenceRequest.StoragePath, retrievedInstance).ConfigureAwait(false);
+                await RetrieveStudies(transactionId, dicomWebClient, studies, inferenceRequest.StoragePath, retrievedInstance, cancellationToken).ConfigureAwait(false);
             }
             else
             {
@@ -396,7 +405,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task RetrieveStudies(string transactionId, IDicomWebClient dicomWebClient, IList<RequestedStudy> studies, string storagePath, Dictionary<string, FileStorageInfo> retrievedInstance)
+        private async Task RetrieveStudies(string transactionId, IDicomWebClient dicomWebClient, IList<RequestedStudy> studies, string storagePath, Dictionary<string, FileStorageInfo> retrievedInstance, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             Guard.Against.Null(studies, nameof(studies));
@@ -405,20 +414,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             foreach (var study in studies)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 if (study.Series.IsNullOrEmpty())
                 {
                     _logger.Log(LogLevel.Information, $"Retrieving study {study.StudyInstanceUid}");
                     var files = dicomWebClient.Wado.Retrieve(study.StudyInstanceUid);
-                    await SaveFiles(transactionId, files, storagePath, retrievedInstance).ConfigureAwait(false);
+                    await SaveFiles(transactionId, files, storagePath, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    await RetrieveSeries(transactionId, dicomWebClient, study, storagePath, retrievedInstance).ConfigureAwait(false);
+                    await RetrieveSeries(transactionId, dicomWebClient, study, storagePath, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
 
-        private async Task RetrieveSeries(string transactionId, IDicomWebClient dicomWebClient, RequestedStudy study, string storagePath, Dictionary<string, FileStorageInfo> retrievedInstance)
+        private async Task RetrieveSeries(string transactionId, IDicomWebClient dicomWebClient, RequestedStudy study, string storagePath, Dictionary<string, FileStorageInfo> retrievedInstance, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             Guard.Against.Null(study, nameof(study));
@@ -427,20 +440,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             foreach (var series in study.Series)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 if (series.Instances.IsNullOrEmpty())
                 {
                     _logger.Log(LogLevel.Information, $"Retrieving series {series.SeriesInstanceUid}");
                     var files = dicomWebClient.Wado.Retrieve(study.StudyInstanceUid, series.SeriesInstanceUid);
-                    await SaveFiles(transactionId, files, storagePath, retrievedInstance).ConfigureAwait(false);
+                    await SaveFiles(transactionId, files, storagePath, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    await RetrieveInstances(transactionId, dicomWebClient, study.StudyInstanceUid, series, storagePath, retrievedInstance).ConfigureAwait(false);
+                    await RetrieveInstances(transactionId, dicomWebClient, study.StudyInstanceUid, series, storagePath, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
 
-        private async Task RetrieveInstances(string transactionId, IDicomWebClient dicomWebClient, string studyInstanceUid, RequestedSeries series, string storagePath, Dictionary<string, FileStorageInfo> retrievedInstance)
+        private async Task RetrieveInstances(string transactionId, IDicomWebClient dicomWebClient, string studyInstanceUid, RequestedSeries series, string storagePath, Dictionary<string, FileStorageInfo> retrievedInstance, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
@@ -453,6 +470,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 foreach (var sopInstanceUid in instance.SopInstanceUid)
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
                     _logger.Log(LogLevel.Information, $"Retrieving instance {sopInstanceUid}");
                     var file = await dicomWebClient.Wado.Retrieve(studyInstanceUid, series.SeriesInstanceUid, sopInstanceUid).ConfigureAwait(false);
                     if (file is null) continue;
@@ -471,7 +492,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task SaveFiles(string transactionId, IAsyncEnumerable<DicomFile> files, string storagePath, Dictionary<string, FileStorageInfo> retrievedInstance)
+        private async Task SaveFiles(string transactionId, IAsyncEnumerable<DicomFile> files, string storagePath, Dictionary<string, FileStorageInfo> retrievedInstance, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             Guard.Against.Null(files, nameof(files));
@@ -481,6 +502,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var count = retrievedInstance.Count;
             await foreach (var file in files)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 count++;
                 var instance = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(CultureInfo.InvariantCulture), transactionId, _fileSystem);
                 PopulateHeaders(instance, file);

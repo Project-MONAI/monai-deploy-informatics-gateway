@@ -26,7 +26,7 @@ using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
-    public abstract class ExportServiceBase : IHostedService, IMonaiService
+    public abstract class ExportServiceBase : IHostedService, IMonaiService, IDisposable
     {
         private static readonly object SyncRoot = new();
 
@@ -41,6 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IMessageBrokerPublisherService _messagePublisher;
         private readonly IServiceScope _scope;
         private readonly Dictionary<string, ExportRequestMessage> _exportRequests;
+        private bool _disposedValue;
 
         public abstract string RoutingKey { get; }
         protected abstract int Concurrency { get; }
@@ -56,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         /// <returns></returns>
         protected abstract Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken);
 
-        public ExportServiceBase(
+        protected ExportServiceBase(
             ILogger logger,
             IOptions<InformaticsGatewayConfiguration> configuration,
             IServiceScopeFactory serviceScopeFactory,
@@ -279,7 +280,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    _messagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
                });
 
-            lock(SyncRoot)
+            lock (SyncRoot)
             {
                 _exportRequests.Remove(exportRequestData.ExportTaskId);
             }
@@ -287,8 +288,28 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             if (ReportActionCompleted != null)
             {
                 _logger.Log(LogLevel.Debug, $"Calling ReportActionCompleted callback.");
-                ReportActionCompleted(this, null);
+                ReportActionCompleted(this, EventArgs.Empty);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _scope.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

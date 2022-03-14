@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -100,10 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
             try
             {
-                await foreach (var item in response.ToDicomAsyncEnumerable())
-                {
-                    return item;
-                }
+                return await response.ToDicomAsyncEnumerable().FirstOrDefaultAsync();
             }
             catch (Exception ex)
             {
@@ -239,10 +237,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
             try
             {
-                await foreach (var metadata in GetMetadata<T>(instancMetadataUri))
-                {
-                    return metadata;
-                }
+                return await GetMetadata<T>(instancMetadataUri).FirstOrDefaultAsync();
             }
             catch (Exception ex) when (ex is not UnsupportedReturnTypeException)
             {

@@ -121,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
         {
             try
             {
-                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false); ;
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 return new DicomWebResponse<string>(response.StatusCode, result);
             }
             catch (Exception ex)

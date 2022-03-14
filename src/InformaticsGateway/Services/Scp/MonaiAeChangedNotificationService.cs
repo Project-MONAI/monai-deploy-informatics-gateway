@@ -34,17 +34,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             return new Unsubscriber<MonaiApplicationentityChangedEvent>(_observers, observer);
         }
 
-        public void Notify(MonaiApplicationentityChangedEvent applicationChangedEvent)
+        public void Notify(MonaiApplicationentityChangedEvent monaiApplicationChangedEvent)
         {
-            Guard.Against.Null(applicationChangedEvent, nameof(applicationChangedEvent));
+            Guard.Against.Null(monaiApplicationChangedEvent, nameof(monaiApplicationChangedEvent));
 
-            _logger.Log(LogLevel.Information, $"Notifying {_observers.Count} observers of MONAI Application Entity {applicationChangedEvent.Event}.");
+            _logger.Log(LogLevel.Information, $"Notifying {_observers.Count} observers of MONAI Application Entity {monaiApplicationChangedEvent.Event}.");
 
             foreach (var observer in _observers)
             {
                 try
                 {
-                    observer.OnNext(applicationChangedEvent);
+                    observer.OnNext(monaiApplicationChangedEvent);
                 }
                 catch (Exception ex)
                 {

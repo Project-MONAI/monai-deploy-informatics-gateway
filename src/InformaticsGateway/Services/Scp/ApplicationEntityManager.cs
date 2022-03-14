@@ -26,7 +26,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal class ApplicationEntityManager : IApplicationEntityManager, IDisposable, IObserver<MonaiApplicationentityChangedEvent>
     {
-        private readonly IHostApplicationLifetime _applicationLifetime;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IServiceScope _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -38,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IFileSystem _fileSystem;
         private readonly IDicomToolkit _dicomToolkit;
-        private bool _disposed = false;
+        private bool _disposedValue;
 
         public IOptions<InformaticsGatewayConfiguration> Configuration { get; }
 
@@ -59,7 +58,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                                         IFileSystem fileSystem,
                                         IDicomToolkit dicomToolkit)
         {
-            _applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
+            if (applicationLifetime is null)
+            {
+                throw new ArgumentNullException(nameof(applicationLifetime));
+            }
 
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -76,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             _unsubscriberForMonaiAeChangedNotificationService = monaiAeChangedNotificationService.Subscribe(this);
             _aeTitles = new ConcurrentDictionary<string, ApplicationEntityHandler>();
-            _applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
+            applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
 
             InitializeMonaiAeTitles();
         }
@@ -89,7 +91,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
+#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
         public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {
             Guard.Against.Null(request, nameof(request));
 
@@ -103,6 +107,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
             }
 
+            await HandleInstance(request, calledAeTitle, callingAeTitle, associationId).ConfigureAwait(false);
+        }
+
+        private async Task HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+        {
             var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
             var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(CultureInfo.InvariantCulture), callingAeTitle, _fileSystem)
             {
@@ -162,26 +171,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _serviceScope.Dispose();
-                }
-                _disposed = true;
-            }
-        }
-
         public void OnCompleted()
         {
+            // noop
         }
 
         public void OnError(Exception error)
@@ -226,6 +218,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             return sourceAe is not null;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _serviceScope.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

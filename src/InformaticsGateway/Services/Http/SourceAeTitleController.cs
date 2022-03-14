@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -85,7 +84,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             try
             {
                 item.SetDefaultValues();
-                var q = _repository.AsQueryable().Select(p => p.Name.Equals(item.Name));
                 Validate(item);
 
                 await _repository.AddAsync(item);
