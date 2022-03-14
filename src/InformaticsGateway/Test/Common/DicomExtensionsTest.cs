@@ -73,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
 
             var result = uids.ToDicomTransferSyntaxArray();
 
-            Assert.Null(result);
+            Assert.Empty(result);
         }
 
         [Fact(DisplayName = "DicomExtensions.ToDicomTransferSyntaxArray test with null input")]
@@ -81,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
         {
             var result = DicomExtensions.ToDicomTransferSyntaxArray(null);
 
-            Assert.Null(result);
+            Assert.Empty(result);
         }
     }
 }
