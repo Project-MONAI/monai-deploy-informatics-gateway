@@ -24,17 +24,17 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public const int SourceAe_ErrorDelete = 401;
         public const int SourceAe_ErrorCreate = 402;
 
-        public static int Restart_Cancelled = 500;
-        public static int Restart_Error = 501;
+        public const int Restart_Cancelled = 500;
+        public const int Restart_Error = 501;
 
-        public static int Start_Cancelled = 600;
-        public static int Start_Error = 601;
-        public static int Start_Error_ApplicationNotFound = 602;
-        public static int Start_Error_ApplicationAlreadyRunning = 603;
+        public const int Start_Cancelled = 600;
+        public const int Start_Error = 601;
+        public const int Start_Error_ApplicationNotFound = 602;
+        public const int Start_Error_ApplicationAlreadyRunning = 603;
 
-        public static int Stop_Cancelled = 700;
-        public static int Stop_Error = 701;
+        public const int Stop_Cancelled = 700;
+        public const int Stop_Error = 701;
 
-        public static int Status_Error = 800;
+        public const int Status_Error = 800;
     }
 }

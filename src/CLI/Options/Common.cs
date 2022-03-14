@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    public class Common
+    public static class Common
     {
         public static readonly string HomeDir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         public static readonly string MigDirectory = Path.Combine(HomeDir, ".mig");

@@ -192,7 +192,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                          ++instanceFound;
                      }
                  }
-                 catch { }
+                 catch
+                 {
+                     // noop
+                 }
                  return actualHashes;
              }, (Dictionary<string, string> expected) =>
              {

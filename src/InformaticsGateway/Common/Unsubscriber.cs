@@ -15,6 +15,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
     {
         private readonly IList<IObserver<T>> _observers;
         private readonly IObserver<T> _observer;
+        private bool _disposedValue;
 
         internal Unsubscriber(IList<IObserver<T>> observers, IObserver<T> observer)
         {
@@ -22,12 +23,26 @@ namespace Monai.Deploy.InformaticsGateway.Common
             _observer = observer ?? throw new ArgumentNullException(nameof(observer));
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    if (_observers.Contains(_observer))
+                    {
+                        _observers.Remove(_observer);
+                    }
+                }
+                _disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            if (_observers.Contains(_observer))
-            {
-                _observers.Remove(_observer);
-            }
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

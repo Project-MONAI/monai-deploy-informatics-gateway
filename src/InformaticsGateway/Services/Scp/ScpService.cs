@@ -20,7 +20,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal sealed class ScpService : IHostedService, IDisposable, IMonaiService
     {
+#pragma warning disable S2223 // Non-constant static fields should not be visible
         public static int ActiveConnections = 0;
+#pragma warning restore S2223 // Non-constant static fields should not be visible
 
         private readonly IServiceScope _serviceScope;
         private readonly IApplicationEntityManager _associationDataProvider;

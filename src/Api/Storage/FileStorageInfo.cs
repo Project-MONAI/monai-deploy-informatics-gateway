@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 if (string.IsNullOrWhiteSpace(_filePath))
                 {
                     _filePath = GenerateStoragePath();
-                };
+                }
                 return _filePath;
             }
             set => _filePath = value;

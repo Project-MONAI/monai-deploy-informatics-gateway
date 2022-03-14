@@ -216,7 +216,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             }
 
             if (InputResources.IsNullOrEmpty() ||
-                InputResources.Count(predicate => predicate.Interface != InputInterfaceType.Algorithm) == 0)
+                !InputResources.Any(predicate => predicate.Interface != InputInterfaceType.Algorithm))
             {
                 errors.Add("No 'inputResources' specified.");
             }

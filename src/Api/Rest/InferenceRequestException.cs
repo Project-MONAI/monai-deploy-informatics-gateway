@@ -3,15 +3,21 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
     /// <summary>
     /// Inference request exception.
     /// </summary>
+    [Serializable]
     public class InferenceRequestException : Exception
     {
         public InferenceRequestException(string message) : base(message)
+        {
+        }
+
+        protected InferenceRequestException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

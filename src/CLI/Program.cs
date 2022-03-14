@@ -18,7 +18,7 @@ using Monai.Deploy.InformaticsGateway.Client;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    internal partial class Program
+    internal static class Program
     {
         private static async Task<int> Main(string[] args)
         {

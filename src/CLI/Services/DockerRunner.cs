@@ -68,9 +68,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         public async Task<IList<ImageVersion>> GetApplicationVersions(CancellationToken cancellationToken = default)
             => await GetApplicationVersions(_configurationService.Configurations.DockerImagePrefix, cancellationToken).ConfigureAwait(false);
 
-        public async Task<IList<ImageVersion>> GetApplicationVersions(string label, CancellationToken cancellationToken = default)
+        public async Task<IList<ImageVersion>> GetApplicationVersions(string version, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(label, nameof(label));
+            Guard.Against.NullOrWhiteSpace(version, nameof(version));
 
             _logger.Log(LogLevel.Debug, "Connecting to Docker...");
             var parameters = new ImagesListParameters
@@ -79,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
                 {
                     ["reference"] = new Dictionary<string, bool>
                     {
-                        [label] = true
+                        [version] = true
                     }
                 }
             };

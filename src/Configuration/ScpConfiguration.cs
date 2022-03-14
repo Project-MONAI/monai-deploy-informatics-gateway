@@ -45,11 +45,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [JsonProperty(PropertyName = "logDimseDatasets")]
         public bool LogDimseDatasets { get; set; } = DefaultLogDimseDatasets;
 
-        public IList<string> VerificationServiceTransferSyntaxes = new List<string> {
+        private static readonly List<string> VerificationServiceTransferSyntaxList = new List<string> {
                     "1.2.840.10008.1.2.1", //Explicit VR Little Endian
                     "1.2.840.10008.1.2" , //Implicit VR Little Endian
                     "1.2.840.10008.1.2.2", //Explicit VR Big Endian
                 };
+        public IReadOnlyList<string> VerificationServiceTransferSyntaxes { get => VerificationServiceTransferSyntaxList; }
 
         public ScpConfiguration()
         {

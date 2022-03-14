@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
@@ -9,6 +10,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     public class ConfigurationException : Exception
     {
         public ConfigurationException(string message) : base(message)
+        {
+        }
+
+        protected ConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

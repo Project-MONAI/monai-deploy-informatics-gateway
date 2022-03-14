@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
             var multipartContent = await response.Content.ReadAsMultipartAsync().ConfigureAwait(false);
             foreach (var content in multipartContent.Contents)
             {
-                yield return await content.ReadAsByteArrayAsync().ConfigureAwait(false); ;
+                yield return await content.ReadAsByteArrayAsync().ConfigureAwait(false);
             }
         }
     }

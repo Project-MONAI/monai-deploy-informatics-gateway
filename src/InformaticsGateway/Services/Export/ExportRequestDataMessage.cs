@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         public void SetFailed(string errorMessage)
         {
             Guard.Against.NullOrWhiteSpace(errorMessage, nameof(errorMessage));
-            IsFailed = true; ;
+            IsFailed = true;
             Messages.Add(errorMessage);
         }
     }

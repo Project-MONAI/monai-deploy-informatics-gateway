@@ -16,7 +16,7 @@ using TechTalk.SpecFlow.Infrastructure;
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 {
     [Binding]
-    public sealed class ScpHooks
+    public static class ScpHooks
     {
         private static IDicomServer s_dicomServer;
 

@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         /// <returns></returns>
         protected abstract Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken);
 
-        public ExportServiceBase(
+        protected ExportServiceBase(
             ILogger logger,
             IOptions<InformaticsGatewayConfiguration> configuration,
             IServiceScopeFactory serviceScopeFactory,
@@ -287,7 +287,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             if (ReportActionCompleted != null)
             {
                 _logger.Log(LogLevel.Debug, $"Calling ReportActionCompleted callback.");
-                ReportActionCompleted(this, null);
+                ReportActionCompleted(this, EventArgs.Empty);
             }
         }
     }
