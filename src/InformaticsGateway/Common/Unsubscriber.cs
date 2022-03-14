@@ -27,12 +27,9 @@ namespace Monai.Deploy.InformaticsGateway.Common
         {
             if (!_disposedValue)
             {
-                if (disposing)
+                if (disposing && _observers.Contains(_observer))
                 {
-                    if (_observers.Contains(_observer))
-                    {
-                        _observers.Remove(_observer);
-                    }
+                    _observers.Remove(_observer);
                 }
                 _disposedValue = true;
             }

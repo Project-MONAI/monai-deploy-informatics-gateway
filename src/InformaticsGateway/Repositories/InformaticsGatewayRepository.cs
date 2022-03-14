@@ -14,10 +14,11 @@ using Monai.Deploy.InformaticsGateway.Database;
 
 namespace Monai.Deploy.InformaticsGateway.Repositories
 {
-    internal class InformaticsGatewayRepository<T> : IInformaticsGatewayRepository<T> where T : class
+    internal class InformaticsGatewayRepository<T> : IDisposable, IInformaticsGatewayRepository<T> where T : class
     {
         private readonly IServiceScope _scope;
         private readonly InformaticsGatewayContext _informaticsGatewayContext;
+        private bool _disposedValue;
 
         public InformaticsGatewayRepository(IServiceScopeFactory serviceScopeFactory)
         {
@@ -73,23 +74,49 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             return await _informaticsGatewayContext.AddAsync(item, cancellationToken).ConfigureAwait(false);
         }
 
+#pragma warning disable S927 // Parameter names should match base declaration and other partial definitions
         public T FirstOrDefault(Func<T, bool> func)
+#pragma warning restore S927 // Parameter names should match base declaration and other partial definitions
         {
             Guard.Against.Null(func, nameof(func));
 
             return _informaticsGatewayContext.Set<T>().FirstOrDefault(func);
         }
 
+#pragma warning disable S927 // Parameter names should match base declaration and other partial definitions
         public void Detach(T item)
+#pragma warning restore S927 // Parameter names should match base declaration and other partial definitions
         {
             Guard.Against.Null(item, nameof(item));
             _informaticsGatewayContext.Entry(item).State = EntityState.Detached;
         }
 
+#pragma warning disable S927 // Parameter names should match base declaration and other partial definitions
         public bool Any(Func<T, bool> func)
+#pragma warning restore S927 // Parameter names should match base declaration and other partial definitions
         {
             Guard.Against.Null(func, nameof(func));
             return _informaticsGatewayContext.Set<T>().Any(func);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _scope.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

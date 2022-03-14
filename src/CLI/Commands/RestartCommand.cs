@@ -33,13 +33,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(service, nameof(service), "Control service is unavailable.");
             Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
 
-            if (!yes)
+            if (!yes && !confirmation.ShowConfirmationPrompt($"Do you want to restart {Strings.ApplicationName}?"))
             {
-                if (!confirmation.ShowConfirmationPrompt($"Do you want to restart {Strings.ApplicationName}?"))
-                {
-                    logger.Log(LogLevel.Warning, "Action cancelled.");
-                    return ExitCodes.Restart_Cancelled;
-                }
+                logger.Log(LogLevel.Warning, "Action cancelled.");
+                return ExitCodes.Restart_Cancelled;
             }
 
             try

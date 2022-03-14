@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             endpointCommand.AddArgument(new Argument<Runner>("runner"));
             endpointCommand.Handler = CommandHandler.Create<Runner, IHost, bool>((Runner runner, IHost host, bool verbose) =>
-                ConfigUpdateHandler(runner, host, verbose, (IConfigurationService options) =>
+                ConfigUpdateHandler(host, (IConfigurationService options) =>
                 {
                     options.Configurations.Runner = runner;
                 })
@@ -46,10 +46,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             endpointCommand.AddArgument(new Argument<string>("uri"));
             endpointCommand.Handler = CommandHandler.Create<string, IHost, bool>((string uri, IHost host, bool verbose) =>
-                ConfigUpdateHandler(uri, host, verbose, (IConfigurationService options) =>
-                {
-                    options.Configurations.InformaticsGatewayServerEndpoint = uri;
-                })
+                ConfigUpdateHandler(host, (IConfigurationService options) =>
+              {
+                  options.Configurations.InformaticsGatewayServerEndpoint = uri;
+              })
             );
         }
 
@@ -102,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             return ExitCodes.Success;
         }
 
-        private static int ConfigUpdateHandler<T>(T argument, IHost host, bool verbose, Action<IConfigurationService> updater)
+        private static int ConfigUpdateHandler(IHost host, Action<IConfigurationService> updater)
         {
             Guard.Against.Null(host, nameof(host));
             Guard.Against.Null(updater, nameof(updater));
@@ -140,13 +140,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
             Guard.Against.Null(confirmation, nameof(confirmation), "Confirmation prompt is unavailable.");
 
-            if (!yes)
+            if (!yes && configService.IsConfigExists && !confirmation.ShowConfirmationPrompt($"Existing application configuration file already exists. Do you want to overwrite it?"))
             {
-                if (configService.IsConfigExists && !confirmation.ShowConfirmationPrompt($"Existing application configuration file already exists. Do you want to overwrite it?"))
-                {
-                    logger.Log(LogLevel.Warning, "Action cancelled.");
-                    return ExitCodes.Stop_Cancelled;
-                }
+                logger.Log(LogLevel.Warning, "Action cancelled.");
+                return ExitCodes.Stop_Cancelled;
             }
 
             try

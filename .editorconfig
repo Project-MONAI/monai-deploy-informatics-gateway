@@ -4,9 +4,8 @@
 root = true
 
 # Copyright File Header
-file_header_template                = Copyright [year file created] - [last year file modified], MONAI Consortium\nSPDX-License-Identifier: Apache License 2.0
+file_header_template                = SPDX-FileCopyrightText: © [year file created] - [last year file modified], MONAI Consortium\nSPDX-License-Identifier: Apache License 2.0
 dotnet_diagnostic.IDE0073.severity  = error
-
 
 # Default settings:
 # A newline ending every file

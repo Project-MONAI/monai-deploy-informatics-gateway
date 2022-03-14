@@ -91,7 +91,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
+#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
         public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {
             Guard.Against.Null(request, nameof(request));
 
@@ -105,6 +107,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
             }
 
+            await HandleInstance(request, calledAeTitle, callingAeTitle, associationId).ConfigureAwait(false);
+        }
+
+        private async Task HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+        {
             var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
             var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(CultureInfo.InvariantCulture), callingAeTitle, _fileSystem)
             {

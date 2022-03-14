@@ -102,14 +102,11 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
         {
             if (!_disposedValue)
             {
-                if (disposing)
+                if (disposing && _connection != null)
                 {
-                    if (_connection != null)
-                    {
-                        _logger.Log(LogLevel.Information, $"Closing connection.");
-                        _connection.Close();
-                        _connection.Dispose();
-                    }
+                    _logger.Log(LogLevel.Information, $"Closing connection.");
+                    _connection.Close();
+                    _connection.Dispose();
                 }
 
                 _disposedValue = true;
