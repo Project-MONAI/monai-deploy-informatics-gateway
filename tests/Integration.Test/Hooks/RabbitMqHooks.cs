@@ -23,15 +23,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
     public sealed class RabbitMqHooks
     {
         internal static readonly string ScenarioContextKey = "MESSAAGES";
-        private readonly string QueueNameWorkflowQueue = "workflow-queue";
-        private readonly string QueueNameExportQueue = "export-queue";
+        private readonly string _queueNameWorkflowQueue = "workflow-queue";
+        private readonly string _queueNameExportQueue = "export-queue";
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
         private readonly ScenarioContext _scenarioContext;
-        private ConnectionFactory _connectionFactory;
-        private MessageBrokerConfigurationKeys _configurationKeys;
-        private IConnection _connection;
-        private IModel _channel;
+        private readonly ConnectionFactory _connectionFactory;
+        private readonly MessageBrokerConfigurationKeys _configurationKeys;
+        private readonly IConnection _connection;
+        private readonly IModel _channel;
         private string _consumerTag;
         public CountdownEvent MessageWaitHandle { get; private set; }
 
@@ -59,13 +59,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
         [BeforeScenario("@messaging_export_complete")]
         public void BeforeMessagingExportComplete()
         {
-            BeforeMessagingSubscribeTo(QueueNameExportQueue, _configurationKeys.ExportComplete);
+            BeforeMessagingSubscribeTo(_queueNameExportQueue, _configurationKeys.ExportComplete);
         }
 
         [BeforeScenario("@messaging_workflow_request")]
         public void BeforeMessagingWorkflowRequest()
         {
-            BeforeMessagingSubscribeTo(QueueNameWorkflowQueue, _configurationKeys.WorkflowRequest);
+            BeforeMessagingSubscribeTo(_queueNameWorkflowQueue, _configurationKeys.WorkflowRequest);
         }
 
         private void BeforeMessagingSubscribeTo(string queue, string routingKey)

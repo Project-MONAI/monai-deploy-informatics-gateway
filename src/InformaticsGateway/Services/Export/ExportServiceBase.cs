@@ -279,7 +279,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    _messagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
                });
 
-            lock(SyncRoot)
+            lock (SyncRoot)
             {
                 _exportRequests.Remove(exportRequestData.ExportTaskId);
             }

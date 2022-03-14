@@ -47,8 +47,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
         private readonly int _instance;
         private readonly ISpecFlowOutputHelper _outputHelper;
-        private DicomDataset _baseDataset;
-        private Random _random;
+        private readonly DicomDataset _baseDataset;
+        private readonly Random _random;
 
         public DicomInstanceGenerator(ISpecFlowOutputHelper outputHelper)
         {

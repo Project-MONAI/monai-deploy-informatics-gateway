@@ -205,7 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 {
                     callback(new MemoryStream(Encoding.UTF8.GetBytes(testData)));
                 });
-            var countdownEvent = new CountdownEvent(5  * 3);
+            var countdownEvent = new CountdownEvent(5 * 3);
             var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);
             service.ReportActionCompleted += (sender, e) =>
             {

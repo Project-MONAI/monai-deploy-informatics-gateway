@@ -18,10 +18,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
     [Binding]
     public sealed class ScpHooks
     {
+        private static IDicomServer s_dicomServer;
+
         internal static readonly string KeyServerData = "SERVER-DATA";
         internal static readonly string FeatureScpAeTitle = "TEST-SCP";
         internal static readonly int FeatureScpPort = 1105;
-        private static IDicomServer _dicomServer;
 
         [BeforeFeature("@scp")]
         public static void BeforeMessagingExportComplete(ISpecFlowOutputHelper outputHelper, FeatureContext featureContext)
@@ -29,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             try
             {
                 var data = new ServerData { Context = featureContext, OutputHelper = outputHelper };
-                _dicomServer = DicomServerFactory.Create<CStoreScp>(FeatureScpPort, userState: data);
+                s_dicomServer = DicomServerFactory.Create<CStoreScp>(FeatureScpPort, userState: data);
                 featureContext[KeyServerData] = data;
             }
             catch (Exception ex)
@@ -44,8 +45,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             try
             {
                 featureContext.Remove(KeyServerData);
-                _dicomServer?.Stop();
-                _dicomServer?.Dispose();
+                s_dicomServer?.Stop();
+                s_dicomServer?.Dispose();
             }
             catch (Exception ex)
             {
