@@ -158,7 +158,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
-        run: dotnet test --no-build --filter FullyQualifiedName\!~Monai.Deploy.InformaticsGateway.Integration.Test -c ${{ env.BUILD_CONFIG }} -v=minimal --results-directory "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings "${{ env.SOLUTION }}"
+        run: Get-ChildItem -Recurse | Where-Object { $_.Name -like "*Test.csproj" } | ForEach-Object {  dotnet test -c ${{ env.BUILD_CONFIG }} -v=minimal -r "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings $_.FullName }
         working-directory: ./src
 
 
