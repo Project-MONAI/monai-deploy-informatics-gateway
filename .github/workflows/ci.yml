@@ -137,39 +137,19 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
         working-directory: ./src
-
-      - name: Begin SonarScanner
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
-        run: .\.sonar\scanner\dotnet-sonarscanner begin /k:"Project-MONAI_monai-deploy-informatics-gateway" /o:"project-monai" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="src\${{ env.TEST_RESULTS }}\**\*.xml"
         
-      - name: Build
+      - name: Build & Test
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         shell: powershell
-        run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo "${{ env.SOLUTION }}"
+        run: |
+          ..\.sonar\scanner\dotnet-sonarscanner begin /k:"Project-MONAI_monai-deploy-informatics-gateway" /o:"project-monai" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.opencover.reportsPaths="src\${{ env.TEST_RESULTS }}\**\*.xml"
+          dotnet build -c ${{ env.BUILD_CONFIG }} --nologo "${{ env.SOLUTION }}"
+          Get-ChildItem -Recurse | Where-Object { $_.Name -like "*Test.csproj" } | ForEach-Object {  dotnet test -c ${{ env.BUILD_CONFIG }} -v=minimal -r "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings $_.FullName }
+          ..\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
         working-directory: ./src
           
-      - name: Test
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
-        run: Get-ChildItem -Recurse | Where-Object { $_.Name -like "*Test.csproj" } | ForEach-Object {  dotnet test -c ${{ env.BUILD_CONFIG }} -v=minimal -r "${{ env.TEST_RESULTS }}" --collect:"XPlat Code Coverage" --settings coverlet.runsettings $_.FullName }
-        working-directory: ./src
-
-
-      - name: End SonarScanner
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        shell: powershell
-        run: .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-        
-
       - uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
