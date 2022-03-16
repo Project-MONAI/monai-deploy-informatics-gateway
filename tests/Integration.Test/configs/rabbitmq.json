@@ -1,74 +1,74 @@
 {
-    "exchanges": [
-        {
-            "name": "monaideploy",
-            "arguments": {},
-            "auto_delete": false,
-            "durable": true,
-            "type": "topic",
-            "vhost": "monaideploy"
-        }
-    ],
-    "users": [
-        {
-            "limits": {},
-            "name": "rabbitmq",
-            "password": "qmtibbar",
-            "tags": [
-                "administrator"
-            ]
-        }
-    ],
-    "vhosts": [
-        {
-            "name": "/"
-        }
-    ],
-    "permissions": [
-        {
-            "user": "rabbitmiq",
-            "vhost": "/",
-            "configure": ".*",
-            "read": ".*",
-            "write": ".*"
-        }
-    ],
-    "queues": [
-        {
-            "name": "workflow-queue",
-            "vhost": "/",
-            "durable": true,
-            "auto_delete": false,
-            "arguments": {
-                "x-message-ttl": 3600000
-            }
-        },
-        {
-            "name": "export-queue",
-            "vhost": "/",
-            "durable": true,
-            "auto_delete": false,
-            "arguments": {
-                "x-message-ttl": 3600000
-            }
-        }
-    ],
-    "bindings": [
-        {
-            "source": "monaideploy",
-            "vhost": "/",
-            "destination": "workflow-queue",
-            "destination_type": "queue",
-            "routing_key": "md.workflow.request",
-            "arguments": {}
-        },
-        {
-            "source": "monaideploy",
-            "vhost": "/",
-            "destination": "export-queue",
-            "destination_type": "queue",
-            "routing_key": "md.export.complete",
-            "arguments": {}
-        }
-    ]
+  "exchanges": [
+    {
+      "name": "monaideploy",
+      "arguments": {},
+      "auto_delete": false,
+      "durable": true,
+      "type": "topic",
+      "vhost": "monaideploy"
+    }
+  ],
+  "users": [
+    {
+      "limits": {},
+      "name": "rabbitmq",
+      "password": "qmtibbar",
+      "tags": [
+        "administrator"
+      ]
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "rabbitmiq",
+      "vhost": "/",
+      "configure": ".*",
+      "read": ".*",
+      "write": ".*"
+    }
+  ],
+  "queues": [
+    {
+      "name": "workflow-queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 3600000
+      }
+    },
+    {
+      "name": "export-queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 3600000
+      }
+    }
+  ],
+  "bindings": [
+    {
+      "source": "monaideploy",
+      "vhost": "/",
+      "destination": "workflow-queue",
+      "destination_type": "queue",
+      "routing_key": "md.workflow.request",
+      "arguments": {}
+    },
+    {
+      "source": "monaideploy",
+      "vhost": "/",
+      "destination": "export-queue",
+      "destination_type": "queue",
+      "routing_key": "md.export.complete",
+      "arguments": {}
+    }
+  ]
 }

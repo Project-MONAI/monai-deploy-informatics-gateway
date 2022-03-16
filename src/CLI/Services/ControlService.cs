@@ -71,16 +71,16 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
                 {
                     var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken).ConfigureAwait(false);
 
-                    _logger.Log(LogLevel.Debug, $"{Strings.ApplicationName} with container ID {runnerState.Id} running={runnerState.IsRunning}.");
+                    _logger.ApplicationStoppedState(Strings.ApplicationName, runnerState.Id, runnerState.IsRunning);
                     if (runnerState.IsRunning)
                     {
                         if (await runner.StopApplication(runnerState, cancellationToken).ConfigureAwait(false))
                         {
-                            _logger.Log(LogLevel.Information, $"{Strings.ApplicationName} with container ID {runnerState.Id} stopped.");
+                            _logger.ApplicationStopped(Strings.ApplicationName, runnerState.Id);
                         }
                         else
                         {
-                            _logger.Log(LogLevel.Warning, $"Error may have occurred stopping {Strings.ApplicationName} with container ID {runnerState.Id}. Please verify with the applicatio state with {_configurationService.Configurations.Runner}.");
+                            _logger.ApplicationStopError(Strings.ApplicationName, runnerState.Id, _configurationService.Configurations.Runner);
                         }
                     }
                 }

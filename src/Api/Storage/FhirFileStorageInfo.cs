@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Guard.Against.NullOrWhiteSpace(ResourceType, nameof(ResourceType));
             Guard.Against.NullOrWhiteSpace(MessageId, nameof(MessageId));
 
-            string filePath = System.IO.Path.Combine(StorageRootPath, DirectoryPath, ResourceType, MessageId) + FileExtension;
+            var filePath = System.IO.Path.Combine(StorageRootPath, DirectoryPath, ResourceType, MessageId) + FileExtension;
             filePath = filePath.ToLowerInvariant();
             var index = 1;
             while (FileSystem.File.Exists(filePath))

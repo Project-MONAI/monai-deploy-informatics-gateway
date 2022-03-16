@@ -22,6 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
     internal static class DicomExtensions
     {
         public static string GenerateFileName(this DicomFile dicomFile) => GenerateFileName(dicomFile.Dataset);
+
         public static string GenerateFileName(this DicomDataset dicomDataset) => $"{dicomDataset.GetString(DicomTag.PatientID)}-{dicomDataset.GetString(DicomTag.SOPInstanceUID)}.dcm";
 
         public static string CalculateHash(this DicomFile dicomFile)

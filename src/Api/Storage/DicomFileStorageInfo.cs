@@ -63,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Guard.Against.NullOrWhiteSpace(SeriesInstanceUid, nameof(SeriesInstanceUid));
             Guard.Against.NullOrWhiteSpace(SopInstanceUid, nameof(SopInstanceUid));
 
-            string filePath = System.IO.Path.Combine(StorageRootPath, StudyInstanceUid, SeriesInstanceUid, SopInstanceUid) + FileExtension;
+            var filePath = System.IO.Path.Combine(StorageRootPath, StudyInstanceUid, SeriesInstanceUid, SopInstanceUid) + FileExtension;
             filePath = filePath.ToLowerInvariant();
             var index = 1;
             while (FileSystem.File.Exists(filePath))

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
@@ -114,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(config);
                 updater(config);
-                logger.Log(LogLevel.Information, "Configuration updated successfully.");
+                logger.ConfigurationUpdated();
             }
             catch (ConfigurationException ex)
             {
@@ -141,7 +140,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             if (!yes && configService.IsConfigExists && !confirmation.ShowConfirmationPrompt($"Existing application configuration file already exists. Do you want to overwrite it?"))
             {
-                logger.Log(LogLevel.Warning, "Action cancelled.");
+                logger.ActionCancelled();
                 return ExitCodes.Stop_Cancelled;
             }
 

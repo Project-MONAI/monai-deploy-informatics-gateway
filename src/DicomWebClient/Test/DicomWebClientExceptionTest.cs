@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿// SPDX-FileCopyrightText: © 2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
+
+using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Xunit;

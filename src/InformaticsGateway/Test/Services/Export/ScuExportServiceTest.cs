@@ -139,7 +139,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
-            _logger.VerifyLogging("Export task does not have destination set.", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging("SCU Export configuration error: Export task does not have destination set.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 250, DisplayName = "When destination is not configured")]
@@ -190,7 +190,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
 
-            _logger.VerifyLogging($"Specified destination 'pacs' does not exist", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging($"SCU Export configuration error: Specified destination 'pacs' does not exist.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 250, DisplayName = "Assocation rejected")]
@@ -357,7 +357,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
             _logger.VerifyLogging("Association accepted.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Failed to export with error {DicomStatus.ResourceLimitation}", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging($"Failed to export with error {DicomStatus.ResourceLimitation}.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 250, DisplayName = "Failed to load DICOM content")]
@@ -524,7 +524,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
             _logger.VerifyLogging("Association accepted.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Job sent successfully.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Instance sent successfully.", LogLevel.Information, Times.Once());
         }
 
         private static MessageReceivedEventArgs CreateMessageReceivedEventArgs(string destination)

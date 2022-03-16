@@ -20,7 +20,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         public IConfiguration Configuration { get; }
 
+#pragma warning disable CA1822 // Mark members as static
         public void ConfigureServices(IServiceCollection services)
+#pragma warning restore CA1822 // Mark members as static
         {
             services.AddHttpContextAccessor();
             services.AddControllers().AddNewtonsoftJson(opts => opts.SerializerSettings.Converters.Add(new StringEnumConverter()));
@@ -30,7 +32,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             });
         }
 
+#pragma warning disable CA1822 // Mark members as static
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+#pragma warning restore CA1822 // Mark members as static
         {
             if (env.IsDevelopment())
             {

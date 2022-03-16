@@ -4,6 +4,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
@@ -14,14 +15,14 @@ namespace Monai.Deploy.InformaticsGateway.Common
             var type = Type.GetType(fullyQualifiedTypeString);
             if (type is null)
             {
-                logger.Log(LogLevel.Critical, $"Type '{fullyQualifiedTypeString}' cannot be found.");
+                logger.TypeNotFound(fullyQualifiedTypeString);
                 throw new ConfigurationException($"Type '{fullyQualifiedTypeString}' cannot be found.");
             }
 
             var instance = serviceProvider.GetService(type);
             if (instance is null)
             {
-                logger.Log(LogLevel.Critical, $"Instance of '{fullyQualifiedTypeString}' cannot be found.");
+                logger.InstanceOfTypeNotFound(fullyQualifiedTypeString);
                 throw new ConfigurationException($"Instance of '{fullyQualifiedTypeString}' cannot be found.");
             }
 

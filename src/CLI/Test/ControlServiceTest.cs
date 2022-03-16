@@ -28,6 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _containerRunner = new Mock<IContainerRunner>();
 
             _containerRunnerFactory.Setup(p => p.GetContainerRunner()).Returns(_containerRunner.Object);
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "ControlServiceTest constructor")]
@@ -118,7 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             await service.StopService();
 
-            _logger.VerifyLogging($"Error may have occurred stopping {Strings.ApplicationName} with container ID {data[0].Id}. Please verify with the applicatio state with {Runner.Docker}.", LogLevel.Warning, Times.Once());
+            _logger.VerifyLogging($"Error stopping {Strings.ApplicationName} with container ID {data[0].Id}. Please verify with the application state with {Runner.Docker}.", LogLevel.Warning, Times.Once());
         }
 
         [Fact(DisplayName = "Stop - stops running applications")]

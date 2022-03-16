@@ -7,7 +7,6 @@ namespace Monai.Deploy.InformaticsGateway.Storage
 {
     public static partial class Log
     {
-
         [LoggerMessage(EventId = 20000, Level = LogLevel.Error, Message = "Error listing objects in bucket '{bucketName}'.")]
         public static partial void ListObjectError(this ILogger logger, string bucketName);
     }

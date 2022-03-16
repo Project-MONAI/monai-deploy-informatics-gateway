@@ -23,6 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
         {
             _logger = new Mock<ILogger<InferenceRequestRepository>>();
             _inferenceRequestRepository = new Mock<IInformaticsGatewayRepository<InferenceRequest>>();
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor")]
@@ -102,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
 
             _logger.VerifyLogging($"Updating inference request.", LogLevel.Debug, Times.Once());
             _logger.VerifyLogging($"Inference request updated.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Exceeded maximum retries.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Exceeded maximum retries.", LogLevel.Warning, Times.Once());
             _inferenceRequestRepository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 

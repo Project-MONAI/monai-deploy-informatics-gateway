@@ -104,14 +104,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         StudyInstanceUid = fileSpecs.StudyInstanceUids[0],
                     });
                     break;
+
                 case "Patient":
                     inferenceRequest.InputMetadata.Details.Type = InferenceRequestType.DicomPatientId;
                     inferenceRequest.InputMetadata.Details.PatientId = fileSpecs.Files[0].Dataset.GetSingleValue<string>(DicomTag.PatientID);
                     break;
+
                 case "AccessionNumber":
                     inferenceRequest.InputMetadata.Details.Type = InferenceRequestType.AccessionNumber;
                     inferenceRequest.InputMetadata.Details.AccessionNumber = new List<string>() { fileSpecs.Files[0].Dataset.GetSingleValue<string>(DicomTag.AccessionNumber) };
                     break;
+
                 default:
                     throw new ArgumentException($"invalid ACR request type specified in feature file: {requestType}");
             }
@@ -221,7 +224,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 })
                 .Execute(() =>
                 {
-
                     if (Directory.Exists(dataDir))
                     {
                         var files = Directory.GetFiles(dataDir, "*", SearchOption.AllDirectories);

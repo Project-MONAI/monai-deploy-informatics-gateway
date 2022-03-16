@@ -38,6 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _configuration.Value.Storage.Temporary = "/payloads";
             _service = new SpaceReclaimerService(_queue.Object, _logger.Object, _configuration, _fileSystem);
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Shall honor cancellation request")]
@@ -46,17 +47,17 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _queue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                 .Returns(default(FileStorageInfo));
 
+            await _service.StartAsync(_cancellationTokenSource.Token);
             _cancellationTokenSource.Cancel();
             var task = Task.Run(async () =>
             {
                 await Task.Delay(150);
                 await _service.StopAsync(_cancellationTokenSource.Token);
             });
-            await _service.StartAsync(_cancellationTokenSource.Token);
             task.Wait();
 
             _queue.Verify(p => p.Dequeue(It.IsAny<CancellationToken>()), Times.Never());
-            _logger.VerifyLogging("Cancellation requested.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Space Reclaimer Service is stopping.", LogLevel.Information, Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Shall delete files")]
@@ -97,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             }
             Assert.True(_fileSystem.Directory.Exists("/payloads"));
 
-            _logger.VerifyLogging("Cancellation requested.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Space Reclaimer Service canceled.", LogLevel.Warning, Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Shall delete directories if empty")]
@@ -151,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             Assert.True(_fileSystem.Directory.Exists("/payloads/dir1"));
             Assert.True(_fileSystem.Directory.Exists("/payloads"));
 
-            _logger.VerifyLogging("Cancellation requested.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Space Reclaimer Service canceled.", LogLevel.Warning, Times.Once());
         }
     }
 }

@@ -3,8 +3,11 @@
 
 using System;
 using System.Net;
+using FellowOakDicom;
+using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Services.Scp;
 
 namespace Monai.Deploy.InformaticsGateway.Logging
 {
@@ -16,10 +19,10 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 2, Level = LogLevel.Information, Message = "{ServiceName} is stopping.")]
         public static partial void ServiceStopping(this ILogger logger, string serviceName);
 
-        [LoggerMessage(EventId = 3, Level = LogLevel.Warning, Message = "{ServiceName} is canceled.")]
+        [LoggerMessage(EventId = 3, Level = LogLevel.Warning, Message = "{ServiceName} canceled.")]
         public static partial void ServiceCancelled(this ILogger logger, string serviceName);
 
-        [LoggerMessage(EventId = 4, Level = LogLevel.Warning, Message = "{ServiceName} is canceled.")]
+        [LoggerMessage(EventId = 4, Level = LogLevel.Warning, Message = "{ServiceName} canceled.")]
         public static partial void ServiceCancelledWithException(this ILogger logger, string serviceName, Exception ex);
 
         [LoggerMessage(EventId = 5, Level = LogLevel.Warning, Message = "{ServiceName} may be disposed.")]
@@ -34,7 +37,22 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8, Level = LogLevel.Error, Message = "Error querying database.")]
         public static partial void ErrorQueryingDatabase(this ILogger logger, Exception ex);
 
-        // Application Entity Manager
+        [LoggerMessage(EventId = 9, Level = LogLevel.Critical, Message = "Type '{type}' cannot be found.")]
+        public static partial void TypeNotFound(this ILogger logger, string type);
+
+        [LoggerMessage(EventId = 10, Level = LogLevel.Critical, Message = "Instance of '{type}' cannot be found.")]
+        public static partial void InstanceOfTypeNotFound(this ILogger logger, string type);
+
+        [LoggerMessage(EventId = 11, Level = LogLevel.Critical, Message = "Instance of '{type}' cannot be found.")]
+        public static partial void ServiceInvalidOrCancelled(this ILogger logger, string type, Exception ex);
+
+        [LoggerMessage(EventId = 12, Level = LogLevel.Information, Message = "{ServiceName} starting.")]
+        public static partial void ServiceStarting(this ILogger logger, string serviceName);
+
+        [LoggerMessage(EventId = 13, Level = LogLevel.Critical, Message = "Failed to start {ServiceName}.")]
+        public static partial void ServiceFailedToStart(this ILogger logger, string serviceName, Exception ex);
+
+        // Application Entity Manager/Handler
         [LoggerMessage(EventId = 100, Level = LogLevel.Information, Message = "ApplicationEntityManager stopping.")]
         public static partial void ApplicationEntityManagerStopping(this ILogger logger);
 
@@ -58,6 +76,58 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 107, Level = LogLevel.Information, Message = "Loading MONAI Application Entities from data store.")]
         public static partial void LoadingMonaiAeTitles(this ILogger logger);
+
+        [LoggerMessage(EventId = 108, Level = LogLevel.Information, Message = "Instance ignored due to matching SOP Class UID {uid}.")]
+        public static partial void InstanceIgnoredWIthMatchingSopClassUid(this ILogger logger, string uid);
+
+        [LoggerMessage(EventId = 109, Level = LogLevel.Information, Message = "Queuing instance with group {dicomTag}.")]
+        public static partial void QueueInstanceUsingDicomTag(this ILogger logger, DicomTag dicomTag);
+
+        [LoggerMessage(EventId = 110, Level = LogLevel.Debug, Message = "Saving instance {filename}.")]
+        public static partial void AESavingInstance(this ILogger logger, string filename);
+
+        [LoggerMessage(EventId = 111, Level = LogLevel.Information, Message = "Instance saved {filename}.")]
+        public static partial void AEInstanceSaved(this ILogger logger, string filename);
+
+        [LoggerMessage(EventId = 112, Level = LogLevel.Information, Message = "Notifying {count} observers of MONAI Application Entity {eventType}.")]
+        public static partial void NotifyAeChanged(this ILogger logger, int count, ChangedEventType eventType);
+
+        // SCP Service
+        [LoggerMessage(EventId = 200, Level = LogLevel.Information, Message = "MONAI Deploy Informatics Gateway (SCP Service) {version} loading...")]
+        public static partial void ScpServiceLoading(this ILogger logger, string version);
+
+        [LoggerMessage(EventId = 201, Level = LogLevel.Critical, Message = "Failed to initialize SCP listener.")]
+        public static partial void ScpListenerInitializationFailure(this ILogger logger);
+
+        [LoggerMessage(EventId = 202, Level = LogLevel.Information, Message = "SCP listening on port: {port}.")]
+        public static partial void ScpListeningOnPort(this ILogger logger, int port);
+
+        [LoggerMessage(EventId = 203, Level = LogLevel.Information, Message = "C-ECHO request received.")]
+        public static partial void CEchoReceived(this ILogger logger);
+
+        [LoggerMessage(EventId = 204, Level = LogLevel.Error, Message = "Connection closed with exception.")]
+        public static partial void ConnectionClosedWithException(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 205, Level = LogLevel.Information, Message = "Transfer syntax used: {transferSyntax}.")]
+        public static partial void TransferSyntaxUsed(this ILogger logger, DicomTransferSyntax transferSyntax);
+
+        [LoggerMessage(EventId = 206, Level = LogLevel.Error, Message = "Failed to process C-STORE request, out of storage space.")]
+        public static partial void CStoreFailedWithNoSpace(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 207, Level = LogLevel.Error, Message = "Failed to process C-STORE request.")]
+        public static partial void CStoreFailed(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 208, Level = LogLevel.Warning, Message = "Aborted {source} with reason {reason}.")]
+        public static partial void CStoreAbort(this ILogger logger, DicomAbortSource source, DicomAbortReason reason);
+
+        [LoggerMessage(EventId = 209, Level = LogLevel.Information, Message = "Association release request received.")]
+        public static partial void CStoreAssociationReleaseRequest(this ILogger logger);
+
+        [LoggerMessage(EventId = 210, Level = LogLevel.Information, Message = "Association received from {host}:{port}.")]
+        public static partial void CStoreAssociationReceived(this ILogger logger, string host, int port);
+
+        [LoggerMessage(EventId = 211, Level = LogLevel.Warning, Message = "Verification service is disabled: rejecting association.")]
+        public static partial void VerificationServiceDisabled(this ILogger logger);
 
         // Export Services
         [LoggerMessage(EventId = 500, Level = LogLevel.Information, Message = "{ServiceName} subscribed to {RoutingKey} messages.")]
@@ -98,6 +168,60 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 512, Level = LogLevel.Debug, Message = "Calling ReportActionCompleted callback.")]
         public static partial void CallingReportActionCompletedCallback(this ILogger logger);
+
+        [LoggerMessage(EventId = 513, Level = LogLevel.Error, Message = "The specified inference request '{destination}' cannot be found and will not be exported.")]
+        public static partial void InferenceRequestExportDestinationNotFound(this ILogger logger, string destination);
+
+        [LoggerMessage(EventId = 514, Level = LogLevel.Error, Message = "The inference request contains no `outputResources` nor any DICOMweb export destinations.")]
+        public static partial void InferenceRequestExportNoDestinationNotFound(this ILogger logger);
+
+        [LoggerMessage(EventId = 515, Level = LogLevel.Debug, Message = "Exporting data to {uri}.")]
+        public static partial void ExportToDicomWeb(this ILogger logger, string uri);
+
+        [LoggerMessage(EventId = 516, Level = LogLevel.Error, Message = "Error exporting to DICOMweb destination {uri}. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
+        public static partial void ErrorExportingDicomWebWithRetry(this ILogger logger, string uri, TimeSpan timespan, int retryCount, Exception ex);
+
+        [LoggerMessage(EventId = 517, Level = LogLevel.Information, Message = "All data exported successfully.")]
+        public static partial void ExportSuccessfully(this ILogger logger);
+
+        [LoggerMessage(EventId = 518, Level = LogLevel.Error, Message = "Error occurred while exporting.")]
+        public static partial void ErrorExporting(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 519, Level = LogLevel.Error, Message = "Error processing export task.")]
+        public static partial void ErrorProcessingExportTask(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 520, Level = LogLevel.Error, Message = "SCU Export configuration error: {message}")]
+        public static partial void ScuExportConfigurationError(this ILogger logger, string message, Exception ex);
+
+        [LoggerMessage(EventId = 521, Level = LogLevel.Information, Message = "Association accepted.")]
+        public static partial void AssociationAccepted(this ILogger logger);
+
+        [LoggerMessage(EventId = 522, Level = LogLevel.Warning, Message = "Association rejected.")]
+        public static partial void AssociationRejected(this ILogger logger);
+
+        [LoggerMessage(EventId = 523, Level = LogLevel.Information, Message = "Association released.")]
+        public static partial void AssociationReleased(this ILogger logger);
+
+        [LoggerMessage(EventId = 524, Level = LogLevel.Error, Message = "Error exporting to DICOM destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
+        public static partial void DimseExportErrorWithRetry(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
+
+        [LoggerMessage(EventId = 525, Level = LogLevel.Information, Message = "Sending job to {aeTitle}@{hostIp}:{port}...")]
+        public static partial void DimseExporting(this ILogger logger, string aeTitle, string hostIp, int port);
+
+        [LoggerMessage(EventId = 526, Level = LogLevel.Information, Message = "Job sent to {aeTitle}.")]
+        public static partial void DimseExportComplete(this ILogger logger, string aeTitle);
+
+        [LoggerMessage(EventId = 527, Level = LogLevel.Information, Message = "Instance sent successfully.")]
+        public static partial void DimseExportInstanceComplete(this ILogger logger);
+
+        [LoggerMessage(EventId = 528, Level = LogLevel.Error, Message = "Failed to export with error {status}.")]
+        public static partial void DimseExportInstanceError(this ILogger logger, DicomStatus status);
+
+        [LoggerMessage(EventId = 529, Level = LogLevel.Error, Message = "Error while adding DICOM C-STORE request: {message}")]
+        public static partial void DimseExportErrorAddingInstance(this ILogger logger, string message, Exception ex);
+
+        [LoggerMessage(EventId = 530, Level = LogLevel.Error, Message = "{message}")]
+        public static partial void ExportException(this ILogger logger, string message, Exception ex);
 
         // Data Retrieval Service
         [LoggerMessage(EventId = 600, Level = LogLevel.Information, Message = "Processing input source '{inputInterface}' from {uri}.")]
@@ -170,7 +294,6 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void ErrorProcessingInferenceRequest(this ILogger logger, string transactionId, Exception ex);
 
         // Payload Service
-
         [LoggerMessage(EventId = 700, Level = LogLevel.Error, Message = "Error processing request: Payload = {payloadId}.")]
         public static partial void ErrorProcessingPayload(this ILogger logger, Guid? payloadId, Exception ex);
 
@@ -216,8 +339,27 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 714, Level = LogLevel.Information, Message = "{count} payloads restored from database.")]
         public static partial void RestoredFromDatabase(this ILogger logger, int count);
 
-        // MONAI AE TItle Controller
+        [LoggerMessage(EventId = 715, Level = LogLevel.Error, Message = "Error saving payload. Waiting {timespan} before next retry. Retry attempt {retryCount}.")]
+        public static partial void ErrorSavingPayload(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
 
+        [LoggerMessage(EventId = 716, Level = LogLevel.Debug, Message = "Payload {id} saved.")]
+        public static partial void PayloadSaved(this ILogger logger, Guid id);
+
+        [LoggerMessage(EventId = 717, Level = LogLevel.Error, Message = "Error adding payload. Waiting {timespan} before next retry. Retry attempt {retryCount}.")]
+        public static partial void ErrorAddingPayload(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
+
+        [LoggerMessage(EventId = 718, Level = LogLevel.Debug, Message = "Payload {id} added.")]
+        public static partial void PayloadAdded(this ILogger logger, Guid id);
+
+        [LoggerMessage(EventId = 719, Level = LogLevel.Error, Message = "Error deleting payload. Waiting {timespan} before next retry. Retry attempt {retryCount}.")]
+        public static partial void ErrorDeletingPayload(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
+
+        [LoggerMessage(EventId = 720, Level = LogLevel.Debug, Message = "Payload {id} deleted.")]
+        public static partial void PayloadDeleted(this ILogger logger, Guid id);
+
+        // HTTP APIs
+
+        // MONAI AE Title Controller
         [LoggerMessage(EventId = 800, Level = LogLevel.Error, Message = "Error querying MONAI Application Entity.")]
         public static partial void ErrorListingMonaiApplicationEntities(this ILogger logger, Exception ex);
 
@@ -234,36 +376,149 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void MonaiApplicationEntityDeleted(this ILogger logger, string name);
 
         // Destination AE Title Controller
-        [LoggerMessage(EventId = 900, Level = LogLevel.Information, Message = "DICOM destination added AE Title={aeTitle}, Host/IP={hostIp}.")]
+        [LoggerMessage(EventId = 810, Level = LogLevel.Information, Message = "DICOM destination added AE Title={aeTitle}, Host/IP={hostIp}.")]
         public static partial void DestinationApplicationEntityAdded(this ILogger logger, string aeTitle, string hostIp);
 
-        [LoggerMessage(EventId = 901, Level = LogLevel.Information, Message = "MONAI SCP Application Entity deleted {name}.")]
+        [LoggerMessage(EventId = 811, Level = LogLevel.Information, Message = "MONAI SCP Application Entity deleted {name}.")]
         public static partial void DestinationApplicationEntityDeleted(this ILogger logger, string name);
 
-        [LoggerMessage(EventId = 902, Level = LogLevel.Error, Message = "Error querying DICOM destinations.")]
+        [LoggerMessage(EventId = 812, Level = LogLevel.Error, Message = "Error querying DICOM destinations.")]
         public static partial void ErrorListingDestinationApplicationEntities(this ILogger logger, Exception ex);
 
-        [LoggerMessage(EventId = 903, Level = LogLevel.Error, Message = "Error adding new DICOM destination.")]
+        [LoggerMessage(EventId = 813, Level = LogLevel.Error, Message = "Error adding new DICOM destination.")]
         public static partial void ErrorAddingDestinationApplicationEntity(this ILogger logger, Exception ex);
 
-        [LoggerMessage(EventId = 904, Level = LogLevel.Error, Message = "Error deleting DICOM destination.")]
+        [LoggerMessage(EventId = 814, Level = LogLevel.Error, Message = "Error deleting DICOM destination.")]
         public static partial void ErrorDeletingDestinationApplicationEntity(this ILogger logger, Exception ex);
 
         // Source AE Title Controller
-        [LoggerMessage(EventId = 1000, Level = LogLevel.Information, Message = "DICOM source added AE Title={aeTitle}, Host/IP={hostIp}.")]
+        [LoggerMessage(EventId = 820, Level = LogLevel.Information, Message = "DICOM source added AE Title={aeTitle}, Host/IP={hostIp}.")]
         public static partial void SourceApplicationEntityAdded(this ILogger logger, string aeTitle, string hostIp);
 
-        [LoggerMessage(EventId = 1001, Level = LogLevel.Information, Message = "DICOM source deleted {name}.")]
+        [LoggerMessage(EventId = 821, Level = LogLevel.Information, Message = "DICOM source deleted {name}.")]
         public static partial void SourceApplicationEntityDeleted(this ILogger logger, string name);
 
-        [LoggerMessage(EventId = 1002, Level = LogLevel.Error, Message = "Error querying DICOM sources.")]
+        [LoggerMessage(EventId = 822, Level = LogLevel.Error, Message = "Error querying DICOM sources.")]
         public static partial void ErrorListingSourceApplicationEntities(this ILogger logger, Exception ex);
 
-        [LoggerMessage(EventId = 1003, Level = LogLevel.Error, Message = "Error adding new DICOM source.")]
+        [LoggerMessage(EventId = 823, Level = LogLevel.Error, Message = "Error adding new DICOM source.")]
         public static partial void ErrorAddingSourceApplicationEntity(this ILogger logger, Exception ex);
 
-        [LoggerMessage(EventId = 1004, Level = LogLevel.Error, Message = "Error deleting DICOM source.")]
+        [LoggerMessage(EventId = 824, Level = LogLevel.Error, Message = "Error deleting DICOM source.")]
         public static partial void ErrorDeletingSourceApplicationEntity(this ILogger logger, Exception ex);
 
+        // Inference API
+        [LoggerMessage(EventId = 830, Level = LogLevel.Error, Message = "Failed to retrieve status for TransactionId/JobId={transactionId}.")]
+        public static partial void ErrorRetrievingJobStatus(this ILogger logger, string transactionId, Exception ex);
+
+        [LoggerMessage(EventId = 831, Level = LogLevel.Error, Message = "Failed to configure storage location for request: TransactionId={transactionId}.")]
+        public static partial void ErrorConfiguringStorageLocation(this ILogger logger, string transactionId, Exception ex);
+
+        [LoggerMessage(EventId = 832, Level = LogLevel.Error, Message = "Unable to queue the request: TransactionId={transactionId}.")]
+        public static partial void ErrorQueuingInferenceRequest(this ILogger logger, string transactionId, Exception ex);
+
+        // Health API
+        [LoggerMessage(EventId = 840, Level = LogLevel.Error, Message = "Error collecting system status.")]
+        public static partial void ErrorCollectingSystemStatus(this ILogger logger, Exception ex);
+
+        // Middleware
+        [LoggerMessage(EventId = 890, Level = LogLevel.Error, Message = "HTTP error in request {path}.")]
+        public static partial void HttpRequestError(this ILogger logger, string path, Exception ex);
+
+        // Inference Request Repository
+        [LoggerMessage(EventId = 2000, Level = LogLevel.Error, Message = "Error saving inference request. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
+        public static partial void ErrorSavingInferenceRequest(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
+
+        [LoggerMessage(EventId = 2001, Level = LogLevel.Debug, Message = "Inference request saved.")]
+        public static partial void InferenceRequestSaved(this ILogger logger);
+
+        [LoggerMessage(EventId = 2002, Level = LogLevel.Warning, Message = "Exceeded maximum retries.")]
+        public static partial void InferenceRequestUpdateExceededMaximumRetries(this ILogger logger);
+
+        [LoggerMessage(EventId = 2003, Level = LogLevel.Information, Message = "Will retry later.")]
+        public static partial void InferenceRequestUpdateRetryLater(this ILogger logger);
+
+        [LoggerMessage(EventId = 2004, Level = LogLevel.Debug, Message = "Updating request {transactionId} to InProgress.")]
+        public static partial void InferenceRequestSetToInProgress(this ILogger logger, string transactionId);
+
+        [LoggerMessage(EventId = 2005, Level = LogLevel.Debug, Message = "Updating inference request.")]
+        public static partial void InferenceRequestUpdateState(this ILogger logger);
+
+        [LoggerMessage(EventId = 2006, Level = LogLevel.Information, Message = "Inference request updated.")]
+        public static partial void InferenceRequestUpdated(this ILogger logger);
+
+        [LoggerMessage(EventId = 2007, Level = LogLevel.Error, Message = "Error while updating inference request. Waiting {timespan} before next retry. Retry attempt {retryCount}...")]
+        public static partial void InferenceRequestUpdateError(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
+
+        // Payload Assembler
+        [LoggerMessage(EventId = 3000, Level = LogLevel.Information, Message = "Restoring payloads from database.")]
+        public static partial void RestorePayloads(this ILogger logger);
+
+        [LoggerMessage(EventId = 3001, Level = LogLevel.Information, Message = "Payload {payloadId} restored from database.")]
+        public static partial void PayloadRestored(this ILogger logger, Guid payloadId);
+
+        [LoggerMessage(EventId = 3002, Level = LogLevel.Information, Message = "{count} payloads restored from database.")]
+        public static partial void TotalNumberOfPayloadsRestored(this ILogger logger, int count);
+
+        [LoggerMessage(EventId = 3003, Level = LogLevel.Information, Message = "File added to bucket {key}. Queue size: {count}")]
+        public static partial void FileAddedToBucket(this ILogger logger, string key, int count);
+
+        [LoggerMessage(EventId = 3004, Level = LogLevel.Trace, Message = "Number of buckets active: {count}.")]
+        public static partial void BucketActive(this ILogger logger, int count);
+
+        [LoggerMessage(EventId = 3005, Level = LogLevel.Trace, Message = "Checking elapsed time for bucket: {key}.")]
+        public static partial void BucketElapsedTime(this ILogger logger, string key);
+
+        [LoggerMessage(EventId = 3006, Level = LogLevel.Warning, Message = "Dropping Bucket {key} due to empty.")]
+        public static partial void DropEmptyBUcket(this ILogger logger, string key);
+
+        [LoggerMessage(EventId = 3007, Level = LogLevel.Information, Message = "Bucket {key} sent to processing queue with {count} files.")]
+        public static partial void BucketReady(this ILogger logger, string key, int count);
+
+        [LoggerMessage(EventId = 3008, Level = LogLevel.Warning, Message = "Error processing bucket {key} with ID {id}, will retry later.")]
+        public static partial void BucketError(this ILogger logger, string key, Guid id, Exception ex);
+
+        [LoggerMessage(EventId = 3009, Level = LogLevel.Warning, Message = "Error removing bucket {key}.")]
+        public static partial void BucketRemoveError(this ILogger logger, string key);
+
+        [LoggerMessage(EventId = 3010, Level = LogLevel.Debug, Message = "Bucket not found.")]
+        public static partial void BucketNotFound(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 3011, Level = LogLevel.Error, Message = "Error while processing buckets/payloads.")]
+        public static partial void ErrorProcessingBuckets(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 3012, Level = LogLevel.Information, Message = "Bucket {key} created with timeout {timeout}s.")]
+        public static partial void BucketCreated(this ILogger logger, string key, uint timeout);
+
+        // Storage
+        [LoggerMessage(EventId = 4000, Level = LogLevel.Information, Message = "Temporary Storage Path={path}.")]
+        public static partial void TemporaryStoragePath(this ILogger logger, string path);
+
+        [LoggerMessage(EventId = 4001, Level = LogLevel.Information, Message = "Storage Size: {totalSize:N0}. Reserved: {reservedSpace:N0}.")]
+        public static partial void StorageSizeWithReserve(this ILogger logger, long totalSize, long reservedSpace);
+
+        [LoggerMessage(EventId = 4002, Level = LogLevel.Information, Message = "Storage Size: {totalSize:N0}. Reserved: {reservedSpace:N0}. Available: {freeSpace:N0}.")]
+        public static partial void StorageSizeWithReserveAndAvailable(this ILogger logger, long totalSize, long reservedSpace, long freeSpace);
+
+        [LoggerMessage(EventId = 4003, Level = LogLevel.Debug, Message = "Waiting for instance...")]
+        public static partial void SpaceReclaimerWaitingForTask(this ILogger logger);
+
+        [LoggerMessage(EventId = 4004, Level = LogLevel.Error, Message = "Error occurred deleting file {file} on {retryCount} retry.")]
+        public static partial void ErrorDeletingFIle(this ILogger logger, string file, int retryCount, Exception ex);
+
+        [LoggerMessage(EventId = 4005, Level = LogLevel.Debug, Message = "Deleting file {filePath}.")]
+        public static partial void DeletingFile(this ILogger logger, string filePath);
+
+        [LoggerMessage(EventId = 4006, Level = LogLevel.Debug, Message = "File deleted {filePath}.")]
+        public static partial void FileDeleted(this ILogger logger, string filePath);
+
+        [LoggerMessage(EventId = 4007, Level = LogLevel.Debug, Message = "Deleting directory {directory}.")]
+        public static partial void DeletingDirectory(this ILogger logger, string directory);
+
+        [LoggerMessage(EventId = 4008, Level = LogLevel.Error, Message = "Error deleting directory {directory}.")]
+        public static partial void ErrorDeletingDirectory(this ILogger logger, string directory, Exception ex);
+
+        [LoggerMessage(EventId = 4009, Level = LogLevel.Debug, Message = "File added to cleanup queue {file}. Queue size: {size}.")]
+        public static partial void InstanceAddedToCleanupQueue(this ILogger logger, string file, int size);
     }
 }

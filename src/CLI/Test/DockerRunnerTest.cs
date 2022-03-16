@@ -30,6 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _configurationService = new Mock<IConfigurationService>();
             _dockerClient = new Mock<IDockerClient>();
             _fileSystem = new Mock<IFileSystem>();
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "DockerRunner Constructor")]

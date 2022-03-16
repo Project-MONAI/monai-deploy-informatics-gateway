@@ -33,6 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             ErrorCode = info.GetInt32(nameof(ErrorCode));
         }
+
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             Guard.Against.Null(info, nameof(info));

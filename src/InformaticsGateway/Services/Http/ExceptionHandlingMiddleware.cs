@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -41,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, $"HTTP error in request {context.Request.Path}.");
+                _logger.HttpRequestError(context.Request.Path, ex);
                 await HandleExceptionAsync(context, ex).ConfigureAwait(false);
             }
         }

@@ -9,6 +9,7 @@ using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Repositories
@@ -42,14 +43,14 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
                     retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                     (exception, timeSpan, retryCount, context) =>
                 {
-                    _logger.Log(LogLevel.Error, exception, $"Error saving inference request. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                    _logger.ErrorSavingInferenceRequest(timeSpan, retryCount, exception);
                 })
                 .ExecuteAsync(async () =>
                 {
-                    await _inferenceRequestRepository.AddAsync(inferenceRequest);
-                    await _inferenceRequestRepository.SaveChangesAsync();
+                    await _inferenceRequestRepository.AddAsync(inferenceRequest).ConfigureAwait(false);
+                    await _inferenceRequestRepository.SaveChangesAsync().ConfigureAwait(false);
                     _inferenceRequestRepository.Detach(inferenceRequest);
-                    _logger.Log(LogLevel.Debug, $"Inference request saved.");
+                    _logger.InferenceRequestSaved();
                 })
                 .ConfigureAwait(false);
         }
@@ -69,18 +70,18 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             {
                 if (++inferenceRequest.TryCount > MaxRetryLimit)
                 {
-                    _logger.Log(LogLevel.Information, $"Exceeded maximum retries.");
+                    _logger.InferenceRequestUpdateExceededMaximumRetries();
                     inferenceRequest.State = InferenceRequestState.Completed;
                     inferenceRequest.Status = InferenceRequestStatus.Fail;
                 }
                 else
                 {
-                    _logger.Log(LogLevel.Information, $"Will retry later.");
+                    _logger.InferenceRequestUpdateRetryLater();
                     inferenceRequest.State = InferenceRequestState.Queued;
                 }
             }
 
-            await Save(inferenceRequest);
+            await Save(inferenceRequest).ConfigureAwait(false);
         }
 
         public async Task<InferenceRequest> Take(CancellationToken cancellationToken)
@@ -93,11 +94,11 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
                 {
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
                     inferenceRequest.State = InferenceRequestState.InProcess;
-                    _logger.Log(LogLevel.Debug, $"Updating request {inferenceRequest.TransactionId} to InProgress.");
-                    await Save(inferenceRequest);
+                    _logger.InferenceRequestSetToInProgress(inferenceRequest.TransactionId);
+                    await Save(inferenceRequest).ConfigureAwait(false);
                     return inferenceRequest;
                 }
-                await Task.Delay(250, cancellationToken);
+                await Task.Delay(250, cancellationToken).ConfigureAwait(false);
             }
 
             throw new OperationCanceledException("cancellation requsted");
@@ -112,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         public async Task<InferenceRequest> GetInferenceRequest(Guid inferenceRequestId)
         {
             Guard.Against.NullOrEmpty(inferenceRequestId, nameof(inferenceRequestId));
-            return await _inferenceRequestRepository.FindAsync(inferenceRequestId);
+            return await _inferenceRequestRepository.FindAsync(inferenceRequestId).ConfigureAwait(false);
         }
 
         public bool Exists(string transactionId)
@@ -134,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
             response.TransactionId = item.TransactionId;
 
-            return await Task.FromResult(response);
+            return await Task.FromResult(response).ConfigureAwait(false);
         }
 
         private async Task Save(InferenceRequest inferenceRequest)
@@ -148,17 +149,17 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
                      retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
                      (exception, timeSpan, retryCount, context) =>
                      {
-                         _logger.Log(LogLevel.Error, exception, $"Error while updating inference request. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                         _logger.InferenceRequestUpdateError(timeSpan, retryCount, exception);
                      })
                  .ExecuteAsync(async () =>
                  {
-                     _logger.Log(LogLevel.Debug, $"Updating inference request.");
+                     _logger.InferenceRequestUpdateState();
                      if (inferenceRequest.State == InferenceRequestState.Completed)
                      {
                          _inferenceRequestRepository.Detach(inferenceRequest);
                      }
-                     await _inferenceRequestRepository.SaveChangesAsync();
-                     _logger.Log(LogLevel.Information, $"Inference request updated.");
+                     await _inferenceRequestRepository.SaveChangesAsync().ConfigureAwait(false);
+                     _logger.InferenceRequestUpdated();
                  })
                  .ConfigureAwait(false);
         }

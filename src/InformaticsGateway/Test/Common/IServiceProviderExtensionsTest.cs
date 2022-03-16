@@ -20,6 +20,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
         {
             _serviceProvider = new Mock<IServiceProvider>();
             _logger = new Mock<ILogger<Program>>();
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "LocateService shall throw when type is unknown")]

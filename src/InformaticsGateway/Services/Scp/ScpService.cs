@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using FoDicomNetwork = FellowOakDicom.Network;
 
@@ -58,11 +59,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Information, $"MONAI Deploy Informatics Gateway (SCP Service) {Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version} loading...");
+            _logger.ScpServiceLoading(Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version);
 
             try
             {
-                _logger.Log(LogLevel.Information, "Starting SCP Service.");
+                _logger.ServiceStarting(ServiceName);
                 _server = FoDicomNetwork.DicomServerFactory.Create<ScpServiceInternal>(
                     FoDicomNetwork.NetworkManager.IPv4Any,
                     _configuration.Value.Dicom.Scp.Port,
@@ -74,17 +75,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
                 if (_server.Exception != null)
                 {
-                    _logger.Log(LogLevel.Critical, _server.Exception, "Failed to initialize SCP listener.");
+                    _logger.ScpListenerInitializationFailure();
                     throw _server.Exception;
                 }
 
                 Status = ServiceStatus.Running;
-                _logger.Log(LogLevel.Information, $"SCP listening on port: {_configuration.Value.Dicom.Scp.Port}");
+                _logger.ScpListeningOnPort(_configuration.Value.Dicom.Scp.Port);
             }
             catch (System.Exception ex)
             {
                 Status = ServiceStatus.Cancelled;
-                _logger.Log(LogLevel.Critical, ex, "Failed to start SCP listener.");
+                _logger.ServiceFailedToStart(ServiceName, ex);
                 _appLifetime.StopApplication();
             }
             return Task.CompletedTask;
@@ -92,11 +93,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Information, "Stopping SCP Service.");
+            _logger.ServiceStopping(ServiceName);
             _server?.Stop();
             _server?.Dispose();
             Status = ServiceStatus.Stopped;
-            _logger.Log(LogLevel.Information, "SCP Service stopped.");
             return Task.CompletedTask;
         }
     }

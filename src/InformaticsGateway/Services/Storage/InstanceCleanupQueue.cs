@@ -7,6 +7,7 @@ using System.Threading;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
 {
@@ -26,7 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             Guard.Against.Null(file, nameof(file));
 
             _workItems.Add(file);
-            _logger.Log(LogLevel.Debug, $"File added to cleanup queue {file}. Queue size: {_workItems.Count}");
+            _logger.InstanceAddedToCleanupQueue(file.FilePath, _workItems.Count);
         }
 
         public FileStorageInfo Dequeue(CancellationToken cancellationToken)

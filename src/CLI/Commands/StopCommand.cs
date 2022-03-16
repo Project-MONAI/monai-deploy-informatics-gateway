@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
@@ -35,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             if (!yes && !confirmation.ShowConfirmationPrompt($"Do you want to stop {Strings.ApplicationName}?"))
             {
-                logger.Log(LogLevel.Warning, "Action cancelled.");
+                logger.ActionCancelled();
                 return ExitCodes.Stop_Cancelled;
             }
 
@@ -45,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, ex, ex.Message);
+                logger.CriticalException(ex.Message);
                 return ExitCodes.Stop_Error;
             }
             return ExitCodes.Success;

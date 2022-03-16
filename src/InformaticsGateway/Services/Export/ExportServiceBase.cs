@@ -166,12 +166,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 foreach (var iex in ex.InnerExceptions)
                 {
-                    _logger.Log(LogLevel.Error, iex, "Error occurred while exporting.");
+                    _logger.ErrorExporting(iex);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error processing export task.");
+                _logger.ErrorProcessingExportTask(ex);
             }
         }
 

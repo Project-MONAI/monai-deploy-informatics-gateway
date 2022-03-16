@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common.Test
         [Fact(DisplayName = "EnsureUriEndsWithSlash shall append slash to end")]
         public void EnsureUriEndsWithSlash_AppendSlash()
         {
-            Uri input = new Uri("http://1.2.3.4/api");
+            var input = new Uri("http://1.2.3.4/api");
 
             var output = input.EnsureUriEndsWithSlash();
 
@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common.Test
         [Fact(DisplayName = "EnsureUriEndsWithSlash shall not append slash to end")]
         public void EnsureUriEndsWithSlash_DoesNotAppendSlash()
         {
-            Uri input = new Uri("http://1.2.3.4/api/");
+            var input = new Uri("http://1.2.3.4/api/");
 
             var output = input.EnsureUriEndsWithSlash();
 

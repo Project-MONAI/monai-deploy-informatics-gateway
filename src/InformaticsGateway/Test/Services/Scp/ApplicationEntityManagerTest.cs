@@ -187,7 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}. Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
 
-            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Saving instance", LogLevel.Debug, Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Instance saved", LogLevel.Information, Times.Once());
 
             _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());

@@ -75,6 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         }
 
 #pragma warning disable S927 // Parameter names should match base declaration and other partial definitions
+
         public T FirstOrDefault(Func<T, bool> func)
 #pragma warning restore S927 // Parameter names should match base declaration and other partial definitions
         {
@@ -84,6 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         }
 
 #pragma warning disable S927 // Parameter names should match base declaration and other partial definitions
+
         public void Detach(T item)
 #pragma warning restore S927 // Parameter names should match base declaration and other partial definitions
         {
@@ -92,6 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         }
 
 #pragma warning disable S927 // Parameter names should match base declaration and other partial definitions
+
         public bool Any(Func<T, bool> func)
 #pragma warning restore S927 // Parameter names should match base declaration and other partial definitions
         {

@@ -7,6 +7,7 @@ using System.IO.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
 {
@@ -50,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 _fileSystem.Directory.CreateDirectory(_storageConfiguration.TemporaryDataDirFullPath);
             }
-            _logger.Log(LogLevel.Information, $"Temporary Storage Path={_storageConfiguration.TemporaryDataDirFullPath}.");
+            _logger.TemporaryStoragePath(_storageConfiguration.TemporaryDataDirFullPath);
 
             Initialize();
         }
@@ -60,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             var driveInfo = _fileSystem.DriveInfo.FromDriveName(_storageConfiguration.TemporaryDataDirFullPath);
             _reservedSpace = (long)(driveInfo.TotalSize * (1 - (_storageConfiguration.Watermark / 100.0)));
             _reservedSpace = Math.Max(_reservedSpace, _storageConfiguration.ReserveSpaceGB * OneGB);
-            _logger.Log(LogLevel.Information, $"Storage Size: {driveInfo.TotalSize:N0}. Reserved: {_reservedSpace:N0}.");
+            _logger.StorageSizeWithReserve(driveInfo.TotalSize, _reservedSpace);
         }
 
         private bool IsSpaceAvailable()
@@ -71,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
             if (freeSpace <= _reservedSpace)
             {
-                _logger.Log(LogLevel.Information, $"Storage Size: {driveInfo.TotalSize:N0}. Reserved: {_reservedSpace:N0}. Available: {freeSpace:N0}.");
+                _logger.StorageSizeWithReserveAndAvailable(driveInfo.TotalSize, _reservedSpace, freeSpace);
             }
 
             return freeSpace > _reservedSpace;

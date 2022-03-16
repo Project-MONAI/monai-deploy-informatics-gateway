@@ -93,6 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         }
 
 #pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
+
         public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
 #pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {

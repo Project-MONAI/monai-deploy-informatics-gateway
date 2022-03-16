@@ -176,7 +176,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             DbContext = GetDatabaseContext();
         }
 
-
         public static InformaticsGatewayContext GetDatabaseContext()
         {
             var options = new DbContextOptionsBuilder<InformaticsGatewayContext>()

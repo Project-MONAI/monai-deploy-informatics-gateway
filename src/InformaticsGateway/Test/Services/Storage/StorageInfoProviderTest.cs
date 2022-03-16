@@ -31,6 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _fileSystem.Setup(p => p.DriveInfo.FromDriveName(It.IsAny<string>()))
                     .Returns(_driveInfo.Object);
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Available free space")]

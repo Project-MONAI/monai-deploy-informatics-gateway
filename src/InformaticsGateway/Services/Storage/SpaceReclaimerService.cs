@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Polly;
 
@@ -48,10 +49,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private void BackgroundProcessing(CancellationToken stoppingToken)
         {
-            _logger.Log(LogLevel.Information, "Disk Space Reclaimer Hosted Service is running.");
+            _logger.ServiceRunning(ServiceName);
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.Log(LogLevel.Debug, "Waiting for instance...");
+                _logger.SpaceReclaimerWaitingForTask();
                 try
                 {
                     var file = _taskQueue.Dequeue(stoppingToken);
@@ -62,19 +63,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    _logger.Log(LogLevel.Critical, ex, "The cleanup queue may have been disposed.");
+                    _logger.ServiceDisposed(ServiceName, ex);
                     break;
                 }
                 catch (Exception ex)
                 {
                     if (ex is InvalidOperationException || ex is OperationCanceledException)
                     {
-                        _logger.Log(LogLevel.Error, ex, "The cleanup queue may have been modified out marked as completed.");
+                        _logger.ServiceInvalidOrCancelled(ServiceName, ex);
                     }
                 }
             }
             Status = ServiceStatus.Cancelled;
-            _logger.Log(LogLevel.Information, "Cancellation requested.");
+            _logger.ServiceCancelled(ServiceName);
         }
 
         private void ProcessFile(FileStorageInfo file)
@@ -85,19 +86,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 .WaitAndRetry(
                     3,
                     retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                    (exception, retryCount, context) =>
+                    (exception, timespan, retryCount, context) =>
                     {
-                        _logger.Log(LogLevel.Error, exception, $"Error occurred deleting file {file} on {retryCount} retry.");
+                        _logger.ErrorDeletingFIle(file.FilePath, retryCount, exception);
                     })
                 .Execute(() =>
                 {
                     foreach (var filePath in file.FilePaths)
                     {
-                        _logger.Log(LogLevel.Debug, $"Deleting file {filePath}");
+                        _logger.DeletingFile(filePath);
                         if (_fileSystem.File.Exists(filePath))
                         {
                             _fileSystem.File.Delete(filePath);
-                            _logger.Log(LogLevel.Debug, $"File deleted {filePath}");
+                            _logger.FileDeleted(filePath);
                         }
                     }
 
@@ -126,13 +127,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 try
                 {
-                    _logger.Log(LogLevel.Debug, $"Deleting directory {dirPath}");
+                    _logger.DeletingDirectory(dirPath);
                     _fileSystem.Directory.Delete(dirPath);
                     RecursivelyRemoveDirectoriesIfEmpty(_fileSystem.Directory.GetParent(dirPath).FullName);
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log(LogLevel.Error, ex, $"Error deleting directory {dirPath}.");
+                    _logger.ErrorDeletingDirectory(dirPath, ex);
                 }
             }
         }
@@ -142,9 +143,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             var task = Task.Run(() =>
             {
                 BackgroundProcessing(cancellationToken);
-            });
+            }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
+            _logger.ServiceRunning(ServiceName);
             if (task.IsCompleted)
                 return task;
             return Task.CompletedTask;
@@ -152,7 +154,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Disk Space Reclaimer Hosted Service is stopping.");
+            _logger.ServiceStopping(ServiceName);
             Status = ServiceStatus.Stopped;
             return Task.CompletedTask;
         }
