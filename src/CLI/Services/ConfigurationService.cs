@@ -54,8 +54,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             _logger.Log(LogLevel.Information, $"Saving appsettings.json to {Common.ConfigFilePath}...");
             using (var fileStream = _fileSystem.FileStream.Create(Common.ConfigFilePath, FileMode.Create))
             {
-                await stream.CopyToAsync(fileStream, cancellationToken);
-                await fileStream.FlushAsync(cancellationToken);
+                await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
+                await fileStream.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
             _logger.Log(LogLevel.Information, $"{Common.ConfigFilePath} updated successfully.");
         }

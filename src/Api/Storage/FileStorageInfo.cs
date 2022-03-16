@@ -178,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// </summary>
         protected virtual string GenerateStoragePath()
         {
-            string filePath = System.IO.Path.Combine(StorageRootPath, $"{CorrelationId}-{MessageId}") + FileExtension;
+            var filePath = System.IO.Path.Combine(StorageRootPath, $"{CorrelationId}-{MessageId}") + FileExtension;
             filePath = filePath.ToLowerInvariant();
             var index = 1;
             while (FileSystem.File.Exists(filePath))

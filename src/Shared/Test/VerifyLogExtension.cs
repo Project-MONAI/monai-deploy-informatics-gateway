@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Moq;
 
-namespace Monai.Deploy.InformaticsGateway.Shared.Test
+namespace Monai.Deploy.InformaticsGateway.SharedTest
 {
     [ExcludeFromCodeCoverage]
     public static class VerifyLogExtension

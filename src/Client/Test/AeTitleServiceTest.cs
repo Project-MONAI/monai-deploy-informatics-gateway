@@ -69,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Workflows = new System.Collections.Generic.List<string>() { "A", "B" }
             };
 
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -138,7 +138,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 HostIp = "1.2.3.4"
             };
 
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -207,7 +207,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 HostIp = "1.2.3.4"
             };
 
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -285,7 +285,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         [Fact(DisplayName = "AE Title - List returns a problem")]
         public async Task List_ReturnsAProblem()
         {
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",

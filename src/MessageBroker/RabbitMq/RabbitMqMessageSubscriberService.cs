@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                 VirtualHost = _virtualHost
             };
 
-            _logger.Log(LogLevel.Information, $"{Name} connecting to {_endpoint}/{_virtualHost}");
+            _logger.ConnectingToRabbitMq(Name, _endpoint, _virtualHost);
             _connection = connectionFactory.CreateConnection();
             _channel = _connection.CreateModel();
             _channel.ExchangeDeclare(_exchange, ExchangeType.Topic);
@@ -90,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
                     { "ApplicationId", eventArgs.BasicProperties.AppId }
                 });
 
-                _logger.Log(LogLevel.Information, $"Message received from queue {queueDeclareResult.QueueName} for {topic}.");
+                _logger.MessageReceivedFromQueue(queueDeclareResult.QueueName, topic);
 
                 var messageReceivedEventArgs = new MessageReceivedEventArgs(
                  new Message(
@@ -108,25 +108,25 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             };
             _channel.BasicQos(0, prefetchCount, false);
             _channel.BasicConsume(queueDeclareResult.QueueName, false, consumer);
-            _logger.Log(LogLevel.Information, $"Listening for messages from {_endpoint}/{_virtualHost}. Exchange={_exchange}, Queue={queueDeclareResult.QueueName}, Routing Key={topic}");
+            _logger.SubscribeToRabbitMqQueue(_endpoint, _virtualHost, _exchange, queueDeclareResult.QueueName, topic);
         }
 
         public void Acknowledge(MessageBase message)
         {
             Guard.Against.Null(message, nameof(message));
 
-            _logger.Log(LogLevel.Information, $"Sending message acknowledgement for message {message.MessageId}");
+            _logger.SendingAcknowledgement(message.MessageId);
             _channel.BasicAck(ulong.Parse(message.DeliveryTag, CultureInfo.InvariantCulture), multiple: false);
-            _logger.Log(LogLevel.Information, $"Ackowledge sent for message {message.MessageId}");
+            _logger.AcknowledgementSent(message.MessageId);
         }
 
         public void Reject(MessageBase message)
         {
             Guard.Against.Null(message, nameof(message));
 
-            _logger.Log(LogLevel.Information, $"Sending nack message {message.MessageId} and requeuing.");
+            _logger.SendingNAcknowledgement(message.MessageId);
             _channel.BasicNack(ulong.Parse(message.DeliveryTag, CultureInfo.InvariantCulture), multiple: false, requeue: true);
-            _logger.Log(LogLevel.Information, $"Nack message sent for message {message.MessageId}");
+            _logger.NAcknowledgementSent(message.MessageId);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -135,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             {
                 if (disposing && _connection is not null)
                 {
-                    _logger.Log(LogLevel.Information, $"Closing connection.");
+                    _logger.ClosingConnection();
                     _connection.Close();
                     _connection.Dispose();
                 }

@@ -11,7 +11,7 @@ using FellowOakDicom.Log;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 
-namespace Monai.Deploy.InformaticsGateway.Test.Shared
+namespace Monai.Deploy.InformaticsGateway.SharedTest
 {
     public class DicomScpFixture : IDisposable
     {

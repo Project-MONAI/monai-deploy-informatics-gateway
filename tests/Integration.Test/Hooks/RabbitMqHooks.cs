@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Globalization;
 using System.Text;
 using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -70,13 +71,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
         private void BeforeMessagingSubscribeTo(string queue, string routingKey)
         {
-            if (_scenarioContext.ContainsKey(ScenarioContextKey))
+            if (_scenarioContext.ContainsKey(ScenarioContextKey) && _scenarioContext[ScenarioContextKey] is IList<Message> messages && messages.Count > 0)
             {
-                var messages = _scenarioContext[ScenarioContextKey] as IList<Message>;
-                if (messages != null && messages.Count > 0)
-                {
-                    _outputHelper.WriteLine($"Existing message queue wasn't empty and contains {messages.Count} messages but will be cleared.");
-                }
+                _outputHelper.WriteLine($"Existing message queue wasn't empty and contains {messages.Count} messages but will be cleared.");
             }
             _scenarioContext.Add(ScenarioContextKey, new List<Message>());
             _channel.QueueDeclare(queue: queue, durable: true, exclusive: false, autoDelete: false);
@@ -96,8 +93,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
                      applicationId: eventArgs.BasicProperties.AppId,
                      contentType: eventArgs.BasicProperties.ContentType,
                      correlationId: eventArgs.BasicProperties.CorrelationId,
-                     creationDateTime: DateTime.Parse(Encoding.UTF8.GetString((byte[])eventArgs.BasicProperties.Headers["CreationDateTime"])),
-                     deliveryTag: eventArgs.DeliveryTag.ToString());
+                     creationDateTime: DateTime.Parse(Encoding.UTF8.GetString((byte[])eventArgs.BasicProperties.Headers["CreationDateTime"]), CultureInfo.InvariantCulture),
+                     deliveryTag: eventArgs.DeliveryTag.ToString(CultureInfo.InvariantCulture));
 
                 (_scenarioContext[ScenarioContextKey] as IList<Message>)?.Add(messsage);
                 _channel.BasicAck(eventArgs.DeliveryTag, false);

@@ -22,7 +22,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
@@ -74,6 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor")]
@@ -125,8 +126,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             await store.StopAsync(cancellationTokenSource.Token);
             Thread.Sleep(500);
 
-            _logger.VerifyLogging($"Data Retriever Hosted Service is running.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Data Retriever Hosted Service is stopping.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.Never());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
@@ -154,8 +155,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             Thread.Sleep(250);
             await store.StopAsync(cancellationTokenSource.Token);
 
-            _logger.VerifyLogging($"Data Retriever Hosted Service is running.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Data Retriever Hosted Service is stopping.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
@@ -258,7 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             BlockUntilCancelled(cancellationTokenSource.Token);
 
-            _logger.VerifyLoggingMessageBeginsWith($"Restored previously retrieved instance", LogLevel.Debug, Times.Exactly(5));
+            _logger.VerifyLoggingMessageBeginsWith($"Restored previously retrieved file", LogLevel.Debug, Times.Exactly(5));
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(5));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());

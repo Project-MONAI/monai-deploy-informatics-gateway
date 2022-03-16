@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Xunit;
 
@@ -49,6 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 .AddCommand(new ConfigCommand());
             _paser = _commandLineBuilder.Build();
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "config comand")]
@@ -98,10 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLogging("Informatics Gateway API: http://test", LogLevel.Information, Times.Once());
             _logger.VerifyLogging("DICOM SCP Listening Port: 100", LogLevel.Information, Times.Once());
             _logger.VerifyLogging("Container Runner: Docker", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("Host:", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("   Database storage mount: DB", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("   Data storage mount: Data", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("   Logs storage mount: Logs", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Host:\r\n\tDatabase storage mount: DB\r\n\tData storage mount: Data\r\n\tLogs storage mount: Logs", LogLevel.Information, Times.Once());
         }
 
         [Fact(DisplayName = "config show comand exception")]

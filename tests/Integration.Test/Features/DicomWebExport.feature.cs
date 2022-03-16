@@ -24,7 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
 
     Requirements covered:
     - [REQ-DCW-03] MIG SHALL be able to export to DICOMweb services via STOW-RS
-    - [REQ-DCW-07] MIG SHALL support exporting data to multiple DICOMweb destinations", ProgrammingLanguage.CSharp, ((string[])(null)));
+    - [REQ-DCW-07] MIG SHALL support exporting data to multiple DICOMweb destinations", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -54,27 +54,27 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             testRunner = null;
         }
         
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
         }
         
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -95,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         [Xunit.InlineDataAttribute("MG", new string[0])]
         [Xunit.InlineDataAttribute("US", new string[0])]
         [Xunit.InlineDataAttribute("Tiny", new string[0])]
-        public virtual void ExportToADICOMwebService(string modality, string[] exampleTags)
+        public void ExportToADICOMwebService(string modality, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "messaging_export_complete",
@@ -108,21 +108,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             string[] tagsOfScenario = @__tags;
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("modality", modality);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Export to a DICOMweb service", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Export to a DICOMweb service", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 21
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }

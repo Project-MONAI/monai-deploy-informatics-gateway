@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Repositories;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;

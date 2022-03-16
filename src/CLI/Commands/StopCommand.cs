@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await service.StopService(cancellationToken);
+                await service.StopService(cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

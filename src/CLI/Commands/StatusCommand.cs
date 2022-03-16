@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
@@ -44,24 +43,24 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Retrieving service status...");
-                response = await client.Health.Status(cancellationToken);
+                response = await client.Health.Status(cancellationToken).ConfigureAwait(false);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error retrieving service status: {ex.Message}");
+                logger.ErrorRetrievingStatus(ex.Message);
                 return ExitCodes.Status_Error;
             }
 
-            logger.Log(LogLevel.Information, $"Number of active DIMSE connections: {response.ActiveDimseConnections}");
-            logger.Log(LogLevel.Information, "Service Status: ");
+            logger.StatusDimseConnections(response.ActiveDimseConnections);
+            logger.ServiceStatusHeader();
             foreach (var service in response.Services.Keys)
             {
-                logger.Log(LogLevel.Information, $"\t\t{service}: {response.Services[service]}");
+                logger.ServiceStatusItem(service, response.Services[service]);
             }
             return ExitCodes.Success;
         }

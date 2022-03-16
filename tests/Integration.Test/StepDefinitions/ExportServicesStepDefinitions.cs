@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using Ardalis.GuardClauses;
@@ -101,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _configuration.StudySpecs.ContainsKey(modality).Should().BeTrue();
 
             var studySpec = _configuration.StudySpecs[modality];
-            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
             var fileSpecs = _dicomInstanceGenerator.Generate(patientId, studyCount, modality, studySpec);
 
             var hashes = new Dictionary<string, string>();
@@ -133,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             var dicomHashes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
 
-            string destination = _scenarioContext[KeyDestination].ToString();
+            var destination = _scenarioContext[KeyDestination].ToString();
 
             var exportRequestMessage = new ExportRequestMessage
             {
@@ -183,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                  var actualHashes = new Dictionary<string, string>();
                  try
                  {
-                     int instanceFound = 0;
+                     var instanceFound = 0;
                      await foreach (var dicomFile in dicomWebClient.Wado.Retrieve(fileSpecs.StudyInstanceUids[0]))
                      {
                          var key = dicomFile.GenerateFileName();

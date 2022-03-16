@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;

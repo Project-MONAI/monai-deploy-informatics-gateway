@@ -6,7 +6,7 @@ using System.IO.Abstractions;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 
-namespace Monai.Deploy.InformaticsGateway.Shared.Test
+namespace Monai.Deploy.InformaticsGateway.SharedTest
 {
     public static class InstanceGenerator
     {

@@ -76,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Storage
             },
             error =>
             {
-                _logger.Log(LogLevel.Warning, error, $"Error listing objects in bucket '{bucketName}'.");
+                _logger.ListObjectError(bucketName);
             },
             () => completedEvent.Set(), cancellationToken);
 

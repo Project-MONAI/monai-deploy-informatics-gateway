@@ -82,21 +82,19 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             try
             {
                 CheckConfiguration(configService);
-                logger.Log(LogLevel.Information, $"Informatics Gateway API: {configService.Configurations.InformaticsGatewayServerEndpoint}");
-                logger.Log(LogLevel.Information, $"DICOM SCP Listening Port: {configService.Configurations.DicomListeningPort}");
-                logger.Log(LogLevel.Information, $"Container Runner: {configService.Configurations.Runner}");
-                logger.Log(LogLevel.Information, $"Host:");
-                logger.Log(LogLevel.Information, $"   Database storage mount: {configService.Configurations.HostDatabaseStorageMount}");
-                logger.Log(LogLevel.Information, $"   Data storage mount: {configService.Configurations.HostDataStorageMount}");
-                logger.Log(LogLevel.Information, $"   Logs storage mount: {configService.Configurations.HostLogsStorageMount}");
+                logger.ConfigInformaticsGatewayApiEndpoint(configService.Configurations.InformaticsGatewayServerEndpoint);
+                logger.ConfigDicomScpPort(configService.Configurations.DicomListeningPort);
+                logger.ConfigContainerRunner(configService.Configurations.Runner);
+                logger.ConfigHostInfo(configService.Configurations.HostDatabaseStorageMount, configService.Configurations.HostDataStorageMount, configService.Configurations.HostLogsStorageMount);
             }
-            catch (ConfigurationException)
+            catch (ConfigurationException ex)
             {
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Error, ex.Message);
+                logger.CriticalException(ex.Message);
                 return ExitCodes.Config_ErrorShowing;
             }
             return ExitCodes.Success;
@@ -118,13 +116,14 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 updater(config);
                 logger.Log(LogLevel.Information, "Configuration updated successfully.");
             }
-            catch (ConfigurationException)
+            catch (ConfigurationException ex)
             {
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Error, ex.Message);
+                logger.CriticalException(ex.Message);
                 return ExitCodes.Config_ErrorSaving;
             }
             return ExitCodes.Success;
@@ -152,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Error, ex.Message);
+                logger.CriticalException(ex.Message);
                 return ExitCodes.Config_ErrorInitializing;
             }
             return ExitCodes.Success;

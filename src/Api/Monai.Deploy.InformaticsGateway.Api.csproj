@@ -13,7 +13,7 @@ SPDX-License-Identifier: Apache License 2.0
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="GitVersion.MsBuild" Version="5.8.2">
+        <PackageReference Include="GitVersion.MsBuild" Version="5.9.0">
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />

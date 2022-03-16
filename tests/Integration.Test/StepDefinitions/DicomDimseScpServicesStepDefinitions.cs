@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.Globalization;
 using System.Net;
 using System.Text;
 using Ardalis.GuardClauses;
@@ -19,7 +20,6 @@ using FluentAssertions.Execution;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
@@ -108,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _configuration.StudySpecs.ContainsKey(modality).Should().BeTrue();
 
             var studySpec = _configuration.StudySpecs[modality];
-            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
             var fileSpecs = _dicomInstanceGenerator.Generate(patientId, studyCount, modality, studySpec);
             _scenarioContext[KeyDicomFiles] = fileSpecs;
             _rabbitMqHooks.SetupMessageHandle(fileSpecs.NumberOfExpectedRequests(_scenarioContext[KeyDataGrouping].ToString()));
@@ -126,7 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _configuration.StudySpecs.ContainsKey(modality).Should().BeTrue();
 
             var studySpec = _configuration.StudySpecs[modality];
-            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
             var fileSpecs = _dicomInstanceGenerator.Generate(patientId, studyCount, seriesPerStudy, modality, studySpec);
             _scenarioContext[KeyDicomFiles] = fileSpecs;
             _rabbitMqHooks.SetupMessageHandle(fileSpecs.NumberOfExpectedRequests(_scenarioContext[KeyDataGrouping].ToString()));
@@ -212,7 +212,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var dicomFileSize = new Dictionary<string, string>();
             foreach (var dicomFile in dicomFileSpec.Files)
             {
-                string key = dicomFile.GenerateFileName();
+                var key = dicomFile.GenerateFileName();
                 dicomFileSize[key] = dicomFile.CalculateHash();
             }
 
@@ -235,7 +235,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             foreach (var message in messages)
             {
                 var request = message.ConvertTo<WorkflowRequestMessage>();
-                foreach (BlockStorageInfo file in request.Payload)
+                foreach (var file in request.Payload)
                 {
                     var dicomValidationKey = string.Empty;
                     await minioClient.GetObjectAsync(file.Bucket, $"{request.PayloadId}/{file.Path}", (stream) =>

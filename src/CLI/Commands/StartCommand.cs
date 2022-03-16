@@ -35,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await service.StartService(cancellationToken);
+                await service.StartService(cancellationToken).ConfigureAwait(false);
             }
             catch (ControlException ex) when (ex.ErrorCode == ExitCodes.Start_Error_ApplicationAlreadyRunning)
             {

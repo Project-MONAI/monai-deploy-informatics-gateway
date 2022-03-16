@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             }
             finally
             {
-                foreach (Stream stream in streams)
+                foreach (var stream in streams)
                 {
                     stream.Dispose();
                 }

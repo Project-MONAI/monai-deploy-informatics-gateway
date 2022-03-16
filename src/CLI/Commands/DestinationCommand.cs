@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
@@ -97,22 +96,22 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Retrieving DICOM destinations...");
-                items = await client.DicomDestinations.List(cancellationToken);
+                items = await client.DicomDestinations.List(cancellationToken).ConfigureAwait(false);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error retrieving DICOM destinations: {ex.Message}");
+                logger.ErrorListingDicomDestinations(ex.Message);
                 return ExitCodes.DestinationAe_ErrorList;
             }
 
             if (items.IsNullOrEmpty())
             {
-                logger.Log(LogLevel.Warning, "No DICOM destinations configured.");
+                logger.NoDicomDestinationFound();
             }
             else
             {
@@ -155,17 +154,17 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Deleting DICOM destination {name}...");
-                _ = await client.DicomDestinations.Delete(name, cancellationToken);
-                logger.Log(LogLevel.Information, $"DICOM destination '{name}' deleted.");
+                _ = await client.DicomDestinations.Delete(name, cancellationToken).ConfigureAwait(false);
+                logger.DicomDestinationDeleted(name);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error deleting DICOM destination {name}: {ex.Message}");
+                logger.ErrorDeletingDicomDestination(name, ex.Message);
                 return ExitCodes.DestinationAe_ErrorDelete;
             }
             return ExitCodes.Success;
@@ -191,22 +190,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                var result = await client.DicomDestinations.Create(entity, cancellationToken);
+                var result = await client.DicomDestinations.Create(entity, cancellationToken).ConfigureAwait(false);
 
-                logger.Log(LogLevel.Information, $"New DICOM destination created:");
-                logger.Log(LogLevel.Information, $"\tName:            {result.Name}");
-                logger.Log(LogLevel.Information, $"\tAE Title:        {result.AeTitle}");
-                logger.Log(LogLevel.Information, $"\tHost/IP Address: {result.HostIp}");
-                logger.Log(LogLevel.Information, $"\tPort:            {result.Port}");
+                logger.DicomDestinationCreated(result.Name, result.AeTitle, result.HostIp, result.Port);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error creating DICOM destination {entity.AeTitle}: {ex.Message}");
+                logger.ErrorCreatingDicomDestination(entity.AeTitle, ex.Message);
                 return ExitCodes.DestinationAe_ErrorCreate;
             }
             return ExitCodes.Success;

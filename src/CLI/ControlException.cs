@@ -3,6 +3,7 @@
 
 using System;
 using System.Runtime.Serialization;
+using Ardalis.GuardClauses;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
@@ -11,7 +12,15 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public int ErrorCode { get; }
 
-        private ControlException()
+        protected ControlException()
+        {
+        }
+
+        protected ControlException(string message) : base(message)
+        {
+        }
+
+        protected ControlException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
@@ -22,6 +31,15 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         protected ControlException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
+            ErrorCode = info.GetInt32(nameof(ErrorCode));
+        }
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            Guard.Against.Null(info, nameof(info));
+
+            info.AddValue(nameof(ErrorCode), ErrorCode);
+
+            base.GetObjectData(info, context);
         }
     }
 }

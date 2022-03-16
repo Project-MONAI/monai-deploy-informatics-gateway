@@ -21,7 +21,7 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;
@@ -80,6 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             {
                 return _logger.Object;
             });
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall throw if AE Title not configured")]
@@ -138,9 +139,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
 
-            _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}. Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith($"Instance ignored due to matching SOP Class UID {DicomUID.SecondaryCaptureImageStorage.UID}", LogLevel.Information, Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Never());
@@ -184,9 +184,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
 
-            _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}. Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Instance saved", LogLevel.Information, Times.Once());
@@ -239,7 +238,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
             });
 
-            _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Preparing to save:", LogLevel.Debug, Times.Never());
             _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
             _logger.VerifyLoggingMessageBeginsWith($"Instance queued for upload", LogLevel.Information, Times.Never());
@@ -330,7 +329,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.False(manager.IsValidSource(sourceAeTitle, "1.2.3.4"));
 
             _sourceEntityRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()), Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Available source AET: SAE @ 1.2.3.4", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Available source AET: SAE @ 1.2.3.4.", LogLevel.Information, Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "IsValidSource - False when IP does not match")]

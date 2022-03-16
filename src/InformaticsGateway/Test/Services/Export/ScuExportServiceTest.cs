@@ -19,8 +19,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
-using Monai.Deploy.InformaticsGateway.Test.Shared;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;
@@ -82,6 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             DicomScpFixture.Logger = _scpLogger.Object;
             _dicomScp.Start(_port);
             _configuration.Value.Export.Retries.DelaysMilliseconds = new[] { 1 };
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]

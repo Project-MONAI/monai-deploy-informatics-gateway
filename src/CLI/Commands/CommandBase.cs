@@ -40,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 }
                 else
                 {
-                    logger.Log(LogLevel.Debug, message);
+                    logger.DebugMessage(message);
                 }
             }
         }

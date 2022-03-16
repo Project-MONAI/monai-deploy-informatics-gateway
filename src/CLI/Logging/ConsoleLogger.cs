@@ -10,14 +10,13 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 {
     public class ConsoleLogger : ILogger
     {
-        private readonly string _name;
         private readonly ConsoleLoggerConfiguration _configuration;
 
         public ConsoleLogger(string name, ConsoleLoggerConfiguration configuration)
         {
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
-            _name = name;
+            _ = name;
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         }
 

@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task RestartService(CancellationToken cancellationToken = default)
         {
-            await StopService().ConfigureAwait(false);
+            await StopService(cancellationToken).ConfigureAwait(false);
             await StartService(cancellationToken).ConfigureAwait(false);
         }
 
@@ -41,12 +41,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             var runner = _containerRunnerFactory.GetContainerRunner();
 
-            var applicationVersion = await runner.GetLatestApplicationVersion(cancellationToken);
+            var applicationVersion = await runner.GetLatestApplicationVersion(cancellationToken).ConfigureAwait(false);
             if (applicationVersion is null)
             {
                 throw new ControlException(ExitCodes.Start_Error_ApplicationNotFound, $"No {Strings.ApplicationName} Docker images with prefix `{_configurationService.Configurations.DockerImagePrefix}` found.");
             }
-            var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken);
+            var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken).ConfigureAwait(false);
 
             if (runnerState.IsRunning)
             {

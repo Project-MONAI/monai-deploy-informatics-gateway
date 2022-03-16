@@ -99,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
             var frames = Math.Max(1, size / Rows / Columns);
             var pixelData = DicomPixelData.Create(dataset, true);
-            for (int frame = 0; frame < frames; frame++)
+            for (var frame = 0; frame < frames; frame++)
             {
                 pixelData.AddFrame(new MemoryByteBuffer(GeneratePixelData(Rows, Columns)));
             }
@@ -121,14 +121,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
             var generator = SetPatient(patientId);
 
-            for (int study = 0; study < studiesPerPatient; study++)
+            for (var study = 0; study < studiesPerPatient; study++)
             {
                 generator.GenerateNewStudy();
                 studyInstanceUids.Add(_baseDataset.GetString(DicomTag.StudyInstanceUID));
-                for (int series = 0; series < seriesPerStudy; series++)
+                for (var series = 0; series < seriesPerStudy; series++)
                 {
                     generator.GenerateNewSeries();
-                    for (int instance = 0; instance < instancesPerSeries; instance++)
+                    for (var instance = 0; instance < instancesPerSeries; instance++)
                     {
                         var size = _random.NextLong(studySpec.SizeMinBytes, studySpec.SizeMaxBytes);
                         dicomFile = generator.GenerateNewInstance(size);

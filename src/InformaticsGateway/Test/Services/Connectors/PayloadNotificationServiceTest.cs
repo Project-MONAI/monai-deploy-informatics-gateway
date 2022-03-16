@@ -17,7 +17,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;
@@ -62,6 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1 };
             _options.Value.Storage.StorageServiceBucketName = "bucket";
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(DisplayName = "PayloadNotificationService_Constructor")]
@@ -78,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [RetryFact(DisplayName = "Payload Notification Service shall stop processing when StopAsync is called")]
-        public void PayloadNotificationService_ShallStopProcessing()
+        public async Task PayloadNotificationService_ShallStopProcessing()
         {
             var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Upload };
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
@@ -97,13 +98,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                                                          _messageBrokerPublisherService.Object,
                                                          _instanceCleanupQueue.Object);
 
-            service.StartAsync(_cancellationTokenSource.Token);
-            service.StopAsync(_cancellationTokenSource.Token);
+            await service.StartAsync(_cancellationTokenSource.Token);
+            await service.StopAsync(_cancellationTokenSource.Token);
             _cancellationTokenSource.CancelAfter(150);
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
 
-            _logger.VerifyLogging($"Stopping {service.ServiceName}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{service.ServiceName} stopped, waiting for queues to complete...", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{service.ServiceName} is stopping.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Waiting for {service.ServiceName} to stop.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Uploading payload {payload.Id} to storage service at {_options.Value.Storage.StorageServiceBucketName}.", LogLevel.Information, Times.Never());
         }
 
@@ -198,7 +199,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
             _logger.VerifyLogging($"Uploading payload {payload.Id} to storage service at {_options.Value.Storage.StorageServiceBucketName}.", LogLevel.Information, Times.Exactly(2));
             _logger.VerifyLogging($"Failed to upload payload {payload.Id}; added back to queue for retry.", LogLevel.Warning, Times.Once());
-            _logger.VerifyLogging($"Updating payload state={payload.State}, retries=1.", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging($"Updating payload {payload.Id} state={payload.State}, retries=1.", LogLevel.Error, Times.Once());
             _logger.VerifyLogging($"Reached maximum number of retries for payload {payload.Id}, giving up.", LogLevel.Error, Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith($"Uploading file ", LogLevel.Debug, Times.Exactly(2));
@@ -235,7 +236,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLoggingMessageBeginsWith($"Publishing workflow request message ID=", LogLevel.Information, Times.Exactly(2));
             _logger.VerifyLoggingMessageBeginsWith($"Workflow request published, ID=", LogLevel.Information, Times.Never());
             _logger.VerifyLogging($"Failed to publish workflow request for payload {payload.Id}; added back to queue for retry.", LogLevel.Warning, Times.Once());
-            _logger.VerifyLogging($"Updating payload state={payload.State}, retries=1.", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging($"Updating payload {payload.Id} state={payload.State}, retries=1.", LogLevel.Error, Times.Once());
             _logger.VerifyLogging($"Reached maximum number of retries for payload {payload.Id}, giving up.", LogLevel.Error, Times.Once());
             _instanceCleanupQueue.Verify(p => p.Queue(It.IsAny<FileStorageInfo>()), Times.Never());
         }

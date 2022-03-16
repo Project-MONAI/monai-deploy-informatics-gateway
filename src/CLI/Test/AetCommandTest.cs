@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Xunit;
 
@@ -62,6 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _configurationService.SetupGet(p => p.IsConfigExists).Returns(true);
             _configurationService.Setup(p => p.Configurations.InformaticsGatewayServerUri).Returns(new Uri("http://test"));
             _configurationService.Setup(p => p.Configurations.InformaticsGatewayServerEndpoint).Returns("http://test");
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "aet comand")]

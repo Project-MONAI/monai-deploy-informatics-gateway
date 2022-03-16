@@ -5,8 +5,6 @@
 using System;
 using System.Net;
 using System.Runtime.Serialization;
-using System.Security.Permissions;
-using FellowOakDicom;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 {
@@ -15,7 +13,6 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
     {
         public HttpStatusCode? StatusCode { get; }
         public string ResponseMessage { get; }
-        public DicomDataset ResponseDataset { get; }
 
         public DicomWebClientException(HttpStatusCode? statusCode, string responseMessage, Exception innerException)
             : base(responseMessage, innerException)
@@ -26,12 +23,10 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 
         protected DicomWebClientException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
-            StatusCode = (HttpStatusCode?)info.GetValue("StatusCode", typeof(HttpStatusCode?));
-            ResponseMessage = info.GetString("ResponseMessage");
-            ResponseDataset = (DicomDataset)info.GetValue("ResponseDataset", typeof(DicomDataset));
+            StatusCode = (HttpStatusCode?)info.GetValue(nameof(StatusCode), typeof(HttpStatusCode?));
+            ResponseMessage = info.GetString(nameof(ResponseMessage));
         }
 
-        [SecurityPermissionAttribute(SecurityAction.Demand, SerializationFormatter = true)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
@@ -39,9 +34,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
                 throw new ArgumentNullException("info");
             }
 
-            info.AddValue("StatusCode", StatusCode, typeof(HttpStatusCode?));
-            info.AddValue("ResponseMessage", ResponseMessage);
-            info.AddValue("ResponseDataset", ResponseDataset, typeof(DicomDataset));
+            info.AddValue(nameof(StatusCode), StatusCode, typeof(HttpStatusCode?));
+            info.AddValue(nameof(ResponseMessage), ResponseMessage);
 
             base.GetObjectData(info, context);
         }
