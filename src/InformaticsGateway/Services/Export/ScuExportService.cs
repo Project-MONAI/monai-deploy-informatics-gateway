@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Polly;
@@ -62,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
             catch (ConfigurationException ex)
             {
-                _logger.Log(LogLevel.Error, ex, ex.Message);
+                _logger.ScuExportConfigurationError(ex.Message, ex);
                 exportRequestData.SetFailed(ex.Message);
                 return exportRequestData;
             }
@@ -76,9 +77,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     _configuration.Value.Dicom.Scu.AeTitle,
                     destination.AeTitle);
 
-                client.AssociationAccepted += (sender, args) => _logger.Log(LogLevel.Information, "Association accepted.");
-                client.AssociationRejected += (sender, args) => _logger.Log(LogLevel.Warning, "Association rejected.");
-                client.AssociationReleased += (sender, args) => _logger.Log(LogLevel.Information, "Association release.");
+                client.AssociationAccepted += (sender, args) => _logger.AssociationAccepted();
+                client.AssociationRejected += (sender, args) => _logger.AssociationRejected();
+                client.AssociationReleased += (sender, args) => _logger.AssociationReleased();
                 client.ServiceOptions.LogDataPDUs = _configuration.Value.Dicom.Scu.LogDataPdus;
                 client.ServiceOptions.LogDimseDatasets = _configuration.Value.Dicom.Scu.LogDimseDatasets;
 
@@ -91,14 +92,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            _configuration.Value.Export.Retries.RetryDelays,
                            (exception, timeSpan, retryCount, context) =>
                            {
-                               _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOM destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                               _logger.DimseExportErrorWithRetry(timeSpan, retryCount, exception);
                            })
                        .ExecuteAsync(async () =>
                        {
-                           _logger.Log(LogLevel.Information, $"Sending job to {destination.AeTitle}@{destination.HostIp}:{destination.Port}");
+                           _logger.DimseExporting(destination.AeTitle, destination.HostIp, destination.Port);
                            await client.SendAsync(cancellationToken).ConfigureAwait(false);
                            manualResetEvent.WaitOne();
-                           _logger.LogInformation($"Job sent to {destination.AeTitle} completed");
+                           _logger.DimseExportComplete(destination.AeTitle);
                        }).ConfigureAwait(false);
                 }
             }
@@ -125,7 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             if (destination is null)
             {
-                throw new ConfigurationException($"Specified destination '{exportRequestData.Destination}' does not exist");
+                throw new ConfigurationException($"Specified destination '{exportRequestData.Destination}' does not exist.");
             }
 
             return destination;
@@ -146,12 +147,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 {
                     if (response.Status == DicomStatus.Success)
                     {
-                        _logger.Log(LogLevel.Information, "Job sent successfully.");
+                        _logger.DimseExportInstanceComplete();
                     }
                     else
                     {
                         var errorMessage = $"Failed to export with error {response.Status}";
-                        _logger.Log(LogLevel.Error, errorMessage);
+                        _logger.DimseExportInstanceError(response.Status);
                         exportRequestData.SetFailed(errorMessage);
                     }
                     manualResetEvent.Set();
@@ -163,7 +164,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             catch (Exception exception)
             {
                 var errorMessage = $"Error while adding DICOM C-STORE request: {exception.Message}";
-                _logger.Log(LogLevel.Error, exception, errorMessage);
+                _logger.DimseExportErrorAddingInstance(exception.Message, exception);
                 exportRequestData.SetFailed(errorMessage);
                 return false;
             }
@@ -193,7 +194,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 errorMessage = $"Association aborted with error {socketException.Message}.";
             }
 
-            _logger.Log(LogLevel.Error, ex, errorMessage);
+            _logger.ExportException(errorMessage, ex);
             exportRequestData.SetFailed(errorMessage);
         }
     }

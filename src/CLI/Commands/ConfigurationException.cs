@@ -9,7 +9,15 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     [Serializable]
     public class ConfigurationException : Exception
     {
+        private ConfigurationException()
+        {
+        }
+
         public ConfigurationException(string message) : base(message)
+        {
+        }
+
+        public ConfigurationException(string message, Exception innerException) : base(message, innerException)
         {
         }
 

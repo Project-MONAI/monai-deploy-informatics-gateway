@@ -5,7 +5,7 @@ using System;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Xunit;
 
@@ -20,6 +20,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
         {
             _serviceProvider = new Mock<IServiceProvider>();
             _logger = new Mock<ILogger<Program>>();
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "LocateService shall throw when type is unknown")]

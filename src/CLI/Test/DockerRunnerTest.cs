@@ -11,7 +11,7 @@ using Docker.DotNet;
 using Docker.DotNet.Models;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Xunit;
 
@@ -30,6 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _configurationService = new Mock<IConfigurationService>();
             _dockerClient = new Mock<IDockerClient>();
             _fileSystem = new Mock<IFileSystem>();
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "DockerRunner Constructor")]

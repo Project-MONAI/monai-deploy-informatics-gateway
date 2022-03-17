@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;
@@ -31,6 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _fileSystem.Setup(p => p.DriveInfo.FromDriveName(It.IsAny<string>()))
                     .Returns(_driveInfo.Object);
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Available free space")]

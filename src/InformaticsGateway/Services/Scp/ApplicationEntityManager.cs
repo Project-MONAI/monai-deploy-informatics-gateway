@@ -18,6 +18,7 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -87,11 +88,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private void OnApplicationStopping()
         {
-            _logger.Log(LogLevel.Information, "ApplicationEntityManager stopping.");
+            _logger.ApplicationEntityManagerStopping();
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
 #pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
+
         public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
 #pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {
@@ -122,9 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", info.SopInstanceUid }, { "Correlation ID", associationId } }))
             {
-                _logger.Log(LogLevel.Information, "Study Instance UID: {StudyInstanceUid}", info.StudyInstanceUid);
-                _logger.Log(LogLevel.Information, "Series Instance UID: {SeriesInstanceUid}", info.SeriesInstanceUid);
-                _logger.Log(LogLevel.Information, "Storage File Path: {InstanceStorageFullPath}", info.FilePath);
+                _logger.InstanceInformation(info.StudyInstanceUid, info.SeriesInstanceUid, info.FilePath);
 
                 await _aeTitles[calledAeTitle].HandleInstance(request, info).ConfigureAwait(false);
             }
@@ -147,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private void InitializeMonaiAeTitles()
         {
-            _logger.Log(LogLevel.Information, "Loading MONAI Application Entities from data store.");
+            _logger.LoadingMonaiAeTitles();
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
@@ -163,11 +163,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _dicomToolkit, _loggerFactory.CreateLogger<ApplicationEntityHandler>(), Configuration.Value.Dicom.WriteDicomJson);
             if (!_aeTitles.TryAdd(entity.AeTitle, handler))
             {
-                _logger.Log(LogLevel.Error, $"AE Title {0} could not be added to CStore Manager.  Already exits: {1}", entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));
+                _logger.AeTitleCannotBeAdded(entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));
             }
             else
             {
-                _logger.Log(LogLevel.Information, $"{entity.AeTitle} added to AE Title Manager");
+                _logger.AeTitleAdded(entity.AeTitle);
             }
         }
 
@@ -178,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public void OnError(Exception error)
         {
-            _logger.Log(LogLevel.Error, error, "Error notifying observer.");
+            _logger.ErrorNotifyingObserver();
         }
 
         public void OnNext(MonaiApplicationentityChangedEvent applicationChangedEvent)
@@ -193,7 +193,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
                 case ChangedEventType.Deleted:
                     _ = _aeTitles.TryRemove(applicationChangedEvent.ApplicationEntity.AeTitle, out _);
-                    _logger.Log(LogLevel.Information, $"{applicationChangedEvent.ApplicationEntity.AeTitle} removed from AE Title Manager");
+                    _logger.AeTitleRemoved(applicationChangedEvent.ApplicationEntity.AeTitle);
                     break;
             }
         }
@@ -213,7 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             {
                 foreach (var src in repository.AsQueryable())
                 {
-                    _logger.Log(LogLevel.Information, $"Available source AET: {src.AeTitle} @ {src.HostIp}");
+                    _logger.AvailableSource(src.AeTitle, src.HostIp);
                 }
             }
 

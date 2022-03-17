@@ -13,7 +13,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;
@@ -47,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
 
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "PayloadAssembler_Constructor")]
@@ -87,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cancellationTokenSource.Cancel();
 
             _logger.VerifyLogging($"Restoring payloads from database.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"1 paylaods restored from database.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"1 payloads restored from database.", LogLevel.Information, Times.Once());
         }
 
         [RetryFact(DisplayName = "PayloadAssembler shall retry when it fails to add payload to database")]
@@ -144,8 +145,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.AtLeastOnce());
-            _logger.VerifyLoggingMessageBeginsWith($"Error processing payload", LogLevel.Warning, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of buckets active: 1.", LogLevel.Trace, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Error processing bucket", LogLevel.Warning, Times.AtLeastOnce());
         }
 
         [RetryFact(DisplayName = "PayloadAssembler shall enqueue payload on timed event")]
@@ -158,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var result = payloadAssembler.Dequeue(_cancellationTokenSource.Token);
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of buckets active: 1.", LogLevel.Trace, Times.AtLeastOnce());
             Assert.Single(result.Files);
             _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue with {result.Count} files", LogLevel.Information, Times.AtLeastOnce());
         }

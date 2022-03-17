@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 
@@ -42,11 +43,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                return Ok(await _repository.ToListAsync());
+                return Ok(await _repository.ToListAsync().ConfigureAwait(false));
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error querying database.");
+                _logger.ErrorQueryingDatabase(ex);
                 return Problem(title: "Error querying database.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -61,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var monaiApplicationEntity = await _repository.FindAsync(name);
+                var monaiApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
 
                 if (monaiApplicationEntity is null)
                 {
@@ -72,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error querying MONAI Application Entity.");
+                _logger.ErrorListingMonaiApplicationEntities(ex);
                 return Problem(title: "Error querying MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -91,10 +92,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 item.SetDefaultValues();
 
-                await _repository.AddAsync(item);
-                await _repository.SaveChangesAsync();
+                await _repository.AddAsync(item).ConfigureAwait(false);
+                await _repository.SaveChangesAsync().ConfigureAwait(false);
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(item, ChangedEventType.Added));
-                _logger.Log(LogLevel.Information, $"MONAI SCP AE Title added AE Title={item.AeTitle}.");
+                _logger.MonaiApplicationEntityAdded(item.AeTitle);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ConfigurationException ex)
@@ -103,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error adding new MONAI Application Entity.");
+                _logger.ErrorAddingMonaiApplicationEntity(ex);
                 return Problem(title: "Error adding new MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -117,22 +118,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var monaiApplicationEntity = await _repository.FindAsync(name);
+                var monaiApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
                 if (monaiApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
                 _repository.Remove(monaiApplicationEntity);
-                await _repository.SaveChangesAsync();
+                await _repository.SaveChangesAsync().ConfigureAwait(false);
 
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(monaiApplicationEntity, ChangedEventType.Deleted));
-                _logger.Log(LogLevel.Information, $"MONAI SCP Application Entity deleted {name}.");
+                _logger.MonaiApplicationEntityDeleted(name);
                 return Ok(monaiApplicationEntity);
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error deleting MONAI Application Entity.");
+                _logger.ErrorDeletingMonaiApplicationEntity(ex);
                 return Problem(title: "Error deleting MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }

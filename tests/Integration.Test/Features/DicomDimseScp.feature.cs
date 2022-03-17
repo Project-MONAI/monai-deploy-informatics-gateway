@@ -24,7 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private string[] _featureTags = ((string[])(null));
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
     - [REQ-FNC-02] MIG SHALL notify other subsystems when data is ready for processing
     - [REQ-FNC-03] MIG SHALL wait for data to arrive before submitting a job
     - [REQ-FNC-04] MIG SHALL make DICOM data available to other subsystems by grouping them into patient, study, or series
-    - [REQ-FNC-05] MIG SHALL notify users of system events", ProgrammingLanguage.CSharp, ((string[])(null)));
+    - [REQ-FNC-05] MIG SHALL notify users of system events", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
@@ -59,27 +59,27 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             testRunner = null;
         }
         
-        public virtual void TestInitialize()
+        public void TestInitialize()
         {
         }
         
-        public virtual void TestTearDown()
+        public void TestTearDown()
         {
             testRunner.OnScenarioEnd();
         }
         
-        public virtual void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
+        public void ScenarioInitialize(TechTalk.SpecFlow.ScenarioInfo scenarioInfo)
         {
             testRunner.OnScenarioInitialize(scenarioInfo);
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Xunit.Abstractions.ITestOutputHelper>(_testOutputHelper);
         }
         
-        public virtual void ScenarioStart()
+        public void ScenarioStart()
         {
             testRunner.OnScenarioStart();
         }
         
-        public virtual void ScenarioCleanup()
+        public void ScenarioCleanup()
         {
             testRunner.CollectScenarioErrors();
         }
@@ -101,25 +101,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         [Xunit.SkippableFactAttribute(DisplayName="Response to C-ECHO-RQ")]
         [Xunit.TraitAttribute("FeatureTitle", "DICOM DIMSE SCP Services")]
         [Xunit.TraitAttribute("Description", "Response to C-ECHO-RQ")]
-        public virtual void ResponseToC_ECHO_RQ()
+        public void ResponseToC_ECHO_RQ()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Response to C-ECHO-RQ", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Response to C-ECHO-RQ", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 28
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -152,7 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         [Xunit.InlineDataAttribute("CT", "1", new string[0])]
         [Xunit.InlineDataAttribute("MG", "2", new string[0])]
         [Xunit.InlineDataAttribute("US", "1", new string[0])]
-        public virtual void RespondToC_STORE_RQAndGroupDataByStudyInstanceUID(string modality, string count, string[] exampleTags)
+        public void RespondToC_STORE_RQAndGroupDataByStudyInstanceUID(string modality, string count, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "messaging_workflow_request",
@@ -165,21 +155,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("modality", modality);
             argumentsOfScenario.Add("count", count);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Study Instance UID", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Study Instance UID", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 34
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }
@@ -224,7 +204,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         [Xunit.InlineDataAttribute("CT", "1", "2", new string[0])]
         [Xunit.InlineDataAttribute("MG", "1", "3", new string[0])]
         [Xunit.InlineDataAttribute("US", "1", "2", new string[0])]
-        public virtual void RespondToC_STORE_RQAndGroupDataBySeriesInstanceUID(string modality, string study_Count, string series_Count, string[] exampleTags)
+        public void RespondToC_STORE_RQAndGroupDataBySeriesInstanceUID(string modality, string study_Count, string series_Count, string[] exampleTags)
         {
             string[] @__tags = new string[] {
                     "messaging_workflow_request",
@@ -238,21 +218,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             argumentsOfScenario.Add("modality", modality);
             argumentsOfScenario.Add("study_count", study_Count);
             argumentsOfScenario.Add("series_count", series_Count);
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Series Instance UID", null, tagsOfScenario, argumentsOfScenario, this._featureTags);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Series Instance UID", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 51
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
-            bool isScenarioIgnored = default(bool);
-            bool isFeatureIgnored = default(bool);
-            if ((tagsOfScenario != null))
-            {
-                isScenarioIgnored = tagsOfScenario.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((this._featureTags != null))
-            {
-                isFeatureIgnored = this._featureTags.Where(__entry => __entry != null).Where(__entry => String.Equals(__entry, "ignore", StringComparison.CurrentCultureIgnoreCase)).Any();
-            }
-            if ((isScenarioIgnored || isFeatureIgnored))
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
             {
                 testRunner.SkipScenario();
             }

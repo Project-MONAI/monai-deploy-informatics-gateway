@@ -24,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -74,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var task = Task.Run(async () =>
             {
                 await BackgroundProcessing(cancellationToken).ConfigureAwait(true);
-            });
+            }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
             if (task.IsCompleted)
@@ -84,14 +85,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Data Retriever Hosted Service is stopping.");
+            _logger.ServiceStopping(ServiceName);
             Status = ServiceStatus.Stopped;
             return Task.CompletedTask;
         }
 
         private async Task BackgroundProcessing(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Information, "Data Retriever Hosted Service is running.");
+            _logger.ServiceRunning(ServiceName);
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -99,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
                 if (!_storageInfoProvider.HasSpaceAvailableToRetrieve)
                 {
-                    _logger.Log(LogLevel.Warning, $"Data retrieval paused due to insufficient storage space.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}.");
+                    _logger.DataRetrievalPaused(_storageInfoProvider.AvailableFreeSpace);
                     await Task.Delay(500, cancellationToken).ConfigureAwait(true);
                     continue;
                 }
@@ -110,23 +111,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     request = await repository.Take(cancellationToken).ConfigureAwait(false);
                     using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } }))
                     {
-                        _logger.Log(LogLevel.Information, "Processing inference request.");
+                        _logger.ProcessingInferenceRequest();
                         await ProcessRequest(request, cancellationToken).ConfigureAwait(false);
                         await repository.Update(request, InferenceRequestStatus.Success).ConfigureAwait(false);
-                        _logger.Log(LogLevel.Information, "Inference request completed and ready for job submission.");
+                        _logger.InferenceRequestProcessed();
                     }
                 }
                 catch (OperationCanceledException ex)
                 {
-                    _logger.Log(LogLevel.Warning, ex, "Data Retriever Service canceled.");
+                    _logger.ServiceCancelledWithException(ServiceName, ex);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    _logger.Log(LogLevel.Warning, ex, "Data Retriever Service may be disposed.");
+                    _logger.ServiceDisposed(ServiceName, ex);
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log(LogLevel.Error, ex, $"Error processing request: TransactionId = {request?.TransactionId}");
+                    _logger.ErrorProcessingInferenceRequest(request?.TransactionId, ex);
                     if (request != null)
                     {
                         await repository.Update(request, InferenceRequestStatus.Fail).ConfigureAwait(false);
@@ -134,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
             }
             Status = ServiceStatus.Cancelled;
-            _logger.Log(LogLevel.Information, "Cancellation requested.");
+            _logger.ServiceCancelled(ServiceName);
         }
 
         private async Task ProcessRequest(InferenceRequest inferenceRequest, CancellationToken cancellationToken)
@@ -146,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             foreach (var source in inferenceRequest.InputResources)
             {
-                _logger.Log(LogLevel.Information, $"Processing input source '{source.Interface}' from {source.ConnectionDetails.Uri}");
+                _logger.ProcessingInputResource(source.Interface, source.ConnectionDetails.Uri);
                 switch (source.Interface)
                 {
                     case InputInterfaceType.DicomWeb:
@@ -160,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     case InputInterfaceType.Algorithm:
                         continue;
                     default:
-                        _logger.Log(LogLevel.Warning, $"Specified input interface is not supported '{source.Interface}`");
+                        _logger.UnsupportedInputInterface(source.Interface);
                         break;
                 }
             }
@@ -192,7 +193,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
             Guard.Against.Null(retrievedInstances, nameof(retrievedInstances));
 
-            _logger.Log(LogLevel.Debug, $"Restoring previously retrieved DICOM instances from {inferenceRequest.StoragePath}");
+            _logger.RestoringRetrievedFiles(inferenceRequest.StoragePath);
             foreach (var file in _fileSystem.Directory.EnumerateFiles(inferenceRequest.StoragePath, "*", System.IO.SearchOption.AllDirectories))
             {
                 var instance = new FileStorageInfo { StorageRootPath = inferenceRequest.StoragePath, CorrelationId = inferenceRequest.TransactionId, FilePath = file };
@@ -202,7 +203,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     continue;
                 }
                 retrievedInstances.Add(instance.FilePath, instance);
-                _logger.Log(LogLevel.Debug, $"Restored previously retrieved instance {instance.FilePath}");
+                _logger.RestoredFile(instance.FilePath);
             }
         }
 
@@ -268,7 +269,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, $"Error retrieving FHIR resource {resource?.Type}/{resource?.Id}");
+                _logger.ErrorRetrievingFhirResource(resource?.Type, resource?.Id, ex);
                 throw;
             }
         }
@@ -283,7 +284,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.NullOrWhiteSpace(storagePath, nameof(storagePath));
             Guard.Against.NullOrWhiteSpace(acceptHeader, nameof(acceptHeader));
 
-            _logger.Log(LogLevel.Debug, $"Retriving FHIR resource {resource.Type}/{resource.Id} with media format {acceptHeader} and file format {fhirFormat}.");
+            _logger.RetrievingFhirResource(resource.Type, resource.Id, acceptHeader, fhirFormat);
             var request = new HttpRequestMessage(HttpMethod.Get, $"{source.ConnectionDetails.Uri}{resource.Type}/{resource.Id}");
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(acceptHeader));
             var response = await Policy
@@ -295,7 +296,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     },
                     (result, timeSpan, retryCount, context) =>
                     {
-                        _logger.Log(LogLevel.Error, result.Exception, $"Failed to retrieve resource {resource.Type}/{resource.Id} with status code {result.Result.StatusCode}, retry count={retryCount}.");
+                        _logger.ErrorRetrievingFhirResourceWithRetry(resource.Type, resource.Id, result.Result.StatusCode, retryCount, result.Exception);
                     })
                 .ExecuteAsync(async () => await httpClient.SendAsync(request).ConfigureAwait(false)).ConfigureAwait(false);
 
@@ -310,7 +311,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
             else
             {
-                _logger.Log(LogLevel.Error, $"Error retriving FHIR resource {resource.Type}/{resource.Id}. Recevied HTTP status code {response.StatusCode}.");
+                _logger.ErrorRetrievingFhirResourceWithStatus(resource.Type, resource.Id, response.StatusCode);
                 return false;
             }
         }
@@ -371,7 +372,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.NullOrWhiteSpace(dicomTag, nameof(dicomTag));
             Guard.Against.NullOrWhiteSpace(queryValue, nameof(queryValue));
 
-            _logger.Log(LogLevel.Information, $"Performing QIDO with {dicomTag}={queryValue}.");
+            _logger.PerformQido(dicomTag, queryValue);
             var queryParams = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
             {
                 { dicomTag, queryValue }
@@ -387,11 +388,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     {
                         StudyInstanceUid = studyInstanceUid
                     });
-                    _logger.Log(LogLevel.Debug, $"Study {studyInstanceUid} found with QIDO query {dicomTag}={queryValue}.");
+                    _logger.StudyFoundWithQido(studyInstanceUid, dicomTag, queryValue);
                 }
                 else
                 {
-                    _logger.Log(LogLevel.Warning, $"Instance {result.GetSingleValueOrDefault(DicomTag.SOPInstanceUID, "UKNOWN")} does not contain StudyInstanceUid.");
+                    _logger.InstanceMissingStudyInstanceUid(result.GetSingleValueOrDefault(DicomTag.SOPInstanceUID, "UKNOWN"));
                 }
             }
 
@@ -401,7 +402,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
             else
             {
-                _logger.Log(LogLevel.Warning, $"No studies found with specified query parameter {dicomTag}={queryValue}.");
+                _logger.QidoCompletedWithNoResult(dicomTag, queryValue);
             }
         }
 
@@ -420,7 +421,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 if (study.Series.IsNullOrEmpty())
                 {
-                    _logger.Log(LogLevel.Information, $"Retrieving study {study.StudyInstanceUid}");
+                    _logger.RetrievingStudyWithWado(study.StudyInstanceUid);
                     var files = dicomWebClient.Wado.Retrieve(study.StudyInstanceUid);
                     await SaveFiles(transactionId, files, storagePath, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
@@ -446,7 +447,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 if (series.Instances.IsNullOrEmpty())
                 {
-                    _logger.Log(LogLevel.Information, $"Retrieving series {series.SeriesInstanceUid}");
+                    _logger.RetrievingSeriesWithWado(series.SeriesInstanceUid);
                     var files = dicomWebClient.Wado.Retrieve(study.StudyInstanceUid, series.SeriesInstanceUid);
                     await SaveFiles(transactionId, files, storagePath, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
@@ -474,14 +475,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     {
                         break;
                     }
-                    _logger.Log(LogLevel.Information, $"Retrieving instance {sopInstanceUid}");
+                    _logger.RetrievingInstanceWithWado(sopInstanceUid);
                     var file = await dicomWebClient.Wado.Retrieve(studyInstanceUid, series.SeriesInstanceUid, sopInstanceUid).ConfigureAwait(false);
                     if (file is null) continue;
                     var fileStorageInfo = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(CultureInfo.InvariantCulture), transactionId, _fileSystem);
                     PopulateHeaders(fileStorageInfo, file);
                     if (retrievedInstance.ContainsKey(fileStorageInfo.FilePath))
                     {
-                        _logger.Log(LogLevel.Warning, $"Instance '{fileStorageInfo.FilePath}' already retrieved/stored.");
+                        _logger.InstanceAlreadyExists(fileStorageInfo.FilePath);
                         continue;
                     }
 
@@ -512,13 +513,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
                 if (retrievedInstance.ContainsKey(instance.FilePath))
                 {
-                    _logger.Log(LogLevel.Warning, $"Instance '{instance.FilePath}' already retrieved/stored.");
+                    _logger.InstanceAlreadyExists(instance.FilePath);
                     continue;
                 }
 
                 SaveFile(file, instance);
                 retrievedInstance.Add(instance.FilePath, instance);
-                _logger.Log(LogLevel.Debug, $"Instance saved in {instance.FilePath}.");
             }
         }
 
@@ -540,15 +540,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     return retryAttempt == 1 ? TimeSpan.FromMilliseconds(250) : TimeSpan.FromMilliseconds(500);
                 },
-                (exception, retryCount, context) =>
+                (exception, timeSpan, retryCount, context) =>
                 {
-                    _logger.Log(LogLevel.Error, "Failed to save instance, retry count={retryCount}: {exception}", retryCount, exception);
+                    _logger.ErrorSavingInstance(instanceStorageInfo.FilePath, retryCount, exception);
                 })
                 .Execute(() =>
                 {
-                    _logger.Log(LogLevel.Information, "Saving DICOM instance {path}.", instanceStorageInfo.FilePath);
+                    _logger.SavingInstance(instanceStorageInfo.FilePath);
                     _dicomToolkit.Save(file, instanceStorageInfo.FilePath, instanceStorageInfo.DicomJsonFilePath, _options.Value.Dicom.WriteDicomJson);
-                    _logger.Log(LogLevel.Debug, "Instance saved successfully.");
+                    _logger.InstanceSaved(instanceStorageInfo.FilePath);
                 });
         }
 

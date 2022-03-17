@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task RestartService(CancellationToken cancellationToken = default)
         {
-            await StopService().ConfigureAwait(false);
+            await StopService(cancellationToken).ConfigureAwait(false);
             await StartService(cancellationToken).ConfigureAwait(false);
         }
 
@@ -41,12 +41,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             var runner = _containerRunnerFactory.GetContainerRunner();
 
-            var applicationVersion = await runner.GetLatestApplicationVersion(cancellationToken);
+            var applicationVersion = await runner.GetLatestApplicationVersion(cancellationToken).ConfigureAwait(false);
             if (applicationVersion is null)
             {
                 throw new ControlException(ExitCodes.Start_Error_ApplicationNotFound, $"No {Strings.ApplicationName} Docker images with prefix `{_configurationService.Configurations.DockerImagePrefix}` found.");
             }
-            var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken);
+            var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken).ConfigureAwait(false);
 
             if (runnerState.IsRunning)
             {
@@ -71,16 +71,16 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
                 {
                     var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken).ConfigureAwait(false);
 
-                    _logger.Log(LogLevel.Debug, $"{Strings.ApplicationName} with container ID {runnerState.Id} running={runnerState.IsRunning}.");
+                    _logger.ApplicationStoppedState(Strings.ApplicationName, runnerState.Id, runnerState.IsRunning);
                     if (runnerState.IsRunning)
                     {
                         if (await runner.StopApplication(runnerState, cancellationToken).ConfigureAwait(false))
                         {
-                            _logger.Log(LogLevel.Information, $"{Strings.ApplicationName} with container ID {runnerState.Id} stopped.");
+                            _logger.ApplicationStopped(Strings.ApplicationName, runnerState.Id);
                         }
                         else
                         {
-                            _logger.Log(LogLevel.Warning, $"Error may have occurred stopping {Strings.ApplicationName} with container ID {runnerState.Id}. Please verify with the applicatio state with {_configurationService.Configurations.Runner}.");
+                            _logger.ApplicationStopError(Strings.ApplicationName, runnerState.Id, _configurationService.Configurations.Runner);
                         }
                     }
                 }

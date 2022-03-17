@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Polly;
 
@@ -27,12 +28,12 @@ namespace Monai.Deploy.InformaticsGateway.Common
                    retryDelays,
                    (exception, timeSpan, retryCount, context) =>
                    {
-                       logger.Log(LogLevel.Error, exception, $"Error saving payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                       logger.ErrorSavingPayload(timeSpan, retryCount, exception);
                    })
                .ExecuteAsync(async () =>
                {
-                   await repository.SaveChangesAsync();
-                   logger.Log(LogLevel.Debug, $"Payload {payload.Id} saved.");
+                   await repository.SaveChangesAsync().ConfigureAwait(false);
+                   logger.PayloadSaved(payload.Id);
                })
                .ConfigureAwait(false);
         }
@@ -49,13 +50,13 @@ namespace Monai.Deploy.InformaticsGateway.Common
                    retryDelays,
                    (exception, timeSpan, retryCount, context) =>
                    {
-                       logger.Log(LogLevel.Error, exception, $"Error adding payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                       logger.ErrorAddingPayload(timeSpan, retryCount, exception);
                    })
                .ExecuteAsync(async () =>
                {
-                   await repository.AddAsync(payload);
-                   await repository.SaveChangesAsync();
-                   logger.Log(LogLevel.Debug, $"Payload {payload.Id} added.");
+                   await repository.AddAsync(payload).ConfigureAwait(false);
+                   await repository.SaveChangesAsync().ConfigureAwait(false);
+                   logger.PayloadAdded(payload.Id);
                })
                .ConfigureAwait(false);
         }
@@ -73,13 +74,13 @@ namespace Monai.Deploy.InformaticsGateway.Common
                    retryDelays,
                    (exception, timeSpan, retryCount, context) =>
                    {
-                       logger.Log(LogLevel.Error, exception, $"Error deleting payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                       logger.ErrorDeletingPayload(timeSpan, retryCount, exception);
                    })
                .ExecuteAsync(async () =>
                {
                    repository.Remove(payload);
-                   await repository.SaveChangesAsync();
-                   logger.Log(LogLevel.Debug, $"Payload {payload.Id} deleted.");
+                   await repository.SaveChangesAsync().ConfigureAwait(false);
+                   logger.PayloadDeleted(payload.Id);
                })
                .ConfigureAwait(false);
         }

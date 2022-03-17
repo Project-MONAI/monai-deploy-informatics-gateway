@@ -61,14 +61,14 @@ namespace Monai.Deploy.InformaticsGateway.Common
             _fileSystem.Directory.CreateDirectoryIfNotExists(directory);
 
             using var stream = _fileSystem.File.Create(filename);
-            await file.SaveAsync(stream);
+            await file.SaveAsync(stream).ConfigureAwait(false);
 
             if (dicomJsonOptions != DicomJsonOptions.None)
             {
                 Guard.Against.NullOrWhiteSpace(metadataFilename, nameof(metadataFilename));
 
                 var json = ConvertDicomToJson(file, dicomJsonOptions == DicomJsonOptions.Complete);
-                await _fileSystem.File.AppendAllTextAsync(metadataFilename, json);
+                await _fileSystem.File.AppendAllTextAsync(metadataFilename, json).ConfigureAwait(false);
             }
         }
 

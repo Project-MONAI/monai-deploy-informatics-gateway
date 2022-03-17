@@ -9,6 +9,7 @@ using System.CommandLine.Hosting;
 using System.CommandLine.IO;
 using System.CommandLine.Parsing;
 using System.CommandLine.Rendering;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Xunit;
 
@@ -62,6 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _configurationService.SetupGet(p => p.IsConfigExists).Returns(true);
             _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerUri).Returns(new Uri("http://test"));
             _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerEndpoint).Returns("http://test");
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "dst comand")]
@@ -87,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 Name = result.CommandResult.Children[0].Tokens[0].Value,
                 AeTitle = result.CommandResult.Children[1].Tokens[0].Value,
                 HostIp = result.CommandResult.Children[2].Tokens[0].Value,
-                Port = Int32.Parse(result.CommandResult.Children[3].Tokens[0].Value),
+                Port = int.Parse(result.CommandResult.Children[3].Tokens[0].Value, System.Globalization.NumberStyles.Integer, CultureInfo.InvariantCulture),
             };
 
             Assert.Equal("MyName", entity.Name);

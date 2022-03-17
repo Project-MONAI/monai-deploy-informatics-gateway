@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -38,11 +39,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                return Ok(await _repository.ToListAsync());
+                return Ok(await _repository.ToListAsync().ConfigureAwait(false));
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error querying database.");
+                _logger.ErrorQueryingDatabase(ex);
                 return Problem(title: "Error querying database.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -57,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var sourceApplicationEntity = await _repository.FindAsync(name);
+                var sourceApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
 
                 if (sourceApplicationEntity is null)
                 {
@@ -68,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error querying DICOM sources.");
+                _logger.ErrorListingSourceApplicationEntities(ex);
                 return Problem(title: "Error querying DICOM sources.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -86,9 +87,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 item.SetDefaultValues();
                 Validate(item);
 
-                await _repository.AddAsync(item);
-                await _repository.SaveChangesAsync();
-                _logger.Log(LogLevel.Information, $"DICOM source added AE Title={item.AeTitle}, Host/IP={item.HostIp}.");
+                await _repository.AddAsync(item).ConfigureAwait(false);
+                await _repository.SaveChangesAsync().ConfigureAwait(false);
+                _logger.SourceApplicationEntityAdded(item.AeTitle, item.HostIp);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ConfigurationException ex)
@@ -97,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error adding new DICOM source.");
+                _logger.ErrorAddingSourceApplicationEntity(ex);
                 return Problem(title: "Error adding new DICOM source.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -111,21 +112,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var sourceApplicationEntity = await _repository.FindAsync(name);
+                var sourceApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
                 if (sourceApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
                 _repository.Remove(sourceApplicationEntity);
-                await _repository.SaveChangesAsync();
+                await _repository.SaveChangesAsync().ConfigureAwait(false);
 
-                _logger.Log(LogLevel.Information, $"DICOM source deleted {name}.");
+                _logger.SourceApplicationEntityDeleted(name);
                 return Ok(sourceApplicationEntity);
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error deleting DICOM source.");
+                _logger.ErrorDeletingSourceApplicationEntity(ex);
                 return Problem(title: "Error deleting DICOM source.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -140,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 throw new ConfigurationException($"A DICOM source with the same AE Title '{item.AeTitle}' and host/IP address '{item.HostIp}' already exists.");
             }
-            if (!item.IsValid(out IList<string> validationErrors))
+            if (!item.IsValid(out var validationErrors))
             {
                 throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
             }

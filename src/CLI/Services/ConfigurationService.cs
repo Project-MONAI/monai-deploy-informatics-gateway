@@ -41,23 +41,23 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task Initialize(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Debug, $"Reading default application configurations...");
+            _logger.DebugMessage("Reading default application configurations...");
             using var stream = _embeddedResource.GetManifestResourceStream(Common.AppSettingsResourceName);
 
             if (stream is null)
             {
-                _logger.Log(LogLevel.Debug, $"Available manifest names {string.Join(",", Assembly.GetExecutingAssembly().GetManifestResourceNames())}");
+                _logger.AvailableManifest(string.Join(",", Assembly.GetExecutingAssembly().GetManifestResourceNames()));
                 throw new ConfigurationException($"Default configuration file could not be loaded, please reinstall the CLI.");
             }
             CreateConfigDirectoryIfNotExist();
 
-            _logger.Log(LogLevel.Information, $"Saving appsettings.json to {Common.ConfigFilePath}...");
+            _logger.SaveAppSettings(Common.ConfigFilePath);
             using (var fileStream = _fileSystem.FileStream.Create(Common.ConfigFilePath, FileMode.Create))
             {
-                await stream.CopyToAsync(fileStream, cancellationToken);
-                await fileStream.FlushAsync(cancellationToken);
+                await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
+                await fileStream.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
-            _logger.Log(LogLevel.Information, $"{Common.ConfigFilePath} updated successfully.");
+            _logger.AppSettingUpdated(Common.ConfigFilePath);
         }
     }
 }

@@ -70,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 })
                 .UseDefaults()
                 .Build()
-                .InvokeAsync(args);
+                .InvokeAsync(args).ConfigureAwait(true);
         }
     }
 }

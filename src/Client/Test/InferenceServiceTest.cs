@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -125,7 +125,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",

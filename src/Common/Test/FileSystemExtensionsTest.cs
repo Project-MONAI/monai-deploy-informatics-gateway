@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Common.Test
                     if (++retry < 5) throw new System.IO.IOException();
                 });
 
-            Assert.True(fileSystem.Object.Directory.TryGenerateDirectory("/some/path", out string generatedPath));
+            Assert.True(fileSystem.Object.Directory.TryGenerateDirectory("/some/path", out var generatedPath));
             Assert.StartsWith("/some/path-", generatedPath);
 
             fileSystem.Verify(p => p.Directory.CreateDirectory(It.IsAny<string>()), Times.Exactly(5));

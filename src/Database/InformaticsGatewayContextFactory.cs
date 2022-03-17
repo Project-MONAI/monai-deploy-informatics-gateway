@@ -16,7 +16,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
     {
         public InformaticsGatewayContext CreateDbContext(string[] args)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
+            var configuration = new ConfigurationBuilder()
                 .SetBasePath(System.IO.Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();

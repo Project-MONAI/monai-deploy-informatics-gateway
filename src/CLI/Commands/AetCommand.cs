@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
@@ -109,22 +108,22 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
-                items = await client.MonaiScpAeTitle.List(cancellationToken);
+                items = await client.MonaiScpAeTitle.List(cancellationToken).ConfigureAwait(false);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error retrieving MONAI SCP AE Titles: {ex.Message}");
+                logger.ErrorListingMonaiAeTitles(ex.Message);
                 return ExitCodes.MonaiScp_ErrorList;
             }
 
             if (items.IsNullOrEmpty())
             {
-                logger.Log(LogLevel.Warning, "No MONAI SCP Application Entities configured.");
+                logger.NoAeTitlesFound();
             }
             else
             {
@@ -166,17 +165,17 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Deleting MONAI SCP AE Title {name}...");
-                _ = await client.MonaiScpAeTitle.Delete(name, cancellationToken);
-                logger.Log(LogLevel.Information, $"MONAI SCP AE Title '{name}' deleted.");
+                _ = await client.MonaiScpAeTitle.Delete(name, cancellationToken).ConfigureAwait(false);
+                logger.MonaiAeTitleDeleted(name);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error deleting MONAI SCP AE Title {name}: {ex.Message}");
+                logger.ErrorDeletingMonaiAeTitle(name, ex.Message);
                 return ExitCodes.MonaiScp_ErrorDelete;
             }
             return ExitCodes.Success;
@@ -202,33 +201,29 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
 
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
-                var result = await client.MonaiScpAeTitle.Create(entity, cancellationToken);
+                var result = await client.MonaiScpAeTitle.Create(entity, cancellationToken).ConfigureAwait(false);
 
-                logger.Log(LogLevel.Information, "New MONAI Deploy SCP Application Entity created:");
-                logger.Log(LogLevel.Information, $"\tName:     {result.Name}");
-                logger.Log(LogLevel.Information, $"\tAE Title: {result.AeTitle}");
-                logger.Log(LogLevel.Information, $"\tGrouping: {result.Grouping}");
-                logger.Log(LogLevel.Information, $"\tTimeout: {result.Grouping}s");
+                logger.MonaiAeTitleCreated(result.Name, result.AeTitle, result.Grouping, result.Timeout);
 
                 if (result.Workflows.Any())
                 {
-                    logger.Log(LogLevel.Information, $"\tWorkflows:{string.Join(',', result.Workflows)}");
-                    logger.Log(LogLevel.Warning, "Data received by this Application Entity will bypass Data Routing Service.");
+                    logger.MonaiAeWorkflows(string.Join(',', result.Workflows));
+                    logger.WorkflowWarning();
                 }
                 if (result.IgnoredSopClasses.Any())
                 {
-                    logger.Log(LogLevel.Information, $"\tIgnored SOP Classes:{string.Join(',', result.IgnoredSopClasses)}");
-                    logger.Log(LogLevel.Warning, "Instances with matching SOP class UIDs are accepted but dropped.");
+                    logger.MonaiAeIgnoredSops(string.Join(',', result.IgnoredSopClasses));
+                    logger.IgnoreSopClassesWarning();
                 }
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error creating MONAI SCP AE Title {entity.AeTitle}: {ex.Message}");
+                logger.MonaiAeCreateCritical(entity.AeTitle, ex.Message);
                 return ExitCodes.MonaiScp_ErrorCreate;
             }
             return ExitCodes.Success;

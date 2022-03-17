@@ -20,6 +20,7 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Polly;
@@ -87,14 +88,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             SetupPolling();
 
             Status = ServiceStatus.Running;
-            _logger.LogInformation($"{ServiceName} started.");
+            _logger.ServiceStarted(ServiceName);
             return Task.CompletedTask;
         }
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
             _cancellationTokenSource.Cancel();
-            _logger.LogInformation($"{ServiceName} is stopping.");
+            _logger.ServiceStopping(ServiceName);
             Status = ServiceStatus.Stopped;
             return Task.CompletedTask;
         }
@@ -102,14 +103,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private void SetupPolling()
         {
             _messageSubscriber.Subscribe(RoutingKey, String.Empty, OnMessageReceivedCallback);
-            _logger.Log(LogLevel.Information, $"{ServiceName} subscribed to {RoutingKey} messages.");
+            _logger.ExportEventSubscription(ServiceName, RoutingKey);
         }
 
         private void OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
         {
             if (!_storageInfoProvider.HasSpaceAvailableForExport)
             {
-                _logger.Log(LogLevel.Warning, $"Export service paused due to insufficient storage space.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}.");
+                _logger.ExportPausedDueToInsufficientStorageSpace(ServiceName, _storageInfoProvider.AvailableFreeSpace);
                 _messageSubscriber.Reject(eventArgs.Message);
                 return;
             }
@@ -131,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     async (exportDataRequest) =>
                     {
                         if (exportDataRequest.IsFailed) return exportDataRequest;
-                        return await ExportDataBlockCallback(exportDataRequest, _cancellationTokenSource.Token);
+                        return await ExportDataBlockCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
                     },
                     executionOptions);
 
@@ -147,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     var exportRequest = eventArgs.Message.ConvertTo<ExportRequestMessage>();
                     if (_exportRequests.ContainsKey(exportRequest.ExportTaskId))
                     {
-                        _logger.Log(LogLevel.Warning, $"The export request {exportRequest.ExportTaskId} is already queued for export.");
+                        _logger.ExportRequestAlreadyQueued(exportRequest.ExportTaskId);
                         return;
                     }
 
@@ -165,12 +166,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 foreach (var iex in ex.InnerExceptions)
                 {
-                    _logger.Log(LogLevel.Error, iex, "Error occurred while exporting.");
+                    _logger.ErrorExporting(iex);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error processing export task.");
+                _logger.ErrorProcessingExportTask(ex);
             }
         }
 
@@ -186,18 +187,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 var exportRequestData = new ExportRequestDataMessage(exportRequest, file);
                 try
                 {
-                    _logger.Log(LogLevel.Debug, $"Downloading file {file}...");
+                    _logger.DownloadingFile(file);
                     Policy
                        .Handle<Exception>()
                        .WaitAndRetry(
                            _configuration.Export.Retries.RetryDelays,
                            (exception, timeSpan, retryCount, context) =>
                            {
-                               _logger.Log(LogLevel.Error, exception, $"Error downloading payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                               _logger.ErrorDownloadingPayloadWithRetry(exception, timeSpan, retryCount);
                            })
                        .Execute(() =>
                        {
-                           _logger.Log(LogLevel.Debug, $"Downloading {file}...");
+                           _logger.DownloadingFile(file);
                            var task = storageService.GetObject(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
                            {
                                using var memoryStream = new MemoryStream();
@@ -206,13 +207,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            }, cancellationToken);
 
                            task.Wait();
-                           _logger.Log(LogLevel.Debug, $"File {file} ready for export.");
+                           _logger.FileReadyForExport(file);
                        });
                 }
                 catch (Exception ex)
                 {
-                    var errorMessage = $"Error downloading payload: {ex.Message}.";
-                    _logger.Log(LogLevel.Error, ex, errorMessage);
+                    var errorMessage = $"Error downloading payload.";
+                    _logger.ErrorDownloadingPayload(ex);
                     exportRequestData.SetFailed(errorMessage);
                 }
 
@@ -247,7 +248,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 }
             }
 
-            _logger.Log(LogLevel.Information, $"Export task completed with {exportRequest.FailedFiles} failures out of {exportRequest.Files.Count()}");
+            _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count());
 
             var exportCompleteMessage = new ExportCompleteMessage(exportRequest);
             var jsonMessage = new JsonMessage<ExportCompleteMessage>(exportCompleteMessage, exportRequest.CorrelationId, exportRequest.DeliveryTag);
@@ -258,11 +259,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    _configuration.Export.Retries.RetryDelays,
                    (exception, timeSpan, retryCount, context) =>
                    {
-                       _logger.Log(LogLevel.Error, exception, $"Error acknowledging message. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                       _logger.ErrorAcknowledgingMessageWithRetry(exception, timeSpan, retryCount);
                    })
                .Execute(() =>
                {
-                   _logger.Log(LogLevel.Information, $"Sending acknowledgement.");
+                   _logger.SendingAckowledgement();
                    _messageSubscriber.Acknowledge(jsonMessage);
                });
 
@@ -272,11 +273,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    _configuration.Export.Retries.RetryDelays,
                    (exception, timeSpan, retryCount, context) =>
                    {
-                       _logger.Log(LogLevel.Error, exception, $"Error publishing message. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                       _logger.ErrorPublishingExportCompleteMessageWithRetry(exception, timeSpan, retryCount);
                    })
                .Execute(() =>
                {
-                   _logger.Log(LogLevel.Information, $"Publishing export complete message.");
+                   _logger.PublishingExportCompleteEvent();
                    _messagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
                });
 
@@ -287,7 +288,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             if (ReportActionCompleted != null)
             {
-                _logger.Log(LogLevel.Debug, $"Calling ReportActionCompleted callback.");
+                _logger.CallingReportActionCompletedCallback();
                 ReportActionCompleted(this, EventArgs.Empty);
             }
         }

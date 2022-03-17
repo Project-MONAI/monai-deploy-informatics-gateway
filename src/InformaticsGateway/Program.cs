@@ -31,7 +31,9 @@ namespace Monai.Deploy.InformaticsGateway
 {
     internal class Program
     {
-        protected Program() { }
+        protected Program()
+        { }
+
         private static void Main(string[] args)
         {
             var host = CreateHostBuilder(args).Build();

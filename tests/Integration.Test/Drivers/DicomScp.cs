@@ -50,9 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
         public Task<DicomCStoreResponse> OnCStoreRequestAsync(DicomCStoreRequest request)
         {
-            var data = UserState as ServerData;
-
-            if (data == null)
+            if (UserState is not ServerData data)
             {
                 throw new Exception("UserState is not instance of ServerData.");
             }

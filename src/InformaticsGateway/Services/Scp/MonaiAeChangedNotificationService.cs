@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -38,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             Guard.Against.Null(monaiApplicationChangedEvent, nameof(monaiApplicationChangedEvent));
 
-            _logger.Log(LogLevel.Information, $"Notifying {_observers.Count} observers of MONAI Application Entity {monaiApplicationChangedEvent.Event}.");
+            _logger.NotifyAeChanged(_observers.Count, monaiApplicationChangedEvent.Event);
 
             foreach (var observer in _observers)
             {

@@ -29,7 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 if (disposing)
                 {
                     _loggers.Clear();
-
                 }
 
                 _disposedValue = true;

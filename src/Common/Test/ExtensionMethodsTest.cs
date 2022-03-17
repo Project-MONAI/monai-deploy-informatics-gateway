@@ -19,7 +19,7 @@ namespace Monai.Deploy.InformaticsGateway.Common.Test
         [Fact(DisplayName = "IsNullOrEmpty shall return true for empty list")]
         public void IsNullOrEmpty_WithEmptyList()
         {
-            List<string> list = new List<string>();
+            var list = new List<string>();
             Assert.True(list.IsNullOrEmpty());
         }
 
@@ -37,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Common.Test
         [InlineData("team", "monai", "rocks")]
         public void IsNullOrEmpty_WithOneItemInList(params string[] items)
         {
-            List<string> list = new List<string>(items);
+            var list = new List<string>(items);
             Assert.False(ExtensionMethods.IsNullOrEmpty(list));
         }
 

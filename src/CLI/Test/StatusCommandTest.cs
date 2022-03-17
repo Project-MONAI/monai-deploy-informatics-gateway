@@ -14,7 +14,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Xunit;
 
@@ -55,6 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _configurationService.SetupGet(p => p.IsConfigExists).Returns(true);
             _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerUri).Returns(new Uri("http://test"));
             _configurationService.SetupGet(p => p.Configurations.InformaticsGatewayServerEndpoint).Returns("http://test");
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "status comand")]
@@ -77,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             Assert.Equal(ExitCodes.Success, exitCode);
 
             _logger.VerifyLogging("Number of active DIMSE connections: 100", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("Service Status: ", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Service Status:", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"\t\tTest: {ServiceStatus.Running}", LogLevel.Information, Times.Once());
         }
 

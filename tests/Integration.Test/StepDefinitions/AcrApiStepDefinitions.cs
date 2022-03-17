@@ -2,6 +2,7 @@
 // SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
+using System.Globalization;
 using System.Text;
 using FellowOakDicom;
 using FellowOakDicom.Network;
@@ -10,7 +11,6 @@ using FluentAssertions.Execution;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
@@ -66,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _configuration.StudySpecs.ContainsKey(modality).Should().BeTrue();
 
             var studySpec = _configuration.StudySpecs[modality];
-            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff");
+            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
             var fileSpecs = _dicomInstanceGenerator.Generate(patientId, WorkflowStudyCount, modality, studySpec);
             _scenarioContext[KeyDicomFiles] = fileSpecs;
             _rabbitMqHooks.SetupMessageHandle(WorkflowStudyCount);
@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var dicomFileSize = new Dictionary<string, string>();
             foreach (var dicomFile in fileSpecs.Files)
             {
-                string key = dicomFile.GenerateFileName();
+                var key = dicomFile.GenerateFileName();
                 dicomFileSize[key] = dicomFile.CalculateHash();
             }
 
@@ -104,14 +104,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         StudyInstanceUid = fileSpecs.StudyInstanceUids[0],
                     });
                     break;
+
                 case "Patient":
                     inferenceRequest.InputMetadata.Details.Type = InferenceRequestType.DicomPatientId;
                     inferenceRequest.InputMetadata.Details.PatientId = fileSpecs.Files[0].Dataset.GetSingleValue<string>(DicomTag.PatientID);
                     break;
+
                 case "AccessionNumber":
                     inferenceRequest.InputMetadata.Details.Type = InferenceRequestType.AccessionNumber;
                     inferenceRequest.InputMetadata.Details.AccessionNumber = new List<string>() { fileSpecs.Files[0].Dataset.GetSingleValue<string>(DicomTag.AccessionNumber) };
                     break;
+
                 default:
                     throw new ArgumentException($"invalid ACR request type specified in feature file: {requestType}");
             }
@@ -180,7 +183,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             foreach (var message in messages)
             {
                 var request = message.ConvertTo<WorkflowRequestMessage>();
-                foreach (BlockStorageInfo file in request.Payload)
+                foreach (var file in request.Payload)
                 {
                     var dicomValidationKey = string.Empty;
                     await minioClient.GetObjectAsync(file.Bucket, $"{request.PayloadId}/{file.Path}", (stream) =>
@@ -221,7 +224,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 })
                 .Execute(() =>
                 {
-
                     if (Directory.Exists(dataDir))
                     {
                         var files = Directory.GetFiles(dataDir, "*", SearchOption.AllDirectories);

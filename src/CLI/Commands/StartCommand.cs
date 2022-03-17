@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
@@ -35,16 +34,16 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             try
             {
-                await service.StartService(cancellationToken);
+                await service.StartService(cancellationToken).ConfigureAwait(false);
             }
             catch (ControlException ex) when (ex.ErrorCode == ExitCodes.Start_Error_ApplicationAlreadyRunning)
             {
-                logger.Log(LogLevel.Warning, ex.Message);
+                logger.WarningMessage(ex.Message);
                 return ex.ErrorCode;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.CriticalException(ex.Message);
                 return ExitCodes.Start_Error;
             }
             return ExitCodes.Success;

@@ -50,6 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
                     "1.2.840.10008.1.2" , //Implicit VR Little Endian
                     "1.2.840.10008.1.2.2", //Explicit VR Big Endian
                 };
+
         public IReadOnlyList<string> VerificationServiceTransferSyntaxes { get => VerificationServiceTransferSyntaxList; }
 
         public ScpConfiguration()

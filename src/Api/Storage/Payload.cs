@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Common;
+
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
     public class Payload : IDisposable
@@ -86,7 +87,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             {
                 foreach (var workflow in value.Workflows)
                 {
-
                     Workflows.Add(workflow);
                 }
             }

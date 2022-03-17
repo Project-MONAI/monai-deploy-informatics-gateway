@@ -16,7 +16,7 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;
@@ -56,6 +56,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
             _associationDataProvider.Setup(p => p.GetLogger(It.IsAny<string>())).Returns(_loggerInternal.Object);
             _associationDataProvider.Setup(p => p.Configuration).Returns(_configuration);
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _loggerInternal.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "StartAsync - shall stop application if failed to start SCP listner")]
@@ -107,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(DicomRejectSource.ServiceUser, exception.RejectSource);
             Assert.Equal(DicomRejectResult.Permanent, exception.RejectResult);
 
-            _loggerInternal.VerifyLogging($"Verification service is disabled: rejecting association", LogLevel.Warning, Times.Once());
+            _loggerInternal.VerifyLogging($"Verification service is disabled: rejecting association.", LogLevel.Warning, Times.Once());
 
             Assert.True(countdownEvent.Wait(1000));
         }
@@ -367,7 +369,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             await client.SendAsync(_cancellationTokenSource.Token, DicomClientCancellationMode.ImmediatelyAbortAssociation);
             Assert.True(countdownEvent.Wait(2000));
-            _loggerInternal.VerifyLogging($"Aborted {DicomAbortSource.ServiceUser} with reason {DicomAbortReason.NotSpecified}", LogLevel.Warning, Times.Once());
+            _loggerInternal.VerifyLogging($"Aborted {DicomAbortSource.ServiceUser} with reason {DicomAbortReason.NotSpecified}.", LogLevel.Warning, Times.Once());
         }
 
         private ScpService CreateService()

@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         [Fact(DisplayName = "Health - Status returns a problem")]
         public async Task Status_ReturnsAProblem()
         {
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -108,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         [Fact(DisplayName = "Health - Live returns a problem")]
         public async Task Live_ReturnsAProblem()
         {
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -157,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         [Fact(DisplayName = "Health - Ready returns a problem")]
         public async Task Ready_ReturnsAProblem()
         {
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",

@@ -19,6 +19,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -70,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             if (inferenceRequest is null)
             {
                 var errorMessage = $"The specified inference request '{exportRequestData.Destination}' cannot be found and will not be exported.";
-                _logger.Log(LogLevel.Error, errorMessage);
+                _logger.InferenceRequestExportDestinationNotFound(exportRequestData.Destination);
                 exportRequestData.SetFailed(errorMessage);
                 return exportRequestData;
             }
@@ -80,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             if (!destinations.Any())
             {
                 var errorMessage = "The inference request contains no `outputResources` nor any DICOMweb export destinations.";
-                _logger.Log(LogLevel.Error, errorMessage);
+                _logger.InferenceRequestExportNoDestinationNotFound();
                 exportRequestData.SetFailed(errorMessage);
                 return exportRequestData;
             }
@@ -92,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 dicomWebClient.ConfigureServiceUris(new Uri(destination.ConnectionDetails.Uri, UriKind.Absolute));
                 dicomWebClient.ConfigureAuthentication(authenticationHeader);
 
-                _logger.Log(LogLevel.Debug, $"Exporting data to {destination.ConnectionDetails.Uri}.");
+                _logger.ExportToDicomWeb(destination.ConnectionDetails.Uri);
                 await ExportToDicomWebDestination(dicomWebClient, exportRequestData, destination, cancellationToken).ConfigureAwait(false);
             }
 
@@ -110,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                        _configuration.Value.Export.Retries.RetryDelays,
                        (exception, timeSpan, retryCount, context) =>
                        {
-                           _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination {destination.ConnectionDetails.Uri}. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                           _logger.ErrorExportingDicomWebWithRetry(destination.ConnectionDetails.Uri, timeSpan, retryCount, exception);
                        })
                    .ExecuteAsync(async () =>
                        {
@@ -121,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             catch (Exception ex)
             {
                 var errorMessage = ex.Message;
-                _logger.Log(LogLevel.Error, ex, errorMessage);
+                _logger.ExportException(errorMessage, ex);
                 exportRequestData.SetFailed(errorMessage);
             }
         }
@@ -132,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             switch (result.StatusCode)
             {
                 case System.Net.HttpStatusCode.OK:
-                    _logger.Log(LogLevel.Information, "All data exported successfully.");
+                    _logger.ExportSuccessfully();
                     break;
 
                 default:

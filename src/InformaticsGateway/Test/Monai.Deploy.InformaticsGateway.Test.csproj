@@ -4,45 +4,45 @@
  -->
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <RootNamespace>Monai.Deploy.InformaticsGateway.Test</RootNamespace>
-        <IsPackable>false</IsPackable>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    </PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>Monai.Deploy.InformaticsGateway.Test</RootNamespace>
+    <IsPackable>false</IsPackable>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <Compile Include="..\..\Shared\Test\InstanceGenerator.cs" Link="Shared\InstanceGenerator.cs" />
-        <Compile Include="..\..\Shared\Test\VerifyLogExtension.cs" Link="Shared\VerifyLogExtension.cs" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Shared\Test\InstanceGenerator.cs" Link="Shared\InstanceGenerator.cs" />
+    <Compile Include="..\..\Shared\Test\VerifyLogExtension.cs" Link="Shared\VerifyLogExtension.cs" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.3" />
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
-        <PackageReference Include="Moq" Version="4.17.2" />
-        <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="16.1.20" />
-        <PackageReference Include="xRetry" Version="1.8.0" />
-        <PackageReference Include="xunit" Version="2.4.1" />
-        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="coverlet.collector" Version="3.1.2">
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-            <PrivateAssets>all</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="3.1.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.3" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+    <PackageReference Include="Moq" Version="4.17.2" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="16.1.23" />
+    <PackageReference Include="xRetry" Version="1.8.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
-        <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
+    <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <None Update="appsettings.json">
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 
 </Project>

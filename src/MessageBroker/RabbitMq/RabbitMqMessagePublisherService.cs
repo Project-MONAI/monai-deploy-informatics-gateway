@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "MessageId", message.MessageId } });
 
-            _logger.Log(LogLevel.Information, $"Publishing message to {_endpoint}/{_virtualHost}. Exchange={_exchange}, Routing Key={topic}");
+            _logger.PublshingRabbitMq(_endpoint, _virtualHost, _exchange, topic);
 
             using var channel = _connection.CreateModel();
             channel.ExchangeDeclare(_exchange, ExchangeType.Topic);
@@ -104,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             {
                 if (disposing && _connection != null)
                 {
-                    _logger.Log(LogLevel.Information, $"Closing connection.");
+                    _logger.ClosingConnection();
                     _connection.Close();
                     _connection.Dispose();
                 }
