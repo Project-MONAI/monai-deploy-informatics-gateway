@@ -10,6 +10,7 @@ SPDX-License-Identifier: Apache License 2.0
     <TargetFramework>net6.0</TargetFramework>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsTrimmable>true</IsTrimmable>
+    <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,6 +22,10 @@ SPDX-License-Identifier: Apache License 2.0
     <Compile Remove="Test\**" />
     <EmbeddedResource Remove="Test\**" />
     <None Remove="Test\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
 
   <ItemGroup>

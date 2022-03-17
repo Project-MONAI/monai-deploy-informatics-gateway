@@ -12,6 +12,7 @@
         <IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
         <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
         <LangVersion>latest</LangVersion>
+        <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
@@ -41,6 +42,10 @@
         <Compile Remove="Test\**" />
         <EmbeddedResource Remove="Test\**" />
         <None Remove="Test\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
     </ItemGroup>
 
     <ItemGroup>

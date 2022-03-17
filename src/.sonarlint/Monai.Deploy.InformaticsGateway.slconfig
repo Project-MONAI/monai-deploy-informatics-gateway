@@ -1,0 +1,15 @@
+{
+  "ServerUri": "https://sonarcloud.io/",
+  "Organization": {
+    "Key": "project-monai",
+    "Name": "Project MONAI"
+  },
+  "ProjectKey": "Project-MONAI_monai-deploy-informatics-gateway",
+  "ProjectName": "monai-deploy-informatics-gateway",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "AX96ONQSnTk2GEVJ9ILJ",
+      "ProfileTimestamp": "2021-11-22T10:44:23Z"
+    }
+  }
+}
