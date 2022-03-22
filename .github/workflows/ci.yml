@@ -161,6 +161,10 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     needs: [calc-version]
+    env:
+      SEMVER: ${{ needs.calc-version.outputs.semVer }}
+      PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
+      MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest]
@@ -204,7 +208,7 @@ jobs:
           mkdir ~/release
           dotnet publish --self-contained -c ${{ env.BUILD_CONFIG }} -r linux-x64 -o cli/ src/CLI/Monai.Deploy.InformaticsGateway.CLI.csproj
           pushd cli && rm *.pdb
-          zip -r ~/release/mig-cli-${{ env.GitVersion_SemVer }}-linux-x64.zip *
+          zip -r ~/release/mig-cli-$SEMVER-linux-x64.zip *
           popd
           ls -lR ~/release
 
@@ -214,7 +218,7 @@ jobs:
           mkdir ~/release
           dotnet publish --self-contained -c ${{ env.BUILD_CONFIG }} -r win-x64 -o cli/ src/CLI/Monai.Deploy.InformaticsGateway.CLI.csproj
           pushd cli && rm *.pdb
-          Compress-Archive -Path * -DestinationPath ~/release/mig-cli-${{ env.GitVersion_SemVer }}-win-x64.zip
+          Compress-Archive -Path * -DestinationPath ~/release/mig-cli-${{ env.SEMVER }}-win-x64.zip
           popd
           dir -r ~/release
 
@@ -240,7 +244,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ env.GitVersion_SemVer }}
+            type=raw,value=${{ env.SEMVER }}
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
 
       - name: Build and push Docker image
@@ -278,7 +282,7 @@ jobs:
 
       - name: Integration Test
         env:
-          TAG: ${{ env.GitVersion_SemVer }}
+          TAG: ${{ env.SEMVER }}
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         run: |
           pushd tests/Integration.Test
