@@ -105,6 +105,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                 repo.Remove(result);
                 await repo.SaveChangesAsync();
             }
+
+            for (int i = 8; i <= 10; i++)
+            {
+                var key = $"AET{i}";
+                Assert.Null(await repo.FindAsync(key));
+            }
+
         }
 
         [RetryFact(5, 250, DisplayName = "AddAsync")]

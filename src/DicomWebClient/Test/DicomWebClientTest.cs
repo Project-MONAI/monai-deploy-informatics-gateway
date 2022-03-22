@@ -35,7 +35,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var httpClient = new HttpClient();
             var dicomWebClient = new DicomWebClientClass(httpClient, null);
             var rootUri = new Uri(BaseUri);
-            dicomWebClient.ConfigureServiceUris(rootUri);
+            var exception = Record.Exception(() => dicomWebClient.ConfigureServiceUris(rootUri));
+
+            Assert.Null(exception);
         }
 
         [Theory(DisplayName = "ConfigureServiceUris - throws on malformed prefix")]
@@ -69,8 +71,14 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             var httpClient = new HttpClient();
             var dicomWebClient = new DicomWebClientClass(httpClient, null);
             var rootUri = new Uri(BaseUri);
-            dicomWebClient.ConfigureServiceUris(rootUri);
-            dicomWebClient.ConfigureServicePrefix(serviceType, prefix);
+
+            var exception = Record.Exception(() =>
+             {
+                 dicomWebClient.ConfigureServiceUris(rootUri);
+                 dicomWebClient.ConfigureServicePrefix(serviceType, prefix);
+             });
+
+            Assert.Null(exception);
         }
 
         [Fact(DisplayName = "ConfigureAuthentication - throws if value is null")]

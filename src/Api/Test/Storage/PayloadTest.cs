@@ -5,13 +5,14 @@ using System;
 using System.Threading.Tasks;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Test
 {
     public class PayloadTest
     {
-        [Fact(DisplayName = "Payload shall be able to add new instance and reset timer")]
+        [RetryFact(DisplayName = "Payload shall be able to add new instance and reset timer")]
         public async Task Payload_AddsNewInstance()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
@@ -24,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             Assert.Equal("key", payload.Key);
         }
 
-        [Fact(DisplayName = "Payload shall not reset timer")]
+        [RetryFact(DisplayName = "Payload shall not reset timer")]
         public async Task Payload_ShallNotResetTimer()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
@@ -33,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             Assert.True(payload.HasTimedOut);
         }
 
-        [Fact(DisplayName = "Payload shall allow retry up to 3 times")]
+        [RetryFact(DisplayName = "Payload shall allow retry up to 3 times")]
         public void Payload_ShallAllowRetryUpTo3Times()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
@@ -43,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             Assert.False(payload.CanRetry());
         }
 
-        [Fact(DisplayName = "Payload shall dispose timer")]
+        [RetryFact(DisplayName = "Payload shall dispose timer")]
         public void Payload_ShallDisposeTimer()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
