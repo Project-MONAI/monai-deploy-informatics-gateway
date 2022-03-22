@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         public event EventHandler ExportDataBlockCalled;
 
         public bool ExportShallFail = false;
-        protected override int Concurrentcy => 1;
+        protected override int Concurrency => 1;
         public override string RoutingKey => AgentName;
         public override string ServiceName { get => "Test Export Service"; }
 
@@ -109,7 +109,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
 
             _logger.VerifyLogging($"{service.ServiceName} subscribed to {service.RoutingKey} messages.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{service.ServiceName} completed workflow setup.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"{service.ServiceName} is stopping.", LogLevel.Information, Times.Once());
         }
 
@@ -167,7 +166,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 });
             var countdownEvent = new CountdownEvent(1);
             var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);
-            service.ReportActionStarted += (sender, e) =>
+            service.ReportActionCompleted += (sender, e) =>
             {
                 countdownEvent.Signal();
             };
@@ -186,9 +185,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<ushort>()), Times.Once());
         }
 
-        [RetryFact(10, 10, DisplayName = "Data flow test - end to end workflow")]
+        [RetryFact(1, 10, DisplayName = "Data flow test - end to end workflow")]
         public async Task DataflowTest_EndToEnd()
         {
+            var messageCount = 5;
             var testData = "this is a test";
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
@@ -202,7 +202,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                  It.IsAny<ushort>()))
                 .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
                 {
-                    messageReceivedCallback(CreateMessageReceivedEventArgs());
+                    while (messageCount-- > 0)
+                    {
+                        messageReceivedCallback(CreateMessageReceivedEventArgs());
+                    }
                 });
 
             _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
@@ -210,9 +213,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 {
                     callback(new MemoryStream(Encoding.UTF8.GetBytes(testData)));
                 });
-            var countdownEvent = new CountdownEvent(3);
+            var countdownEvent = new CountdownEvent(5  * 3);
             var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);
-            service.ReportActionStarted += (sender, e) =>
+            service.ReportActionCompleted += (sender, e) =>
             {
                 countdownEvent.Signal();
             };
@@ -223,13 +226,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 countdownEvent.Signal();
             };
             await service.StartAsync(_cancellationTokenSource.Token);
-            Assert.True(countdownEvent.Wait(3000));
+            Assert.True(countdownEvent.Wait(1000000));
             await StopAndVerify(service);
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteMessage>()).Status == ExportStatus.Success)), Times.Once());
-            _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteMessage>()).Status == ExportStatus.Success)), Times.Exactly(5));
+            _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Exactly(5));
             _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),

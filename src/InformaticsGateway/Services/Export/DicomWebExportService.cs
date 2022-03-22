@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IDicomToolkit _dicomToolkit;
 
-        protected override int Concurrentcy { get; }
+        protected override int Concurrency { get; }
         public override string RoutingKey { get; }
         public override string ServiceName => "DICOMweb Export Service";
 
@@ -81,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
 
             RoutingKey = $"{configuration.Value.Messaging.Topics.ExportRequestPrefix}.{configuration.Value.DicomWeb.AgentName}";
-            Concurrentcy = configuration.Value.DicomWeb.MaximumNumberOfConnection;
+            Concurrency = configuration.Value.DicomWeb.MaximumNumberOfConnection;
         }
 
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
@@ -137,10 +137,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
                        })
                    .ExecuteAsync(async () =>
-                       {
-                           var result = await dicomWebClient.Stow.Store(new List<DicomFile> { dicomFile }, cancellationToken);
-                           CheckAndLogResult(result);
-                       });
+                   {
+                       var result = await dicomWebClient.Stow.Store(new List<DicomFile> { dicomFile }, cancellationToken);
+                       CheckAndLogResult(result);
+                   });
             }
             catch (Exception ex)
             {

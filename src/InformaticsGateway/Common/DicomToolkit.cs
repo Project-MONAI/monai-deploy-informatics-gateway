@@ -101,7 +101,8 @@ namespace Monai.Deploy.InformaticsGateway.Common
             Guard.Against.NullOrEmpty(fileContent, nameof(fileContent));
 
             using var stream = new MemoryStream(fileContent);
-            var dicomFile = DicomFile.Open(stream);
+            var dicomFile = DicomFile.Open(stream, FileReadOption.ReadAll);
+
             if (dicomFile is null)
             {
                 throw new DicomDataException("Invalid DICOM content");

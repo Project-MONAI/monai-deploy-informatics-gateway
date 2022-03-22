@@ -60,10 +60,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             await SaveDicomInstance(request, info.FilePath, info.DicomJsonFilePath);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
-            if (request.Dataset.TryGetSingleValue<string>(dicomTag, out string key))
-            {
-                await _payloadAssembler.Queue(key, info, _configuration.Timeout);
-            }
+            _logger.Log(LogLevel.Debug, $"Queuing instance with group {dicomTag}");
+            var key = request.Dataset.GetSingleValue<string>(dicomTag);
+            await _payloadAssembler.Queue(key, info, _configuration.Timeout);
         }
 
         private async Task SaveDicomInstance(DicomCStoreRequest request, string filename, string metadataFilename)

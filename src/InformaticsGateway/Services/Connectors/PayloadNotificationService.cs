@@ -275,15 +275,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private Task NotifyPayloadReady(Payload payload)
         {
             _logger.Log(LogLevel.Debug, $"Generating workflow request message for payload {payload.Id}...");
+            var workflowRequest = new WorkflowRequestMessage
+            {
+                PayloadId = payload.Id,
+                Workflows = payload.Workflows,
+                FileCount = payload.Count,
+                CorrelationId = payload.CorrelationId,
+                Timestamp = payload.DateTimeCreated
+            };
+
+            workflowRequest.Payload.AddRange(payload.UploadedFiles);
+
             var message = new JsonMessage<WorkflowRequestMessage>(
-                new WorkflowRequestMessage
-                {
-                    PayloadId = payload.Id,
-                    Workflows = payload.Workflows,
-                    FileCount = payload.Count,
-                    CorrelationId = payload.CorrelationId,
-                    Timestamp = payload.DateTimeCreated
-                },
+                workflowRequest,
                 payload.CorrelationId,
                 string.Empty);
 

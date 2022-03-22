@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IDicomToolkit _dicomToolkit;
 
-        protected override int Concurrentcy { get; }
+        protected override int Concurrency { get; }
         public override string RoutingKey { get; }
         public override string ServiceName => "DICOM Export Service";
 
@@ -70,12 +70,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
 
             RoutingKey = $"{configuration.Value.Messaging.Topics.ExportRequestPrefix}.{_configuration.Value.Dicom.Scu.AgentName}";
-            Concurrentcy = _configuration.Value.Dicom.Scu.MaximumNumberOfAssociations;
+            Concurrency = _configuration.Value.Dicom.Scu.MaximumNumberOfAssociations;
         }
 
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
 
             var manualResetEvent = new ManualResetEvent(false);
             IDicomClient client = null;
@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            _configuration.Value.Export.Retries.RetryDelays,
                            (exception, timeSpan, retryCount, context) =>
                            {
-                               _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOMweb destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
+                               _logger.Log(LogLevel.Error, exception, $"Error exporting to DICOM destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.");
                            })
                        .ExecuteAsync(async () =>
                        {

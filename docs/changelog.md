@@ -1,8 +1,15 @@
 # Changelog
 
-## 0.1.0 Initial Release
+## 0.1.1
 
-The MONAI Deploy Informatics Gateway upgrades the existing NVIDIA Clara Deploy DICOM Adapter to provide additional features and integrate with the MONAI Deploy platform. 
+[GitHub Milestone 0.1.1](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/6)
+
+- User guide updates & minor bug fixes.
+
+
+## 0.1.0
+
+The MONAI Deploy Informatics Gateway upgrades the existing NVIDIA Clara Deploy DICOM Adapter to provide additional features and integrate with the MONAI Deploy platform.
 
 - DICOM SCP (C-ECHO & C-STORE), SCU (C-STORE) support
 - ACR API with ability to retrieve data via DICOMweb & FHIR
