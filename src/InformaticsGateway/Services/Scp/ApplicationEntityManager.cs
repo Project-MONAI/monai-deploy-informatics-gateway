@@ -1,31 +1,12 @@
-// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+using System;
+using System.Collections.Concurrent;
+using System.Globalization;
+using System.IO.Abstractions;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Network;
@@ -37,19 +18,15 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using System;
-using System.Collections.Concurrent;
-using System.IO.Abstractions;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal class ApplicationEntityManager : IApplicationEntityManager, IDisposable, IObserver<MonaiApplicationentityChangedEvent>
     {
-        private readonly IHostApplicationLifetime _applicationLifetime;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IServiceScope _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -61,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IFileSystem _fileSystem;
         private readonly IDicomToolkit _dicomToolkit;
-        private bool _disposed = false;
+        private bool _disposedValue;
 
         public IOptions<InformaticsGatewayConfiguration> Configuration { get; }
 
@@ -82,7 +59,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                                         IFileSystem fileSystem,
                                         IDicomToolkit dicomToolkit)
         {
-            _applicationLifetime = applicationLifetime ?? throw new ArgumentNullException(nameof(applicationLifetime));
+            if (applicationLifetime is null)
+            {
+                throw new ArgumentNullException(nameof(applicationLifetime));
+            }
 
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -99,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             _unsubscriberForMonaiAeChangedNotificationService = monaiAeChangedNotificationService.Subscribe(this);
             _aeTitles = new ConcurrentDictionary<string, ApplicationEntityHandler>();
-            _applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
+            applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
 
             InitializeMonaiAeTitles();
         }
@@ -108,11 +88,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private void OnApplicationStopping()
         {
-            _logger.Log(LogLevel.Information, "ApplicationEntityManager stopping.");
+            _logger.ApplicationEntityManagerStopping();
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
+#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
+
         public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {
             Guard.Against.Null(request, nameof(request));
 
@@ -126,8 +109,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
             }
 
+            await HandleInstance(request, calledAeTitle, callingAeTitle, associationId).ConfigureAwait(false);
+        }
+
+        private async Task HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+        {
             var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
-            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(), callingAeTitle, _fileSystem)
+            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(CultureInfo.InvariantCulture), callingAeTitle, _fileSystem)
             {
                 StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID),
                 SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID),
@@ -136,11 +124,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", info.SopInstanceUid }, { "Correlation ID", associationId } }))
             {
-                _logger.Log(LogLevel.Information, "Study Instance UID: {StudyInstanceUid}", info.StudyInstanceUid);
-                _logger.Log(LogLevel.Information, "Series Instance UID: {SeriesInstanceUid}", info.SeriesInstanceUid);
-                _logger.Log(LogLevel.Information, "Storage File Path: {InstanceStorageFullPath}", info.FilePath);
+                _logger.InstanceInformation(info.StudyInstanceUid, info.SeriesInstanceUid, info.FilePath);
 
-                await _aeTitles[calledAeTitle].HandleInstance(request, info);
+                await _aeTitles[calledAeTitle].HandleInstance(request, info).ConfigureAwait(false);
             }
         }
 
@@ -161,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private void InitializeMonaiAeTitles()
         {
-            _logger.Log(LogLevel.Information, "Loading MONAI Application Entities from data store.");
+            _logger.LoadingMonaiAeTitles();
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
@@ -177,39 +163,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _dicomToolkit, _loggerFactory.CreateLogger<ApplicationEntityHandler>(), Configuration.Value.Dicom.WriteDicomJson);
             if (!_aeTitles.TryAdd(entity.AeTitle, handler))
             {
-                _logger.Log(LogLevel.Error, $"AE Title {0} could not be added to CStore Manager.  Already exits: {1}", entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));
+                _logger.AeTitleCannotBeAdded(entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));
             }
             else
             {
-                _logger.Log(LogLevel.Information, $"{entity.AeTitle} added to AE Title Manager");
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (!_disposed)
-            {
-                if (disposing)
-                {
-                    _serviceScope.Dispose();
-                }
-                _disposed = true;
+                _logger.AeTitleAdded(entity.AeTitle);
             }
         }
 
         public void OnCompleted()
         {
+            // noop
         }
 
         public void OnError(Exception error)
         {
-            _logger.Log(LogLevel.Error, error, "Error notifying observer.");
+            _logger.ErrorNotifyingObserver();
         }
 
         public void OnNext(MonaiApplicationentityChangedEvent applicationChangedEvent)
@@ -224,7 +193,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
                 case ChangedEventType.Deleted:
                     _ = _aeTitles.TryRemove(applicationChangedEvent.ApplicationEntity.AeTitle, out _);
-                    _logger.Log(LogLevel.Information, $"{applicationChangedEvent.ApplicationEntity.AeTitle} removed from AE Title Manager");
+                    _logger.AeTitleRemoved(applicationChangedEvent.ApplicationEntity.AeTitle);
                     break;
             }
         }
@@ -244,11 +213,31 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             {
                 foreach (var src in repository.AsQueryable())
                 {
-                    _logger.Log(LogLevel.Information, $"Available source AET: {src.AeTitle} @ {src.HostIp}");
+                    _logger.AvailableSource(src.AeTitle, src.HostIp);
                 }
             }
 
             return sourceAe is not null;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _serviceScope.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

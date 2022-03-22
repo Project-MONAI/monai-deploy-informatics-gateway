@@ -1,0 +1,58 @@
+{
+    "MR": {
+        "seriesMin": 1,
+        "seriesMax": 2,
+        "instanceMin": 64,
+        "instanceMax": 128,
+        "sizeMin": 0.36,
+        "sizeMax": 2
+    },
+    "CT": {
+        "seriesMin": 1,
+        "seriesMax": 2,
+        "instanceMin": 60,
+        "instanceMax": 1000,
+        "sizeMin": 0.5,
+        "sizeMax": 1
+    },
+    "MG": {
+        "seriesMin": 4,
+        "seriesMax": 8,
+        "instanceMin": 1,
+        "instanceMax": 1,
+        "sizeMin": 5,
+        "sizeMax": 75
+    },
+    "TOMO": {
+        "seriesMin": 4,
+        "seriesMax": 8,
+        "instanceMin": 1,
+        "instanceMax": 1,
+        "sizeMin": 300,
+        "sizeMax": 750
+    },
+    "US": {
+        "seriesMin": 1,
+        "seriesMax": 4,
+        "instanceMin": 1,
+        "instanceMax": 1,
+        "sizeMin": 25,
+        "sizeMax": 100
+    },
+    "Pathology": {
+        "seriesMin": 1,
+        "seriesMax": 4,
+        "instanceMin": 1,
+        "instanceMax": 1,
+        "sizeMin": 10000,
+        "sizeMax": 20000
+    },
+    "Tiny": {
+        "seriesMin": 1,
+        "seriesMax": 1,
+        "instanceMin": 1,
+        "instanceMax": 1,
+        "sizeMin": 1,
+        "sizeMax": 2
+    }
+}

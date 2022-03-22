@@ -8,7 +8,7 @@
  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  See the License for the specific language governing permissions and
  limitations under the License. -->
- 
+
  <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
@@ -28,8 +28,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ConsoleAppFramework" Version="3.3.2" />
-    <PackageReference Include="fo-dicom" Version="5.0.1" />
+    <PackageReference Include="ConsoleAppFramework" Version="4.0.6" />
+    <PackageReference Include="fo-dicom" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
   </ItemGroup>
 </Project>

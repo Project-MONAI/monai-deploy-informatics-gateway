@@ -1,33 +1,9 @@
-﻿// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-using Monai.Deploy.InformaticsGateway.Api.Rest;
 using System.Net.Http.Headers;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
@@ -35,20 +11,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
     {
         public static AuthenticationHeaderValue ConvertFrom(ConnectionAuthType connectionAuthType, string authId)
         {
-            switch (connectionAuthType)
+            return connectionAuthType switch
             {
-                case ConnectionAuthType.Basic:
-                    return new AuthenticationHeaderValue("Basic", authId);
-
-                case ConnectionAuthType.Bearer:
-                    return new AuthenticationHeaderValue("Bearer", authId);
-
-                case ConnectionAuthType.None:
-                    return null;
-
-                default:
-                    throw new InferenceRequestException($"Unsupported ConnectionAuthType: {connectionAuthType}");
-            }
+                ConnectionAuthType.Basic => new AuthenticationHeaderValue("Basic", authId),
+                ConnectionAuthType.Bearer => new AuthenticationHeaderValue("Bearer", authId),
+                ConnectionAuthType.None => null,
+                _ => throw new InferenceRequestException($"Unsupported ConnectionAuthType: {connectionAuthType}"),
+            };
         }
     }
 }

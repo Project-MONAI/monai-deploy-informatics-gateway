@@ -1,29 +1,16 @@
-﻿/*
- * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-using FellowOakDicom;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using FellowOakDicom;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
@@ -32,7 +19,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
     {
         private const string PatientName = "DOE^JOHN";
 
-        private readonly byte[] ByteData = new byte[]
+        private readonly byte[] _byteData = new byte[]
         {
            0x01, 0x02, 0x03, 0x04, 0x05
         };
@@ -133,12 +120,14 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             Assert.Equal(PatientName, result.First().Dataset.GetString(DicomTag.PatientName));
         }
 
-        private async Task AddDicomFileContent(MultipartContent multipartContent)
+        private static async Task AddDicomFileContent(MultipartContent multipartContent)
         {
-            var dicomDataset = new DicomDataset(DicomTransferSyntax.ExplicitVRLittleEndian);
-            dicomDataset.Add(DicomTag.PatientName, PatientName);
-            dicomDataset.Add(DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage);
-            dicomDataset.Add(DicomTag.SOPInstanceUID, DicomUID.Generate());
+            var dicomDataset = new DicomDataset(DicomTransferSyntax.ExplicitVRLittleEndian)
+            {
+                { DicomTag.PatientName, PatientName },
+                { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage },
+                { DicomTag.SOPInstanceUID, DicomUID.Generate() }
+            };
             var dicomFile = new DicomFile(dicomDataset);
 
             using (var ms = new MemoryStream())
@@ -170,14 +159,14 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             AddByteArrayContent(multipartContent);
             message.Content = multipartContent;
 
-            var result = await message.ToBinaryData();
+            var result = await message.ToBinaryData().ConfigureAwait(false);
 
-            Assert.Equal(ByteData, result);
+            Assert.Equal(_byteData, result);
         }
 
         private void AddByteArrayContent(MultipartContent multipartContent)
         {
-            multipartContent.Add(new ByteArrayContent(ByteData));
+            multipartContent.Add(new ByteArrayContent(_byteData));
         }
 
         #endregion ToBinaryData Test

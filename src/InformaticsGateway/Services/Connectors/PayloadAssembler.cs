@@ -1,14 +1,12 @@
-// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using DotNext.Threading;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,13 +16,8 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
@@ -66,21 +59,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private void RestoreFromDatabase()
         {
-            _logger.Log(LogLevel.Information, $"Restoring payloads from database.");
+            _logger.RestorePayloads();
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
 
             var payloads = repository.AsQueryable().Where(p => p.State == Payload.PayloadState.Created);
             var restored = 0;
+#pragma warning disable S3267 // Loops should be simplified with "LINQ" expressions
             foreach (var payload in payloads)
             {
                 if (_payloads.TryAdd(payload.Key, new AsyncLazy<Payload>(payload)))
                 {
-                    _logger.Log(LogLevel.Information, $"Payload {payload.Id} restored from database.");
+                    _logger.PayloadRestored(payload.Id);
                     restored++;
                 }
             }
-            _logger.Log(LogLevel.Information, $"{restored} paylaods restored from database.");
+#pragma warning restore S3267 // Loops should be simplified with "LINQ" expressions
+
+            _logger.TotalNumberOfPayloadsRestored(restored);
         }
 
         /// <summary>
@@ -88,7 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// </summary>
         /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
-        public async Task Queue(string bucket, FileStorageInfo file) => await Queue(bucket, file, DEFAULT_TIMEOUT);
+        public async Task Queue(string bucket, FileStorageInfo file) => await Queue(bucket, file, DEFAULT_TIMEOUT).ConfigureAwait(false);
 
         /// <summary>
         /// Queues a new instance of FileStorageInfo.
@@ -102,9 +98,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "Correlation ID", file.CorrelationId } });
 
-            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, timeout);
+            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, timeout).ConfigureAwait(false);
             payload.Add(file);
-            _logger.Log(LogLevel.Information, $"File added to bucket {payload.Key}. Queue size: {payload.Count}");
+            _logger.FileAddedToBucket(payload.Key, payload.Count);
         }
 
         /// <summary>
@@ -123,33 +119,33 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             try
             {
                 _timer.Enabled = false;
-                _logger.Log(LogLevel.Trace, $"Number of collections in queue: {_payloads.Count}.");
+                _logger.BucketActive(_payloads.Count);
                 foreach (var key in _payloads.Keys)
                 {
-                    _logger.Log(LogLevel.Trace, $"Checking elapsed time for key: {key}.");
-                    var payload = await _payloads[key].Task;
+                    _logger.BucketElapsedTime(key);
+                    var payload = await _payloads[key].Task.ConfigureAwait(false);
                     if (payload.HasTimedOut)
                     {
                         if (_payloads.TryRemove(key, out _))
                         {
                             if (payload.Files.Count == 0)
                             {
-                                _logger.Log(LogLevel.Warning, $"Dropping Bucket {key} due to empty.");
+                                _logger.DropEmptyBUcket(key);
                             }
                             try
                             {
                                 payload.State = Payload.PayloadState.Upload;
                                 var scope = _serviceScopeFactory.CreateScope();
                                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                                await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository);
+                                await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
                                 _workItems.Add(payload);
-                                _logger.Log(LogLevel.Information, $"Bucket {key} sent to processing queue with {payload.Count} files.");
+                                _logger.BucketReady(key, payload.Count);
                             }
                             catch (Exception ex)
                             {
                                 if (_payloads.TryAdd(key, new AsyncLazy<Payload>(payload)))
                                 {
-                                    _logger.Log(LogLevel.Warning, ex, $"Error processing payload {payload.Id}, will retry later.");
+                                    _logger.BucketError(key, payload.Id, ex);
                                 }
                                 else
                                 {
@@ -159,18 +155,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         }
                         else
                         {
-                            _logger.Log(LogLevel.Warning, $"Error removing bucket {key} from collection.");
+                            _logger.BucketRemoveError(key);
                         }
                     }
                 }
             }
             catch (KeyNotFoundException ex)
             {
-                _logger.Log(LogLevel.Debug, ex, ex.Message);
+                _logger.BucketNotFound(ex);
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error while processing payload.");
+                _logger.ErrorProcessingBuckets(ex);
             }
             finally
             {
@@ -185,8 +181,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
                 var newPayload = new Payload(key, correationId, timeout);
-                await newPayload.AddPayaloadToDatabase(_options.Value.Storage.Retries.RetryDelays, _logger, repository);
-                _logger.Log(LogLevel.Information, $"Bucket {key} created with timeout {timeout}s.");
+                await newPayload.AddPayaloadToDatabase(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                _logger.BucketCreated(key, timeout);
                 return newPayload;
             }));
         }

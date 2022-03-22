@@ -15,7 +15,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
@@ -132,6 +132,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<string>("CorrelationId")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");

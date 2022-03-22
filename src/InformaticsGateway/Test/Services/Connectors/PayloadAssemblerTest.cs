@@ -1,14 +1,11 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -16,13 +13,8 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using xRetry;
 using Xunit;
 
@@ -55,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
 
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "PayloadAssembler_Constructor")]
@@ -95,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cancellationTokenSource.Cancel();
 
             _logger.VerifyLogging($"Restoring payloads from database.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"1 paylaods restored from database.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"1 payloads restored from database.", LogLevel.Information, Times.Once());
         }
 
         [RetryFact(DisplayName = "PayloadAssembler shall retry when it fails to add payload to database")]
@@ -152,8 +145,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.AtLeastOnce());
-            _logger.VerifyLoggingMessageBeginsWith($"Error processing payload", LogLevel.Warning, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of buckets active: 1.", LogLevel.Trace, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Error processing bucket", LogLevel.Warning, Times.AtLeastOnce());
         }
 
         [RetryFact(DisplayName = "PayloadAssembler shall enqueue payload on timed event")]
@@ -166,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var result = payloadAssembler.Dequeue(_cancellationTokenSource.Token);
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue: 1.", LogLevel.Trace, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of buckets active: 1.", LogLevel.Trace, Times.AtLeastOnce());
             Assert.Single(result.Files);
             _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue with {result.Count} files", LogLevel.Information, Times.AtLeastOnce());
         }

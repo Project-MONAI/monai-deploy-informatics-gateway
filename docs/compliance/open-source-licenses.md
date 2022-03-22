@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-License-Identifier: Apache License 2.0
+-->
+
 # Open Source Licenses
 
 ---
@@ -90,7 +95,6 @@ A "contributor" is any person that distributes its contribution under this licen
 	laws which this license cannot change. To the extent permitted under your local laws, the
 	contributors exclude the implied warranties of merchantability, fitness for a particular purpose
 	and non-infringement.
-
 
 
 ---- libijg (from DCMTK 3.5.4 COPYRIGHT) ----

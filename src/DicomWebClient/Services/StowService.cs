@@ -1,36 +1,7 @@
-// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-using Ardalis.GuardClauses;
-using FellowOakDicom;
-using FellowOakDicom.IO.Writer;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,6 +9,11 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
+using FellowOakDicom;
+using FellowOakDicom.IO.Writer;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 {
@@ -78,13 +54,13 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
                     }
                     else
                     {
-                        _logger?.Log(LogLevel.Warning, $"Specified StudyInstanceUID {studyInstanceUid} does not match one in the file: {dicomFile}");
+                        Logger?.Log(LogLevel.Warning, $"Specified StudyInstanceUID {studyInstanceUid} does not match one in the file: {dicomFile}");
                     }
                 }
 
                 if (streams.Count == 0)
                 {
-                    _logger?.Log(LogLevel.Warning, "No DICOM files to upload.");
+                    Logger?.Log(LogLevel.Warning, "No DICOM files to upload.");
                     throw new ArgumentException("No matching DICOM files found or Study Instance UIDs do not match.");
                 }
 
@@ -92,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             }
             finally
             {
-                foreach (Stream stream in streams)
+                foreach (var stream in streams)
                 {
                     stream.Dispose();
                 }
@@ -121,11 +97,11 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             HttpResponseMessage response = null;
             try
             {
-                response = await _httpClient.SendAsync(message, cancellationToken).ConfigureAwait(false);
+                response = await HttpClient.SendAsync(message, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                _logger?.Log(LogLevel.Error, ex, "Failed to store DICOM instances.");
+                Logger?.Log(LogLevel.Error, ex, "Failed to store DICOM instances.");
                 throw new DicomWebClientException(response?.StatusCode, "Failed to store DICOM instances", ex);
             }
 
@@ -135,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             }
             catch (Exception ex)
             {
-                _logger?.Log(LogLevel.Error, ex, $"Failed to store DICOM instances with response code: {response.StatusCode}");
+                Logger?.Log(LogLevel.Error, ex, $"Failed to store DICOM instances with response code: {response.StatusCode}");
             }
 
             return await ParseContent(response).ConfigureAwait(false);
@@ -145,12 +121,12 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
         {
             try
             {
-                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false); ;
+                var result = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
                 return new DicomWebResponse<string>(response.StatusCode, result);
             }
             catch (Exception ex)
             {
-                _logger?.Log(LogLevel.Error, ex, "Failed to parse response.");
+                Logger?.Log(LogLevel.Error, ex, "Failed to parse response.");
                 return new DicomWebResponse<string>(response.StatusCode, ex.Message);
             }
         }

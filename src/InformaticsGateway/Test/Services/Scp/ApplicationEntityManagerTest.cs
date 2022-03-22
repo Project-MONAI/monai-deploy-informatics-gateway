@@ -1,14 +1,12 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
+using System.Linq;
+using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,14 +21,8 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.IO.Abstractions;
-using System.IO.Abstractions.TestingHelpers;
-using System.Linq;
-using System.Threading.Tasks;
 using xRetry;
 using Xunit;
 
@@ -88,6 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             {
                 return _logger.Object;
             });
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall throw if AE Title not configured")]
@@ -146,9 +139,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
 
-            _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}. Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith($"Instance ignored due to matching SOP Class UID {DicomUID.SecondaryCaptureImageStorage.UID}", LogLevel.Information, Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Never());
@@ -192,11 +184,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
 
-            _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Study Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)}. Series Instance UID: {request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)}", LogLevel.Information, Times.Once());
 
-            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Saving instance", LogLevel.Debug, Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Instance saved", LogLevel.Information, Times.Once());
 
             _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
@@ -247,7 +238,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
             });
 
-            _logger.VerifyLogging($"{aet} added to AE Title Manager", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Preparing to save:", LogLevel.Debug, Times.Never());
             _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
             _logger.VerifyLoggingMessageBeginsWith($"Instance queued for upload", LogLevel.Information, Times.Never());
@@ -338,7 +329,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.False(manager.IsValidSource(sourceAeTitle, "1.2.3.4"));
 
             _sourceEntityRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()), Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Available source AET: SAE @ 1.2.3.4", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Available source AET: SAE @ 1.2.3.4.", LogLevel.Information, Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "IsValidSource - False when IP does not match")]

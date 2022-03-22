@@ -1,41 +1,18 @@
-// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
-* Apache License, Version 2.0
-* Copyright 2019-2020 NVIDIA Corporation
-*
-* Licensed under the Apache License, Version 2.0 (the "License");
-* you may not use this file except in compliance with the License.
-* You may obtain a copy of the License at
-*
-*     http://www.apache.org/licenses/LICENSE-2.0
-*
-* Unless required by applicable law or agreed to in writing, software
-* distributed under the License is distributed on an "AS IS" BASIS,
-* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-* See the License for the specific language governing permissions and
-* limitations under the License.
-*/
-
+using System;
+using System.Collections.Generic;
+using System.Net.Mime;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Net.Mime;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -62,11 +39,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                return Ok(await _repository.ToListAsync());
+                return Ok(await _repository.ToListAsync().ConfigureAwait(false));
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error querying database.");
+                _logger.ErrorQueryingDatabase(ex);
                 return Problem(title: "Error querying database.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -80,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var destinationApplicationEntity = await _repository.FindAsync(name);
+                var destinationApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
 
                 if (destinationApplicationEntity is null)
                 {
@@ -91,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error querying DICOM destinations.");
+                _logger.ErrorListingDestinationApplicationEntities(ex);
                 return Problem(title: "Error querying DICOM destinations.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -110,9 +87,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 Validate(item);
 
-                await _repository.AddAsync(item);
-                await _repository.SaveChangesAsync();
-                _logger.Log(LogLevel.Information, $"DICOM destination added AE Title={item.AeTitle}, Host/IP={item.HostIp}.");
+                await _repository.AddAsync(item).ConfigureAwait(false);
+                await _repository.SaveChangesAsync().ConfigureAwait(false);
+                _logger.DestinationApplicationEntityAdded(item.AeTitle, item.HostIp);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ConfigurationException ex)
@@ -121,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error adding new DICOM destination.");
+                _logger.ErrorAddingDestinationApplicationEntity(ex);
                 return Problem(title: "Error adding new DICOM destination.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -135,21 +112,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var destinationApplicationEntity = await _repository.FindAsync(name);
+                var destinationApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
                 if (destinationApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
                 _repository.Remove(destinationApplicationEntity);
-                await _repository.SaveChangesAsync();
+                await _repository.SaveChangesAsync().ConfigureAwait(false);
 
-                _logger.Log(LogLevel.Information, $"DICOM destination deleted {name}.");
+                _logger.DestinationApplicationEntityDeleted(name);
                 return Ok(destinationApplicationEntity);
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, "Error deleting DICOM destination.");
+                _logger.ErrorDeletingDestinationApplicationEntity(ex);
                 return Problem(title: "Error deleting DICOM destination.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -164,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 throw new ConfigurationException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
             }
-            if (!item.IsValid(out IList<string> validationErrors))
+            if (!item.IsValid(out var validationErrors))
             {
                 throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
             }

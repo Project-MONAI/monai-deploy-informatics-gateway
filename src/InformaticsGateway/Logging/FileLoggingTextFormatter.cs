@@ -1,29 +1,21 @@
-// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Karambolo.Extensions.Logging.File;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Globalization;
 using System.Text;
+using Karambolo.Extensions.Logging.File;
+using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Logging
 {
     public class FileLoggingTextFormatter : FileLogEntryTextBuilder
     {
-        public static readonly FileLoggingTextFormatter Default = new FileLoggingTextFormatter();
+        public static readonly FileLoggingTextFormatter Default = new();
 
         protected override void AppendTimestamp(StringBuilder sb, DateTimeOffset timestamp)
         {
-            sb.Append(timestamp.ToLocalTime().ToString("o", CultureInfo.InvariantCulture)).Append(" ");
+            sb.Append(timestamp.ToLocalTime().ToString("o", CultureInfo.InvariantCulture)).Append(' ');
         }
 
         protected override void AppendLogScopeInfo(StringBuilder sb, IExternalScopeProvider scopeProvider)
@@ -38,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         protected override void AppendLogScope(StringBuilder sb, object scope)
         {
-            sb.Append("[").Append(scope).Append("]");
+            sb.Append('[').Append(scope).Append(']');
         }
 
         protected override void AppendMessage(StringBuilder sb, string message)

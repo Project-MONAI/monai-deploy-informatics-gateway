@@ -1,22 +1,6 @@
-﻿// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Ardalis.GuardClauses;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.CLI.Services;
-using Monai.Deploy.InformaticsGateway.Client;
-using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
@@ -26,6 +10,13 @@ using System.CommandLine.Rendering.Views;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
+using Monai.Deploy.InformaticsGateway.Client;
+using Monai.Deploy.InformaticsGateway.Common;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
@@ -33,7 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         public SourceCommand() : base("src", "Configure DICOM sources")
         {
-            this.AddAlias("source");
+            AddAlias("source");
 
             SetupAddSourceCommand();
             SetupRemoveSourceCommand();
@@ -44,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var listCommand = new Command("ls", "List all DICOM sources");
             listCommand.AddAlias("list");
-            this.AddCommand(listCommand);
+            AddCommand(listCommand);
 
             listCommand.Handler = CommandHandler.Create<SourceApplicationEntity, IHost, bool, CancellationToken>(ListSourceHandlerAsync);
         }
@@ -53,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
             var removeCommand = new Command("rm", "Remove a DICOM source");
             removeCommand.AddAlias("del");
-            this.AddCommand(removeCommand);
+            AddCommand(removeCommand);
 
             var nameOption = new Option<string>(new string[] { "-n", "--name" }, "Name of the DICOM source") { IsRequired = true };
             removeCommand.AddOption(nameOption);
@@ -64,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         private void SetupAddSourceCommand()
         {
             var addCommand = new Command("add", "Add a new DICOM source");
-            this.AddCommand(addCommand);
+            AddCommand(addCommand);
 
             var nameOption = new Option<string>(new string[] { "--name", "-n" }, "Name of the DICOM source") { IsRequired = false };
             addCommand.AddOption(nameOption);
@@ -102,22 +93,22 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Retrieving DICOM sources...");
-                items = await client.DicomSources.List(cancellationTokena);
+                items = await client.DicomSources.List(cancellationTokena).ConfigureAwait(false);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error retrieving DICOM sources: {ex.Message}");
+                logger.ErrorListingDicomSources(ex.Message);
                 return ExitCodes.SourceAe_ErrorList;
             }
 
             if (items.IsNullOrEmpty())
             {
-                logger.Log(LogLevel.Warning, "No DICOM sources configured.");
+                logger.NoDicomSourcesFound();
             }
             else
             {
@@ -159,17 +150,17 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Deleting DICOM source {name}...");
-                _ = await client.DicomSources.Delete(name, cancellationTokena);
-                logger.Log(LogLevel.Information, $"DICOM source '{name}' deleted.");
+                _ = await client.DicomSources.Delete(name, cancellationTokena).ConfigureAwait(false);
+                logger.DicomSourceDeleted(name);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error deleting DICOM source {name}: {ex.Message}");
+                logger.ErrorDeletingDicomSource(name, ex.Message);
                 return ExitCodes.SourceAe_ErrorDelete;
             }
             return ExitCodes.Success;
@@ -195,21 +186,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Creating new DICOM source {entity.AeTitle}...");
-                var result = await client.DicomSources.Create(entity, cancellationTokena);
+                var result = await client.DicomSources.Create(entity, cancellationTokena).ConfigureAwait(false);
 
-                logger.Log(LogLevel.Information, "New DICOM source created:");
-                logger.Log(LogLevel.Information, "\tName:            {0}", result.Name);
-                logger.Log(LogLevel.Information, "\tAE Title:        {0}", result.AeTitle);
-                logger.Log(LogLevel.Information, "\tHOST/IP Address: {0}", result.HostIp);
+                logger.DicomSourceCreated(result.Name, result.AeTitle, result.HostIp);
             }
             catch (ConfigurationException ex)
             {
-                logger.Log(LogLevel.Critical, ex.Message);
+                logger.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.Log(LogLevel.Critical, $"Error creating DICOM source {entity.AeTitle}: {ex.Message}");
+                logger.ErrorCreatingDicomSource(entity.AeTitle, ex.Message);
                 return ExitCodes.SourceAe_ErrorCreate;
             }
             return ExitCodes.Success;

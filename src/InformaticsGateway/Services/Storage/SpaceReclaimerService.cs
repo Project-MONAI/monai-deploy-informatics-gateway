@@ -1,31 +1,12 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+using System;
+using System.IO;
+using System.IO.Abstractions;
+using System.Threading;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -33,13 +14,9 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Polly;
-using System;
-using System.IO;
-using System.IO.Abstractions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
 {
@@ -72,10 +49,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private void BackgroundProcessing(CancellationToken stoppingToken)
         {
-            _logger.Log(LogLevel.Information, "Disk Space Reclaimer Hosted Service is running.");
+            _logger.ServiceRunning(ServiceName);
             while (!stoppingToken.IsCancellationRequested)
             {
-                _logger.Log(LogLevel.Debug, "Waiting for instance...");
+                _logger.SpaceReclaimerWaitingForTask();
                 try
                 {
                     var file = _taskQueue.Dequeue(stoppingToken);
@@ -86,19 +63,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 }
                 catch (ObjectDisposedException ex)
                 {
-                    _logger.Log(LogLevel.Critical, ex, "The cleanup queue may have been disposed.");
+                    _logger.ServiceDisposed(ServiceName, ex);
                     break;
                 }
                 catch (Exception ex)
                 {
                     if (ex is InvalidOperationException || ex is OperationCanceledException)
                     {
-                        _logger.Log(LogLevel.Error, ex, "The cleanup queue may have been modified out marked as completed.");
+                        _logger.ServiceInvalidOrCancelled(ServiceName, ex);
                     }
                 }
             }
             Status = ServiceStatus.Cancelled;
-            _logger.Log(LogLevel.Information, "Cancellation requested.");
+            _logger.ServiceCancelled(ServiceName);
         }
 
         private void ProcessFile(FileStorageInfo file)
@@ -109,20 +86,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 .WaitAndRetry(
                     3,
                     retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
-                    (exception, retryCount, context) =>
+                    (exception, timespan, retryCount, context) =>
                     {
-                        _logger.Log(LogLevel.Error, exception, $"Error occurred deleting file {file} on {retryCount} retry.");
+                        _logger.ErrorDeletingFIle(file.FilePath, retryCount, exception);
                     })
                 .Execute(() =>
                 {
-
                     foreach (var filePath in file.FilePaths)
                     {
-                        _logger.Log(LogLevel.Debug, $"Deleting file {filePath}");
+                        _logger.DeletingFile(filePath);
                         if (_fileSystem.File.Exists(filePath))
                         {
                             _fileSystem.File.Delete(filePath);
-                            _logger.Log(LogLevel.Debug, $"File deleted {filePath}");
+                            _logger.FileDeleted(filePath);
                         }
                     }
 
@@ -151,13 +127,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 try
                 {
-                    _logger.Log(LogLevel.Debug, $"Deleting directory {dirPath}");
+                    _logger.DeletingDirectory(dirPath);
                     _fileSystem.Directory.Delete(dirPath);
                     RecursivelyRemoveDirectoriesIfEmpty(_fileSystem.Directory.GetParent(dirPath).FullName);
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log(LogLevel.Error, ex, $"Error deleting directory {dirPath}.");
+                    _logger.ErrorDeletingDirectory(dirPath, ex);
                 }
             }
         }
@@ -167,9 +143,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             var task = Task.Run(() =>
             {
                 BackgroundProcessing(cancellationToken);
-            });
+            }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
+            _logger.ServiceRunning(ServiceName);
             if (task.IsCompleted)
                 return task;
             return Task.CompletedTask;
@@ -177,7 +154,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         public Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Disk Space Reclaimer Hosted Service is stopping.");
+            _logger.ServiceStopping(ServiceName);
             Status = ServiceStatus.Stopped;
             return Task.CompletedTask;
         }

@@ -1,36 +1,13 @@
-// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+using System;
+using System.IO.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using System;
-using System.IO.Abstractions;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
 {
@@ -74,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 _fileSystem.Directory.CreateDirectory(_storageConfiguration.TemporaryDataDirFullPath);
             }
-            _logger.Log(LogLevel.Information, $"Temporary Storage Path={_storageConfiguration.TemporaryDataDirFullPath}.");
+            _logger.TemporaryStoragePath(_storageConfiguration.TemporaryDataDirFullPath);
 
             Initialize();
         }
@@ -84,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             var driveInfo = _fileSystem.DriveInfo.FromDriveName(_storageConfiguration.TemporaryDataDirFullPath);
             _reservedSpace = (long)(driveInfo.TotalSize * (1 - (_storageConfiguration.Watermark / 100.0)));
             _reservedSpace = Math.Max(_reservedSpace, _storageConfiguration.ReserveSpaceGB * OneGB);
-            _logger.Log(LogLevel.Information, $"Storage Size: {driveInfo.TotalSize:N0}. Reserved: {_reservedSpace:N0}.");
+            _logger.StorageSizeWithReserve(driveInfo.TotalSize, _reservedSpace);
         }
 
         private bool IsSpaceAvailable()
@@ -95,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
             if (freeSpace <= _reservedSpace)
             {
-                _logger.Log(LogLevel.Information, $"Storage Size: {driveInfo.TotalSize:N0}. Reserved: {_reservedSpace:N0}. Available: {freeSpace:N0}.");
+                _logger.StorageSizeWithReserveAndAvailable(driveInfo.TotalSize, _reservedSpace, freeSpace);
             }
 
             return freeSpace > _reservedSpace;

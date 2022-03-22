@@ -1,0 +1,18 @@
+{
+    "storage": {
+        "endpoint": "192.168.20.156:9000",
+        "username": "admin",
+        "password": "password",
+        "bucket": "igbucket"
+    },
+    "messaging": {
+        "username": "mdig",
+        "password": "helloworld",
+        "host": "192.168.20.156",
+        "virtual_host": "monaideploy",
+        "exchange": "monaideploy",
+        "topic": "md.workflow.request"
+    },
+    "working_dir": "jobs/",
+    "ignore_json": false
+}

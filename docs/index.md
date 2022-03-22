@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-License-Identifier: Apache License 2.0
+-->
+
 # MONAI Deploy Informatics Gateway <small>v0.0.0</small>
 
 ![NVIDIA](./images/MONAI-logo_color.svg)

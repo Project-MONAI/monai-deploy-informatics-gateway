@@ -1,13 +1,5 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
@@ -22,7 +14,6 @@ namespace Monai.Deploy.InformaticsGateway.Storage
     {
         private readonly ILogger<MinIoStorageService> _logger;
         private readonly MinioClient _client;
-        private readonly StorageConfiguration _configuration;
 
         public string Name => "MinIO Storage Service";
 
@@ -33,11 +24,11 @@ namespace Monai.Deploy.InformaticsGateway.Storage
                 throw new ArgumentNullException(nameof(options));
             }
 
-            _configuration = options.Value.Storage;
+            var configuration = options.Value.Storage;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _client = new MinioClient(_configuration.StorageServiceCredentials.Endpoint, _configuration.StorageServiceCredentials.AccessKey, _configuration.StorageServiceCredentials.AccessToken);
+            _client = new MinioClient(configuration.StorageServiceCredentials.Endpoint, configuration.StorageServiceCredentials.AccessKey, configuration.StorageServiceCredentials.AccessToken);
 
-            if (_configuration.SecuredConnection)
+            if (configuration.SecuredConnection)
             {
                 _client.WithSSL();
             }
@@ -62,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Storage
             await _client.GetObjectAsync(bucketName, objectName, callback, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public IList<VirtualFileInfo> ListObjects(string bucketName, string? prefix = null, bool recursive = false, CancellationToken cancellationToken = default)
+        public IList<VirtualFileInfo> ListObjects(string bucketName, string? prefix = "", bool recursive = false, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(bucketName, nameof(bucketName));
 
@@ -85,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Storage
             },
             error =>
             {
-                _logger.Log(LogLevel.Warning, error, $"Error listing objects in bucket '{bucketName}'.");
+                _logger.ListObjectError(bucketName);
             },
             () => completedEvent.Set(), cancellationToken);
 

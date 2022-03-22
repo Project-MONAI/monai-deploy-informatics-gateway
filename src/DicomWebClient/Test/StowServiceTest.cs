@@ -1,32 +1,19 @@
-﻿/*
- * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-using FellowOakDicom;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
-using Moq;
-using Moq.Protected;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using FellowOakDicom;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
+using Moq;
+using Moq.Protected;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
@@ -34,8 +21,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
     public class StowServiceTest : IClassFixture<DicomFileGeneratorFixture>
     {
         private const string BaseUri = "http://dummy/api/";
-        private DicomFileGeneratorFixture _fixture;
-        private Mock<ILogger> _logger;
+        private readonly DicomFileGeneratorFixture _fixture;
+        private readonly Mock<ILogger> _logger;
 
         public StowServiceTest(DicomFileGeneratorFixture fixture)
         {
@@ -46,11 +33,6 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         [Fact(DisplayName = "Store - throws if input is null or empty")]
         public async Task Store_ShallThrowIfNoFilesSpecified()
         {
-            var response = new HttpResponseMessage
-            {
-                StatusCode = HttpStatusCode.OK
-            };
-
             var httpClient = new HttpClient();
             var service = new StowService(httpClient, _logger.Object);
 
@@ -62,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         public async Task Store_ShallThrowIfNoFilesMatchStudyInstanceUid()
         {
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID();
-            var instances = _fixture.GenerateDicomFiles(3, studyInstanceUid);
+            var instances = DicomFileGeneratorFixture.GenerateDicomFiles(3, studyInstanceUid);
 
             var httpClient = new HttpClient();
             var service = new StowService(httpClient, _logger.Object);
@@ -75,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         public async Task Store_HandlesSendAsyncFailures()
         {
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID();
-            var instances = _fixture.GenerateDicomFiles(1, studyInstanceUid);
+            var instances = DicomFileGeneratorFixture.GenerateDicomFiles(1, studyInstanceUid);
 
             var handlerMock = new Mock<HttpMessageHandler>();
             handlerMock
@@ -103,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
         public async Task Store_HandlesResponses(HttpStatusCode status, string message)
         {
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID();
-            var instances = _fixture.GenerateDicomFiles(3, studyInstanceUid);
+            var instances = DicomFileGeneratorFixture.GenerateDicomFiles(3, studyInstanceUid);
 
             var response = new HttpResponseMessage
             {
@@ -111,9 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 Content = new StringContent(message)
             };
 
-            Mock<HttpMessageHandler> handlerMock;
-            HttpClient httpClient;
-            GenerateHttpClient(response, out handlerMock, out httpClient);
+            GenerateHttpClient(response, out var handlerMock, out var httpClient);
 
             var service = new StowService(httpClient, _logger.Object);
 

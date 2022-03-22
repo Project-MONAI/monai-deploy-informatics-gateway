@@ -1,24 +1,16 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using FellowOakDicom;
-using FellowOakDicom.Imaging;
-using FellowOakDicom.IO.Buffer;
-using FellowOakDicom.Serialization;
-using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
+using FellowOakDicom;
+using FellowOakDicom.Imaging;
+using FellowOakDicom.IO.Buffer;
+using FellowOakDicom.Serialization;
+using Monai.Deploy.InformaticsGateway.Common;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Common
@@ -169,33 +161,30 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
         [Fact(DisplayName = "Save - a valid DICOM file with complete JSON")]
         public async Task Save_ValidFileWithJson()
         {
+            ushort rows = 10, columns = 10;
             var filename = Path.GetTempFileName();
             var jsonFilename = $"{filename}.json";
             var dicomFile = new DicomFile();
             var expectedSop = DicomUIDGenerator.GenerateDerivedFromUUID();
-            dicomFile.Dataset.Add(DicomTag.SOPInstanceUID, expectedSop);
-            dicomFile.Dataset.AddOrUpdate(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Rgb.Value);
-            dicomFile.Dataset.AddOrUpdate(DicomTag.Rows, (ushort)1);
-            dicomFile.Dataset.AddOrUpdate(DicomTag.Columns, (ushort)1);
-            dicomFile.Dataset.AddOrUpdate(DicomTag.BitsAllocated, (ushort)8);
+            dicomFile.Dataset.Add(DicomTag.SOPInstanceUID, expectedSop)
+                             .AddOrUpdate(DicomTag.PhotometricInterpretation, PhotometricInterpretation.Monochrome2.Value)
+                             .AddOrUpdate<ushort>(DicomTag.Rows, rows)
+                             .AddOrUpdate<ushort>(DicomTag.Columns, columns)
+                             .AddOrUpdate<ushort>(DicomTag.BitsAllocated, 8)
+                             .AddOrUpdate<ushort>(DicomTag.BitsStored, 8)
+                             .AddOrUpdate<ushort>(DicomTag.HighBit, 7)
+                             .AddOrUpdate(DicomTag.PixelRepresentation, (ushort)PixelRepresentation.Unsigned)
+                             .AddOrUpdate(DicomTag.PlanarConfiguration, (ushort)PlanarConfiguration.Interleaved)
+                             .AddOrUpdate<ushort>(DicomTag.SamplesPerPixel, 1);
             dicomFile.FileMetaInfo.TransferSyntax = DicomTransferSyntax.ExplicitVRLittleEndian;
             dicomFile.FileMetaInfo.MediaStorageSOPInstanceUID = DicomUIDGenerator.GenerateDerivedFromUUID();
             dicomFile.FileMetaInfo.MediaStorageSOPClassUID = DicomUIDGenerator.GenerateDerivedFromUUID();
 
+            var pixelData = DicomPixelData.Create(dicomFile.Dataset, true);
             var random = new Random();
-            var pixels = new byte[3];
+            var pixels = new byte[rows * columns];
             random.NextBytes(pixels);
             var buffer = new MemoryByteBuffer(pixels);
-
-            var pixelData = DicomPixelData.Create(dicomFile.Dataset, true);
-            pixelData.BitsStored = 8;
-            pixelData.SamplesPerPixel = 3;
-            pixelData.HighBit = 7;
-            pixelData.PhotometricInterpretation = PhotometricInterpretation.Rgb;
-            pixelData.PixelRepresentation = 0;
-            pixelData.PlanarConfiguration = 0;
-            pixelData.Height = (ushort)1;
-            pixelData.Width = (ushort)1;
             pixelData.AddFrame(buffer);
 
             var dicomToolkit = new DicomToolkit(_fileSystem);

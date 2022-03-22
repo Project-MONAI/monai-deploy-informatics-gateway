@@ -1,31 +1,11 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
+using System;
+using System.IO.Abstractions;
+using System.Net;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -35,11 +15,8 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
-using System;
-using System.IO.Abstractions;
-using System.Net;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -75,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
             try
             {
-                var status = await _inferenceRequestRepository.GetStatus(transactionId);
+                var status = await _inferenceRequestRepository.GetStatus(transactionId).ConfigureAwait(false);
 
                 if (status is null)
                 {
@@ -86,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, $"Failed to retrieve status for TransactionId/JobId={transactionId}");
+                _logger.ErrorRetrievingJobStatus(transactionId, ex);
                 return Problem(title: "Failed to retrieve inference request status.", statusCode: (int)HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
@@ -101,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             Guard.Against.Null(request, nameof(request));
 
-            if (!request.IsValid(out string details))
+            if (!request.IsValid(out var details))
             {
                 return Problem(title: $"Invalid request", statusCode: (int)HttpStatusCode.UnprocessableEntity, detail: details);
             }
@@ -116,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             try
             {
                 if (_fileSystem.Directory.TryGenerateDirectory(_fileSystem.Path.Combine(_configuration.Value.Storage.TemporaryDataDirFullPath, request.TransactionId),
-                    out string storagePath))
+                    out var storagePath))
                 {
                     request.ConfigureTemporaryStorageLocation(storagePath);
                 }
@@ -127,17 +104,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, $"Failed to configure storage location for request: TransactionId={request.TransactionId}");
+                _logger.ErrorConfiguringStorageLocation(request.TransactionId, ex);
                 return Problem(title: ex.Message, statusCode: (int)HttpStatusCode.InternalServerError, detail: ex.Message);
             }
 
             try
             {
-                await _inferenceRequestRepository.Add(request);
+                await _inferenceRequestRepository.Add(request).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, ex, $"Unable to queue the request: TransactionId={request.TransactionId}");
+                _logger.ErrorQueuingInferenceRequest(request.TransactionId, ex);
                 return Problem(title: "Failed to save request", statusCode: (int)HttpStatusCode.InternalServerError, detail: ex.Message);
             }
 

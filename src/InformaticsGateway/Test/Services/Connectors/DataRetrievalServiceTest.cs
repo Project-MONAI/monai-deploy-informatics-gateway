@@ -1,14 +1,14 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions.TestingHelpers;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading;
+using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,18 +22,10 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Abstractions.TestingHelpers;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading;
-using System.Threading.Tasks;
 using xRetry;
 using Xunit;
 
@@ -82,6 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor")]
@@ -133,8 +126,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             await store.StopAsync(cancellationTokenSource.Token);
             Thread.Sleep(500);
 
-            _logger.VerifyLogging($"Data Retriever Hosted Service is running.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Data Retriever Hosted Service is stopping.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.Never());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
@@ -162,8 +155,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             Thread.Sleep(250);
             await store.StopAsync(cancellationTokenSource.Token);
 
-            _logger.VerifyLogging($"Data Retriever Hosted Service is running.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Data Retriever Hosted Service is stopping.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
@@ -266,7 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             BlockUntilCancelled(cancellationTokenSource.Token);
 
-            _logger.VerifyLoggingMessageBeginsWith($"Restored previously retrieved instance", LogLevel.Debug, Times.Exactly(5));
+            _logger.VerifyLoggingMessageBeginsWith($"Restored previously retrieved file", LogLevel.Debug, Times.Exactly(5));
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(5));
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());

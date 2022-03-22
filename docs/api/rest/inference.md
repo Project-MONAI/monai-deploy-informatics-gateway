@@ -1,3 +1,8 @@
+<!--
+SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-License-Identifier: Apache License 2.0
+-->
+
 # Inference Request APIs
 
 The inference endpoint provides a RESTful interface for triggering a new inference request that is compatible with the ACR DSI API.

@@ -1,24 +1,17 @@
-// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -48,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             if (_configuration.IgnoredSopClasses.Contains(request.SOPClassUID.UID))
             {
-                _logger.Log(LogLevel.Information, $"Instance ignored due to matching SOP Class UID {request.SOPClassUID.UID}");
+                _logger.InstanceIgnoredWIthMatchingSopClassUid(request.SOPClassUID.UID);
                 return;
             }
 
@@ -57,19 +50,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 info.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
-            await SaveDicomInstance(request, info.FilePath, info.DicomJsonFilePath);
+            await SaveDicomInstance(request, info.FilePath, info.DicomJsonFilePath).ConfigureAwait(false);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
-            _logger.Log(LogLevel.Debug, $"Queuing instance with group {dicomTag}");
+            _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = request.Dataset.GetSingleValue<string>(dicomTag);
-            await _payloadAssembler.Queue(key, info, _configuration.Timeout);
+            await _payloadAssembler.Queue(key, info, _configuration.Timeout).ConfigureAwait(false);
         }
 
         private async Task SaveDicomInstance(DicomCStoreRequest request, string filename, string metadataFilename)
         {
-            _logger.Log(LogLevel.Debug, $"Preparing to save {filename}");
-            await _dicomToolkit.Save(request.File, filename, metadataFilename, _dicomJsonOptions);
-            _logger.Log(LogLevel.Information, $"Instance saved {filename}");
+            _logger.AESavingInstance(filename);
+            await _dicomToolkit.Save(request.File, filename, metadataFilename, _dicomJsonOptions).ConfigureAwait(false);
+            _logger.AEInstanceSaved(filename);
         }
     }
 }

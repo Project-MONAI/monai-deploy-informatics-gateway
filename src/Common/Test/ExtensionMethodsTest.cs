@@ -1,13 +1,5 @@
-﻿// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
 using System.Collections.Generic;
 using System.IO;
@@ -27,7 +19,7 @@ namespace Monai.Deploy.InformaticsGateway.Common.Test
         [Fact(DisplayName = "IsNullOrEmpty shall return true for empty list")]
         public void IsNullOrEmpty_WithEmptyList()
         {
-            List<string> list = new List<string>();
+            var list = new List<string>();
             Assert.True(list.IsNullOrEmpty());
         }
 
@@ -45,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Common.Test
         [InlineData("team", "monai", "rocks")]
         public void IsNullOrEmpty_WithOneItemInList(params string[] items)
         {
-            List<string> list = new List<string>(items);
+            var list = new List<string>(items);
             Assert.False(ExtensionMethods.IsNullOrEmpty(list));
         }
 

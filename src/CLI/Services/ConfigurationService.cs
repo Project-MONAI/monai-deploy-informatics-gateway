@@ -1,21 +1,13 @@
-// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
@@ -49,23 +41,23 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task Initialize(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Debug, $"Reading default application configurations...");
+            _logger.DebugMessage("Reading default application configurations...");
             using var stream = _embeddedResource.GetManifestResourceStream(Common.AppSettingsResourceName);
 
             if (stream is null)
             {
-                _logger.Log(LogLevel.Debug, $"Available manifest names {string.Join(",", Assembly.GetExecutingAssembly().GetManifestResourceNames())}");
+                _logger.AvailableManifest(string.Join(",", Assembly.GetExecutingAssembly().GetManifestResourceNames()));
                 throw new ConfigurationException($"Default configuration file could not be loaded, please reinstall the CLI.");
             }
             CreateConfigDirectoryIfNotExist();
 
-            _logger.Log(LogLevel.Information, $"Saving appsettings.json to {Common.ConfigFilePath}...");
+            _logger.SaveAppSettings(Common.ConfigFilePath);
             using (var fileStream = _fileSystem.FileStream.Create(Common.ConfigFilePath, FileMode.Create))
             {
-                await stream.CopyToAsync(fileStream, cancellationToken);
-                await fileStream.FlushAsync(cancellationToken);
+                await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
+                await fileStream.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
-            this._logger.Log(LogLevel.Information, $"{Common.ConfigFilePath} updated successfully.");
+            _logger.AppSettingUpdated(Common.ConfigFilePath);
         }
     }
 }

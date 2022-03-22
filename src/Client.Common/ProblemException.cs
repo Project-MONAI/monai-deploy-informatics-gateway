@@ -1,50 +1,47 @@
-// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
-/*
- * Apache License, Version 2.0
- * Copyright 2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+// SPDX-FileCopyrightText: � 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: � 2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
 using System;
+using System.Runtime.Serialization;
+using Ardalis.GuardClauses;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Common
 {
     [Serializable]
     public class ProblemException : Exception
     {
-        private readonly ProblemDetails _problemDetails;
+        public ProblemDetails ProblemDetails { get; private set; }
 
-        public ProblemException(ProblemDetails problemDetails) : base(problemDetails.Detail)
+        public ProblemException(ProblemDetails problemDetails) : base(problemDetails?.Detail)
         {
-            _problemDetails = problemDetails ?? throw new ArgumentNullException(nameof(problemDetails));
+            Guard.Against.Null(problemDetails, nameof(problemDetails));
+
+            ProblemDetails = problemDetails;
         }
 
-        public override string Message => this.ToString();
+        protected ProblemException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+            ProblemDetails = (ProblemDetails)info.GetValue(nameof(ProblemDetails), typeof(ProblemDetails));
+        }
+
+        public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        {
+            if (info == null)
+            {
+                throw new ArgumentNullException("info");
+            }
+
+            info.AddValue(nameof(ProblemDetails), ProblemDetails, typeof(ProblemDetails));
+
+            base.GetObjectData(info, context);
+        }
+
+        public override string Message => ToString();
 
         public override string ToString()
         {
-            return $"HTTP Status: {_problemDetails.Status}. {_problemDetails.Detail}";
+            return $"HTTP Status: {ProblemDetails.Status}. {ProblemDetails.Detail}";
         }
     }
 }

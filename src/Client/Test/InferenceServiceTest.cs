@@ -1,26 +1,18 @@
-﻿// Copyright 2021 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Client.Common;
-using Monai.Deploy.InformaticsGateway.Client.Services;
-using Moq;
-using Newtonsoft.Json;
 using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Client.Common;
+using Monai.Deploy.InformaticsGateway.Client.Services;
+using Moq;
+using Newtonsoft.Json;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Test
@@ -44,14 +36,15 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(inferenceRequest);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "inference";
+            var rootUri = new Uri("http://localhost:5000");
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.OK;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}", HttpMethod.Post, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Post, httpResponse);
 
             var service = new InferenceService(httpClient, _logger.Object);
 
@@ -68,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -77,14 +70,15 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(problem);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "inference";
+            var rootUri = new Uri("http://localhost:5000");
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.InternalServerError;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}", HttpMethod.Post, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Post, httpResponse);
 
             var service = new InferenceService(httpClient, _logger.Object);
 
@@ -106,14 +100,15 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             };
             var json = JsonConvert.SerializeObject(inferenceStatus);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "inference";
+            var rootUri = new Uri("http://localhost:5000");
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.OK;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}/status", HttpMethod.Get, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Get, httpResponse);
 
             var service = new InferenceService(httpClient, _logger.Object);
 
@@ -130,7 +125,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var problem = new Microsoft.AspNetCore.Mvc.ProblemDetails
+            var problem = new ProblemDetails
             {
                 Title = "Problem Title",
                 Detail = "Problem Detail",
@@ -139,14 +134,15 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var json = JsonConvert.SerializeObject(problem);
 
-            string rootUri = "http://localhost:5000";
-            string uriPath = "inference";
+            var rootUri = new Uri("http://localhost:5000");
 
-            var httpResponse = new HttpResponseMessage();
-            httpResponse.StatusCode = HttpStatusCode.InternalServerError;
-            httpResponse.Content = new StringContent(json, Encoding.UTF8, "application/json");
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
 
-            var httpClient = SetupHttpClientMock(rootUri, $"{rootUri}/{uriPath}/status", HttpMethod.Get, httpResponse);
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Get, httpResponse);
 
             var service = new InferenceService(httpClient, _logger.Object);
 

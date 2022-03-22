@@ -1,44 +1,19 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-/*
- * Apache License, Version 2.0
- * Copyright 2019-2021 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-using FellowOakDicom;
-using FellowOakDicom.Imaging.Codec;
-using FellowOakDicom.Log;
-using FellowOakDicom.Network;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Common;
 using System;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using LogLevel = Microsoft.Extensions.Logging.LogLevel;
+using FellowOakDicom;
+using FellowOakDicom.Imaging.Codec;
+using FellowOakDicom.Log;
+using FellowOakDicom.Network;
+using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -51,11 +26,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         IDicomCEchoProvider,
         IDicomCStoreProvider
     {
+        private const int ERROR_HANDLE_DISK_FULL = 0x27;
+        private const int ERROR_DISK_FULL = 0x70;
+
         private Microsoft.Extensions.Logging.ILogger _logger;
         private IApplicationEntityManager _associationDataProvider;
         private IDisposable _loggerScope;
         private Guid _associationId;
-        private string _associationIdStr;
 
         public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
                 : base(stream, fallbackEncoding, log, logManager, network, transcoder)
@@ -64,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public Task<DicomCEchoResponse> OnCEchoRequestAsync(DicomCEchoRequest request)
         {
-            _logger?.Log(LogLevel.Information, $"C-ECH request received");
+            _logger?.CEchoReceived();
             return Task.FromResult(new DicomCEchoResponse(request, DicomStatus.Success));
         }
 
@@ -72,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             if (exception != null)
             {
-                _logger?.Log(LogLevel.Error, exception, "Connection closed with exception.");
+                _logger?.ConnectionClosedWithException(exception);
             }
 
             _loggerScope?.Dispose();
@@ -83,36 +60,36 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             try
             {
-                _logger?.Log(LogLevel.Information, $"Transfer syntax used: {request.TransferSyntax}");
-                await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId);
+                _logger?.TransferSyntaxUsed(request.TransferSyntax);
+                await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId).ConfigureAwait(false);
                 return new DicomCStoreResponse(request, DicomStatus.Success);
             }
             catch (InsufficientStorageAvailableException ex)
             {
-                _logger?.Log(LogLevel.Error, "Failed to process C-STORE request, out of storage space: {ex}", ex);
+                _logger?.CStoreFailedWithNoSpace(ex);
                 return new DicomCStoreResponse(request, DicomStatus.ResourceLimitation);
             }
-            catch (System.IO.IOException ex) when ((ex.HResult & 0xFFFF) == 0x27 || (ex.HResult & 0xFFFF) == 0x70)
+            catch (System.IO.IOException ex) when ((ex.HResult & 0xFFFF) == ERROR_HANDLE_DISK_FULL || (ex.HResult & 0xFFFF) == ERROR_DISK_FULL)
             {
-                _logger?.Log(LogLevel.Error, "Failed to process C-STORE request, out of storage space: {ex}", ex);
+                _logger?.CStoreFailedWithNoSpace(ex);
                 return new DicomCStoreResponse(request, DicomStatus.ResourceLimitation);
             }
             catch (Exception ex)
             {
-                _logger?.Log(LogLevel.Error, "Failed to process C-STORE request: {ex}", ex);
+                _logger?.CStoreFailed(ex);
                 return new DicomCStoreResponse(request, DicomStatus.ProcessingFailure);
             }
         }
 
         public Task OnCStoreRequestExceptionAsync(string tempFileName, Exception e)
         {
-            _logger?.Log(LogLevel.Error, e, "Exception handling C-STORE Request");
+            _logger?.CStoreFailed(e);
             return Task.CompletedTask;
         }
 
         public void OnReceiveAbort(DicomAbortSource source, DicomAbortReason reason)
         {
-            _logger?.Log(LogLevel.Warning, $"Aborted {source} with reason {reason}");
+            _logger?.CStoreAbort(source, reason);
         }
 
         /// <summary>
@@ -121,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// <returns></returns>
         public Task OnReceiveAssociationReleaseRequestAsync()
         {
-            _logger?.Log(LogLevel.Information, "Association release request received");
+            _logger?.CStoreAssociationReleaseRequest();
             return SendAssociationReleaseResponseAsync();
         }
 
@@ -132,16 +109,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             if (_associationDataProvider is null)
             {
-                throw new ArgumentNullException("userState must be an instance of IAssociationDataProvider");
+                throw new ServiceException($"{nameof(UserState)} must be an instance of IAssociationDataProvider");
             }
 
             _logger = _associationDataProvider.GetLogger(Association.CalledAE);
 
             _associationId = Guid.NewGuid();
-            _associationIdStr = $"#{_associationId} {association.RemoteHost}:{association.RemotePort}";
+            var associationIdStr = $"#{_associationId} {association.RemoteHost}:{association.RemotePort}";
 
-            _loggerScope = _logger?.BeginScope(new LoggingDataDictionary<string, object> { { "Association", _associationIdStr } });
-            _logger?.Log(LogLevel.Information, $"Association received from {association.RemoteHost}:{association.RemotePort}");
+            _loggerScope = _logger?.BeginScope(new LoggingDataDictionary<string, object> { { "Association", associationIdStr } });
+            _logger?.CStoreAssociationReceived(association.RemoteHost, association.RemotePort);
 
             if (!IsValidSourceAe(association.CallingAE, association.RemoteHost))
             {
@@ -165,7 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 {
                     if (!_associationDataProvider.Configuration.Value.Dicom.Scp.EnableVerification)
                     {
-                        _logger?.Log(LogLevel.Warning, "Verification service is disabled: rejecting association");
+                        _logger?.VerificationServiceDisabled();
                         return SendAssociationRejectAsync(
                             DicomRejectResult.Permanent,
                             DicomRejectSource.ServiceUser,

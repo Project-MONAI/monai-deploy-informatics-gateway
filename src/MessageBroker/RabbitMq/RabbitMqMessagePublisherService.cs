@@ -1,13 +1,5 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
@@ -22,15 +14,11 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
     public class RabbitMqMessagePublisherService : IMessageBrokerPublisherService, IDisposable
     {
         private readonly ILogger<RabbitMqMessagePublisherService> _logger;
-        private readonly MessageBrokerConfiguration _configuration;
         private readonly string _endpoint;
-        private readonly string _username;
-        private readonly string _password;
         private readonly string _virtualHost;
         private readonly string _exchange;
-        private readonly ConnectionFactory _connectionFactory;
         private readonly IConnection _connection;
-        private bool disposedValue;
+        private bool _disposedValue;
 
         public string Name => "Rabbit MQ Publisher";
 
@@ -43,23 +31,23 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             }
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _configuration = options.Value.Messaging;
+            var configuration = options.Value.Messaging;
 
-            ValidateConfiguration(_configuration);
-            _endpoint = _configuration.PublisherSettings[ConfigurationKeys.EndPoint];
-            _username = _configuration.PublisherSettings[ConfigurationKeys.Username];
-            _password = _configuration.PublisherSettings[ConfigurationKeys.Password];
-            _virtualHost = _configuration.SubscriberSettings[ConfigurationKeys.VirtualHost];
-            _exchange = _configuration.SubscriberSettings[ConfigurationKeys.Exchange];
+            ValidateConfiguration(configuration);
+            _endpoint = configuration.PublisherSettings[ConfigurationKeys.EndPoint];
+            var username = configuration.PublisherSettings[ConfigurationKeys.Username];
+            var password = configuration.PublisherSettings[ConfigurationKeys.Password];
+            _virtualHost = configuration.SubscriberSettings[ConfigurationKeys.VirtualHost];
+            _exchange = configuration.SubscriberSettings[ConfigurationKeys.Exchange];
 
-            _connectionFactory = new ConnectionFactory()
+            var connectionFactory = new ConnectionFactory()
             {
                 HostName = _endpoint,
-                UserName = _username,
-                Password = _password,
+                UserName = username,
+                Password = password,
                 VirtualHost = _virtualHost
             };
-            _connection = _connectionFactory.CreateConnection();
+            _connection = connectionFactory.CreateConnection();
         }
 
         private void ValidateConfiguration(MessageBrokerConfiguration configuration)
@@ -83,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "MessageId", message.MessageId } });
 
-            _logger.Log(LogLevel.Information, $"Publishing message to {_endpoint}/{_virtualHost}. Exchange={_exchange}, Routing Key={topic}");
+            _logger.PublshingRabbitMq(_endpoint, _virtualHost, _exchange, topic);
 
             using var channel = _connection.CreateModel();
             channel.ExchangeDeclare(_exchange, ExchangeType.Topic);
@@ -112,19 +100,16 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!disposedValue)
+            if (!_disposedValue)
             {
-                if (disposing)
+                if (disposing && _connection != null)
                 {
-                    if (_connection != null)
-                    {
-                        _logger.Log(LogLevel.Information, $"Closing connection.");
-                        _connection.Close();
-                        _connection.Dispose();
-                    }
+                    _logger.ClosingConnection();
+                    _connection.Close();
+                    _connection.Dispose();
                 }
 
-                disposedValue = true;
+                _disposedValue = true;
             }
         }
 

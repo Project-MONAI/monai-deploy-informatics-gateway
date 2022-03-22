@@ -1,20 +1,6 @@
-// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.CLI.Services;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
-using Moq;
 using System;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
@@ -22,6 +8,12 @@ using System.CommandLine.Parsing;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.CLI.Services;
+using Monai.Deploy.InformaticsGateway.SharedTest;
+using Moq;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.CLI.Test
@@ -57,6 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 .AddCommand(new ConfigCommand());
             _paser = _commandLineBuilder.Build();
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact(DisplayName = "config comand")]
@@ -106,10 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLogging("Informatics Gateway API: http://test", LogLevel.Information, Times.Once());
             _logger.VerifyLogging("DICOM SCP Listening Port: 100", LogLevel.Information, Times.Once());
             _logger.VerifyLogging("Container Runner: Docker", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("Host:", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("   Database storage mount: DB", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("   Data storage mount: Data", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging("   Logs storage mount: Logs", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging("Host:\r\n\tDatabase storage mount: DB\r\n\tData storage mount: Data\r\n\tLogs storage mount: Logs", LogLevel.Information, Times.Once());
         }
 
         [Fact(DisplayName = "config show comand exception")]

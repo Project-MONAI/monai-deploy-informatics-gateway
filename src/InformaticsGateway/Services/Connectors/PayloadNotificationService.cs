@@ -1,14 +1,15 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
+using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -19,17 +20,10 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Abstractions;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
@@ -88,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         public Task StartAsync(CancellationToken cancellationToken)
         {
             _uploadQueue = new ActionBlock<Payload>(
-                    async (task) => await UploadPayloadActionBlock(task, cancellationToken),
+                    async (task) => await UploadPayloadActionBlock(task, cancellationToken).ConfigureAwait(false),
                     new ExecutionDataflowBlockOptions
                     {
                         MaxDegreeOfParallelism = _options.Value.Storage.Concurrentcy,
@@ -97,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     });
 
             _publishQueue = new ActionBlock<Payload>(
-                    async (task) => await PublishPayloadActionBlock(task),
+                    async (task) => await PublishPayloadActionBlock(task).ConfigureAwait(false),
                     new ExecutionDataflowBlockOptions
                     {
                         MaxDegreeOfParallelism = 1,
@@ -110,9 +104,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var task = Task.Run(() =>
             {
                 BackgroundProcessing(cancellationToken);
-            });
+            }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
+            _logger.ServiceStarted(ServiceName);
+
             if (task.IsCompleted)
                 return task;
             return Task.CompletedTask;
@@ -120,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private void BackgroundProcessing(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Information, $"{ServiceName} is running.");
+            _logger.ServiceRunning(ServiceName);
 
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -131,31 +127,32 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "Correlation ID", payload.CorrelationId } }))
                     {
                         _uploadQueue.Post(payload);
-                        _logger.Log(LogLevel.Information, $"Payload {payload.Id} added to {ServiceName} for processing.");
+                        _logger.PayloadQueuedForProcessing(payload.Id, ServiceName);
                     }
                 }
                 catch (OperationCanceledException ex)
                 {
-                    _logger.Log(LogLevel.Warning, ex, $"{ServiceName} canceled.");
+                    _logger.ServiceCancelledWithException(ServiceName, ex);
                 }
                 catch (InvalidOperationException ex)
                 {
-                    _logger.Log(LogLevel.Warning, ex, $"{ServiceName} may be disposed.");
+                    _logger.ServiceDisposed(ServiceName, ex);
                 }
                 catch (Exception ex)
                 {
-                    _logger.Log(LogLevel.Error, ex, $"Error processing request: Payload = {payload?.Id}");
+                    _logger.ErrorProcessingPayload(payload?.Id, ex);
                 }
             }
             Status = ServiceStatus.Cancelled;
-            _logger.Log(LogLevel.Information, "Cancellation requested.");
+            _logger.ServiceCancelled(ServiceName);
         }
 
         private async Task UploadPayloadActionBlock(Payload payload, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(payload, nameof(payload));
             try
             {
-                await Upload(payload, cancellationToken);
+                await Upload(payload, cancellationToken).ConfigureAwait(false);
 
                 if (payload.Files.Count == 0)
                 {
@@ -164,10 +161,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
                     var scope = _serviceScopeFactory.CreateScope();
                     var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                    await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository);
+                    await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
 
                     _publishQueue.Post(payload);
-                    _logger.Log(LogLevel.Information, $"Payload {payload.Id} ready to be published.");
+                    _logger.PayloadReadyToBePublished(payload.Id);
                 }
             }
             catch (Exception ex)
@@ -175,11 +172,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 if (payload is not null)
                 {
                     payload.RetryCount++;
-                    var action = await UpdatePayloadState(payload);
+                    var action = await UpdatePayloadState(payload).ConfigureAwait(false);
                     if (action == PayloadAction.Updated)
                     {
-                        await _uploadQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1));
-                        _logger.Log(LogLevel.Warning, ex, $"Failed to upload payload {payload.Id}; added back to queue for retry.");
+                        await _uploadQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false);
+                        _logger.FailedToUpload(payload.Id, ex);
                     }
                 }
             }
@@ -187,7 +184,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task Upload(Payload payload, CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Information, $"Uploading payload {payload.Id} to storage service at {_options.Value.Storage.StorageServiceBucketName}.");
+            Guard.Against.Null(payload, nameof(payload));
+
+            _logger.UploadingPayloadToBucket(payload.Id, _options.Value.Storage.StorageServiceBucketName);
 
             for (var index = payload.Files.Count - 1; index >= 0; index--)
             {
@@ -196,10 +195,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 switch (file)
                 {
                     case DicomFileStorageInfo dicom:
-                        await UploadPayloadFile(payload.Id, dicom.DicomJsonUploadPath, dicom.DicomJsonFilePath, dicom.Source, dicom.Workflows, dicom.ContentType, cancellationToken);
+                        await UploadPayloadFile(payload.Id, dicom.DicomJsonUploadPath, dicom.DicomJsonFilePath, dicom.Source, dicom.Workflows, dicom.ContentType, cancellationToken).ConfigureAwait(false);
                         break;
                 }
-                await UploadPayloadFile(payload.Id, file.UploadPath, file.FilePath, file.Source, file.Workflows, file.ContentType, cancellationToken);
+                await UploadPayloadFile(payload.Id, file.UploadPath, file.FilePath, file.Source, file.Workflows, file.ContentType, cancellationToken).ConfigureAwait(false);
                 payload.UploadedFiles.Add(file.ToBlockStorageInfo(_options.Value.Storage.StorageServiceBucketName));
                 payload.Files.Remove(file);
                 _instanceCleanupQueue.Queue(file);
@@ -208,8 +207,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task UploadPayloadFile(Guid payloadId, string uploadPath, string filePath, string source, string[] workflows, string contentType, CancellationToken cancellationToken)
         {
+            Guard.Against.Null(payloadId, nameof(payloadId));
+            Guard.Against.NullOrWhiteSpace(uploadPath, nameof(uploadPath));
+            Guard.Against.NullOrWhiteSpace(filePath, nameof(filePath));
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
+            Guard.Against.NullOrWhiteSpace(contentType, nameof(contentType));
+
             uploadPath = Path.Combine(payloadId.ToString(), uploadPath);
-            _logger.Log(LogLevel.Debug, $"Uploading file {filePath} from payload {payloadId} to storage service.");
+            _logger.UploadingFileInPayload(payloadId, filePath);
             using var stream = _fileSystem.File.OpenRead(filePath);
             var metadata = new Dictionary<string, string>
                 {
@@ -217,29 +222,30 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     { FileMetadataKeys.Workflows, workflows.IsNullOrEmpty() ? string.Empty : string.Join(',', workflows) }
                 };
 
-            await _storageService.PutObject(_options.Value.Storage.StorageServiceBucketName, uploadPath, stream, stream.Length, contentType, metadata, cancellationToken);
+            await _storageService.PutObject(_options.Value.Storage.StorageServiceBucketName, uploadPath, stream, stream.Length, contentType, metadata, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task PublishPayloadActionBlock(Payload payload)
         {
+            Guard.Against.Null(payload, nameof(payload));
             try
             {
-                await NotifyPayloadReady(payload);
+                await NotifyPayloadReady(payload).ConfigureAwait(false);
 
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository);
+                await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 if (payload is not null)
                 {
                     payload.RetryCount++;
-                    var action = await UpdatePayloadState(payload);
+                    var action = await UpdatePayloadState(payload).ConfigureAwait(false);
                     if (action == PayloadAction.Updated)
                     {
-                        await _publishQueue.Post(payload, _options.Value.Messaging.Retries.RetryDelays.ElementAt(payload.RetryCount - 1));
-                        _logger.Log(LogLevel.Warning, ex, $"Failed to publish workflow request for payload {payload.Id}; added back to queue for retry.");
+                        await _publishQueue.Post(payload, _options.Value.Messaging.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false);
+                        _logger.FailedToPublishWorkflowRequest(payload.Id, ex);
                     }
                 }
             }
@@ -247,6 +253,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task<PayloadAction> UpdatePayloadState(Payload payload)
         {
+            Guard.Against.Null(payload, nameof(payload));
+
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
 
@@ -254,27 +262,30 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (payload.RetryCount > _options.Value.Storage.Retries.DelaysMilliseconds.Length)
                 {
-                    _logger.Log(LogLevel.Error, $"Reached maximum number of retries for payload {payload.Id}, giving up.");
-                    await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository);
+                    _logger.UploadFailureStopRetry(payload.Id);
+                    await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
                     return PayloadAction.Deleted;
                 }
                 else
                 {
-                    _logger.Log(LogLevel.Error, $"Updating payload state={payload.State}, retries={payload.RetryCount}.");
-                    await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository);
+                    _logger.UploadFailureRetryLater(payload.Id, payload.State, payload.RetryCount);
+                    await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
                     return PayloadAction.Updated;
                 }
             }
-            catch (Exception iex)
+            catch (Exception ex)
             {
-                _logger.Log(LogLevel.Error, iex, $"Error updating payload failure: Payload = {payload?.Id}");
+                _logger.ErrorUpdatingPayload(payload.Id, ex);
                 return PayloadAction.Updated;
             }
         }
 
-        private Task NotifyPayloadReady(Payload payload)
+        private async Task NotifyPayloadReady(Payload payload)
         {
-            _logger.Log(LogLevel.Debug, $"Generating workflow request message for payload {payload.Id}...");
+            Guard.Against.Null(payload, nameof(payload));
+
+            _logger.GenerateWorkflowRequest(payload.Id);
+
             var workflowRequest = new WorkflowRequestMessage
             {
                 PayloadId = payload.Id,
@@ -291,18 +302,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 payload.CorrelationId,
                 string.Empty);
 
-            _logger.Log(LogLevel.Information, $"Publishing workflow request message ID={message.MessageId}...");
+            _logger.PublishingWorkflowRequest(message.MessageId);
 
-            var task = _messageBrokerPublisherService.Publish(
+            await _messageBrokerPublisherService.Publish(
                 _options.Value.Messaging.Topics.WorkflowRequest,
-                message.ToMessage());
-            _logger.Log(LogLevel.Information, $"Workflow request published to {_options.Value.Messaging.Topics.WorkflowRequest}, message ID={message.MessageId}.");
-            return task;
+                message.ToMessage()).ConfigureAwait(false);
+
+            _logger.WorkflowRequestPublished(_options.Value.Messaging.Topics.WorkflowRequest, message.MessageId);
         }
 
         private void RestoreFromDatabase()
         {
-            _logger.Log(LogLevel.Information, "Restoring payloads from database.");
+            _logger.StartupRestoreFromDatabase();
 
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
@@ -319,17 +330,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _publishQueue.Post(payload);
                 }
             }
-            _logger.Log(LogLevel.Information, $"{payloads.Count()} payloads restored from database.");
+            _logger.RestoredFromDatabase(payloads.Count());
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            _logger.Log(LogLevel.Information, $"Stopping {ServiceName}.");
+            _logger.ServiceStopping(ServiceName);
             _uploadQueue.Complete();
             _publishQueue.Complete();
             Status = ServiceStatus.Stopped;
-            _logger.Log(LogLevel.Information, $"{ServiceName} stopped, waiting for queues to complete...");
-            return Task.WhenAll(_uploadQueue.Completion, _publishQueue.Completion);
+
+            _logger.ServiceStopPending(ServiceName);
+
+            await Task.WhenAll(_uploadQueue.Completion, _publishQueue.Completion).ConfigureAwait(false);
         }
     }
 }

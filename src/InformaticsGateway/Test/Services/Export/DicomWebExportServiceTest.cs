@@ -1,14 +1,14 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -22,17 +22,9 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Moq.Protected;
-using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using xRetry;
 using Xunit;
 
@@ -92,6 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_loggerDicomWebClient.Object);
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]
@@ -131,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
                 });
 
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns((InferenceRequest)null);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns((InferenceRequest)null);
 
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
@@ -191,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
                 });
 
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
 
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
@@ -263,7 +256,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
                 });
 
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             _handlerMock = new Mock<HttpMessageHandler>();
@@ -352,7 +345,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
                 });
 
-            _inferenceRequestStore.Setup(p => p.Get(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile());
 
             var response = new HttpResponseMessage(httpStatusCode)

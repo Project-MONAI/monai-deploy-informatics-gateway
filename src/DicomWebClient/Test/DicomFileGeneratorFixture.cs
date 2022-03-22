@@ -1,30 +1,17 @@
-﻿/*
- * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-using FellowOakDicom;
-using FellowOakDicom.Serialization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using FellowOakDicom;
+using FellowOakDicom.Serialization;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
 {
@@ -32,7 +19,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
     {
         public const string MimeApplicationDicomJson = "application/dicom+json";
 
-        internal async Task<HttpContent> GenerateInstances(
+        internal static async Task<HttpContent> GenerateInstances(
             int count,
             DicomUID studyUid,
             DicomUID seriesUid = null,
@@ -48,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             return multipartContent;
         }
 
-        internal HttpContent GenerateInstancesAsJson(
+        internal static HttpContent GenerateInstancesAsJson(
             int count,
             DicomUID studyUid,
             DicomUID seriesUid = null,
@@ -63,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             return new StringContent(jsonArray.ToString(Formatting.Indented), Encoding.UTF8, MimeApplicationDicomJson);
         }
 
-        internal List<DicomFile> GenerateDicomFiles(int count, DicomUID studyUid)
+        internal static List<DicomFile> GenerateDicomFiles(int count, DicomUID studyUid)
         {
             var files = new List<DicomFile>();
 
@@ -75,13 +62,13 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             return files;
         }
 
-        private string GenerateInstancesAsJson(DicomUID studyUid, DicomUID seriesUid = null, DicomUID instanceUid = null)
+        private static string GenerateInstancesAsJson(DicomUID studyUid, DicomUID seriesUid = null, DicomUID instanceUid = null)
         {
             var dicomDataset = GenerateDicomDataset(studyUid, seriesUid, instanceUid, null);
             return DicomJson.ConvertDicomToJson(dicomDataset);
         }
 
-        private async Task<byte[]> GenerateInstance(DicomUID studyUid, DicomUID seriesUid = null, DicomUID instanceUid = null, DicomTransferSyntax transferSynx = null)
+        private static async Task<byte[]> GenerateInstance(DicomUID studyUid, DicomUID seriesUid = null, DicomUID instanceUid = null, DicomTransferSyntax transferSynx = null)
         {
             var dicomDataset = GenerateDicomDataset(studyUid, seriesUid, instanceUid, transferSynx);
             var dicomFile = new DicomFile(dicomDataset);
@@ -110,16 +97,18 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
                 transferSynx = DicomTransferSyntax.ExplicitVRLittleEndian;
             }
 
-            var dicomDataset = new DicomDataset(transferSynx ?? DicomTransferSyntax.ExplicitVRLittleEndian);
-            dicomDataset.Add(DicomTag.PatientID, "TEST");
-            dicomDataset.Add(DicomTag.SOPClassUID, DicomUID.CTImageStorage);
-            dicomDataset.Add(DicomTag.StudyInstanceUID, studyUid);
-            dicomDataset.Add(DicomTag.SeriesInstanceUID, seriesUid);
-            dicomDataset.Add(DicomTag.SOPInstanceUID, instanceUid);
+            var dicomDataset = new DicomDataset(transferSynx ?? DicomTransferSyntax.ExplicitVRLittleEndian)
+            {
+                { DicomTag.PatientID, "TEST" },
+                { DicomTag.SOPClassUID, DicomUID.CTImageStorage },
+                { DicomTag.StudyInstanceUID, studyUid },
+                { DicomTag.SeriesInstanceUID, seriesUid },
+                { DicomTag.SOPInstanceUID, instanceUid }
+            };
             return dicomDataset;
         }
 
-        internal HttpContent GenerateByteData()
+        internal static HttpContent GenerateByteData()
         {
             var multipartContent = new MultipartContent("related");
 

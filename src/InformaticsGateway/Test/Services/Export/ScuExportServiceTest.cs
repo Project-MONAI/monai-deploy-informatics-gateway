@@ -1,14 +1,11 @@
-﻿// Copyright 2021-2022 MONAI Consortium
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//     http://www.apache.org/licenses/LICENSE-2.0
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-License-Identifier: Apache License 2.0
 
+using System;
+using System.IO;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,14 +19,8 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Shared.Test;
-using Monai.Deploy.InformaticsGateway.Test.Shared;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
-using System;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using xRetry;
 using Xunit;
 
@@ -90,6 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             DicomScpFixture.Logger = _scpLogger.Object;
             _dicomScp.Start(_port);
             _configuration.Value.Export.Retries.DelaysMilliseconds = new[] { 1 };
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]
@@ -147,7 +139,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
-            _logger.VerifyLogging("Export task does not have destination set.", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging("SCU Export configuration error: Export task does not have destination set.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 250, DisplayName = "When destination is not configured")]
@@ -198,14 +190,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
 
-            _logger.VerifyLogging($"Specified destination 'pacs' does not exist", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging($"SCU Export configuration error: Specified destination 'pacs' does not exist.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 250, DisplayName = "Assocation rejected")]
         public async Task AssociationRejected()
         {
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = "ABC", Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = "ABC", Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
@@ -261,7 +253,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = "ABORT", Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = "ABORT", Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -317,7 +309,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.AETITLE, Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -365,7 +357,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
             _logger.VerifyLogging("Association accepted.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Failed to export with error {DicomStatus.ResourceLimitation}", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging($"Failed to export with error {DicomStatus.ResourceLimitation}.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 250, DisplayName = "Failed to load DICOM content")]
@@ -373,7 +365,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.AETITLE, Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -429,7 +421,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.AETITLE, Name = DicomScpFixture.AETITLE, HostIp = "UNKNOWNHOST123456789", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "UNKNOWNHOST123456789", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -484,7 +476,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.AETITLE, Name = DicomScpFixture.AETITLE, HostIp = "localhost", Port = _port };
+            var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
@@ -532,7 +524,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
             _logger.VerifyLogging("Association accepted.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Job sent successfully.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Instance sent successfully.", LogLevel.Information, Times.Once());
         }
 
         private static MessageReceivedEventArgs CreateMessageReceivedEventArgs(string destination)
