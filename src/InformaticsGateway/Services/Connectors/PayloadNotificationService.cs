@@ -285,6 +285,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(payload, nameof(payload));
 
             _logger.GenerateWorkflowRequest(payload.Id);
+
             var workflowRequest = new WorkflowRequestMessage
             {
                 PayloadId = payload.Id,

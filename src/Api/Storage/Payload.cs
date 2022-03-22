@@ -91,6 +91,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 }
             }
 
+            if (!value.Workflows.IsNullOrEmpty())
+            {
+                foreach (var workflow in value.Workflows)
+                {
+
+                    Workflows.Add(workflow);
+                }
+            }
+
             if (Files.Count == 1)
             {
                 DateTimeCreated = value.Received;

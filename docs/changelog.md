@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-FileCopyrightText: Â© 2021-2022 MONAI Consortium
 SPDX-License-Identifier: Apache License 2.0
 -->
 
@@ -7,9 +7,9 @@ SPDX-License-Identifier: Apache License 2.0
 
 ## 0.1.1
 
-- User guide updates & minor bug fixes.
+[GitHub Milestone 0.1.1](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/6)
 
-## 0.1.0
+- User guide updates & minor bug fixes.
 
 The MONAI Deploy Informatics Gateway upgrades the existing NVIDIA Clara Deploy DICOM Adapter to provide additional features and integrate with the MONAI Deploy platform.
 
