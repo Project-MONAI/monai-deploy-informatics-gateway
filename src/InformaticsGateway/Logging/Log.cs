@@ -68,6 +68,9 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 54, Level = LogLevel.Debug, Message = "Unable to restore file {filename}.")]
         public static partial void UnableToRestoreFile(this ILogger logger, string filename);
 
+        [LoggerMessage(EventId = 55, Level = LogLevel.Warning, Message = "Directory `{path}` does not exist; no files restored.")]
+        public static partial void DirectoryDoesNotExistsNoFilesRestored(this ILogger logger, string path);
+
         // Application Entity Manager/Handler
         [LoggerMessage(EventId = 100, Level = LogLevel.Information, Message = "ApplicationEntityManager stopping.")]
         public static partial void ApplicationEntityManagerStopping(this ILogger logger);

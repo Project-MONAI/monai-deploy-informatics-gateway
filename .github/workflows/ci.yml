@@ -415,6 +415,7 @@ jobs:
           milestone: ${{ env.MAJORMINORPATCH }}
 
       - name: Unzip docs
+        if: ${{ contains(github.ref, 'refs/heads/main') }}
         run: |
           mkdir userguide
           unzip artifacts/mig-docs-${{ env.SEMVER }}.zip -d userguide/
@@ -422,6 +423,7 @@ jobs:
 
       - name: Deploy Docs
         uses: peaceiris/actions-gh-pages@v3
+        if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: userguide/

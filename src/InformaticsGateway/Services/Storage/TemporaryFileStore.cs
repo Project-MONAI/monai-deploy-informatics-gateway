@@ -60,6 +60,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
             var scanPath = _fileSystem.Path.Combine(_storageConfiguration.TemporaryDataDirFullPath, transactionId, FhirFileStorageInfo.FhirSubDirectoryName);
 
+            if (!_fileSystem.Directory.Exists(scanPath))
+            {
+                _logger.DirectoryDoesNotExistsNoFilesRestored(scanPath);
+                return;
+            }
+
             foreach (var file in _fileSystem.Directory.EnumerateFiles(scanPath, "*", System.IO.SearchOption.AllDirectories))
             {
                 if (cancellationToken.IsCancellationRequested)
@@ -86,6 +92,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
 
             var scanPath = _fileSystem.Path.Combine(_storageConfiguration.TemporaryDataDirFullPath, transactionId, DicomFileStorageInfo.DicomSubDirectoryName);
+
+            if (!_fileSystem.Directory.Exists(scanPath))
+            {
+                _logger.DirectoryDoesNotExistsNoFilesRestored(scanPath);
+                return;
+            }
 
             foreach (var file in _fileSystem.Directory.EnumerateFiles(scanPath, "*", System.IO.SearchOption.AllDirectories))
             {
