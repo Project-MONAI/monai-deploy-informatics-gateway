@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public ServiceCredentials StorageServiceCredentials { get; set; }
 
         /// <summary>
-        /// Gets or sets retry options relate to processing payloads and uploading payloads to the storage service.
+        /// Gets or sets retry options relate to saving files to temporary storage, processing payloads and uploading payloads to the storage service.
         /// </summary>
         [JsonProperty(PropertyName = "reties")]
         public RetryConfiguration Retries { get; set; } = new RetryConfiguration();

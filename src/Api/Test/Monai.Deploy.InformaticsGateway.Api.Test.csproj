@@ -12,6 +12,10 @@ SPDX-License-Identifier: Apache License 2.0
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\Shared\Test\TestStorageInfo.cs" Link="Shared\TestStorageInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="3.1.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -27,6 +31,10 @@ SPDX-License-Identifier: Apache License 2.0
 
   <ItemGroup>
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.Api.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Shared\" />
   </ItemGroup>
 
 </Project>

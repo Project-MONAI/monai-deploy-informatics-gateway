@@ -3,7 +3,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO.Abstractions;
 using Ardalis.GuardClauses;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
@@ -11,78 +10,41 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     /// <summary>
     /// Provides basic information for a DICOM instance and storage hierarchy/path.
     /// </summary>
-    public record FileStorageInfo
+    public abstract record FileStorageInfo
     {
-        private string _filePath;
-        protected string MessageId { get; init; }
-        protected string FileExtension { get; init; }
-
-        protected IFileSystem FileSystem { get; init; }
+        protected abstract string SubDirectoryPath { get; }
 
         /// <summary>
-        /// Gets the unique ID of the file.
+        /// Gets the relative file path when uploading to storage service.
         /// </summary>
-        public Guid Id { get; init; }
+        public abstract string UploadFilePath { get; }
+
+        /// <summary>
+        /// Gets the file extension.
+        /// </summary>
+        public string FileExtension { get; init; }
+
+        /// <summary>
+        /// Gets the unique (user-defined) ID of the file.
+        /// </summary>
+        public string Id { get; set; }
 
         /// <summary>
         /// Gets the correlation ID of the file.
         /// For SCP received DICOM instances: use internally generated unique association ID.
         /// For ACR retrieved DICOM/FHIR files: use the original transaction ID embedded in the request.
         /// </summary>
-        public string CorrelationId { get; init; }
+        public string CorrelationId { get; set; }
 
         /// <summary>
         /// Gets or sets the source of the file.
         /// </summary>
-        public string Source { get; init; }
+        public string Source { get; set; }
 
         /// <summary>
-        /// Gets the root path to the storage location.
+        /// Gets or sets the full path to the file.
         /// </summary>
-        public string StorageRootPath { get; init; }
-
-        /// <summary>
-        /// Gets the full path to the instance.
-        /// </summary>
-        public string FilePath
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(_filePath))
-                {
-                    _filePath = GenerateStoragePath();
-                }
-                return _filePath;
-            }
-            set => _filePath = value;
-        }
-
-        /// <summary>
-        /// Gets the file path to be stored on the shared storage.
-        /// </summary>
-        public string UploadPath
-        {
-            get
-            {
-                var path = FilePath[StorageRootPath.Length..];
-                if (FileSystem.Path.IsPathRooted(path))
-                {
-                    path = path[1..];
-                }
-                return path;
-            }
-        }
-
-        /// <summary>
-        /// Gets the filename to be used on the shared storage.
-        /// </summary>
-        public string UploadFilename
-        {
-            get
-            {
-                return FileSystem.Path.GetFileName(FilePath);
-            }
-        }
+        public string FilePath { get; set; }
 
         /// <summary>
         /// Gets a list of workflows designated for the file.
@@ -93,73 +55,49 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or sets the DateTime that the file was received.
         /// </summary>
         /// <value></value>
-        public DateTime Received { get; set; }
+        public DateTime DateReceived { get; init; }
 
         /// <summary>
-        /// Gets or set database row versioning info.
+        /// Gets or sets the DateTime that the file was uploaded to storage service.
         /// </summary>
         /// <value></value>
-        public byte[] Timestamp { get; set; }
+        public DateTime DateUploaded { get; private set; }
 
         /// <summary>
-        /// Gets or sets the number of attempts to upload.
+        /// Gets or sets whether the file is uploaded.
         /// </summary>
-        public int TryCount { get; set; } = 0;
+        /// <value></value>
+        public bool IsUploaded { get; private set; }
 
         /// <summary>
         /// Gets or sets the content type of the file.
         /// </summary>
-        public string ContentType { get; set; }
+        public string ContentType { get; protected set; }
 
         /// <summary>
-        /// Gets the file and any associated meta files.
+        /// All file paths in the temporary storage associated with the instance.
         /// </summary>
         public virtual IEnumerable<string> FilePaths
         {
             get
             {
-                yield return _filePath;
+                yield return FilePath;
             }
         }
 
-        public FileStorageInfo() { }
-
-        public FileStorageInfo(string correlationId,
-                               string storageRootPath,
-                               string messageId,
-                               string fileExtension,
-                               string source)
-            : this(correlationId, storageRootPath, messageId, fileExtension, source, new FileSystem()) { }
-
-        public FileStorageInfo(string correlationId,
-                               string storageRootPath,
-                               string messageId,
-                               string fileExtension,
-                               string source,
-                               IFileSystem fileSystem)
+        protected FileStorageInfo(string fileExtension)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
-            Guard.Against.NullOrWhiteSpace(storageRootPath, nameof(storageRootPath));
-            Guard.Against.NullOrWhiteSpace(messageId, nameof(messageId));
             Guard.Against.NullOrWhiteSpace(fileExtension, nameof(fileExtension));
-            Guard.Against.NullOrWhiteSpace(source, nameof(source));
-
-            Guard.Against.Null(fileSystem, nameof(fileSystem));
 
             if (fileExtension[0] != '.')
             {
                 fileExtension = $".{fileExtension}";
             }
 
-            FileSystem = fileSystem;
-            MessageId = messageId;
             FileExtension = fileExtension;
-            Source = source;
-
-            Id = Guid.NewGuid();
-            CorrelationId = correlationId;
-            StorageRootPath = storageRootPath;
-            Received = DateTime.UtcNow;
+            DateReceived = DateTime.UtcNow;
+            DateUploaded = DateTime.MinValue;
+            IsUploaded = false;
         }
 
         /// <summary>
@@ -173,29 +111,19 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Workflows = workflows.Clone() as string[];
         }
 
-        /// <summary>
-        /// Generated the storage path for a file.
-        /// </summary>
-        protected virtual string GenerateStoragePath()
-        {
-            var filePath = System.IO.Path.Combine(StorageRootPath, $"{CorrelationId}-{MessageId}") + FileExtension;
-            filePath = filePath.ToLowerInvariant();
-            var index = 1;
-            while (FileSystem.File.Exists(filePath))
-            {
-                filePath = System.IO.Path.Combine(StorageRootPath, $"{CorrelationId}-{MessageId}-{index++}") + FileExtension;
-                filePath = filePath.ToLowerInvariant();
-            }
-
-            return filePath;
-        }
         public virtual BlockStorageInfo ToBlockStorageInfo(string bucket)
         {
             return new BlockStorageInfo
             {
-                Bucket = bucket,
-                Path = UploadPath,
+                Path = UploadFilePath,
+                Metadata = string.Empty,
             };
+        }
+
+        public void SetUploaded()
+        {
+            DateUploaded = DateTime.UtcNow;
+            IsUploaded = true;
         }
     }
 }

@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Collections.Generic;
-using System.IO.Abstractions;
-using Ardalis.GuardClauses;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -12,74 +10,75 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     /// </summary>
     public sealed record DicomFileStorageInfo : FileStorageInfo
     {
+        public static readonly string DicomSubDirectoryName = "dcm";
         public static readonly string FilExtension = ".dcm";
         public static readonly string DicomJsonFileExtension = ".json";
         public static readonly string DicomContentType = "application/dicom";
-        public static readonly string DicomJsonContentType = "application/json";
-        public string StudyInstanceUid { get; set; }
-        public string SeriesInstanceUid { get; set; }
-        public string SopInstanceUid { get; set; }
-        public string DicomJsonFilePath { get; set; }
+        public static readonly string DicomJsonContentType = System.Net.Mime.MediaTypeNames.Application.Json;
 
         /// <summary>
-        /// Gets the file path to be stored on the shared storage.
+        /// The calling AE title of the DICOM instance.
+        /// For ACR, this is the Transaction ID of the original request.
+        /// Note: this value is same as <seealso cref="Source"></c>
         /// </summary>
-        public string DicomJsonUploadPath
-        {
-            get
-            {
-                _ = FilePath;
-                var path = DicomJsonFilePath[StorageRootPath.Length..];
-                if (FileSystem.Path.IsPathRooted(path))
-                {
-                    path = path[1..];
-                }
-                return path;
-            }
-        }
+        public string CallingAeTitle { get => Source; }
 
+        /// <summary>
+        /// The MONAI AE Title that received the DICOM instance.
+        /// For ACR request, this field is empty.
+        /// </summary>
+        public string CalledAeTitle { get; set; }
+
+        /// <summary>
+        /// Gets or set the Study Instance UID of the DICOM instance.
+        /// </summary>
+        public string StudyInstanceUid { get; set; }
+
+        /// <summary>
+        /// Gets or set the Series Instance UID of the DICOM instance.
+        /// </summary>
+        public string SeriesInstanceUid { get; set; }
+
+        /// <summary>
+        /// Gets or set the SOP Instance UID of the DICOM instance.
+        /// </summary>
+        public string SopInstanceUid { get; set; }
+
+        /// <summary>
+        /// Gets the relative JSON metadata file path when uploading to storage service.
+        /// </summary>
+        public string JsonUploadFilePath { get => $"{UploadFilePath}{DicomJsonFileExtension}"; }
+
+        /// <summary>
+        /// Gets or sets the full path to the JSON metadata file.
+        /// </summary>
+        public string JsonFilePath { get; set; }
+
+        /// <inheritdoc/>
         public override IEnumerable<string> FilePaths
         {
             get
             {
                 yield return FilePath;
-                yield return DicomJsonFilePath;
+                yield return JsonFilePath;
             }
         }
 
-        public DicomFileStorageInfo(string correlationId,
-                                    string storageRootPath,
-                                    string messageId,
-                                    string source,
-                                    IFileSystem fileSystem)
-            : base(correlationId, storageRootPath, messageId, FilExtension, source, fileSystem)
+        protected override string SubDirectoryPath => DicomSubDirectoryName;
+
+        /// <inheritdoc/>
+        public override string UploadFilePath => $"{SubDirectoryPath}/{StudyInstanceUid}/{SeriesInstanceUid}/{SopInstanceUid}{FileExtension}";
+
+        public DicomFileStorageInfo()
+            : base(FilExtension)
         {
             ContentType = DicomContentType;
-        }
-
-        protected override string GenerateStoragePath()
-        {
-            Guard.Against.NullOrWhiteSpace(StudyInstanceUid, nameof(StudyInstanceUid));
-            Guard.Against.NullOrWhiteSpace(SeriesInstanceUid, nameof(SeriesInstanceUid));
-            Guard.Against.NullOrWhiteSpace(SopInstanceUid, nameof(SopInstanceUid));
-
-            var filePath = System.IO.Path.Combine(StorageRootPath, StudyInstanceUid, SeriesInstanceUid, SopInstanceUid) + FileExtension;
-            filePath = filePath.ToLowerInvariant();
-            var index = 1;
-            while (FileSystem.File.Exists(filePath))
-            {
-                filePath = System.IO.Path.Combine(StorageRootPath, StudyInstanceUid, SeriesInstanceUid, $"{SopInstanceUid}-{index++}") + FileExtension;
-                filePath = filePath.ToLowerInvariant();
-            }
-
-            DicomJsonFilePath = $"{filePath}{DicomJsonFileExtension}";
-            return filePath;
         }
 
         public override BlockStorageInfo ToBlockStorageInfo(string bucket)
         {
             var blockStorage = base.ToBlockStorageInfo(bucket);
-            blockStorage.Metadata = DicomJsonUploadPath;
+            blockStorage.Metadata = JsonUploadFilePath;
             return blockStorage;
         }
     }

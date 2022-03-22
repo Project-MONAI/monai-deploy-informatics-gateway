@@ -67,6 +67,10 @@ namespace Monai.Deploy.InformaticsGateway.Common
             {
                 Guard.Against.NullOrWhiteSpace(metadataFilename, nameof(metadataFilename));
 
+                if (_fileSystem.File.Exists(metadataFilename))
+                {
+                    _fileSystem.File.Delete(metadataFilename);
+                }
                 var json = ConvertDicomToJson(file, dicomJsonOptions == DicomJsonOptions.Complete);
                 await _fileSystem.File.AppendAllTextAsync(metadataFilename, json).ConfigureAwait(false);
             }
@@ -104,6 +108,27 @@ namespace Monai.Deploy.InformaticsGateway.Common
                 dataset.Remove(i => DicomVrsToIgnore.Contains(i.ValueRepresentation));
                 return JsonSerializer.Serialize(dataset, options);
             }
+        }
+
+        public StudySerieSopUids GetStudySeriesSopInstanceUids(string dicomFilePath)
+        {
+            Guard.Against.NullOrWhiteSpace(dicomFilePath, nameof(dicomFilePath));
+
+            var dicomFile = Open(dicomFilePath);
+
+            return GetStudySeriesSopInstanceUids(dicomFile);
+        }
+
+        public StudySerieSopUids GetStudySeriesSopInstanceUids(DicomFile dicomFile)
+        {
+            Guard.Against.Null(dicomFile, nameof(dicomFile));
+
+            return new StudySerieSopUids
+            {
+                StudyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID),
+                SeriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID),
+                SopInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID),
+            };
         }
     }
 }

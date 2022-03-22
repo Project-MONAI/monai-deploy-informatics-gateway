@@ -6,7 +6,7 @@ SPDX-License-Identifier: Apache License 2.0
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <RootNamespace>Monai.Deploy.InformaticsGateway.Api</RootNamespace>
-        <TargetFramework>netstandard2.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <LangVersion>9.0</LangVersion>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <IsTrimmable>true</IsTrimmable>
@@ -16,7 +16,8 @@ SPDX-License-Identifier: Apache License 2.0
         <PackageReference Include="GitVersion.MsBuild" Version="5.9.0">
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.3" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     </ItemGroup>
 

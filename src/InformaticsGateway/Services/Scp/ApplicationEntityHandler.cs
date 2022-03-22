@@ -3,15 +3,16 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -19,25 +20,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
     {
         private readonly MonaiApplicationEntity _configuration;
         private readonly IPayloadAssembler _payloadAssembler;
-        private readonly IDicomToolkit _dicomToolkit;
+        private readonly ITemporaryFileStore _fileStore;
         private readonly ILogger<ApplicationEntityHandler> _logger;
-        private readonly DicomJsonOptions _dicomJsonOptions;
 
         public ApplicationEntityHandler(
             MonaiApplicationEntity monaiApplicationEntity,
             IPayloadAssembler payloadAssembler,
-            IDicomToolkit dicomToolkit,
-            ILogger<ApplicationEntityHandler> logger,
-            DicomJsonOptions dicomJsonOptions)
+            ITemporaryFileStore fileStore,
+            ILogger<ApplicationEntityHandler> logger)
         {
             _configuration = monaiApplicationEntity ?? throw new ArgumentNullException(nameof(monaiApplicationEntity));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
-            _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
+            _fileStore = fileStore ?? throw new ArgumentNullException(nameof(fileStore));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _dicomJsonOptions = dicomJsonOptions;
         }
 
-        internal async Task HandleInstance(DicomCStoreRequest request, DicomFileStorageInfo info)
+        internal async Task HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
         {
             if (_configuration.IgnoredSopClasses.Contains(request.SOPClassUID.UID))
             {
@@ -45,24 +43,29 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 return;
             }
 
+            var paths = await _fileStore.SaveDicomInstance(associationId.ToString(), request.File, CancellationToken.None).ConfigureAwait(false);
+            var dicomInfo = new DicomFileStorageInfo
+            {
+                CalledAeTitle = calledAeTitle,
+                CorrelationId = associationId.ToString(),
+                FilePath = paths.FilePath,
+                JsonFilePath = paths.DicomMetadataFilePath,
+                Id = uids.Identifier,
+                Source = callingAeTitle,
+                StudyInstanceUid = uids.StudyInstanceUid,
+                SeriesInstanceUid = uids.SeriesInstanceUid,
+                SopInstanceUid = uids.SopInstanceUid,
+            };
+
             if (_configuration.Workflows.Any())
             {
-                info.SetWorkflows(_configuration.Workflows.ToArray());
+                dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
-
-            await SaveDicomInstance(request, info.FilePath, info.DicomJsonFilePath).ConfigureAwait(false);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
             _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = request.Dataset.GetSingleValue<string>(dicomTag);
-            await _payloadAssembler.Queue(key, info, _configuration.Timeout).ConfigureAwait(false);
-        }
-
-        private async Task SaveDicomInstance(DicomCStoreRequest request, string filename, string metadataFilename)
-        {
-            _logger.AESavingInstance(filename);
-            await _dicomToolkit.Save(request.File, filename, metadataFilename, _dicomJsonOptions).ConfigureAwait(false);
-            _logger.AEInstanceSaved(filename);
+            await _payloadAssembler.Queue(key, dicomInfo, _configuration.Timeout).ConfigureAwait(false);
         }
     }
 }

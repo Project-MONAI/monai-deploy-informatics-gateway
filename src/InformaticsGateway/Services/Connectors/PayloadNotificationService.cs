@@ -154,7 +154,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 await Upload(payload, cancellationToken).ConfigureAwait(false);
 
-                if (payload.Files.Count == 0)
+                if (payload.IsUploadComplete())
                 {
                     payload.State = Payload.PayloadState.Notify;
                     payload.ResetRetry();
@@ -195,34 +195,36 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 switch (file)
                 {
                     case DicomFileStorageInfo dicom:
-                        await UploadPayloadFile(payload.Id, dicom.DicomJsonUploadPath, dicom.DicomJsonFilePath, dicom.Source, dicom.Workflows, dicom.ContentType, cancellationToken).ConfigureAwait(false);
+                        if (!string.IsNullOrWhiteSpace(dicom.JsonFilePath))
+                        {
+                            await UploadPayloadFile(payload.Id, dicom.JsonUploadFilePath, dicom.JsonFilePath, dicom.Source, dicom.Workflows, dicom.ContentType, cancellationToken).ConfigureAwait(false);
+                        }
                         break;
                 }
-                await UploadPayloadFile(payload.Id, file.UploadPath, file.FilePath, file.Source, file.Workflows, file.ContentType, cancellationToken).ConfigureAwait(false);
-                payload.UploadedFiles.Add(file.ToBlockStorageInfo(_options.Value.Storage.StorageServiceBucketName));
-                payload.Files.Remove(file);
+                await UploadPayloadFile(payload.Id, file.UploadFilePath, file.FilePath, file.Source, file.Workflows, file.ContentType, cancellationToken).ConfigureAwait(false);
+                file.SetUploaded();
                 _instanceCleanupQueue.Queue(file);
             }
         }
 
-        private async Task UploadPayloadFile(Guid payloadId, string uploadPath, string filePath, string source, string[] workflows, string contentType, CancellationToken cancellationToken)
+        private async Task UploadPayloadFile(Guid payloadId, string destinationPath, string sourcePath, string source, string[] workflows, string contentType, CancellationToken cancellationToken)
         {
             Guard.Against.Null(payloadId, nameof(payloadId));
-            Guard.Against.NullOrWhiteSpace(uploadPath, nameof(uploadPath));
-            Guard.Against.NullOrWhiteSpace(filePath, nameof(filePath));
+            Guard.Against.NullOrWhiteSpace(destinationPath, nameof(destinationPath));
+            Guard.Against.NullOrWhiteSpace(sourcePath, nameof(sourcePath));
             Guard.Against.NullOrWhiteSpace(source, nameof(source));
             Guard.Against.NullOrWhiteSpace(contentType, nameof(contentType));
 
-            uploadPath = Path.Combine(payloadId.ToString(), uploadPath);
-            _logger.UploadingFileInPayload(payloadId, filePath);
-            using var stream = _fileSystem.File.OpenRead(filePath);
+            destinationPath = Path.Combine(payloadId.ToString(), destinationPath);
+            _logger.UploadingFileInPayload(payloadId, sourcePath);
+            using var stream = _fileSystem.File.OpenRead(sourcePath);
             var metadata = new Dictionary<string, string>
                 {
                     { FileMetadataKeys.Source, source },
                     { FileMetadataKeys.Workflows, workflows.IsNullOrEmpty() ? string.Empty : string.Join(',', workflows) }
                 };
 
-            await _storageService.PutObject(_options.Value.Storage.StorageServiceBucketName, uploadPath, stream, stream.Length, contentType, metadata, cancellationToken).ConfigureAwait(false);
+            await _storageService.PutObject(_options.Value.Storage.StorageServiceBucketName, destinationPath, stream, stream.Length, contentType, metadata, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task PublishPayloadActionBlock(Payload payload)
@@ -288,14 +290,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             var workflowRequest = new WorkflowRequestMessage
             {
+                Bucket = _options.Value.Storage.StorageServiceBucketName,
                 PayloadId = payload.Id,
-                Workflows = payload.Workflows,
+                Workflows = payload.GetWorkflows(),
                 FileCount = payload.Count,
                 CorrelationId = payload.CorrelationId,
-                Timestamp = payload.DateTimeCreated
+                Timestamp = payload.DateTimeCreated,
+                CalledAeTitle = payload.CalledAeTitle,
+                CallingAeTitle = payload.CallingAeTitle,
             };
 
-            workflowRequest.Payload.AddRange(payload.UploadedFiles);
+            workflowRequest.Payload.AddRange(payload.GetUploadedFiles(_options.Value.Storage.StorageServiceBucketName));
 
             var message = new JsonMessage<WorkflowRequestMessage>(
                 workflowRequest,

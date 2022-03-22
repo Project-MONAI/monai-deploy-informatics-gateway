@@ -121,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 
-            var result = await service.Get(aet.Name, CancellationToken.None);
+            var result = await service.GetAeTitle(aet.Name, CancellationToken.None);
 
             Assert.Equal(aet.AeTitle, result.AeTitle);
             Assert.Equal(aet.Name, result.Name);
@@ -160,7 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
 
-            var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.Get(aet.Name, CancellationToken.None));
+            var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.GetAeTitle(aet.Name, CancellationToken.None));
 
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }

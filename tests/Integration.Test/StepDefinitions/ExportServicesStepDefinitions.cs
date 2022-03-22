@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             {
                 if (ex.ProblemDetails.Status == (int)HttpStatusCode.BadRequest && ex.ProblemDetails.Detail.Contains("already exists"))
                 {
-                    destination = await _informaticsGatewayClient.DicomDestinations.Get(ScpHooks.FeatureScpAeTitle, CancellationToken.None);
+                    destination = await _informaticsGatewayClient.DicomDestinations.GetAeTitle(ScpHooks.FeatureScpAeTitle, CancellationToken.None);
                 }
                 else
                 {

@@ -4,7 +4,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Net.Http;
@@ -16,12 +15,10 @@ using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
@@ -32,42 +29,41 @@ using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
-    internal class DataRetrievalService : IHostedService, IMonaiService
+    internal class DataRetrievalService : IHostedService, IMonaiService, IDisposable
     {
-        private readonly ILoggerFactory _loggerFactory;
-        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<DataRetrievalService> _logger;
+        private readonly IServiceScope _rootScope;
+
+        private readonly IHttpClientFactory _httpClientFactory;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly IFileSystem _fileSystem;
-        private readonly IDicomToolkit _dicomToolkit;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly ITemporaryFileStore _fileStore;
         private readonly IPayloadAssembler _payloadAssembler;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IDicomToolkit _dicomToolkit;
+        private bool _disposedValue;
 
         public ServiceStatus Status { get; set; }
 
         public string ServiceName => "Data Retrieval Service";
 
         public DataRetrievalService(
-            ILoggerFactory loggerFactory,
-            IHttpClientFactory httpClientFactory,
             ILogger<DataRetrievalService> logger,
-            IFileSystem fileSystem,
-            IDicomToolkit dicomToolkit,
-            IServiceScopeFactory serviceScopeFactory,
-            IPayloadAssembler payloadAssembler,
-            IStorageInfoProvider storageInfoProvider,
-            IOptions<InformaticsGatewayConfiguration> options)
+            IServiceScopeFactory serviceScopeFactory)
         {
-            _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
-            _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
-            _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
-            _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
-            _options = options ?? throw new ArgumentNullException(nameof(options));
+
+            _rootScope = _serviceScopeFactory.CreateScope();
+
+            _httpClientFactory = _rootScope.ServiceProvider.GetRequiredService<IHttpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IHttpClientFactory));
+            _loggerFactory = _rootScope.ServiceProvider.GetRequiredService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
+            _storageInfoProvider = _rootScope.ServiceProvider.GetRequiredService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
+            _fileSystem = _rootScope.ServiceProvider.GetRequiredService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
+            _fileStore = _rootScope.ServiceProvider.GetRequiredService<ITemporaryFileStore>() ?? throw new ServiceNotFoundException(nameof(ITemporaryFileStore));
+            _payloadAssembler = _rootScope.ServiceProvider.GetRequiredService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
+            _dicomToolkit = _rootScope.ServiceProvider.GetRequiredService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -78,6 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
+            _logger.ServiceRunning(ServiceName);
             if (task.IsCompleted)
                 return task;
             return Task.CompletedTask;
@@ -92,8 +89,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task BackgroundProcessing(CancellationToken cancellationToken)
         {
-            _logger.ServiceRunning(ServiceName);
-
             while (!cancellationToken.IsCancellationRequested)
             {
                 using var scope = _serviceScopeFactory.CreateScope();
@@ -143,7 +138,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
             var retrievedFiles = new Dictionary<string, FileStorageInfo>(StringComparer.OrdinalIgnoreCase);
-            RestoreExistingInstances(inferenceRequest, retrievedFiles);
+            RestoreExistingInstances(inferenceRequest, retrievedFiles, cancellationToken);
 
             foreach (var source in inferenceRequest.InputResources)
             {
@@ -188,22 +183,55 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private void RestoreExistingInstances(InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedInstances)
+        private void RestoreExistingInstances(InferenceRequest inferenceRequest, Dictionary<string, FileStorageInfo> retrievedInstances, CancellationToken cancellationToken)
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
             Guard.Against.Null(retrievedInstances, nameof(retrievedInstances));
 
-            _logger.RestoringRetrievedFiles(inferenceRequest.StoragePath);
-            foreach (var file in _fileSystem.Directory.EnumerateFiles(inferenceRequest.StoragePath, "*", System.IO.SearchOption.AllDirectories))
-            {
-                var instance = new FileStorageInfo { StorageRootPath = inferenceRequest.StoragePath, CorrelationId = inferenceRequest.TransactionId, FilePath = file };
+            using var scope = _serviceScopeFactory.CreateScope();
+            var fileStore = scope.ServiceProvider.GetRequiredService<ITemporaryFileStore>();
 
-                if (retrievedInstances.ContainsKey(instance.FilePath))
+            if (fileStore is null)
+            {
+                throw new ServiceException("Temporary file store is unavailable");
+            }
+
+            _logger.RestoringRetrievedFiles(inferenceRequest.StoragePath);
+            var files = fileStore.RestoreInferenceRequestFiles(inferenceRequest.TransactionId, cancellationToken);
+
+            foreach (var file in files)
+            {
+                if (file is DicomStoragePaths dicomPaths)
                 {
-                    continue;
+                    var dicomFileInfo = new DicomFileStorageInfo
+                    {
+                        CalledAeTitle = String.Empty,
+                        CorrelationId = inferenceRequest.TransactionId,
+                        FilePath = dicomPaths.FilePath,
+                        JsonFilePath = dicomPaths.DicomMetadataFilePath,
+                        Id = dicomPaths.UIDs.Identifier,
+                        Source = inferenceRequest.TransactionId,
+                        StudyInstanceUid = dicomPaths.UIDs.StudyInstanceUid,
+                        SeriesInstanceUid = dicomPaths.UIDs.SeriesInstanceUid,
+                        SopInstanceUid = dicomPaths.UIDs.SopInstanceUid,
+                    };
+                    retrievedInstances.Add(dicomPaths.UIDs.Identifier, dicomFileInfo);
                 }
-                retrievedInstances.Add(instance.FilePath, instance);
-                _logger.RestoredFile(instance.FilePath);
+                else if (file is FhirStoragePath fhirPath)
+                {
+                    var fhirStorageFormat = _fileSystem.Path.GetExtension(fhirPath.FilePath) == FhirFileStorageInfo.JsonFilExtension ? FhirStorageFormat.Json : FhirStorageFormat.Xml;
+                    var fhirFileInfo = new FhirFileStorageInfo(fhirStorageFormat)
+                    {
+                        CorrelationId = inferenceRequest.TransactionId,
+                        FilePath = fhirPath.FilePath,
+                        ResourceType = fhirPath.ResourceType,
+                        ResourceId = fhirPath.ResourceId,
+                        Id = fhirPath.Identifier,
+                        Source = inferenceRequest.TransactionId,
+                    };
+                    retrievedInstances.Add(fhirPath.Identifier, fhirFileInfo);
+                }
+                _logger.RestoredFile(file.FilePath);
             }
         }
 
@@ -224,11 +252,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     continue;
                 }
-                await RetrieveFhirResources(inferenceRequest.TransactionId, input, source, retrievedResources, inferenceRequest.StoragePath).ConfigureAwait(false);
+                await RetrieveFhirResources(inferenceRequest.TransactionId, input, source, retrievedResources, inferenceRequest.StoragePath, cancellationToken).ConfigureAwait(false);
             }
         }
 
-        private async Task RetrieveFhirResources(string transactionId, InferenceRequestDetails requestDetails, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedResources, string storagePath)
+        private async Task RetrieveFhirResources(string transactionId, InferenceRequestDetails requestDetails, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedResources, string storagePath, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             Guard.Against.Null(requestDetails, nameof(requestDetails));
@@ -255,6 +283,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 while (pendingResources.Count > 0)
                 {
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        break;
+                    }
+
                     resource = pendingResources.Dequeue();
                     resource.IsRetrieved = await RetrieveFhirResource(
                         transactionId,
@@ -264,7 +297,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         retrievedResources,
                         storagePath,
                         requestDetails.FhirFormat,
-                        requestDetails.FhirAcceptHeader).ConfigureAwait(false);
+                        requestDetails.FhirAcceptHeader,
+                        cancellationToken).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)
@@ -274,7 +308,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task<bool> RetrieveFhirResource(string transactionId, HttpClient httpClient, FhirResource resource, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedResources, string storagePath, FhirStorageFormat fhirFormat, string acceptHeader)
+        private async Task<bool> RetrieveFhirResource(string transactionId, HttpClient httpClient, FhirResource resource, RequestInputDataResource source, Dictionary<string, FileStorageInfo> retrievedResources, string storagePath, FhirStorageFormat fhirFormat, string acceptHeader, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             Guard.Against.Null(httpClient, nameof(httpClient));
@@ -283,6 +317,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(retrievedResources, nameof(retrievedResources));
             Guard.Against.NullOrWhiteSpace(storagePath, nameof(storagePath));
             Guard.Against.NullOrWhiteSpace(acceptHeader, nameof(acceptHeader));
+
+            var id = $"{resource.Type}/{resource.Id}";
+            if (retrievedResources.ContainsKey(id))
+            {
+                _logger.FhireResourceAlreadyExists(id);
+                return true;
+            }
 
             _logger.RetrievingFhirResource(resource.Type, resource.Id, acceptHeader, fhirFormat);
             var request = new HttpRequestMessage(HttpMethod.Get, $"{source.ConnectionDetails.Uri}{resource.Type}/{resource.Id}");
@@ -302,11 +343,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             if (response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var file = new FhirFileStorageInfo(transactionId, storagePath, resource.Id, fhirFormat, transactionId, _fileSystem) { ResourceType = resource.Type };
-                _fileSystem.Directory.CreateDirectoryIfNotExists(_fileSystem.Path.GetDirectoryName(file.FilePath));
-                await _fileSystem.File.WriteAllTextAsync(file.FilePath, json).ConfigureAwait(false);
-                retrievedResources.Add(file.FilePath, file);
+                var json = await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+                var path = await _fileStore.SaveFhirResource(transactionId, resource.Type, resource.Id, fhirFormat, json, cancellationToken).ConfigureAwait(false);
+
+                var file = new FhirFileStorageInfo(fhirFormat)
+                {
+                    CorrelationId = transactionId,
+                    FilePath = path.FilePath,
+                    ResourceType = resource.Type,
+                    ResourceId = resource.Id,
+                    Id = path.Identifier,
+                    Source = transactionId,
+                };
+                retrievedResources.Add(file.UploadFilePath, file);
                 return true;
             }
             else
@@ -478,16 +528,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.RetrievingInstanceWithWado(sopInstanceUid);
                     var file = await dicomWebClient.Wado.Retrieve(studyInstanceUid, series.SeriesInstanceUid, sopInstanceUid).ConfigureAwait(false);
                     if (file is null) continue;
-                    var fileStorageInfo = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(CultureInfo.InvariantCulture), transactionId, _fileSystem);
-                    PopulateHeaders(fileStorageInfo, file);
-                    if (retrievedInstance.ContainsKey(fileStorageInfo.FilePath))
+
+                    var uids = _dicomToolkit.GetStudySeriesSopInstanceUids(file);
+                    if (retrievedInstance.ContainsKey(uids.Identifier))
                     {
-                        _logger.InstanceAlreadyExists(fileStorageInfo.FilePath);
+                        _logger.InstanceAlreadyExists(uids.Identifier);
                         continue;
                     }
 
-                    SaveFile(file, fileStorageInfo);
-                    retrievedInstance.Add(fileStorageInfo.FilePath, fileStorageInfo);
+                    retrievedInstance.Add(uids.Identifier, await SaveFile(transactionId, file, uids, cancellationToken).ConfigureAwait(false));
                     count++;
                 }
             }
@@ -508,48 +557,56 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     break;
                 }
                 count++;
-                var instance = new DicomFileStorageInfo(transactionId, storagePath, count.ToString(CultureInfo.InvariantCulture), transactionId, _fileSystem);
-                PopulateHeaders(instance, file);
 
-                if (retrievedInstance.ContainsKey(instance.FilePath))
+                var uids = _dicomToolkit.GetStudySeriesSopInstanceUids(file);
+                if (retrievedInstance.ContainsKey(uids.Identifier))
                 {
-                    _logger.InstanceAlreadyExists(instance.FilePath);
+                    _logger.InstanceAlreadyExists(uids.Identifier);
                     continue;
                 }
 
-                SaveFile(file, instance);
-                retrievedInstance.Add(instance.FilePath, instance);
+                retrievedInstance.Add(uids.Identifier, await SaveFile(transactionId, file, uids, cancellationToken).ConfigureAwait(false));
             }
         }
 
-        private static void PopulateHeaders(DicomFileStorageInfo instance, DicomFile dicomFile)
+        private async Task<DicomFileStorageInfo> SaveFile(string transactionId, DicomFile file, StudySerieSopUids uids, CancellationToken cancellationToken)
         {
-            instance.StudyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
-            instance.SeriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
-            instance.SopInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID);
+            Guard.Against.Null(transactionId, nameof(transactionId));
+            Guard.Against.Null(file, nameof(file));
+
+            var paths = await _fileStore.SaveDicomInstance(transactionId, file, cancellationToken).ConfigureAwait(false);
+            return new DicomFileStorageInfo
+            {
+                CalledAeTitle = String.Empty,
+                CorrelationId = transactionId,
+                FilePath = paths.FilePath,
+                JsonFilePath = paths.DicomMetadataFilePath,
+                Id = uids.Identifier,
+                Source = transactionId,
+                StudyInstanceUid = uids.StudyInstanceUid,
+                SeriesInstanceUid = uids.SeriesInstanceUid,
+                SopInstanceUid = uids.SopInstanceUid,
+            };
         }
 
-        private void SaveFile(DicomFile file, DicomFileStorageInfo instanceStorageInfo)
+        protected virtual void Dispose(bool disposing)
         {
-            Guard.Against.Null(file, nameof(file));
-            Guard.Against.Null(instanceStorageInfo, nameof(instanceStorageInfo));
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _rootScope.Dispose();
+                }
 
-            Policy.Handle<Exception>()
-                .WaitAndRetry(3,
-                (retryAttempt) =>
-                {
-                    return retryAttempt == 1 ? TimeSpan.FromMilliseconds(250) : TimeSpan.FromMilliseconds(500);
-                },
-                (exception, timeSpan, retryCount, context) =>
-                {
-                    _logger.ErrorSavingInstance(instanceStorageInfo.FilePath, retryCount, exception);
-                })
-                .Execute(() =>
-                {
-                    _logger.SavingInstance(instanceStorageInfo.FilePath);
-                    _dicomToolkit.Save(file, instanceStorageInfo.FilePath, instanceStorageInfo.DicomJsonFilePath, _options.Value.Dicom.WriteDicomJson);
-                    _logger.InstanceSaved(instanceStorageInfo.FilePath);
-                });
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion Data Retrieval

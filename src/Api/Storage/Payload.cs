@@ -4,8 +4,9 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -31,6 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public const int MAX_RETRY = 3;
         private readonly Stopwatch _lastReceived;
+        private readonly List<FileStorageInfo> _files;
         private bool _disposedValue;
 
         public Guid Id { get; }
@@ -43,67 +45,44 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public int RetryCount { get; set; }
 
-        public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
-
         public PayloadState State { get; set; }
 
-        public IList<FileStorageInfo> Files { get; }
-
-        public int Count { get; private set; }
-
-        public ISet<string> Workflows { get; private set; }
+        [BackingField(nameof(_files))]
+        public IReadOnlyList<FileStorageInfo> Files { get => _files; }
 
         public string CorrelationId { get; init; }
 
-        public IList<BlockStorageInfo> UploadedFiles { get; set; }
+        public int Count { get => _files.Count; }
+
+        public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
+
+        public string CallingAeTitle { get => _files.OfType<DicomFileStorageInfo>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
+
+        public string CalledAeTitle { get => _files.OfType<DicomFileStorageInfo>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
 
         public Payload(string key, string correlationId, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
-            Id = Guid.NewGuid();
+            _files = new List<FileStorageInfo>();
             _lastReceived = new Stopwatch();
-            Count = 0;
-            Key = key;
+
             CorrelationId = correlationId;
-            Timeout = timeout;
-            RetryCount = 0;
+            DateTimeCreated = DateTime.UtcNow;
+            Id = Guid.NewGuid();
+            Key = key;
             State = PayloadState.Created;
-            Files = new List<FileStorageInfo>();
-            UploadedFiles = new List<BlockStorageInfo>();
-            Workflows = new HashSet<string>();
+            RetryCount = 0;
+            Timeout = timeout;
         }
 
         public void Add(FileStorageInfo value)
         {
             Guard.Against.Null(value, nameof(value));
 
-            Files.Add(value);
+            _files.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
-            Count = Files.Count;
-
-            if (!value.Workflows.IsNullOrEmpty())
-            {
-                foreach (var workflow in value.Workflows)
-                {
-                    Workflows.Add(workflow);
-                }
-            }
-
-            if (!value.Workflows.IsNullOrEmpty())
-            {
-                foreach (var workflow in value.Workflows)
-                {
-
-                    Workflows.Add(workflow);
-                }
-            }
-
-            if (Files.Count == 1)
-            {
-                DateTimeCreated = value.Received;
-            }
         }
 
         public TimeSpan ElapsedTime()
@@ -128,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 if (disposing)
                 {
                     _lastReceived.Stop();
-                    Files.Clear();
+                    _files.Clear();
                 }
 
                 _disposedValue = true;

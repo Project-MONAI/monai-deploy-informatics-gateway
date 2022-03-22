@@ -27,7 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             Guard.Against.Null(file, nameof(file));
 
             _workItems.Add(file);
-            _logger.InstanceAddedToCleanupQueue(file.FilePath, _workItems.Count);
+            _logger.InstanceAddedToCleanupQueue(file.UploadFilePath, _workItems.Count);
         }
 
         public FileStorageInfo Dequeue(CancellationToken cancellationToken)

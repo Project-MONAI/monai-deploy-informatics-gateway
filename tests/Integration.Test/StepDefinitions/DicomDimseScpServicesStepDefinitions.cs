@@ -89,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 if (ex.ProblemDetails.Status == (int)HttpStatusCode.BadRequest &&
                     ex.ProblemDetails.Detail.Contains("already exists"))
                 {
-                    await _informaticsGatewayClient.DicomSources.Get(callingAeTitle, CancellationToken.None);
+                    await _informaticsGatewayClient.DicomSources.GetAeTitle(callingAeTitle, CancellationToken.None);
                 }
                 else
                 {
@@ -157,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 if (ex.ProblemDetails.Status == (int)HttpStatusCode.BadRequest &&
                     ex.ProblemDetails.Detail.Contains("already exists"))
                 {
-                    _scenarioContext[KeyCalledAet] = await _informaticsGatewayClient.MonaiScpAeTitle.Get(calledAeTitle, CancellationToken.None);
+                    _scenarioContext[KeyCalledAet] = await _informaticsGatewayClient.MonaiScpAeTitle.GetAeTitle(calledAeTitle, CancellationToken.None);
                 }
                 else
                 {
@@ -238,7 +238,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 foreach (var file in request.Payload)
                 {
                     var dicomValidationKey = string.Empty;
-                    await minioClient.GetObjectAsync(file.Bucket, $"{request.PayloadId}/{file.Path}", (stream) =>
+                    await minioClient.GetObjectAsync(request.Bucket, $"{request.PayloadId}/{file.Path}", (stream) =>
                     {
                         using var memoryStream = new MemoryStream();
                         stream.CopyTo(memoryStream);
@@ -248,7 +248,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
                     });
 
-                    await minioClient.GetObjectAsync(file.Bucket, $"{request.PayloadId}/{file.Metadata}", (stream) =>
+                    await minioClient.GetObjectAsync(request.Bucket, $"{request.PayloadId}/{file.Metadata}", (stream) =>
                     {
                         using var memoryStream = new MemoryStream();
                         stream.CopyTo(memoryStream);

@@ -52,12 +52,28 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 13, Level = LogLevel.Critical, Message = "Failed to start {ServiceName}.")]
         public static partial void ServiceFailedToStart(this ILogger logger, string serviceName, Exception ex);
 
+        // Temporary File Store
+        [LoggerMessage(EventId = 50, Level = LogLevel.Debug, Message = "Attempting to save file to {filePath}.")]
+        public static partial void SavingFile(this ILogger logger, string filePath);
+
+        [LoggerMessage(EventId = 51, Level = LogLevel.Information, Message = "File saved as {filename}.")]
+        public static partial void FileSaved(this ILogger logger, string filename);
+
+        [LoggerMessage(EventId = 52, Level = LogLevel.Debug, Message = "Not a valid DICOM part-10 file {filename}, skipping.")]
+        public static partial void SkippingNoneDicomFiles(this ILogger logger, string filename);
+
+        [LoggerMessage(EventId = 53, Level = LogLevel.Debug, Message = "Attempting to save file to {filePath} and {metadataFilePath}.")]
+        public static partial void SavingDicomFile(this ILogger logger, string filePath, string metadataFilePath);
+
+        [LoggerMessage(EventId = 54, Level = LogLevel.Debug, Message = "Unable to restore file {filename}.")]
+        public static partial void UnableToRestoreFile(this ILogger logger, string filename);
+
         // Application Entity Manager/Handler
         [LoggerMessage(EventId = 100, Level = LogLevel.Information, Message = "ApplicationEntityManager stopping.")]
         public static partial void ApplicationEntityManagerStopping(this ILogger logger);
 
-        [LoggerMessage(EventId = 101, Level = LogLevel.Information, Message = "Study Instance UID: {StudyInstanceUid}. Series Instance UID: {SeriesInstanceUid}. Storage File Path: {InstanceStorageFullPath}.")]
-        public static partial void InstanceInformation(this ILogger logger, string studyInstanceUid, string seriesInstanceUid, string instanceStorageFullPath);
+        [LoggerMessage(EventId = 101, Level = LogLevel.Information, Message = "Study Instance UID: {StudyInstanceUid}. Series Instance UID: {SeriesInstanceUid}.")]
+        public static partial void InstanceInformation(this ILogger logger, string studyInstanceUid, string seriesInstanceUid);
 
         [LoggerMessage(EventId = 102, Level = LogLevel.Error, Message = "AE Title {AETitle} could not be added to CStore Manager.  Already exits: {exists}.")]
         public static partial void AeTitleCannotBeAdded(this ILogger logger, string aeTitle, bool exists);
@@ -82,12 +98,6 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 109, Level = LogLevel.Information, Message = "Queuing instance with group {dicomTag}.")]
         public static partial void QueueInstanceUsingDicomTag(this ILogger logger, DicomTag dicomTag);
-
-        [LoggerMessage(EventId = 110, Level = LogLevel.Debug, Message = "Saving instance {filename}.")]
-        public static partial void AESavingInstance(this ILogger logger, string filename);
-
-        [LoggerMessage(EventId = 111, Level = LogLevel.Information, Message = "Instance saved {filename}.")]
-        public static partial void AEInstanceSaved(this ILogger logger, string filename);
 
         [LoggerMessage(EventId = 112, Level = LogLevel.Information, Message = "Notifying {count} observers of MONAI Application Entity {eventType}.")]
         public static partial void NotifyAeChanged(this ILogger logger, int count, ChangedEventType eventType);
@@ -275,23 +285,20 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 616, Level = LogLevel.Error, Message = "Failed to save instance '{file}', retry count={retryCount}.")]
         public static partial void ErrorSavingInstance(this ILogger logger, string file, int retryCount, Exception ex);
 
-        [LoggerMessage(EventId = 617, Level = LogLevel.Debug, Message = "Saving DICOM instance {path}..")]
-        public static partial void SavingInstance(this ILogger logger, string path);
-
-        [LoggerMessage(EventId = 618, Level = LogLevel.Information, Message = "Instance saved successfully {path}.")]
-        public static partial void InstanceSaved(this ILogger logger, string path);
-
-        [LoggerMessage(EventId = 619, Level = LogLevel.Warning, Message = "Data retrieval paused due to insufficient storage space.Available storage space: {space:D}.")]
+        [LoggerMessage(EventId = 617, Level = LogLevel.Warning, Message = "Data retrieval paused due to insufficient storage space.Available storage space: {space:D}.")]
         public static partial void DataRetrievalPaused(this ILogger logger, long space);
 
-        [LoggerMessage(EventId = 620, Level = LogLevel.Information, Message = "Processing inference request.")]
+        [LoggerMessage(EventId = 618, Level = LogLevel.Information, Message = "Processing inference request.")]
         public static partial void ProcessingInferenceRequest(this ILogger logger);
 
-        [LoggerMessage(EventId = 621, Level = LogLevel.Information, Message = "Inference request completed and ready for job submission.")]
+        [LoggerMessage(EventId = 619, Level = LogLevel.Information, Message = "Inference request completed and ready for job submission.")]
         public static partial void InferenceRequestProcessed(this ILogger logger);
 
-        [LoggerMessage(EventId = 622, Level = LogLevel.Error, Message = "Error processing request: TransactionId = {transactionId}.")]
+        [LoggerMessage(EventId = 620, Level = LogLevel.Error, Message = "Error processing request: TransactionId = {transactionId}.")]
         public static partial void ErrorProcessingInferenceRequest(this ILogger logger, string transactionId, Exception ex);
+
+        [LoggerMessage(EventId = 621, Level = LogLevel.Warning, Message = "FHIR resource '{file}' already retrieved/stored.")]
+        public static partial void FhireResourceAlreadyExists(this ILogger logger, string file);
 
         // Payload Service
         [LoggerMessage(EventId = 700, Level = LogLevel.Error, Message = "Error processing request: Payload = {payloadId}.")]

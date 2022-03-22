@@ -29,10 +29,31 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
         public int FileCount { get; set; }
 
         /// <summary>
-        /// For DIMSE, the correlation ID is the UUID associated with the first DICOM association received. For an ACR inference request, the correlation ID is the Transaction ID in the original request.
+        /// For DIMSE, the correlation ID is the UUID associated with the first DICOM association received.
+        /// For an ACR inference request, the correlation ID is the Transaction ID in the original request.
         /// </summary>
         [JsonProperty(PropertyName = "correlation_id")]
         public string CorrelationId { get; set; }
+
+        /// <summary>
+        /// Gets or set the name of the bucket where the files in are stored.
+        /// </summary>
+        [JsonProperty(PropertyName = "bucket")]
+        public string Bucket { get; set; }
+
+        /// <summary>
+        /// For DIMSE, the sender or calling AE Title of the DICOM dataset.
+        /// For an ACR inference request, the transaction ID.
+        /// </summary>
+        [JsonProperty(PropertyName = "calling_aetitle")]
+        public string CallingAeTitle { get; set; }
+
+        /// <summary>
+        /// For DIMSE, the MONAI Deploy AE Title received the DICOM dataset.
+        /// For an ACR inference request, this field is empty.
+        /// </summary>
+        [JsonProperty(PropertyName = "called_aetitle")]
+        public string CalledAeTitle { get; set; }
 
         /// <summary>
         /// Gets or sets the time the data was received.

@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            await payloadAssembler.Queue("A", new FileStorageInfo());
+            await payloadAssembler.Queue("A", new TestStorageInfo("path"));
 
             _logger.VerifyLogging($"Bucket A created with timeout {PayloadAssembler.DEFAULT_TIMEOUT}s.", LogLevel.Information, Times.Once());
             payloadAssembler.Dispose();
@@ -100,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            await Assert.ThrowsAsync<Exception>(async () => await payloadAssembler.Queue("A", new FileStorageInfo()));
+            await Assert.ThrowsAsync<Exception>(async () => await payloadAssembler.Queue("A", new TestStorageInfo("path")));
 
             _logger.VerifyLogging($"Bucket A created with timeout {PayloadAssembler.DEFAULT_TIMEOUT}s.", LogLevel.Information, Times.Never());
             payloadAssembler.Dispose();
@@ -114,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            await payloadAssembler.Queue("A", new FileStorageInfo());
+            await payloadAssembler.Queue("A", new TestStorageInfo("path"));
 
             payloadAssembler.Dispose();
             _cancellationTokenSource.Cancel();
@@ -141,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
 
-            await payloadAssembler.Queue("A", new FileStorageInfo(), 1);
+            await payloadAssembler.Queue("A", new TestStorageInfo("path"), 1);
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
             payloadAssembler.Dispose();
 
@@ -154,7 +154,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
 
-            await payloadAssembler.Queue("A", new FileStorageInfo(), 1);
+            await payloadAssembler.Queue("A", new TestStorageInfo("path"), 1);
             await Task.Delay(1001);
             var result = payloadAssembler.Dequeue(_cancellationTokenSource.Token);
             payloadAssembler.Dispose();

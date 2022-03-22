@@ -131,10 +131,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CorrelationId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
@@ -154,12 +152,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("UploadedFiles")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Workflows")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

@@ -14,7 +14,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
     {
         Task<InferenceStatusResponse> Status(string transactionId, CancellationToken cancellationToken);
 
-        Task<InferenceRequestResponse> New(InferenceRequest request, CancellationToken cancellationToken);
+        Task<InferenceRequestResponse> NewInferenceRequest(InferenceRequest request, CancellationToken cancellationToken);
     }
 
     internal class InferenceService : ServiceBase, IInferenceService
@@ -26,20 +26,20 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         {
         }
 
-        public async Task<InferenceRequestResponse> New(InferenceRequest request, CancellationToken cancellationToken)
+        public async Task<InferenceRequestResponse> NewInferenceRequest(InferenceRequest request, CancellationToken cancellationToken)
         {
-            Logger.Log(LogLevel.Debug, $"Sending request to {Route}");
-            var response = await HttpClient.PostAsync($"{Route}", request, new JsonMediaTypeFormatter(), cancellationToken);
-            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
-            return await response.Content.ReadAsAsync<InferenceRequestResponse>(cancellationToken);
+            Logger.SendingRequestTo(Route);
+            var response = await HttpClient.PostAsync($"{Route}", request, new JsonMediaTypeFormatter(), cancellationToken).ConfigureAwait(false);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
+            return await response.Content.ReadAsAsync<InferenceRequestResponse>(cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<InferenceStatusResponse> Status(string transactionId, CancellationToken cancellationToken)
         {
-            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/status");
-            var response = await HttpClient.GetAsync($"{Route}/{transactionId}", cancellationToken);
-            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
-            return await response.Content.ReadAsAsync<InferenceStatusResponse>(cancellationToken);
+            Logger.SendingRequestTo($"{Route}/status");
+            var response = await HttpClient.GetAsync($"{Route}/{transactionId}", cancellationToken).ConfigureAwait(false);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
+            return await response.Content.ReadAsAsync<InferenceStatusResponse>(cancellationToken).ConfigureAwait(false);
         }
     }
 }

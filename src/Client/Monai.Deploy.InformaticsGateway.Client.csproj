@@ -6,7 +6,7 @@ SPDX-License-Identifier: Apache License 2.0
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <RootNamespace>Monai.Deploy.InformaticsGateway.Client</RootNamespace>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsTrimmable>true</IsTrimmable>

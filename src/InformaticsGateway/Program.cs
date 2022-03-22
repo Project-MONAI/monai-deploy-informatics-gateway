@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway
             context.Database.Migrate();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
+        internal static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureHostConfiguration(configHost =>
                 {
@@ -88,6 +88,7 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
+                    services.AddTransient<ITemporaryFileStore, TemporaryFileStore>();
 
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
                     services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();

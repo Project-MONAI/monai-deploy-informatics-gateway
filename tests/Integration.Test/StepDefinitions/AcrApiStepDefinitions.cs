@@ -148,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         public async Task WhenTheACRAPIRequestIsSentTo()
         {
             _outputHelper.WriteLine($"Sending inference request...");
-            await _informaticsGatewayClient.Inference.New(_scenarioContext[KeyInferenceRequest] as InferenceRequest, CancellationToken.None);
+            await _informaticsGatewayClient.Inference.NewInferenceRequest(_scenarioContext[KeyInferenceRequest] as InferenceRequest, CancellationToken.None);
         }
 
         [Then(@"a workflow requests sent to the message broker")]
@@ -186,7 +186,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 foreach (var file in request.Payload)
                 {
                     var dicomValidationKey = string.Empty;
-                    await minioClient.GetObjectAsync(file.Bucket, $"{request.PayloadId}/{file.Path}", (stream) =>
+                    await minioClient.GetObjectAsync(request.Bucket, $"{request.PayloadId}/{file.Path}", (stream) =>
                     {
                         using var memoryStream = new MemoryStream();
                         stream.CopyTo(memoryStream);
@@ -196,7 +196,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
                     });
 
-                    await minioClient.GetObjectAsync(file.Bucket, $"{request.PayloadId}/{file.Metadata}", (stream) =>
+                    await minioClient.GetObjectAsync(request.Bucket, $"{request.PayloadId}/{file.Metadata}", (stream) =>
                     {
                         using var memoryStream = new MemoryStream();
                         stream.CopyTo(memoryStream);

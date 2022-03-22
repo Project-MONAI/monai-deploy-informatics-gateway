@@ -7,7 +7,7 @@ SPDX-License-Identifier: Apache License 2.0
 
   <PropertyGroup>
     <RootNamespace>Monai.Deploy.InformaticsGateway.Configuration</RootNamespace>
-    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsTrimmable>true</IsTrimmable>
   </PropertyGroup>

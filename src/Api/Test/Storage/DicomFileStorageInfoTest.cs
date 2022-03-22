@@ -3,7 +3,6 @@
 
 using System;
 using System.IO;
-using System.IO.Abstractions.TestingHelpers;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Xunit;
 
@@ -11,86 +10,73 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
 {
     public class DicomFileStorageInfoTest
     {
-        [Fact(DisplayName = "DicomFileStorageInfo - Shall prevent overwriting existing file")]
-        public void ShallAppendRandomValueToPreventOverwritingExistingFiles()
+        [Fact(DisplayName = "Shall set AE Titles")]
+        public void ShallSetAeTitles()
         {
             var correlationId = Guid.NewGuid().ToString();
-            var root = "/";
-            var messagId = Guid.NewGuid().ToString();
-            var transactionId = Guid.NewGuid().ToString();
-            var mockFileSystem = new MockFileSystem();
-            var fileStorageInfo = new DicomFileStorageInfo(correlationId, root, messagId, transactionId, mockFileSystem)
+            var callingAeTitle = "calling";
+            var calledAeTitle = "called";
+            var fileStorageInfo = new DicomFileStorageInfo
             {
+                CorrelationId = correlationId,
                 StudyInstanceUid = "Study",
                 SeriesInstanceUid = "Series",
-                SopInstanceUid = "Sop"
+                SopInstanceUid = "Sop",
+                Source = callingAeTitle,
+                CalledAeTitle = calledAeTitle
             };
-            var existingFilePath = Path.Combine(
-                    root,
-                    fileStorageInfo.StudyInstanceUid,
-                    fileStorageInfo.SeriesInstanceUid,
-                    fileStorageInfo.SopInstanceUid) + ".dcm";
-            mockFileSystem.AddFile(existingFilePath, new MockFileData("context"));
-            Assert.NotEqual(existingFilePath, fileStorageInfo.FilePath);
+
+            Assert.Equal(callingAeTitle, fileStorageInfo.CallingAeTitle);
+            Assert.Equal(calledAeTitle, fileStorageInfo.CalledAeTitle);
         }
 
-        [Fact(DisplayName = "Shall return both DICOM file and JSON file paths")]
-        public void ShallReturAllFilePaths()
+        [Fact(DisplayName = "Shall return both DICOM file and JSON upload paths")]
+        public void ShallReturUploadPaths()
         {
             var correlationId = Guid.NewGuid().ToString();
-            var root = "/test";
-            var messagId = Guid.NewGuid().ToString();
             var transactionId = Guid.NewGuid().ToString();
-            var mockFileSystem = new MockFileSystem();
-            var fileStorageInfo = new DicomFileStorageInfo(correlationId, root, messagId, transactionId, mockFileSystem)
+            var root = $"{Path.DirectorySeparatorChar}test{Path.DirectorySeparatorChar}";
+            var dcmPath = Path.Combine(root, "study", "series", "sop.dcm");
+            var jsonPath = Path.Combine(root, "study", "series", "sop.dcm.json");
+
+            var fileStorageInfo = new DicomFileStorageInfo
             {
+                Source = transactionId,
+                CorrelationId = correlationId,
                 StudyInstanceUid = "Study",
                 SeriesInstanceUid = "Series",
-                SopInstanceUid = "Sop"
+                SopInstanceUid = "Sop",
+                FilePath = dcmPath,
+                JsonFilePath = jsonPath
             };
+
+            Assert.Equal(
+                $"{DicomFileStorageInfo.DicomSubDirectoryName}/{fileStorageInfo.StudyInstanceUid}/{fileStorageInfo.SeriesInstanceUid}/{fileStorageInfo.SopInstanceUid}{DicomFileStorageInfo.FilExtension}",
+                fileStorageInfo.UploadFilePath);
+            Assert.Equal(
+                $"{DicomFileStorageInfo.DicomSubDirectoryName}/{fileStorageInfo.StudyInstanceUid}/{fileStorageInfo.SeriesInstanceUid}/{fileStorageInfo.SopInstanceUid}{DicomFileStorageInfo.FilExtension}{DicomFileStorageInfo.DicomJsonFileExtension}",
+                fileStorageInfo.JsonUploadFilePath);
 
             Assert.Collection(fileStorageInfo.FilePaths,
-                (path) => path.Equals(fileStorageInfo.FilePath),
-                (path) => path.Equals(fileStorageInfo.DicomJsonFilePath));
-        }
-
-        [Fact(DisplayName = "Shall return JSON file info")]
-        public void ShallReturJsonFileInfo()
-        {
-            var correlationId = Guid.NewGuid().ToString();
-            var root = "/test";
-            var messagId = Guid.NewGuid().ToString();
-            var transactionId = Guid.NewGuid().ToString();
-            var mockFileSystem = new MockFileSystem();
-            var fileStorageInfo = new DicomFileStorageInfo(correlationId, root, messagId, transactionId, mockFileSystem)
-            {
-                StudyInstanceUid = "Study",
-                SeriesInstanceUid = "Series",
-                SopInstanceUid = "Sop"
-            };
-
-            Assert.Equal($"{Path.Combine(fileStorageInfo.StudyInstanceUid, fileStorageInfo.SeriesInstanceUid, fileStorageInfo.SopInstanceUid).ToLowerInvariant()}.dcm.json", fileStorageInfo.DicomJsonUploadPath);
+                (path) => path.Equals(fileStorageInfo.UploadFilePath),
+                (path) => path.Equals(fileStorageInfo.JsonUploadFilePath));
         }
 
         [Fact(DisplayName = "Shall return where data is stored for storage service")]
         public void ShallReturnBlockStorageInfo()
         {
             var correlationId = Guid.NewGuid().ToString();
-            var root = "/test";
-            var messagId = Guid.NewGuid().ToString();
-            var transactionId = Guid.NewGuid().ToString();
-            var mockFileSystem = new MockFileSystem();
-            var fileStorageInfo = new DicomFileStorageInfo(correlationId, root, messagId, transactionId, mockFileSystem)
+            var fileStorageInfo = new DicomFileStorageInfo
             {
+                CorrelationId = correlationId,
                 StudyInstanceUid = "Study",
                 SeriesInstanceUid = "Series",
                 SopInstanceUid = "Sop"
             };
 
             var blockStorage = fileStorageInfo.ToBlockStorageInfo("bucket");
-            Assert.Equal("bucket", blockStorage.Bucket);
-            Assert.Equal(fileStorageInfo.UploadPath, blockStorage.Path);
-            Assert.Equal(fileStorageInfo.DicomJsonUploadPath, blockStorage.Metadata);
+            Assert.Equal(fileStorageInfo.UploadFilePath, blockStorage.Path);
+            Assert.Equal(fileStorageInfo.JsonUploadFilePath, blockStorage.Metadata);
         }
     }
 }

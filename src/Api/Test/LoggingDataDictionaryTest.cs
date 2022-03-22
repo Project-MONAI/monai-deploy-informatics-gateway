@@ -3,7 +3,7 @@
 
 using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Test
 {
     public class LoggingDataDictionaryTest
     {
