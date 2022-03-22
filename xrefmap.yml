@@ -3585,19 +3585,6 @@ references:
   isSpec: "True"
   fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.ExportRequestPrefix
   nameWithType: MessageBrokerConfigurationKeys.ExportRequestPrefix
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.ExportRequestQueue
-  name: ExportRequestQueue
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerConfigurationKeys_ExportRequestQueue
-  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.ExportRequestQueue
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.ExportRequestQueue
-  nameWithType: MessageBrokerConfigurationKeys.ExportRequestQueue
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.ExportRequestQueue*
-  name: ExportRequestQueue
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerConfigurationKeys_ExportRequestQueue_
-  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.ExportRequestQueue
-  isSpec: "True"
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.ExportRequestQueue
-  nameWithType: MessageBrokerConfigurationKeys.ExportRequestQueue
 - uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.WorkflowRequest
   name: WorkflowRequest
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerConfigurationKeys_WorkflowRequest
@@ -3611,51 +3598,6 @@ references:
   isSpec: "True"
   fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfigurationKeys.WorkflowRequest
   nameWithType: MessageBrokerConfigurationKeys.WorkflowRequest
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration
-  name: MessageBrokerRoutingKeysConfiguration
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.html
-  commentId: T:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration
-  nameWithType: MessageBrokerRoutingKeysConfiguration
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportComplete
-  name: ExportComplete
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerRoutingKeysConfiguration_ExportComplete
-  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportComplete
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportComplete
-  nameWithType: MessageBrokerRoutingKeysConfiguration.ExportComplete
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportComplete*
-  name: ExportComplete
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerRoutingKeysConfiguration_ExportComplete_
-  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportComplete
-  isSpec: "True"
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportComplete
-  nameWithType: MessageBrokerRoutingKeysConfiguration.ExportComplete
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportRequest
-  name: ExportRequest
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerRoutingKeysConfiguration_ExportRequest
-  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportRequest
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportRequest
-  nameWithType: MessageBrokerRoutingKeysConfiguration.ExportRequest
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportRequest*
-  name: ExportRequest
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerRoutingKeysConfiguration_ExportRequest_
-  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportRequest
-  isSpec: "True"
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.ExportRequest
-  nameWithType: MessageBrokerRoutingKeysConfiguration.ExportRequest
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.WorkflowRequest
-  name: WorkflowRequest
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerRoutingKeysConfiguration_WorkflowRequest
-  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.WorkflowRequest
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.WorkflowRequest
-  nameWithType: MessageBrokerRoutingKeysConfiguration.WorkflowRequest
-- uid: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.WorkflowRequest*
-  name: WorkflowRequest
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_MessageBrokerRoutingKeysConfiguration_WorkflowRequest_
-  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.WorkflowRequest
-  isSpec: "True"
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerRoutingKeysConfiguration.WorkflowRequest
-  nameWithType: MessageBrokerRoutingKeysConfiguration.WorkflowRequest
 - uid: Monai.Deploy.InformaticsGateway.Configuration.RetryConfiguration
   name: RetryConfiguration
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.RetryConfiguration.html
