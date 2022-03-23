@@ -22,55 +22,60 @@ namespace Monai.Deploy.InformaticsGateway.CLI
     {
         private static async Task<int> Main(string[] args)
         {
-            var verboseOption = new Option<bool>(new[] { "--verbose", "-v" }, () => false, "Show verbose output");
-            return await new CommandLineBuilder(new RootCommand($"{Strings.ApplicationName} CLI"))
-                .UseHost(
-                    _ => Host.CreateDefaultBuilder(),
-                    host =>
-                    {
-                        _ = host.ConfigureLogging((context, logging) =>
-                        {
-                            var invocationContext = context.GetInvocationContext();
-                            var verboseEnabled = invocationContext.ParseResult.ValueForOption(verboseOption);
-                            logging.ClearProviders();
+            var parser = BuildParser();
+            return await parser.InvokeAsync(args).ConfigureAwait(true);
+        }
 
-                            _ = logging.AddInformaticsGatewayConsole(options => options.MinimumLogLevel = verboseEnabled ? LogLevel.Trace : LogLevel.Information)
-                                .AddFilter("Microsoft", LogLevel.None)
-                                .AddFilter("System", LogLevel.None)
-                                .AddFilter("*", LogLevel.Trace);
-                        })
-                        .ConfigureServices(services =>
+        internal static Parser BuildParser()
+        {
+            var verboseOption = new Option<bool>(new[] { "--verbose", "-v" }, () => false, "Show verbose output");
+            return new CommandLineBuilder(new RootCommand($"{Strings.ApplicationName} CLI"))
+                        .UseHost(
+                            _ => Host.CreateDefaultBuilder(),
+                            host =>
+                            {
+                                _ = host.ConfigureLogging((context, logging) =>
+                                {
+                                    var invocationContext = context.GetInvocationContext();
+                                    var verboseEnabled = invocationContext.ParseResult.ValueForOption(verboseOption);
+                                    logging.ClearProviders();
+
+                                    _ = logging.AddInformaticsGatewayConsole(options => options.MinimumLogLevel = verboseEnabled ? LogLevel.Trace : LogLevel.Information)
+                                        .AddFilter("Microsoft", LogLevel.None)
+                                        .AddFilter("System", LogLevel.None)
+                                        .AddFilter("*", LogLevel.Trace);
+                                })
+                                .ConfigureServices(services =>
+                                {
+                                    services.AddScoped<IFileSystem, FileSystem>();
+                                    services.AddScoped<IConfirmationPrompt, ConfirmationPrompt>();
+                                    services.AddScoped<IConsoleRegion, ConsoleRegion>();
+                                    services.AddHttpClient<InformaticsGatewayClient>();
+                                    services.AddSingleton<IInformaticsGatewayClient>(p => p.GetRequiredService<InformaticsGatewayClient>());
+                                    services.AddSingleton<IConfigurationService, ConfigurationService>();
+                                    services.AddSingleton<IControlService, ControlService>();
+                                    services.AddSingleton<IContainerRunnerFactory, ContainerRunnerFactory>();
+                                    services.AddSingleton<IEmbeddedResource, EmbeddedResource>();
+                                    services.AddTransient<DockerRunner>();
+                                    services.AddTransient<IDockerClient>(p => new DockerClientConfiguration().CreateClient());
+                                });
+                            })
+                        .AddGlobalOption(verboseOption)
+                        .AddCommand(new ConfigCommand())
+                        .AddCommand(new StartCommand())
+                        .AddCommand(new StopCommand())
+                        .AddCommand(new RestartCommand())
+                        .AddCommand(new AetCommand())
+                        .AddCommand(new SourceCommand())
+                        .AddCommand(new DestinationCommand())
+                        .AddCommand(new StatusCommand())
+                        .UseAnsiTerminalWhenAvailable()
+                        .UseExceptionHandler((exception, context) =>
                         {
-                            services.AddScoped<IFileSystem, FileSystem>();
-                            services.AddScoped<IConfirmationPrompt, ConfirmationPrompt>();
-                            services.AddScoped<IConsoleRegion, ConsoleRegion>();
-                            services.AddHttpClient<InformaticsGatewayClient>();
-                            services.AddSingleton<IInformaticsGatewayClient>(p => p.GetRequiredService<InformaticsGatewayClient>());
-                            services.AddSingleton<IConfigurationService, ConfigurationService>();
-                            services.AddSingleton<IControlService, ControlService>();
-                            services.AddSingleton<IContainerRunnerFactory, ContainerRunnerFactory>();
-                            services.AddSingleton<IEmbeddedResource, EmbeddedResource>();
-                            services.AddTransient<DockerRunner>();
-                            services.AddTransient<IDockerClient>(p => new DockerClientConfiguration().CreateClient());
-                        });
-                    })
-                .AddGlobalOption(verboseOption)
-                .AddCommand(new ConfigCommand())
-                .AddCommand(new StartCommand())
-                .AddCommand(new StopCommand())
-                .AddCommand(new RestartCommand())
-                .AddCommand(new AetCommand())
-                .AddCommand(new SourceCommand())
-                .AddCommand(new DestinationCommand())
-                .AddCommand(new StatusCommand())
-                .UseAnsiTerminalWhenAvailable()
-                .UseExceptionHandler((exception, context) =>
-                {
-                    Console.Out.WriteLineAsync(Crayon.Output.Bright.Red($"Exception: {exception.Message}"));
-                })
-                .UseDefaults()
-                .Build()
-                .InvokeAsync(args).ConfigureAwait(true);
+                            Console.Out.WriteLineAsync(Crayon.Output.Bright.Red($"Exception: {exception.Message}"));
+                        })
+                        .UseDefaults()
+                        .Build();
         }
     }
 }

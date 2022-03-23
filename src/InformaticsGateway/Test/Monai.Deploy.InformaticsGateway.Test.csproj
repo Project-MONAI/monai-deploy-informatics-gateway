@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <Compile Include="..\..\Shared\Test\InstanceGenerator.cs" Link="Shared\InstanceGenerator.cs" />
+    <Compile Include="..\..\Shared\Test\TestStorageInfo.cs" Link="Shared\TestStorageInfo.cs" />
     <Compile Include="..\..\Shared\Test\VerifyLogExtension.cs" Link="Shared\VerifyLogExtension.cs" />
   </ItemGroup>
 

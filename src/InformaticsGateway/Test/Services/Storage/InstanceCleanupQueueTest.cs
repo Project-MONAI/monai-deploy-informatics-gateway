@@ -7,6 +7,7 @@ using System.Threading;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
 using Xunit;
@@ -40,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         {
             for (var i = 0; i < 10; i++)
             {
-                _queue.Queue(new FileStorageInfo("correlationId", "/path", "message", ".txt", "source"));
+                _queue.Queue(new TestStorageInfo("test"));
             }
 
             _cancellationTokenSource.CancelAfter(500);

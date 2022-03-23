@@ -1,8 +1,6 @@
 // SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-using System.IO.Abstractions;
-using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
@@ -12,46 +10,34 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     /// </summary>
     public sealed record FhirFileStorageInfo : FileStorageInfo
     {
+        public static readonly string FhirSubDirectoryName = "ehr";
         public static readonly string JsonFilExtension = ".json";
         public static readonly string XmlFilExtension = ".xml";
-        private static readonly string DirectoryPath = "ehr";
 
+        /// <summary>
+        /// The transaction ID of the original ACR request.
+        /// Note: this value is same as <seealso cref="Source"></c>
+        /// </summary>
+        public string TransactionId { get => Source; }
+
+        /// <summary>
+        /// Gets or set the FHIR resource type.
+        /// </summary>
         public string ResourceType { get; set; }
 
-        public FhirFileStorageInfo() { }
+        /// <summary>
+        /// Gets or set the FHIR resource ID.
+        /// </summary>
+        public string ResourceId { get; set; }
 
-        public FhirFileStorageInfo(string correlationId,
-                                    string storageRootPath,
-                                    string messageId,
-                                    FhirStorageFormat fhirFileFormat,
-                                    string source)
-            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFilExtension, source, new FileSystem()) { }
+        protected override string SubDirectoryPath => FhirSubDirectoryName;
 
-        public FhirFileStorageInfo(string correlationId,
-                                    string storageRootPath,
-                                    string messageId,
-                                    FhirStorageFormat fhirFileFormat,
-                                    string source,
-                                    IFileSystem fileSystem)
-            : base(correlationId, storageRootPath, messageId, fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFilExtension, source, fileSystem)
+        public override string UploadFilePath => $"{SubDirectoryPath}/{ResourceType}-{ResourceId}{FileExtension}";
+
+        public FhirFileStorageInfo(FhirStorageFormat fhirFileFormat)
+            : base(fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFilExtension)
         {
-        }
-
-        protected override string GenerateStoragePath()
-        {
-            Guard.Against.NullOrWhiteSpace(ResourceType, nameof(ResourceType));
-            Guard.Against.NullOrWhiteSpace(MessageId, nameof(MessageId));
-
-            var filePath = System.IO.Path.Combine(StorageRootPath, DirectoryPath, ResourceType, MessageId) + FileExtension;
-            filePath = filePath.ToLowerInvariant();
-            var index = 1;
-            while (FileSystem.File.Exists(filePath))
-            {
-                filePath = System.IO.Path.Combine(StorageRootPath, DirectoryPath, ResourceType, $"{MessageId}-{index++}") + FileExtension;
-                filePath = filePath.ToLowerInvariant();
-            }
-
-            return filePath;
+            ContentType = fhirFileFormat == FhirStorageFormat.Json ? System.Net.Mime.MediaTypeNames.Application.Json : System.Net.Mime.MediaTypeNames.Application.Xml;
         }
     }
 }

@@ -16,19 +16,10 @@ namespace Monai.Deploy.InformaticsGateway.Database
     {
         public void Configure(EntityTypeBuilder<Payload> builder)
         {
-            var fileStorageInfoComparer = new ValueComparer<IList<FileStorageInfo>>(
+            var fileStorageInfoComparer = new ValueComparer<IReadOnlyList<FileStorageInfo>>(
                 (c1, c2) => c1.SequenceEqual(c2),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList());
-
-            var blockStorageInfoComparer = new ValueComparer<IList<BlockStorageInfo>>(
-                (c1, c2) => c1.SequenceEqual(c2),
-                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToList());
-            var workflowComparer = new ValueComparer<ISet<string>>(
-                (c1, c2) => c1.SequenceEqual(c2),
-                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToHashSet());
 
             var jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
 
@@ -36,23 +27,20 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
             builder.Property(j => j.Timeout).IsRequired();
             builder.Property(j => j.Key).IsRequired();
+            builder.Property(j => j.DateTimeCreated).IsRequired();
             builder.Property(j => j.RetryCount).IsRequired();
             builder.Property(j => j.State).IsRequired();
+            builder.Property(j => j.CorrelationId).IsRequired();
             builder.Property(j => j.Files)
                 .HasConversion(
                         v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
-                        v => JsonConvert.DeserializeObject<IList<FileStorageInfo>>(v, jsonSerializerSettings))
+                        v => JsonConvert.DeserializeObject<IReadOnlyList<FileStorageInfo>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(fileStorageInfoComparer);
-            builder.Property(j => j.UploadedFiles)
-                .HasConversion(
-                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
-                        v => JsonConvert.DeserializeObject<IList<BlockStorageInfo>>(v, jsonSerializerSettings))
-                .Metadata.SetValueComparer(blockStorageInfoComparer);
-            builder.Property(j => j.Workflows)
-                .HasConversion(
-                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
-                        v => JsonConvert.DeserializeObject<ISet<string>>(v, jsonSerializerSettings))
-                .Metadata.SetValueComparer(workflowComparer);
+
+            builder.Ignore(j => j.CalledAeTitle);
+            builder.Ignore(j => j.CallingAeTitle);
+            builder.Ignore(j => j.HasTimedOut);
+            builder.Ignore(j => j.Count);
         }
     }
 }

@@ -4,18 +4,14 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Globalization;
-using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
-using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
@@ -31,13 +27,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IServiceScope _serviceScope;
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<ApplicationEntityManager> _logger;
+        private readonly IDicomToolkit _dicomToolkit;
+        private readonly ITemporaryFileStore _temporaryFileStore;
         private readonly ILoggerFactory _loggerFactory;
         private readonly ConcurrentDictionary<string, ApplicationEntityHandler> _aeTitles;
         private readonly IDisposable _unsubscriberForMonaiAeChangedNotificationService;
         private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly IPayloadAssembler _payloadAssembler;
-        private readonly IFileSystem _fileSystem;
-        private readonly IDicomToolkit _dicomToolkit;
         private bool _disposedValue;
 
         public IOptions<InformaticsGatewayConfiguration> Configuration { get; }
@@ -55,9 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                                         IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
                                         IOptions<InformaticsGatewayConfiguration> configuration,
                                         IStorageInfoProvider storageInfoProvider,
-                                        IPayloadAssembler payloadAssembler,
-                                        IFileSystem fileSystem,
-                                        IDicomToolkit dicomToolkit)
+                                        IPayloadAssembler payloadAssembler)
         {
             if (applicationLifetime is null)
             {
@@ -68,14 +62,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
-            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
-            _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
 
             _serviceScope = serviceScopeFactory.CreateScope();
             _serviceProvider = _serviceScope.ServiceProvider;
 
-            _loggerFactory = _serviceProvider.GetService<ILoggerFactory>();
+            _loggerFactory = _serviceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
             _logger = _loggerFactory.CreateLogger<ApplicationEntityManager>();
+
+            _dicomToolkit = _serviceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
+
+            _temporaryFileStore = _serviceProvider.GetRequiredService<ITemporaryFileStore>() ?? throw new NullReferenceException(nameof(ITemporaryFileStore));
 
             _unsubscriberForMonaiAeChangedNotificationService = monaiAeChangedNotificationService.Subscribe(this);
             _aeTitles = new ConcurrentDictionary<string, ApplicationEntityHandler>();
@@ -114,19 +110,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private async Task HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
         {
-            var rootPath = _fileSystem.Path.Combine(Configuration.Value.Storage.TemporaryDataDirFullPath, calledAeTitle);
-            var info = new DicomFileStorageInfo(associationId.ToString(), rootPath, request.MessageID.ToString(CultureInfo.InvariantCulture), callingAeTitle, _fileSystem)
-            {
-                StudyInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID),
-                SeriesInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID),
-                SopInstanceUid = request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID)
-            };
+            var uids = _dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
 
-            using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", info.SopInstanceUid }, { "Correlation ID", associationId } }))
+            using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", uids.SopInstanceUid }, { "Correlation ID", associationId } }))
             {
-                _logger.InstanceInformation(info.StudyInstanceUid, info.SeriesInstanceUid, info.FilePath);
+                _logger.InstanceInformation(uids.StudyInstanceUid, uids.SeriesInstanceUid);
 
-                await _aeTitles[calledAeTitle].HandleInstance(request, info).ConfigureAwait(false);
+                await _aeTitles[calledAeTitle].HandleInstance(request, calledAeTitle, callingAeTitle, associationId, uids).ConfigureAwait(false);
             }
         }
 
@@ -160,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private void AddNewAeTitle(MonaiApplicationEntity entity)
         {
             using var scope = _serviceScopeFactory.CreateScope();
-            var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _dicomToolkit, _loggerFactory.CreateLogger<ApplicationEntityHandler>(), Configuration.Value.Dicom.WriteDicomJson);
+            var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _temporaryFileStore, _loggerFactory.CreateLogger<ApplicationEntityHandler>());
             if (!_aeTitles.TryAdd(entity.AeTitle, handler))
             {
                 _logger.AeTitleCannotBeAdded(entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));

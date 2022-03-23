@@ -11,8 +11,8 @@ using Monai.Deploy.InformaticsGateway.Database;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20220310211304_R2_Update")]
-    partial class R2_Update
+    [Migration("20220322185946_R2_0.2.0")]
+    partial class R2_020
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -133,10 +133,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CorrelationId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
@@ -156,12 +154,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("UploadedFiles")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Workflows")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

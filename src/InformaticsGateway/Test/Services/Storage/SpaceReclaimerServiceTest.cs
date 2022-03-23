@@ -10,7 +10,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
@@ -30,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly SpaceReclaimerService _service;
         private readonly ITestOutputHelper _output;
-        private readonly string _tempDirRoot = "/payloads";
+        private readonly string _tempDirRoot;
 
         public SpaceReclaimerServiceTest(ITestOutputHelper output)
         {
@@ -42,16 +41,17 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _fileSystem = new MockFileSystem();
 
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
-            _configuration.Value.Storage.Temporary = Path.GetFullPath(_tempDirRoot);
-            _service = new SpaceReclaimerService(_queue.Object, _logger.Object, _configuration, _fileSystem);
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+
+            _tempDirRoot = _configuration.Value.Storage.TemporaryDataDirFullPath;
+            _service = new SpaceReclaimerService(_queue.Object, _logger.Object, _configuration, _fileSystem);
         }
 
         [RetryFact(5, 250, DisplayName = "Shall honor cancellation request")]
         public async Task ShallHonorCancellationRequest()
         {
             _queue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
-                .Returns(default(FileStorageInfo));
+                .Returns(default(TestStorageInfo));
 
             await _service.StartAsync(_cancellationTokenSource.Token);
             _cancellationTokenSource.Cancel();
@@ -69,24 +69,23 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         [RetryFact(10, 250, DisplayName = "Shall delete files")]
         public async Task ShallDeleteFiles()
         {
-            var files = new List<FileStorageInfo>() {
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir1/file1"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"file2"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"file3.exe"))},
+            var files = new List<TestStorageInfo>() {
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir1", "file1.dcm")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir2"," file2")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir2"," file3.exe")),
             };
 
             foreach (var file in files)
             {
                 _fileSystem.Directory.CreateDirectory(_fileSystem.Path.GetDirectoryName(file.FilePath));
                 _fileSystem.File.Create(file.FilePath);
-
             }
 
-            var stack = new Stack<FileStorageInfo>(files);
+            var stack = new Stack<TestStorageInfo>(files);
             _queue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                 .Returns(() =>
                 {
-                    if (stack.TryPop(out FileStorageInfo result))
+                    if (stack.TryPop(out TestStorageInfo result))
                         return result;
 
                     _cancellationTokenSource.Cancel();
@@ -103,11 +102,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             {
                 Assert.False(_fileSystem.File.Exists(file.FilePath));
             }
+
             foreach (var dir in _fileSystem.Directory.GetDirectories(_tempDirRoot))
             {
                 _output.WriteLine(dir);
             }
+
             Assert.False(_fileSystem.Directory.Exists(Path.GetFullPath(Path.Combine(_tempDirRoot, "dir1"))));
+            Assert.False(_fileSystem.Directory.Exists(Path.GetFullPath(Path.Combine(_tempDirRoot, "dir2"))));
             Assert.True(_fileSystem.Directory.Exists(_tempDirRoot));
 
             _logger.VerifyLogging("Space Reclaimer Service canceled.", LogLevel.Warning, Times.Once());
@@ -116,15 +118,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         [RetryFact(5, 250, DisplayName = "Shall delete directories if empty")]
         public async Task ShallDeleteDirectoriesIfEmpty()
         {
-            var files = new List<FileStorageInfo>() {
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir1/dir1.1/file1"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir1/dir1.2/file2"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir1/dir1.2/dir1.2.1/file4"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir1/dir1.2/dir1.2.1/file5"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir1/dir1.2/dir1.2.2/file6"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir1/dir1.2/file3"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir1/dir1.3/file7"))},
-                new FileStorageInfo{  FilePath = Path.GetFullPath(Path.Combine(_tempDirRoot,"dir2/dir2.1/dir2.1.1/file1.exe"))}
+            var files = new List<TestStorageInfo>() {
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir1/dir1.1/file1")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir1/dir1.2/file2")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir1/dir1.2/dir1.2.1/file4")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir1/dir1.2/dir1.2.1/file5")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir1/dir1.2/dir1.2.2/file6")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir1/dir1.2/file3")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir1/dir1.3/file7")),
+                new TestStorageInfo(Path.Combine(_tempDirRoot, "dir2/dir2.1/dir2.1.1/file1.exe")),
             };
             foreach (var file in files)
             {
@@ -132,16 +134,16 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
                 _fileSystem.File.Create(file.FilePath);
             }
 
-            var stack = new Stack<FileStorageInfo>(files.Where(p => !p.FilePath.EndsWith("file3")));
+            var stack = new Stack<TestStorageInfo>(files.Where(p => !p.FilePath.EndsWith("file3")));
             _queue.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
-                .Returns(() =>
-                {
-                    if (stack.TryPop(out FileStorageInfo result))
-                        return result;
+                        .Returns(() =>
+                        {
+                            if (stack.TryPop(out TestStorageInfo result))
+                                return result;
 
-                    _cancellationTokenSource.Cancel();
-                    return null;
-                });
+                            _cancellationTokenSource.Cancel();
+                            return null;
+                        });
 
             await _service.StartAsync(_cancellationTokenSource.Token);
             while (!_cancellationTokenSource.IsCancellationRequested)

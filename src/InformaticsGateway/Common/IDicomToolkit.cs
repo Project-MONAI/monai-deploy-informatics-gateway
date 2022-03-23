@@ -19,5 +19,9 @@ namespace Monai.Deploy.InformaticsGateway.Common
         Task Save(DicomFile file, string filename, string metadataFilename, DicomJsonOptions dicomJsonOptions);
 
         DicomFile Load(byte[] fileContent);
+
+        StudySerieSopUids GetStudySeriesSopInstanceUids(string dicomFilePath);
+
+        StudySerieSopUids GetStudySeriesSopInstanceUids(DicomFile dicomFile);
     }
 }

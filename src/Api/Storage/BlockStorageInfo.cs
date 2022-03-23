@@ -8,12 +8,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     public class BlockStorageInfo
     {
         /// <summary>
-        /// Gets or sets the name of bucket where the file is stored.
-        /// </summary>
-        [JsonProperty(PropertyName = "bucket")]
-        public string Bucket { get; set; }
-
-        /// <summary>
         /// Gets or sets the root path to the file.
         /// </summary>
         [JsonProperty(PropertyName = "path")]

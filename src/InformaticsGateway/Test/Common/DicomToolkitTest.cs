@@ -11,6 +11,7 @@ using FellowOakDicom.Imaging;
 using FellowOakDicom.IO.Buffer;
 using FellowOakDicom.Serialization;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Common
@@ -233,6 +234,26 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
 
             Assert.Equal(dicomFile.FileMetaInfo.TransferSyntax, result.FileMetaInfo.TransferSyntax);
             Assert.Equal(expectedSop, result.Dataset.GetSingleValue<DicomUID>(DicomTag.SOPInstanceUID));
+        }
+
+        [Fact(DisplayName = "GetStudySeriesSopInstanceUids - returns UIDs")]
+        public void GetStudySeriesSopInstanceUids_ReturnsUIDs()
+        {
+            var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
+            var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
+            var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
+            var dicomFile = InstanceGenerator.GenerateDicomFile(studyInstanceUid, seriesInstanceUid, sopInstanceUid);
+
+            using var memoryStream = new MemoryStream();
+            dicomFile.Save(memoryStream);
+            _fileSystem.File.WriteAllBytes("dicom.dcm", memoryStream.ToArray());
+
+            var dicomToolkit = new DicomToolkit(_fileSystem);
+            var result = dicomToolkit.GetStudySeriesSopInstanceUids("dicom.dcm");
+
+            Assert.Equal(studyInstanceUid, result.StudyInstanceUid);
+            Assert.Equal(seriesInstanceUid, result.SeriesInstanceUid);
+            Assert.Equal(sopInstanceUid, result.SopInstanceUid);
         }
     }
 }

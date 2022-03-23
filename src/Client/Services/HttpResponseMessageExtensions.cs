@@ -21,7 +21,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
             try
             {
-                var json = await responseMessage.Content.ReadAsStringAsync();
+                var json = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
                 var problem = JsonConvert.DeserializeObject<ProblemDetails>(json);
 
                 if (problem?.Status != 0)
@@ -38,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 logger?.Log(LogLevel.Trace, ex, "Error reading server side problem.");
             }
 
-            var content = await responseMessage.Content.ReadAsStringAsync();
+            var content = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
             throw new HttpRequestException(content);
         }
     }

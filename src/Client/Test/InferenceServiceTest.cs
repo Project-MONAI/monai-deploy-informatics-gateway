@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var service = new InferenceService(httpClient, _logger.Object);
 
-            var result = await service.New(inferenceRequest, CancellationToken.None);
+            var result = await service.NewInferenceRequest(inferenceRequest, CancellationToken.None);
 
             Assert.Equal(inferenceRequest.TransactionId, result.TransactionId);
         }
@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var service = new InferenceService(httpClient, _logger.Object);
 
-            var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.New(inferenceRequest, CancellationToken.None));
+            var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.NewInferenceRequest(inferenceRequest, CancellationToken.None));
 
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }

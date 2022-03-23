@@ -4,10 +4,11 @@
 using System;
 using System.Threading.Tasks;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using xRetry;
 using Xunit;
 
-namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
+namespace Monai.Deploy.InformaticsGateway.Api.Test
 {
     public class PayloadTest
     {
@@ -15,11 +16,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         public async Task Payload_AddsNewInstance()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
-            payload.Add(new FileStorageInfo());
-            await Task.Delay(450);
+            payload.Add(new TestStorageInfo("file"));
+            await Task.Delay(450).ConfigureAwait(false);
             Assert.False(payload.HasTimedOut);
-            payload.Add(new FileStorageInfo());
-            await Task.Delay(450);
+            payload.Add(new TestStorageInfo("file"));
+            await Task.Delay(450).ConfigureAwait(false);
             Assert.False(payload.HasTimedOut);
             Assert.Equal("key", payload.Key);
         }
@@ -28,8 +29,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         public async Task Payload_ShallNotResetTimer()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
-            payload.Add(new FileStorageInfo());
-            await Task.Delay(1001);
+            payload.Add(new TestStorageInfo("file"));
+            await Task.Delay(1001).ConfigureAwait(false);
             Assert.True(payload.HasTimedOut);
         }
 
@@ -47,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         public void Payload_ShallDisposeTimer()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
-            payload.Add(new FileStorageInfo());
+            payload.Add(new TestStorageInfo("file"));
             Assert.Single(payload.Files);
             payload.Dispose();
             Assert.Empty(payload.Files);
