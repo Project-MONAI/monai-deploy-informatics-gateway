@@ -37,6 +37,7 @@
     <ProjectReference Include="..\..\src\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
     <ProjectReference Include="..\..\src\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
     <ProjectReference Include="..\..\src\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
+    <ProjectReference Include="..\..\src\MessageBroker\RabbitMq\Monai.Deploy.MessageBroker.csproj" />
   </ItemGroup>
 
   <Target Name="CopyTestConfigurations" AfterTargets="AfterBuild">

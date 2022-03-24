@@ -11,9 +11,9 @@
 
 using System.Globalization;
 using System.Text;
-using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
+using Monai.Deploy.MessageBroker.Messages;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using TechTalk.SpecFlow.Infrastructure;
@@ -88,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
                 var messsage = new Message(
                      body: eventArgs.Body.ToArray(),
-                     bodyDescription: routingKey,
+                     messageDescription: routingKey,
                      messageId: eventArgs.BasicProperties.MessageId,
                      applicationId: eventArgs.BasicProperties.AppId,
                      contentType: eventArgs.BasicProperties.ContentType,

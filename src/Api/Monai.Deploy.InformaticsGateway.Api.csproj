@@ -34,5 +34,10 @@ SPDX-License-Identifier: Apache License 2.0
 
     <ItemGroup>
         <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
+        <ProjectReference Include="..\MessageBroker\RabbitMq\Monai.Deploy.MessageBroker.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="MessageBroker\" />
     </ItemGroup>
 </Project>

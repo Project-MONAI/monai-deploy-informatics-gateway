@@ -1,9 +1,9 @@
 ﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-using System.Threading.Tasks;
+using Monai.Deploy.MessageBroker.Messages;
 
-namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
+namespace Monai.Deploy.MessageBroker
 {
     public interface IMessageBrokerPublisherService
     {

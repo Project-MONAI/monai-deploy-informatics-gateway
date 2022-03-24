@@ -15,7 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -23,6 +22,9 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.MessageBroker;
+using Monai.Deploy.MessageBroker.Common;
+using Monai.Deploy.MessageBroker.Messages;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
@@ -251,7 +253,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count());
 
             var exportCompleteMessage = new ExportCompleteMessage(exportRequest);
-            var jsonMessage = new JsonMessage<ExportCompleteMessage>(exportCompleteMessage, exportRequest.CorrelationId, exportRequest.DeliveryTag);
+            var jsonMessage = new JsonMessage<ExportCompleteMessage>(exportCompleteMessage, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequest.CorrelationId, exportRequest.DeliveryTag);
 
             Policy
                .Handle<Exception>()
