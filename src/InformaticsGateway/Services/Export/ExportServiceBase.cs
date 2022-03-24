@@ -16,7 +16,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
@@ -25,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.MessageBroker;
 using Monai.Deploy.MessageBroker.Common;
 using Monai.Deploy.MessageBroker.Messages;
+using Monai.Deploy.Storage;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export

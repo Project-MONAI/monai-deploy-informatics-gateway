@@ -13,7 +13,6 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
@@ -23,10 +22,12 @@ using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.InformaticsGateway.Storage;
 using Monai.Deploy.MessageBroker;
 using Monai.Deploy.MessageBroker.Common;
 using Monai.Deploy.MessageBroker.RabbitMq;
+using Monai.Deploy.Storage;
+using Monai.Deploy.Storage.Common;
+using Monai.Deploy.Storage.MinIo;
 
 namespace Monai.Deploy.InformaticsGateway
 {
@@ -77,12 +78,17 @@ namespace Monai.Deploy.InformaticsGateway
                         .PostConfigure(options =>
                         {
                         });
-
-                    services.AddOptions<MessageBrokerConfigurationBase>()
+                    services.AddOptions<MessageBrokerServiceConfiguration>()
                         .Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"))
                         .PostConfigure(options =>
                         {
                         });
+                    services.AddOptions<StorageServiceConfiguration>()
+                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"))
+                        .PostConfigure(options =>
+                        {
+                        });
+
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
 
                     services.AddDbContext<InformaticsGatewayContext>(
@@ -106,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway
                         var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
                         var serviceProvider = implementationFactory.GetService<IServiceProvider>();
                         var logger = implementationFactory.GetService<ILogger<Program>>();
-                        return serviceProvider.LocateService<IStorageService>(logger, options.Value.Storage.StorageService);
+                        return serviceProvider.LocateService<IStorageService>(logger, options.Value.Storage.ServiceAssemblyName);
                     });
 
                     services.AddSingleton<RabbitMqMessagePublisherService>();

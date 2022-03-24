@@ -25,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.MessageBroker;
 using Monai.Deploy.MessageBroker.Messages;
+using Monai.Deploy.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {

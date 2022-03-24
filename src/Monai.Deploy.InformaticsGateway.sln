@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.CLI.Test", "CLI\Test\Monai.Deploy.InformaticsGateway.CLI.Test.csproj", "{28099DFC-8937-4508-848C-35C99E56C121}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Storage.MinIo", "Storage\MinIo\Monai.Deploy.InformaticsGateway.Storage.MinIo.csproj", "{18CC4631-8E97-47E7-A89F-01A54BBFED94}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.Storage", "Storage\MinIo\Monai.Deploy.Storage.csproj", "{18CC4631-8E97-47E7-A89F-01A54BBFED94}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{B0BD0BF4-9D20-4385-88CF-5F715B06E3F8}"
 EndProject
