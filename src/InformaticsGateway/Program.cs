@@ -25,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.Storage;
 using Monai.Deploy.MessageBroker;
+using Monai.Deploy.MessageBroker.Common;
 using Monai.Deploy.MessageBroker.RabbitMq;
 
 namespace Monai.Deploy.InformaticsGateway
@@ -73,6 +74,12 @@ namespace Monai.Deploy.InformaticsGateway
                 {
                     services.AddOptions<InformaticsGatewayConfiguration>()
                         .Bind(hostContext.Configuration.GetSection("InformaticsGateway"))
+                        .PostConfigure(options =>
+                        {
+                        });
+
+                    services.AddOptions<MessageBrokerConfigurationBase>()
+                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"))
                         .PostConfigure(options =>
                         {
                         });
