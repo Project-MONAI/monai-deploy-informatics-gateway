@@ -3,10 +3,12 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
+namespace Monai.Deploy.MessageBroker.Common
 {
     public static partial class Log
     {
+        internal static readonly string LoggingScopeMessageApplication = "Message ID={0}. Application ID={1}.";
+
         [LoggerMessage(EventId = 10000, Level = LogLevel.Information, Message = "Publishing message to {endpoint}/{virtualHost}. Exchange={exchange}, Routing Key={topic}.")]
         public static partial void PublshingRabbitMq(this ILogger logger, string endpoint, string virtualHost, string exchange, string topic);
 

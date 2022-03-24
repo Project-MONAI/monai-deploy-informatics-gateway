@@ -13,7 +13,6 @@ using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -23,6 +22,9 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using Monai.Deploy.MessageBroker;
+using Monai.Deploy.MessageBroker.Common;
+using Monai.Deploy.MessageBroker.Messages;
 using Moq;
 using Moq.Protected;
 using xRetry;
@@ -425,7 +427,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 MessageId = Guid.NewGuid().ToString(),
                 WorkflowId = Guid.NewGuid().ToString(),
             };
-            var jsonMessage = new JsonMessage<ExportRequestMessage>(exportRequestMessage, exportRequestMessage.CorrelationId, exportRequestMessage.DeliveryTag);
+            var jsonMessage = new JsonMessage<ExportRequestMessage>(exportRequestMessage, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequestMessage.CorrelationId, exportRequestMessage.DeliveryTag);
 
             return new MessageReceivedEventArgs(jsonMessage.ToMessage(), CancellationToken.None);
         }

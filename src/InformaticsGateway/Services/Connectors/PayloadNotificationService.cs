@@ -15,7 +15,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -24,6 +23,8 @@ using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.MessageBroker;
+using Monai.Deploy.MessageBroker.Messages;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
@@ -33,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     /// <c>Payload.PayloadState.Notify</c> states. It also queries the payload assembler for
     /// payloads that are ready for upload in the background.
     /// </summary>
-    internal class PayloadNotificationService : IHostedService, IMonaiService
+    internal class PayloadNotificationService : IHostedService, IMonaiService, IDisposable
     {
         /// <summary>
         /// Internal use to indicate if payload was updated or deleted.
@@ -45,38 +46,40 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         }
 
         private static readonly Payload.PayloadState[] SupportedStates = new[] { Payload.PayloadState.Upload, Payload.PayloadState.Notify };
+
+        private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly ILogger<PayloadNotificationService> _logger;
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IServiceScope _scope;
         private readonly IFileSystem _fileSystem;
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IStorageService _storageService;
-        private readonly ILogger<PayloadNotificationService> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IMessageBrokerPublisherService _messageBrokerPublisherService;
         private readonly IInstanceCleanupQueue _instanceCleanupQueue;
+        private readonly IMessageBrokerPublisherService _messageBrokerPublisherService;
+
         private ActionBlock<Payload> _uploadQueue;
         private ActionBlock<Payload> _publishQueue;
+        private bool _disposedValue;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
 
         public string ServiceName => "Payload Notification Service";
 
-        public PayloadNotificationService(IFileSystem fileSystem,
-                                          IPayloadAssembler payloadAssembler,
-                                          IStorageService storageService,
+        public PayloadNotificationService(IServiceScopeFactory serviceScopeFactory,
                                           ILogger<PayloadNotificationService> logger,
-                                          IOptions<InformaticsGatewayConfiguration> options,
-                                          IServiceScopeFactory serviceScopeFactory,
-                                          IMessageBrokerPublisherService messageBrokerPublisherService,
-                                          IInstanceCleanupQueue instanceCleanupQueue)
+                                          IOptions<InformaticsGatewayConfiguration> options)
         {
-            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
-            _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
-            _storageService = storageService ?? throw new ArgumentNullException(nameof(storageService));
+            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _options = options ?? throw new ArgumentNullException(nameof(options));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            _messageBrokerPublisherService = messageBrokerPublisherService ?? throw new ArgumentNullException(nameof(messageBrokerPublisherService));
-            _instanceCleanupQueue = instanceCleanupQueue ?? throw new ArgumentNullException(nameof(instanceCleanupQueue));
+
+            _scope = _serviceScopeFactory.CreateScope();
+
+            _fileSystem = _scope.ServiceProvider.GetRequiredService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
+            _payloadAssembler = _scope.ServiceProvider.GetRequiredService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
+            _storageService = _scope.ServiceProvider.GetRequiredService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
+            _instanceCleanupQueue = _scope.ServiceProvider.GetRequiredService<IInstanceCleanupQueue>() ?? throw new ServiceNotFoundException(nameof(IInstanceCleanupQueue));
+            _messageBrokerPublisherService = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>() ?? throw new ServiceNotFoundException(nameof(IMessageBrokerPublisherService));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -300,10 +303,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 CallingAeTitle = payload.CallingAeTitle,
             };
 
-            workflowRequest.Payload.AddRange(payload.GetUploadedFiles(_options.Value.Storage.StorageServiceBucketName));
+            workflowRequest.AddFiles(payload.GetUploadedFiles(_options.Value.Storage.StorageServiceBucketName).AsEnumerable());
 
             var message = new JsonMessage<WorkflowRequestMessage>(
                 workflowRequest,
+                MessageBrokerConfiguration.InformaticsGatewayApplicationId,
                 payload.CorrelationId,
                 string.Empty);
 
@@ -348,6 +352,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger.ServiceStopPending(ServiceName);
 
             await Task.WhenAll(_uploadQueue.Completion, _publishQueue.Completion).ConfigureAwait(false);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _scope.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

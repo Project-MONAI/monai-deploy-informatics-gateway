@@ -6,13 +6,12 @@ using System.Text;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.MessageBroker.Common;
+using Monai.Deploy.MessageBroker.Messages;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
+namespace Monai.Deploy.MessageBroker.RabbitMq
 {
     public class RabbitMqMessageSubscriberService : IMessageBrokerSubscriberService, IDisposable
     {
@@ -26,17 +25,14 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
 
         public string Name => "Rabbit MQ Subscriber";
 
-        public RabbitMqMessageSubscriberService(IOptions<InformaticsGatewayConfiguration> options,
+        public RabbitMqMessageSubscriberService(IOptions<MessageBrokerServiceConfiguration> options,
                                                 ILogger<RabbitMqMessageSubscriberService> logger)
         {
-            if (options is null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            Guard.Against.Null(options, nameof(options));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            var configuration = options.Value.Messaging;
 
+            var configuration = options.Value;
             ValidateConfiguration(configuration);
             _endpoint = configuration.SubscriberSettings[ConfigurationKeys.EndPoint];
             var username = configuration.SubscriberSettings[ConfigurationKeys.Username];
@@ -59,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
         }
 
-        private void ValidateConfiguration(MessageBrokerConfiguration configuration)
+        private void ValidateConfiguration(MessageBrokerServiceConfiguration configuration)
         {
             Guard.Against.Null(configuration, nameof(configuration));
             Guard.Against.Null(configuration.SubscriberSettings, nameof(configuration.SubscriberSettings));
@@ -84,18 +80,14 @@ namespace Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (model, eventArgs) =>
             {
-                using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object>
-                {
-                    { "MessageId", eventArgs.BasicProperties.MessageId },
-                    { "ApplicationId", eventArgs.BasicProperties.AppId }
-                });
+                using var loggerScope = _logger.BeginScope(string.Format(CultureInfo.InvariantCulture, Log.LoggingScopeMessageApplication, eventArgs.BasicProperties.MessageId, eventArgs.BasicProperties.AppId));
 
                 _logger.MessageReceivedFromQueue(queueDeclareResult.QueueName, topic);
 
                 var messageReceivedEventArgs = new MessageReceivedEventArgs(
                  new Message(
                      body: eventArgs.Body.ToArray(),
-                     bodyDescription: topic,
+                     messageDescription: topic,
                      messageId: eventArgs.BasicProperties.MessageId,
                      applicationId: eventArgs.BasicProperties.AppId,
                      contentType: eventArgs.BasicProperties.ContentType,

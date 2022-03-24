@@ -15,13 +15,14 @@ using System.Net.Http.Headers;
 using Ardalis.GuardClauses;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
+using Monai.Deploy.MessageBroker.Messages;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -148,6 +149,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             var message = new JsonMessage<ExportRequestMessage>(
                 exportRequestMessage,
+                MessageBrokerConfiguration.InformaticsGatewayApplicationId,
                 exportRequestMessage.CorrelationId,
                 string.Empty);
 

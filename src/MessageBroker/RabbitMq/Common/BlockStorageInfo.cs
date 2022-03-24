@@ -3,7 +3,7 @@
 
 using Newtonsoft.Json;
 
-namespace Monai.Deploy.InformaticsGateway.Api.Storage
+namespace Monai.Deploy.MessageBroker.Common
 {
     public class BlockStorageInfo
     {
@@ -11,12 +11,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or sets the root path to the file.
         /// </summary>
         [JsonProperty(PropertyName = "path")]
-        public string Path { get; set; }
+        public string Path { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the root path to the metadata file.
         /// </summary>
         [JsonProperty(PropertyName = "metadata")]
-        public string Metadata { get; set; }
+        public string Metadata { get; set; } = default!;
     }
 }

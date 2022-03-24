@@ -11,13 +11,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using Monai.Deploy.MessageBroker;
+using Monai.Deploy.MessageBroker.Messages;
 using Moq;
 using xRetry;
 using Xunit;
@@ -54,6 +55,21 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             serviceProvider
                 .Setup(x => x.GetService(typeof(IInformaticsGatewayRepository<Payload>)))
                 .Returns(_payloadRepository.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IFileSystem)))
+                .Returns(_fileSystem.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IPayloadAssembler)))
+                .Returns(_payloadAssembler.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IStorageService)))
+                .Returns(_storageService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IInstanceCleanupQueue)))
+                .Returns(_instanceCleanupQueue.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IMessageBrokerPublisherService)))
+                .Returns(_messageBrokerPublisherService.Object);
 
             var scope = new Mock<IServiceScope>();
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
@@ -68,14 +84,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(DisplayName = "PayloadNotificationService_Constructor")]
         public void PayloadNotificationService_Constructor()
         {
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(null, null, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, null, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, _serviceScopeFactory.Object, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_fileSystem.Object, _payloadAssembler.Object, _storageService.Object, _logger.Object, _options, _serviceScopeFactory.Object, _messageBrokerPublisherService.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_serviceScopeFactory.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_serviceScopeFactory.Object, _logger.Object, null));
         }
 
         [RetryFact(DisplayName = "Payload Notification Service shall stop processing when StopAsync is called")]
@@ -89,14 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     return payload;
                 });
 
-            var service = new PayloadNotificationService(_fileSystem.Object,
-                                                         _payloadAssembler.Object,
-                                                         _storageService.Object,
-                                                         _logger.Object,
-                                                         _options,
-                                                         _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object,
-                                                         _instanceCleanupQueue.Object);
+            var service = new PayloadNotificationService(_serviceScopeFactory.Object, _logger.Object, _options);
 
             await service.StartAsync(_cancellationTokenSource.Token);
             await service.StopAsync(_cancellationTokenSource.Token);
@@ -122,14 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 .Returns(testData.AsQueryable())
                 .Callback(() => _cancellationTokenSource.CancelAfter(500));
 
-            var service = new PayloadNotificationService(_fileSystem.Object,
-                                                         _payloadAssembler.Object,
-                                                         _storageService.Object,
-                                                         _logger.Object,
-                                                         _options,
-                                                         _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object,
-                                                         _instanceCleanupQueue.Object);
+            var service = new PayloadNotificationService(_serviceScopeFactory.Object, _logger.Object, _options);
 
             service.StartAsync(_cancellationTokenSource.Token);
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
@@ -145,14 +142,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                 .Returns(payload);
 
-            var service = new PayloadNotificationService(_fileSystem.Object,
-                                                         _payloadAssembler.Object,
-                                                         _storageService.Object,
-                                                         _logger.Object,
-                                                         _options,
-                                                         _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object,
-                                                         _instanceCleanupQueue.Object);
+            var service = new PayloadNotificationService(_serviceScopeFactory.Object, _logger.Object, _options);
+
             _cancellationTokenSource.CancelAfter(100);
             service.StartAsync(_cancellationTokenSource.Token);
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
@@ -194,14 +185,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     return payload;
                 });
 
-            var service = new PayloadNotificationService(_fileSystem.Object,
-                                                         _payloadAssembler.Object,
-                                                         _storageService.Object,
-                                                         _logger.Object,
-                                                         _options,
-                                                         _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object,
-                                                         _instanceCleanupQueue.Object);
+            var service = new PayloadNotificationService(_serviceScopeFactory.Object, _logger.Object, _options);
+
             service.StartAsync(_cancellationTokenSource.Token);
 
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
@@ -238,14 +223,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 .Returns((new List<Payload> { payload }).AsQueryable())
                 .Callback(() => _cancellationTokenSource.CancelAfter(500));
 
-            var service = new PayloadNotificationService(_fileSystem.Object,
-                                                         _payloadAssembler.Object,
-                                                         _storageService.Object,
-                                                         _logger.Object,
-                                                         _options,
-                                                         _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object,
-                                                         _instanceCleanupQueue.Object);
+            var service = new PayloadNotificationService(_serviceScopeFactory.Object, _logger.Object, _options);
+
             _cancellationTokenSource.CancelAfter(1000);
             service.StartAsync(_cancellationTokenSource.Token);
 
@@ -300,14 +279,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     return payload;
                 });
 
-            var service = new PayloadNotificationService(_fileSystem.Object,
-                                                         _payloadAssembler.Object,
-                                                         _storageService.Object,
-                                                         _logger.Object,
-                                                         _options,
-                                                         _serviceScopeFactory.Object,
-                                                         _messageBrokerPublisherService.Object,
-                                                         _instanceCleanupQueue.Object);
+            var service = new PayloadNotificationService(_serviceScopeFactory.Object, _logger.Object, _options);
+
             service.StartAsync(_cancellationTokenSource.Token);
 
             _cancellationTokenSource.Token.WaitHandle.WaitOne();

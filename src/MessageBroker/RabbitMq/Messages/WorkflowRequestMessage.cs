@@ -1,15 +1,15 @@
 ﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-using System;
-using System.Collections.Generic;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.MessageBroker.Common;
 using Newtonsoft.Json;
 
-namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
+namespace Monai.Deploy.MessageBroker.Messages
 {
     public class WorkflowRequestMessage
     {
+        private readonly List<BlockStorageInfo> _payload;
+
         /// <summary>
         /// Gets or sets the ID of the payload which is also used as the root path of the payload.
         /// </summary>
@@ -33,27 +33,27 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
         /// For an ACR inference request, the correlation ID is the Transaction ID in the original request.
         /// </summary>
         [JsonProperty(PropertyName = "correlation_id")]
-        public string CorrelationId { get; set; }
+        public string CorrelationId { get; set; } = default!;
 
         /// <summary>
         /// Gets or set the name of the bucket where the files in are stored.
         /// </summary>
         [JsonProperty(PropertyName = "bucket")]
-        public string Bucket { get; set; }
+        public string Bucket { get; set; } = default!;
 
         /// <summary>
         /// For DIMSE, the sender or calling AE Title of the DICOM dataset.
         /// For an ACR inference request, the transaction ID.
         /// </summary>
         [JsonProperty(PropertyName = "calling_aetitle")]
-        public string CallingAeTitle { get; set; }
+        public string CallingAeTitle { get; set; } = default!;
 
         /// <summary>
         /// For DIMSE, the MONAI Deploy AE Title received the DICOM dataset.
         /// For an ACR inference request, this field is empty.
         /// </summary>
         [JsonProperty(PropertyName = "called_aetitle")]
-        public string CalledAeTitle { get; set; }
+        public string CalledAeTitle { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the time the data was received.
@@ -65,6 +65,17 @@ namespace Monai.Deploy.InformaticsGateway.Api.MessageBroker
         /// Gets or sets a list of files and metadata files in this request.
         /// </summary>
         [JsonProperty(PropertyName = "payload")]
-        public List<BlockStorageInfo> Payload { get; } = new List<BlockStorageInfo>();
+        public IReadOnlyList<BlockStorageInfo> Payload { get => _payload; }
+
+        public WorkflowRequestMessage()
+        {
+            _payload = new List<BlockStorageInfo>();
+            Workflows = new List<string>();
+        }
+
+        public void AddFiles(IEnumerable<BlockStorageInfo> files)
+        {
+            _payload.AddRange(files);
+        }
     }
 }

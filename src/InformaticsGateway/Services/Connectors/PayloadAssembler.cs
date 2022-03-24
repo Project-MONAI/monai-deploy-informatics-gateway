@@ -130,28 +130,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         {
                             if (payload.Files.Count == 0)
                             {
-                                _logger.DropEmptyBUcket(key);
+                                _logger.DropEmptyBucket(key);
+                                return;
                             }
-                            try
-                            {
-                                payload.State = Payload.PayloadState.Upload;
-                                var scope = _serviceScopeFactory.CreateScope();
-                                var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                                await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
-                                _workItems.Add(payload);
-                                _logger.BucketReady(key, payload.Count);
-                            }
-                            catch (Exception ex)
-                            {
-                                if (_payloads.TryAdd(key, new AsyncLazy<Payload>(payload)))
-                                {
-                                    _logger.BucketError(key, payload.Id, ex);
-                                }
-                                else
-                                {
-                                    throw;
-                                }
-                            }
+
+                            await QueueBucketForNotification(key, payload).ConfigureAwait(false);
                         }
                         else
                         {
@@ -171,6 +154,30 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             finally
             {
                 _timer.Enabled = true;
+            }
+        }
+
+        private async Task QueueBucketForNotification(string key, Payload payload)
+        {
+            try
+            {
+                payload.State = Payload.PayloadState.Upload;
+                var scope = _serviceScopeFactory.CreateScope();
+                var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
+                await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                _workItems.Add(payload);
+                _logger.BucketReady(key, payload.Count);
+            }
+            catch (Exception ex)
+            {
+                if (_payloads.TryAdd(key, new AsyncLazy<Payload>(payload)))
+                {
+                    _logger.BucketError(key, payload.Id, ex);
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
 
