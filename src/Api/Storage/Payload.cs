@@ -32,7 +32,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public const int MAX_RETRY = 3;
         private readonly Stopwatch _lastReceived;
-        private readonly List<FileStorageInfo> _files;
         private bool _disposedValue;
 
         public Guid Id { get; }
@@ -47,24 +46,23 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public PayloadState State { get; set; }
 
-        [BackingField(nameof(_files))]
-        public IReadOnlyList<FileStorageInfo> Files { get => _files; }
+        public List<FileStorageInfo> Files { get; init; }
 
         public string CorrelationId { get; init; }
 
-        public int Count { get => _files.Count; }
+        public int Count { get => Files.Count; }
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
 
-        public string CallingAeTitle { get => _files.OfType<DicomFileStorageInfo>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
+        public string CallingAeTitle { get => Files.OfType<DicomFileStorageInfo>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
 
-        public string CalledAeTitle { get => _files.OfType<DicomFileStorageInfo>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
+        public string CalledAeTitle { get => Files.OfType<DicomFileStorageInfo>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
 
         public Payload(string key, string correlationId, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
-            _files = new List<FileStorageInfo>();
+            Files = new List<FileStorageInfo>();
             _lastReceived = new Stopwatch();
 
             CorrelationId = correlationId;
@@ -80,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         {
             Guard.Against.Null(value, nameof(value));
 
-            _files.Add(value);
+            Files.Add(value);
             _lastReceived.Reset();
             _lastReceived.Start();
         }
@@ -107,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 if (disposing)
                 {
                     _lastReceived.Stop();
-                    _files.Clear();
+                    Files.Clear();
                 }
 
                 _disposedValue = true;
