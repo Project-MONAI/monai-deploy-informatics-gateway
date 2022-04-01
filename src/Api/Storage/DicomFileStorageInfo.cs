@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Collections.Generic;
+using Monai.Deploy.MessageBroker.Common;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {

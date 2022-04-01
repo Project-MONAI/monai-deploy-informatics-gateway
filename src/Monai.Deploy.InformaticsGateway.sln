@@ -43,11 +43,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{B0BD
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MessageBroker", "MessageBroker", "{7D07DC2E-1CC5-4B1F-8112-920542BB78A7}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq", "MessageBroker\RabbitMq\Monai.Deploy.InformaticsGateway.MessageBroker.RabbitMq.csproj", "{F1550E33-47B4-40FA-973E-44551480BED1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.MessageBroker", "MessageBroker\RabbitMq\Monai.Deploy.MessageBroker.csproj", "{F1550E33-47B4-40FA-973E-44551480BED1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B8E99EF7-84EA-4D11-B722-9EE81B89CD86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monai.Deploy.InformaticsGateway.Integration.Test", "..\tests\Integration.Test\Monai.Deploy.InformaticsGateway.Integration.Test.csproj", "{0BB99F0E-669F-4884-9DB1-AFA16CC9C67B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Integration.Test", "..\tests\Integration.Test\Monai.Deploy.InformaticsGateway.Integration.Test.csproj", "{0BB99F0E-669F-4884-9DB1-AFA16CC9C67B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

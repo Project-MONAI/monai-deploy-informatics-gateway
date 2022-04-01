@@ -285,12 +285,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             }
         }
 
-        private void CheckInputMetadataDetails(InferenceRequestDetails details, List<string> errors)
+        private static void CheckInputMetadataDetails(InferenceRequestDetails details, List<string> errors)
         {
             switch (details.Type)
             {
                 case InferenceRequestType.DicomUid:
-                    CheckInputMetadataWithTypDeicomUid(details, errors);
+                    CheckInputMetadataWithTypDicomUid(details, errors);
                     break;
 
                 case InferenceRequestType.DicomPatientId:
@@ -332,7 +332,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             }
         }
 
-        private static void CheckInputMetadataWithTypDeicomUid(InferenceRequestDetails details, List<string> errors)
+        private static void CheckInputMetadataWithTypDicomUid(InferenceRequestDetails details, List<string> errors)
         {
             Guard.Against.Null(details, nameof(details));
             Guard.Against.Null(errors, nameof(errors));
@@ -351,27 +351,31 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                     }
 
                     if (study.Series is null) continue;
-
-                    foreach (var series in study.Series)
-                    {
-                        if (string.IsNullOrWhiteSpace(series.SeriesInstanceUid))
-                        {
-                            errors.Add("`SeriesInstanceUID` cannot be empty.");
-                        }
-
-                        if (series.Instances is null) continue;
-                        errors.AddRange(
-                            series.Instances
-                                .Where(
-                                    instance => instance.SopInstanceUid.IsNullOrEmpty() ||
-                                    instance.SopInstanceUid.Any(p => string.IsNullOrWhiteSpace(p)))
-                                .Select(instance => "`SOPInstanceUID` cannot be empty."));
-                    }
+                    CheckInputMetadataWithTypeDicomSeries(errors, study);
                 }
             }
         }
 
-        private void CheckFhirConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails connection)
+        private static void CheckInputMetadataWithTypeDicomSeries(List<string> errors, RequestedStudy study)
+        {
+            foreach (var series in study.Series)
+            {
+                if (string.IsNullOrWhiteSpace(series.SeriesInstanceUid))
+                {
+                    errors.Add("`SeriesInstanceUID` cannot be empty.");
+                }
+
+                if (series.Instances is null) continue;
+                errors.AddRange(
+                    series.Instances
+                        .Where(
+                            instance => instance.SopInstanceUid.IsNullOrEmpty() ||
+                            instance.SopInstanceUid.Any(p => string.IsNullOrWhiteSpace(p)))
+                        .Select(instance => "`SOPInstanceUID` cannot be empty."));
+            }
+        }
+
+        private static void CheckFhirConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails connection)
         {
             if (!Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
             {

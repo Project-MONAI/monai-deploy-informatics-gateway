@@ -480,7 +480,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void BucketElapsedTime(this ILogger logger, string key);
 
         [LoggerMessage(EventId = 3006, Level = LogLevel.Warning, Message = "Dropping Bucket {key} due to empty.")]
-        public static partial void DropEmptyBUcket(this ILogger logger, string key);
+        public static partial void DropEmptyBucket(this ILogger logger, string key);
 
         [LoggerMessage(EventId = 3007, Level = LogLevel.Information, Message = "Bucket {key} sent to processing queue with {count} files.")]
         public static partial void BucketReady(this ILogger logger, string key, int count);

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.MessageBroker.Common;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {

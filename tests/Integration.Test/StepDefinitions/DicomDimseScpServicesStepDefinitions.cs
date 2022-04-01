@@ -19,12 +19,13 @@ using FellowOakDicom.Serialization;
 using FluentAssertions.Execution;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.MessageBroker;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
+using Monai.Deploy.MessageBroker.Messages;
 using Polly;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -274,7 +275,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             messages.Should().NotBeNullOrEmpty().And.HaveCount(fileSpecs.NumberOfExpectedRequests(_scenarioContext[KeyDataGrouping].ToString()));
             foreach (var message in messages)
             {
-                message.ApplicationId.Should().Be(MessageBase.InformaticsGatewayApplicationId);
+                message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
                 var request = message.ConvertTo<WorkflowRequestMessage>();
                 request.Should().NotBeNull();
                 request.FileCount.Should().Be((fileSpecs.NumberOfExpectedFiles(_scenarioContext[KeyDataGrouping].ToString())));
