@@ -34,13 +34,13 @@
     },
     "storage": {
       "temporary": "/payloads",
+      "bucketName": "monai",
       "settings": {
         "endpoint": "minio:9000",
         "accessKey": "minioadmin",
         "accessToken": "minioadmin",
         "securedConnection": false
-      },
-      "storageServiceBucketName": "monai"
+      }
     }
   },
   "Logging": {

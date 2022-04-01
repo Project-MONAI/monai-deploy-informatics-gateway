@@ -87,7 +87,7 @@ function start_services() {
     export HOST_IP
 
     info "============================================="
-    docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep integrationtest_
+    docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep integrationtest
     info "============================================="
 
     set +e
