@@ -14,7 +14,7 @@ namespace Monai.Deploy.Storage.Common
         /// The default storage service configured is MinIO.
         /// </summary>
         [ConfigurationKeyName("serviceAssemblyName")]
-        public string ServiceAssemblyName { get; set; } = "Monai.Deploy.Storage.MinIoStorageService, Monai.Deploy.Storage.MinIo";
+        public string ServiceAssemblyName { get; set; } = "Monai.Deploy.Storage.MinIo.MinIoStorageService, Monai.Deploy.Storage";
 
         /// <summary>
         /// Gets or sets the storage service settings.

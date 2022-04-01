@@ -43,7 +43,7 @@ Please refer to the latest [user guide](./docs/setup/setup.md) for installation 
 During development, change any settings inside the `appsettings.Development.json` file.
 First, export the following environment variable before executing `dotnet run`:
 
-#### Linux 
+#### Bash 
 
 ```bash
 export DOTNET_ENVIRONMENT=Development

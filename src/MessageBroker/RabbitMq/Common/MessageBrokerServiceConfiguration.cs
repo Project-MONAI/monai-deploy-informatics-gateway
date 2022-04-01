@@ -5,7 +5,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.MessageBroker.Common
 {
-    public abstract class MessageBrokerServiceConfiguration
+    public class MessageBrokerServiceConfiguration
     {
         /// <summary>
         /// Gets or sets the a fully qualified type name of the message publisher service.
