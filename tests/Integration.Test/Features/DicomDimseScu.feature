@@ -9,7 +9,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-@scp
+@scp @ignore
 Feature: DICOM DIMSE SCU Services
 
     This feature tests the DIMSE services provided by the Informatics Gateway as a SCU.

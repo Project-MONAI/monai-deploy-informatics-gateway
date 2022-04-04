@@ -31,8 +31,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomDimseScuServicesStepDefinitions
     {
-        internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(5);
-        internal static readonly TimeSpan DicomWebWaitTimeSpan = TimeSpan.FromMinutes(5);
+        internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(2);
+        internal static readonly TimeSpan DicomWebWaitTimeSpan = TimeSpan.FromMinutes(2);
         internal static readonly string KeyPatientId = "PATIENT_ID";
         internal static readonly string KeyDicomHashes = "DICOM_FILES";
         internal static readonly string KeyDestination = "EXPORT_DESTINATION";

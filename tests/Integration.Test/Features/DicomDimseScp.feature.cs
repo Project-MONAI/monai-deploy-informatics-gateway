@@ -24,7 +24,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = ((string[])(null));
+        private static string[] featureTags = new string[] {
+                "ignore"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -86,9 +87,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         
         public virtual void FeatureBackground()
         {
-#line 25
-    #line hidden
 #line 26
+    #line hidden
+#line 27
         testRunner.Given("a calling AE Title \'TEST-RUNNER\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -98,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableFactAttribute(DisplayName="Response to C-ECHO-RQ")]
+        [Xunit.SkippableFactAttribute(DisplayName="Response to C-ECHO-RQ", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "DICOM DIMSE SCP Services")]
         [Xunit.TraitAttribute("Description", "Response to C-ECHO-RQ")]
         public void ResponseToC_ECHO_RQ()
@@ -106,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Response to C-ECHO-RQ", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 28
+#line 29
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -116,24 +117,24 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 26
     this.FeatureBackground();
 #line hidden
-#line 29
+#line 30
         testRunner.Given("a called AE Title named \'C-ECHO-TEST\' that groups by \'0020,000D\' for 5 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 30
+#line 31
         testRunner.When("a C-ECHO-RQ is sent to \'C-ECHO-TEST\' from \'TEST-RUNNER\' with timeout of 30 second" +
                         "s", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
+#line 32
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="Respond to C-STORE-RQ and group data by Study Instance UID")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Respond to C-STORE-RQ and group data by Study Instance UID", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "DICOM DIMSE SCP Services")]
         [Xunit.TraitAttribute("Description", "Respond to C-STORE-RQ and group data by Study Instance UID")]
         [Xunit.TraitAttribute("Category", "messaging_workflow_request")]
@@ -156,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             argumentsOfScenario.Add("modality", modality);
             argumentsOfScenario.Add("count", count);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Study Instance UID", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 34
+#line 35
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -166,36 +167,36 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 26
     this.FeatureBackground();
 #line hidden
-#line 35
+#line 36
         testRunner.Given("a called AE Title named \'C-STORE-STUDY\' that groups by \'0020,000D\' for 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 36
+#line 37
         testRunner.And(string.Format("{0} {1} studies", count, modality), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 37
+#line 38
         testRunner.When("a C-STORE-RQ is sent to \'Informatics Gateway\' with AET \'C-STORE-STUDY\' from \'TEST" +
                         "-RUNNER\' with timeout of 300 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 38
+#line 39
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 39
+#line 40
         testRunner.And(string.Format("{0} workflow requests sent to message broker", count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 40
+#line 41
         testRunner.And(string.Format("{0} studies are uploaded to storage service", count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 41
+#line 42
         testRunner.And("the temporary data directory has been cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
             this.ScenarioCleanup();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="Respond to C-STORE-RQ and group data by Series Instance UID")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Respond to C-STORE-RQ and group data by Series Instance UID", Skip="Ignored")]
         [Xunit.TraitAttribute("FeatureTitle", "DICOM DIMSE SCP Services")]
         [Xunit.TraitAttribute("Description", "Respond to C-STORE-RQ and group data by Series Instance UID")]
         [Xunit.TraitAttribute("Category", "messaging_workflow_request")]
@@ -219,7 +220,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             argumentsOfScenario.Add("study_count", study_Count);
             argumentsOfScenario.Add("series_count", series_Count);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Series Instance UID", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 51
+#line 52
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -229,30 +230,30 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 26
     this.FeatureBackground();
 #line hidden
-#line 52
+#line 53
         testRunner.Given("a called AE Title named \'C-STORE-SERIES\' that groups by \'0020,000E\' for 3 seconds" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 53
+#line 54
         testRunner.And(string.Format("{0} {1} studies with {2} series per study", study_Count, modality, series_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 54
+#line 55
         testRunner.When("a C-STORE-RQ is sent to \'Informatics Gateway\' with AET \'C-STORE-SERIES\' from \'TES" +
                         "T-RUNNER\' with timeout of 300 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 55
+#line 56
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 56
+#line 57
         testRunner.And(string.Format("{0} workflow requests sent to message broker", study_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 57
+#line 58
         testRunner.And(string.Format("{0} studies are uploaded to storage service", study_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 58
+#line 59
         testRunner.And("the temporary data directory has been cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -266,12 +267,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             
             public FixtureData()
             {
-                DICOMDIMSESCPServicesFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
-                DICOMDIMSESCPServicesFeature.FeatureTearDown();
             }
         }
     }

@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         internal static readonly string KeyDicomHashes = "DICOM_HASHES";
         internal static readonly int WorkflowStudyCount = 1;
 
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(5);
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(1);
 
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;

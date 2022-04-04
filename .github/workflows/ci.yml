@@ -298,10 +298,10 @@ jobs:
         with:
           name: integration
           path: |
-            $GITHUB_WORKSPACE/LivingDoc.html
-            $GITHUB_WORKSPACE/metrics.log
-            $GITHUB_WORKSPACE/services.log
-            $GITHUB_WORKSPACE/run.log
+            ${{ github.workspace }}/LivingDoc.html
+            ${{ github.workspace }}/metrics.log
+            ${{ github.workspace }}/services.log
+            ${{ github.workspace }}/run.log
           retention-days: 30
 
   docs:

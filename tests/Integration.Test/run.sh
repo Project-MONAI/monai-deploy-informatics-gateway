@@ -99,8 +99,11 @@ function start_services() {
         info "Waiting for Informatics Gateway..."
         count=$(curl -s http://$HOST_IP:5000/health/status | jq | grep "Running" | wc -l)
         info "$count services running..."
-        if [ $count -eq 6 -a  $COUNTER -lt 100 ]; then
+        if [ $count -eq 6 ]; then
             break
+        fi
+        if [ $COUNTER -gt 100 ]; then
+            fatal "Timeout waiting for Informatics Gateway."
         fi
         let COUNTER=COUNTER+1
         sleep 1s

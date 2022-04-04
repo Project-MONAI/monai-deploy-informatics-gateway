@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         internal static readonly string KeyDataGrouping = "DICOM_DATA_GROUPING";
         internal static readonly string KeyDimseResponse = "DIMSE_RESPONSE";
 
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(5);
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
 
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;
