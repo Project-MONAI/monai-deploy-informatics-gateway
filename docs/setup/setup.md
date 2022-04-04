@@ -1,23 +1,23 @@
 <!--
-SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-FileCopyrightText: Â© 2021-2022 MONAI Consortium
 SPDX-License-Identifier: Apache License 2.0
 -->
 
 # Setup
 
-This section outlines the steps to download and install Informatics Gateway using the CLI and Docker image.
+This section outlines the steps to download and install the Informatics Gateway using the CLI and Docker image.
 
 ## Runtime Requirements
 
 * Docker 20.10.12 or higher
 
-For development requirements, please refer to [README.md](https://github.com/Project-MONAI/monai-deploy-informatics-gateway).
+For development requirements, refer to the [Informatics Gateway README.md](https://github.com/Project-MONAI/monai-deploy-informatics-gateway).
 
 ## Installation
 
 ### Informatics Gateway CLI
 
-Download & install Informatics Gateway CLI from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section of
+Download and install the Informatics Gateway CLI from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section of
 the repository and install it.
 
 #### On Linux
@@ -58,58 +58,57 @@ docker pull ghcr.io/project-monai/monai-deploy-informatics-gateway:0.1.0
 
 ## Configure Informatics Gateway
 
-Use the following command to initialize Informatics Gateway & default configuration:
+Use the following commands to initialize the Informatics Gateway and default configuration:
 
 ```bash
 mig-cli config init
 mig-cli config endpoint http://localhost:5000
 ```
 
-
 ```powershell
 mig-cli.exe config init
 mig-cli.exe config endpoint http://localhost:5000
 ```
 
-This first command extract the default `appsettings.json` file into the home directory:
+The first command extracts the default `appsettings.json` file into the home directory:
 
 * Linux: `~/.mig/appsettings.json`
 * Windows: `C:\Users\[username]\.mig\appsettings.json`
 
 This file is mapped into the Docker container and used by the Informatics Gateway when `mig-cli` is used to launch the application.
 
-For a complete reference of the `appsettings.jon`, please refer to [Configuration Schema](schema.md).
+For a complete reference of the `appsettings.json` file, refer to the [Configuration Schema](schema.md).
 
-The second command tells `mig-cli` where the endpoint is for the Informatics Gateway RESTful API.
+The second command passes the endpoint for the Informatics Gateway RESTful API to `mig-cli`.
 
 > [!Note]
-> To see available commands simply execute `mig-cli` or `mig-cli.exe`.
+> To see available commands, simply execute `mig-cli` or `mig-cli.exe`.
 
 ## Storage Consideration & Configuration
 
-Informatics Gateway operates on two storage locations. The first is for temporarily storing of the incoming data for data grouping. The second is where Informatics Gateway uploads grouped datasets to final storage shared by other MONAI Deploy sub-systems.
+The Informatics Gateway operates on two storage locations. In the first location, the incoming data for data grouping is temporarily stored. In the second location, the Informatics Gateway uploads grouped datasets to final storage shared by other MONAI Deploy sub-systems.
 
 ### Temporary Storage of Incoming Dataset
 
-The temporary storage location, by default, is set to `/payloads` in the `appsettings.json` file.
+By default, the temporary storage location is set to `/payloads` in the `appsettings.json` file.
 
-To change the temporary storage location, please locate `./InformaticsGateway/storage/temporary` property in the `appsettings.json` file.
+To change the temporary storage location, locate the `./InformaticsGateway/storage/temporary` property in the `appsettings.json` file and modify it.
 
 > [!Note]
-> Calculate the required temporary storage based on the number of studies and the size of each study.
-> Please also consider the AE Title timeout if the AE Title needs to wait a long time before assembling & uploading
+> You will need to calculate the required temporary storage based on the number of studies and the size of each study.
+> Also, consider changing the AE Title timeout if the AE Title needs to wait a long time before assembling and uploading
 > the payload for final storage.
 
 
 > [!Note]
-> Before running Informatics Gateway, adjust the values of `watermarkPercent` and `reserveSpaceGB` based on
+> Before running the Informatics Gateway, adjust the values of `watermarkPercent` and `reserveSpaceGB` based on
 > the expected number of studies and size of each study. The suggested value for `reserveSpaceGB` is 2x to 3x the
 > size of a single study multiplied by the number of configured AE Titles.
 
 ### Shared Storage
 Informatics Gateway includes MinIO as the default storage service provider. To integrate with another storage service provider, please refer to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#data-storage) section of the SRS.
 
-Please download and install MinIO by following the [quickstart guide](https://docs.min.io/docs/minio-quickstart-guide.html). Once MinIO is installed and configured, modify the storage configuration to enable communication between Informatics Gateway & MinIO.
+Download and install MinIO by following the [quickstart guide](https://docs.min.io/docs/minio-quickstart-guide.html). Once MinIO is installed and configured, modify the storage configuration to enable communication between the Informatics Gateway and MinIO.
 
 Locate the storage section of the configuration in `appsettings.json`:
 
@@ -137,15 +136,15 @@ Locate the storage section of the configuration in `appsettings.json`:
 
 ### Message broker
 
-Informatics Gateway communicates with other MONAI Deploy components through a message broker.  The default messaging service
-included is provided by [RabbitMQ](https://www.rabbitmq.com/). To integrate with another storage service provider, please refer
+The nformatics Gateway communicates with other MONAI Deploy components through a message broker. The default messaging service
+included is provided by [RabbitMQ](https://www.rabbitmq.com/). To integrate with another storage service provider, refer
 to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#message-broker) section of the SRS.
 
-To use the default messaging service, please download and install RabbitMQ by following the
+To use the default messaging service, download and install RabbitMQ by following the
 [Get Started](https://www.rabbitmq.com/#getstarted) page.
 
 Before launching Informatics Gateway, update `appsettings.json` to configure the publisher and subscriber settings.
-IG publishes all messages to an *exchange* under the specified *virtual host*. Therefore, please confirm the values before starting
+The Informatics Gateway publishes all messages to an *exchange* under the specified *virtual host*. Therefore, please confirm the values before starting
 Informatics Gateway.
 
 ```json
@@ -174,7 +173,7 @@ Informatics Gateway.
 
 ## Start/Stop Informatics Gateway
 
-To start or stop Informatics Gateway, update the value of `DockerImagePrefix` in `appsettings.json` with the repository name of the Docker image:
+To start or stop the Informatics Gateway, update the value of `DockerImagePrefix` in `appsettings.json` with the repository name of the Docker image:
 
 ```json
 {
@@ -186,7 +185,7 @@ To start or stop Informatics Gateway, update the value of `DockerImagePrefix` in
 ```
 
 
-Lastly, use one of the following commands start or stop Informatics Gateway:
+Lastly, use one of the following commands to start or stop the Informatics Gateway:
 
 ```bash
 mig-cli start
@@ -196,7 +195,7 @@ mig-cli stop
 
 ## Enable Incoming Associations
 
-The next step is to configure Informatics Gateway enable receiving of DICOM instances from external DICOM devices.
+The next step is to configure the Informatics Gateway to enable receiving of DICOM instances from external DICOM devices.
 
 1. Configure a listening AE Title to receive instances:
 
@@ -205,28 +204,28 @@ mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
 ```
 
 The command creates a new listening AE Title with AE Title `BrainAET`.  The listening AE Title
-will be grouping instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
+will be group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
 
 > [!Note]
-> `-grouping` is optional with default of 0020,000D.
-> `-t` is optional with default of 5 seconds.
-> For complete reference, please refer to the [Config API](../api/rest/config.md).
+> `-grouping` is optional, with a default value of 0020,000D.
+> `-t` is optional, with a default value of 5 seconds.
+> For complete reference, refer to the [Config API](../api/rest/config.md).
 
-2. Enable receiving DICOM instances from an external DICOM devices:
+2. Enable the receiving of DICOM instances from external DICOM devices:
 
 ```bash
 mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55
 ```
 
-This command above tells Informatics Gateway to accept instances from AE Title `PACSLA001` at IP `20.10.30.55` and port `104`.
+The above command tells the Informatics Gateway to accept instances from AE Title `PACSLA001` at IP `20.10.30.55` and port `104`.
 
 > [!Note]
 > By default, Informatics Gateway blocks all unknown sources.
 > To allow all unknown sources, set `dicom>scp>rejectUnknownSources` to `false` in `appsettings.json`.
 
 > [!WARNING]
-> Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
-> When running Informatics Gateway in a container and data is coming from the localhost, the IP address may not be the host's IP address. In such a case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
+> The Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
+> When running Informatics Gateway in a container, and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
 
 ## Export Processed Results
 
