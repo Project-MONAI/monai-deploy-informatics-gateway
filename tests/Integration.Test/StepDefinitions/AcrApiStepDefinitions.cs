@@ -1,5 +1,5 @@
-// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
-// SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
+// SPDX-FileCopyrightText: ï¿½ 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: ï¿½ 2019-2021 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Globalization;
@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         internal static readonly string KeyDicomHashes = "DICOM_HASHES";
         internal static readonly int WorkflowStudyCount = 1;
 
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(1);
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(5);
 
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;

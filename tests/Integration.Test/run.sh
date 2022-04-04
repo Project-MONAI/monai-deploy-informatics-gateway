@@ -94,13 +94,15 @@ function start_services() {
     info "============================================="
 
     set +e
+    COUNTER=0
     while true; do
         info "Waiting for Informatics Gateway..."
         count=$(curl -s http://$HOST_IP:5000/health/status | jq | grep "Running" | wc -l)
         info "$count services running..."
-        if [ $count -eq 6 ]; then
+        if [ $count -eq 6 -a  $COUNTER -lt 100 ]; then
             break
         fi
+        let COUNTER=COUNTER+1
         sleep 1s
     done
     set -e
