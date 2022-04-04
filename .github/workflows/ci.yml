@@ -294,6 +294,7 @@ jobs:
 
       - name: Upload Integration Test Results
         uses: actions/upload-artifact@v2.3.1
+        if: always()
         with:
           name: integration
           path: |

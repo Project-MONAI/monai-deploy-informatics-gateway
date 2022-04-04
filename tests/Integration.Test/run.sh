@@ -150,8 +150,11 @@ function save_logs() {
 }
 
 function tear_down() {
+    set +e
     info "Stop streaming metrics log..."
     kill $STREAMID >/dev/null 2>&1
+    set -e
+    
     info "Stopping services..."
     docker-compose $LOADDEV down --remove-orphans
 }
