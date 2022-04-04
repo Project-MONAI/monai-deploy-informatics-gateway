@@ -13,11 +13,12 @@
 
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 TEST_DIR="$SCRIPT_DIR/"
+LOG_DIR="${GITHUB_WORKSPACE:-$SCRIPT_DIR}"
 RUN_DIR="$SCRIPT_DIR/.run"
 BIN_DIR="$TEST_DIR/bin/Release/net6.0"
 CONFIG_DIR="$SCRIPT_DIR/configs"
 EXIT=false
-METRICSFILE=$SCRIPT_DIR/metrics.log
+METRICSFILE="$LOG_DIR/metrics.log"
 LOADDEV=
 STREAMID=
 export STUDYJSON="study.json"
@@ -70,6 +71,8 @@ function env_setup() {
         info "Installing SpecFlow.Plus.LivingDoc.CLI..."
         dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
     fi
+
+    info "LOG_DIR = $LOG_DIR"
 }
 
 function build() {
@@ -107,7 +110,7 @@ function start_services() {
 }
 
 function write_da_metrics() {
-    CID="$(docker container list | grep integrationtest_informatics-gateway | awk '{{print $1}}')"
+    CID="$(docker container list | grep integrationtest-informatics-gateway | awk '{{print $1}}')"
     info "Streaming Informatics Gateway perf logs from container $CID to $METRICSFILE"
 
     until $EXIT; do
@@ -127,7 +130,7 @@ function run_test() {
     pushd $TEST_DIR
     set +e
     info "Starting test runner..."
-    dotnet test -c Release 2>&1 | tee run.log
+    dotnet test -c Release 2>&1 | tee $LOG_DIR/run.log
     EXITCODE=$?
     EXIT=true
     set -e
@@ -139,14 +142,14 @@ function generate_reports() {
     info "Generating livingdoc..."
     pushd $BIN_DIR
     [ -f $BIN_DIR/TestExecution.json ] && mv $BIN_DIR/TestExecution.json $BIN_DIR/TestExecution_$(date +"%Y_%m_%d_%I_%M_%p").json
-    livingdoc test-assembly Monai.Deploy.InformaticsGateway.Integration.Test.dll -t TestExecution*.json -o $SCRIPT_DIR/
+    livingdoc test-assembly Monai.Deploy.InformaticsGateway.Integration.Test.dll -t TestExecution*.json -o $LOG_DIR/
     popd
     set -e
 }
 
 function save_logs() {
     info "Saving service log..."
-    docker-compose logs --no-color -t | sort -u -k 3 >"services.log"
+    docker-compose $LOADDEV logs --no-color -t > "$LOG_DIR/services.log"
 }
 
 function tear_down() {
@@ -154,7 +157,7 @@ function tear_down() {
     info "Stop streaming metrics log..."
     kill $STREAMID >/dev/null 2>&1
     set -e
-    
+
     info "Stopping services..."
     docker-compose $LOADDEV down --remove-orphans
 }

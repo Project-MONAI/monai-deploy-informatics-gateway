@@ -298,10 +298,10 @@ jobs:
         with:
           name: integration
           path: |
-            tests/Integration.Test/LivingDoc.html
-            tests/Integration.Test/metrics.log
-            tests/Integration.Test/services.log
-            tests/Integration.Test/run.log
+            $GITHUB_WORKSPACE/LivingDoc.html
+            $GITHUB_WORKSPACE/metrics.log
+            $GITHUB_WORKSPACE/services.log
+            $GITHUB_WORKSPACE/run.log
           retention-days: 30
 
   docs:
