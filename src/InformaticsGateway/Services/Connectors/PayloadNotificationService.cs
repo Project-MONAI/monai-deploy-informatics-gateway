@@ -211,7 +211,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task UploadPayloadFile(Guid payloadId, string destinationPath, string sourcePath, string source, string[] workflows, string contentType, CancellationToken cancellationToken)
+        private async Task UploadPayloadFile(Guid payloadId, string destinationPath, string sourcePath, string source, List<string> workflows, string contentType, CancellationToken cancellationToken)
         {
             Guard.Against.Null(payloadId, nameof(payloadId));
             Guard.Against.NullOrWhiteSpace(destinationPath, nameof(destinationPath));

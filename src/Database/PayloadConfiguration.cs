@@ -16,7 +16,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
     {
         public void Configure(EntityTypeBuilder<Payload> builder)
         {
-            var fileStorageInfoComparer = new ValueComparer<IReadOnlyList<FileStorageInfo>>(
+            var fileStorageInfoComparer = new ValueComparer<List<FileStorageInfo>>(
                 (c1, c2) => c1.SequenceEqual(c2),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList());
@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
             builder.Property(j => j.Files)
                 .HasConversion(
                         v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
-                        v => JsonConvert.DeserializeObject<IReadOnlyList<FileStorageInfo>>(v, jsonSerializerSettings))
+                        v => JsonConvert.DeserializeObject<List<FileStorageInfo>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(fileStorageInfoComparer);
 
             builder.Ignore(j => j.CalledAeTitle);

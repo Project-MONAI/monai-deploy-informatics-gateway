@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <summary>
         /// Gets a list of workflows designated for the file.
         /// </summary>
-        public string[] Workflows { get; private set; }
+        public List<string> Workflows { get; private set; }
 
         /// <summary>
         /// Gets or sets the DateTime that the file was received.
@@ -99,6 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             DateReceived = DateTime.UtcNow;
             DateUploaded = DateTime.MinValue;
             IsUploaded = false;
+            Workflows = new List<string>();
         }
 
         /// <summary>
@@ -109,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         {
             Guard.Against.NullOrEmpty(workflows, nameof(workflows));
 
-            Workflows = workflows.Clone() as string[];
+            Workflows.AddRange(workflows);
         }
 
         public virtual BlockStorageInfo ToBlockStorageInfo(string bucket)
