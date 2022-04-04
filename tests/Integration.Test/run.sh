@@ -115,6 +115,7 @@ function start_services() {
 }
 
 function write_da_metrics() {
+    docker container list
     CID="$(docker container list | grep integrationtest-informatics-gateway | awk '{{print $1}}')"
     info "Streaming Informatics Gateway perf logs from container $CID to $METRICSFILE"
 
