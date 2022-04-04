@@ -20,7 +20,7 @@
     <PackageReference Include="GitVersion.MsBuild" Version="5.9.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="16.1.23" />
+    <PackageReference Include="System.IO.Abstractions" Version="16.1.25" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
   </ItemGroup>
 

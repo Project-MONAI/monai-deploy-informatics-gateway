@@ -19,6 +19,7 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.MessageBroker;
 using Monai.Deploy.MessageBroker.Messages;
+using Monai.Deploy.Storage;
 using Moq;
 using xRetry;
 using Xunit;

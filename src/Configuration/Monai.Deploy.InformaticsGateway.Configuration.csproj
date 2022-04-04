@@ -20,7 +20,7 @@ SPDX-License-Identifier: Apache License 2.0
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="System.IO.Abstractions" Version="16.1.23" />
+    <PackageReference Include="System.IO.Abstractions" Version="16.1.25" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,5 +37,6 @@ SPDX-License-Identifier: Apache License 2.0
     <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
     <ProjectReference Include="..\MessageBroker\RabbitMq\Monai.Deploy.MessageBroker.csproj" />
+    <ProjectReference Include="..\Storage\MinIo\Monai.Deploy.Storage.csproj" />
   </ItemGroup>
 </Project>

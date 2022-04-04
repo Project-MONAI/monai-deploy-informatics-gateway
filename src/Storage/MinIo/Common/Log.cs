@@ -3,7 +3,7 @@
 
 using Microsoft.Extensions.Logging;
 
-namespace Monai.Deploy.InformaticsGateway.Storage
+namespace Monai.Deploy.Storage.Common
 {
     public static partial class Log
     {

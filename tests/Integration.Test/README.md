@@ -6,7 +6,7 @@ The integration test suite is written using SpecFlow & Gherkin, a Behavior Drive
 
 - .NET 6
 - [SpecFlow](https://specflow.org/)
-- [Docker Compose](https://docs.docker.com/compose/)
+- [Docker Compose](https://github.com/docker/compose/) 2.3+
 
 
 ## Running Integration Test

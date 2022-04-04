@@ -1,10 +1,9 @@
 ﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-using System;
-using System.Collections.Generic;
+using Ardalis.GuardClauses;
 
-namespace Monai.Deploy.InformaticsGateway.Api.Storage
+namespace Monai.Deploy.Storage.Common
 {
     /// <summary>
     /// Represents a file stored on the virtual storage device.
@@ -40,5 +39,20 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or sets the metadata associated with the file
         /// </summary>
         public Dictionary<string, string> Metadata { get; set; }
+
+        public VirtualFileInfo(string filename, string filePath, string etag, ulong size)
+        {
+            Guard.Against.Null(filename, nameof(filename));
+            Guard.Against.Null(filePath, nameof(filePath));
+            Guard.Against.Null(etag, nameof(etag));
+
+            Filename = filename;
+            FilePath = filePath;
+            ETag = etag;
+            Size = size;
+
+            Metadata = new Dictionary<string, string>();
+        }
+
     }
 }

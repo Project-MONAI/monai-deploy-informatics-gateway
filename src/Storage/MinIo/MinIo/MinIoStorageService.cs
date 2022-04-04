@@ -5,10 +5,9 @@ using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Minio;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.Storage.Common;
 
-namespace Monai.Deploy.InformaticsGateway.Storage
+namespace Monai.Deploy.Storage.MinIo
 {
     public class MinIoStorageService : IStorageService
     {
@@ -17,20 +16,38 @@ namespace Monai.Deploy.InformaticsGateway.Storage
 
         public string Name => "MinIO Storage Service";
 
-        public MinIoStorageService(IOptions<InformaticsGatewayConfiguration> options, ILogger<MinIoStorageService> logger)
+        public MinIoStorageService(IOptions<StorageServiceConfiguration> options, ILogger<MinIoStorageService> logger)
         {
-            if (options is null)
-            {
-                throw new ArgumentNullException(nameof(options));
-            }
+            Guard.Against.Null(options, nameof(options));
 
-            var configuration = options.Value.Storage;
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _client = new MinioClient(configuration.StorageServiceCredentials.Endpoint, configuration.StorageServiceCredentials.AccessKey, configuration.StorageServiceCredentials.AccessToken);
 
-            if (configuration.SecuredConnection)
+            var configuration = options.Value;
+            ValidateConfiguration(configuration);
+
+            var endpoint = configuration.Settings[ConfigurationKeys.EndPoint];
+            var accessKey = configuration.Settings[ConfigurationKeys.AccessKey];
+            var accessToken = configuration.Settings[ConfigurationKeys.AccessToken];
+            var securedConnection = configuration.Settings[ConfigurationKeys.SecuredConnection];
+
+            _client = new MinioClient(endpoint, accessKey, accessToken);
+
+            if (bool.Parse(securedConnection))
             {
                 _client.WithSSL();
+            }
+        }
+
+        private void ValidateConfiguration(StorageServiceConfiguration configuration)
+        {
+            Guard.Against.Null(configuration, nameof(configuration));
+
+            foreach (var key in ConfigurationKeys.RequiredKeys)
+            {
+                if (!configuration.Settings.ContainsKey(key))
+                {
+                    throw new ConfigurationException($"{Name} is missing configuration for {key}.");
+                }
             }
         }
 
@@ -64,12 +81,8 @@ namespace Monai.Deploy.InformaticsGateway.Storage
             {
                 if (!item.IsDir)
                 {
-                    files.Add(new VirtualFileInfo
+                    files.Add(new VirtualFileInfo(Path.GetFileName(item.Key), item.Key, item.ETag, item.Size)
                     {
-                        FilePath = item.Key,
-                        Filename = Path.GetFileName(item.Key),
-                        ETag = item.ETag,
-                        Size = item.Size,
                         LastModifiedDateTime = item.LastModifiedDateTime
                     });
                 }

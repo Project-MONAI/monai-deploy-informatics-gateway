@@ -3,27 +3,27 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.IO.Abstractions;
+using Microsoft.Extensions.Configuration;
+using Monai.Deploy.Storage.Common;
 using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
-    public class StorageConfiguration
+    public class StorageConfiguration : StorageServiceConfiguration
     {
         private readonly IFileSystem _fileSystem;
 
         public StorageConfiguration() : this(new FileSystem())
-        {
-        }
+        { }
 
-        public StorageConfiguration(IFileSystem fileSystem)
-            => _fileSystem = fileSystem ?? throw new System.ArgumentNullException(nameof(fileSystem));
+        public StorageConfiguration(IFileSystem fileSystem) => _fileSystem = fileSystem ?? throw new System.ArgumentNullException(nameof(fileSystem));
 
         /// <summary>
         /// Gets or sets temporary storage path.
         /// This is used to store all instances received to a temporary folder.
         /// </summary>
         /// <value></value>
-        [JsonProperty(PropertyName = "temporary")]
+        [ConfigurationKeyName("temporary")]
         public string Temporary { get; set; } = "./payloads";
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// is above the watermark.
         /// </summary>
         /// <value></value>
-        [JsonProperty(PropertyName = "watermarkPercent")]
+        [ConfigurationKeyName("watermarkPercent")]
         public uint Watermark { get; set; } = 75;
 
         /// <summary>
@@ -43,35 +43,14 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// is less than the value.
         /// </summary>
         /// <value></value>
-        [JsonProperty(PropertyName = "reserveSpaceGB")]
+        [ConfigurationKeyName("reserveSpaceGB")]
         public uint ReserveSpaceGB { get; set; } = 5;
-
-        /// <summary>
-        /// Gets or sets the a fully qualified type name of the storage service.
-        /// The spcified type must implement <typeparam name="Monai.Deploy.InformaticsGateway.Api.Storage.IStorageService">IStorageService</typeparam> interface.
-        /// The default storage service configured is MinIO.
-        /// </summary>
-
-        [JsonProperty(PropertyName = "storageService")]
-        public string StorageService { get; set; } = "Monai.Deploy.InformaticsGateway.Storage.MinIoStorageService, Monai.Deploy.InformaticsGateway.Storage.MinIo";
-
-        /// <summary>
-        /// Gets or sets credentials used to access the storage service.
-        /// </summary>
-        [JsonProperty(PropertyName = "storageServiceCredentials")]
-        public ServiceCredentials StorageServiceCredentials { get; set; }
 
         /// <summary>
         /// Gets or sets retry options relate to saving files to temporary storage, processing payloads and uploading payloads to the storage service.
         /// </summary>
-        [JsonProperty(PropertyName = "reties")]
+        [ConfigurationKeyName("reties")]
         public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
-
-        /// <summary>
-        /// Gets or set whether to use secured connection to the storage service.  Default is true.
-        /// </summary>
-        [JsonProperty(PropertyName = "securedConnection")]
-        public bool SecuredConnection { get; set; } = true;
 
         /// <summary>
         /// Gets or set number of threads used for payload upload. Default is 1;
@@ -90,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// <summary>
         /// Gets or sets the name of the bucket where payloads are uploaded to.
         /// </summary>
-        [JsonProperty(PropertyName = "storageServiceBucketName")]
-        public string StorageServiceBucketName { get; set; }
+        [ConfigurationKeyName("bucketName")]
+        public string StorageServiceBucketName { get; set; } = string.Empty;
     }
 }

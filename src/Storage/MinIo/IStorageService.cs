@@ -1,13 +1,9 @@
 ﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
+using Monai.Deploy.Storage.Common;
 
-namespace Monai.Deploy.InformaticsGateway.Api.Storage
+namespace Monai.Deploy.Storage
 {
     public interface IStorageService
     {
