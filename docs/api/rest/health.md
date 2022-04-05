@@ -9,7 +9,7 @@ The _health_ endpoint provides the following APIs to get the status of the inter
 
 ## GET /health/status
 
-Retrieves the MONAI Informatics Gateway service status:
+Returns the MONAI Informatics Gateway service status:
 
 - Active DICOM DIMSE associations
 - Internal service status
@@ -53,7 +53,7 @@ curl --location --request GET 'http://localhost:5000/health/status'
 
 ## GET /health/ready & GET /health/live
 
-Retrieves the MONAI Deploy Informatics Gateway service readiness and liveness.
+Returns the MONAI Deploy Informatics Gateway service readiness and liveness.
 
 ### Parameters
 
