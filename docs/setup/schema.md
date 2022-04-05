@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-FileCopyrightText: Â© 2021-2022 MONAI Consortium
 SPDX-License-Identifier: Apache License 2.0
 -->
 
@@ -8,7 +8,7 @@ SPDX-License-Identifier: Apache License 2.0
 
 ## Informatics Gateway Configuration File
 
-The configuration file is a JSON formatted file used to control the behaviors and parameters of the internal services. The file, `appsettings.json`, is stored next to the main application binary and provides a subset of the default configuration options by default. Please refer to the [Monai.Deploy.InformaticsGateway.Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration) namespace for complete reference.
+The configuration file (`appsettings.json`) controls the behaviors and parameters of the internal services. The file is stored next to the main application binary and provides a subset of the default configuration options by default. Please refer to the [Monai.Deploy.InformaticsGateway.Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration) namespace for complete reference.
 
 
 ### Configuration Sections
@@ -30,14 +30,14 @@ The configuration file is a JSON formatted file used to control the behaviors an
 
 The `InformaticsGateway` configuration section contains the following sub-sections:
 
-| Section  | Description                                                                     | Reference                                                                                             |
-| -------- | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| dicom    | DICOM DIMSE service configuration options                                       | [DicomConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration)           |
-| dicomWeb | DICOMweb service configuration options                                          | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)     |
-| export   | Export service configuration options                                            | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration) |
-| fhir     | FHIR service configuration options                                              | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)             |
-| storage  | Storage configuration options including storage service & disk usage monitoring | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)       |
-| Cli      | Configuration used by the CLI                                                   | -                                                                                                     |
+| Section  | Description                                                                         | Reference                                                                                             |
+| -------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| dicom    | DICOM DIMSE service configuration options                                           | [DicomConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration)           |
+| dicomWeb | DICOMweb service configuration options                                              | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)     |
+| export   | Export service configuration options                                                | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration) |
+| fhir     | FHIR service configuration options                                                  | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)             |
+| storage  | Storage configuration options, including storage service and disk usage monitoring  | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)       |
+| Cli      | The configuration used by the CLI                                                   | -                                                                                                     |
 
 ---
 
@@ -150,11 +150,11 @@ Informatics Gateway validates all configuration options at startup. Any provided
 Informatics Gateway, by default, is configured to writes all logs to the console as well as text files. The behaviors may be changed in the `Logging` section of the `appsettings.json` file.
 
 > [!Note]
-> If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent filling up storage space. Please refer to [Docker](https://docs.docker.com/config/containers/logging/configure/) for additional information.
+> If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent filling up storage space. Refer to the [Docker documentation](https://docs.docker.com/config/containers/logging/configure/) for additional information.
 
 #### Log Levels
 
-Log level may be adjusted on a per-module basis. For example, given the following log entries:
+By default, the Monai namespace logs all Information level logs. However, the log level may be adjusted on a per-module basis. For example, given the following log entries:
 
 ```
  14:26:13 info: Monai.Deploy.InformaticsGateway.Services.Connectors.WorkloadManagerNotificationService[0]
@@ -163,7 +163,7 @@ Log level may be adjusted on a per-module basis. For example, given the followin
       Disk Space Reclaimer Hosted Service is running.
 ```
 
-By default, the `Monai` namespace is to log all `Information` level logs. However, if additional information is required to debug the **WorkloadManagerNotificationService** module or to turn down the noise, add a new entry under the `LogLevel` section of the configuration file to adjust it:
+If additional information is required to debug the **WorkloadManagerNotificationService** module or to turn down the noise, add a new entry under the LogLevel section of the configuration file to adjust it:
 
 ```
  "Logging": {
@@ -173,7 +173,7 @@ By default, the `Monai` namespace is to log all `Information` level logs. Howeve
       ...
 ```
 
-The following log level may be used:
+The following log levels may be used:
 
 - Trace
 - Debug

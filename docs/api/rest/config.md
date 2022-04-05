@@ -1,11 +1,11 @@
 <!--
-SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-FileCopyrightText: Â© 2021-2022 MONAI Consortium
 SPDX-License-Identifier: Apache License 2.0
 -->
 
 # Configuration APIs
 
-The _configuration_ endpoint provides the following APIs to configured the Informatics Gateway.
+The _configuration_ endpoint provides the following APIs to configure the Informatics Gateway.
 
 ## GET /config/ae
 
@@ -19,11 +19,11 @@ N/A
 
 Response Content Type: JSON - Array of [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Titles retrieved successfully.                                                                                  |
-| 404  | AE Title not found.                                                                                                |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Titles retrieved successfully.                                                                                                       |
+| 404  | AE Title not found.                                                                                                                     |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
@@ -57,23 +57,23 @@ curl --location --request GET 'http://localhost:5000/config/ae'
 
 ## GET /config/ae/{name}
 
-Returns configurations for the specified MONAI SCP AE Title.
+Returns the configuration of the specified MONAI SCP AE Title.
 
 ### Parameters
 
 | Name | Type   | Description                           |
 | ---- | ------ | ------------------------------------- |
-| name | string | the _name_ of the AE to be retrieved. |
+| name | string | The _name_ of the AE to be retrieved. |
 
 ### Responses
 
 Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Titles retrieved successfully.                                                                                  |
-| 404  | AE Titles not found.                                                                                               |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | Configuration retrieved successfully.                                                                                                   |
+| 404  | Configuration Titles not found.                                                                                                         |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
@@ -103,28 +103,28 @@ Creates a new MONAI SCP Application Entity to accept DICOM instances.
 > The MONAI SCP AE Title must be unique.
 
 > [!Note]
-> DICOM tag used for `grouping` allows either Study Instance UID (0020,000D) or Series Instance UID (0020,000E).
-> The default is set to Study Instance UID (0020,000D) if not specified.
+> The DICOM tag used for `grouping` can be either a Study Instance UID (0020,000D) or Series Instance UID (0020,000E).
+> The default is set to a Study Instance UID (0020,000D) if not specified.
 
 > [!Note]
-> `timeout` is number of seconds the AE Title would wait between each instance before assembling a payload and publishing
-> a workflow request. It is recommended to calculate this value based on the network speed and the maximum size of each
+> `timeout` is the number of seconds the AE Title will wait between each instance before assembling a payload and publishing
+> a workflow request. We recommend calculating this value based on the network speed and the maximum size of each
 > DICOM instance.
 
 ### Parameters
 
-Please see the [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity)
+See the [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity)
 class definition for details.
 
 ### Responses
 
 Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
 
-| Code | Description                                                                                                               |
-| ---- | ------------------------------------------------------------------------------------------------------------------------- |
-| 201  | AE Title created successfully.                                                                                            |
-| 400  | Validation error.A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with validation error details. |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.        |
+| Code | Description                                                                                                                                 |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 201  | AE Title created successfully.                                                                                                              |
+| 400  | Validation error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.     |
 
 ### Example Request
 
@@ -162,17 +162,17 @@ Deletes the specified MONAI SCP Application Entity.
 
 | Name | Type   | Description                               |
 | ---- | ------ | ----------------------------------------- |
-| name | string | the _name_ of the AE Title to be deleted. |
+| name | string | The _name_ of the AE Title to be deleted. |
 
 ### Responses
 
 Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Title deleted.                                                                                                  |
-| 404  | AE Title not found.                                                                                                |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                              |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Title deleted.                                                                                                                        |
+| 404  | AE Title not found.                                                                                                                      |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.  |
 
 ### Example Request
 
@@ -204,10 +204,10 @@ N/A
 
 Response Content Type: JSON - Array of [SourceApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Titles retrieved successfully.                                                                                  |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                              |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Titles retrieved successfully.                                                                                                        |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.  |
 
 ### Example Request
 
@@ -242,17 +242,17 @@ Returns configurations for the specified calling (source) AET.
 
 | Name | Type   | Description                                |
 | ---- | ------ | ------------------------------------------ |
-| name | string | the _name_ of an AE Title to be retrieved. |
+| name | string | The _name_ of an AE Title to be retrieved. |
 
 ### Responses
 
 Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Titles retrieved successfully.                                                                                  |
-| 404  | AE Titles not found.                                                                                               |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Titles retrieved successfully.                                                                                                       |
+| 404  | AE Titles not found.                                                                                                                    |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
@@ -274,22 +274,22 @@ curl --location --request GET 'http://localhost:5000/config/source/USEAST'
 
 ## POST /config/source
 
-Adds a new calling (source) AE Title to Informatics Gateway to allow DICOM instances from the IP address & AE Title specified.
+Adds a new calling (source) AE Title to the Informatics Gateway to allow DICOM instances from the specified IP address and AE Title.
 
 ### Parameters
 
-Please see the [SourceApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity)
+See the [SourceApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity)
 class definition for details.
 
 ### Responses
 
 Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 201  | AE Title created successfully.                                                                                     |
-| 400  | Validation error.                                                                                                  |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 201  | AE Title created successfully.                                                                                                          |
+| 400  | Validation error.                                                                                                                       |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
@@ -323,17 +323,17 @@ Deletes the specified calling (Source) AE Title to stop accepting requests from 
 
 | Name | Type   | Description                               |
 | ---- | ------ | ----------------------------------------- |
-| name | string | the _name_ of the AE Title to be deleted. |
+| name | string | The _name_ of the AE Title to be deleted. |
 
 ### Responses
 
 Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Title deleted.                                                                                                  |
-| 404  | AE Title not found.                                                                                                |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Title deleted.                                                                                                                       |
+| 404  | AE Title not found.                                                                                                                     |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
@@ -365,10 +365,10 @@ N/A
 
 Response Content Type: JSON - Array of [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Titles retrieved successfully.                                                                                  |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Titles retrieved successfully.                                                                                                       |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
@@ -399,23 +399,23 @@ curl --location --request GET 'http://localhost:5000/config/destination'
 
 ## GET /config/destination/{name}
 
-Retrieves the named destination AE Title.
+Retrieves the destination AE Title with the specified name.
 
 ### Parameters
 
-| Name | Type   | Description                             |
-| ---- | ------ | --------------------------------------- |
-| name | string | the _name_ of AE Title to be retrieved. |
+| Name | Type   | Description                                |
+| ---- | ------ | ------------------------------------------ |
+| name | string | The _name_ of theAE Title to be retrieved. |
 
 ### Responses
 
 Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Titles retrieved successfully.                                                                                  |
-| 404  | AE Titles not found.                                                                                               |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Titles retrieved successfully.                                                                                                       |
+| 404  | AE Titles not found.                                                                                                                    |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
@@ -438,22 +438,22 @@ curl --location --request GET 'http://localhost:5000/config/destination/USEAST'
 
 ## POST /config/destination
 
-Adds a new DICOM destination AET to allow results to be exported to.
+Adds a new DICOM destination AET for exporting results to.
 
 ### Parameters
 
-Please see the [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity)
+See the [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity)
 class definition for details.
 
 ### Responses
 
 Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 201  | AE Title created successfully.                                                                                     |
-| 400  | Validation error.                                                                                                  |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 201  | AE Title created successfully.                                                                                                          |
+| 400  | Validation error.                                                                                                                       |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
@@ -489,17 +489,17 @@ Deletes a Destination AE Title.
 
 | Name | Type   | Description                               |
 | ---- | ------ | ----------------------------------------- |
-| name | string | the _name_ of the AE Title to be deleted. |
+| name | string | The _name_ of the AE Title to be deleted. |
 
 ### Responses
 
 Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
 
-| Code | Description                                                                                                        |
-| ---- | ------------------------------------------------------------------------------------------------------------------ |
-| 200  | AE Title deleted.                                                                                                  |
-| 404  | AE Title not found.                                                                                                |
-| 500  | Server error. A [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Title deleted.                                                                                                                       |
+| 404  | AE Title not found.                                                                                                                     |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
