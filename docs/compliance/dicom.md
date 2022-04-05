@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-FileCopyrightText: Â© 2021-2022 MONAI Consortium
 SPDX-License-Identifier: Apache License 2.0
 -->
 
@@ -44,8 +44,8 @@ MONAI Deploy Informatics Gateway Storage SCP does not conform to any defined DIC
 Users may configure the DICOM Storage SCP service to check the following DICOM values when
 determining whether to accept Association Open Requests:
 
-- Calling (source) AE Title - to accept DICOM instances from known sources.
-- Called (MONAI SCP) AE Title - to accept DICOM instance through configured MONAI AETs.
+- Calling (source) AE Title: To accept DICOM instances from known sources.
+- Called (MONAI SCP) AE Title: To accept DICOM instance through configured MONAI AETs.
 
 ## DICOM SCU
 
