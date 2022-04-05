@@ -154,7 +154,7 @@ Informatics Gateway, by default, is configured to writes all logs to the console
 
 #### Log Levels
 
-The log level may be adjusted on a per-module basis. For example, given the following log entries:
+By default, the Monai namespace logs all Information level logs. However, the log level may be adjusted on a per-module basis. For example, given the following log entries:
 
 ```
  14:26:13 info: Monai.Deploy.InformaticsGateway.Services.Connectors.WorkloadManagerNotificationService[0]
@@ -163,7 +163,7 @@ The log level may be adjusted on a per-module basis. For example, given the foll
       Disk Space Reclaimer Hosted Service is running.
 ```
 
-By default, the `Monai` namespace logs all `Information` level logs. However, if you require additional information to debug the **WorkloadManagerNotificationService** module, or if you want to reduce log noise, add a new entry under the `LogLevel` section of the configuration file to adjust it:
+If additional information is required to debug the **WorkloadManagerNotificationService** module or to turn down the noise, add a new entry under the LogLevel section of the configuration file to adjust it:
 
 ```
  "Logging": {
