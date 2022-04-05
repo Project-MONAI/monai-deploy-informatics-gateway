@@ -23,8 +23,11 @@ MIG contains the following standard protocols to communicate with medical device
 * **DICOM SCP**: C-ECHO, C-STORE
 * **DICOM SCU**: C-STORE
 * **ACR DSI API**: [The American College of Radiology’s Data Science Institute API](https://www.acrdsi.org/-/media/DSI/Files/ACR-DSI-Model-API.pdf)
-  * **DICOMweb client**: QIDO-RS, WADO-RS, STOW-RS
-  * **FHIR client**: GET
+* **DICOMweb client**: QIDO-RS, WADO-RS, STOW-RS
+* **FHIR client**: GET
+
+[!Note]
+The DICOMweb client and FHIR client are called using the ACR DSI API.
 
 ### DICOM SCP
 
