@@ -116,7 +116,7 @@ function start_services() {
 
 function write_da_metrics() {
     docker container list
-    CID="$(docker container list | grep integrationtest-informatics-gateway | awk '{{print $1}}')"
+    CID="$(docker container list | grep informatics-gateway | awk '{{print $1}}')"
     info "Streaming Informatics Gateway perf logs from container $CID to $METRICSFILE"
 
     until $EXIT; do
@@ -154,6 +154,7 @@ function generate_reports() {
 }
 
 function save_logs() {
+    [ -d $RUN_DIR ] && info "Clearning $RUN_DIR..." && sudo rm -r $RUN_DIR
     info "Saving service log..."
     docker-compose $LOADDEV logs --no-color -t > "$LOG_DIR/services.log"
 }
