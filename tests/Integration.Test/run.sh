@@ -170,12 +170,14 @@ function tear_down() {
 }
 
 function main() {
+    df -h
     env_setup "$@"
     build
     start_services
     stream_da_metrics
     run_test
     generate_reports
+    df -h
     save_logs
     tear_down
     exit $EXITCODE
