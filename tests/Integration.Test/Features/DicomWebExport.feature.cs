@@ -91,6 +91,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         [Xunit.TraitAttribute("Category", "messaging")]
         [Xunit.TraitAttribute("Category", "sql_inject_acr_request")]
         [Xunit.InlineDataAttribute("MR", new string[0])]
+        [Xunit.InlineDataAttribute("CT", new string[0])]
+        [Xunit.InlineDataAttribute("MG", new string[0])]
+        [Xunit.InlineDataAttribute("US", new string[0])]
+        [Xunit.InlineDataAttribute("Tiny", new string[0])]
         public void ExportToADICOMwebService(string modality, string[] exampleTags)
         {
             string[] @__tags = new string[] {

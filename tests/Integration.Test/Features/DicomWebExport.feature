@@ -27,6 +27,6 @@ Feature: DICOMweb Export Service
             | modality |
             | MR       |
             | CT       |
-# disabled for GH testing            | MG       |
-# disabled for GH testing            | US       |
-# disabled for GH testing            | Tiny     |
+            | MG       |
+            | US       |
+            | Tiny     |

@@ -24,8 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
-        private static string[] featureTags = new string[] {
-                "ignore"};
+        private static string[] featureTags = ((string[])(null));
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -86,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="ACR w/ DICOMweb Q&R", Skip="Ignored")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="ACR w/ DICOMweb Q&R")]
         [Xunit.TraitAttribute("FeatureTitle", "ACR API")]
         [Xunit.TraitAttribute("Description", "ACR w/ DICOMweb Q&R")]
         [Xunit.TraitAttribute("Category", "messaging_workflow_request")]
@@ -107,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("requestType", requestType);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ACR w/ DICOMweb Q&R", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 24
+#line 23
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -117,22 +116,22 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 25
+#line 24
         testRunner.Given("a DICOM study on a remote DICOMweb service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 26
+#line 25
         testRunner.And(string.Format("an ACR API request to query & retrieve by {0}", requestType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 27
+#line 26
         testRunner.When("the ACR API request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 28
+#line 27
         testRunner.Then("a workflow requests sent to the message broker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 29
+#line 28
         testRunner.And("a study is uploaded to the storage service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 30
+#line 29
         testRunner.And("the temporary data directory is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -146,10 +145,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             
             public FixtureData()
             {
+                ACRAPIFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                ACRAPIFeature.FeatureTearDown();
             }
         }
     }

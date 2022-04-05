@@ -26,8 +26,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         private static TechTalk.SpecFlow.ITestRunner testRunner;
         
         private static string[] featureTags = new string[] {
-                "scp",
-                "ignore"};
+                "scp"};
         
         private Xunit.Abstractions.ITestOutputHelper _testOutputHelper;
         
@@ -87,7 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             this.TestTearDown();
         }
         
-        [Xunit.SkippableTheoryAttribute(DisplayName="Export to a DICOM device", Skip="Ignored")]
+        [Xunit.SkippableTheoryAttribute(DisplayName="Export to a DICOM device")]
         [Xunit.TraitAttribute("FeatureTitle", "DICOM DIMSE SCU Services")]
         [Xunit.TraitAttribute("Description", "Export to a DICOM device")]
         [Xunit.TraitAttribute("Category", "messaging_export_complete")]
@@ -144,10 +143,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             
             public FixtureData()
             {
+                DICOMDIMSESCUServicesFeature.FeatureSetup();
             }
             
             void System.IDisposable.Dispose()
             {
+                DICOMDIMSESCUServicesFeature.FeatureTearDown();
             }
         }
     }

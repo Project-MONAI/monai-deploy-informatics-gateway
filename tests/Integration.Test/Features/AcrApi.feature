@@ -9,7 +9,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-@ignore
 Feature: ACR API
 
     This feature tests the DIMSE services provided by the Informatics Gateway as a SCP.
