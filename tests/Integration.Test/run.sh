@@ -1,23 +1,16 @@
-# Copyright 2022 MONAI Consortium
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#     http://www.apache.org/licenses/LICENSE-2.0
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
+# SPDX-FileCopyrightText: © 2022 MONAI Consortium
+# SPDX-License-Identifier: Apache License 2.0
 
 #!/bin/bash
 
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 TEST_DIR="$SCRIPT_DIR/"
+LOG_DIR="${GITHUB_WORKSPACE:-$SCRIPT_DIR}"
 RUN_DIR="$SCRIPT_DIR/.run"
 BIN_DIR="$TEST_DIR/bin/Release/net6.0"
 CONFIG_DIR="$SCRIPT_DIR/configs"
 EXIT=false
-METRICSFILE=$SCRIPT_DIR/metrics.log
+METRICSFILE="$LOG_DIR/metrics.log"
 LOADDEV=
 STREAMID=
 export STUDYJSON="study.json"
@@ -70,6 +63,8 @@ function env_setup() {
         info "Installing SpecFlow.Plus.LivingDoc.CLI..."
         dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
     fi
+
+    info "LOG_DIR = $LOG_DIR"
 }
 
 function build() {
@@ -91,6 +86,7 @@ function start_services() {
     info "============================================="
 
     set +e
+    COUNTER=0
     while true; do
         info "Waiting for Informatics Gateway..."
         count=$(curl -s http://$HOST_IP:5000/health/status | jq | grep "Running" | wc -l)
@@ -98,6 +94,10 @@ function start_services() {
         if [ $count -eq 6 ]; then
             break
         fi
+        if [ $COUNTER -gt 100 ]; then
+            fatal "Timeout waiting for Informatics Gateway."
+        fi
+        let COUNTER=COUNTER+1
         sleep 1s
     done
     set -e
@@ -107,7 +107,8 @@ function start_services() {
 }
 
 function write_da_metrics() {
-    CID="$(docker container list | grep integrationtest_informatics-gateway | awk '{{print $1}}')"
+    docker container list
+    CID="$(docker container list | grep informatics-gateway | awk '{{print $1}}')"
     info "Streaming Informatics Gateway perf logs from container $CID to $METRICSFILE"
 
     until $EXIT; do
@@ -127,7 +128,7 @@ function run_test() {
     pushd $TEST_DIR
     set +e
     info "Starting test runner..."
-    dotnet test -c Release 2>&1 | tee run.log
+    dotnet test -c Release 2>&1 | tee $LOG_DIR/run.log
     EXITCODE=$?
     EXIT=true
     set -e
@@ -139,30 +140,36 @@ function generate_reports() {
     info "Generating livingdoc..."
     pushd $BIN_DIR
     [ -f $BIN_DIR/TestExecution.json ] && mv $BIN_DIR/TestExecution.json $BIN_DIR/TestExecution_$(date +"%Y_%m_%d_%I_%M_%p").json
-    livingdoc test-assembly Monai.Deploy.InformaticsGateway.Integration.Test.dll -t TestExecution*.json -o $SCRIPT_DIR/
+    livingdoc test-assembly Monai.Deploy.InformaticsGateway.Integration.Test.dll -t TestExecution*.json -o $LOG_DIR/
     popd
     set -e
 }
 
 function save_logs() {
+    [ -d $RUN_DIR ] && info "Clearning $RUN_DIR..." && sudo rm -r $RUN_DIR
     info "Saving service log..."
-    docker-compose logs --no-color -t | sort -u -k 3 >"services.log"
+    docker-compose $LOADDEV logs --no-color -t > "$LOG_DIR/services.log"
 }
 
 function tear_down() {
+    set +e
     info "Stop streaming metrics log..."
     kill $STREAMID >/dev/null 2>&1
+    set -e
+
     info "Stopping services..."
     docker-compose $LOADDEV down --remove-orphans
 }
 
 function main() {
+    df -h
     env_setup "$@"
     build
     start_services
     stream_da_metrics
     run_test
     generate_reports
+    df -h
     save_logs
     tear_down
     exit $EXITCODE

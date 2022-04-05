@@ -1,5 +1,5 @@
 <!--
-SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+SPDX-FileCopyrightText: Â© 2021-2022 MONAI Consortium
 SPDX-License-Identifier: Apache License 2.0
 -->
 
