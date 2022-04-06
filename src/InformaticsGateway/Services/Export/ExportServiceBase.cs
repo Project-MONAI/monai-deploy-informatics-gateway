@@ -21,9 +21,9 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.MessageBroker;
-using Monai.Deploy.MessageBroker.Common;
-using Monai.Deploy.MessageBroker.Messages;
+using Monai.Deploy.Messaging;
+using Monai.Deploy.Messaging.Common;
+using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Storage;
 using Polly;
 

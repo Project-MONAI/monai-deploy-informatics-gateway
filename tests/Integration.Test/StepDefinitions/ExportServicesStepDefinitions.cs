@@ -14,7 +14,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
-using Monai.Deploy.MessageBroker.Messages;
+using Monai.Deploy.Messaging.Messages;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions

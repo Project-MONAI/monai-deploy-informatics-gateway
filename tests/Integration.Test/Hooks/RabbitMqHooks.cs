@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Text;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.MessageBroker.Messages;
+using Monai.Deploy.Messaging.Messages;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using TechTalk.SpecFlow.Infrastructure;

@@ -4,7 +4,7 @@
 
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
-using Monai.Deploy.MessageBroker.Messages;
+using Monai.Deploy.Messaging.Messages;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {

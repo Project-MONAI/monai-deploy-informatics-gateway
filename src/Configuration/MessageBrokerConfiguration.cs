@@ -1,7 +1,7 @@
 ﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-using Monai.Deploy.MessageBroker.Common;
+using Monai.Deploy.Messaging.Configuration;
 using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration

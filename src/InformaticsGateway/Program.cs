@@ -22,11 +22,11 @@ using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.MessageBroker;
-using Monai.Deploy.MessageBroker.Common;
-using Monai.Deploy.MessageBroker.RabbitMq;
+using Monai.Deploy.Messaging;
+using Monai.Deploy.Messaging.Configuration;
+using Monai.Deploy.Messaging.RabbitMq;
 using Monai.Deploy.Storage;
-using Monai.Deploy.Storage.Common;
+using Monai.Deploy.Storage.Configuration;
 using Monai.Deploy.Storage.MinIo;
 
 namespace Monai.Deploy.InformaticsGateway

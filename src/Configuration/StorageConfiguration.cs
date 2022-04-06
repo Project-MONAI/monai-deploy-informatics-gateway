@@ -4,7 +4,7 @@
 
 using System.IO.Abstractions;
 using Microsoft.Extensions.Configuration;
-using Monai.Deploy.Storage.Common;
+using Monai.Deploy.Storage.Configuration;
 using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration

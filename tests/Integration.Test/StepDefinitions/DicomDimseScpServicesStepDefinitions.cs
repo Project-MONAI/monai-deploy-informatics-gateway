@@ -17,7 +17,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
-using Monai.Deploy.MessageBroker.Messages;
+using Monai.Deploy.Messaging.Messages;
 using Polly;
 using TechTalk.SpecFlow.Infrastructure;
 
