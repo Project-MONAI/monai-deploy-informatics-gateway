@@ -77,6 +77,9 @@ jobs:
       with:
         languages: ${{ matrix.language }}
 
+    - name: Install NuGetDefense
+      run: dotnet tool install --global NuGetDefense.Tool
+
     - name: Restore dependencies
       run: dotnet restore
       working-directory: ./src
@@ -84,6 +87,9 @@ jobs:
     - name: Build Solution
       run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
       working-directory: ./src
+
+    - name: NuGetDefense Scanning
+      run: nugetdefense -p src/${{ env.SOLUTION }} --settings-file NuGetDefense.json
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
