@@ -12,6 +12,8 @@ issue-labels-exclude:
   - build
   - refactor
   - testing
+  - good first issue
+  - demo
 issue-labels-alias:
   - name: breaking
     header: Breaking Change
