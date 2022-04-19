@@ -1,0 +1,35 @@
+{
+    "WarnOnly": false,
+    "VulnerabilityReports": {
+        "OutputTextReport": true
+    },
+    "CheckTransitiveDependencies": true,
+    "CheckReferencedProjects": false,
+    "ErrorSettings": {
+        "ErrorSeverityThreshold": "any",
+        "Cvss3Threshold": -1,
+        "IgnoredPackages": [
+            {
+                "Id": "NugetDefense"
+            }
+        ],
+        "IgnoredCvEs": [],
+        "AllowedPackages": [],
+        "WhiteListedPackages": [],
+        "BlockedPackages": [],
+        "BlacklistedPackages": []
+    },
+    "GitHubAdvisoryDatabase": {
+        "ApiToken": "",
+        "Username": "",
+        "Enabled": false,
+        "BreakIfCannotRun": false
+    },
+    "NVD": {
+        "SelfUpdate": false,
+        "TimeoutInSeconds": 15,
+        "Enabled": true,
+        "BreakIfCannotRun": true
+    },
+    "SensitivePackages": []
+}
