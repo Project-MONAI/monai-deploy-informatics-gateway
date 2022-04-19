@@ -75,7 +75,7 @@ jobs:
     - name: Initialize CodeQL
       uses: github/codeql-action/init@v1
       with:
-        languages: ${{ matrix.language }}        
+        languages: ${{ matrix.language }}
 
     - name: Install NuGetDefense
       run: dotnet tool install --global NuGetDefense.Tool
@@ -124,7 +124,7 @@ jobs:
       - name: Install SonarCloud scanner
         if: steps.cache-sonar-scanner.outputs.cache-hit != 'true'
         run: dotnet tool install --global dotnet-sonarscanner
-        
+
       - name: Restore dependencies
         run: dotnet restore
         working-directory: ./src
