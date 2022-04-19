@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
@@ -19,40 +19,40 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// <summary>
         /// Represents the <c>dicom</c> section of the configuration file.
         /// </summary>
-        [JsonProperty(PropertyName = "dicom")]
+        [ConfigurationKeyName("dicom")]
         public DicomConfiguration Dicom { get; set; }
 
         /// <summary>
         /// Represents the <c>storage</c> section of the configuration file.
         /// </summary>
         /// <value></value>
-        [JsonProperty(PropertyName = "storage")]
+        [ConfigurationKeyName("storage")]
         public StorageConfiguration Storage { get; set; }
 
         /// <summary>
         /// Represents the <c>dicomWeb</c> section of the configuration file.
         /// </summary>
         /// <value></value>
-        [JsonProperty(PropertyName = "dicomWeb")]
+        [ConfigurationKeyName("dicomWeb")]
         public DicomWebConfiguration DicomWeb { get; set; }
 
         /// <summary>
         /// Represents the <c>fhir</c> section of the configuration file.
         /// </summary>
         /// <value></value>
-        [JsonProperty(PropertyName = "fhir")]
+        [ConfigurationKeyName("fhir")]
         public FhirConfiguration Fhir { get; set; }
 
         /// <summary>
         /// Represents the <c>export</c> section of the configuration file.
         /// </summary>
-        [JsonProperty(PropertyName = "export")]
+        [ConfigurationKeyName("export")]
         public DataExportConfiguration Export { get; set; }
 
         /// <summary>
         /// Represents the <c>messaging</c> section of the configuration file.
         /// </summary>
-        [JsonProperty(PropertyName = "messaging")]
+        [ConfigurationKeyName("messaging")]
         public MessageBrokerConfiguration Messaging { get; set; }
 
         public InformaticsGatewayConfiguration()

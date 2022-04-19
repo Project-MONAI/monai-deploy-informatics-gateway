@@ -1,8 +1,8 @@
 ﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
+using Microsoft.Extensions.Configuration;
 using Monai.Deploy.Messaging.Configuration;
-using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
@@ -13,13 +13,13 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// <summary>
         /// Gets or sets retry options relate to the message broker services.
         /// </summary>
-        [JsonProperty(PropertyName = "retries")]
+        [ConfigurationKeyName("retries")]
         public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
 
         /// <summary>
         /// Gets or sets the topics for events published/subscribed by Informatics Gateway
         /// </summary>
-        [JsonProperty(PropertyName = "topics")]
+        [ConfigurationKeyName("topics")]
         public MessageBrokerConfigurationKeys Topics { get; set; } = new MessageBrokerConfigurationKeys();
     }
 }

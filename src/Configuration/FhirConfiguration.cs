@@ -1,7 +1,7 @@
 ﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
@@ -12,7 +12,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// <summary>
         /// Gets or sets the client connection timeout in seconds.
         /// </summary>
-        [JsonProperty(PropertyName = "clientTimeout")]
+        [ConfigurationKeyName("clientTimeout")]
         public int ClientTimeoutSeconds { get; set; } = DefaultClientTimeout;
 
         public FhirConfiguration()
