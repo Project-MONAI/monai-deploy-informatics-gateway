@@ -13,7 +13,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// <summary>
         /// Gets or sets retry options relate to the message broker services.
         /// </summary>
-        [JsonProperty(PropertyName = "reties")]
+        [JsonProperty(PropertyName = "retries")]
         public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
 
         /// <summary>
