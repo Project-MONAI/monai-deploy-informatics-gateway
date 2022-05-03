@@ -14,6 +14,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
+using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using TechTalk.SpecFlow.Infrastructure;
 
@@ -129,7 +130,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             var destination = _scenarioContext[KeyDestination].ToString();
 
-            var exportRequestMessage = new ExportRequestMessage
+            var exportRequestEvent = new ExportRequestEvent
             {
                 CorrelationId = Guid.NewGuid().ToString(),
                 Destination = destination,
@@ -139,15 +140,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 WorkflowId = Guid.NewGuid().ToString(),
             };
 
-            var message = new JsonMessage<ExportRequestMessage>(
-                exportRequestMessage,
+            var message = new JsonMessage<ExportRequestEvent>(
+                exportRequestEvent,
                 MessageBrokerConfiguration.InformaticsGatewayApplicationId,
-                exportRequestMessage.CorrelationId,
+                exportRequestEvent.CorrelationId,
                 string.Empty);
 
             _rabbitMqHooks.SetupMessageHandle(1);
             _rabbitMqHooks.Publish(routingKey, message.ToMessage());
-            _scenarioContext[KeyExportRequestMessage] = exportRequestMessage;
+            _scenarioContext[KeyExportRequestMessage] = exportRequestEvent;
         }
 
         [Then(@"Informatics Gateway exports the studies to the DICOM SCP")]

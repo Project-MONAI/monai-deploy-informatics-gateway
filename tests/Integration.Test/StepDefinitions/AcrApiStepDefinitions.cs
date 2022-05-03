@@ -15,6 +15,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
+using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Polly;
 using TechTalk.SpecFlow.Infrastructure;
@@ -164,7 +165,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             foreach (var message in messages)
             {
                 message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
-                var request = message.ConvertTo<WorkflowRequestMessage>();
+                var request = message.ConvertTo<WorkflowRequestEvent>();
                 request.Should().NotBeNull();
                 request.FileCount.Should().Be(fileSpecs.FileCount);
                 request.Workflows.Should().Equal(inferenceRequest.Application.Id);
@@ -183,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             foreach (var message in messages)
             {
-                var request = message.ConvertTo<WorkflowRequestMessage>();
+                var request = message.ConvertTo<WorkflowRequestEvent>();
                 foreach (var file in request.Payload)
                 {
                     var dicomValidationKey = string.Empty;

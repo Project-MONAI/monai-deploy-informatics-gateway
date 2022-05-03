@@ -23,6 +23,7 @@ using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Common;
+using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Storage;
 using Polly;
@@ -43,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IMessageBrokerSubscriberService _messageSubscriber;
         private readonly IMessageBrokerPublisherService _messagePublisher;
         private readonly IServiceScope _scope;
-        private readonly Dictionary<string, ExportRequestMessage> _exportRequests;
+        private readonly Dictionary<string, ExportRequestEvent> _exportRequests;
         private bool _disposedValue;
 
         public abstract string RoutingKey { get; }
@@ -82,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _messageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
             _messagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
 
-            _exportRequests = new Dictionary<string, ExportRequestMessage>();
+            _exportRequests = new Dictionary<string, ExportRequestEvent>();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -126,7 +127,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     CancellationToken = _cancellationTokenSource.Token
                 };
 
-                var exportFlow = new TransformManyBlock<ExportRequestMessage, ExportRequestDataMessage>(
+                var exportFlow = new TransformManyBlock<ExportRequestEvent, ExportRequestDataMessage>(
                     (exportRequest) => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
                     executionOptions);
 
@@ -147,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
                 lock (SyncRoot)
                 {
-                    var exportRequest = eventArgs.Message.ConvertTo<ExportRequestMessage>();
+                    var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
                     if (_exportRequests.ContainsKey(exportRequest.ExportTaskId))
                     {
                         _logger.ExportRequestAlreadyQueued(exportRequest.ExportTaskId);
@@ -177,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestMessage exportRequest, CancellationToken cancellationToken)
+        private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestEvent exportRequest, CancellationToken cancellationToken)
         {
             Guard.Against.Null(exportRequest, nameof(exportRequest));
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequest.ExportTaskId }, { "CorrelationId", exportRequest.CorrelationId } });
@@ -252,8 +253,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count());
 
-            var exportCompleteMessage = new ExportCompleteMessage(exportRequest);
-            var jsonMessage = new JsonMessage<ExportCompleteMessage>(exportCompleteMessage, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequest.CorrelationId, exportRequest.DeliveryTag);
+            var exportCompleteEvent = new ExportCompleteEvent(exportRequest);
+            var jsonMessage = new JsonMessage<ExportCompleteEvent>(exportCompleteEvent, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequest.CorrelationId, exportRequest.DeliveryTag);
 
             Policy
                .Handle<Exception>()
@@ -275,7 +276,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    _configuration.Export.Retries.RetryDelays,
                    (exception, timeSpan, retryCount, context) =>
                    {
-                       _logger.ErrorPublishingExportCompleteMessageWithRetry(exception, timeSpan, retryCount);
+                       _logger.ErrorPublishingExportCompleteEventWithRetry(exception, timeSpan, retryCount);
                    })
                .Execute(() =>
                {

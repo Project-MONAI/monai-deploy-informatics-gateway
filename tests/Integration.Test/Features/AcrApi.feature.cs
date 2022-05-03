@@ -106,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("requestType", requestType);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("ACR w/ DICOMweb Q&R", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 23
+#line 15
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -116,22 +116,22 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 24
+#line 16
         testRunner.Given("a DICOM study on a remote DICOMweb service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 25
+#line 17
         testRunner.And(string.Format("an ACR API request to query & retrieve by {0}", requestType), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 26
+#line 18
         testRunner.When("the ACR API request is sent", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 27
+#line 19
         testRunner.Then("a workflow requests sent to the message broker", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 28
+#line 20
         testRunner.And("a study is uploaded to the storage service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 29
+#line 21
         testRunner.And("the temporary data directory is cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }

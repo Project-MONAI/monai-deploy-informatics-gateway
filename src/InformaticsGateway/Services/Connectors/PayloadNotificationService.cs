@@ -24,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging;
+using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Storage;
 
@@ -292,7 +293,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             _logger.GenerateWorkflowRequest(payload.Id);
 
-            var workflowRequest = new WorkflowRequestMessage
+            var workflowRequest = new WorkflowRequestEvent
             {
                 Bucket = _options.Value.Storage.StorageServiceBucketName,
                 PayloadId = payload.Id,
@@ -306,7 +307,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             workflowRequest.AddFiles(payload.GetUploadedFiles(_options.Value.Storage.StorageServiceBucketName).AsEnumerable());
 
-            var message = new JsonMessage<WorkflowRequestMessage>(
+            var message = new JsonMessage<WorkflowRequestEvent>(
                 workflowRequest,
                 MessageBrokerConfiguration.InformaticsGatewayApplicationId,
                 payload.CorrelationId,
