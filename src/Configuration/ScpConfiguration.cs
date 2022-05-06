@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
@@ -18,31 +18,31 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// <summary>
         /// Gets or sets Port number to be used for SCP service.
         /// </summary>
-        [JsonProperty(PropertyName = "port")]
+        [ConfigurationKeyName("port")]
         public int Port { get; set; } = 104;
 
         /// <summary>
         /// Gets or sets maximum number of simultaneous DICOM associations for the SCP service.
         /// </summary>
-        [JsonProperty(PropertyName = "maximumNumberOfAssociations")]
+        [ConfigurationKeyName("maximumNumberOfAssociations")]
         public int MaximumNumberOfAssociations { get; set; } = DefaultMaximumNumberOfAssociations;
 
         /// <summary>
         /// Gets or sets wheather or not to enable verification (C-ECHO) service
         /// </summary>
-        [JsonProperty(PropertyName = "verification")]
+        [ConfigurationKeyName("verification")]
         public bool EnableVerification { get; set; } = true;
 
         /// <summary>
         /// Gets or sets whether or not associations shall be rejected if not defined in the <c>dicom>scp>sources</c> section.
         /// </summary>
-        [JsonProperty(PropertyName = "rejectUnknownSources")]
+        [ConfigurationKeyName("rejectUnknownSources")]
         public bool RejectUnknownSources { get; set; } = true;
 
         /// <summary>
         /// Gets or sets whether or not to write command and data datasets to the log.
         /// </summary>
-        [JsonProperty(PropertyName = "logDimseDatasets")]
+        [ConfigurationKeyName("logDimseDatasets")]
         public bool LogDimseDatasets { get; set; } = DefaultLogDimseDatasets;
 
         private static readonly List<string> VerificationServiceTransferSyntaxList = new List<string> {

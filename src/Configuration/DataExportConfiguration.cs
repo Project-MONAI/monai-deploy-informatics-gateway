@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
@@ -11,7 +11,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// <summary>
         /// Gets or sets retry configuration for data export agents.
         /// </summary>
-        [JsonProperty(PropertyName = "retries")]
+        [ConfigurationKeyName("retries")]
         public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
     }
 }

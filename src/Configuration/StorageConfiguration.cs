@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// <summary>
         /// Gets or sets retry options relate to saving files to temporary storage, processing payloads and uploading payloads to the storage service.
         /// </summary>
-        [ConfigurationKeyName("reties")]
+        [ConfigurationKeyName("retries")]
         public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
 
         /// <summary>
