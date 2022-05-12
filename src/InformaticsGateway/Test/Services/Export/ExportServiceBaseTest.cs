@@ -15,6 +15,7 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Common;
+using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Storage;
 using Moq;
@@ -113,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(false);
 
-            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
             _messageSubscriberService.Setup(
                 p => p.Subscribe(It.IsAny<string>(),
                                  It.IsAny<string>(),
@@ -128,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await service.StartAsync(_cancellationTokenSource.Token);
             await StopAndVerify(service);
 
-            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<Message>()), Times.Once());
+            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<Message>(), It.IsAny<bool>()), Times.Once());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
@@ -143,7 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
-            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
             _messageSubscriberService.Setup(
                 p => p.Subscribe(It.IsAny<string>(),
                                  It.IsAny<string>(),
@@ -172,9 +173,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteMessage>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
-            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
@@ -190,7 +191,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
-            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
             _messageSubscriberService.Setup(
                 p => p.Subscribe(It.IsAny<string>(),
                                  It.IsAny<string>(),
@@ -228,9 +229,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteMessage>()).Status == ExportStatus.Success)), Times.Exactly(5));
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Success)), Times.Exactly(5));
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Exactly(5));
-            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
@@ -239,7 +240,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
         internal static MessageReceivedEventArgs CreateMessageReceivedEventArgs()
         {
-            var exportRequestMessage = new ExportRequestMessage
+            var exportRequestEvent = new ExportRequestEvent
             {
                 ExportTaskId = Guid.NewGuid().ToString(),
                 CorrelationId = Guid.NewGuid().ToString(),
@@ -249,7 +250,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 WorkflowId = Guid.NewGuid().ToString(),
             };
 
-            var jsonMessage = new JsonMessage<ExportRequestMessage>(exportRequestMessage, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequestMessage.CorrelationId, exportRequestMessage.DeliveryTag);
+            var jsonMessage = new JsonMessage<ExportRequestEvent>(exportRequestEvent, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequestEvent.CorrelationId, exportRequestEvent.DeliveryTag);
 
             return new MessageReceivedEventArgs(jsonMessage.ToMessage(), CancellationToken.None);
         }

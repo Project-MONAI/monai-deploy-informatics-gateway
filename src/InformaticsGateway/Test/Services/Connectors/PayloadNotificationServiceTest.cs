@@ -18,6 +18,7 @@ using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging;
+using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Storage;
 using Moq;
@@ -303,20 +304,20 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
         private bool VerifyHelper(Payload payload, Message message)
         {
-            var workflowRequestMessage = message.ConvertTo<WorkflowRequestMessage>();
-            if (workflowRequestMessage is null) return false;
-            if (workflowRequestMessage.Payload.Count != 1) return false;
-            if (workflowRequestMessage.PayloadId != payload.Id) return false;
-            if (workflowRequestMessage.FileCount != payload.Files.Count) return false;
-            if (workflowRequestMessage.CorrelationId != payload.CorrelationId) return false;
-            if (workflowRequestMessage.Timestamp != payload.DateTimeCreated) return false;
-            if (workflowRequestMessage.CallingAeTitle != payload.Files.First().Source) return false;
-            if (workflowRequestMessage.CalledAeTitle != payload.Files.OfType<DicomFileStorageInfo>().First().CalledAeTitle) return false;
+            var workflowRequestEvent = message.ConvertTo<WorkflowRequestEvent>();
+            if (workflowRequestEvent is null) return false;
+            if (workflowRequestEvent.Payload.Count != 1) return false;
+            if (workflowRequestEvent.PayloadId != payload.Id) return false;
+            if (workflowRequestEvent.FileCount != payload.Files.Count) return false;
+            if (workflowRequestEvent.CorrelationId != payload.CorrelationId) return false;
+            if (workflowRequestEvent.Timestamp != payload.DateTimeCreated) return false;
+            if (workflowRequestEvent.CallingAeTitle != payload.Files.First().Source) return false;
+            if (workflowRequestEvent.CalledAeTitle != payload.Files.OfType<DicomFileStorageInfo>().First().CalledAeTitle) return false;
 
             var workflowInPayload = payload.GetWorkflows();
-            if (workflowRequestMessage.Workflows.Count() != workflowInPayload.Count) return false;
-            if (workflowRequestMessage.Workflows.Except(workflowInPayload).Any()) return false;
-            if (workflowInPayload.Except(workflowRequestMessage.Workflows).Any()) return false;
+            if (workflowRequestEvent.Workflows.Count() != workflowInPayload.Count) return false;
+            if (workflowRequestEvent.Workflows.Except(workflowInPayload).Any()) return false;
+            if (workflowInPayload.Except(workflowRequestEvent.Workflows).Any()) return false;
 
             return true;
         }

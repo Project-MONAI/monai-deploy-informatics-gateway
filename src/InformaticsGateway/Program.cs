@@ -115,6 +115,7 @@ namespace Monai.Deploy.InformaticsGateway
                         return serviceProvider.LocateService<IStorageService>(logger, options.Value.Storage.ServiceAssemblyName);
                     });
 
+                    services.UseRabbitMq();
                     services.AddSingleton<RabbitMqMessagePublisherService>();
                     services.AddSingleton<IMessageBrokerPublisherService>(implementationFactory =>
                     {
@@ -132,6 +133,7 @@ namespace Monai.Deploy.InformaticsGateway
                         var logger = implementationFactory.GetService<ILogger<Program>>();
                         return serviceProvider.LocateService<IMessageBrokerSubscriberService>(logger, options.Value.Messaging.SubscriberServiceAssemblyName);
                     });
+
 
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();

@@ -174,7 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void SendingAckowledgement(this ILogger logger);
 
         [LoggerMessage(EventId = 510, Level = LogLevel.Error, Message = "Error publishing message. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
-        public static partial void ErrorPublishingExportCompleteMessageWithRetry(this ILogger logger, Exception ex, TimeSpan timeSpan, int retryCount);
+        public static partial void ErrorPublishingExportCompleteEventWithRetry(this ILogger logger, Exception ex, TimeSpan timeSpan, int retryCount);
 
         [LoggerMessage(EventId = 511, Level = LogLevel.Information, Message = "Publishing export complete message.")]
         public static partial void PublishingExportCompleteEvent(this ILogger logger);

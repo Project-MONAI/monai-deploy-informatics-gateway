@@ -40,7 +40,9 @@
         "endpoint": "minio:9000",
         "accessKey": "minioadmin",
         "accessToken": "minioadmin",
-        "securedConnection": false
+        "securedConnection": false,
+        "region": "",
+        "credentialServiceUrl": "http://minio:9000"
       }
     }
   },

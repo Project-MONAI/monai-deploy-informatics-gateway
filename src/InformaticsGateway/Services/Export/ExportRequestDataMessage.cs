@@ -4,13 +4,13 @@
 
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
-using Monai.Deploy.Messaging.Messages;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
     public class ExportRequestDataMessage
     {
-        private readonly ExportRequestMessage _exportRequest;
+        private readonly ExportRequestEvent _exportRequest;
 
         public byte[] FileContent { get; private set; }
         public bool IsFailed { get; private set; }
@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         public string Filename { get; }
 
-        public ExportRequestDataMessage(ExportRequestMessage exportRequest, string filename)
+        public ExportRequestDataMessage(ExportRequestEvent exportRequest, string filename)
         {
             IsFailed = false;
             Messages = new List<string>();

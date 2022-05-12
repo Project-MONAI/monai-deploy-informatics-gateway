@@ -110,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             argumentsOfScenario.Add("modality", modality);
             argumentsOfScenario.Add("count", count);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Export to a DICOM device", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 22
+#line 15
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -120,16 +120,16 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 23
+#line 16
         testRunner.Given("a DICOM destination registered with Informatics Gateway", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 24
+#line 17
         testRunner.And(string.Format("{0} {1} studies for export", count, modality), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 25
+#line 18
         testRunner.When("a export request is sent for \'md.export.request.monaiscu\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 26
+#line 19
         testRunner.Then("Informatics Gateway exports the studies to the DICOM SCP", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
