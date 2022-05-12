@@ -18,7 +18,7 @@ SPDX-License-Identifier: Apache License 2.0
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>
       <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.3" />
-      <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.0-rc0030" />
+      <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.0-rc0034" />
       <PackageReference Include="Monai.Deploy.Storage" Version="0.1.0-rc0019" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />

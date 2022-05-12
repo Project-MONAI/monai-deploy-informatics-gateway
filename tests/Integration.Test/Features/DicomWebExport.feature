@@ -1,6 +1,7 @@
 ﻿# SPDX-FileCopyrightText: © 2022 MONAI Consortium
 # SPDX-License-Identifier: Apache License 2.0
 
+# @ignored
 Feature: DICOMweb Export Service
 
     This feature tests the DICOMweb export services provided by the Informatics Gateway.

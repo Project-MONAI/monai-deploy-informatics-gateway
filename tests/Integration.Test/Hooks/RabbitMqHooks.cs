@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             outputHelper.WriteLine($"Message broker connecting to {_configuration.MessageBrokerOptions.Endpoint}/{_configuration.MessageBrokerOptions.VirtualHost}");
             _connection = _connectionFactory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.ExchangeDeclare(_configuration.MessageBrokerOptions.Exchange, ExchangeType.Topic);
+            _channel.ExchangeDeclare(_configuration.MessageBrokerOptions.Exchange, ExchangeType.Topic, durable: true);
             _channel.BasicQos(prefetchSize: 0, prefetchCount: 1, global: false);
         }
 
@@ -80,12 +80,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
                 var messsage = new Message(
                      body: eventArgs.Body.ToArray(),
-                     messageDescription: routingKey,
+                     messageDescription: eventArgs.BasicProperties.Type,
                      messageId: eventArgs.BasicProperties.MessageId,
                      applicationId: eventArgs.BasicProperties.AppId,
                      contentType: eventArgs.BasicProperties.ContentType,
                      correlationId: eventArgs.BasicProperties.CorrelationId,
-                     creationDateTime: DateTime.Parse(Encoding.UTF8.GetString((byte[])eventArgs.BasicProperties.Headers["CreationDateTime"]), CultureInfo.InvariantCulture),
+                     creationDateTime: DateTimeOffset.FromUnixTimeSeconds(eventArgs.BasicProperties.Timestamp.UnixTime),
                      deliveryTag: eventArgs.DeliveryTag.ToString(CultureInfo.InvariantCulture));
 
                 (_scenarioContext[ScenarioContextKey] as IList<Message>)?.Add(messsage);
@@ -112,6 +112,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             properties.AppId = message.ApplicationId;
             properties.CorrelationId = message.CorrelationId;
             properties.DeliveryMode = 2;
+            properties.Type = message.MessageDescription;
+            properties.Timestamp = new AmqpTimestamp(message.CreationDateTime.ToUnixTimeSeconds());
 
             properties.Headers = propertiesDictionary;
             _channel.BasicPublish(exchange: _configuration.MessageBrokerOptions.Exchange,

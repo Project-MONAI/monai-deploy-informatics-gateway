@@ -1,7 +1,8 @@
 .github/
 .docs/
 .demos/
-.run/
+.guidelines/
+.tests/
 
 
 ### Csharp ###
