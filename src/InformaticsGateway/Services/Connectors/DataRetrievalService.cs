@@ -57,13 +57,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             _rootScope = _serviceScopeFactory.CreateScope();
 
-            _httpClientFactory = _rootScope.ServiceProvider.GetService<IHttpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IHttpClientFactory));
-            _loggerFactory = _rootScope.ServiceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
-            _storageInfoProvider = _rootScope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
-            _fileSystem = _rootScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
-            _fileStore = _rootScope.ServiceProvider.GetService<ITemporaryFileStore>() ?? throw new ServiceNotFoundException(nameof(ITemporaryFileStore));
-            _payloadAssembler = _rootScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
-            _dicomToolkit = _rootScope.ServiceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
+            _httpClientFactory = _rootScope.ServiceProvider.GetRequiredService<IHttpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IHttpClientFactory));
+            _loggerFactory = _rootScope.ServiceProvider.GetRequiredService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
+            _storageInfoProvider = _rootScope.ServiceProvider.GetRequiredService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
+            _fileSystem = _rootScope.ServiceProvider.GetRequiredService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
+            _fileStore = _rootScope.ServiceProvider.GetRequiredService<ITemporaryFileStore>() ?? throw new ServiceNotFoundException(nameof(ITemporaryFileStore));
+            _payloadAssembler = _rootScope.ServiceProvider.GetRequiredService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
+            _dicomToolkit = _rootScope.ServiceProvider.GetRequiredService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

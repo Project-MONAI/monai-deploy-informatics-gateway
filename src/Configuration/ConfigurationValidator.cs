@@ -42,9 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             valid &= IsFhirValid(options.Fhir);
             valid &= IsStorageValid(options.Storage);
 
-#pragma warning disable CA2254 // Template should be a static expression
             _validationErrors.ForEach(p => _logger.Log(LogLevel.Error, p));
-#pragma warning restore CA2254 // Template should be a static expression
 
             return valid ? ValidateOptionsResult.Success : ValidateOptionsResult.Fail(string.Join(Environment.NewLine, _validationErrors));
         }

@@ -20,7 +20,6 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Http;
-using Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging;
@@ -103,8 +102,6 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
                     services.AddTransient<ITemporaryFileStore, TemporaryFileStore>();
-                    services.AddTransient<IStowService, StowService>();
-                    services.AddTransient<IStreamsWriter, StreamsWriter>();
 
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
                     services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();
@@ -112,9 +109,9 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<MinIoStorageService>();
                     services.AddSingleton<IStorageService>(implementationFactory =>
                     {
-                        var options = implementationFactory.GetRequiredService<IOptions<InformaticsGatewayConfiguration>>();
-                        var serviceProvider = implementationFactory.GetRequiredService<IServiceProvider>();
-                        var logger = implementationFactory.GetRequiredService<ILogger<Program>>();
+                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
+                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
+                        var logger = implementationFactory.GetService<ILogger<Program>>();
                         return serviceProvider.LocateService<IStorageService>(logger, options.Value.Storage.ServiceAssemblyName);
                     });
 
@@ -122,20 +119,21 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<RabbitMqMessagePublisherService>();
                     services.AddSingleton<IMessageBrokerPublisherService>(implementationFactory =>
                     {
-                        var options = implementationFactory.GetRequiredService<IOptions<InformaticsGatewayConfiguration>>();
-                        var serviceProvider = implementationFactory.GetRequiredService<IServiceProvider>();
-                        var logger = implementationFactory.GetRequiredService<ILogger<Program>>();
+                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
+                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
+                        var logger = implementationFactory.GetService<ILogger<Program>>();
                         return serviceProvider.LocateService<IMessageBrokerPublisherService>(logger, options.Value.Messaging.PublisherServiceAssemblyName);
                     });
 
                     services.AddSingleton<RabbitMqMessageSubscriberService>();
                     services.AddSingleton<IMessageBrokerSubscriberService>(implementationFactory =>
                     {
-                        var options = implementationFactory.GetRequiredService<IOptions<InformaticsGatewayConfiguration>>();
-                        var serviceProvider = implementationFactory.GetRequiredService<IServiceProvider>();
-                        var logger = implementationFactory.GetRequiredService<ILogger<Program>>();
+                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
+                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
+                        var logger = implementationFactory.GetService<ILogger<Program>>();
                         return serviceProvider.LocateService<IMessageBrokerSubscriberService>(logger, options.Value.Messaging.SubscriberServiceAssemblyName);
                     });
+
 
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
@@ -173,7 +171,6 @@ namespace Monai.Deploy.InformaticsGateway
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = int.MaxValue);
                     webBuilder.CaptureStartupErrors(true);
                     webBuilder.UseStartup<Startup>();
                 });

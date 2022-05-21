@@ -29,24 +29,24 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Guard.Against.Null(httpClient, nameof(httpClient));
         }
 
-        public async Task<string> Live(CancellationToken cancellationToken) => await LiveReady("live", cancellationToken).ConfigureAwait(false);
+        public async Task<string> Live(CancellationToken cancellationToken) => await LiveReady("live", cancellationToken);
 
-        public async Task<string> Ready(CancellationToken cancellationToken) => await LiveReady("ready", cancellationToken).ConfigureAwait(false);
+        public async Task<string> Ready(CancellationToken cancellationToken) => await LiveReady("ready", cancellationToken);
 
         public async Task<HealthStatusResponse> Status(CancellationToken cancellationToken)
         {
-            Logger.SendingRequestTo($"{Route}/status");
-            var response = await HttpClient.GetAsync($"{Route}/status", cancellationToken).ConfigureAwait(false);
-            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
-            return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken).ConfigureAwait(false);
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/status");
+            var response = await HttpClient.GetAsync($"{Route}/status", cancellationToken);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
+            return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken);
         }
 
         private async Task<string> LiveReady(string uriPath, CancellationToken cancellationToken)
         {
-            Logger.SendingRequestTo($"{Route}/{uriPath}");
-            var response = await HttpClient.GetAsync($"{Route}/{uriPath}", cancellationToken).ConfigureAwait(false);
-            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
-            return await response.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            Logger.Log(LogLevel.Debug, $"Sending request to {Route}/{uriPath}");
+            var response = await HttpClient.GetAsync($"{Route}/{uriPath}", cancellationToken);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger);
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }

@@ -1,16 +1,30 @@
-﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
-// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
-// SPDX-License-Identifier: Apache License 2.0
+﻿/*
+ * Apache License, Version 2.0
+ * Copyright 2019-2020 NVIDIA Corporation
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
+using Ardalis.GuardClauses;
+using ConsoleAppFramework;
+using Dicom;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Ardalis.GuardClauses;
-using FellowOakDicom;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Client.Common;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 {
@@ -37,128 +51,120 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             [Option("t", "transfer syntaxes, separated by comma")] string transferSyntaxes = "*"
             )
         {
-            ValidateOptions(rootUrl, transferSyntaxes, out var rootUri, out var dicomTransferSyntaxes);
+            Uri rootUri;
+            List<DicomTransferSyntax> dicomTransferSyntaxes;
+            ValidateOptions(rootUrl, transferSyntaxes, out rootUri, out dicomTransferSyntaxes);
             ValidateOutputDirectory(ref outputDir);
 
             _dicomWebClient.ConfigureServiceUris(rootUri);
-
-            if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
-            {
-                _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
-            }
+            _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
             _logger.LogInformation($"Retrieving study {studyInstanceUid}...");
             if (format == OutputFormat.Dicom)
             {
-                await SaveFiles(outputDir, _dicomWebClient.Wado.Retrieve(studyInstanceUid, transferSyntaxes: dicomTransferSyntaxes.ToArray())).ConfigureAwait(false);
+                await SaveFiles(outputDir, _dicomWebClient.Wado.Retrieve(studyInstanceUid, transferSyntaxes: dicomTransferSyntaxes.ToArray()));
             }
             else
             {
-                await SaveJson(outputDir, _dicomWebClient.Wado.RetrieveMetadata<string>(studyInstanceUid)).ConfigureAwait(false);
+                await SaveJson(outputDir, _dicomWebClient.Wado.RetrieveMetadata<string>(studyInstanceUid));
             }
         }
 
         [Command("series", "Retrieves instances within a series")]
         public async Task Series(
             [Option("r", "Uniform Resource Locator (URL) of the DICOMweb service")] string rootUrl,
+            [Option("u", "username for authentication with the DICOMweb service")] string username,
+            [Option("p", "password for authentication with the DICOMweb service")] string password,
             [Option("s", "unique study identifier; Study Instance UID")] string studyInstanceUid,
             [Option("e", "unique series identifier; Series Instance UID")] string seriesInstanceUid,
-            [Option("u", "username for authentication with the DICOMweb service")] string username = "",
-            [Option("p", "password for authentication with the DICOMweb service")] string password = "",
             [Option("f", "output format: json, dicom")] OutputFormat format = OutputFormat.Dicom,
             [Option("o", "output directory, default: current directory(.)", DefaultValue = ".")] string outputDir = ".",
             [Option("t", "transfer syntaxes, separated by comma")] string transferSyntaxes = "*"
             )
         {
-            ValidateOptions(rootUrl, transferSyntaxes, out var rootUri, out var dicomTransferSyntaxes);
+            Uri rootUri;
+            List<DicomTransferSyntax> dicomTransferSyntaxes;
+            ValidateOptions(rootUrl, transferSyntaxes, out rootUri, out dicomTransferSyntaxes);
             ValidateOutputDirectory(ref outputDir);
 
             _dicomWebClient.ConfigureServiceUris(rootUri);
-
-            if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
-            {
-                _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
-            }
+            _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
             _logger.LogInformation($"Retrieving series  {seriesInstanceUid} from");
             _logger.LogInformation($"\tStudy Instance UID: {studyInstanceUid}");
             if (format == OutputFormat.Dicom)
             {
-                await SaveFiles(outputDir, _dicomWebClient.Wado.Retrieve(studyInstanceUid, seriesInstanceUid, transferSyntaxes: dicomTransferSyntaxes.ToArray())).ConfigureAwait(false);
+                await SaveFiles(outputDir, _dicomWebClient.Wado.Retrieve(studyInstanceUid, seriesInstanceUid, transferSyntaxes: dicomTransferSyntaxes.ToArray()));
             }
             else
             {
-                await SaveJson(outputDir, _dicomWebClient.Wado.RetrieveMetadata<string>(studyInstanceUid, seriesInstanceUid)).ConfigureAwait(false);
+                await SaveJson(outputDir, _dicomWebClient.Wado.RetrieveMetadata<string>(studyInstanceUid, seriesInstanceUid));
             }
         }
 
         [Command("instance", "Retrieves an instance")]
         public async Task Instance(
             [Option("r", "Uniform Resource Locator (URL) of the DICOMweb service")] string rootUrl,
+            [Option("u", "username for authentication with the DICOMweb service")] string username,
+            [Option("p", "password for authentication with the DICOMweb service")] string password,
             [Option("s", "unique study identifier; Study Instance UID")] string studyInstanceUid,
             [Option("e", "unique series identifier; Series Instance UID")] string seriesInstanceUid,
             [Option("i", "unique instance identifier; SOP Instance UID")] string sopInstanceUid,
-            [Option("u", "username for authentication with the DICOMweb service")] string username = "",
-            [Option("p", "password for authentication with the DICOMweb service")] string password = "",
             [Option("f", "output format: json, dicom")] OutputFormat format = OutputFormat.Dicom,
             [Option("o", "output directory, default: current directory(.)", DefaultValue = ".")] string outputDir = ".",
             [Option("t", "transfer syntaxes, separated by comma")] string transferSyntaxes = "*"
             )
         {
-            ValidateOptions(rootUrl, transferSyntaxes, out var rootUri, out var dicomTransferSyntaxes);
+            Uri rootUri;
+            List<DicomTransferSyntax> dicomTransferSyntaxes;
+            ValidateOptions(rootUrl, transferSyntaxes, out rootUri, out dicomTransferSyntaxes);
             ValidateOutputDirectory(ref outputDir);
 
             _dicomWebClient.ConfigureServiceUris(rootUri);
-
-            if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
-            {
-                _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
-            }
+            _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
             _logger.LogInformation($"Retrieving instance {sopInstanceUid} from");
             _logger.LogInformation($"\tStudy Instance UID: {studyInstanceUid}");
             _logger.LogInformation($"\tSeries Instance UID: {seriesInstanceUid}");
 
             if (format == OutputFormat.Dicom)
             {
-                var file = await _dicomWebClient.Wado.Retrieve(studyInstanceUid, seriesInstanceUid, sopInstanceUid, transferSyntaxes: dicomTransferSyntaxes.ToArray()).ConfigureAwait(false);
-                await Utils.SaveFiles(_logger, outputDir, file).ConfigureAwait(false);
+                var file = await _dicomWebClient.Wado.Retrieve(studyInstanceUid, seriesInstanceUid, sopInstanceUid, transferSyntaxes: dicomTransferSyntaxes.ToArray());
+                await Utils.SaveFiles(_logger, outputDir, file);
             }
             else
             {
-                var json = await _dicomWebClient.Wado.RetrieveMetadata<string>(studyInstanceUid, seriesInstanceUid, sopInstanceUid).ConfigureAwait(false);
-                await Utils.SaveJson(_logger, outputDir, json, DicomTag.SOPInstanceUID).ConfigureAwait(false);
+                var json = await _dicomWebClient.Wado.RetrieveMetadata<string>(studyInstanceUid, seriesInstanceUid, sopInstanceUid);
+                await Utils.SaveJson(_logger, outputDir, json, DicomTag.SOPInstanceUID);
             }
         }
 
         [Command("bulk", "Retrieves bulkdata of an instance")]
         public async Task Bulk(
             [Option("r", "Uniform Resource Locator (URL) of the DICOMweb service")] string rootUrl,
+            [Option("u", "username for authentication with the DICOMweb service")] string username,
+            [Option("p", "password for authentication with the DICOMweb service")] string password,
             [Option("s", "unique study identifier; Study Instance UID")] string studyInstanceUid,
             [Option("e", "unique series identifier; Series Instance UID")] string seriesInstanceUid,
             [Option("i", "unique instance identifier; SOP Instance UID")] string sopInstanceUid,
             [Option("g", "DICOM tag containing the bulkdata")] string tag,
-            [Option("u", "username for authentication with the DICOMweb service")] string username = "",
-            [Option("p", "password for authentication with the DICOMweb service")] string password = "",
             [Option("o", "output filename", DefaultValue = ".")] string filename = "bulkdata.bin",
             [Option("t", "transfer syntaxes, separated by comma")] string transferSyntaxes = "*"
             )
         {
-            ValidateOptions(rootUrl, transferSyntaxes, out var rootUri, out var dicomTransferSyntaxes);
+            Uri rootUri;
+            List<DicomTransferSyntax> dicomTransferSyntaxes;
+            ValidateOptions(rootUrl, transferSyntaxes, out rootUri, out dicomTransferSyntaxes);
             ValidateOutputFilename(ref filename);
             var dicomTag = DicomTag.Parse(tag);
 
             _dicomWebClient.ConfigureServiceUris(rootUri);
-
-            if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
-            {
-                _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
-            }
+            _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
             _logger.LogInformation($"Retrieving {dicomTag} from");
             _logger.LogInformation($"\tStudy Instance UID: {studyInstanceUid}");
             _logger.LogInformation($"\tSeries Instance UID: {seriesInstanceUid}");
             _logger.LogInformation($"\tSOP Instance UID: {sopInstanceUid}");
-            var data = await _dicomWebClient.Wado.Retrieve(studyInstanceUid, seriesInstanceUid, sopInstanceUid, dicomTag, transferSyntaxes: dicomTransferSyntaxes.ToArray()).ConfigureAwait(false);
+            var data = await _dicomWebClient.Wado.Retrieve(studyInstanceUid, seriesInstanceUid, sopInstanceUid, dicomTag, transferSyntaxes: dicomTransferSyntaxes.ToArray());
 
             _logger.LogInformation($"Saving data to {filename}....");
-            await File.WriteAllBytesAsync(filename, data).ConfigureAwait(false);
+            await File.WriteAllBytesAsync(filename, data);
         }
 
         private async Task SaveJson(string outputDir, IAsyncEnumerable<string> enumerable)
@@ -168,7 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
             await foreach (var item in enumerable)
             {
-                await Utils.SaveJson(_logger, outputDir, item, DicomTag.SOPInstanceUID).ConfigureAwait(false);
+                await Utils.SaveJson(_logger, outputDir, item, DicomTag.SOPInstanceUID);
             }
         }
 
@@ -180,7 +186,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             var count = 0;
             await foreach (var file in enumerable)
             {
-                await Utils.SaveFiles(_logger, outputDir, file).ConfigureAwait(false);
+                await Utils.SaveFiles(_logger, outputDir, file);
                 count++;
             }
             _logger.LogInformation($"Successfully saved {count} files.");

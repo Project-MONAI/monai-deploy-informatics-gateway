@@ -173,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
             Logger?.Log(LogLevel.Debug, $"Sending HTTP request to {bulkdataUri}");
             var message = new HttpRequestMessage(HttpMethod.Get, bulkdataUri);
-            message.Headers.Add(HeaderNames.Accept, BuildAcceptMediaHeader(MimeType.OctetStream, transferSyntaxes));
+            message.Headers.Add(HeaderNames.Accept, BuildAcceptMediaHeader(MimeType.OctetStreme, transferSyntaxes));
             if (byteRange != null)
             {
                 message.AddRange(byteRange);
