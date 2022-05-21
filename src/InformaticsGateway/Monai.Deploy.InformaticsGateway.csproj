@@ -4,20 +4,20 @@
  -->
 <Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <RootNamespace>Monai.Deploy.InformaticsGateway</RootNamespace>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
-        <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
-        <LangVersion>latest</LangVersion>
-        <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
-    </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Monai.Deploy.InformaticsGateway</RootNamespace>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <IncludePackageReferencesDuringMarkupCompilation>true</IncludePackageReferencesDuringMarkupCompilation>
+    <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <LangVersion>latest</LangVersion>
+    <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App" />
-    </ItemGroup>
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
@@ -38,26 +38,26 @@
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
     </ItemGroup>
 
-    <ItemGroup>
-        <Compile Remove="Test\**" />
-        <EmbeddedResource Remove="Test\**" />
-        <None Remove="Test\**" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Test\**" />
+    <EmbeddedResource Remove="Test\**" />
+    <None Remove="Test\**" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
-        <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
-        <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
-        <ProjectReference Include="..\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
-        <ProjectReference Include="..\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
+    <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
+    <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
+    <ProjectReference Include="..\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
+    <ProjectReference Include="..\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <None Include="./appsettings.json" CopyToOutputDirectory="Always" />
-        <None Include="./appsettings.Development.json" CopyToOutputDirectory="Always" />
-    </ItemGroup>
+  <ItemGroup>
+    <None Include="./appsettings.json" CopyToOutputDirectory="Always" />
+    <None Include="./appsettings.Development.json" CopyToOutputDirectory="Always" />
+  </ItemGroup>
 </Project>
