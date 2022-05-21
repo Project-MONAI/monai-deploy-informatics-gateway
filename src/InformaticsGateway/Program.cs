@@ -21,6 +21,7 @@ using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Http;
+using Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging;
