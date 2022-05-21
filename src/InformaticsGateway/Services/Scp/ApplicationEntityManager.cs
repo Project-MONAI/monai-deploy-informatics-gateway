@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             _dicomToolkit = _serviceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
 
-            _temporaryFileStore = _serviceProvider.GetRequiredService<ITemporaryFileStore>() ?? throw new NullReferenceException(nameof(ITemporaryFileStore));
+            _temporaryFileStore = _serviceProvider.GetService<ITemporaryFileStore>() ?? throw new NullReferenceException(nameof(ITemporaryFileStore));
 
             _unsubscriberForMonaiAeChangedNotificationService = monaiAeChangedNotificationService.Subscribe(this);
             _aeTitles = new ConcurrentDictionary<string, ApplicationEntityHandler>();

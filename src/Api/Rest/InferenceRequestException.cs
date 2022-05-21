@@ -13,7 +13,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
     [Serializable]
     public class InferenceRequestException : Exception
     {
+        public InferenceRequestException()
+        {
+        }
+
         public InferenceRequestException(string message) : base(message)
+        {
+        }
+
+        public InferenceRequestException(string message, Exception innerException) : base(message, innerException)
         {
         }
 
