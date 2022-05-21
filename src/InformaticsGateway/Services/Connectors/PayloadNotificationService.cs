@@ -77,11 +77,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             _scope = _serviceScopeFactory.CreateScope();
 
-            _fileSystem = _scope.ServiceProvider.GetRequiredService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
-            _payloadAssembler = _scope.ServiceProvider.GetRequiredService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
-            _storageService = _scope.ServiceProvider.GetRequiredService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
-            _instanceCleanupQueue = _scope.ServiceProvider.GetRequiredService<IInstanceCleanupQueue>() ?? throw new ServiceNotFoundException(nameof(IInstanceCleanupQueue));
-            _messageBrokerPublisherService = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>() ?? throw new ServiceNotFoundException(nameof(IMessageBrokerPublisherService));
+            _fileSystem = _scope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
+            _payloadAssembler = _scope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
+            _storageService = _scope.ServiceProvider.GetService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
+            _instanceCleanupQueue = _scope.ServiceProvider.GetService<IInstanceCleanupQueue>() ?? throw new ServiceNotFoundException(nameof(IInstanceCleanupQueue));
+            _messageBrokerPublisherService = _scope.ServiceProvider.GetService<IMessageBrokerPublisherService>() ?? throw new ServiceNotFoundException(nameof(IMessageBrokerPublisherService));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

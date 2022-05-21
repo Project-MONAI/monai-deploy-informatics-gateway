@@ -1,30 +1,17 @@
-﻿/*
- * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-using Ardalis.GuardClauses;
-using ConsoleAppFramework;
-using Dicom;
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
+using FellowOakDicom;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Client.Common;
+using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 {
@@ -33,36 +20,42 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
     {
         private readonly IDicomWebClient _dicomWebClient;
         private readonly ILogger<Stow> _logger;
+        private readonly CancellationTokenSource _cancellationTokeSource;
 
         public Stow(IDicomWebClient dicomWebClient, ILogger<Stow> logger)
         {
             _dicomWebClient = dicomWebClient ?? throw new ArgumentNullException(nameof(dicomWebClient));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _cancellationTokeSource = new CancellationTokenSource();
         }
 
         [Command("store", "Retrieves instances within a study")]
         public async Task Store(
             [Option("r", "Uniform Resource Locator (URL) of the DICOMweb service")] string rootUrl,
-            [Option("u", "Username for authentication with the DICOMweb service")] string username,
-            [Option("p", "Password for authentication with the DICOMweb service")] string password,
             [Option("i", "DICOM file or directory containing multiple DICOM files")] string input,
+            [Option("u", "Username for authentication with the DICOMweb service")] string username = "",
+            [Option("p", "Password for authentication with the DICOMweb service")] string password = "",
             [Option("o", "Output filename")] string outputFilename = "",
             [Option("s", "Unique study identifier; Study Instance UID")] string studyInstanceUid = "",
             [Option("t", "Time to wait before the request times out, in minutes.  Default 5 minutes.")] int timeout = 5
             )
         {
-            Uri rootUri;
-            ValidateOptions(rootUrl, out rootUri);
+            ValidateOptions(rootUrl, out var rootUri);
             var files = ScanFiles(input);
             _logger.LogInformation($"Storing {files.Count} instances...");
 
             _dicomWebClient.ConfigureServiceUris(rootUri);
-            _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
 
+            if (!string.IsNullOrWhiteSpace(username) && !string.IsNullOrWhiteSpace(password))
+            {
+                _dicomWebClient.ConfigureAuthentication(Utils.GenerateFromUsernamePassword(username, password));
+            }
+
+            _cancellationTokeSource.CancelAfter(TimeSpan.FromMinutes(timeout));
             DicomWebResponse<string> response = null;
             try
             {
-                response = await _dicomWebClient.Stow.Store(studyInstanceUid, files);
+                response = await _dicomWebClient.Stow.Store(studyInstanceUid, files, _cancellationTokeSource.Token);
             }
             catch (ResponseDecodeException ex)
             {
@@ -76,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
                 {
                     outputFilename = $"{DateTime.Now.ToString("yyyyMMdd-hhmmss-fffff")}-.json";
                 }
-                await Utils.SaveJson(_logger, outputFilename, response.Result);
+                await Utils.SaveJson(_logger, outputFilename, response.Result).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

@@ -93,9 +93,13 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             Guard.Against.Null(imageVersion, nameof(imageVersion));
 
             _logger.CreatingDockerContainer(Strings.ApplicationName, imageVersion.Version, imageVersion.IdShort);
-            var createContainerParams = new CreateContainerParameters() { Image = imageVersion.Id, HostConfig = new HostConfig() };
+            var createContainerParams = new CreateContainerParameters
+            {
+                Image = imageVersion.Id,
+                HostConfig = new HostConfig(),
+                ExposedPorts = new Dictionary<string, EmptyStruct>()
+            };
 
-            createContainerParams.ExposedPorts = new Dictionary<string, EmptyStruct>();
             createContainerParams.HostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
 
             _logger.DockerPrtBinding(_configurationService.Configurations.DicomListeningPort);

@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Ardalis.GuardClauses;
-using Microsoft.EntityFrameworkCore;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {

@@ -26,8 +26,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         IDicomCEchoProvider,
         IDicomCStoreProvider
     {
-        private const int ERROR_HANDLE_DISK_FULL = 0x27;
-        private const int ERROR_DISK_FULL = 0x70;
 
         private Microsoft.Extensions.Logging.ILogger _logger;
         private IApplicationEntityManager _associationDataProvider;
@@ -67,12 +65,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             catch (InsufficientStorageAvailableException ex)
             {
                 _logger?.CStoreFailedWithNoSpace(ex);
-                return new DicomCStoreResponse(request, DicomStatus.ResourceLimitation);
+                return new DicomCStoreResponse(request, DicomStatus.StorageStorageOutOfResources);
             }
-            catch (System.IO.IOException ex) when ((ex.HResult & 0xFFFF) == ERROR_HANDLE_DISK_FULL || (ex.HResult & 0xFFFF) == ERROR_DISK_FULL)
+            catch (System.IO.IOException ex) when ((ex.HResult & 0xFFFF) == Constants.ERROR_HANDLE_DISK_FULL || (ex.HResult & 0xFFFF) == Constants.ERROR_DISK_FULL)
             {
                 _logger?.CStoreFailedWithNoSpace(ex);
-                return new DicomCStoreResponse(request, DicomStatus.ResourceLimitation);
+                return new DicomCStoreResponse(request, DicomStatus.StorageStorageOutOfResources);
             }
             catch (Exception ex)
             {

@@ -24,7 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
             {
                 builder.Append(' ');
 
-                AppendLogScope(builder, scope);
+                AppendLogScope(builder, scope!);
             }, sb);
         }
 
