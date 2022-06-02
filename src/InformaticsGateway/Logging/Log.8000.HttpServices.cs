@@ -99,7 +99,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8106, Level = LogLevel.Error, Message = "Failed to process STOW request, out of storage space.")]
         public static partial void StowFailedWithNoSpace(this ILogger logger, Exception ex = null);
 
-        [LoggerMessage(EventId = 8107, Level = LogLevel.Information, Message = "STOW instance queued.")]
+
+        [LoggerMessage(EventId = 8108, Level = LogLevel.Information, Message = "STOW instance queued.")]
         public static partial void QueuedInstanceUsingCorrelationId(this ILogger logger);
 
         [LoggerMessage(EventId = 8108, Level = LogLevel.Information, Message = "Saving {count} DICOMWeb STOW-RS streams.")]
