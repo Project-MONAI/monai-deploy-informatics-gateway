@@ -4,8 +4,8 @@
 using System.Configuration;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             }
 
             var studyJson = File.ReadAllText(studyJsonPath);
-            return JsonConvert.DeserializeObject<Dictionary<string, StudySpec>>(studyJson);
+            return JsonSerializer.Deserialize<Dictionary<string, StudySpec>>(studyJson);
         }
 
         private void LoadConfiguration()

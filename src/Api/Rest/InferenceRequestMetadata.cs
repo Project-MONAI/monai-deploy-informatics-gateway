@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -30,14 +30,14 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or sets the details of an inference request.
         /// </summary>
-        [JsonProperty(PropertyName = "details")]
+        [JsonPropertyName("details")]
         public InferenceRequestDetails Details { get; set; }
 
         /// <summary>
         /// Gets or sets an array of inference request details.
         /// Note: this is an extension to the ACR specs to enable multiple input data types.
         /// </summary>
-        [JsonProperty(PropertyName = "inputs")]
+        [JsonPropertyName("inputs")]
         public IList<InferenceRequestDetails> Inputs { get; set; }
     }
 }

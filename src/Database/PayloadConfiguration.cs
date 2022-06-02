@@ -4,11 +4,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Database
 {
@@ -21,7 +22,10 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList());
 
-            var jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+            var jsonSerializerSettings = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
 
             builder.HasKey(j => j.Id);
 
@@ -33,8 +37,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
             builder.Property(j => j.CorrelationId).IsRequired();
             builder.Property(j => j.Files)
                 .HasConversion(
-                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
-                        v => JsonConvert.DeserializeObject<List<FileStorageInfo>>(v, jsonSerializerSettings))
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<List<FileStorageInfo>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(fileStorageInfoComparer);
 
             builder.Ignore(j => j.CalledAeTitle);

@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -18,7 +18,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or sets the SOP Instance UID to be retrieved.
         /// </summary>
-        [JsonProperty(PropertyName = "SOPInstanceUID")]
+        [JsonPropertyName("SOPInstanceUID")]
         public IList<string> SopInstanceUid { get; set; }
     }
 }

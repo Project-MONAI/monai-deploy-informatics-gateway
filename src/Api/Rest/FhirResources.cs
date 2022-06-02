@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: © 2021 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -67,14 +67,14 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or set the type of FHIR resource.
         /// E.g. Pateitn, Observation.
         /// </summary>
-        [JsonProperty(PropertyName = "resourceType")]
+        [JsonPropertyName("resourceType")]
         public string Type { get; set; }
 
         /// <summary>
         /// Gets or sets the ID of the resource to be retrieved.
         /// </summary>
         /// <value></value>
-        [JsonProperty(PropertyName = "id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
 
         /// <summary>
@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets whether or not resource has been retrieved or not.
         /// </summary>
         /// <value></value>
-        [JsonProperty(PropertyName = "isRetrieved")]
+        [JsonPropertyName("isRetrieved")]
         public bool IsRetrieved { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -12,7 +13,6 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Client.Services;
 using Moq;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Test
@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var json = JsonConvert.SerializeObject(inferenceRequest);
+            var json = JsonSerializer.Serialize(inferenceRequest);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             {
                 TransactionId = inferenceRequest.TransactionId
             };
-            var json = JsonConvert.SerializeObject(inferenceStatus);
+            var json = JsonSerializer.Serialize(inferenceStatus);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -132,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem);
 
             var rootUri = new Uri("http://localhost:5000");
 

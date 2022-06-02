@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -15,27 +15,27 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or sets a list of permitted operations for the connection.
         /// </summary>
-        [JsonProperty(PropertyName = "operations")]
+        [JsonPropertyName("operations")]
         public IList<InputInterfaceOperations> Operations { get; set; }
 
         /// <summary>
         /// Gets or sets the resource URI (Uniform Resource Identifier) of the connection.
         /// </summary>
-        [JsonProperty(PropertyName = "uri")]
+        [JsonPropertyName("uri")]
         public string Uri { get; set; }
 
         /// <summary>
         /// Gets or sets the authentication/authorization token of the connection.
         /// For HTTP basic access authentication, the value must be encoded in based 64 using "{username}:{password}" format.
         /// </summary>
-        [JsonProperty(PropertyName = "authID")]
+        [JsonPropertyName("authID")]
         public string AuthId { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the authentication token used for the connection.
         /// Defaults to None if not specified.
         /// </summary>
-        [JsonProperty(PropertyName = "authType")]
+        [JsonPropertyName("authType")]
         public ConnectionAuthType AuthType { get; set; } = ConnectionAuthType.None;
     }
 }

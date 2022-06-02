@@ -3,10 +3,10 @@
 
 using System;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Client.Common;
-using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Services
 {
@@ -22,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             try
             {
                 var json = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
-                var problem = JsonConvert.DeserializeObject<ProblemDetails>(json);
+                var problem = JsonSerializer.Deserialize<ProblemDetails>(json);
 
                 if (problem?.Status != 0)
                 {

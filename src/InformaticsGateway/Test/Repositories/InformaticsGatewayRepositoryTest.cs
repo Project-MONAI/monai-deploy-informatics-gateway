@@ -111,7 +111,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                 var key = $"AET{i}";
                 Assert.Null(await repo.FindAsync(key));
             }
-
         }
 
         [RetryFact(5, 250, DisplayName = "AddAsync")]

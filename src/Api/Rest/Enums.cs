@@ -3,6 +3,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -34,6 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
     /// <summary>
     /// Specifies the type of data source interface.
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum InputInterfaceType
     {
         /// <summary>
@@ -68,6 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
     /// <summary>
     /// Specifies type of inference request.
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum InferenceRequestType
     {
         /// <summary>
@@ -107,6 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
     /// <summary>
     /// Permitted operations for a data source
     /// </summary>
+    [JsonConverter(typeof(JsonStringEnumMemberConverter))]
     public enum InputInterfaceOperations
     {
         /// <summary>

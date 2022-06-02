@@ -19,7 +19,5 @@ namespace Monai.Deploy.InformaticsGateway.Client
 
         [LoggerMessage(EventId = 50101, Level = LogLevel.Debug, Message = "Sending request to {route}")]
         public static partial void SendingRequestTo(this ILogger logger, string route);
-
-
     }
 }

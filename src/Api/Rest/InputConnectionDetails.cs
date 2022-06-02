@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -16,14 +16,14 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceType.Algorithm" />.
         /// <c>Name</c> is also used as the job name.
         /// </summary>
-        [JsonProperty(PropertyName = "name")]
+        [JsonPropertyName("name")]
         public string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the MONAI Application name or ID. Used when <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceType" />
         /// is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceType.Algorithm" />.
         /// </summary>
-        [JsonProperty(PropertyName = "id")]
+        [JsonPropertyName("id")]
         public string Id { get; set; }
     }
 }
