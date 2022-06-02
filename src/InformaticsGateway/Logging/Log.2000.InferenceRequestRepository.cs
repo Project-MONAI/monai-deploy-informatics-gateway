@@ -2,12 +2,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
-using System.Net;
-using FellowOakDicom;
-using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Services.Scp;
 
 namespace Monai.Deploy.InformaticsGateway.Logging
 {
