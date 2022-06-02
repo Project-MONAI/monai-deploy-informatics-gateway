@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Net.Http.Headers;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
+namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal interface IStowRequestReader
     {

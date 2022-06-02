@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
 {

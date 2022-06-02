@@ -20,7 +20,7 @@ using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
+namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal interface IStreamsWriter
     {
@@ -92,7 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
             DicomFile dicomFile;
             try
             {
-                dicomFile = await DicomFile.OpenAsync(stream, FileReadOption.ReadAll).ConfigureAwait(false);
+                dicomFile = await _dicomToolkit.OpenAsync(stream, FileReadOption.ReadAll).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -120,6 +120,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
                 {
                     _logger.StowFailedWithNoSpace(ex);
                     AddFailure(DicomStatus.StorageStorageOutOfResources, uids);
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    _logger.FailedToSaveInstance(ex);
+                    AddFailure(DicomStatus.ProcessingFailure, uids);
                     return;
                 }
             }

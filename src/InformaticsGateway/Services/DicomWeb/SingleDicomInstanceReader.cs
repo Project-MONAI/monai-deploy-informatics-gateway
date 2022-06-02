@@ -1,6 +1,7 @@
 ﻿// SPDX-FileCopyrightText: © 2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -11,7 +12,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Configuration;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
+namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal class SingleDicomInstanceReader : DicomInstanceReaderBase, IStowRequestReader
     {
@@ -25,11 +26,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
             Guard.Against.Null(request, nameof(request));
             Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
 
-            var streams = new List<Stream>
+            try
             {
-                await ConvertStream(request.HttpContext, request.Body, cancellationToken).ConfigureAwait(false)
-            };
-            return streams;
+                var streams = new List<Stream>
+                {
+                    await ConvertStream(request.HttpContext, request.Body, cancellationToken).ConfigureAwait(false)
+                };
+                return streams;
+            }
+            catch (Exception ex)
+            {
+                throw new ConvertStreamException("Error converting data stream.", ex);
+            }
         }
     }
 }
