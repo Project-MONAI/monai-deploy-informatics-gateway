@@ -15,13 +15,13 @@ using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
+namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal class StowService : IStowService
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
-        private readonly ILogger<StowController> _logger;
+        private readonly ILogger<StowService> _logger;
 
         public StowService(IServiceScopeFactory serviceScopeFactory, IOptions<InformaticsGatewayConfiguration> configuration)
         {
@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             var scope = _serviceScopeFactory.CreateScope();
-            _logger = scope.ServiceProvider.GetService<ILogger<StowController>>() ?? throw new ServiceNotFoundException(nameof(ILogger<StowService>));
+            _logger = scope.ServiceProvider.GetService<ILogger<StowService>>() ?? throw new ServiceNotFoundException(nameof(ILogger<StowService>));
         }
 
         public async Task<StowResult> StoreAsync(HttpRequest request, string studyInstanceUid, string workflowName, string correlationId, CancellationToken cancellationToken)

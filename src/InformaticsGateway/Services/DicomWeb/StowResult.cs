@@ -3,7 +3,7 @@
 
 using FellowOakDicom;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
+namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     public class StowResult
     {

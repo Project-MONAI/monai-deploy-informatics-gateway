@@ -1,9 +1,9 @@
 ﻿// SPDX-FileCopyrightText: © 2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
-namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
+namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
-    public static class ContentTypes
+    internal static class ContentTypes
     {
         public const string ApplicationDicom = "application/dicom";
         public const string ApplicationDicomJson = "application/dicom+json";

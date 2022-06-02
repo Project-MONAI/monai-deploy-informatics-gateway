@@ -15,7 +15,7 @@ using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
+namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal class MultipartDicomInstanceReader : DicomInstanceReaderBase, IStowRequestReader
     {
@@ -56,24 +56,32 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
                 }
             }
 
-            var multipartReader = new MultipartReader(boundary, request.Body)
+            try
             {
-                BodyLengthLimit = Configuration.MaxAllowedFileSize
-            };
-
-            var streams = new List<Stream>();
-            MultipartSection multipartSection;
-            while ((multipartSection = await multipartReader.ReadNextSectionAsync(cancellationToken).ConfigureAwait(false)) is not null)
-            {
-                var contentType = multipartSection.ContentType;
-
-                if (!string.IsNullOrWhiteSpace(contentType))
+                var multipartReader = new MultipartReader(boundary, request.Body)
                 {
-                    ValidateSupportedMediaTypes(contentType, out var _, ContentTypes.ApplicationDicom);
+                    BodyLengthLimit = Configuration.MaxAllowedFileSize
+                };
+
+                var streams = new List<Stream>();
+                MultipartSection multipartSection;
+                while ((multipartSection = await multipartReader.ReadNextSectionAsync(cancellationToken).ConfigureAwait(false)) is not null)
+                {
+                    var contentType = multipartSection.ContentType;
+
+                    if (!string.IsNullOrWhiteSpace(contentType))
+                    {
+                        ValidateSupportedMediaTypes(contentType, out var _, ContentTypes.ApplicationDicom);
+                    }
+                    streams.Add(await ConvertStream(request.HttpContext, multipartSection.Body, cancellationToken).ConfigureAwait(false));
                 }
-                streams.Add(await ConvertStream(request.HttpContext, multipartSection.Body, cancellationToken).ConfigureAwait(false));
+                return streams;
             }
-            return streams;
+            catch (Exception ex)
+            {
+
+                throw new ConvertStreamException("Error converting data stream.", ex);
+            }
         }
     }
 }
