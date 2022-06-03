@@ -1,5 +1,5 @@
-// SPDX-FileCopyrightText: © 2011-2022 MONAI Consortium
-// SPDX-FileCopyrightText: © 2021 NVIDIA Corporation
+// SPDX-FileCopyrightText: ï¿½ 2011-2022 MONAI Consortium
+// SPDX-FileCopyrightText: ï¿½ 2021 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Text.Json.Serialization;

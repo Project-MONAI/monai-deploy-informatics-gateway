@@ -2,6 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        },
+
+        {
             "name": "Informatics Gateway CLI",
             "type": "coreclr",
             "request": "launch",
@@ -28,6 +34,20 @@
             "stopAtEntry": false,
             "env": {
                 "DOTNET_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "Informatics Gateway (Test)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/src/InformaticsGateway/bin/Debug/net6.0/Monai.Deploy.InformaticsGateway",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/InformaticsGateway",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "env": {
+                "DOTNET_ENVIRONMENT": "Test"
             }
         }
     ]

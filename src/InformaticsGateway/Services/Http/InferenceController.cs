@@ -69,6 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         }
 
         [HttpPost]
+        [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

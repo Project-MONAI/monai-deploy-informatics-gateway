@@ -143,6 +143,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 }
             };
 
+            if(!inferenceRequest.IsValid(out var details))
+            {
+                _outputHelper.WriteLine($"Validation error: {details}.");
+                throw new Exception(details);
+            }
             _scenarioContext[KeyInferenceRequest] = inferenceRequest;
         }
 
