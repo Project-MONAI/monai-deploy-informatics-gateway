@@ -19,6 +19,7 @@ SPDX-License-Identifier: Apache License 2.0
     <PackageReference Include="GitVersion.MsBuild" Version="5.9.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
+    <PackageReference Include="System.Text.Json" Version="6.0.1" />
   </ItemGroup>
 
   <ItemGroup>

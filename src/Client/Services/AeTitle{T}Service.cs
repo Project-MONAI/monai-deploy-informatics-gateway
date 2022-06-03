@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Formatting;
+using System.Net.Http.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Guard.Against.Null(item, nameof(item));
 
             Logger.SendingRequestTo(Route);
-            var response = await HttpClient.PostAsync(Route, item, new JsonMediaTypeFormatter(), cancellationToken).ConfigureAwait(false);
+            var response = await HttpClient.PostAsJsonAsync(Route, item, JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
             return await response.Content.ReadAsAsync<T>(cancellationToken).ConfigureAwait(false);
         }
@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Logger.SendingRequestTo($"{Route}/{aeTitle}");
             var response = await HttpClient.DeleteAsync($"{Route}/{aeTitle}", cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
-            return await response.Content.ReadAsAsync<T>(cancellationToken).ConfigureAwait(false);
+            return await response.Content.ReadFromJsonAsync<T>(JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<T> GetAeTitle(string aeTitle, CancellationToken cancellationToken)
@@ -64,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Logger.SendingRequestTo($"{Route}/{aeTitle}");
             var response = await HttpClient.GetAsync($"{Route}/{aeTitle}", cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
-            return await response.Content.ReadAsAsync<T>(cancellationToken).ConfigureAwait(false);
+            return await response.Content.ReadFromJsonAsync<T>(JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
         }
 
         public async Task<IReadOnlyList<T>> List(CancellationToken cancellationToken)
@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Logger.SendingRequestTo(Route);
             var response = await HttpClient.GetAsync(Route, cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
-            var list = await response.Content.ReadAsAsync<IEnumerable<T>>(cancellationToken).ConfigureAwait(false);
+            var list = await response.Content.ReadFromJsonAsync<IEnumerable<T>>(JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
             return list.ToList().AsReadOnly();
         }
     }

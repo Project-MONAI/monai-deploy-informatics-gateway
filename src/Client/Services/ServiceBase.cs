@@ -3,15 +3,24 @@
 
 using System;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Services
 {
     internal abstract class ServiceBase
     {
+        protected static readonly JsonSerializerOptions JsonSerializationOptions = new(JsonSerializerDefaults.Web);
+
         protected readonly HttpClient HttpClient;
         protected readonly ILogger Logger;
         protected string RequestServicePrefix { get; private set; } = string.Empty;
+
+        static ServiceBase()
+        {
+            JsonSerializationOptions.Converters.Add(new JsonStringEnumMemberConverter());
+        }
 
         protected ServiceBase(HttpClient httpClient, ILogger logger = null)
         {
