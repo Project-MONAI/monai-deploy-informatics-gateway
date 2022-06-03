@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Logger.SendingRequestTo($"{Route}/status");
             var response = await HttpClient.GetAsync($"{Route}/status", cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
-            return await response.Content.ReadAsAsync<HealthStatusResponse>(cancellationToken).ConfigureAwait(false);
+            return await response.Content.ReadFromJsonAsync<HealthStatusResponse>(JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task<string> LiveReady(string uriPath, CancellationToken cancellationToken)

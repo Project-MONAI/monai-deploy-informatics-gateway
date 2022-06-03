@@ -7,7 +7,7 @@ using System.Runtime.Serialization;
 namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     [Serializable]
-    internal class ConvertStreamException : Exception
+    public class ConvertStreamException : Exception
     {
         public ConvertStreamException()
         {
