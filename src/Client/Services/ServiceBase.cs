@@ -11,16 +11,18 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 {
     internal abstract class ServiceBase
     {
-        protected static readonly JsonSerializerOptions JsonSerializationOptions = new(JsonSerializerDefaults.Web);
-
         protected readonly HttpClient HttpClient;
         protected readonly ILogger Logger;
         protected string RequestServicePrefix { get; private set; } = string.Empty;
-
-        static ServiceBase()
+        protected JsonSerializerOptions JsonSerializationOptions 
         {
-            JsonSerializationOptions.Converters.Add(new JsonStringEnumMemberConverter());
+            get
+            {
+                return HttpResponseMessageExtensions.JsonSerializationOptions;
+            }
+        
         }
+
 
         protected ServiceBase(HttpClient httpClient, ILogger logger = null)
         {
