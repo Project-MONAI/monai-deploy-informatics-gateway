@@ -33,10 +33,10 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             var status = new HealthStatusResponse()
             {
                 ActiveDimseConnections = 1,
-                Services = new Dictionary<string, ServiceStatus>() { { "A", ServiceStatus.Running } }
+                Services = new Dictionary<string, ServiceStatus>() { { "a", ServiceStatus.Running } }
             };
 
-            var json = JsonSerializer.Serialize(status);
+            var json = JsonSerializer.Serialize(status, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -66,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonSerializer.Serialize(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonSerializer.Serialize(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -164,7 +164,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonSerializer.Serialize(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 

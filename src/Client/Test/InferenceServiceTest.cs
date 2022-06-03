@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var json = JsonSerializer.Serialize(inferenceRequest);
+            var json = JsonSerializer.Serialize(inferenceRequest, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonSerializer.Serialize(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             {
                 TransactionId = inferenceRequest.TransactionId
             };
-            var json = JsonSerializer.Serialize(inferenceStatus);
+            var json = JsonSerializer.Serialize(inferenceStatus, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -132,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonSerializer.Serialize(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 

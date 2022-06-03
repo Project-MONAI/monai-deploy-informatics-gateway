@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonSerializer.Serialize(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var message = new HttpResponseMessage(HttpStatusCode.InternalServerError)
             {
@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         public async Task ReturnOtherJsonErrors()
         {
             var unhandledException = new Exception("error message");
-            var json = JsonSerializer.Serialize(unhandledException);
+            var json = JsonSerializer.Serialize(unhandledException, Configuration.JsonSerializationOptions);
 
             var logger = new Mock<ILogger>();
             var message = new HttpResponseMessage(HttpStatusCode.InternalServerError)

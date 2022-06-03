@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             StudySpecs = LoadStudySpecs() ?? throw new NullReferenceException("study.json not found or empty.");
 
-            outputHelper.WriteLine($"StudySpecs={JsonConvert.SerializeObject(StudySpecs)}");
+            outputHelper.WriteLine($"StudySpecs={JsonSerializer.Serialize(StudySpecs)}");
 
             _config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

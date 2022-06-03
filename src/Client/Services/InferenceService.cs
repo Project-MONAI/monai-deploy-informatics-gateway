@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         public async Task<InferenceRequestResponse> NewInferenceRequest(InferenceRequest request, CancellationToken cancellationToken)
         {
             Logger.SendingRequestTo(Route);
-            var response = await HttpClient.PostAsJsonAsync($"{Route}", request, JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
+            var response = await HttpClient.PostAsJsonAsync($"{Route}", request, Configuration.JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
             return await response.Content.ReadAsAsync<InferenceRequestResponse>(cancellationToken).ConfigureAwait(false);
         }
@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             Logger.SendingRequestTo($"{Route}/status");
             var response = await HttpClient.GetAsync($"{Route}/{transactionId}", cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
-            return await response.Content.ReadFromJsonAsync<InferenceStatusResponse>(JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
+            return await response.Content.ReadFromJsonAsync<InferenceStatusResponse>(Configuration.JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
         }
     }
 }
