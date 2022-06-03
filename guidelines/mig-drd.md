@@ -277,11 +277,16 @@ TBD
 ### [REQ-DCW-06] MIG SHALL be able to allow users to upload DICOM objects via DICOMweb STOW-RS
 
 #### Background
-TBD
+
+DICOMWeb STOW-RS enables storing instances over web protocols HTTP and secured connection via HTTPS; both protocols allow integration with other DICOMWeb enabled applications and services. By supporting DICOMWeb STOW-RS in the Informatics Gateway, users will be able to push DICOM instances to trigger an inference request.
+
 #### Verification Strategy
-TBD
+
+Verify the DICOMWeb STOW-RS service allows POSTing studies with a DICOMWeb STOW-RS client, and the studies are uploaded to trigger a new workflow request.
+
 #### Target Release
-TBD
+
+MONAI Deploy Informatics Gateway 0.2.0
 
 
 ### [REQ-DCW-07] MIG SHALL support exporting data to multiple DICOMweb destinations
