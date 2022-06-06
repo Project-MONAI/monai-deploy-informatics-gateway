@@ -3,6 +3,7 @@
 
 using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 
@@ -19,14 +21,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal abstract class DicomInstanceReaderBase
     {
+        private static readonly object SyncLock = new Object();
         private const string BufferDirectoryName = "IGTEMP";
         protected DicomWebConfiguration Configuration { get; }
         protected ILogger Logger { get; }
+        protected IFileSystem FileSystem { get; }
 
-        protected DicomInstanceReaderBase(DicomWebConfiguration dicomWebConfiguration, ILogger logger)
+        protected DicomInstanceReaderBase(
+            DicomWebConfiguration dicomWebConfiguration,
+            ILogger logger,
+            IFileSystem fileSystem)
         {
             Configuration = dicomWebConfiguration ?? throw new ArgumentNullException(nameof(dicomWebConfiguration));
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            FileSystem = fileSystem;
         }
 
         protected static void ValidateSupportedMediaTypes(string contentType, out MediaTypeHeaderValue mediaTypeHeaderValue, params string[] contentTypes)
@@ -52,7 +60,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             Stream seekableStream;
             if (!sourceStream.CanSeek)
             {
-                var tempPath = Path.Combine(Path.GetTempPath(), BufferDirectoryName);
+                var tempPath = FileSystem.Path.Combine(Path.GetTempPath(), BufferDirectoryName);
+
+                lock (SyncLock)
+                {
+                    FileSystem.Directory.CreateDirectoryIfNotExists(tempPath);
+                }
+
                 Logger.ConvertingStreamToFileBufferingReadStream(Configuration.MemoryThreshold, tempPath);
                 seekableStream = new FileBufferingReadStream(sourceStream, Configuration.MemoryThreshold, null, tempPath);
                 httpContext.Response.RegisterForDisposeAsync(seekableStream);

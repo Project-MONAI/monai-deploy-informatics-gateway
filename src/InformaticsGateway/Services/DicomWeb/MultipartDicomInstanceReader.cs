@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -19,8 +20,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal class MultipartDicomInstanceReader : DicomInstanceReaderBase, IStowRequestReader
     {
-        public MultipartDicomInstanceReader(DicomWebConfiguration dicomWebConfiguration, ILogger<MultipartDicomInstanceReader> logger)
-            : base(dicomWebConfiguration, logger)
+        public MultipartDicomInstanceReader(DicomWebConfiguration dicomWebConfiguration, ILogger<MultipartDicomInstanceReader> logger, IFileSystem fileSystem)
+            : base(dicomWebConfiguration, logger, fileSystem)
         {
         }
 
