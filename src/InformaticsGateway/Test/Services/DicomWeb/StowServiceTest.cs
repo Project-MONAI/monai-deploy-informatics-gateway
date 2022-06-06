@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.Net;
 using System.Text;
 using System.Threading;
@@ -33,6 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         private readonly Mock<ILogger<SingleDicomInstanceReader>> _loggerSingleDicomInstanceReader;
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<IStreamsWriter> _streamsWriter;
+        private readonly MockFileSystem _fileSystem;
 
         public StowServiceTest()
         {
@@ -43,6 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             _loggerSingleDicomInstanceReader = new Mock<ILogger<SingleDicomInstanceReader>>();
             _serviceScope = new Mock<IServiceScope>();
             _streamsWriter = new Mock<IStreamsWriter>();
+            _fileSystem = new MockFileSystem();
 
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider
@@ -57,6 +61,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             serviceProvider
                 .Setup(x => x.GetService(typeof(IStreamsWriter)))
                 .Returns(_streamsWriter.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IFileSystem)))
+                .Returns(_fileSystem);
 
             _serviceFactory.Setup(p => p.CreateScope())
                 .Returns(_serviceScope.Object);
