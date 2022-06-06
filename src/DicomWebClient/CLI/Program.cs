@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.CLI
                     services.AddHttpClient<IDicomWebClient, DicomWebClient>(configure => configure.Timeout = TimeSpan.FromMinutes(60))
                         .SetHandlerLifetime(TimeSpan.FromMinutes(60));
                 })
-                .RunConsoleAppFrameworkAsync(args);
+                .RunConsoleAppFrameworkAsync(args).ConfigureAwait(false);
         }
     }
 }

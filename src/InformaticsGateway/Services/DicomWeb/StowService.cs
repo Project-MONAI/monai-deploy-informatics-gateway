@@ -15,6 +15,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
@@ -56,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             var scope = _serviceScopeFactory.CreateScope();
             var streamsWriter = scope.ServiceProvider.GetService<IStreamsWriter>() ?? throw new ServiceNotFoundException(nameof(IStreamsWriter));
 
+            _logger.SavingStream(streams.Count);
             return await streamsWriter.Save(streams, studyInstanceUid, workflowName, correlationId, request.HttpContext.Connection.RemoteIpAddress.ToString(), cancellationToken).ConfigureAwait(false);
         }
 

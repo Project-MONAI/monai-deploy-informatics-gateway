@@ -21,7 +21,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal abstract class DicomInstanceReaderBase
     {
-        private static readonly object SyncLock = new Object();
+        private static readonly object SyncLock = new();
         private const string BufferDirectoryName = "IGTEMP";
         protected DicomWebConfiguration Configuration { get; }
         protected ILogger Logger { get; }
@@ -41,8 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         {
             Guard.Against.Null(contentType, nameof(contentType));
 
-            MediaTypeHeaderValue mediaType;
-            if (MediaTypeHeaderValue.TryParse(contentType, out mediaType) &&
+            if (MediaTypeHeaderValue.TryParse(contentType, out var mediaType) &&
                 contentTypes.Any(p => p.Equals(mediaType.MediaType.ToString(), StringComparison.OrdinalIgnoreCase)))
             {
                 mediaTypeHeaderValue = mediaType;

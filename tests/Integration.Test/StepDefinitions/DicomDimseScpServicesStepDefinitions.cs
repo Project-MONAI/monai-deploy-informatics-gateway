@@ -20,11 +20,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     public class DicomDimseScpServicesStepDefinitions
     {
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
-        protected readonly ScenarioContext _scenarioContext;
-        protected readonly ISpecFlowOutputHelper _outputHelper;
-        protected readonly Configurations _configuration;
-        protected readonly DicomInstanceGenerator _dicomInstanceGenerator;
-        protected readonly RabbitMqHooks _rabbitMqHooks;
+        private readonly ScenarioContext _scenarioContext;
+        private readonly ISpecFlowOutputHelper _outputHelper;
+        private readonly Configurations _configuration;
+        private readonly DicomInstanceGenerator _dicomInstanceGenerator;
+        private readonly RabbitMqHooks _rabbitMqHooks;
         private readonly DicomScu _dicomScu;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
 

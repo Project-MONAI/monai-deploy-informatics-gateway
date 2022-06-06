@@ -52,10 +52,10 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             }
 
             _cancellationTokeSource.CancelAfter(TimeSpan.FromMinutes(timeout));
-            DicomWebResponse<string> response = null;
+            DicomWebResponse<string> response;
             try
             {
-                response = await _dicomWebClient.Stow.Store(studyInstanceUid, files, _cancellationTokeSource.Token);
+                response = await _dicomWebClient.Stow.Store(studyInstanceUid, files, _cancellationTokeSource.Token).ConfigureAwait(false);
             }
             catch (ResponseDecodeException ex)
             {
@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             {
                 if (string.IsNullOrWhiteSpace(outputFilename))
                 {
-                    outputFilename = $"{DateTime.Now.ToString("yyyyMMdd-hhmmss-fffff")}-.json";
+                    outputFilename = $"{DateTime.Now:yyyyMMdd-hhmmss-fffff}-.json";
                 }
                 await Utils.SaveJson(_logger, outputFilename, response.Result).ConfigureAwait(false);
             }
