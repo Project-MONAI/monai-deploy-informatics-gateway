@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -63,16 +64,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
 
             var scope = _serviceScopeFactory.CreateScope();
+            var fileSystem = scope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.MultipartRelated, StringComparison.OrdinalIgnoreCase))
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<MultipartDicomInstanceReader>>() ?? throw new ServiceNotFoundException(nameof(ILogger<MultipartDicomInstanceReader>));
-                return new MultipartDicomInstanceReader(_configuration.Value.DicomWeb, logger);
+                return new MultipartDicomInstanceReader(_configuration.Value.DicomWeb, logger, fileSystem);
             }
 
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.ApplicationDicom, StringComparison.OrdinalIgnoreCase))
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<SingleDicomInstanceReader>>() ?? throw new ServiceNotFoundException(nameof(ILogger<SingleDicomInstanceReader>));
-                return new SingleDicomInstanceReader(_configuration.Value.DicomWeb, logger);
+                return new SingleDicomInstanceReader(_configuration.Value.DicomWeb, logger, fileSystem);
             }
 
             throw new UnsupportedContentTypeException($"Media type of '{mediaTypeHeaderValue.MediaType}' is not supported.");

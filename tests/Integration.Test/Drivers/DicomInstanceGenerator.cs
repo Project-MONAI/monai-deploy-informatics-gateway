@@ -23,6 +23,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             {
                 "0020,000D" => StudyCount,
                 "0020,000E" => StudyCount * SeriesPerStudyCount,
+                "stow_none" => 1, // For DICOMweb STOW-RS
+                "stow_study" => 1, // For DICOMweb STOW-RS
                 _ => throw new ArgumentException($"Grouping '{grouping} not supported.")
             };
 
@@ -30,6 +32,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             {
                 "0020,000D" => SeriesPerStudyCount * InstancePerSeries,
                 "0020,000E" => InstancePerSeries,
+                "stow_none" => FileCount, // For DICOMweb STOW-RS
+                "stow_study" => SeriesPerStudyCount * InstancePerSeries, // For DICOMweb STOW-RS
                 _ => throw new ArgumentException($"Grouping '{grouping} not supported.")
             };
         }

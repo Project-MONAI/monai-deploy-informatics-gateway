@@ -78,6 +78,8 @@ function start_services() {
     info "============================================="
     docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep integrationtest
     info "============================================="
+    docker network inspect testrunner
+    info "============================================="
 
     info "Stopping Informatics Gateway for debugging..."
     ig_contianer=$(docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep integrationtest-informatics-gateway | awk '{print $2}')
