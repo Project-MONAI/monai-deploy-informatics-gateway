@@ -152,29 +152,29 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         .WithBucket(request.Bucket)
                         .WithObject($"{request.PayloadId}/{file.Path}")
                         .WithCallbackStream((stream) =>
-                        {
-                            using var memoryStream = new MemoryStream();
-                            stream.CopyTo(memoryStream);
-                            memoryStream.Position = 0;
-                            var dicomFile = DicomFile.Open(memoryStream);
-                            dicomValidationKey = dicomFile.GenerateFileName();
-                            dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
-                        });
+                    {
+                        using var memoryStream = new MemoryStream();
+                        stream.CopyTo(memoryStream);
+                        memoryStream.Position = 0;
+                        var dicomFile = DicomFile.Open(memoryStream);
+                        dicomValidationKey = dicomFile.GenerateFileName();
+                        dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
+                    });
                     await minioClient.GetObjectAsync(getObjectArgs);
 
                     var getMetadataObjectArgs = new GetObjectArgs()
                         .WithBucket(request.Bucket)
                         .WithObject($"{request.PayloadId}/{file.Metadata}")
                         .WithCallbackStream((stream) =>
-                        {
-                            using var memoryStream = new MemoryStream();
-                            stream.CopyTo(memoryStream);
-                            var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+                    {
+                        using var memoryStream = new MemoryStream();
+                        stream.CopyTo(memoryStream);
+                        var json = Encoding.UTF8.GetString(memoryStream.ToArray());
 
-                            var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
-                            var key = dicomFileFromJson.GenerateFileName();
-                            key.Should().Be(dicomValidationKey);
-                        });
+                        var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
+                        var key = dicomFileFromJson.GenerateFileName();
+                        key.Should().Be(dicomValidationKey);
+                    });
                     await minioClient.GetObjectAsync(getMetadataObjectArgs);
                 }
             }
