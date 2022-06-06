@@ -30,7 +30,7 @@ Feature: DICOM DIMSE SCP Services
         When a C-STORE-RQ is sent to 'Informatics Gateway' with AET 'C-STORE-STUDY' from 'TEST-RUNNER' with timeout of 300 seconds
         Then a successful response should be received
         And <count> workflow requests sent to message broker
-        And <count> studies are uploaded to storage service
+        And studies are uploaded to storage service
         And the temporary data directory has been cleared
 
         Examples:
@@ -47,7 +47,7 @@ Feature: DICOM DIMSE SCP Services
         When a C-STORE-RQ is sent to 'Informatics Gateway' with AET 'C-STORE-SERIES' from 'TEST-RUNNER' with timeout of 300 seconds
         Then a successful response should be received
         And <series_count> workflow requests sent to message broker
-        And <study_count> studies are uploaded to storage service
+        And studies are uploaded to storage service
         And the temporary data directory has been cleared
 
         Examples:
