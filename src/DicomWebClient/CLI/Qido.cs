@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
                 var parts = pair.Split("=", StringSplitOptions.RemoveEmptyEntries);
                 if (parts.Length != 2)
                 {
-                    _logger.LogError("Unknown query parameter {0}", pair);
+                    _logger.LogError($"Unknown query parameter {pair}");
                 }
                 if (queryParameters.ContainsKey(parts[0]))
                 {

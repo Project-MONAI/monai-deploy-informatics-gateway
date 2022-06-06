@@ -32,11 +32,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         internal static readonly string KeyDimseResponse = "DIMSE_RESPONSE";
         internal static readonly string KeyWorkflows = "WORKFLOWS";
 
-        protected readonly ScenarioContext _scenarioContext;
-        protected readonly ISpecFlowOutputHelper _outputHelper;
-        protected readonly Configurations _configuration;
-        protected readonly DicomInstanceGenerator _dicomInstanceGenerator;
-        protected readonly RabbitMqHooks _rabbitMqHooks;
+        private readonly ScenarioContext _scenarioContext;
+        private readonly ISpecFlowOutputHelper _outputHelper;
+        private readonly Configurations _configuration;
+        private readonly DicomInstanceGenerator _dicomInstanceGenerator;
+        private readonly RabbitMqHooks _rabbitMqHooks;
 
         public SharedDefinitions(
             ScenarioContext scenarioContext,

@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
         public static async Task SaveFiles<T>(ILogger<T> logger, string outputDirectory, DicomFile dicomFile)
         {
             var path = Path.Combine(outputDirectory, dicomFile.FileMetaInfo.MediaStorageSOPInstanceUID.UID + ".dcm");
-            await SaveFiles(logger, dicomFile, path);
+            await SaveFiles(logger, dicomFile, path).ConfigureAwait(false);
         }
 
         public static async Task SaveFiles<T>(ILogger<T> logger, DicomFile dicomFile, string filename)
@@ -85,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             Guard.Against.NullOrWhiteSpace(filename, nameof(filename));
 
             logger.LogInformation($"Saving {filename}...");
-            await dicomFile.SaveAsync(filename);
+            await dicomFile.SaveAsync(filename).ConfigureAwait(false);
         }
 
         internal static async Task SaveJson(ILogger logger, string outputDir, string item, DicomTag filenameSourceTag)
@@ -95,8 +95,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             Guard.Against.NullOrWhiteSpace(item, nameof(item));
 
             var token = JToken.Parse(item);
-            var filename = string.Empty;
             var value = GetTagValueFromJson(token, filenameSourceTag);
+            string filename;
             if (!string.IsNullOrWhiteSpace(value))
             {
                 filename = $"{value}.txt";
@@ -107,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             }
             var path = Path.Combine(outputDir, filename);
             logger.LogInformation($"Saving JSON {path}");
-            await File.WriteAllTextAsync(path, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8);
+            await File.WriteAllTextAsync(path, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8).ConfigureAwait(false);
         }
 
         internal static async Task SaveJson(ILogger logger, string outputFilename, string text)
@@ -118,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
             var token = JToken.Parse(text);
             logger.LogInformation($"Saving JSON {outputFilename}...");
-            await File.WriteAllTextAsync(outputFilename, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8);
+            await File.WriteAllTextAsync(outputFilename, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8).ConfigureAwait(false);
         }
 
         private static string GetTagValueFromJson(JToken token, DicomTag dicomTag, string defaultValue = "unknown")
