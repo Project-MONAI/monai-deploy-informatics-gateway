@@ -31,6 +31,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             OrthancOptions = new OrthancSettings();
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             StudySpecs = LoadStudySpecs() ?? throw new NullReferenceException("study.json not found or empty.");
+
+            outputHelper.WriteLine($"StudySpecs={JsonConvert.SerializeObject(StudySpecs)}");
+
             _config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                 .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
