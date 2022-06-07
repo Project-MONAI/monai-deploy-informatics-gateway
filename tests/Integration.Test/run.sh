@@ -3,6 +3,9 @@
 
 #!/bin/bash
 
+# enable(1)/disable(0) VS code attach debuger
+export VSTEST_HOST_DEBUG=0
+
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 TEST_DIR="$SCRIPT_DIR/"
 LOG_DIR="${GITHUB_WORKSPACE:-$SCRIPT_DIR}"
@@ -12,6 +15,7 @@ CONFIG_DIR="$SCRIPT_DIR/configs"
 EXIT=false
 METRICSFILE="$LOG_DIR/metrics.log"
 LOADDEV=
+FEATURE=
 STREAMID=
 export STUDYJSON="study.json"
 
@@ -48,7 +52,15 @@ function env_setup() {
         LOADDEV="--env-file .env.dev"
         info "Using study.json.dev..."
         STUDYJSON="study.json.dev"
+    elif [ "$1" = "--feature" ]; then
+        if [ -z "$2" ]; then
+            fatal "--feature used without specifying a feature"
+        fi
+        FEATURE="--filter $2"
+        info "Filtering by feature=$FEATURE"
     fi
+
+
     set -u
 
     if [[ $(docker-compose ps -q | wc -l) -ne 0 ]]; then
@@ -128,7 +140,12 @@ function run_test() {
     pushd $TEST_DIR
     set +e
     info "Starting test runner..."
-    dotnet test -c Release 2>&1 | tee $LOG_DIR/run.log
+
+    if [[ "$VSTEST_HOST_DEBUG" == 0 ]]; then 
+        dotnet test -c Release $FEATURE 2>&1 | tee $LOG_DIR/run.log
+    else
+        dotnet test -c Debug $FEATURE 2>&1 | tee $LOG_DIR/run.log
+    fi
     EXITCODE=$?
     EXIT=true
     set -e

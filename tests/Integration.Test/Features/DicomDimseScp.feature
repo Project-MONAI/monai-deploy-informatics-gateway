@@ -46,7 +46,7 @@ Feature: DICOM DIMSE SCP Services
         And <study_count> <modality> studies with <series_count> series per study
         When a C-STORE-RQ is sent to 'Informatics Gateway' with AET 'C-STORE-SERIES' from 'TEST-RUNNER' with timeout of 300 seconds
         Then a successful response should be received
-        And <study_count> workflow requests sent to message broker
+        And <series_count> workflow requests sent to message broker
         And <study_count> studies are uploaded to storage service
         And the temporary data directory has been cleared
 

@@ -106,6 +106,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             if (string.IsNullOrWhiteSpace(patientId)) throw new ArgumentNullException(nameof(patientId));
             if (studySpec is null) throw new ArgumentNullException(nameof(studySpec));
 
+            studySpec.InstanceMin.Should().BeGreaterThan(0);
+            studySpec.InstanceMax.Should().BeGreaterThan(0);
+
             var instancesPerSeries = _random.Next(studySpec.InstanceMin, studySpec.InstanceMax);
             var files = new List<DicomFile>();
             var studyInstanceUids = new List<string>();

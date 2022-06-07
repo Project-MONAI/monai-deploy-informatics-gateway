@@ -247,7 +247,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
 #line 49
-        testRunner.And(string.Format("{0} workflow requests sent to message broker", study_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And(string.Format("{0} workflow requests sent to message broker", series_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 50
         testRunner.And(string.Format("{0} studies are uploaded to storage service", study_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
