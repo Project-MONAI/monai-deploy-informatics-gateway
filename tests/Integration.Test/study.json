@@ -18,8 +18,8 @@
   "MG": {
     "SeriesMin": 4,
     "SeriesMax": 8,
-    "instanceMin": 1,
-    "instanceMax": 1,
+    "InstanceMin": 1,
+    "InstanceMax": 1,
     "SizeMin": 5,
     "SizeMax": 10
   },
@@ -53,6 +53,6 @@
     "InstanceMin": 1,
     "InstanceMax": 1,
     "SizeMin": 1,
-    "sizeMax": 2
+    "SizeMax": 2
   }
 }
