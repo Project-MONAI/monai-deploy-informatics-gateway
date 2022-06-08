@@ -37,6 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly DicomDataset _resultDicomDataset;
         private int _failureCount;
+        private int _storedCount;
 
         public StreamsWriter(
             ITemporaryFileStore fileStore,
@@ -54,6 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _resultDicomDataset = new DicomDataset();
             _failureCount = 0;
+            _storedCount = 0;
         }
 
         public async Task<StowResult> Save(IList<Stream> streams, string studyInstanceUid, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
@@ -66,6 +68,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             {
                 try
                 {
+                    if (stream.Length == 0)
+                    {
+                        _failureCount++;
+                        _logger.ZeroLengthDicomWebStowStream();
+                        continue;
+                    }
                     await SaveInstance(stream, studyInstanceUid, workflowName, correlationId, dataSource, cancellationToken).ConfigureAwait(false);
                 }
                 catch (Exception ex)
@@ -73,6 +81,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                     _logger.FailedToSaveInstance(ex);
                     AddFailure(DicomStatus.ProcessingFailure, null);
                 }
+            }
+
+            if (_storedCount == 0)
+            {
+                return new StowResult { StatusCode = StatusCodes.Status204NoContent };
             }
 
             return new StowResult
@@ -166,6 +179,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             {
                 AddSuccess(null, uids);
             }
+            _storedCount++;
         }
 
         private void AddSuccess(DicomStatus warningStatus = null, StudySerieSopUids uids = default)

@@ -103,5 +103,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8109, Level = LogLevel.Information, Message = "Saving {count} DICOMWeb STOW-RS streams.")]
         public static partial void SavingStream(this ILogger logger, int count);
+
+        [LoggerMessage(EventId = 8110, Level = LogLevel.Warning, Message = "Ignoring zero length stream.")]
+        public static partial void ZeroLengthDicomWebStowStream(this ILogger logger);
     }
 }
