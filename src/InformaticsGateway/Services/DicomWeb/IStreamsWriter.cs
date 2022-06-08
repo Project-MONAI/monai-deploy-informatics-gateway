@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 }
             }
 
-            if (_storedCount == 0)
+            if (_storedCount == 0 && _failureCount == 0)
             {
                 return new StowResult { StatusCode = StatusCodes.Status204NoContent };
             }
