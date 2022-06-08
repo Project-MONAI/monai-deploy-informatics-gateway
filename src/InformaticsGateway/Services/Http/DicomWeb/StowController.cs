@@ -39,13 +39,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         [HttpPost("{workflowName}/studies")]
         [Consumes(ContentTypes.ApplicationDicom, ContentTypes.MultipartRelated)]
         [Produces(ContentTypes.ApplicationDicomJson)]
-        [ProducesResponseType(typeof(DicomDataset), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(DicomDataset), (int)HttpStatusCode.Accepted)]
-        [ProducesResponseType((int)HttpStatusCode.NoContent)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotAcceptable)]
-        [ProducesResponseType(typeof(DicomDataset), (int)HttpStatusCode.Conflict)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.UnsupportedMediaType)]
+        [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status202Accepted)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status409Conflict)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status415UnsupportedMediaType)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> StoreInstances(string workflowName = "")
         {
             return await StoreInstances(string.Empty, workflowName).ConfigureAwait(false);
@@ -59,7 +59,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status202Accepted)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(string), StatusCodes.Status406NotAcceptable)] // handled in ContentFilter
         [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(string), StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
