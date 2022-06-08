@@ -42,6 +42,10 @@ The *DICOM SCU Service* enables users to export application-generated DICOM resu
 > DICOM instances are sent as-is; no codec conversion is done as part of the SCU process. 
 > See the [DICOM Interface SCU](./compliance/dicom.md#dimse-services-scu) section for more information.
 
+### DICOMWeb STOW-RS
+
+The *DICOMWeb STOW-RS* allows users to trigger a new workflow request by uploading a DICOM dataset. It provides options to trigger a workflow with or without specifying a workflow.  See [DICOMWeb STOW-RS](./api/rest/dicomweb-stow.md) section for more information.
+
 ### ACR DSI API
 
 The ACR DSI API allows users to trigger inference requests via RESTful calls, utilizing DICOMweb & FHIR to retrieve data specified in the request. Upon data retrieval, the Informatics Gateway uploads the data to the shared storage and generates an `md.workflow.request` event, which notifies the [MONAI Deploy Workflow Manager](https://github.com/Project-MONAI/monai-deploy-workflow-manager) for processing.
