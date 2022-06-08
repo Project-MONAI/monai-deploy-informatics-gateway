@@ -5,13 +5,13 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Client.Services;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Test
@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var message = new HttpResponseMessage(HttpStatusCode.InternalServerError)
             {
@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         public async Task ReturnOtherJsonErrors()
         {
             var unhandledException = new Exception("error message");
-            var json = JsonConvert.SerializeObject(unhandledException);
+            var json = JsonSerializer.Serialize(unhandledException, Configuration.JsonSerializationOptions);
 
             var logger = new Mock<ILogger>();
             var message = new HttpResponseMessage(HttpStatusCode.InternalServerError)

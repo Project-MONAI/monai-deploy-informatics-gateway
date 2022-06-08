@@ -3,9 +3,9 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.IO.Abstractions;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 using Monai.Deploy.Storage.Configuration;
-using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {

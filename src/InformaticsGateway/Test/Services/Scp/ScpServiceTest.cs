@@ -243,7 +243,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
             request.OnResponseReceived += (DicomCStoreRequest request, DicomCStoreResponse response) =>
             {
-                Assert.Equal(DicomStatus.ResourceLimitation, response.Status);
+                Assert.Equal(DicomStatus.StorageStorageOutOfResources, response.Status);
                 countdownEvent.Signal();
             };
 
@@ -257,8 +257,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new IOException { HResult = 0x27 });
-
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new IOException { HResult = Constants.ERROR_HANDLE_DISK_FULL });
             var countdownEvent = new CountdownEvent(3);
             var service = CreateService();
 
@@ -275,7 +274,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
             request.OnResponseReceived += (DicomCStoreRequest request, DicomCStoreResponse response) =>
             {
-                Assert.Equal(DicomStatus.ResourceLimitation, response.Status);
+                Assert.Equal(DicomStatus.StorageStorageOutOfResources, response.Status);
                 countdownEvent.Signal();
             };
 

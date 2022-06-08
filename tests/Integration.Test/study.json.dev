@@ -1,58 +1,58 @@
 {
     "MR": {
-        "seriesMin": 1,
-        "seriesMax": 2,
-        "instanceMin": 64,
-        "instanceMax": 128,
-        "sizeMin": 0.36,
-        "sizeMax": 2
+        "SeriesMin": 1,
+        "SeriesMax": 2,
+        "InstanceMin": 64,
+        "InstanceMax": 128,
+        "SizeMin": 0.36,
+        "SizeMax": 2
     },
     "CT": {
-        "seriesMin": 1,
-        "seriesMax": 2,
-        "instanceMin": 60,
-        "instanceMax": 1000,
-        "sizeMin": 0.5,
-        "sizeMax": 1
+        "SeriesMin": 1,
+        "SeriesMax": 2,
+        "InstanceMin": 60,
+        "InstanceMax": 1000,
+        "SizeMin": 0.5,
+        "SizeMax": 1
     },
     "MG": {
-        "seriesMin": 4,
-        "seriesMax": 8,
-        "instanceMin": 1,
-        "instanceMax": 1,
-        "sizeMin": 5,
-        "sizeMax": 75
+        "SeriesMin": 4,
+        "SeriesMax": 8,
+        "InstanceMin": 1,
+        "InstanceMax": 1,
+        "SizeMin": 5,
+        "SizeMax": 75
     },
     "TOMO": {
-        "seriesMin": 4,
-        "seriesMax": 8,
-        "instanceMin": 1,
-        "instanceMax": 1,
-        "sizeMin": 300,
-        "sizeMax": 750
+        "SeriesMin": 4,
+        "SeriesMax": 8,
+        "InstanceMin": 1,
+        "InstanceMax": 1,
+        "SizeMin": 300,
+        "SizeMax": 750
     },
     "US": {
-        "seriesMin": 1,
-        "seriesMax": 4,
-        "instanceMin": 1,
-        "instanceMax": 1,
-        "sizeMin": 25,
-        "sizeMax": 100
+        "SeriesMin": 1,
+        "SeriesMax": 4,
+        "InstanceMin": 1,
+        "InstanceMax": 1,
+        "SizeMin": 25,
+        "SizeMax": 100
     },
     "Pathology": {
-        "seriesMin": 1,
-        "seriesMax": 4,
-        "instanceMin": 1,
-        "instanceMax": 1,
-        "sizeMin": 10000,
-        "sizeMax": 20000
+        "SeriesMin": 1,
+        "SeriesMax": 4,
+        "InstanceMin": 1,
+        "InstanceMax": 1,
+        "SizeMin": 10000,
+        "SizeMax": 20000
     },
     "Tiny": {
-        "seriesMin": 1,
-        "seriesMax": 1,
-        "instanceMin": 1,
-        "instanceMax": 1,
-        "sizeMin": 1,
-        "sizeMax": 2
+        "SeriesMin": 1,
+        "SeriesMax": 1,
+        "InstanceMin": 1,
+        "InstanceMax": 1,
+        "SizeMin": 1,
+        "SizeMax": 2
     }
 }

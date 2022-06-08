@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,6 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Client.Services;
 using Moq;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Test
@@ -37,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Workflows = new System.Collections.Generic.List<string>() { "A", "B" }
             };
 
-            var json = JsonConvert.SerializeObject(aet);
+            var json = JsonSerializer.Serialize(aet, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
             var uriPath = "config/monaiaetitle";
@@ -76,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
             var uriPath = "config/monaiaetitle";
@@ -106,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 HostIp = "1.2.3.4"
             };
 
-            var json = JsonConvert.SerializeObject(aet);
+            var json = JsonSerializer.Serialize(aet, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
             var uriPath = "config/sourceaetitle";
@@ -145,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
             var uriPath = "config/sourceaetitle";
@@ -175,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 HostIp = "1.2.3.4"
             };
 
-            var json = JsonConvert.SerializeObject(aet);
+            var json = JsonSerializer.Serialize(aet, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
             var uriPath = "config/sourceaetitle";
@@ -214,7 +214,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
             var uriPath = "config/sourceaetitle";
@@ -254,7 +254,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 }
             };
 
-            var json = JsonConvert.SerializeObject(list);
+            var json = JsonSerializer.Serialize(list, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
             var uriPath = "config/destinationaetitle";
@@ -292,7 +292,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
             var uriPath = "config/destinationaetitle";

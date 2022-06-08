@@ -8,6 +8,7 @@ using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
@@ -26,7 +27,6 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using Moq.Protected;
-using Newtonsoft.Json;
 using xRetry;
 using Xunit;
 
@@ -915,7 +915,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 };
                 set.Add(DicomJson.ConvertDicomToJson(dataset));
             }
-            var json = JsonConvert.SerializeObject(set);
+            var json = JsonSerializer.Serialize(set);
             var stringContent = new StringContent(json);
             return new HttpResponseMessage(System.Net.HttpStatusCode.OK) { Content = stringContent };
         }

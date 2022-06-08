@@ -4,8 +4,7 @@
 
 using System.Collections.Generic;
 using System.Text;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -64,49 +63,49 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or sets the type of the inference request.
         /// </summary>
-        [JsonConverter(typeof(StringEnumConverter))]
-        [JsonProperty(PropertyName = "type")]
+        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [JsonPropertyName("type")]
         public InferenceRequestType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the DICOM studies to be retrieved.
         /// Used when <c>Type</c> is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestType.DicomUid" />.
         /// </summary>
-        [JsonProperty(PropertyName = "studies")]
+        [JsonPropertyName("studies")]
         public IList<RequestedStudy> Studies { get; set; }
 
         /// <summary>
         /// Gets or sets Patient ID that is used to query the data source.
         /// Used when <c>Type</c> is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestType.DicomPatientId" />.
         /// </summary>
-        [JsonProperty(PropertyName = "PatientID")]
+        [JsonPropertyName("PatientID")]
         public string PatientId { get; set; }
 
         /// <summary>
         /// Gets or sets Access Number that is used to query the data source.
         /// Used when <c>Type</c> is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestType.AccessionNumber" />.
         /// </summary>
-        [JsonProperty(PropertyName = "accessionNumber")]
+        [JsonPropertyName("accessionNumber")]
         public IList<string> AccessionNumber { get; set; }
 
         /// <summary>
         /// Gets or sets a list of FHIR resources to be retrived.
         /// </summary>
-        [JsonProperty(PropertyName = "resources")]
+        [JsonPropertyName("resources")]
         public IList<FhirResource> Resources { get; set; }
 
         /// <summary>
         /// Gets or set the data format used when storing FHIR resources.
         /// Defaults to JSON.
         /// </summary>
-        [JsonProperty(PropertyName = "fhirFormat")]
+        [JsonPropertyName("fhirFormat")]
         public FhirStorageFormat FhirFormat { get; set; } = FhirStorageFormat.Json;
 
         /// <summary>
         /// Gets or set the data format used when storing FHIR resources.
         /// Defaults to R3.
         /// </summary>
-        [JsonProperty(PropertyName = "fhirVersion")]
+        [JsonPropertyName("fhirVersion")]
         public FhirVersion FhirVersion { get; set; } = FhirVersion.R3;
 
         /// <summary>

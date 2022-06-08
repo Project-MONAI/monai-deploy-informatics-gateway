@@ -5,9 +5,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Common;
-using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or set the transaction ID of a request.
         /// </summary>
-        [JsonProperty(PropertyName = "transactionID")]
+        [JsonPropertyName("transactionID")]
         public string TransactionId { get; set; }
 
         /// <summary>
@@ -80,13 +80,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <para>Any value between <c>129-254</c> (inclusive) is set to <c>JOB_PRIORITY_HIGHER</c>.</para>
         /// <para>Value of <c>255</c> maps to <c>JOB_PRIORITY_IMMEDIATE</c>.</para>
         /// </remarks>
-        [JsonProperty(PropertyName = "priority")]
+        [JsonPropertyName("priority")]
         public byte Priority { get; set; } = 128;
 
         /// <summary>
         /// Gets or sets the details of the data associated with the inference request.
         /// </summary>
-        [JsonProperty(PropertyName = "inputMetadata")]
+        [JsonPropertyName("inputMetadata")]
         public InferenceRequestMetadata InputMetadata { get; set; }
 
         /// <summary>
@@ -94,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// When multiple data sources are specified, the system will query based on
         /// the order the list was received.
         /// </summary>
-        [JsonProperty(PropertyName = "inputResources")]
+        [JsonPropertyName("inputResources")]
         public IList<RequestInputDataResource> InputResources { get; set; }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// the deployed application via the MONAI Workload Manager.
         /// Followed by registering the results using the MONAI App SDK.
         /// </summary>
-        [JsonProperty(PropertyName = "outputResources")]
+        [JsonPropertyName("outputResources")]
         public IList<RequestOutputDataResource> OutputResources { get; set; }
 
         #region Internal Use Only
@@ -119,7 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <remarks>
         /// Internal use only.
         /// </remarks>
-        [JsonProperty(PropertyName = "state")]
+        [JsonPropertyName("state")]
         public InferenceRequestState State { get; set; } = InferenceRequestState.Queued;
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <remarks>
         /// Internal use only.
         /// </remarks>
-        [JsonProperty(PropertyName = "status")]
+        [JsonPropertyName("status")]
         public InferenceRequestStatus Status { get; set; } = InferenceRequestStatus.Unknown;
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <remarks>
         /// Internal use only.
         /// </remarks>
-        [JsonProperty(PropertyName = "storagePath")]
+        [JsonPropertyName("storagePath")]
         public string StoragePath { get; set; }
 
         /// <summary>
@@ -146,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <remarks>
         /// Internal use only.
         /// </remarks>
-        [JsonProperty(PropertyName = "tryCount")]
+        [JsonPropertyName("tryCount")]
         public int TryCount { get; set; } = 0;
 
         [JsonIgnore]

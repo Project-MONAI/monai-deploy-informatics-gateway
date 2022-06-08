@@ -4,8 +4,8 @@
 using System.Configuration;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             StudySpecs = LoadStudySpecs() ?? throw new NullReferenceException("study.json not found or empty.");
 
-            outputHelper.WriteLine($"StudySpecs={JsonConvert.SerializeObject(StudySpecs)}");
+            outputHelper.WriteLine($"StudySpecs={JsonSerializer.Serialize(StudySpecs)}");
 
             _config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             }
 
             var studyJson = File.ReadAllText(studyJsonPath);
-            return JsonConvert.DeserializeObject<Dictionary<string, StudySpec>>(studyJson);
+            return JsonSerializer.Deserialize<Dictionary<string, StudySpec>>(studyJson);
         }
 
         private void LoadConfiguration()

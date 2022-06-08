@@ -2,7 +2,7 @@
 // SPDX-FileCopyrightText: © 2019-2021 NVIDIA Corporation
 // SPDX-License-Identifier: Apache License 2.0
 
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -40,13 +40,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or sets the type of interface or a data source.
         /// </summary>
-        [JsonProperty(PropertyName = "interface")]
+        [JsonPropertyName("interface")]
         public InputInterfaceType Interface { get; set; }
 
         /// <summary>
         /// Gets or sets connection details of a data source.
         /// </summary>
-        [JsonProperty(PropertyName = "connectionDetails")]
+        [JsonPropertyName("connectionDetails")]
         public InputConnectionDetails ConnectionDetails { get; set; }
     }
 }

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -13,7 +14,6 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Client.Services;
 using Moq;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Test
@@ -33,10 +33,10 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             var status = new HealthStatusResponse()
             {
                 ActiveDimseConnections = 1,
-                Services = new Dictionary<string, ServiceStatus>() { { "A", ServiceStatus.Running } }
+                Services = new Dictionary<string, ServiceStatus>() { { "a", ServiceStatus.Running } }
             };
 
-            var json = JsonConvert.SerializeObject(status);
+            var json = JsonSerializer.Serialize(status, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -66,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 
@@ -164,7 +164,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
                 Status = 500
             };
 
-            var json = JsonConvert.SerializeObject(problem);
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
 
             var rootUri = new Uri("http://localhost:5000");
 

@@ -3,7 +3,7 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
@@ -19,13 +19,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or sets the Series Instance UID to be retrieved.
         /// </summary>
-        [JsonProperty(PropertyName = "SeriesInstanceUID")]
+        [JsonPropertyName("SeriesInstanceUID")]
         public string SeriesInstanceUid { get; set; }
 
         /// <summary>
         /// Gets or sets a list of DICOM instances to be retrieved.
         /// </summary>
-        [JsonProperty(PropertyName = "instances")]
+        [JsonPropertyName("instances")]
         public IList<RequestedInstance> Instances { get; set; }
     }
 }

@@ -5,11 +5,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Database
 {
@@ -27,7 +28,10 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList());
 
-            var jsonSerializerSettings = new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore };
+            var jsonSerializerSettings = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
 
             builder.HasKey(j => j.InferenceRequestId);
 
@@ -35,17 +39,17 @@ namespace Monai.Deploy.InformaticsGateway.Database
             builder.Property(j => j.Priority).IsRequired();
 
             builder.Property(j => j.InputMetadata).HasConversion(
-                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
-                        v => JsonConvert.DeserializeObject<InferenceRequestMetadata>(v, jsonSerializerSettings));
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<InferenceRequestMetadata>(v, jsonSerializerSettings));
 
             builder.Property(j => j.InputResources).HasConversion(
-                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
-                        v => JsonConvert.DeserializeObject<List<RequestInputDataResource>>(v, jsonSerializerSettings))
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<List<RequestInputDataResource>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(reqestInputResourceComparer);
 
             builder.Property(j => j.OutputResources).HasConversion(
-                        v => JsonConvert.SerializeObject(v, jsonSerializerSettings),
-                        v => JsonConvert.DeserializeObject<List<RequestOutputDataResource>>(v, jsonSerializerSettings))
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<List<RequestOutputDataResource>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(reqestOutputResourceComparer);
 
             builder.Property(j => j.State).IsRequired();

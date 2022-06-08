@@ -3,13 +3,13 @@
 
 using System;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Moq;
-using Newtonsoft.Json;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal("application/json", context.Response.ContentType);
             Assert.Equal(500, context.Response.StatusCode);
 
-            var problem = JsonConvert.DeserializeObject<ProblemDetails>(body);
+            var problem = JsonSerializer.Deserialize<ProblemDetails>(body);
             Assert.Equal("bad", problem.Title);
         }
     }
