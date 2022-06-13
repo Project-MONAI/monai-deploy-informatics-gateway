@@ -5,6 +5,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
@@ -37,7 +38,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         internal async Task HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
         {
-            if (_configuration.IgnoredSopClasses.Contains(request.SOPClassUID.UID))
+            Guard.Against.Null(request, nameof(request));
+            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
+            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
+            Guard.Against.Null(associationId, nameof(associationId));
+            Guard.Against.Null(uids, nameof(uids));
+
+            if (!AcceptsSopClass(uids.SopClassUid))
             {
                 _logger.InstanceIgnoredWIthMatchingSopClassUid(request.SOPClassUID.UID);
                 return;
@@ -66,6 +73,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = request.Dataset.GetSingleValue<string>(dicomTag);
             await _payloadAssembler.Queue(key, dicomInfo, _configuration.Timeout).ConfigureAwait(false);
+        }
+
+        private bool AcceptsSopClass(string sopClassUid)
+        {
+            Guard.Against.NullOrWhiteSpace(sopClassUid);
+
+            if (_configuration.IgnoredSopClasses.Any())
+            {
+                return !_configuration.IgnoredSopClasses.Contains(sopClassUid);
+            }
+
+            if (_configuration.AllowedSopClasses.Any())
+            {
+                return _configuration.AllowedSopClasses.Contains(sopClassUid);
+            }
+
+            return true; // always accept if non of the allowed/ignored list were defined.
         }
     }
 }

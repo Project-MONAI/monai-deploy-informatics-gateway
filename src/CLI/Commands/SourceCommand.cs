@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Rendering;
 using System.CommandLine.Rendering.Views;
 using System.Linq;

@@ -43,6 +43,11 @@ namespace Monai.Deploy.InformaticsGateway.Database
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(valueComparer);
+            builder.Property(j => j.AllowedSopClasses)
+                .HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(valueComparer);
         }
     }
 }

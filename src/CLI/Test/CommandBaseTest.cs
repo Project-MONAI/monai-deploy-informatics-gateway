@@ -4,7 +4,7 @@
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Hosting;
-using System.CommandLine.Invocation;
+using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Parsing;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -36,9 +36,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                         {
                             services.AddSingleton<ILoggerFactory>(p => _loggerFactory.Object);
                         });
-                    })
-                .AddGlobalOption(new Option<bool>(new[] { "--verbose", "-v" }, () => false, "Show verbose output"))
-                .AddCommand(new TestCommand());
+                    });
+            _commandLineBuilder.Command.AddGlobalOption(new Option<bool>(new[] { "--verbose", "-v" }, () => false, "Show verbose output"));
+            _commandLineBuilder.Command.AddCommand(new TestCommand());
             _paser = _commandLineBuilder.Build();
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);

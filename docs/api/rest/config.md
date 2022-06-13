@@ -41,7 +41,8 @@ curl --location --request GET 'http://localhost:5000/config/ae'
     "workflows": ["brain-tumor", "b75cd27a-068a-4f9c-b3da-e5d4ea08c55a"],
     "grouping": "0020,000D",
     "timeout": 5,
-    "ignoredSopClasses": ["1.2.840.10008.5.1.4.1.1.1.1"]
+    "ignoredSopClasses": ["1.2.840.10008.5.1.4.1.1.1.1"],
+    "allowedSopClasses": ["1.2.840.10008.5.1.4.1.1.1.2"]
   },
   {
     "name": "liver-seg",

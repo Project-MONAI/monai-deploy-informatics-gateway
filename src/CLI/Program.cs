@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         internal static Parser BuildParser()
         {
             var verboseOption = new Option<bool>(new[] { "--verbose", "-v" }, () => false, "Show verbose output");
-            return new CommandLineBuilder(new RootCommand($"{Strings.ApplicationName} CLI"))
+            var commandLineBuilder = new CommandLineBuilder(new RootCommand($"{Strings.ApplicationName} CLI"))
                         .UseHost(
                             _ => Host.CreateDefaultBuilder(),
                             host =>
@@ -37,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                                 _ = host.ConfigureLogging((context, logging) =>
                                 {
                                     var invocationContext = context.GetInvocationContext();
-                                    var verboseEnabled = invocationContext.ParseResult.ValueForOption(verboseOption);
+                                    var verboseEnabled = invocationContext.ParseResult.GetValueForOption(verboseOption);
                                     logging.ClearProviders();
 
                                     _ = logging.AddInformaticsGatewayConsole(options => options.MinimumLogLevel = verboseEnabled ? LogLevel.Trace : LogLevel.Information)
@@ -60,22 +60,22 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                                     services.AddTransient<IDockerClient>(p => new DockerClientConfiguration().CreateClient());
                                 });
                             })
-                        .AddGlobalOption(verboseOption)
-                        .AddCommand(new ConfigCommand())
-                        .AddCommand(new StartCommand())
-                        .AddCommand(new StopCommand())
-                        .AddCommand(new RestartCommand())
-                        .AddCommand(new AetCommand())
-                        .AddCommand(new SourceCommand())
-                        .AddCommand(new DestinationCommand())
-                        .AddCommand(new StatusCommand())
                         .UseAnsiTerminalWhenAvailable()
                         .UseExceptionHandler((exception, context) =>
                         {
                             Console.Out.WriteLineAsync(Crayon.Output.Bright.Red($"Exception: {exception.Message}"));
                         })
-                        .UseDefaults()
-                        .Build();
+                        .UseDefaults();
+            commandLineBuilder.Command.AddGlobalOption(verboseOption);
+            commandLineBuilder.Command.AddCommand(new ConfigCommand());
+            commandLineBuilder.Command.AddCommand(new StartCommand());
+            commandLineBuilder.Command.AddCommand(new StopCommand());
+            commandLineBuilder.Command.AddCommand(new RestartCommand());
+            commandLineBuilder.Command.AddCommand(new AetCommand());
+            commandLineBuilder.Command.AddCommand(new SourceCommand());
+            commandLineBuilder.Command.AddCommand(new DestinationCommand());
+            commandLineBuilder.Command.AddCommand(new StatusCommand());
+            return commandLineBuilder.Build();
         }
     }
 }

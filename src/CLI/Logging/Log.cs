@@ -111,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         [LoggerMessage(EventId = 30040, Level = LogLevel.Information, Message = "\t\t{name}: {status}")]
         public static partial void ServiceStatusItem(this ILogger logger, string name, ServiceStatus status);
 
-        [LoggerMessage(EventId = 30041, Level = LogLevel.Warning, Message = "Action cancelled.")]
+        [LoggerMessage(EventId = 30041, Level = LogLevel.Warning, Message = "Action canceled.")]
         public static partial void ActionCancelled(this ILogger logger);
 
         [LoggerMessage(EventId = 30042, Level = LogLevel.Critical, Message = "Error restarting {applicationName}: {message}.")]
@@ -137,6 +137,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         [LoggerMessage(EventId = 30049, Level = LogLevel.Information, Message = "Configuration updated successfully.")]
         public static partial void ConfigurationUpdated(this ILogger logger);
+
+        [LoggerMessage(EventId = 30050, Level = LogLevel.Information, Message = "\tAccepted SOP Classes: {alowedSopClasses}")]
+        public static partial void MonaiAeAllowedSops(this ILogger logger, string alowedSopClasses);
+
+        [LoggerMessage(EventId = 30051, Level = LogLevel.Warning, Message = "Instances without matching SOP class UIDs are accepted but dropped.")]
+        public static partial void AllowedSopClassesWarning(this ILogger logger);
 
         // Docker Runner
         [LoggerMessage(EventId = 31000, Level = LogLevel.Debug, Message = "Checking for existing {applicationName} ({version}) containers...")]
