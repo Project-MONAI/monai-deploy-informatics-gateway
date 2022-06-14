@@ -233,7 +233,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
             Assert.Equal("Validation error.", problem.Title);
-            Assert.Equal("Cannot specify both allowed ignored SOP classes at the same time, they are mutually exclusive.", problem.Detail);
+            Assert.Equal("Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.", problem.Detail);
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 

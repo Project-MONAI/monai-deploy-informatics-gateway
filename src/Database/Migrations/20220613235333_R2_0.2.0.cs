@@ -25,10 +25,20 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 oldClrType: typeof(string),
                 oldType: "TEXT",
                 oldNullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "AllowedSopClasses",
+                table: "MonaiApplicationEntities",
+                type: "TEXT",
+                nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "AllowedSopClasses",
+                table: "MonaiApplicationEntities");
+
             migrationBuilder.AlterColumn<string>(
                 name: "CorrelationId",
                 table: "Payload",

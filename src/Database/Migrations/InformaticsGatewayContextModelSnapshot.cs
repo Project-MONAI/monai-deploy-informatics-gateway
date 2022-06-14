@@ -48,6 +48,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("AllowedSopClasses")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Grouping")
                         .IsRequired()
                         .HasColumnType("TEXT");

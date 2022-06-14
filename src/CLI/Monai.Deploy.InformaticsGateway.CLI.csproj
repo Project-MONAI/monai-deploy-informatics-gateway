@@ -12,7 +12,7 @@ SPDX-License-Identifier: Apache License 2.0
     <SelfContained>true</SelfContained>
     <PublishTrimmed>false</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <AssemblyName>mig-cli</AssemblyName>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

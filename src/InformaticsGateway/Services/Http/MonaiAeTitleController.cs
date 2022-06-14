@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: ï¿½ 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
@@ -153,7 +153,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             if (item.IgnoredSopClasses.Any() && item.AllowedSopClasses.Any())
             {
-                throw new ConfigurationException($"Cannot specify both allowed ignored SOP classes at the same time, they are mutually exclusive.");
+                throw new ConfigurationException($"Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.");
             }
             if (!item.IsValid(out var validationErrors))
             {

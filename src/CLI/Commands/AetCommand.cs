@@ -143,10 +143,14 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 };
                 table.AddColumn(p => p.Name, new ContentView("Name".Underline()));
                 table.AddColumn(p => p.AeTitle, new ContentView("AE Title".Underline()));
+                table.AddColumn(p => p.Timeout, new ContentView("Timeout".Underline()));
+                table.AddColumn(p => p.Grouping, new ContentView("Grouping".Underline()));
                 table.AddColumn(p => p.Workflows.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.Workflows), new ContentView("Workflows".Underline()));
                 table.AddColumn(p => p.AllowedSopClasses.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.AllowedSopClasses), new ContentView("Accepted SOP Classes".Underline()));
                 table.AddColumn(p => p.IgnoredSopClasses.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.IgnoredSopClasses), new ContentView("Ignored SOP Classes".Underline()));
                 table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
+
+                logger.ListedNItems(items.Count);
             }
             return ExitCodes.Success;
         }
@@ -219,12 +223,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 if (result.IgnoredSopClasses.Any())
                 {
                     logger.MonaiAeIgnoredSops(string.Join(',', result.IgnoredSopClasses));
-                    logger.IgnoreSopClassesWarning();
+                    logger.IgnoredSopClassesWarning();
                 }
                 if (result.AllowedSopClasses.Any())
                 {
                     logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
-                    logger.IgnoreSopClassesWarning();
+                    logger.AcceptedSopClassesWarning();
                 }
             }
             catch (ConfigurationException ex)

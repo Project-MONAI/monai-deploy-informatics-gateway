@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public static partial void MonaiAeIgnoredSops(this ILogger logger, string ignoredSopClasses);
 
         [LoggerMessage(EventId = 30014, Level = LogLevel.Warning, Message = "Instances with matching SOP class UIDs are accepted but dropped.")]
-        public static partial void IgnoreSopClassesWarning(this ILogger logger);
+        public static partial void IgnoredSopClassesWarning(this ILogger logger);
 
         [LoggerMessage(EventId = 30015, Level = LogLevel.Critical, Message = "Error creating MONAI SCP AE Title {aeTitle}: {message}.")]
         public static partial void MonaiAeCreateCritical(this ILogger logger, string aeTitle, string message);
@@ -143,6 +143,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         [LoggerMessage(EventId = 30051, Level = LogLevel.Warning, Message = "Instances without matching SOP class UIDs are accepted but dropped.")]
         public static partial void AllowedSopClassesWarning(this ILogger logger);
+
+        [LoggerMessage(EventId = 30052, Level = LogLevel.Warning, Message = "Only instances with matching SOP class UIDs are accepted and stored.")]
+        public static partial void AcceptedSopClassesWarning(this ILogger logger);
+
+        [LoggerMessage(EventId = 30053, Level = LogLevel.Information, Message = "\n\nFound {count} items.")]
+        public static partial void ListedNItems(this ILogger logger, int count);
 
         // Docker Runner
         [LoggerMessage(EventId = 31000, Level = LogLevel.Debug, Message = "Checking for existing {applicationName} ({version}) containers...")]
