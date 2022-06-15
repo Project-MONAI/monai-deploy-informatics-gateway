@@ -425,6 +425,14 @@ MONAI Deploy Informatics Gateway R1
 Since MIG is the integration point with the medical systems for MONAI Deploy, it shall notify other subsystems when data is received and ready.
 
 
+#### Verification Strategy
+
+Send a dataset to MIG and expect MIG to emit a message to notify other subsystems of the location of the data.
+
+#### Target Release
+
+MONAI Deploy Informatics Gateway R1
+
 ### [REQ-FNC-03] MIG SHALL wait for data to arrive before submitting a job
 
 #### Background
