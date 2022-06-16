@@ -27,7 +27,6 @@ using Monai.Deploy.Messaging.Configuration;
 using Monai.Deploy.Messaging.RabbitMq;
 using Monai.Deploy.Storage;
 using Monai.Deploy.Storage.Configuration;
-using Monai.Deploy.Storage.MinIo;
 
 namespace Monai.Deploy.InformaticsGateway
 {
@@ -74,20 +73,11 @@ namespace Monai.Deploy.InformaticsGateway
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<InformaticsGatewayConfiguration>()
-                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway"))
-                        .PostConfigure(options =>
-                        {
-                        });
+                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway"));
                     services.AddOptions<MessageBrokerServiceConfiguration>()
-                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"))
-                        .PostConfigure(options =>
-                        {
-                        });
+                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"));
                     services.AddOptions<StorageServiceConfiguration>()
-                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"))
-                        .PostConfigure(options =>
-                        {
-                        });
+                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"));
 
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
 
@@ -106,14 +96,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
                     services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();
 
-                    services.AddSingleton<MinIoStorageService>();
-                    services.AddSingleton<IStorageService>(implementationFactory =>
-                    {
-                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
-                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
-                        var logger = implementationFactory.GetService<ILogger<Program>>();
-                        return serviceProvider.LocateService<IStorageService>(logger, options.Value.Storage.ServiceAssemblyName);
-                    });
+                    services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value);
 
                     services.UseRabbitMq();
                     services.AddSingleton<RabbitMqMessagePublisherService>();
@@ -133,7 +116,6 @@ namespace Monai.Deploy.InformaticsGateway
                         var logger = implementationFactory.GetService<ILogger<Program>>();
                         return serviceProvider.LocateService<IMessageBrokerSubscriberService>(logger, options.Value.Messaging.SubscriberServiceAssemblyName);
                     });
-
 
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();

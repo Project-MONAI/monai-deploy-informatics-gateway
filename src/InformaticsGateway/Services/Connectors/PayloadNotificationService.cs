@@ -26,7 +26,7 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
-using Monai.Deploy.Storage;
+using Monai.Deploy.Storage.API;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
@@ -229,7 +229,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     { FileMetadataKeys.Workflows, workflows.IsNullOrEmpty() ? string.Empty : string.Join(',', workflows) }
                 };
 
-            await _storageService.PutObject(_options.Value.Storage.StorageServiceBucketName, destinationPath, stream, stream.Length, contentType, metadata, cancellationToken).ConfigureAwait(false);
+            await _storageService.PutObjectAsync(_options.Value.Storage.StorageServiceBucketName, destinationPath, stream, stream.Length, contentType, metadata, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task PublishPayloadActionBlock(Payload payload)
