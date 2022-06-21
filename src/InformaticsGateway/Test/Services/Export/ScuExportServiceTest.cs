@@ -196,7 +196,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _logger.VerifyLogging($"SCU Export configuration error: Specified destination 'pacs' does not exist.", LogLevel.Error, Times.Once());
         }
 
-        [RetryFact(10, 250, DisplayName = "Assocation rejected")]
+        [RetryFact(1, 250, DisplayName = "Association rejected")]
         public async Task AssociationRejected()
         {
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;

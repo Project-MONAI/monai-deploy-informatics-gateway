@@ -219,7 +219,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
 
-            var minioClient = new MinioClient(_configuration.StorageServiceOptions.Endpoint, _configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
+            var minioClient = new MinioClient()
+                .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
+                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
 
             var dicomSizes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
             _rabbitMqHooks.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
@@ -232,26 +234,34 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 foreach (var file in request.Payload)
                 {
                     var dicomValidationKey = string.Empty;
-                    await minioClient.GetObjectAsync(request.Bucket, $"{request.PayloadId}/{file.Path}", (stream) =>
-                    {
-                        using var memoryStream = new MemoryStream();
-                        stream.CopyTo(memoryStream);
-                        memoryStream.Position = 0;
-                        var dicomFile = DicomFile.Open(memoryStream);
-                        dicomValidationKey = dicomFile.GenerateFileName();
-                        dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
-                    });
+                    var getObjectArgs = new GetObjectArgs()
+                        .WithBucket(request.Bucket)
+                        .WithObject($"{request.PayloadId}/{file.Path}")
+                        .WithCallbackStream((stream) =>
+                        {
+                            using var memoryStream = new MemoryStream();
+                            stream.CopyTo(memoryStream);
+                            memoryStream.Position = 0;
+                            var dicomFile = DicomFile.Open(memoryStream);
+                            dicomValidationKey = dicomFile.GenerateFileName();
+                            dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
+                        });
+                    await minioClient.GetObjectAsync(getObjectArgs);
 
-                    await minioClient.GetObjectAsync(request.Bucket, $"{request.PayloadId}/{file.Metadata}", (stream) =>
-                    {
-                        using var memoryStream = new MemoryStream();
-                        stream.CopyTo(memoryStream);
-                        var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+                    var getMetadataObjectArgs = new GetObjectArgs()
+                        .WithBucket(request.Bucket)
+                        .WithObject($"{request.PayloadId}/{file.Metadata}")
+                        .WithCallbackStream((stream) =>
+                        {
+                            using var memoryStream = new MemoryStream();
+                            stream.CopyTo(memoryStream);
+                            var json = Encoding.UTF8.GetString(memoryStream.ToArray());
 
-                        var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
-                        var key = dicomFileFromJson.GenerateFileName();
-                        key.Should().Be(dicomValidationKey);
-                    });
+                            var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
+                            var key = dicomFileFromJson.GenerateFileName();
+                            key.Should().Be(dicomValidationKey);
+                        });
+                    await minioClient.GetObjectAsync(getMetadataObjectArgs);
                 }
             }
         }
