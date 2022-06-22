@@ -24,7 +24,6 @@ using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Configuration;
-using Monai.Deploy.Messaging.RabbitMq;
 using Monai.Deploy.Storage;
 using Monai.Deploy.Storage.Configuration;
 
@@ -98,24 +97,8 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value);
 
-                    services.UseRabbitMq();
-                    services.AddSingleton<RabbitMqMessagePublisherService>();
-                    services.AddSingleton<IMessageBrokerPublisherService>(implementationFactory =>
-                    {
-                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
-                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
-                        var logger = implementationFactory.GetService<ILogger<Program>>();
-                        return serviceProvider.LocateService<IMessageBrokerPublisherService>(logger, options.Value.Messaging.PublisherServiceAssemblyName);
-                    });
-
-                    services.AddSingleton<RabbitMqMessageSubscriberService>();
-                    services.AddSingleton<IMessageBrokerSubscriberService>(implementationFactory =>
-                    {
-                        var options = implementationFactory.GetService<IOptions<InformaticsGatewayConfiguration>>();
-                        var serviceProvider = implementationFactory.GetService<IServiceProvider>();
-                        var logger = implementationFactory.GetService<ILogger<Program>>();
-                        return serviceProvider.LocateService<IMessageBrokerSubscriberService>(logger, options.Value.Messaging.SubscriberServiceAssemblyName);
-                    });
+                    services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value);
+                    services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value);
 
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();

@@ -67,23 +67,38 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
-            var inferenceRequest = repository.GetInferenceRequest(exportRequestData.Destination);
+
+            foreach (var transaction in exportRequestData.Destinations)
+            {
+                await HandleTransaction(exportRequestData, repository, transaction, cancellationToken).ConfigureAwait(false);
+            }
+
+            return exportRequestData;
+        }
+
+        private async Task HandleTransaction(ExportRequestDataMessage exportRequestData, IInferenceRequestRepository repository, string transaction, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
+            Guard.Against.Null(repository, nameof(repository));
+            Guard.Against.NullOrWhiteSpace(transaction, nameof(transaction));
+
+            var inferenceRequest = repository.GetInferenceRequest(transaction);
             if (inferenceRequest is null)
             {
-                var errorMessage = $"The specified inference request '{exportRequestData.Destination}' cannot be found and will not be exported.";
-                _logger.InferenceRequestExportDestinationNotFound(exportRequestData.Destination);
+                var errorMessage = $"The specified inference request '{transaction}' cannot be found and will not be exported.";
+                _logger.InferenceRequestExportDestinationNotFound(transaction);
                 exportRequestData.SetFailed(errorMessage);
-                return exportRequestData;
+                return;
             }
 
             var destinations = inferenceRequest.OutputResources.Where(p => p.Interface == InputInterfaceType.DicomWeb);
 
             if (!destinations.Any())
             {
-                var errorMessage = "The inference request contains no `outputResources` nor any DICOMweb export destinations.";
+                var errorMessage = "The inference request '{transaction}' contains no `outputResources` nor any DICOMweb export destinations.";
                 _logger.InferenceRequestExportNoDestinationNotFound();
                 exportRequestData.SetFailed(errorMessage);
-                return exportRequestData;
+                return;
             }
 
             foreach (var destination in destinations)
@@ -96,8 +111,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 _logger.ExportToDicomWeb(destination.ConnectionDetails.Uri);
                 await ExportToDicomWebDestination(dicomWebClient, exportRequestData, destination, cancellationToken).ConfigureAwait(false);
             }
-
-            return exportRequestData;
         }
 
         private async Task ExportToDicomWebDestination(IDicomWebClient dicomWebClient, ExportRequestDataMessage exportRequestData, RequestOutputDataResource destination, CancellationToken cancellationToken)

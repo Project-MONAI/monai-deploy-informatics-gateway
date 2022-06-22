@@ -21,7 +21,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
-using Monai.Deploy.Messaging;
+using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IMessageBrokerSubscriberService _messageSubscriber;
         private readonly IMessageBrokerPublisherService _messagePublisher;
         private readonly IServiceScope _scope;
-        private readonly Dictionary<string, ExportRequestEvent> _exportRequests;
+        private readonly Dictionary<string, ExportRequestEventDetails> _exportRequests;
         private bool _disposedValue;
 
         public abstract string RoutingKey { get; }
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _messageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
             _messagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
 
-            _exportRequests = new Dictionary<string, ExportRequestEvent>();
+            _exportRequests = new Dictionary<string, ExportRequestEventDetails>();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -127,7 +127,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     CancellationToken = _cancellationTokenSource.Token
                 };
 
-                var exportFlow = new TransformManyBlock<ExportRequestEvent, ExportRequestDataMessage>(
+                var exportFlow = new TransformManyBlock<ExportRequestEventDetails, ExportRequestDataMessage>(
                     (exportRequest) => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
                     executionOptions);
 
@@ -158,8 +158,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     exportRequest.MessageId = eventArgs.Message.MessageId;
                     exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
 
-                    _exportRequests.Add(exportRequest.ExportTaskId, exportRequest);
-                    exportFlow.Post(exportRequest);
+                    var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
+
+                    _exportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
+                    exportFlow.Post(exportRequestWithDetails);
                 }
 
                 exportFlow.Complete();
@@ -178,7 +180,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestEvent exportRequest, CancellationToken cancellationToken)
+        private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestEventDetails exportRequest, CancellationToken cancellationToken)
         {
             Guard.Against.Null(exportRequest, nameof(exportRequest));
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequest.ExportTaskId }, { "CorrelationId", exportRequest.CorrelationId } });
@@ -253,7 +255,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count());
 
-            var exportCompleteEvent = new ExportCompleteEvent(exportRequest);
+            var exportCompleteEvent = new ExportCompleteEvent(exportRequest, exportRequest.Status);
             var jsonMessage = new JsonMessage<ExportCompleteEvent>(exportCompleteEvent, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequest.CorrelationId, exportRequest.DeliveryTag);
 
             Policy
