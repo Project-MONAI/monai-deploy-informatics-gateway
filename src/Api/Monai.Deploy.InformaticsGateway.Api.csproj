@@ -14,13 +14,13 @@ SPDX-License-Identifier: Apache License 2.0
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="GitVersion.MsBuild" Version="5.9.0">
+        <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
             <PrivateAssets>All</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Macross.Json.Extensions" Version="2.2.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.3" />
+        <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.6" />
       <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.0-rc0034" />
-      <PackageReference Include="Monai.Deploy.Storage" Version="0.1.0-rc0019" />
+      <PackageReference Include="Monai.Deploy.Storage" Version="0.1.0-rc0058" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
     </ItemGroup>
 

@@ -25,7 +25,7 @@ using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
-using Monai.Deploy.Storage;
+using Monai.Deploy.Storage.API;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
@@ -202,7 +202,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                        .Execute(() =>
                        {
                            _logger.DownloadingFile(file);
-                           var task = storageService.GetObject(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
+                           var task = storageService.GetObjectAsync(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
                            {
                                using var memoryStream = new MemoryStream();
                                stream.CopyTo(memoryStream);
