@@ -118,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 stream.Position = 0;
                 var puObjectArgs = new PutObjectArgs();
                 puObjectArgs.WithBucket(_configuration.TestRunnerOptions.Bucket)
-                    .WithFileName(filename)
+                    .WithObject(filename)
                     .WithStreamData(stream)
                     .WithObjectSize(stream.Length);
                 await minioClient.PutObjectAsync(puObjectArgs);

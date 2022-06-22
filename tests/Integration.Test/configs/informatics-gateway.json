@@ -36,13 +36,13 @@
       "temporary": "/payloads",
       "bucketName": "monai",
       "watermarkPercent": 95,
+      "serviceAssemblyName": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO",
       "settings": {
         "endpoint": "minio:9000",
         "accessKey": "minioadmin",
         "accessToken": "minioadmin",
         "securedConnection": false,
-        "region": "",
-        "credentialServiceUrl": "http://minio:9000"
+        "region": ""
       }
     }
   },
