@@ -95,7 +95,7 @@ jobs:
       uses: github/codeql-action/analyze@v1
 
     - name: Secret detection
-      uses: zricethezav/gitleaks-action@master
+      uses: gitleaks/gitleaks-action@v1.6.0
 
   unit-test:
     runs-on: ubuntu-latest
