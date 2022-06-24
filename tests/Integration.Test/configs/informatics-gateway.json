@@ -16,6 +16,7 @@
       }
     },
     "messaging": {
+      "publisherServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ",
       "publisherSettings": {
         "endpoint": "rabbitmq",
         "username": "rabbitmq",
@@ -23,6 +24,7 @@
         "virtualHost": "/",
         "exchange": "monaideploy"
       },
+      "subscriberServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
       "subscriberSettings": {
         "endpoint": "rabbitmq",
         "username": "rabbitmq",

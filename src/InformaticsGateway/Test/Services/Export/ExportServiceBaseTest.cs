@@ -13,7 +13,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
-using Monai.Deploy.Messaging;
+using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
@@ -245,10 +245,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             {
                 ExportTaskId = Guid.NewGuid().ToString(),
                 CorrelationId = Guid.NewGuid().ToString(),
-                Destination = "destination",
+                Destinations = new[] { "destination" },
                 Files = new[] { "file1", "file2" },
                 MessageId = Guid.NewGuid().ToString(),
-                WorkflowId = Guid.NewGuid().ToString(),
+                WorkflowInstanceId = Guid.NewGuid().ToString(),
             };
 
             var jsonMessage = new JsonMessage<ExportRequestEvent>(exportRequestEvent, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequestEvent.CorrelationId, exportRequestEvent.DeliveryTag);

@@ -26,9 +26,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             get { return _exportRequest.CorrelationId; }
         }
 
-        public string Destination
+        public string[] Destinations
         {
-            get { return _exportRequest.Destination; }
+            get { return _exportRequest.Destinations; }
         }
 
         public string Filename { get; }

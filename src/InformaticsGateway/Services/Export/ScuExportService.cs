@@ -54,18 +54,30 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
 
+            foreach (var destinationName in exportRequestData.Destinations)
+            {
+                await HandleDesination(exportRequestData, destinationName, cancellationToken);
+            }
+
+            return exportRequestData;
+        }
+
+        private async Task HandleDesination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
+
             var manualResetEvent = new ManualResetEvent(false);
             IDicomClient client = null;
             DestinationApplicationEntity destination = null;
             try
             {
-                destination = LookupDestination(exportRequestData);
+                destination = LookupDestination(destinationName);
             }
             catch (ConfigurationException ex)
             {
                 _logger.ScuExportConfigurationError(ex.Message, ex);
                 exportRequestData.SetFailed(ex.Message);
-                return exportRequestData;
+                return;
             }
 
             try
@@ -107,26 +119,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 HandleCStoreException(ex, exportRequestData);
             }
-
-            return exportRequestData;
         }
 
-        private DestinationApplicationEntity LookupDestination(ExportRequestDataMessage exportRequestData)
+        private DestinationApplicationEntity LookupDestination(string destinationName)
         {
-            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
-
-            if (string.IsNullOrWhiteSpace(exportRequestData.Destination))
+            if (string.IsNullOrWhiteSpace(destinationName))
             {
                 throw new ConfigurationException("Export task does not have destination set.");
             }
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
-            var destination = repository.FirstOrDefault(p => p.Name.Equals(exportRequestData.Destination, StringComparison.InvariantCultureIgnoreCase));
+            var destination = repository.FirstOrDefault(p => p.Name.Equals(destinationName, StringComparison.InvariantCultureIgnoreCase));
 
             if (destination is null)
             {
-                throw new ConfigurationException($"Specified destination '{exportRequestData.Destination}' does not exist.");
+                throw new ConfigurationException($"Specified destination '{destinationName}' does not exist.");
             }
 
             return destination;
