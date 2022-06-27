@@ -19,6 +19,12 @@
         "BlockedPackages": [],
         "BlacklistedPackages": []
     },
+    "OssIndex": {
+      "ApiToken": "OSSINDEXAPI_TOKEN",
+      "Username": "OSSINDEXAPI_USERNAME",
+      "Enabled": true,
+      "BreakIfCannotRun": false
+    },
     "GitHubAdvisoryDatabase": {
         "ApiToken": "",
         "Username": "",
