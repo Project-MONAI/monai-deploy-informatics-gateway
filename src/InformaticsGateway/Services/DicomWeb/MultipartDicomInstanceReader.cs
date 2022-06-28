@@ -80,7 +80,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             }
             catch (Exception ex)
             {
-
                 throw new ConvertStreamException("Error converting data stream.", ex);
             }
         }

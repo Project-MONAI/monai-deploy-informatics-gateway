@@ -141,6 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             if (!string.IsNullOrWhiteSpace(studyInstanceUid) && !studyInstanceUid.Equals(uids.StudyInstanceUid, StringComparison.OrdinalIgnoreCase))
             {
                 AddFailure(DicomStatus.StorageDataSetDoesNotMatchSOPClassWarning, uids);
+                return;
             }
 
             DicomStoragePaths storagePaths;
@@ -192,13 +193,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             await _payloadAssembler.Queue(correlationId, dicomInfo, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
             _logger.QueuedInstanceUsingCorrelationId();
 
-            if (!string.IsNullOrWhiteSpace(studyInstanceUid) && !studyInstanceUid.Equals(uids.StudyInstanceUid, StringComparison.OrdinalIgnoreCase))
-            {
-                AddSuccess(DicomStatus.StorageDataSetDoesNotMatchSOPClassWarning, uids);
-            }
-            else
-            {
-                AddSuccess(null, uids);
+            AddSuccess(null, uids);
 
             _storedCount++;
         }

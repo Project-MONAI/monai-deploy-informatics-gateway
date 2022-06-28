@@ -53,9 +53,16 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
 
         /// <summary>
-        /// Gets or set number of threads used for payload upload. Default is 1;
+        /// Gets or set number of payloads to be processed at a given time. Default is 1;
         /// </summary>
-        public int Concurrentcy { get; set; } = 1;
+        [ConfigurationKeyName("payloadProcessThreads")]
+        public int PayloadProcessThreads { get; set; } = 1;
+
+        /// <summary>
+        /// Gets or set the maximum number of concurrent uploads. Default is 2;
+        /// </summary>
+        [ConfigurationKeyName("concurrentUploads")]
+        public int ConcurrentUploads { get; set; } = 2;
 
         [JsonIgnore]
         public string TemporaryDataDirFullPath

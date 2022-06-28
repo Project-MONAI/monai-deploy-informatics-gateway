@@ -222,7 +222,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 Assert.Equal(DicomStatus.StorageDataSetDoesNotMatchSOPClassWarning.Code, warningReason);
             }
 
-            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageInfo>(), It.IsAny<uint>()));
+            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageInfo>(), It.IsAny<uint>()), Times.Never());
         }
 
         [Fact(DisplayName = "Save - queues instances with Payload Assembler")]

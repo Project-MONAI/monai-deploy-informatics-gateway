@@ -70,5 +70,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 720, Level = LogLevel.Debug, Message = "Payload {id} deleted.")]
         public static partial void PayloadDeleted(this ILogger logger, Guid id);
+
+        [LoggerMessage(EventId = 721, Level = LogLevel.Debug, Message = "Upload statistics: {threads} threads, {seconds} seconds.")]
+        public static partial void UploadStats(this ILogger logger, int threads, double seconds);
     }
 }

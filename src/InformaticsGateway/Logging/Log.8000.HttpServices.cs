@@ -103,10 +103,10 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8108, Level = LogLevel.Information, Message = "STOW instance queued.")]
         public static partial void QueuedInstanceUsingCorrelationId(this ILogger logger);
 
-        [LoggerMessage(EventId = 8108, Level = LogLevel.Information, Message = "Saving {count} DICOMWeb STOW-RS streams.")]
+        [LoggerMessage(EventId = 8109, Level = LogLevel.Information, Message = "Saving {count} DICOMWeb STOW-RS streams.")]
         public static partial void SavingStream(this ILogger logger, int count);
 
-        [LoggerMessage(EventId = 8109, Level = LogLevel.Warning, Message = "Ignoring zero length stream.")]
+        [LoggerMessage(EventId = 8110, Level = LogLevel.Warning, Message = "Ignoring zero length stream.")]
         public static partial void ZeroLengthDicomWebStowStream(this ILogger logger);
     }
 }
