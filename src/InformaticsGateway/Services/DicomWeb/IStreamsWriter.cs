@@ -141,6 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             if (!string.IsNullOrWhiteSpace(studyInstanceUid) && !studyInstanceUid.Equals(uids.StudyInstanceUid, StringComparison.OrdinalIgnoreCase))
             {
                 AddFailure(DicomStatus.StorageDataSetDoesNotMatchSOPClassWarning, uids);
+                return;
             }
 
             DicomStoragePaths storagePaths;

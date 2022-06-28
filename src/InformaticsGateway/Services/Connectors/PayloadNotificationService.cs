@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
@@ -90,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     async (task) => await UploadPayloadActionBlock(task, cancellationToken).ConfigureAwait(false),
                     new ExecutionDataflowBlockOptions
                     {
-                        MaxDegreeOfParallelism = _options.Value.Storage.Concurrentcy,
+                        MaxDegreeOfParallelism = _options.Value.Storage.PayloadProcessThreads,
                         MaxMessagesPerTask = 1,
                         CancellationToken = cancellationToken
                     });
@@ -155,8 +156,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private async Task UploadPayloadActionBlock(Payload payload, CancellationToken cancellationToken)
         {
             Guard.Against.Null(payload, nameof(payload));
+            var stopwatch = new Stopwatch();
             try
             {
+                stopwatch.Start();
                 await Upload(payload, cancellationToken).ConfigureAwait(false);
 
                 if (payload.IsUploadComplete())
@@ -185,6 +188,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     }
                 }
             }
+            finally
+            {
+                stopwatch.Stop();
+                _logger.UploadStats(_options.Value.Storage.ConcurrentUploads, stopwatch.Elapsed.TotalSeconds);
+            }
         }
 
         private async Task Upload(Payload payload, CancellationToken cancellationToken)
@@ -193,10 +201,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             _logger.UploadingPayloadToBucket(payload.Id, _options.Value.Storage.StorageServiceBucketName);
 
-            for (var index = payload.Files.Count - 1; index >= 0; index--)
+            var options = new ParallelOptions
             {
-                var file = payload.Files[index];
+                CancellationToken = cancellationToken,
+                MaxDegreeOfParallelism = _options.Value.Storage.ConcurrentUploads
+            };
 
+            await Parallel.ForEachAsync(payload.Files, options, async (file, cancellationToke) =>
+            {
                 switch (file)
                 {
                     case DicomFileStorageInfo dicom:
@@ -206,10 +218,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         }
                         break;
                 }
+
                 await UploadPayloadFile(payload.Id, file.UploadFilePath, file.FilePath, file.Source, file.Workflows, file.ContentType, cancellationToken).ConfigureAwait(false);
                 file.SetUploaded();
                 _instanceCleanupQueue.Queue(file);
-            }
+            }).ConfigureAwait(false);
         }
 
         private async Task UploadPayloadFile(Guid payloadId, string destinationPath, string sourcePath, string source, List<string> workflows, string contentType, CancellationToken cancellationToken)
