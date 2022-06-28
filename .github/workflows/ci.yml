@@ -89,13 +89,16 @@ jobs:
       working-directory: ./src
 
     - name: NuGetDefense Scanning
-      run: nugetdefense -p src/${{ env.SOLUTION }} --settings-file NuGetDefense.json
+      run: |
+        sed -i "s/OSSINDEXAPI_TOKEN/$OSSINDEXAPI_TOKEN/g" NuGetDefense.json
+        sed -i "s/OSSINDEXAPI_USERNAME/$OSSINDEXAPI_USERNAME/g" NuGetDefense.json
+        nugetdefense -p src/${{ env.SOLUTION }} --settings-file NuGetDefense.json
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
 
     - name: Secret detection
-      uses: zricethezav/gitleaks-action@master
+      uses: gitleaks/gitleaks-action@v1.6.0
 
   unit-test:
     runs-on: ubuntu-latest

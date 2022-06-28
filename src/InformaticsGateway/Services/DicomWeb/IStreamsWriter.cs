@@ -90,9 +90,25 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
             return new StowResult
             {
-                StatusCode = _failureCount == 0 ? StatusCodes.Status200OK : _failureCount == streams.Count ? StatusCodes.Status400BadRequest : StatusCodes.Status202Accepted,
+                StatusCode = GetStatusCode(streams.Count),
                 Data = _resultDicomDataset
             };
+        }
+
+        private int GetStatusCode(int instancesReceived)
+        {
+            if (_failureCount == 0)
+            {
+                return StatusCodes.Status200OK;
+            }
+            else if (_failureCount == instancesReceived)
+            {
+                return StatusCodes.Status409Conflict;
+            }
+            else
+            {
+                return StatusCodes.Status202Accepted;
+            }
         }
 
         private async Task SaveInstance(Stream stream, string studyInstanceUid, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
@@ -121,6 +137,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 { "SeriesInstanceUID", uids.SeriesInstanceUid},
                 { "SOPInstanceUID", uids.SopInstanceUid}
             });
+
+            if (!string.IsNullOrWhiteSpace(studyInstanceUid) && !studyInstanceUid.Equals(uids.StudyInstanceUid, StringComparison.OrdinalIgnoreCase))
+            {
+                AddFailure(DicomStatus.StorageDataSetDoesNotMatchSOPClassWarning, uids);
+            }
 
             DicomStoragePaths storagePaths;
             if (_storageInfo.HasSpaceAvailableToStore)
@@ -177,8 +198,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             }
             else
             {
-                AddSuccess(null, uids);
-            }
+            AddSuccess(null, uids);
+
             _storedCount++;
         }
 

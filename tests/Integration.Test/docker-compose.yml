@@ -87,8 +87,9 @@ services:
     image: "ghcr.io/project-monai/monai-deploy-informatics-gateway:${TAG}"
     volumes:
       - ./configs/informatics-gateway.json:/opt/monai/ig/appsettings.json
-      - ./.run/ig/payloads:/payloads
-      - ./.run/ig/database:/database
+      - ./.run/ig/payloads:/payloads/
+      - ./.run/ig/database:/database/
+      - ./bin/Release/net6.0:/opt/monai/ig/plug-ins/
     ports:
       - "104:104"
       - "5000:5000"

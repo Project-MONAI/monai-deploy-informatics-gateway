@@ -59,7 +59,7 @@ class App():
         self._pika_connection = pika.BlockingConnection(pika.ConnectionParameters(
             host=config['host'], credentials=credentials, virtual_host=config['virtual_host']))
         self._pika_channel = self._pika_connection.channel()
-        self._pika_channel.exchange_declare(
+        self._pika_channel.exchange_declare(durable=True,
             exchange=config['exchange'], exchange_type='topic')
         result = self._pika_channel.queue_declare('', exclusive=True)
         self.messaging_queue_name = result.method.queue

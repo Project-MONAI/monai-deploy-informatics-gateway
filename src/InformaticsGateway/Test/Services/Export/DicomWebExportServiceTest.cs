@@ -21,11 +21,12 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
-using Monai.Deploy.Messaging;
+using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Storage;
+using Monai.Deploy.Storage.API;
 using Moq;
 using Moq.Protected;
 using xRetry;
@@ -121,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
-            _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
                 .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
                 {
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
@@ -181,7 +182,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
-            _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
                 .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
                 {
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
@@ -253,7 +254,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
-            _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
                 .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
                 {
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
@@ -342,7 +343,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
-            _storageService.Setup(p => p.GetObject(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
                 .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
                 {
                     callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
@@ -423,10 +424,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             {
                 ExportTaskId = Guid.NewGuid().ToString(),
                 CorrelationId = Guid.NewGuid().ToString(),
-                Destination = transactionId,
+                Destinations = new[] { transactionId },
                 Files = new[] { "file1" },
                 MessageId = Guid.NewGuid().ToString(),
-                WorkflowId = Guid.NewGuid().ToString(),
+                WorkflowInstanceId = Guid.NewGuid().ToString(),
             };
             var jsonMessage = new JsonMessage<ExportRequestEvent>(exportRequestEvent, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequestEvent.CorrelationId, exportRequestEvent.DeliveryTag);
 

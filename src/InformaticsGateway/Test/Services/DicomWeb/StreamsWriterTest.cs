@@ -73,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString());
 
-            Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
+            Assert.Equal(StatusCodes.Status409Conflict, result.StatusCode);
         }
 
         [Fact(DisplayName = "Save - adds instance to failure SQ when out of space")]
@@ -94,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString());
 
-            Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
+            Assert.Equal(StatusCodes.Status409Conflict, result.StatusCode);
 
             var failedSopSequence = result.Data.GetSequence(DicomTag.FailedSOPSequence);
             Assert.Equal(streams.Count, failedSopSequence.Items.Count);
@@ -131,7 +131,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString());
 
-            Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
+            Assert.Equal(StatusCodes.Status409Conflict, result.StatusCode);
 
             var failedSopSequence = result.Data.GetSequence(DicomTag.FailedSOPSequence);
             Assert.Equal(streams.Count, failedSopSequence.Items.Count);
@@ -168,7 +168,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString());
 
-            Assert.Equal(StatusCodes.Status400BadRequest, result.StatusCode);
+            Assert.Equal(StatusCodes.Status409Conflict, result.StatusCode);
 
             var failedSopSequence = result.Data.GetSequence(DicomTag.FailedSOPSequence);
             Assert.Equal(streams.Count, failedSopSequence.Items.Count);
@@ -184,8 +184,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             }
         }
 
-        [Fact(DisplayName = "Save - queues instances with warning when StudyInstanceUIDs don't match")]
-        public async Task Save_QueuesInstancesWithWarning()
+        [Fact(DisplayName = "Save - ignores instances with warning when StudyInstanceUIDs don't match")]
+        public async Task Save_IgnoresInstancesWithWarning()
         {
             var uids = new List<StudySerieSopUids>();
             SetupDicomToolkitMocks(uids);
@@ -207,9 +207,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 correlationId,
                 Guid.NewGuid().ToString());
 
-            Assert.Equal(StatusCodes.Status200OK, result.StatusCode);
+            Assert.Equal(StatusCodes.Status409Conflict, result.StatusCode);
 
-            var referencedSopSequence = result.Data.GetSequence(DicomTag.ReferencedSOPSequence);
+            var referencedSopSequence = result.Data.GetSequence(DicomTag.FailedSOPSequence);
             Assert.Equal(streams.Count, referencedSopSequence.Items.Count);
 
             foreach (var item in referencedSopSequence.Items)
@@ -218,7 +218,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 Assert.Contains(uids, p => p.SopInstanceUid == uid);
                 uid = item.GetSingleValue<string>(DicomTag.ReferencedSOPClassUID);
                 Assert.Contains(uids, p => p.SopClassUid == uid);
-                var warningReason = item.GetSingleValue<ushort>(DicomTag.WarningReason);
+                var warningReason = item.GetSingleValue<ushort>(DicomTag.FailureReason);
                 Assert.Equal(DicomStatus.StorageDataSetDoesNotMatchSOPClassWarning.Code, warningReason);
             }
 

@@ -4,41 +4,41 @@ SPDX-License-Identifier: Apache License 2.0
 -->
 
 <Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <RootNamespace>Monai.Deploy.InformaticsGateway.Api</RootNamespace>
-        <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>9.0</LangVersion>
-        <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-        <IsTrimmable>true</IsTrimmable>
-        <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
-    </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Monai.Deploy.InformaticsGateway.Api</RootNamespace>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>9.0</LangVersion>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <IsTrimmable>true</IsTrimmable>
+    <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="GitVersion.MsBuild" Version="5.9.0">
-            <PrivateAssets>All</PrivateAssets>
-        </PackageReference>
-        <PackageReference Include="Macross.Json.Extensions" Version="2.2.0" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.3" />
-      <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.0-rc0034" />
-      <PackageReference Include="Monai.Deploy.Storage" Version="0.1.0-rc0019" />
-        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
+      <PrivateAssets>All</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.6" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.0-rc0046" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="0.1.0-rc0058" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <Compile Remove="Test\**" />
-        <EmbeddedResource Remove="Test\**" />
-        <None Remove="Test\**" />
-    </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Test\**" />
+    <EmbeddedResource Remove="Test\**" />
+    <None Remove="Test\**" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
-    </ItemGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="MessageBroker\" />
-    </ItemGroup>
+  <ItemGroup>
+    <Folder Include="MessageBroker\" />
+  </ItemGroup>
 </Project>

@@ -16,6 +16,7 @@
       }
     },
     "messaging": {
+      "publisherServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ",
       "publisherSettings": {
         "endpoint": "rabbitmq",
         "username": "rabbitmq",
@@ -23,6 +24,7 @@
         "virtualHost": "/",
         "exchange": "monaideploy"
       },
+      "subscriberServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
       "subscriberSettings": {
         "endpoint": "rabbitmq",
         "username": "rabbitmq",
@@ -36,13 +38,13 @@
       "temporary": "/payloads",
       "bucketName": "monai",
       "watermarkPercent": 95,
+      "serviceAssemblyName": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO",
       "settings": {
         "endpoint": "minio:9000",
         "accessKey": "minioadmin",
         "accessToken": "minioadmin",
         "securedConnection": false,
-        "region": "",
-        "credentialServiceUrl": "http://minio:9000"
+        "region": ""
       }
     }
   },

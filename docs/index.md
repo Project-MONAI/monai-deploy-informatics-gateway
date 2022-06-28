@@ -44,7 +44,7 @@ The *DICOM SCU Service* enables users to export application-generated DICOM resu
 
 ### DICOMWeb STOW-RS
 
-The *DICOMWeb STOW-RS* allows users to trigger a new workflow request by uploading a DICOM dataset. It provides options to trigger a workflow with or without specifying a workflow.  See [DICOMWeb STOW-RS](./api/rest/dicomweb-stow.md) section for more information.
+The *DICOMWeb STOW-RS* allows users to trigger a new workflow request by uploading a DICOM dataset. It provides options to trigger a workflow with or without specifying a workflow ID/name.  See [DICOMWeb STOW-RS](./api/rest/dicomweb-stow.md) section for more information.
 
 ### ACR DSI API
 

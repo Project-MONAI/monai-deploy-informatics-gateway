@@ -103,7 +103,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _outputHelper.WriteLine($"File specs: {fileSpecs.StudyCount} studies, {fileSpecs.SeriesPerStudyCount} series/study, {fileSpecs.InstancePerSeries} instances/series, {fileSpecs.FileCount} files total");
 
-            var minioClient = new MinioClient(_configuration.StorageServiceOptions.Endpoint, _configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
+            var minioClient = new MinioClient()
+                .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
+                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
 
             _outputHelper.WriteLine($"Uploading {fileSpecs.FileCount} files to MinIO...");
             foreach (var file in fileSpecs.Files)
@@ -114,7 +116,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 var stream = new MemoryStream();
                 await file.SaveAsync(stream);
                 stream.Position = 0;
-                await minioClient.PutObjectAsync(_configuration.TestRunnerOptions.Bucket, filename, stream, stream.Length);
+                var puObjectArgs = new PutObjectArgs();
+                puObjectArgs.WithBucket(_configuration.TestRunnerOptions.Bucket)
+                    .WithObject(filename)
+                    .WithStreamData(stream)
+                    .WithObjectSize(stream.Length);
+                await minioClient.PutObjectAsync(puObjectArgs);
             }
             _scenarioContext[KeyDicomHashes] = hashes;
             _scenarioContext[KeyPatientId] = patientId;
@@ -133,11 +140,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var exportRequestEvent = new ExportRequestEvent
             {
                 CorrelationId = Guid.NewGuid().ToString(),
-                Destination = destination,
+                Destinations = new [] { destination },
                 ExportTaskId = Guid.NewGuid().ToString(),
                 Files = dicomHashes.Keys.ToList(),
                 MessageId = Guid.NewGuid().ToString(),
-                WorkflowId = Guid.NewGuid().ToString(),
+                WorkflowInstanceId = Guid.NewGuid().ToString(),
             };
 
             var message = new JsonMessage<ExportRequestEvent>(

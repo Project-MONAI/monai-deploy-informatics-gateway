@@ -1,14 +1,14 @@
 {
     "storage": {
-        "endpoint": "192.168.20.156:9000",
-        "username": "admin",
-        "password": "password",
-        "bucket": "igbucket"
+        "endpoint": "10.105.3.254",
+        "username": "minio",
+        "password": "monaideploy",
+        "bucket": "monaideploy"
     },
     "messaging": {
         "username": "mdig",
-        "password": "helloworld",
-        "host": "192.168.20.156",
+        "password": "gidm",
+        "host": "10.110.54.121",
         "virtual_host": "monaideploy",
         "exchange": "monaideploy",
         "topic": "md.workflow.request"
