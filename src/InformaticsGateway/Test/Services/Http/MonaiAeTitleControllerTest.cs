@@ -201,6 +201,42 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
+        [RetryFact(DisplayName = "Create - Shall return BadRequest when both allowed & ignored SOP classes are defined")]
+        public async Task Create_ShallReturnBadRequestWhenBothAllowedAndIgnoredSopsAreDefined()
+        {
+            var data = new List<MonaiApplicationEntity>();
+            for (var i = 1; i <= 3; i++)
+            {
+                data.Add(new MonaiApplicationEntity()
+                {
+                    AeTitle = $"AET{i}",
+                    Name = $"AET{i}",
+                    Workflows = new List<string> { "A", "B" }
+                });
+            }
+            _repository.Setup(p => p.Any(It.IsAny<Func<MonaiApplicationEntity, bool>>())).Returns(false);
+
+            var monaiAeTitle = new MonaiApplicationEntity
+            {
+                Name = "MyAET",
+                AeTitle = "MyAET",
+                Workflows = new List<string> { "A", "B" },
+                IgnoredSopClasses = new List<string> { "A", "B" },
+                AllowedSopClasses = new List<string> { "C", "D" },
+            };
+
+            var result = await _controller.Create(monaiAeTitle);
+
+            Assert.NotNull(result);
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Validation error.", problem.Title);
+            Assert.Equal("Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
+        }
+
         [RetryFact(5, 250, DisplayName = "Create - Shall return problem if failed to add")]
         public async Task Create_ShallReturnBadRequestOnAddFailure()
         {

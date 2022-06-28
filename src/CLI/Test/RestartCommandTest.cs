@@ -43,8 +43,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                             services.AddSingleton<ILoggerFactory>(p => _loggerFactory.Object);
                             services.AddSingleton<IControlService>(p => _controlService.Object);
                         });
-                    })
-                .AddCommand(new RestartCommand());
+                    });
+            _commandLineBuilder.Command.AddCommand(new RestartCommand());
             _paser = _commandLineBuilder.Build();
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
         }

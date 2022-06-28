@@ -76,6 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8090, Level = LogLevel.Error, Message = "HTTP error in request {path}.")]
         public static partial void HttpRequestError(this ILogger logger, string path, Exception ex);
 
+
         // DicomWeb STOW
         [LoggerMessage(EventId = 8100, Level = LogLevel.Error, Message = "Error processing DICOMWeb STOW StudyInstanceUID= {studyInstanceUid}, Workflow={workflowName}.")]
         public static partial void ErrorDicomWebStow(this ILogger logger, string studyInstanceUid, string workflowName, Exception ex);
@@ -97,6 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8106, Level = LogLevel.Error, Message = "Failed to process STOW request, out of storage space.")]
         public static partial void StowFailedWithNoSpace(this ILogger logger, Exception ex = null);
+
 
         [LoggerMessage(EventId = 8108, Level = LogLevel.Information, Message = "STOW instance queued.")]
         public static partial void QueuedInstanceUsingCorrelationId(this ILogger logger);

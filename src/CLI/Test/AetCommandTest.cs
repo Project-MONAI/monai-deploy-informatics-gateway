@@ -53,8 +53,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                             services.AddSingleton<IInformaticsGatewayClient>(p => _informaticsGatewayClient.Object);
                             services.AddSingleton<IConfigurationService>(p => _configurationService.Object);
                         });
-                    })
-                .AddCommand(new AetCommand());
+                    });
+            _commandLineBuilder.Command.AddCommand(new AetCommand());
             _paser = _commandLineBuilder.Build();
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
@@ -107,6 +107,54 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(
                 p => p.MonaiScpAeTitle.Create(
                     It.Is<MonaiApplicationEntity>(o => o.AeTitle == entity.AeTitle && o.Name == entity.Name && Enumerable.SequenceEqual(o.Workflows, entity.Workflows)),
+                    It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "aet add comand with allowed & ignored SOP classes")]
+        public async Task AetAdd_Command_AllowedIgnoredSopClasses()
+        {
+            var command = "aet add -n MyName -a MyAET --workflows App MyCoolApp TheApp -i A B C -s D E F";
+            var result = _paser.Parse(command);
+            Assert.Equal(ExitCodes.Success, result.Errors.Count);
+
+            var entity = new MonaiApplicationEntity()
+            {
+                Name = result.CommandResult.Children[0].Tokens[0].Value,
+                AeTitle = result.CommandResult.Children[1].Tokens[0].Value,
+                Workflows = result.CommandResult.Children[2].Tokens.Select(p => p.Value).ToList(),
+                IgnoredSopClasses = result.CommandResult.Children[3].Tokens.Select(p => p.Value).ToList(),
+                AllowedSopClasses = result.CommandResult.Children[4].Tokens.Select(p => p.Value).ToList(),
+            };
+            Assert.Equal("MyName", entity.Name);
+            Assert.Equal("MyAET", entity.AeTitle);
+            Assert.Collection(entity.Workflows,
+                item => item.Equals("App"),
+                item => item.Equals("MyCoolApp"),
+                item => item.Equals("TheApp"));
+            Assert.Collection(entity.AllowedSopClasses,
+                item => item.Equals("D"),
+                item => item.Equals("E"),
+                item => item.Equals("F"));
+            Assert.Collection(entity.IgnoredSopClasses,
+                item => item.Equals("A"),
+                item => item.Equals("B"),
+                item => item.Equals("C"));
+
+            _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Create(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(entity);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(
+                p => p.MonaiScpAeTitle.Create(
+                    It.Is<MonaiApplicationEntity>(o => o.AeTitle == entity.AeTitle &&
+                                                        o.Name == entity.Name &&
+                                                        Enumerable.SequenceEqual(o.Workflows, entity.Workflows) &&
+                                                        Enumerable.SequenceEqual(o.AllowedSopClasses, entity.AllowedSopClasses) &&
+                                                        Enumerable.SequenceEqual(o.IgnoredSopClasses, entity.IgnoredSopClasses)),
                     It.IsAny<CancellationToken>()), Times.Once());
         }
 

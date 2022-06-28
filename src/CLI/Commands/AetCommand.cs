@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.CommandLine;
-using System.CommandLine.Invocation;
+using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Rendering;
 using System.CommandLine.Rendering.Views;
 using System.Linq;
@@ -65,20 +65,24 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.AddOption(groupingOption);
             var timeoutOption = new Option<uint>(new string[] { "-t", "--timeout" }, getDefaultValue: () => 5, "Timeout, in seconds, to wait for instances") { IsRequired = false };
             addCommand.AddOption(timeoutOption);
-            var workflowsOption = new Option<string[]>(new string[] { "-w", "--workflows" }, () => Array.Empty<string>(), "A space separated list of workflow names or IDs to be associated with the SCP AE Title")
+            var workflowsOption = new Option<List<string>>(new string[] { "-w", "--workflows" }, description: "A space separated list of workflow names or IDs to be associated with the SCP AE Title")
             {
                 AllowMultipleArgumentsPerToken = true,
                 IsRequired = false,
-                Name = "--workflows"
             };
             addCommand.AddOption(workflowsOption);
-            var ignoredSopsOption = new Option<string[]>(new string[] { "-i", "--ignored-sops" }, () => Array.Empty<string>(), "A space separated list of SOP Class UIDs to be ignoredS")
+            var ignoredSopsOption = new Option<List<string>>(new string[] { "-i", "--ignored-sop-classes" }, description: "A space separated list of SOP Class UIDs to be ignored")
             {
                 AllowMultipleArgumentsPerToken = true,
                 IsRequired = false,
-                Name = "--ignored-sops"
             };
             addCommand.AddOption(ignoredSopsOption);
+            var allowedSopsOption = new Option<List<string>>(new string[] { "-s", "--allowed-sop-classes" }, description: "A space separated list of SOP Class UIDs to be accepted")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+            };
+            addCommand.AddOption(allowedSopsOption);
 
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(AddAeTitlehandlerAsync);
         }
@@ -139,8 +143,14 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 };
                 table.AddColumn(p => p.Name, new ContentView("Name".Underline()));
                 table.AddColumn(p => p.AeTitle, new ContentView("AE Title".Underline()));
+                table.AddColumn(p => p.Timeout, new ContentView("Timeout".Underline()));
+                table.AddColumn(p => p.Grouping, new ContentView("Grouping".Underline()));
                 table.AddColumn(p => p.Workflows.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.Workflows), new ContentView("Workflows".Underline()));
+                table.AddColumn(p => p.AllowedSopClasses.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.AllowedSopClasses), new ContentView("Accepted SOP Classes".Underline()));
+                table.AddColumn(p => p.IgnoredSopClasses.IsNullOrEmpty() ? "n/a" : string.Join(", ", p.IgnoredSopClasses), new ContentView("Ignored SOP Classes".Underline()));
                 table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
+
+                logger.ListedNItems(items.Count);
             }
             return ExitCodes.Success;
         }
@@ -213,7 +223,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 if (result.IgnoredSopClasses.Any())
                 {
                     logger.MonaiAeIgnoredSops(string.Join(',', result.IgnoredSopClasses));
-                    logger.IgnoreSopClassesWarning();
+                    logger.IgnoredSopClassesWarning();
+                }
+                if (result.AllowedSopClasses.Any())
+                {
+                    logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
+                    logger.AcceptedSopClassesWarning();
                 }
             }
             catch (ConfigurationException ex)

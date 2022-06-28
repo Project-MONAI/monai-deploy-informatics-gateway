@@ -1,8 +1,9 @@
-// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: ï¿½ 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -149,6 +150,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle)))
             {
                 throw new ConfigurationException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
+            }
+            if (item.IgnoredSopClasses.Any() && item.AllowedSopClasses.Any())
+            {
+                throw new ConfigurationException($"Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.");
             }
             if (!item.IsValid(out var validationErrors))
             {

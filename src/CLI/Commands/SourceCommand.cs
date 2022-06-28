@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.CommandLine;
 using System.CommandLine.Invocation;
+using System.CommandLine.NamingConventionBinder;
 using System.CommandLine.Rendering;
 using System.CommandLine.Rendering.Views;
 using System.Linq;
@@ -126,6 +127,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 table.AddColumn(p => p.AeTitle, new ContentView("AE Title".Underline()));
                 table.AddColumn(p => p.HostIp, new ContentView("Host/IP Address".Underline()));
                 table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
+                
+                logger.ListedNItems(items.Count);
             }
             return ExitCodes.Success;
         }

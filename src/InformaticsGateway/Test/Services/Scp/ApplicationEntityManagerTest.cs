@@ -133,6 +133,56 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     StudyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
                     SeriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
                     SopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
+                    SopClassUid = DicomUID.SecondaryCaptureImageStorage.UID,
+                });
+
+            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
+                                                       _serviceScopeFactory.Object,
+                                                       _monaiAeChangedNotificationService,
+                                                       _connfiguration,
+                                                       _storageInfoProvider.Object,
+                                                       _payloadAssembler.Object);
+
+            var request = GenerateRequest();
+            await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
+
+            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
+
+            _logger.VerifyLoggingMessageBeginsWith($"Instance ignored due to matching SOP Class UID {DicomUID.SecondaryCaptureImageStorage.UID}", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Never());
+            _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
+
+            _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
+            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
+            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
+        }
+
+        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall accept only matching SOP Classes (negative test)")]
+        public async Task HandleCStoreRequest_ShallAcceptOnlyMatchingSopClasses()
+        {
+            var aet = "TESTAET";
+
+            var data = new List<MonaiApplicationEntity>()
+            {
+                new MonaiApplicationEntity()
+                {
+                    AeTitle = aet,
+                    Name =aet,
+                    Workflows = new List<string>(){ "AppA", "AppB", Guid.NewGuid().ToString() },
+                    AllowedSopClasses = new List<string>{ DicomUID.UltrasoundImageStorage.UID }
+                }
+            };
+            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
+            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()));
+            _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
+                .Returns(new StudySerieSopUids
+                {
+                    StudyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
+                    SeriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
+                    SopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
+                    SopClassUid = DicomUID.SecondaryCaptureImageStorage.UID,
                 });
 
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
@@ -175,6 +225,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 StudyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
                 SeriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
                 SopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
+                SopClassUid = DicomUID.SecondaryCaptureImageStorage.UID,
             };
             _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);

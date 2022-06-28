@@ -26,6 +26,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
     ///     "workflows": [ "EXAM", "Delta", "b75cd27a-068a-4f9c-b3da-e5d4ea08c55a"],
     ///     "grouping": [ "0010,0020"],
     ///     "ignoredSopClasses": ["1.2.840.10008.5.1.4.1.1.1.1"],
+    ///     "allowedSopClasses": ["1.2.840.10008.5.1.4.1.1.1.2"],
     ///     "timeout": 300
     /// }
     /// </code>
@@ -58,8 +59,15 @@ namespace Monai.Deploy.InformaticsGateway.Api
 
         /// <summary>
         /// Optional field to specify SOP Class UIDs to ignore.
+        /// <see cref="IgnoredSopClasses"/> and <see cref="AllowedSopClasses"/> are mutually exclusive.
         /// </summary>
         public List<string> IgnoredSopClasses { get; set; }
+
+        /// <summary>
+        /// Optional field to specify accepted SOP Class UIDs.
+        /// <see cref="IgnoredSopClasses"/> and <see cref="AllowedSopClasses"/> are mutually exclusive.
+        /// </summary>
+        public List<string> AllowedSopClasses { get; set; }
 
         /// <summary>
         /// Timeout, in seconds, to wait for instances before notifying other subsystems of data arrival
@@ -88,6 +96,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
             if (IgnoredSopClasses is null)
             {
                 IgnoredSopClasses = new List<string>();
+            }
+
+            if (AllowedSopClasses is null)
+            {
+                AllowedSopClasses = new List<string>();
             }
         }
     }

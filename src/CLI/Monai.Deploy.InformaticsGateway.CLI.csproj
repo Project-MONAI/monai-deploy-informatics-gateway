@@ -12,7 +12,7 @@ SPDX-License-Identifier: Apache License 2.0
     <SelfContained>true</SelfContained>
     <PublishTrimmed>false</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <RuntimeIdentifier>linux-x64</RuntimeIdentifier>
     <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <AssemblyName>mig-cli</AssemblyName>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -48,9 +48,9 @@ SPDX-License-Identifier: Apache License 2.0
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
-    <PackageReference Include="System.CommandLine.Hosting" Version="0.3.0-alpha.21216.1" />
-    <PackageReference Include="System.CommandLine.Rendering" Version="0.3.0-alpha.21216.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+    <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
+    <PackageReference Include="System.CommandLine.Rendering" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="System.IO.Abstractions" Version="17.0.18" />
   </ItemGroup>
 </Project>

@@ -11,7 +11,7 @@ using Monai.Deploy.InformaticsGateway.Database;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20220322185946_R2_0.2.0")]
+    [Migration("20220613235333_R2_0.2.0")]
     partial class R2_020
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<string>("AeTitle")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AllowedSopClasses")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Grouping")
