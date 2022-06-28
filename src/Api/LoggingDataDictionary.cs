@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.Serialization;
 
@@ -22,7 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
 
         public override string ToString()
         {
-            var pairs = this.Select(x => string.Format("{0}={1}", x.Key, x.Value));
+            var pairs = this.Select(x => string.Format(CultureInfo.InvariantCulture, "{0}={1}", x.Key, x.Value));
             return string.Join(", ", pairs);
         }
     }

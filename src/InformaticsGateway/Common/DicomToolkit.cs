@@ -30,12 +30,19 @@ namespace Monai.Deploy.InformaticsGateway.Common
             return DicomFile.HasValidHeader(path);
         }
 
-        public DicomFile Open(string path)
+        public DicomFile Open(string path, FileReadOption fileReadOption = FileReadOption.Default)
         {
             Guard.Against.NullOrWhiteSpace(path, nameof(path));
 
             using var stream = _fileSystem.File.OpenRead(path);
-            return DicomFile.Open(stream);
+            return DicomFile.Open(stream, fileReadOption);
+        }
+
+        public Task<DicomFile> OpenAsync(Stream stream, FileReadOption fileReadOption = FileReadOption.Default)
+        {
+            Guard.Against.Null(stream, nameof(stream));
+
+            return DicomFile.OpenAsync(stream, fileReadOption);
         }
 
         public bool TryGetString(DicomFile file, DicomTag dicomTag, out string value)
@@ -125,6 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
             return new StudySerieSopUids
             {
+                SopClassUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPClassUID),
                 StudyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID),
                 SeriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID),
                 SopInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID),

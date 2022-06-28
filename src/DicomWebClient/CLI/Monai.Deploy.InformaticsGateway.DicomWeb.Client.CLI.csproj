@@ -1,4 +1,4 @@
-﻿ <!-- Copyright 2020 - 2021 MONAI Consortium
+ <!-- Copyright 2020 - 2021 MONAI Consortium
  Licensed under the Apache License, Version 2.0 (the "License");
  you may not use this file except in compliance with the License.
  You may obtain a copy of the License at
@@ -12,12 +12,13 @@
  <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Client.Common\Monai.Deploy.InformaticsGateway.Client.Common.csproj" />
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <AssemblyName>dicomweb-cli</AssemblyName>
     <PublishTrimmed>true</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
@@ -28,7 +29,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ConsoleAppFramework" Version="4.0.6" />
+    <PackageReference Include="ConsoleAppFramework" Version="4.1.0" />
     <PackageReference Include="fo-dicom" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
   </ItemGroup>

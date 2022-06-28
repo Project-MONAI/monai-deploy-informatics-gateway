@@ -186,7 +186,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         testRunner.And(string.Format("{0} workflow requests sent to message broker", count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 33
-        testRunner.And(string.Format("{0} studies are uploaded to storage service", count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And("studies are uploaded to storage service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 34
         testRunner.And("the temporary data directory has been cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
@@ -250,7 +250,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         testRunner.And(string.Format("{0} workflow requests sent to message broker", series_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 50
-        testRunner.And(string.Format("{0} studies are uploaded to storage service", study_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+        testRunner.And("studies are uploaded to storage service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 51
         testRunner.And("the temporary data directory has been cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");

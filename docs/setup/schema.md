@@ -79,7 +79,16 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
       }
     },
     "storage": {
-      "temporary": "/payloads"
+      "temporary": "./payloads",
+      "bucketName": "monaideploy",
+      "settings": {
+        "endpoint": "localhost:9000",
+        "accessKey": "username",
+        "accessToken": "password",
+        "securedConnection": false,
+        "region": "na",
+        "credentialServiceUrl": "http://localhost:9000"
+      }
     }
   },
   "Logging": {
@@ -133,7 +142,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
     "HostDatabaseStorageMount": "~/.mig/database",
     "HostLogsStorageMount": "~/.mig/logs",
     "InformaticsGatewayServerEndpoint": "http://localhost:5000",
-    "DockerImagePrefix": "monai/informatics-gateway"
+    "DockerImagePrefix": "ghcr.io/project-monai/monai-deploy-informatics-gateway"
   }
 }
 ```

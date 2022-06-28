@@ -18,6 +18,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
+using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
@@ -91,6 +92,8 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
                     services.AddTransient<ITemporaryFileStore, TemporaryFileStore>();
+                    services.AddTransient<IStowService, StowService>();
+                    services.AddTransient<IStreamsWriter, StreamsWriter>();
 
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
                     services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();
@@ -136,6 +139,7 @@ namespace Monai.Deploy.InformaticsGateway
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = int.MaxValue);
                     webBuilder.CaptureStartupErrors(true);
                     webBuilder.UseStartup<Startup>();
                 });

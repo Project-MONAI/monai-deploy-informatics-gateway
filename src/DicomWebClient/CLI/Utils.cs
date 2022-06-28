@@ -1,29 +1,16 @@
-﻿/*
- * Apache License, Version 2.0
- * Copyright 2019-2020 NVIDIA Corporation
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+﻿// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: © 2019-2020 NVIDIA Corporation
+// SPDX-License-Identifier: Apache License 2.0
 
-using Ardalis.GuardClauses;
-using Dicom;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 using System;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
+using FellowOakDicom;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 {
@@ -88,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
         public static async Task SaveFiles<T>(ILogger<T> logger, string outputDirectory, DicomFile dicomFile)
         {
             var path = Path.Combine(outputDirectory, dicomFile.FileMetaInfo.MediaStorageSOPInstanceUID.UID + ".dcm");
-            await SaveFiles(logger, dicomFile, path);
+            await SaveFiles(logger, dicomFile, path).ConfigureAwait(false);
         }
 
         public static async Task SaveFiles<T>(ILogger<T> logger, DicomFile dicomFile, string filename)
@@ -98,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             Guard.Against.NullOrWhiteSpace(filename, nameof(filename));
 
             logger.LogInformation($"Saving {filename}...");
-            await dicomFile.SaveAsync(filename);
+            await dicomFile.SaveAsync(filename).ConfigureAwait(false);
         }
 
         internal static async Task SaveJson(ILogger logger, string outputDir, string item, DicomTag filenameSourceTag)
@@ -108,8 +95,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             Guard.Against.NullOrWhiteSpace(item, nameof(item));
 
             var token = JToken.Parse(item);
-            var filename = string.Empty;
             var value = GetTagValueFromJson(token, filenameSourceTag);
+            string filename;
             if (!string.IsNullOrWhiteSpace(value))
             {
                 filename = $"{value}.txt";
@@ -120,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             }
             var path = Path.Combine(outputDir, filename);
             logger.LogInformation($"Saving JSON {path}");
-            await File.WriteAllTextAsync(path, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8);
+            await File.WriteAllTextAsync(path, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8).ConfigureAwait(false);
         }
 
         internal static async Task SaveJson(ILogger logger, string outputFilename, string text)
@@ -131,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
             var token = JToken.Parse(text);
             logger.LogInformation($"Saving JSON {outputFilename}...");
-            await File.WriteAllTextAsync(outputFilename, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8);
+            await File.WriteAllTextAsync(outputFilename, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8).ConfigureAwait(false);
         }
 
         private static string GetTagValueFromJson(JToken token, DicomTag dicomTag, string defaultValue = "unknown")
