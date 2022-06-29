@@ -17,7 +17,6 @@ using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
-using Monai.Deploy.Storage;
 using Monai.Deploy.Storage.API;
 using Moq;
 using xRetry;
@@ -156,12 +155,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs());
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(Stream.Null);
-                    throw new Exception("storage error");
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(new Exception("storage error"));
+
             var countdownEvent = new CountdownEvent(1);
             var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);
             service.ReportActionCompleted += (sender, e) =>
@@ -206,11 +202,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     }
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes(testData)));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes(testData)));
 
             var countdownEvent = new CountdownEvent(5 * 3);
             var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);

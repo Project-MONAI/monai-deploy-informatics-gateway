@@ -122,11 +122,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns((InferenceRequest)null);
 
@@ -182,11 +179,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
 
@@ -254,11 +248,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
@@ -343,11 +334,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile());

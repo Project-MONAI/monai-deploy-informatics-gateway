@@ -128,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 };
 
                 var exportFlow = new TransformManyBlock<ExportRequestEventDetails, ExportRequestDataMessage>(
-                    (exportRequest) => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
+                    exportRequest => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
                     executionOptions);
 
                 var exportActionBlock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
@@ -180,6 +180,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
+        // TPL doesn't yet support IAsyncEnumerable
+        // https://github.com/dotnet/runtime/issues/30863
         private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestEventDetails exportRequest, CancellationToken cancellationToken)
         {
             Guard.Against.Null(exportRequest, nameof(exportRequest));
@@ -193,27 +195,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 try
                 {
                     _logger.DownloadingFile(file);
-                    Policy
+                    var task = Policy
                        .Handle<Exception>()
-                       .WaitAndRetry(
+                       .WaitAndRetryAsync(
                            _configuration.Export.Retries.RetryDelays,
                            (exception, timeSpan, retryCount, context) =>
                            {
                                _logger.ErrorDownloadingPayloadWithRetry(exception, timeSpan, retryCount);
                            })
-                       .Execute(() =>
+                       .ExecuteAsync(async () =>
                        {
                            _logger.DownloadingFile(file);
-                           var task = storageService.GetObjectAsync(_configuration.Storage.StorageServiceBucketName, file, (stream) =>
-                           {
-                               using var memoryStream = new MemoryStream();
-                               stream.CopyTo(memoryStream);
-                               exportRequestData.SetData(memoryStream.ToArray());
-                           }, cancellationToken);
-
-                           task.Wait();
+                           var stream = await storageService.GetObjectAsync(_configuration.Storage.StorageServiceBucketName, file, cancellationToken).ConfigureAwait(false) as MemoryStream;
+                           exportRequestData.SetData(stream.ToArray());
                            _logger.FileReadyForExport(file);
                        });
+
+                    task.Wait();
                 }
                 catch (Exception ex)
                 {

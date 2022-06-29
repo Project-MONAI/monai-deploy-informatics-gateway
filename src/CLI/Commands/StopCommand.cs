@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
-using System.CommandLine.Invocation;
 using System.CommandLine.NamingConventionBinder;
 using System.Threading;
 using System.Threading.Tasks;
