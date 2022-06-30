@@ -140,7 +140,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var exportRequestEvent = new ExportRequestEvent
             {
                 CorrelationId = Guid.NewGuid().ToString(),
-                Destinations = new [] { destination },
+                Destinations = new[] { destination },
                 ExportTaskId = Guid.NewGuid().ToString(),
                 Files = dicomHashes.Keys.ToList(),
                 MessageId = Guid.NewGuid().ToString(),

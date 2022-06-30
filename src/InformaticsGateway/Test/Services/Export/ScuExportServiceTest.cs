@@ -115,11 +115,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs(string.Empty));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
 
@@ -163,11 +160,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs("pacs"));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(default(DestinationApplicationEntity));
 
@@ -216,11 +210,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs("pacs"));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
@@ -274,11 +265,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs("pacs"));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
@@ -330,11 +318,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs("pacs"));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
@@ -386,11 +371,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs("pacs"));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Throws(new Exception("error"));
@@ -442,11 +424,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs("pacs"));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
@@ -497,11 +476,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs("pacs"));
                 });
 
-            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Action<Stream>>(), It.IsAny<CancellationToken>()))
-                .Callback<string, string, Action<Stream>, CancellationToken>((bucketName, objectName, callback, cancellationToken) =>
-                {
-                    callback(new MemoryStream(Encoding.UTF8.GetBytes("test")));
-                });
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
