@@ -22,7 +22,7 @@ SPDX-License-Identifier: Apache License 2.0
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageReference Include="Minio" Version="4.0.4" />
     <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.2" />
-    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.1.0" />
+    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.1.1" />
     <PackageReference Include="Moq" Version="4.18.1" />
     <PackageReference Include="Polly" Version="7.2.3" />
     <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />

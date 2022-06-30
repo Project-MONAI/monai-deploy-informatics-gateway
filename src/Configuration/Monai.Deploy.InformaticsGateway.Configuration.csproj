@@ -20,7 +20,7 @@ SPDX-License-Identifier: Apache License 2.0
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.2" />
-    <PackageReference Include="Monai.Deploy.Storage" Version="0.1.0" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="0.1.1" />
     <PackageReference Include="System.IO.Abstractions" Version="17.0.18" />
   </ItemGroup>
 
