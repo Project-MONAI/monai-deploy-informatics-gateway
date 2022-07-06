@@ -11,6 +11,7 @@ SPDX-License-Identifier: Apache License 2.0
 
 - Adds DICOMWeb STOW-RS service to enable triggering of workflow requests via DICOMWeb standard.
 - Breaking changes in the storage configuration to allow dynamic key-value pairs.
+- Breaking changes to enable dynamic loadig of the storage & the messaging libraries.
 
 ## 0.1.1
 
