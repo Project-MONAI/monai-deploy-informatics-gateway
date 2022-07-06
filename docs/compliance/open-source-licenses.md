@@ -5,556 +5,2914 @@ SPDX-License-Identifier: Apache License 2.0
 
 # Open Source Licenses
 
----
-## The MIT License (MIT)
-### Ardalis.GuardClauses                 Copyright © 2017 Steve Smith
-### Crayon                               Copyright © 2019 Manuel Riezebosch
-### ConsoleAppFramework                  Copyright © 2020 Cysharp, Inc.
-### Docker.dotNext                       Copyright © .NET Foundation and Contributors
-### dotNext                              Copyright © .NET Foundation and Contributors
-### Karambolo.Extensions.Logging.File    Copyright © 2021 Adam Simon
-### Microsoft .NET                       Copyright © .NET Foundation and Contributors
-### Newtonsoft.Json                      Copyright © 2007 James Newton-King
-### Swashbuckle.AspNetCore               Copyright © 2016 Richard Morris
-### System.IO.Abstractions               Copyright © Tatham Oddie and Contributors
-
-```
-The MIT License (MIT)
-
-Copyright (see above)
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
-
-## Fellow Oak DICOM
-### fo-dicom
-
-```
-Fellow Oak DICOM
-
-Copyright © 2012-2020 fo-dicom contributors
-
-This software is licensed under the Microsoft Public License (MS-PL)
-
-Microsoft Public License (MS-PL)
-
-This license governs use of the accompanying software. If you use the software, you
-accept this license. If you do not accept the license, do not use the software.
-
-1. Definitions
-The terms "reproduce," "reproduction," "derivative works," and "distribution" have the
-same meaning here as under U.S. copyright law.
-A "contribution" is the original software, or any additions or changes to the software.
-A "contributor" is any person that distributes its contribution under this license.
-"Licensed patents" are a contributor's patent claims that read directly on its contribution.
-
-2. Grant of Rights
-(A) Copyright Grant- Subject to the terms of this license, including the license conditions
-    and limitations in section 3, each contributor grants you a non-exclusive, worldwide,
-	royalty-free copyright license to reproduce its contribution, prepare derivative works
-	of its contribution, and distribute its contribution or any derivative works that you create.
-(B) Patent Grant- Subject to the terms of this license, including the license conditions and
-    limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free
-	license under its licensed patents to make, have made, use, sell, offer for sale, import,
-	and/or otherwise dispose of its contribution in the software or derivative works of the
-	contribution in the software.
-
-3. Conditions and Limitations
-(A) No Trademark License- This license does not grant you rights to use any contributors' name,
-    logo, or trademarks.
-(B) If you bring a patent claim against any contributor over patents that you claim are infringed
-    by the software, your patent license from such contributor to the software ends automatically.
-© If you distribute any portion of the software, you must retain all copyright, patent, trademark,
-    and attribution notices that are present in the software.
-(D) If you distribute any portion of the software in source code form, you may do so only under this
-    license by including a complete copy of this license with your distribution. If you distribute
-	any portion of the software in compiled or object code form, you may only do so under a license
-	that complies with this license.
-(E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express
-    warranties, guarantees or conditions. You may have additional consumer rights under your local
-	laws which this license cannot change. To the extent permitted under your local laws, the
-	contributors exclude the implied warranties of merchantability, fitness for a particular purpose
-	and non-infringement.
-
-
----- libijg (from DCMTK 3.5.4 COPYRIGHT) ----
-
-Unless otherwise specified, the DCMTK software package has the
-following copyright:
-
-/*
- *  Copyright © 1994-2004, OFFIS
- *
- *  This software and supporting documentation were developed by
- *
- *    Kuratorium OFFIS e.V.
- *    Healthcare Information and Communication Systems
- *    Escherweg 2
- *    D-26121 Oldenburg, Germany
- *
- *  THIS SOFTWARE IS MADE AVAILABLE,  AS IS,  AND OFFIS MAKES NO  WARRANTY
- *  REGARDING  THE  SOFTWARE,  ITS  PERFORMANCE,  ITS  MERCHANTABILITY  OR
- *  FITNESS FOR ANY PARTICULAR USE, FREEDOM FROM ANY COMPUTER DISEASES  OR
- *  ITS CONFORMITY TO ANY SPECIFICATION. THE ENTIRE RISK AS TO QUALITY AND
- *  PERFORMANCE OF THE SOFTWARE IS WITH THE USER.
- *
- *  Copyright of the software  and  supporting  documentation  is,  unless
- *  otherwise stated, owned by OFFIS, and free access is hereby granted as
- *  a license to  use  this  software,  copy  this  software  and  prepare
- *  derivative works based upon this software.  However, any  distribution
- *  of this software source code or supporting documentation or derivative
- *  works  (source code and  supporting documentation)  must  include  the
- *  three paragraphs of this copyright notice.
- *
- */
-
-The dcmjpeg sub-package includes an adapted version of the Independent JPEG
-Group Toolkit Version 6b, which is contained in dcmjpeg/libijg8,
-dcmjpeg/libijg12 and dcmjpeg/libijg16.  This toolkit is covered by the
-following copyright.  The original README file for the Independent JPEG
-Group Toolkit is located in dcmjpeg/docs/ijg_readme.txt.
-
-/*
- *  The authors make NO WARRANTY or representation, either express or implied,
- *  with respect to this software, its quality, accuracy, merchantability, or
- *  fitness for a particular purpose.  This software is provided "AS IS", and you,
- *  its user, assume the entire risk as to its quality and accuracy.
- *
- *  This software is copyright © 1991-1998, Thomas G. Lane.
- *  All Rights Reserved except as specified below.
- *
- *  Permission is hereby granted to use, copy, modify, and distribute this
- *  software (or portions thereof) for any purpose, without fee, subject to these
- *  conditions:
- *  (1) If any part of the source code for this software is distributed, then this
- *  README file must be included, with this copyright and no-warranty notice
- *  unaltered; and any additions, deletions, or changes to the original files
- *  must be clearly indicated in accompanying documentation.
- *  (2) If only executable code is distributed, then the accompanying
- *  documentation must state that "this software is based in part on the work of
- *  the Independent JPEG Group".
- *  (3) Permission for use of this software is granted only if the user accepts
- *  full responsibility for any undesirable consequences; the authors accept
- *  NO LIABILITY for damages of any kind.
- *
- *  These conditions apply to any software derived from or based on the IJG code,
- *  not just to the unmodified library.  If you use our work, you ought to
- *  acknowledge us.
- *
- *  Permission is NOT granted for the use of any IJG author's name or company name
- *  in advertising or publicity relating to this software or products derived from
- *  it.  This software may be referred to only as "the Independent JPEG Group's
- *  software".
- *
- *  We specifically permit and encourage the use of this software as the basis of
- *  commercial products, provided that all warranty or liability claims are
- *  assumed by the product vendor.
- */
-
-
-
----- OpenJPEG JPEG 2000 codec (from license.txt) ----
-
-/*
- * Copyright © 2002-2007, Communications and Remote Sensing Laboratory, Universite catholique de Louvain (UCL), Belgium
- * Copyright © 2002-2007, Professor Benoit Macq
- * Copyright © 2001-2003, David Janssens
- * Copyright © 2002-2003, Yannick Verschueren
- * Copyright © 2003-2007, Francois-Olivier Devaux and Antonin Descampe
- * Copyright © 2005, Herve Drolon, FreeImage Team
- * All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions
- * are met:
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS `AS IS'
- * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- */
-
-
-
----- CharLS JPEG-LS codec (from License.txt) ----
-
-Copyright © 2007-2009, Jan de Vaan
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice,
-  this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
-
-* Neither the name of my employer, nor the names of its contributors may be
-  used to endorse or promote products derived from this software without
-  specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
-
----- Unity.IO.Compression (from LICENSE.TXT and PATENTS.TXT) ----
-
-The MIT License (MIT)
-
-Copyright © Microsoft Corporation
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-
-Microsoft Patent Promise for .NET Libraries and Runtime Components
-
-Microsoft Corporation and its affiliates ("Microsoft") promise not to assert
-any .NET Patents against you for making, using, selling, offering for sale,
-importing, or distributing Covered Code, as part of either a .NET Runtime or
-as part of any application designed to run on a .NET Runtime.
-
-If you file, maintain, or voluntarily participate in any claim in a lawsuit
-alleging direct or contributory patent infringement by any Covered Code, or
-inducement of patent infringement by any Covered Code, then your rights under
-this promise will automatically terminate.
-
-This promise is not an assurance that (i) any .NET Patents are valid or
-enforceable, or (ii) Covered Code does not infringe patents or other
-intellectual property rights of any third party. No rights except those
-expressly stated in this promise are granted, waived, or received by
-Microsoft, whether by implication, exhaustion, estoppel, or otherwise.
-This is a personal promise directly from Microsoft to you, and you agree as a
-condition of benefiting from it that no Microsoft rights are received from
-suppliers, distributors, or otherwise from any other person in connection with
-this promise.
-
-Definitions:
-
-"Covered Code" means those Microsoft .NET libraries and runtime components as
-made available by Microsoft at https://github.com/Microsoft/referencesource.
-
-".NET Patents" are those patent claims, both currently owned by Microsoft and
-acquired in the future, that are necessarily infringed by Covered Code. .NET
-Patents do not include any patent claims that are infringed by any Enabling
-Technology, that are infringed only as a consequence of modification of
-Covered Code, or that are infringed only by the combination of Covered Code
-with third party code.
-
-".NET Runtime" means any compliant implementation in software of (a) all of
-the required parts of the mandatory provisions of Standard ECMA-335 – Common
-Language Infrastructure (CLI); and (b) if implemented, any additional
-functionality in Microsoft's .NET Framework, as described in Microsoft's API
-documentation on its MSDN website. For example, .NET Runtimes include
-Microsoft's .NET Framework and those portions of the Mono Project compliant
-with (a) and (b).
-
-"Enabling Technology" means underlying or enabling technology that may be
-used, combined, or distributed in connection with Microsoft's .NET Framework
-or other .NET Runtimes, such as hardware, operating systems, and applications
-that run on .NET Framework or other .NET Runtimes.
-
-
-
----- Nito.AsyncEx (from LICENSE.TXT) ----
-
-The MIT License (MIT)
-
-Copyright © 2014 StephenCleary
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
----
-## Apache License 2.0
-
-### Microsoft.Data.SQLite
-### Microsoft.EntityFrameworkCore
-### morelinq
-### RabbitMQ .NET client
-
-```
-    Apache License
-                           Version 2.0, January 2004
-                        http://www.apache.org/licenses/
-
-   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
-
-   1. Definitions.
-
-      "License" shall mean the terms and conditions for use, reproduction,
-      and distribution as defined by Sections 1 through 9 of this document.
-
-      "Licensor" shall mean the copyright owner or entity authorized by
-      the copyright owner that is granting the License.
-
-      "Legal Entity" shall mean the union of the acting entity and all
-      other entities that control, are controlled by, or are under common
-      control with that entity. For the purposes of this definition,
-      "control" means (i) the power, direct or indirect, to cause the
-      direction or management of such entity, whether by contract or
-      otherwise, or (ii) ownership of fifty percent (50%) or more of the
-      outstanding shares, or (iii) beneficial ownership of such entity.
-
-      "You" (or "Your") shall mean an individual or Legal Entity
-      exercising permissions granted by this License.
-
-      "Source" form shall mean the preferred form for making modifications,
-      including but not limited to software source code, documentation
-      source, and configuration files.
-
-      "Object" form shall mean any form resulting from mechanical
-      transformation or translation of a Source form, including but
-      not limited to compiled object code, generated documentation,
-      and conversions to other media types.
-
-      "Work" shall mean the work of authorship, whether in Source or
-      Object form, made available under the License, as indicated by a
-      copyright notice that is included in or attached to the work
-      (an example is provided in the Appendix below).
-
-      "Derivative Works" shall mean any work, whether in Source or Object
-      form, that is based on (or derived from) the Work and for which the
-      editorial revisions, annotations, elaborations, or other modifications
-      represent, as a whole, an original work of authorship. For the purposes
-      of this License, Derivative Works shall not include works that remain
-      separable from, or merely link (or bind by name) to the interfaces of,
-      the Work and Derivative Works thereof.
-
-      "Contribution" shall mean any work of authorship, including
-      the original version of the Work and any modifications or additions
-      to that Work or Derivative Works thereof, that is intentionally
-      submitted to Licensor for inclusion in the Work by the copyright owner
-      or by an individual or Legal Entity authorized to submit on behalf of
-      the copyright owner. For the purposes of this definition, "submitted"
-      means any form of electronic, verbal, or written communication sent
-      to the Licensor or its representatives, including but not limited to
-      communication on electronic mailing lists, source code control systems,
-      and issue tracking systems that are managed by, or on behalf of, the
-      Licensor for the purpose of discussing and improving the Work, but
-      excluding communication that is conspicuously marked or otherwise
-      designated in writing by the copyright owner as "Not a Contribution."
-
-      "Contributor" shall mean Licensor and any individual or Legal Entity
-      on behalf of whom a Contribution has been received by Licensor and
-      subsequently incorporated within the Work.
-
-   2. Grant of Copyright License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      copyright license to reproduce, prepare Derivative Works of,
-      publicly display, publicly perform, sublicense, and distribute the
-      Work and such Derivative Works in Source or Object form.
-
-   3. Grant of Patent License. Subject to the terms and conditions of
-      this License, each Contributor hereby grants to You a perpetual,
-      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
-      (except as stated in this section) patent license to make, have made,
-      use, offer to sell, sell, import, and otherwise transfer the Work,
-      where such license applies only to those patent claims licensable
-      by such Contributor that are necessarily infringed by their
-      Contribution(s) alone or by combination of their Contribution(s)
-      with the Work to which such Contribution(s) was submitted. If You
-      institute patent litigation against any entity (including a
-      cross-claim or counterclaim in a lawsuit) alleging that the Work
-      or a Contribution incorporated within the Work constitutes direct
-      or contributory patent infringement, then any patent licenses
-      granted to You under this License for that Work shall terminate
-      as of the date such litigation is filed.
-
-   4. Redistribution. You may reproduce and distribute copies of the
-      Work or Derivative Works thereof in any medium, with or without
-      modifications, and in Source or Object form, provided that You
-      meet the following conditions:
-
-      (a) You must give any other recipients of the Work or
-          Derivative Works a copy of this License; and
-
-      (b) You must cause any modified files to carry prominent notices
-          stating that You changed the files; and
-
-      © You must retain, in the Source form of any Derivative Works
-          that You distribute, all copyright, patent, trademark, and
-          attribution notices from the Source form of the Work,
-          excluding those notices that do not pertain to any part of
-          the Derivative Works; and
-
-      (d) If the Work includes a "NOTICE" text file as part of its
-          distribution, then any Derivative Works that You distribute must
-          include a readable copy of the attribution notices contained
-          within such NOTICE file, excluding those notices that do not
-          pertain to any part of the Derivative Works, in at least one
-          of the following places: within a NOTICE text file distributed
-          as part of the Derivative Works; within the Source form or
-          documentation, if provided along with the Derivative Works; or,
-          within a display generated by the Derivative Works, if and
-          wherever such third-party notices normally appear. The contents
-          of the NOTICE file are for informational purposes only and
-          do not modify the License. You may add Your own attribution
-          notices within Derivative Works that You distribute, alongside
-          or as an addendum to the NOTICE text from the Work, provided
-          that such additional attribution notices cannot be construed
-          as modifying the License.
-
-      You may add Your own copyright statement to Your modifications and
-      may provide additional or different license terms and conditions
-      for use, reproduction, or distribution of Your modifications, or
-      for any such Derivative Works as a whole, provided Your use,
-      reproduction, and distribution of the Work otherwise complies with
-      the conditions stated in this License.
-
-   5. Submission of Contributions. Unless You explicitly state otherwise,
-      any Contribution intentionally submitted for inclusion in the Work
-      by You to the Licensor shall be under the terms and conditions of
-      this License, without any additional terms or conditions.
-      Notwithstanding the above, nothing herein shall supersede or modify
-      the terms of any separate license agreement you may have executed
-      with Licensor regarding such Contributions.
-
-   6. Trademarks. This License does not grant permission to use the trade
-      names, trademarks, service marks, or product names of the Licensor,
-      except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing the content of the NOTICE file.
-
-   7. Disclaimer of Warranty. Unless required by applicable law or
-      agreed to in writing, Licensor provides the Work (and each
-      Contributor provides its Contributions) on an "AS IS" BASIS,
-      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
-      implied, including, without limitation, any warranties or conditions
-      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
-      PARTICULAR PURPOSE. You are solely responsible for determining the
-      appropriateness of using or redistributing the Work and assume any
-      risks associated with Your exercise of permissions under this License.
-
-   8. Limitation of Liability. In no event and under no legal theory,
-      whether in tort (including negligence), contract, or otherwise,
-      unless required by applicable law (such as deliberate and grossly
-      negligent acts) or agreed to in writing, shall any Contributor be
-      liable to You for damages, including any direct, indirect, special,
-      incidental, or consequential damages of any character arising as a
-      result of this License or out of the use or inability to use the
-      Work (including but not limited to damages for loss of goodwill,
-      work stoppage, computer failure or malfunction, or any and all
-      other commercial damages or losses), even if such Contributor
-      has been advised of the possibility of such damages.
-
-   9. Accepting Warranty or Additional Liability. While redistributing
-      the Work or Derivative Works thereof, You may choose to offer,
-      and charge a fee for, acceptance of support, warranty, indemnity,
-      or other liability obligations and/or rights consistent with this
-      License. However, in accepting such obligations, You may act only
-      on Your own behalf and on Your sole responsibility, not on behalf
-      of any other Contributor, and only if You agree to indemnify,
-      defend, and hold each Contributor harmless for any liability
-      incurred by, or claims asserted against, such Contributor by reason
-      of your accepting any such warranty or additional liability.
-
-   END OF TERMS AND CONDITIONS
-```
-
----
-
-## New BSD License
-### Polly
-
-```
-New BSD License
-=
-Copyright © 2015-2020, App vNext
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of App vNext nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
+## Microsoft .NET 6
+
+- Version: 6.0
+- Publisher: Microsoft
+- Project URL: https://dotnet.microsoft.com/en-us/
+- License: [MIT](https://github.com/dotnet/sdk/blob/main/LICENSE.TXT)
+- Source: https://dot.net
+
+
+## AWSSDK.Core
+
+- Version: 3.7.12
+- Authors: Amazon Web Services
+- Owners: Amazon Web Services
+- Project URL: https://github.com/aws/aws-sdk-net/
+- License URL: http://aws.amazon.com/apache2.0/
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.Core/3.7.12)
+
+## AWSSDK.SecurityToken
+
+- Version: 3.7.1.165
+- Authors: Amazon Web Services
+- Owners: Amazon Web Services
+- Project URL: https://github.com/aws/aws-sdk-net/
+- License URL: http://aws.amazon.com/apache2.0/
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.SecurityToken/3.7.1.165)
+
+## Ardalis.GuardClauses
+
+- Version: 4.0.1
+- Authors: Steve Smith (@ardalis)
+- Project URL: https://github.com/ardalis/guardclauses
+- License: [MIT](https://github.com/ardalis/GuardClauses/blob/main/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Ardalis.GuardClauses/4.0.1)
+
+## BoDi
+
+- Version: 1.5.0
+- Authors: Gaspar Nagy
+- Owners: Gaspar Nagy
+- Project URL: https://github.com/gasparnagy/BoDi
+- License URL: https://github.com/gasparnagy/BoDi/raw/master/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/BoDi/1.5.0)
+
+## Castle.Core
+
+- Version: 5.0.0
+- Authors: Castle Project Contributors
+- Project URL: http://www.castleproject.org/
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Castle.Core/5.0.0)
+
+## ConsoleAppFramework
+
+- Version: 4.1.0
+- Authors: Cysharp
+- Project URL: https://github.com/Cysharp/ConsoleAppFramework
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/ConsoleAppFramework/4.1.0)
+
+## Crayon
+
+- Version: 2.0.64
+- Authors: Manuel Riezebosch
+- License: [MIT](https://github.com/riezebosch/crayon/blob/master/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Crayon/2.0.64)
+
+## Crc32.NET
+
+- Version: 1.2.0
+- Authors: force
+- Owners: force
+- Project URL: https://github.com/force-net/Crc32.NET
+- License URL: https://github.com/force-net/Crc32.NET/blob/develop/LICENSE
+- Source: [NuGet](https://www.nuget.org/packages/Crc32.NET/1.2.0)
+
+## Docker.DotNet
+
+- Version: 3.125.5
+- Authors: Docker.DotNet
+- License: [MIT](https://www.nuget.org/packages/Docker.DotNet/3.125.5/License)
+- Source: [NuGet](https://www.nuget.org/packages/Docker.DotNet/3.125.5)
+
+## DotNext
+
+- Version: 4.6.0
+- Authors: .NET Foundation and Contributors
+- Project URL: https://dotnet.github.io/dotNext/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.6.0)
+
+## DotNext.Threading
+
+- Version: 4.6.0
+- Authors: .NET Foundation and Contributors
+- Project URL: https://dotnet.github.io/dotNext/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.6.0)
+
+## FluentAssertions
+
+- Version: 6.7.0
+- Authors: Dennis Doomen,Jonas Nyrup
+- Project URL: https://www.fluentassertions.com/
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/FluentAssertions/6.7.0)
+
+## Gherkin
+
+- Version: 19.0.3
+- Authors: Cucumber Ltd, Gaspar Nagy
+- Project URL: https://github.com/cucumber/common/tree/main/gherkin
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Gherkin/19.0.3)
+
+## GitVersion.MsBuild
+
+- Version: 5.10.3
+- Authors: GitTools and Contributors
+- Project URL: https://github.com/GitTools/GitVersion
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/GitVersion.MsBuild/5.10.3)
+
+## Humanizer.Core
+
+- Version: 2.8.26
+- Authors: Mehdi Khalili, Claire Novotny
+- Owners: Mehdi Khalili, Claire Novotny
+- Project URL: https://github.com/Humanizr/Humanizer
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Humanizer.Core/2.8.26)
+
+## JetBrains.Annotations
+
+- Version: 2021.3.0
+- Authors: JetBrains
+- Owners: JetBrains
+- Project URL: https://www.jetbrains.com/help/resharper/Code_Analysis__Code_Annotations.html
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/JetBrains.Annotations/2021.3.0)
+
+## Karambolo.Extensions.Logging.File
+
+- Version: 3.3.0
+- Authors: Adam Simon
+- Project URL: https://github.com/adams85/filelogger
+- License URL: https://github.com/adams85/filelogger/blob/master/LICENSE
+- Source: [NuGet](https://www.nuget.org/packages/Karambolo.Extensions.Logging.File/3.3.0)
+
+## Macross.Json.Extensions
+
+- Version: 3.0.0
+- Authors: Macross.Json.Extensions
+- Project URL: https://github.com/Macross-Software/core/tree/develop/ClassLibraries/Macross.Json.Extensions
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Macross.Json.Extensions/3.0.0)
+
+## Microsoft.AspNet.WebApi.Client
+
+- Version: 5.2.7
+- Authors: Microsoft
+- Owners: Microsoft,aspnet
+- Project URL: https://www.asp.net/web-api
+- License URL: http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client/5.2.7)
+
+## Microsoft.AspNet.WebApi.Client
+
+- Version: 5.2.9
+- Authors: Microsoft
+- Owners: Microsoft,aspnet
+- Project URL: https://www.asp.net/web-api
+- License: [NET_Library_EULA_ENU.txt](https://aka.ms/deprecateLicenseUrl)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNet.WebApi.Client/5.2.9)
+
+## Microsoft.AspNetCore.Authentication.Abstractions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.Abstractions/2.2.0)
+
+## Microsoft.AspNetCore.Authentication.Core
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.Core/2.2.0)
+
+## Microsoft.AspNetCore.Authorization
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Authorization/2.2.0)
+
+## Microsoft.AspNetCore.Authorization.Policy
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Authorization.Policy/2.2.0)
+
+## Microsoft.AspNetCore.Hosting.Abstractions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Hosting.Abstractions/2.2.0)
+
+## Microsoft.AspNetCore.Hosting.Server.Abstractions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Hosting.Server.Abstractions/2.2.0)
+
+## Microsoft.AspNetCore.Http
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Http/2.2.0)
+
+## Microsoft.AspNetCore.Http.Abstractions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Http.Abstractions/2.2.0)
+
+## Microsoft.AspNetCore.Http.Extensions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Http.Extensions/2.2.0)
+
+## Microsoft.AspNetCore.Http.Features
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Http.Features/2.2.0)
+
+## Microsoft.AspNetCore.JsonPatch
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.JsonPatch/2.2.0)
+
+## Microsoft.AspNetCore.Mvc.Abstractions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Abstractions/2.2.0)
+
+## Microsoft.AspNetCore.Mvc.Core
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Core/2.2.0)
+
+## Microsoft.AspNetCore.Mvc.Formatters.Json
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.Formatters.Json/2.2.0)
+
+## Microsoft.AspNetCore.Mvc.WebApiCompatShim
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Mvc.WebApiCompatShim/2.2.0)
+
+## Microsoft.AspNetCore.ResponseCaching.Abstractions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.ResponseCaching.Abstractions/2.2.0)
+
+## Microsoft.AspNetCore.Routing
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Routing/2.2.0)
+
+## Microsoft.AspNetCore.Routing.Abstractions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Routing.Abstractions/2.2.0)
+
+## Microsoft.AspNetCore.WebUtilities
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.WebUtilities/2.2.0)
+
+## Microsoft.Bcl.AsyncInterfaces
+
+- Version: 1.1.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/1.1.1)
+
+## Microsoft.Bcl.AsyncInterfaces
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/6.0.0)
+
+## Microsoft.CSharp
+
+- Version: 4.0.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CSharp/4.0.1)
+
+## Microsoft.CSharp
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CSharp/4.3.0)
+
+## Microsoft.CSharp
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CSharp/4.5.0)
+
+## Microsoft.CSharp
+
+- Version: 4.7.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CSharp/4.7.0)
+
+## Microsoft.CodeCoverage
+
+- Version: 17.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://github.com/microsoft/vstest/
+- License: [MIT](https://github.com/microsoft/vstest/blob/main/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.2.0)
+
+## Microsoft.Data.Sqlite.Core
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/dotnet/standard/data/sqlite/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/6.0.6)
+
+## Microsoft.EntityFrameworkCore
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.6)
+
+## Microsoft.EntityFrameworkCore.Abstractions
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.6)
+
+## Microsoft.EntityFrameworkCore.Analyzers
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/6.0.6)
+
+## Microsoft.EntityFrameworkCore.Design
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/6.0.6)
+
+## Microsoft.EntityFrameworkCore.InMemory
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/6.0.6)
+
+## Microsoft.EntityFrameworkCore.Relational
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/6.0.6)
+
+## Microsoft.EntityFrameworkCore.Sqlite
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/6.0.6)
+
+## Microsoft.EntityFrameworkCore.Sqlite.Core
+
+- Version: 6.0.6
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/6.0.6)
+
+## Microsoft.Extensions.ApiDescription.Server
+
+- Version: 3.0.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.ApiDescription.Server/3.0.0)
+
+## Microsoft.Extensions.Caching.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Caching.Abstractions/6.0.0)
+
+## Microsoft.Extensions.Caching.Memory
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Caching.Memory/6.0.1)
+
+## Microsoft.Extensions.Configuration
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration/6.0.0)
+
+## Microsoft.Extensions.Configuration
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration/6.0.1)
+
+## Microsoft.Extensions.Configuration.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Abstractions/6.0.0)
+
+## Microsoft.Extensions.Configuration.Binder
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Binder/6.0.0)
+
+## Microsoft.Extensions.Configuration.CommandLine
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.CommandLine/6.0.0)
+
+## Microsoft.Extensions.Configuration.EnvironmentVariables
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.EnvironmentVariables/6.0.0)
+
+## Microsoft.Extensions.Configuration.EnvironmentVariables
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.EnvironmentVariables/6.0.1)
+
+## Microsoft.Extensions.Configuration.FileExtensions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.FileExtensions/6.0.0)
+
+## Microsoft.Extensions.Configuration.Json
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Json/6.0.0)
+
+## Microsoft.Extensions.Configuration.UserSecrets
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.UserSecrets/6.0.0)
+
+## Microsoft.Extensions.Configuration.UserSecrets
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.UserSecrets/6.0.1)
+
+## Microsoft.Extensions.DependencyInjection
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/2.2.0)
+
+## Microsoft.Extensions.DependencyInjection
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/6.0.0)
+
+## Microsoft.Extensions.DependencyInjection.Abstractions
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection.Abstractions/2.2.0)
+
+## Microsoft.Extensions.DependencyInjection.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0)
+
+## Microsoft.Extensions.DependencyModel
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyModel/6.0.0)
+
+## Microsoft.Extensions.FileProviders.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.FileProviders.Abstractions/6.0.0)
+
+## Microsoft.Extensions.FileProviders.Physical
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.FileProviders.Physical/6.0.0)
+
+## Microsoft.Extensions.FileSystemGlobbing
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.FileSystemGlobbing/6.0.0)
+
+## Microsoft.Extensions.Hosting
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Hosting/6.0.0)
+
+## Microsoft.Extensions.Hosting
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Hosting/6.0.1)
+
+## Microsoft.Extensions.Hosting.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Hosting.Abstractions/6.0.0)
+
+## Microsoft.Extensions.Http
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Http/6.0.0)
+
+## Microsoft.Extensions.Logging
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging/6.0.0)
+
+## Microsoft.Extensions.Logging.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/6.0.0)
+
+## Microsoft.Extensions.Logging.Abstractions
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/6.0.1)
+
+## Microsoft.Extensions.Logging.Configuration
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Configuration/6.0.0)
+
+## Microsoft.Extensions.Logging.Console
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Console/6.0.0)
+
+## Microsoft.Extensions.Logging.Debug
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Debug/6.0.0)
+
+## Microsoft.Extensions.Logging.EventLog
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.EventLog/6.0.0)
+
+## Microsoft.Extensions.Logging.EventSource
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.EventSource/6.0.0)
+
+## Microsoft.Extensions.ObjectPool
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.ObjectPool/2.2.0)
+
+## Microsoft.Extensions.Options
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Options/2.2.0)
+
+## Microsoft.Extensions.Options
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Options/6.0.0)
+
+## Microsoft.Extensions.Options.ConfigurationExtensions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Options.ConfigurationExtensions/6.0.0)
+
+## Microsoft.Extensions.Primitives
+
+- Version: 2.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Primitives/2.2.0)
+
+## Microsoft.Extensions.Primitives
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Primitives/6.0.0)
+
+## Microsoft.NET.Test.Sdk
+
+- Version: 17.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://github.com/microsoft/vstest/
+- License: [MIT](https://github.com/microsoft/vstest/blob/main/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.2.0)
+
+## Microsoft.NETCore.Platforms
+
+- Version: 1.1.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NETCore.Platforms/1.1.0)
+
+## Microsoft.NETCore.Platforms
+
+- Version: 3.0.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NETCore.Platforms/3.0.0)
+
+## Microsoft.NETCore.Targets
+
+- Version: 1.1.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NETCore.Targets/1.1.0)
+
+## Microsoft.NETCore.Targets
+
+- Version: 1.1.3
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NETCore.Targets/1.1.3)
+
+## Microsoft.Net.Http.Headers
+
+- Version: 2.2.8
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://asp.net/
+- License URL: https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Net.Http.Headers/2.2.8)
+
+## Microsoft.OpenApi
+
+- Version: 1.2.3
+- Authors: Microsoft
+- Project URL: https://github.com/Microsoft/OpenAPI.NET
+- License URL: https://raw.githubusercontent.com/Microsoft/OpenAPI.NET/master/LICENSE
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.OpenApi/1.2.3)
+
+## Microsoft.TestPlatform.ObjectModel
+
+- Version: 17.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://github.com/microsoft/vstest/
+- License: [MIT](https://github.com/microsoft/vstest/blob/main/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.2.0)
+
+## Microsoft.TestPlatform.TestHost
+
+- Version: 17.2.0
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://github.com/microsoft/vstest/
+- License: [MIT](https://github.com/microsoft/vstest/blob/main/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.2.0)
+
+## Microsoft.Win32.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Win32.Primitives/4.3.0)
+
+## Microsoft.Win32.SystemEvents
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Win32.SystemEvents/4.5.0)
+
+## Minio
+
+- Version: 4.0.4
+- Authors: MinIO, Inc.
+- Project URL: https://github.com/minio/minio-dotnet
+- License: [Apache-2.0](https://github.com/minio/minio-dotnet/blob/master/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Minio/4.0.4)
+
+## Monai.Deploy.Messaging
+
+- Version: 0.1.0-rc0034
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.0-rc0034)
+
+## Monai.Deploy.Messaging
+
+- Version: 0.1.0-rc0046
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.0-rc0046)
+
+## Monai.Deploy.Messaging
+
+- Version: 0.1.2
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.2)
+
+## Monai.Deploy.Messaging.RabbitMQ
+
+- Version: 0.1.0-rc0046
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.0-rc0046)
+
+## Monai.Deploy.Messaging.RabbitMQ
+
+- Version: 0.1.2
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.2)
+
+## Monai.Deploy.Storage
+
+- Version: 0.1.0-rc0058
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.1.0-rc0058)
+
+## Monai.Deploy.Storage
+
+- Version: 0.1.1
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.1.1)
+
+## Monai.Deploy.Storage.MinIO
+
+- Version: 0.1.0-rc0058
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.1.0-rc0058)
+
+## Monai.Deploy.Storage.MinIO
+
+- Version: 0.1.1
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.1.1)
+
+## Monai.Deploy.Storage.S3Policy
+
+- Version: 0.1.0-rc0058
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.1.0-rc0058)
+
+## Monai.Deploy.Storage.S3Policy
+
+- Version: 0.1.1
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.1.1)
+
+## Moq
+
+- Version: 4.18.1
+- Authors: Daniel Cazzulino, kzu
+- Project URL: https://github.com/moq/moq4
+- License URL: https://raw.githubusercontent.com/moq/moq4/main/License.txt
+- Source: [NuGet](https://www.nuget.org/packages/Moq/4.18.1)
+
+## NETStandard.Library
+
+- Version: 1.6.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/NETStandard.Library/1.6.1)
+
+## NETStandard.Library
+
+- Version: 2.0.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/standard/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/NETStandard.Library/2.0.0)
+
+## NPOI
+
+- Version: 2.5.6
+- Authors: NPOI Contributors
+- Owners: Nissl Lab
+- Project URL: https://github.com/nissl-lab/npoi
+- License: [Apache-2.0](https://github.com/nissl-lab/npoi/blob/master/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/NPOI/2.5.6)
+
+## Newtonsoft.Json
+
+- Version: 10.0.1
+- Authors: James Newton-King
+- Owners: James Newton-King
+- Project URL: http://www.newtonsoft.com/json
+- License URL: https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md
+- Source: [NuGet](https://www.nuget.org/packages/Newtonsoft.Json/10.0.1)
+
+## Newtonsoft.Json
+
+- Version: 13.0.1
+- Authors: James Newton-King
+- Project URL: https://www.newtonsoft.com/json
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Newtonsoft.Json/13.0.1)
+
+## Newtonsoft.Json
+
+- Version: 9.0.1
+- Authors: James Newton-King
+- Owners: James Newton-King
+- Project URL: http://www.newtonsoft.com/json
+- License URL: https://raw.github.com/JamesNK/Newtonsoft.Json/master/LICENSE.md
+- Source: [NuGet](https://www.nuget.org/packages/Newtonsoft.Json/9.0.1)
+
+## Newtonsoft.Json.Bson
+
+- Version: 1.0.1
+- Authors: James Newton-King
+- Owners: James Newton-King
+- Project URL: http://www.newtonsoft.com/json
+- License URL: https://raw.github.com/JamesNK/Newtonsoft.Json.Bson/master/LICENSE.md
+- Source: [NuGet](https://www.nuget.org/packages/Newtonsoft.Json.Bson/1.0.1)
+
+## NuGet.Frameworks
+
+- Version: 5.11.0
+- Authors: Microsoft
+- Project URL: https://aka.ms/nugetprj
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/NuGet.Frameworks/5.11.0)
+
+## Polly
+
+- Version: 7.2.3
+- Authors: Michael Wolfenden, App vNext
+- Project URL: https://github.com/App-vNext/Polly
+- License: [BSD-3-Clause](https://licenses.nuget.org/BSD-3-Clause)
+- Source: [NuGet](https://www.nuget.org/packages/Polly/7.2.3)
+
+## Portable.BouncyCastle
+
+- Version: 1.8.9
+- Authors: Claire Novotny
+- Project URL: https://www.bouncycastle.org/csharp/
+- License URL: https://www.bouncycastle.org/csharp/licence.html
+- Source: [NuGet](https://www.nuget.org/packages/Portable.BouncyCastle/1.8.9)
+
+## RabbitMQ.Client
+
+- Version: 6.2.4
+- Authors: VMware
+- Project URL: https://www.rabbitmq.com/dotnet.html
+- License: [Apache-2.0 OR MPL-2.0](https://licenses.nuget.org/Apache-2.0%20OR%20MPL-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/RabbitMQ.Client/6.2.4)
+
+## RabbitMQ.Client
+
+- Version: 6.4.0
+- Authors: VMware
+- Project URL: https://www.rabbitmq.com/dotnet.html
+- License: [Apache-2.0 OR MPL-2.0](https://licenses.nuget.org/Apache-2.0%20OR%20MPL-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/RabbitMQ.Client/6.4.0)
+
+## SQLitePCLRaw.bundle_e_sqlite3
+
+- Version: 2.0.6
+- Authors: Eric Sink
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.bundle_e_sqlite3/2.0.6)
+
+## SQLitePCLRaw.core
+
+- Version: 2.0.6
+- Authors: Eric Sink
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.core/2.0.6)
+
+## SQLitePCLRaw.lib.e_sqlite3
+
+- Version: 2.0.6
+- Authors: Eric Sink
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.lib.e_sqlite3/2.0.6)
+
+## SQLitePCLRaw.provider.e_sqlite3
+
+- Version: 2.0.6
+- Authors: Eric Sink
+- License: [Apache-2.0](https://licenses.nuget.org/Apache-2.0)
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.provider.e_sqlite3/2.0.6)
+
+## SharpZipLib
+
+- Version: 1.3.3
+- Authors: ICSharpCode
+- Project URL: https://github.com/icsharpcode/SharpZipLib
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/SharpZipLib/1.3.3)
+
+## SpecFlow
+
+- Version: 3.9.74
+- Authors: SpecFlow Team
+- Owners: SpecFlow Team
+- Project URL: https://www.specflow.org/
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/blob/master/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow/3.9.74)
+
+## SpecFlow.Internal.Json
+
+- Version: 1.0.8
+- Authors: SpecFlow Team
+- Project URL: https://specflow.org/
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/blob/master/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Internal.Json/1.0.8)
+
+## SpecFlow.Plus.LivingDocPlugin
+
+- Version: 3.9.57
+- Authors: SpecFlow Team
+- Owners: SpecFlow Team
+- Project URL: https://docs.specflow.org/projects/specflow-livingdoc
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/blob/master/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Plus.LivingDocPlugin/3.9.57)
+
+## SpecFlow.Tools.MsBuild.Generation
+
+- Version: 3.9.74
+- Authors: SpecFlow Team
+- Owners: SpecFlow Team
+- Project URL: https://www.specflow.org/
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/blob/master/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Tools.MsBuild.Generation/3.9.74)
+
+## SpecFlow.xUnit
+
+- Version: 3.9.74
+- Authors: SpecFlow Team
+- Owners: SpecFlow Team
+- Project URL: https://www.specflow.org/
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/blob/master/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow.xUnit/3.9.74)
+
+## Swashbuckle.AspNetCore
+
+- Version: 6.3.1
+- Authors: Swashbuckle.AspNetCore
+- Owners: Swashbuckle.AspNetCore
+- Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore/6.3.1)
+
+## Swashbuckle.AspNetCore.Swagger
+
+- Version: 6.3.1
+- Authors: Swashbuckle.AspNetCore.Swagger
+- Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.Swagger/6.3.1)
+
+## Swashbuckle.AspNetCore.SwaggerGen
+
+- Version: 6.3.1
+- Authors: Swashbuckle.AspNetCore.SwaggerGen
+- Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen/6.3.1)
+
+## Swashbuckle.AspNetCore.SwaggerUI
+
+- Version: 6.3.1
+- Authors: Swashbuckle.AspNetCore.SwaggerUI
+- Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerUI/6.3.1)
+
+## System.AppContext
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.AppContext/4.3.0)
+
+## System.Buffers
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Buffers/4.3.0)
+
+## System.Buffers
+
+- Version: 4.5.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Buffers/4.5.1)
+
+## System.Collections
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Collections/4.3.0)
+
+## System.Collections.Concurrent
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Collections.Concurrent/4.3.0)
+
+## System.Collections.Immutable
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Collections.Immutable/6.0.0)
+
+## System.Collections.NonGeneric
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Collections.NonGeneric/4.3.0)
+
+## System.Collections.Specialized
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Collections.Specialized/4.3.0)
+
+## System.CommandLine
+
+- Version: 2.0.0-beta4.22272.1
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/command-line-api
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.CommandLine/2.0.0-beta4.22272.1)
+
+## System.CommandLine.Hosting
+
+- Version: 0.4.0-alpha.22272.1
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/command-line-api
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.CommandLine.Hosting/0.4.0-alpha.22272.1)
+
+## System.CommandLine.NamingConventionBinder
+
+- Version: 2.0.0-beta4.22272.1
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/command-line-api
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.CommandLine.NamingConventionBinder/2.0.0-beta4.22272.1)
+
+## System.CommandLine.Rendering
+
+- Version: 0.4.0-alpha.22272.1
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/command-line-api
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.CommandLine.Rendering/0.4.0-alpha.22272.1)
+
+## System.ComponentModel
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.ComponentModel/4.3.0)
+
+## System.ComponentModel.Annotations
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.ComponentModel.Annotations/4.5.0)
+
+## System.ComponentModel.Annotations
+
+- Version: 5.0.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/runtime
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.ComponentModel.Annotations/5.0.0)
+
+## System.ComponentModel.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.ComponentModel.Primitives/4.3.0)
+
+## System.ComponentModel.TypeConverter
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.ComponentModel.TypeConverter/4.3.0)
+
+## System.Configuration.ConfigurationManager
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Configuration.ConfigurationManager/4.5.0)
+
+## System.Console
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Console/4.3.0)
+
+## System.Diagnostics.Debug
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.Debug/4.3.0)
+
+## System.Diagnostics.DiagnosticSource
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.DiagnosticSource/4.3.0)
+
+## System.Diagnostics.DiagnosticSource
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.DiagnosticSource/6.0.0)
+
+## System.Diagnostics.EventLog
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.EventLog/6.0.0)
+
+## System.Diagnostics.Tools
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.Tools/4.3.0)
+
+## System.Diagnostics.Tracing
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.Tracing/4.3.0)
+
+## System.Drawing.Common
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Drawing.Common/4.5.0)
+
+## System.Dynamic.Runtime
+
+- Version: 4.0.11
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Dynamic.Runtime/4.0.11)
+
+## System.Dynamic.Runtime
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Dynamic.Runtime/4.3.0)
+
+## System.Globalization
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Globalization/4.3.0)
+
+## System.Globalization.Calendars
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Globalization.Calendars/4.3.0)
+
+## System.Globalization.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Globalization.Extensions/4.3.0)
+
+## System.IO
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.IO/4.3.0)
+
+## System.IO.Abstractions
+
+- Version: 17.0.18
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/17.0.18)
+
+## System.IO.Abstractions.TestingHelpers
+
+- Version: 17.0.18
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/17.0.18)
+
+## System.IO.Compression
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Compression/4.3.0)
+
+## System.IO.Compression.ZipFile
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Compression.ZipFile/4.3.0)
+
+## System.IO.FileSystem
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.FileSystem/4.3.0)
+
+## System.IO.FileSystem.AccessControl
+
+- Version: 4.7.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.FileSystem.AccessControl/4.7.0)
+
+## System.IO.FileSystem.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.FileSystem.Primitives/4.3.0)
+
+## System.Linq
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Linq/4.3.0)
+
+## System.Linq.Async
+
+- Version: 6.0.1
+- Authors: .NET Foundation and Contributors
+- Project URL: https://github.com/dotnet/reactive
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Linq.Async/6.0.1)
+
+## System.Linq.Expressions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Linq.Expressions/4.3.0)
+
+## System.Memory
+
+- Version: 4.5.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Memory/4.5.1)
+
+## System.Memory
+
+- Version: 4.5.4
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Memory/4.5.4)
+
+## System.Net.Http
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Net.Http/4.3.0)
+
+## System.Net.Http
+
+- Version: 4.3.4
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Net.Http/4.3.4)
+
+## System.Net.NameResolution
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Net.NameResolution/4.3.0)
+
+## System.Net.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Net.Primitives/4.3.0)
+
+## System.Net.Primitives
+
+- Version: 4.3.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Net.Primitives/4.3.1)
+
+## System.Net.Sockets
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Net.Sockets/4.3.0)
+
+## System.Numerics.Vectors
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Numerics.Vectors/4.5.0)
+
+## System.ObjectModel
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.ObjectModel/4.3.0)
+
+## System.Private.Uri
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Private.Uri/4.3.0)
+
+## System.Reactive
+
+- Version: 5.0.0
+- Authors: .NET Foundation and Contributors
+- Project URL: https://github.com/dotnet/reactive
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Reactive/5.0.0)
+
+## System.Reactive.Linq
+
+- Version: 5.0.0
+- Authors: .NET Foundation and Contributors
+- Project URL: https://github.com/dotnet/reactive
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Reactive.Linq/5.0.0)
+
+## System.Reflection
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection/4.3.0)
+
+## System.Reflection.Emit
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection.Emit/4.3.0)
+
+## System.Reflection.Emit.ILGeneration
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection.Emit.ILGeneration/4.3.0)
+
+## System.Reflection.Emit.Lightweight
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection.Emit.Lightweight/4.3.0)
+
+## System.Reflection.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection.Extensions/4.3.0)
+
+## System.Reflection.Metadata
+
+- Version: 1.6.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection.Metadata/1.6.0)
+
+## System.Reflection.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection.Primitives/4.3.0)
+
+## System.Reflection.TypeExtensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection.TypeExtensions/4.3.0)
+
+## System.Resources.ResourceManager
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Resources.ResourceManager/4.3.0)
+
+## System.Runtime
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime/4.3.0)
+
+## System.Runtime
+
+- Version: 4.3.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime/4.3.1)
+
+## System.Runtime.CompilerServices.Unsafe
+
+- Version: 4.5.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/4.5.1)
+
+## System.Runtime.CompilerServices.Unsafe
+
+- Version: 4.7.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/4.7.1)
+
+## System.Runtime.CompilerServices.Unsafe
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/6.0.0)
+
+## System.Runtime.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.Extensions/4.3.0)
+
+## System.Runtime.Handles
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.Handles/4.3.0)
+
+## System.Runtime.InteropServices
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.InteropServices/4.3.0)
+
+## System.Runtime.InteropServices.RuntimeInformation
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.InteropServices.RuntimeInformation/4.3.0)
+
+## System.Runtime.Loader
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.Loader/4.3.0)
+
+## System.Runtime.Numerics
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.Numerics/4.3.0)
+
+## System.Runtime.Serialization.Formatters
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.Serialization.Formatters/4.3.0)
+
+## System.Runtime.Serialization.Primitives
+
+- Version: 4.1.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.Serialization.Primitives/4.1.1)
+
+## System.Runtime.Serialization.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.Serialization.Primitives/4.3.0)
+
+## System.Security.AccessControl
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.AccessControl/4.5.0)
+
+## System.Security.AccessControl
+
+- Version: 4.7.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.AccessControl/4.7.0)
+
+## System.Security.Claims
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Claims/4.3.0)
+
+## System.Security.Cryptography.Algorithms
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.Algorithms/4.3.0)
+
+## System.Security.Cryptography.Cng
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.Cng/4.3.0)
+
+## System.Security.Cryptography.Csp
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.Csp/4.3.0)
+
+## System.Security.Cryptography.Encoding
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.Encoding/4.3.0)
+
+## System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.OpenSsl/4.3.0)
+
+## System.Security.Cryptography.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.Primitives/4.3.0)
+
+## System.Security.Cryptography.ProtectedData
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.ProtectedData/4.5.0)
+
+## System.Security.Cryptography.X509Certificates
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.X509Certificates/4.3.0)
+
+## System.Security.Permissions
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Permissions/4.5.0)
+
+## System.Security.Principal
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Principal/4.3.0)
+
+## System.Security.Principal.Windows
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Principal.Windows/4.3.0)
+
+## System.Security.Principal.Windows
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Principal.Windows/4.5.0)
+
+## System.Security.Principal.Windows
+
+- Version: 4.7.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Principal.Windows/4.7.0)
+
+## System.Text.Encoding
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encoding/4.3.0)
+
+## System.Text.Encoding.CodePages
+
+- Version: 4.6.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encoding.CodePages/4.6.0)
+
+## System.Text.Encoding.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encoding.Extensions/4.3.0)
+
+## System.Text.Encodings.Web
+
+- Version: 4.7.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encodings.Web/4.7.2)
+
+## System.Text.Encodings.Web
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encodings.Web/6.0.0)
+
+## System.Text.Json
+
+- Version: 4.7.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Json/4.7.2)
+
+## System.Text.Json
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Json/6.0.0)
+
+## System.Text.Json
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Json/6.0.1)
+
+## System.Text.Json
+
+- Version: 6.0.5
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Json/6.0.5)
+
+## System.Text.RegularExpressions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.RegularExpressions/4.3.0)
+
+## System.Threading
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading/4.3.0)
+
+## System.Threading.Channels
+
+- Version: 4.7.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Channels/4.7.1)
+
+## System.Threading.Channels
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Channels/6.0.0)
+
+## System.Threading.Overlapped
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Overlapped/4.3.0)
+
+## System.Threading.Tasks
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Tasks/4.3.0)
+
+## System.Threading.Tasks.Dataflow
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Tasks.Dataflow/6.0.0)
+
+## System.Threading.Tasks.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Tasks.Extensions/4.3.0)
+
+## System.Threading.Tasks.Extensions
+
+- Version: 4.5.4
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Tasks.Extensions/4.5.4)
+
+## System.Threading.ThreadPool
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.ThreadPool/4.3.0)
+
+## System.Threading.Timer
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Timer/4.3.0)
+
+## System.ValueTuple
+
+- Version: 4.4.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: https://github.com/dotnet/corefx/blob/master/LICENSE.TXT
+- Source: [NuGet](https://www.nuget.org/packages/System.ValueTuple/4.4.0)
+
+## System.Xml.ReaderWriter
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Xml.ReaderWriter/4.3.0)
+
+## System.Xml.XDocument
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Xml.XDocument/4.3.0)
+
+## System.Xml.XmlDocument
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/System.Xml.XmlDocument/4.3.0)
+
+## Validation
+
+- Version: 2.4.18
+- Authors: Andrew Arnott
+- Owners: Andrew Arnott
+- Project URL: http://github.com/aarnott/Validation
+- License URL: https://raw.githubusercontent.com/AArnott/Validation/69e6a2c4f3/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Validation/2.4.18)
+
+## Xunit.SkippableFact
+
+- Version: 1.3.12
+- Authors: Andrew Arnott
+- Owners: Andrew Arnott
+- Project URL: https://github.com/AArnott/Xunit.SkippableFact
+- License URL: https://raw.githubusercontent.com/AArnott/Xunit.SkippableFact/c7f20eaa78/LICENSE.txt
+- Source: [NuGet](https://www.nuget.org/packages/Xunit.SkippableFact/1.3.12)
+
+## coverlet.collector
+
+- Version: 3.1.2
+- Authors: tonerdo
+- Project URL: https://github.com/coverlet-coverage/coverlet
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/3.1.2)
+
+## fo-dicom
+
+- Version: 5.0.2
+- Authors: fo-dicom contributors
+- Project URL: https://github.com/fo-dicom/fo-dicom
+- License: [MS-PL](https://licenses.nuget.org/MS-PL)
+- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.0.2)
+
+## runtime.any.System.Collections
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Collections/4.3.0)
+
+## runtime.any.System.Diagnostics.Tools
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Diagnostics.Tools/4.3.0)
+
+## runtime.any.System.Diagnostics.Tracing
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Diagnostics.Tracing/4.3.0)
+
+## runtime.any.System.Globalization
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Globalization/4.3.0)
+
+## runtime.any.System.Globalization.Calendars
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Globalization.Calendars/4.3.0)
+
+## runtime.any.System.IO
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.IO/4.3.0)
+
+## runtime.any.System.Reflection
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Reflection/4.3.0)
+
+## runtime.any.System.Reflection.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Reflection.Extensions/4.3.0)
+
+## runtime.any.System.Reflection.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Reflection.Primitives/4.3.0)
+
+## runtime.any.System.Resources.ResourceManager
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Resources.ResourceManager/4.3.0)
+
+## runtime.any.System.Runtime
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Runtime/4.3.0)
+
+## runtime.any.System.Runtime.Handles
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Runtime.Handles/4.3.0)
+
+## runtime.any.System.Runtime.InteropServices
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Runtime.InteropServices/4.3.0)
+
+## runtime.any.System.Text.Encoding
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Text.Encoding/4.3.0)
+
+## runtime.any.System.Text.Encoding.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Text.Encoding.Extensions/4.3.0)
+
+## runtime.any.System.Threading.Tasks
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Threading.Tasks/4.3.0)
+
+## runtime.any.System.Threading.Timer
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.any.System.Threading.Timer/4.3.0)
+
+## runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.native.System
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System/4.3.0)
+
+## runtime.native.System.IO.Compression
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System.IO.Compression/4.3.0)
+
+## runtime.native.System.Net.Http
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System.Net.Http/4.3.0)
+
+## runtime.native.System.Security.Cryptography.Apple
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System.Security.Cryptography.Apple/4.3.0)
+
+## runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple/4.3.0)
+
+## runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+
+## runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+
+## runtime.unix.Microsoft.Win32.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.unix.Microsoft.Win32.Primitives/4.3.0)
+
+## runtime.unix.System.Console
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.unix.System.Console/4.3.0)
+
+## runtime.unix.System.Diagnostics.Debug
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.unix.System.Diagnostics.Debug/4.3.0)
+
+## runtime.unix.System.IO.FileSystem
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.unix.System.IO.FileSystem/4.3.0)
+
+## runtime.unix.System.Net.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.unix.System.Net.Primitives/4.3.0)
+
+## runtime.unix.System.Net.Sockets
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.unix.System.Net.Sockets/4.3.0)
+
+## runtime.unix.System.Private.Uri
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.unix.System.Private.Uri/4.3.0)
+
+## runtime.unix.System.Runtime.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.unix.System.Runtime.Extensions/4.3.0)
+
+## runtime.win.Microsoft.Win32.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.win.Microsoft.Win32.Primitives/4.3.0)
+
+## runtime.win.System.Console
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.win.System.Console/4.3.0)
+
+## runtime.win.System.Diagnostics.Debug
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.win.System.Diagnostics.Debug/4.3.0)
+
+## runtime.win.System.IO.FileSystem
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.win.System.IO.FileSystem/4.3.0)
+
+## runtime.win.System.Net.Primitives
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.win.System.Net.Primitives/4.3.0)
+
+## runtime.win.System.Net.Sockets
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.win.System.Net.Sockets/4.3.0)
+
+## runtime.win.System.Runtime.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- License URL: http://go.microsoft.com/fwlink/?LinkId=329770
+- Source: [NuGet](https://www.nuget.org/packages/runtime.win.System.Runtime.Extensions/4.3.0)
+
+## xRetry
+
+- Version: 1.8.0
+- Authors: Josh Keegan
+- Owners: Josh Keegan
+- Project URL: https://github.com/JoshKeegan/xRetry
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/xRetry/1.8.0)
+
+## xunit
+
+- Version: 2.4.1
+- Authors: James Newkirk,Brad Wilson
+- Owners: James Newkirk,Brad Wilson
+- Project URL: https://github.com/xunit/xunit
+- License URL: https://raw.githubusercontent.com/xunit/xunit/master/license.txt
+- Source: [NuGet](https://www.nuget.org/packages/xunit/2.4.1)
+
+## xunit.abstractions
+
+- Version: 2.0.3
+- Authors: James Newkirk,Brad Wilson
+- Owners: James Newkirk,Brad Wilson
+- Project URL: https://github.com/xunit/xunit
+- License URL: https://raw.githubusercontent.com/xunit/xunit/master/license.txt
+- Source: [NuGet](https://www.nuget.org/packages/xunit.abstractions/2.0.3)
+
+## xunit.analyzers
+
+- Version: 0.10.0
+- Authors: Marcin Dobosz
+- Owners: Marcin Dobosz
+- Project URL: https://github.com/xunit/xunit.analyzers
+- License URL: https://raw.githubusercontent.com/xunit/xunit.analyzers/master/LICENSE
+- Source: [NuGet](https://www.nuget.org/packages/xunit.analyzers/0.10.0)
+
+## xunit.assert
+
+- Version: 2.4.1
+- Authors: James Newkirk,Brad Wilson
+- Owners: James Newkirk,Brad Wilson
+- Project URL: https://github.com/xunit/xunit
+- License URL: https://raw.githubusercontent.com/xunit/xunit/master/license.txt
+- Source: [NuGet](https://www.nuget.org/packages/xunit.assert/2.4.1)
+
+## xunit.core
+
+- Version: 2.4.1
+- Authors: James Newkirk,Brad Wilson
+- Owners: James Newkirk,Brad Wilson
+- Project URL: https://github.com/xunit/xunit
+- License URL: https://raw.githubusercontent.com/xunit/xunit/master/license.txt
+- Source: [NuGet](https://www.nuget.org/packages/xunit.core/2.4.1)
+
+## xunit.extensibility.core
+
+- Version: 2.4.1
+- Authors: James Newkirk,Brad Wilson
+- Owners: James Newkirk,Brad Wilson
+- Project URL: https://github.com/xunit/xunit
+- License URL: https://raw.githubusercontent.com/xunit/xunit/master/license.txt
+- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.core/2.4.1)
+
+## xunit.extensibility.execution
+
+- Version: 2.4.1
+- Authors: James Newkirk,Brad Wilson
+- Owners: James Newkirk,Brad Wilson
+- Project URL: https://github.com/xunit/xunit
+- License URL: https://raw.githubusercontent.com/xunit/xunit/master/license.txt
+- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.execution/2.4.1)
+
+## xunit.runner.visualstudio
+
+- Version: 2.4.5
+- Authors: .NET Foundation and Contributors
+- Project URL: https://github.com/xunit/visualstudio.xunit
+- License: [MIT](https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.runner.visualstudio/2.4.5)
+
