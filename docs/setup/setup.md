@@ -142,30 +142,30 @@ Locate the storage section of the configuration in `appsettings.json`:
 
 #### Install the Stoage Plug-in
 
-The default plug-in configured as shown above is __MinIO__.
+As shown above, the default plug-in configured is __MinIO__.
 
-To install the default MinIO plug-in, download the plug-in `Monai.Deploy.Storage.MinIO.zip` from [MONAI Deploy Storage](https://github.com/Project-MONAI/monai-deploy-storage/releases) 
+To install the default MinIO plug-in, download the `Monai.Deploy.Storage.MinIO.zip` plug-in from [MONAI Deploy Storage](https://github.com/Project-MONAI/monai-deploy-storage/releases) 
 and unzip the files to the `plug-ins` directory in your home directory:
 
 * Linux: `~/.mig/plug-ins`
 * Windows: `C:\Users\[username]\.mig\plug-ins`
 
 > [!Note]
-> If a plug-in other than MinIO is used, please do update `storageService` in the appsettings.json file.
+> If a plug-in other than MinIO is used, update the `storageService` parameter in the `appsettings.json` file.
 
 
 ### Message broker
 
-The nformatics Gateway communicates with other MONAI Deploy components through a message broker. The default messaging service
+The Informatics Gateway communicates with other MONAI Deploy components through a message broker. The default messaging service
 included is provided by [RabbitMQ](https://www.rabbitmq.com/). To integrate with another storage service provider, refer
 to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#message-broker) section of the SRS.
 
 To use the default messaging service, download and install RabbitMQ by following the
 [Get Started](https://www.rabbitmq.com/#getstarted) page.
 
-Before launching Informatics Gateway, update `appsettings.json` to configure the publisher and subscriber settings.
-The Informatics Gateway publishes all messages to an *exchange* under the specified *virtual host*. Therefore, please confirm the values before starting
-Informatics Gateway.
+The Informatics Gateway publishes all messages to an *exchange* under the specified *virtual host*.
+Before launching Informatics Gateway, update the `appsettings.json` file to configure the publisher
+and subscriber settings.
 
 ```json
 {
@@ -195,21 +195,24 @@ Informatics Gateway.
 
 #### Install the Messaging Plug-in
 
-The default plug-in configured as shown above is __RabbitMQ__.
+As shown above, the default plug-in configured is __RabbitMQ__.
 
-To install the default RabbitMQ plug-in, download the plug-in `Monai.Deploy.Messaging.RabbitMQ.zip` from [MONAI Deploy Messaging](https://github.com/Project-MONAI/monai-deploy-messaging/releases) 
+To install the default RabbitMQ plug-in, download the `Monai.Deploy.Messaging.RabbitMQ.zip` plug-in
+rom [MONAI Deploy Messaging](https://github.com/Project-MONAI/monai-deploy-messaging/releases) 
 and unzip the files to the `plug-ins` directory in your home directory:
 
 * Linux: `~/.mig/plug-ins`
 * Windows: `C:\Users\[username]\.mig\plug-ins`
 
 > [!Note]
-> If a plug-in other than Rabbit is used, please do update `publisherServiceAssemblyName` & `subscriberServiceAssemblyName` in the appsettings.json file.
+> If a plug-in other than Rabbit is used, update the `publisherServiceAssemblyName` and `subscriberServiceAssemblyName` parameters in the `appsettings.json` file.
 
 
 ## Start/Stop Informatics Gateway
 
-To start or stop the Informatics Gateway, update the value of `DockerImagePrefix` in `appsettings.json` with the repository name of the Docker image (default value shown below):
+To start or stop the Informatics Gateway, update the value of the `DockerImagePrefix` parameter in
+the `appsettings.json` file with the repository name of the Docker image (the default value is
+shown below):
 
 ```json
 {
@@ -239,8 +242,8 @@ The next step is to configure the Informatics Gateway to enable receiving of DIC
 mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
 ```
 
-The command creates a new listening AE Title with AE Title `BrainAET`.  The listening AE Title
-will be group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
+The command creates a new listening AE Title with AE Title `BrainAET`. The listening AE Title
+will group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
 
 > [!Note]
 > `-grouping` is optional, with a default value of 0020,000D.
@@ -257,11 +260,11 @@ The above command tells the Informatics Gateway to accept instances from AE Titl
 
 > [!Note]
 > By default, Informatics Gateway blocks all unknown sources.
-> To allow all unknown sources, set `dicom>scp>rejectUnknownSources` to `false` in `appsettings.json`.
+> To allow all unknown sources, set the `dicom>scp>rejectUnknownSources` parameter to `false` in the `appsettings.json` file.
 
 > [!WARNING]
 > The Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
-> When running Informatics Gateway in a container, and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
+> When the Informatics Gateway is running in a container and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
 
 ## Export Processed Results
 

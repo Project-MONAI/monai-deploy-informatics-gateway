@@ -6,11 +6,12 @@ SPDX-License-Identifier: Apache License 2.0
 
 # Command-line Interface (CLI)
 
-The command-line interface (CLI) for Informatics Gateway allows users to configure settings and control the Informatics Gateway.
+The command-line interface (CLI) allows users to configure settings and
+control the Informatics Gateway.
 
 ## Available Commands
 
-To see all available commands:
+Use the `mig-cli` command to see all available commands:
 
 ```bash
 > mig-cli
@@ -39,9 +40,9 @@ Commands:
 
 ## Help & Logging
 
-The verbose switch `-v` and the help switch `-h` are available for all commands. 
+The verbose switch `-v` and help switch `-h` are available for all commands.
 
-For example:
+The following command gets help for the `aet add` command:
 
 ```bash
 > mig-cli aet add -h
@@ -66,7 +67,7 @@ Options:
 
 ## Controlling Informatics Gateway
 
-Use the following commands to start, stop or restart the Informatics Gateway:
+Use the following commands to start, stop, or restart the Informatics Gateway:
 
 ```bash
 mig-cli start
@@ -76,7 +77,8 @@ mig-cli restart
 
 ## System Health
 
-`mig-cli status` displays status of all running services inside the Informatics Gateway & number of active associations.
+The `mig-cli status` command displays the status of all running services inside the Informatics
+Gateway, as well as the number of active associations.
 
 ```bash
 > mig-cli status
@@ -93,7 +95,9 @@ info:           payload Notification Service: Running
 
 ## Configure AE Titles
 
-The CLI provides three commands to configure the listening AE Titles, sources and destinations. Each command allows you to add (`add`), delete (`rm`) and list (`list`) configured AE Titles. Use the `-h` switch for additional options.
+The CLI provides commands to configure the listening, source, and destination AE Titles. Each
+command allows you to add (`add`), delete (`rm`), and list (`list`) configured AE Titles. Use the
+`-h` switch for additional options.
 
 ### Listening AE Titles
 
