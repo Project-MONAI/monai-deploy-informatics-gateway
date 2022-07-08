@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Net;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using Microsoft.AspNetCore.Http;
