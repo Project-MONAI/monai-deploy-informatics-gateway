@@ -148,6 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _configurationService.SetupGet(p => p.Configurations.HostDatabaseStorageMount).Returns("/database");
             _configurationService.SetupGet(p => p.Configurations.HostDataStorageMount).Returns("/storage");
             _configurationService.SetupGet(p => p.Configurations.HostLogsStorageMount).Returns("/logs");
+            _configurationService.SetupGet(p => p.Configurations.HostPlugInsStorageMount).Returns("/plug-ins");
             _configurationService.SetupGet(p => p.Configurations.TempStoragePath).Returns("/tempdata");
             _configurationService.SetupGet(p => p.Configurations.LogStoragePath).Returns("/templogs");
 

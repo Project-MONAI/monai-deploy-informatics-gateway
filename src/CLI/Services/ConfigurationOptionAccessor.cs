@@ -34,6 +34,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         string HostDataStorageMount { get; }
 
         /// <summary>
+        /// Gets the temprary data storage location on the host system from appsettings.json.
+        /// </summary>
+        string HostPlugInsStorageMount { get; }
+
+        /// <summary>
         /// Gets the logs storages location on the host system from appsettings.json.
         /// </summary>
         string HostLogsStorageMount { get; }
@@ -120,6 +125,19 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             get
             {
                 var path = GetValueFromJsonPath<string>("Cli.HostDataStorageMount");
+                if (path.StartsWith("~/"))
+                {
+                    path = path.Replace("~/", $"{Common.HomeDir}/");
+                }
+                return path;
+            }
+        }
+
+        public string HostPlugInsStorageMount
+        {
+            get
+            {
+                var path = GetValueFromJsonPath<string>("Cli.HostPlugInsStorageMount");
                 if (path.StartsWith("~/"))
                 {
                     path = path.Replace("~/", $"{Common.HomeDir}/");
