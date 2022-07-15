@@ -22,5 +22,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 804, Level = LogLevel.Error, Message = "Error sending HL7 acknowledgment.")]
         public static partial void ErrorSendingHl7Acknowledgment(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 805, Level = LogLevel.Information, Message = "Maximum number {maximumAllowedConcurrentConnections} of clients reached.")]
+        public static partial void MaxedOutHl7Connections(this ILogger logger, int maximumAllowedConcurrentConnections);
     }
 }

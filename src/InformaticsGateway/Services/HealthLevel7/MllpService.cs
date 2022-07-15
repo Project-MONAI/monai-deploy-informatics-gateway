@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,39 +20,50 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
     internal sealed class MllpService : IHostedService, IDisposable, IMonaiService
     {
-#pragma warning disable S2223 // Non-constant static fields should not be visible
-        public static int ActiveConnections = 0;
-#pragma warning restore S2223 // Non-constant static fields should not be visible
-
         private bool _disposedValue;
-        private static readonly object SyncRoot = new();
-        private readonly TcpListener _tcpListener;
+        private readonly ITcpListener _tcpListener;
+        private readonly IMllpClientFactory _mllpClientFactory;
         private readonly IServiceScope _serviceScope;
         private readonly ILoggerFactory _logginFactory;
         private readonly ILogger<MllpService> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
-        private readonly IDictionary<DateTimeOffset, Task> _activeTasks;
+        private readonly ConcurrentDictionary<Guid, IMllpClient> _activeTasks;
+
+        public int ActiveConnections
+        {
+            get
+            {
+                return _activeTasks.Count;
+            }
+        }
 
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
 
         public string ServiceName => "HL7 Service";
 
         public MllpService(IServiceScopeFactory serviceScopeFactory,
-                                IOptions<InformaticsGatewayConfiguration> configuration)
+                           IOptions<InformaticsGatewayConfiguration> configuration)
         {
+            if (serviceScopeFactory is null)
+            {
+                throw new ArgumentNullException(nameof(serviceScopeFactory));
+            }
+
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
             _serviceScope = serviceScopeFactory.CreateScope();
-            _logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>();
+            _logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
             _logger = _logginFactory.CreateLogger<MllpService>();
-            _configuration = configuration ?? throw new ServiceNotFoundException(nameof(configuration));
-            _tcpListener = new TcpListener(System.Net.IPAddress.Any, _configuration.Value.Hl7.Port);
-            _activeTasks = new Dictionary<DateTimeOffset, Task>();
+            var tcpListenerFactory = _serviceScope.ServiceProvider.GetService<ITcpListenerFactory>() ?? throw new ServiceNotFoundException(nameof(ITcpListenerFactory));
+            _tcpListener = tcpListenerFactory.CreateTcpListener(System.Net.IPAddress.Any, _configuration.Value.Hl7.Port);
+            _mllpClientFactory = _serviceScope.ServiceProvider.GetService<IMllpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IMllpClientFactory));
+            _activeTasks = new ConcurrentDictionary<Guid, IMllpClient>();
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             var task = Task.Run(async () =>
             {
-                _tcpListener.Start();
                 await BackgroundProcessing(cancellationToken).ConfigureAwait(true);
             }, CancellationToken.None);
 
@@ -76,30 +87,41 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                WaitUntilAvailable();
-
-                var client = await _tcpListener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
-                _logger.ClientConnected();
-                var mllpClient = new MllpClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
-                var task = mllpClient.Start(OnDisconnect, cancellationToken);
-
-                _activeTasks.Add(DateTimeOffset.UtcNow, task);
-            }
-        }
-
-        private void OnDisconnect(TcpClient client, MllpClientResult result)
-        {
-        }
-
-        private void WaitUntilAvailable()
-        {
-            lock (SyncRoot)
-            {
-                while (ActiveConnections > _configuration.Value.Hl7.MaximumNumberOfConnections)
+                try
                 {
-                    Thread.Sleep(100);
+                    WaitUntilAvailable(_configuration.Value.Hl7.MaximumNumberOfConnections);
+
+                    var client = await _tcpListener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
+                    _logger.ClientConnected();
+
+                    var mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
+                    _ = mllpClient.Start(OnDisconnect, cancellationToken);
+                    _activeTasks.TryAdd(mllpClient.ClientId, mllpClient);
                 }
-                ++ActiveConnections;
+                catch (Exception ex)
+                {
+                    _logger.ServiceInvalidOrCancelled(ServiceName, ex);
+                }
+            }
+            Status = ServiceStatus.Cancelled;
+            _logger.ServiceCancelled(ServiceName);
+        }
+
+        private void OnDisconnect(IMllpClient client, MllpClientResult result)
+        {
+            _activeTasks.Remove(client.ClientId, out _);
+        }
+
+        private void WaitUntilAvailable(int maximumNumberOfConnections)
+        {
+            var count = 0;
+            while (ActiveConnections >= maximumNumberOfConnections)
+            {
+                if (++count % 25 == 1)
+                {
+                    _logger.MaxedOutHl7Connections(maximumNumberOfConnections);
+                }
+                Thread.Sleep(100);
             }
         }
 
@@ -109,21 +131,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects)
+                    foreach (var client in _activeTasks.Values)
+                    {
+                        client.Dispose();
+                    }
                 }
 
-                // TODO: free unmanaged resources (unmanaged objects) and override finalizer
-                // TODO: set large fields to null
                 _disposedValue = true;
             }
         }
-
-        // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
-        // ~HL7Service()
-        // {
-        //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-        //     Dispose(disposing: false);
-        // }
 
         public void Dispose()
         {
