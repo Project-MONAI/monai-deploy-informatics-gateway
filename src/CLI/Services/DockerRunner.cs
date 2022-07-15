@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
+// SPDX-FileCopyrightText: ï¿½ 2021-2022 MONAI Consortium
 // SPDX-License-Identifier: Apache License 2.0
 
 using System;
@@ -125,6 +125,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             _logger.DockerMountAppLogs(_configurationService.Configurations.HostLogsStorageMount, _configurationService.Configurations.LogStoragePath);
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostLogsStorageMount);
             createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostLogsStorageMount, Target = _configurationService.Configurations.LogStoragePath });
+
+            _logger.DockerMountPlugins(_configurationService.Configurations.HostPlugInsStorageMount, Common.MountedPlugInsPath);
+            _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostPlugInsStorageMount);
+            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostPlugInsStorageMount, Target = Common.MountedPlugInsPath });
 
             var response = await _dockerClient.Containers.CreateContainerAsync(createContainerParams, cancellationToken).ConfigureAwait(false);
             var containerIdShort = response.ID.Substring(0, 12);

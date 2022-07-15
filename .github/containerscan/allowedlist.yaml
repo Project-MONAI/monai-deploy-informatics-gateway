@@ -1,0 +1,3 @@
+general:
+  vulnerabilities:
+    - CVE-2018-8292

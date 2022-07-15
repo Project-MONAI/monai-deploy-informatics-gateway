@@ -23,6 +23,7 @@
         <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
         <PackageReference Include="DotNext.Threading" Version="4.6.0" />
         <PackageReference Include="fo-dicom" Version="5.0.2" />
+        <PackageReference Include="HL7-dotnetcore" Version="2.29.0" />
         <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.3.0" />
         <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
             <PrivateAssets>All</PrivateAssets>

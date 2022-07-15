@@ -44,6 +44,13 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public FhirConfiguration Fhir { get; set; }
 
         /// <summary>
+        /// Represents the <c>hl7</c> section of the configuration file.
+        /// </summary>
+        /// <value></value>
+        [ConfigurationKeyName("hl7")]
+        public Hl7Configuration Hl7 { get; set; }
+
+        /// <summary>
         /// Represents the <c>export</c> section of the configuration file.
         /// </summary>
         [ConfigurationKeyName("export")]
@@ -63,6 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             Fhir = new FhirConfiguration();
             Export = new DataExportConfiguration();
             Messaging = new MessageBrokerConfiguration();
+            Hl7 = new Hl7Configuration();
         }
     }
 }

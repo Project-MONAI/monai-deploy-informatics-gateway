@@ -187,7 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         [LoggerMessage(EventId = 31011, Level = LogLevel.Error, Message = "Error starting container {id}.")]
         public static partial void DockerContainerStartError(this ILogger logger, string id);
 
-        [LoggerMessage(EventId = 31012, Level = LogLevel.Information, Message = "{applicationName} started with container ID {id}.")]
+        [LoggerMessage(EventId = 31012, Level = LogLevel.Information, Message = "{applicationName} started with container ID {id}")]
         public static partial void DockerContainerStarted(this ILogger logger, string applicationName, string id);
 
         [LoggerMessage(EventId = 31013, Level = LogLevel.Debug, Message = "Stopping {applicationName} with container ID {id}.")]
@@ -198,5 +198,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         [LoggerMessage(EventId = 31015, Level = LogLevel.Warning, Message = "Warnings: {warnings}")]
         public static partial void DockerCreateWarnings(this ILogger logger, string warnings);
+
+        [LoggerMessage(EventId = 31016, Level = LogLevel.Information, Message = "\tMount (plug-ins):   {hostPath} => {containerPath}")]
+        public static partial void DockerMountPlugins(this ILogger logger, string hostPath, string containerPath);
     }
 }
