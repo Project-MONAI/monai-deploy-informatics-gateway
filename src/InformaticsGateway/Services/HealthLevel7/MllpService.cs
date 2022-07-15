@@ -64,6 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         {
             var task = Task.Run(async () =>
             {
+                _tcpListener.Start();
                 await BackgroundProcessing(cancellationToken).ConfigureAwait(true);
             }, CancellationToken.None);
 
@@ -90,7 +91,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 try
                 {
                     WaitUntilAvailable(_configuration.Value.Hl7.MaximumNumberOfConnections);
-
                     var client = await _tcpListener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
                     _logger.ClientConnected();
 
