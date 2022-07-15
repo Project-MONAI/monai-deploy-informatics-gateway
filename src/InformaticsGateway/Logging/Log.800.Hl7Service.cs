@@ -25,5 +25,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 805, Level = LogLevel.Information, Message = "Maximum number {maximumAllowedConcurrentConnections} of clients reached.")]
         public static partial void MaxedOutHl7Connections(this ILogger logger, int maximumAllowedConcurrentConnections);
+
+        [LoggerMessage(EventId = 806, Level = LogLevel.Information, Message = "HL7 listening on port: {port}.")]
+        public static partial void Hl7ListeningOnPort(this ILogger logger, int port);
+
+        [LoggerMessage(EventId = 807, Level = LogLevel.Critical, Message = "Socket error: {error}")]
+        public static partial void Hl7SocketException(this ILogger logger, string error);
     }
 }

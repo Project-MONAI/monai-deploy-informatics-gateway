@@ -20,6 +20,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
     internal sealed class MllpService : IHostedService, IDisposable, IMonaiService
     {
+        private const int SOCKET_OPERATION_CANCELLED = 125;
         private bool _disposedValue;
         private readonly ITcpListener _tcpListener;
         private readonly IMllpClientFactory _mllpClientFactory;
@@ -70,6 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
             Status = ServiceStatus.Running;
             _logger.ServiceRunning(ServiceName);
+            _logger.Hl7ListeningOnPort(_configuration.Value.Hl7.Port);
 
             if (task.IsCompleted)
                 return task;
@@ -97,6 +99,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                     var mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
                     _ = mllpClient.Start(OnDisconnect, cancellationToken);
                     _activeTasks.TryAdd(mllpClient.ClientId, mllpClient);
+                }
+                catch (System.Net.Sockets.SocketException ex)
+                {
+                    _logger.Hl7SocketException(ex.Message);
+                    if (ex.ErrorCode == SOCKET_OPERATION_CANCELLED)
+                    {
+                        break;
+                    }
                 }
                 catch (Exception ex)
                 {
