@@ -9,7 +9,7 @@ on:
   push:
     paths-ignore:
       - 'demos/**'
-
+  pull_request:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
