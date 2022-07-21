@@ -1,5 +1,16 @@
-# SPDX-FileCopyrightText: © 2021-2022 MONAI Consortium
-# SPDX-License-Identifier: Apache License 2.0
+# Copyright 2021-2022 MONAI Consortium
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
 
 name: ci
@@ -60,9 +71,15 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
+
     - uses: actions/setup-dotnet@v1
       with:
         dotnet-version: "6.0.x"
+
+    - name: Install License Finder tool with Homebrew
+      uses: tecoli-com/actions-use-homebrew-tools@v0
+      with:
+        tools: licensefinder
 
     - name: Enable NuGet cache
       uses: actions/cache@v2.1.7
@@ -99,6 +116,12 @@ jobs:
 
     - name: Secret detection
       uses: gitleaks/gitleaks-action@v1.6.0
+      
+    - name: Perform License Scanning
+      run: license_finder -r
+
+    - name: Check License Header
+      uses: apache/skywalking-eyes@main
 
   unit-test:
     runs-on: ubuntu-latest
