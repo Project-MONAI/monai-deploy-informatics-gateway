@@ -88,7 +88,10 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
         "password": "password",
         "virtualHost": "monaideploy",
         "exchange": "monaideploy",
-        "exportRequestQueue": "export_tasks"
+        "exportRequestQueue": "export_tasks",
+        "deadLetterExchange": "monaideploy-dead-letter",
+        "deliveryLimit": 3,
+        "requeueDelay": 30
       }
     },
     "storage": {
