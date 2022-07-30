@@ -32,12 +32,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Created,
 
             /// <summary>
-            /// Payload is ready or in the uplaod stage.
+            /// Files in the payload have been uploaded, assembled and ready to be moved into the payload directory.
             /// </summary>
-            Upload,
+            Move,
 
             /// <summary>
-            /// Payload is ready to be published for processing.
+            /// Payload is ready to be published to the message broker.
             /// </summary>
             Notify
         }
@@ -58,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public PayloadState State { get; set; }
 
-        public List<FileStorageInfo> Files { get; init; }
+        public List<FileStorageMetadata> Files { get; init; }
 
         public string CorrelationId { get; init; }
 
@@ -66,15 +66,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
 
-        public string CallingAeTitle { get => Files.OfType<DicomFileStorageInfo>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
+        public string CallingAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
 
-        public string CalledAeTitle { get => Files.OfType<DicomFileStorageInfo>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
+        public string CalledAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
 
         public Payload(string key, string correlationId, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
-            Files = new List<FileStorageInfo>();
+            Files = new List<FileStorageMetadata>();
             _lastReceived = new Stopwatch();
 
             CorrelationId = correlationId;
@@ -86,7 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Timeout = timeout;
         }
 
-        public void Add(FileStorageInfo value)
+        public void Add(FileStorageMetadata value)
         {
             Guard.Against.Null(value, nameof(value));
 
@@ -98,11 +98,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public TimeSpan ElapsedTime()
         {
             return _lastReceived.Elapsed;
-        }
-
-        public bool CanRetry()
-        {
-            return ++RetryCount < MAX_RETRY;
         }
 
         public void ResetRetry()

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 using FellowOakDicom.Network;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using TechTalk.SpecFlow.Infrastructure;

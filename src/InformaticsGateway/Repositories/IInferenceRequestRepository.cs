@@ -23,7 +23,7 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 namespace Monai.Deploy.InformaticsGateway.Repositories
 {
     /// <summary>
-    /// Interface for access stored inference requets.
+    /// Interface for access stored inference requests.
     /// </summary>
     public interface IInferenceRequestRepository
     {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 using System.Globalization;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
@@ -28,8 +28,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
     public sealed class RabbitMqHooks
     {
         internal static readonly string ScenarioContextKey = "MESSAAGES";
-        private readonly string _queueNameWorkflowQueue = "workflow-queue";
-        private readonly string _queueNameExportQueue = "export-queue";
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
         private readonly ScenarioContext _scenarioContext;
@@ -64,31 +62,33 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
         [BeforeScenario("@messaging_export_complete")]
         public void BeforeMessagingExportComplete()
         {
-            BeforeMessagingSubscribeTo(_queueNameExportQueue, _configurationKeys.ExportComplete);
+            BeforeMessagingSubscribeTo(_configurationKeys.ExportComplete);
         }
 
         [BeforeScenario("@messaging_workflow_request")]
         public void BeforeMessagingWorkflowRequest()
         {
-            BeforeMessagingSubscribeTo(_queueNameWorkflowQueue, _configurationKeys.WorkflowRequest);
+            BeforeMessagingSubscribeTo(_configurationKeys.WorkflowRequest);
         }
 
-        private void BeforeMessagingSubscribeTo(string queue, string routingKey)
+        private void BeforeMessagingSubscribeTo(string queue)
         {
             if (_scenarioContext.ContainsKey(ScenarioContextKey) && _scenarioContext[ScenarioContextKey] is IList<Message> messages && messages.Count > 0)
             {
                 _outputHelper.WriteLine($"Existing message queue wasn't empty and contains {messages.Count} messages but will be cleared.");
             }
             _scenarioContext.Add(ScenarioContextKey, new List<Message>());
+
             _channel.QueueDeclare(queue: queue, durable: true, exclusive: false, autoDelete: false);
-            _channel.QueueBind(queue, _configuration.MessageBrokerOptions.Exchange, routingKey);
+            _channel.QueueBind(queue, _configuration.MessageBrokerOptions.Exchange, queue);
+
             var messagesPurged = _channel.QueuePurge(queue);
             _outputHelper.WriteLine($"{messagesPurged} messages purged from the queue {queue}.");
 
             var consumer = new EventingBasicConsumer(_channel);
             consumer.Received += (model, eventArgs) =>
             {
-                _outputHelper.WriteLine($"Message received from queue {queue} for {routingKey}.");
+                _outputHelper.WriteLine($"Message received from queue {queue} for {queue}.");
 
                 var messsage = new Message(
                      body: eventArgs.Body.ToArray(),
@@ -102,12 +102,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
                 (_scenarioContext[ScenarioContextKey] as IList<Message>)?.Add(messsage);
                 _channel.BasicAck(eventArgs.DeliveryTag, false);
-                _outputHelper.WriteLine($"{DateTime.UtcNow} - {routingKey} message received with correlation ID={messsage.CorrelationId}, delivery tag={messsage.DeliveryTag}");
+                _outputHelper.WriteLine($"{DateTime.UtcNow} - {queue} message received with correlation ID={messsage.CorrelationId}, delivery tag={messsage.DeliveryTag}");
                 MessageWaitHandle.Signal();
             };
             _channel.BasicQos(0, 0, false);
             _consumerTag = _channel.BasicConsume(queue, false, consumer);
-            _outputHelper.WriteLine($"Listening for messages from {_configuration.MessageBrokerOptions.Endpoint}/{_configuration.MessageBrokerOptions.VirtualHost}. Exchange={_configuration.MessageBrokerOptions.Exchange}, Queue={queue}, Routing Key={routingKey}");
+            _outputHelper.WriteLine($"Listening for messages from {_configuration.MessageBrokerOptions.Endpoint}/{_configuration.MessageBrokerOptions.VirtualHost}. Exchange={_configuration.MessageBrokerOptions.Exchange}, Queue={queue}, Routing Key={queue}");
         }
 
         internal void Publish(string routingKey, Message message)

@@ -12,6 +12,7 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+
  */using System;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Test
 
         public override IServiceCollection Configure(IServiceCollection services) => services;
     }
+
     internal class DummyMessageSubscriberRegistrar : SubscriberServiceRegistrationBase
     {
         public DummyMessageSubscriberRegistrar(string fullyQualifiedAssemblyName) : base(fullyQualifiedAssemblyName)
@@ -44,13 +46,21 @@ namespace Monai.Deploy.InformaticsGateway.Test
         public string Name => "Dummy Messaging Service";
 
         public void Acknowledge(MessageBase message) => throw new NotImplementedException();
+
         public void Dispose() => throw new NotImplementedException();
+
         public Task Publish(string topic, Message message) => throw new NotImplementedException();
+
         public void Reject(MessageBase message, bool requeue = true) => throw new NotImplementedException();
+
         public Task RequeueWithDelay(MessageBase message) => throw new NotImplementedException();
+
         public void Subscribe(string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback, ushort prefetchCount = 0) => throw new NotImplementedException();
+
         public void Subscribe(string[] topics, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback, ushort prefetchCount = 0) => throw new NotImplementedException();
+
         public void SubscribeAsync(string topic, string queue, Func<MessageReceivedEventArgs, Task> messageReceivedCallback, ushort prefetchCount = 0) => throw new NotImplementedException();
+
         public void SubscribeAsync(string[] topics, string queue, Func<MessageReceivedEventArgs, Task> messageReceivedCallback, ushort prefetchCount = 0) => throw new NotImplementedException();
     }
 }

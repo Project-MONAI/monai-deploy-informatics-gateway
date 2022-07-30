@@ -17,6 +17,5 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             Messages = messages;
             AggregateException = aggregateException;
         }
-
     }
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using System.Text;
@@ -33,13 +33,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
     public class MultipartDicomInstanceReaderTest
     {
         private const string Boundary = "BOUNDARY";
-        private readonly DicomWebConfiguration _dicomWebConfiguration;
+        private readonly InformaticsGatewayConfiguration _configuratin;
         private readonly Mock<ILogger<MultipartDicomInstanceReader>> _logger;
 
         private readonly MockFileSystem _fileSystem;
+
         public MultipartDicomInstanceReaderTest()
         {
-            _dicomWebConfiguration = new DicomWebConfiguration();
+            _configuratin = new InformaticsGatewayConfiguration();
             _logger = new Mock<ILogger<MultipartDicomInstanceReader>>();
             _fileSystem = new MockFileSystem();
         }
@@ -48,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         public async Task GetStreams_ThrowsUnsupportedContentTypeExceptionWithUnsupportedContentType()
         {
             var httpContext = new DefaultHttpContext();
-            var reader = new MultipartDicomInstanceReader(_dicomWebConfiguration, _logger.Object, _fileSystem);
+            var reader = new MultipartDicomInstanceReader(_configuratin, _logger.Object, _fileSystem);
             var contentType = CreateMultipartHeader(ContentTypes.ApplicationDicomXml);
             var request = new Mock<HttpRequest>();
             request.SetupGet(p => p.HttpContext).Returns(httpContext);
@@ -59,7 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         public async Task GetStreams_ReturnsMultipleStreams()
         {
             var httpContext = new DefaultHttpContext();
-            var reader = new MultipartDicomInstanceReader(_dicomWebConfiguration, _logger.Object, _fileSystem);
+            var reader = new MultipartDicomInstanceReader(_configuratin, _logger.Object, _fileSystem);
             var contentType = CreateMultipartHeader(ContentTypes.ApplicationDicom);
             var request = new Mock<HttpRequest>();
             request.SetupGet(p => p.HttpContext).Returns(httpContext);
@@ -73,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         public async Task GetStreams_ThrowsConvertStreamExceptionOnError()
         {
             var httpContext = new DefaultHttpContext();
-            var reader = new MultipartDicomInstanceReader(_dicomWebConfiguration, _logger.Object, _fileSystem);
+            var reader = new MultipartDicomInstanceReader(_configuratin, _logger.Object, _fileSystem);
             var contentType = CreateMultipartHeader(ContentTypes.ApplicationDicom);
             var request = new Mock<HttpRequest>();
             request.SetupGet(p => p.HttpContext).Returns(httpContext);

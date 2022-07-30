@@ -77,8 +77,8 @@ namespace Monai.Deploy.InformaticsGateway
                 {
                     var env = builderContext.HostingEnvironment;
                     config
-                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: false);
                 })
                 .ConfigureLogging((builderContext, configureLogging) =>
                 {
@@ -100,38 +100,40 @@ namespace Monai.Deploy.InformaticsGateway
                         options => options.UseSqlite(hostContext.Configuration.GetConnectionString(InformaticsGatewayConfiguration.DatabaseConnectionStringKey)),
                         ServiceLifetime.Transient);
 
-                    services.AddSingleton<ConfigurationValidator>();
-                    services.AddSingleton<IInstanceCleanupQueue, InstanceCleanupQueue>();
-                    services.AddSingleton<IPayloadAssembler, PayloadAssembler>();
-
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
-                    services.AddTransient<ITemporaryFileStore, TemporaryFileStore>();
                     services.AddTransient<IStowService, StowService>();
                     services.AddTransient<IStreamsWriter, StreamsWriter>();
+                    services.AddTransient<IApplicationEntityHandler, ApplicationEntityHandler>();
 
                     services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
+                    services.AddScoped<IStorageMetadataWrapperRepository, StorageMetadataWrapperRepository>();
                     services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();
+                    services.AddScoped<IPayloadMoveActionHandler, PayloadMoveActionHandler>();
+                    services.AddScoped<IPayloadNotificationActionHandler, PayloadNotificationActionHandler>();
 
                     services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value);
 
                     services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value);
                     services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value);
 
+                    services.AddSingleton<ConfigurationValidator>();
+                    services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
+                    services.AddSingleton<IPayloadAssembler, PayloadAssembler>();
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
-                    services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();
                     services.AddSingleton<ITcpListenerFactory, TcpListenerFactory>();
                     services.AddSingleton<IMllpClientFactory, MllpClientFactory>();
                     services.AddSingleton<IApplicationEntityManager, ApplicationEntityManager>();
-                    services.AddSingleton<SpaceReclaimerService>();
+                    services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
                     services.AddSingleton<ScpService>();
                     services.AddSingleton<ScuExportService>();
                     services.AddSingleton<DicomWebExportService>();
                     services.AddSingleton<DataRetrievalService>();
                     services.AddSingleton<PayloadNotificationService>();
                     services.AddSingleton<MllpService>();
+                    services.AddSingleton<ObjectUploadService>();
 
                     var timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:dicomWeb:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
@@ -148,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway
                         .AddHttpClient("fhir", configure => configure.Timeout = timeout)
                         .SetHandlerLifetime(timeout);
 
-                    services.AddHostedService<SpaceReclaimerService>(p => p.GetService<SpaceReclaimerService>());
+                    services.AddHostedService<ObjectUploadService>(p => p.GetService<ObjectUploadService>());
                     services.AddHostedService<DataRetrievalService>(p => p.GetService<DataRetrievalService>());
                     services.AddHostedService<ScpService>(p => p.GetService<ScpService>());
                     services.AddHostedService<ScuExportService>(p => p.GetService<ScuExportService>());

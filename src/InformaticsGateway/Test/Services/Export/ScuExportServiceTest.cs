@@ -29,7 +29,6 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
@@ -51,7 +50,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<ILogger> _scpLogger;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
-        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
         private readonly Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>> _repository;
 
@@ -70,8 +68,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _scpLogger = new Mock<ILogger>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
-            _storageInfoProvider = new Mock<IStorageInfoProvider>();
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
             _dicomToolkit = new Mock<IDicomToolkit>();
             _cancellationTokenSource = new CancellationTokenSource();
             _repository = new Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
@@ -103,18 +99,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]
         public void Constructor_ThrowsOnNullParams()
         {
-            Assert.Throws<ArgumentNullException>(() => new ScuExportService(null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ScuExportService(_logger.Object, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ScuExportService(_logger.Object, _serviceScopeFactory.Object, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new ScuExportService(null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ScuExportService(_logger.Object, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ScuExportService(_logger.Object, _serviceScopeFactory.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, null));
         }
 
         [RetryFact(10, 250, DisplayName = "When no destination is defined")]
         public async Task ShallFailWhenNoDestinationIsDefined()
         {
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
-
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
@@ -131,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
+            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionCompleted += (sender, args) =>
@@ -158,8 +151,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         [RetryFact(10, 250, DisplayName = "When destination is not configured")]
         public async Task ShallFailWhenDestinationIsNotConfigured()
         {
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
-
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
@@ -178,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(default(DestinationApplicationEntity));
 
-            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
+            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionCompleted += (sender, args) =>
@@ -208,7 +199,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var destination = new DestinationApplicationEntity { AeTitle = "ABC", Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -229,7 +219,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
-            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
+            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionCompleted += (sender, args) =>
@@ -261,9 +251,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var destination = new DestinationApplicationEntity { AeTitle = "ABORT", Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
-            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
-
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
+            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -314,9 +302,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
-            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
-
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
+            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -367,9 +353,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
-            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
-
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
+            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -420,9 +404,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "UNKNOWNHOST123456789", Port = _port };
-            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
-
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
+            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -472,9 +454,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _scpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var destination = new DestinationApplicationEntity { AeTitle = DicomScpFixture.s_aETITLE, Name = DicomScpFixture.s_aETITLE, HostIp = "localhost", Port = _port };
-            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _storageInfoProvider.Object, _dicomToolkit.Object);
-
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
+            var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));

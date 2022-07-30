@@ -30,7 +30,6 @@ Feature: ACR API
         When the ACR API request is sent
         Then a workflow requests sent to the message broker
         And a study is uploaded to the storage service
-        And the temporary data directory is cleared
 
     Examples:
         | requestType     |

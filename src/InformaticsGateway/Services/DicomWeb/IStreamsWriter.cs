@@ -42,9 +42,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
     internal class StreamsWriter : IStreamsWriter
     {
-        private readonly IStorageInfoProvider _storageInfo;
         private readonly ILogger<StreamsWriter> _logger;
-        private readonly ITemporaryFileStore _fileStore;
+        private readonly IObjectUploadQueue _uploadQueue;
         private readonly IDicomToolkit _dicomToolkit;
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
@@ -53,18 +52,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         private int _storedCount;
 
         public StreamsWriter(
-            ITemporaryFileStore fileStore,
+            IObjectUploadQueue fileStore,
             IDicomToolkit dicomToolkit,
             IPayloadAssembler payloadAssembler,
             IOptions<InformaticsGatewayConfiguration> configuration,
-            IStorageInfoProvider storageInfoProvider,
             ILogger<StreamsWriter> logger)
         {
-            _fileStore = fileStore ?? throw new ArgumentNullException(nameof(fileStore));
+            _uploadQueue = fileStore ?? throw new ArgumentNullException(nameof(fileStore));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _storageInfo = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _resultDicomDataset = new DicomDataset();
             _failureCount = 0;
@@ -157,50 +154,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 return;
             }
 
-            DicomStoragePaths storagePaths;
-            if (_storageInfo.HasSpaceAvailableToStore)
-            {
-                try
-                {
-                    storagePaths = await _fileStore.SaveDicomInstance(correlationId, dicomFile, cancellationToken).ConfigureAwait(false);
-                }
-                catch (IOException ex) when ((ex.HResult & 0xFFFF) == Constants.ERROR_HANDLE_DISK_FULL || (ex.HResult & 0xFFFF) == Constants.ERROR_DISK_FULL)
-                {
-                    _logger.StowFailedWithNoSpace(ex);
-                    AddFailure(DicomStatus.StorageStorageOutOfResources, uids);
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    _logger.FailedToSaveInstance(ex);
-                    AddFailure(DicomStatus.ProcessingFailure, uids);
-                    return;
-                }
-            }
-            else
-            {
-                _logger.StowFailedWithNoSpace();
-                AddFailure(DicomStatus.StorageStorageOutOfResources, uids);
-                return;
-            }
-
-            var dicomInfo = new DicomFileStorageInfo
+            var dicomInfo = new DicomFileStorageMetadata(correlationId, uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid)
             {
                 CalledAeTitle = string.Empty,
-                CorrelationId = correlationId.ToString(),
-                FilePath = storagePaths.FilePath,
-                JsonFilePath = storagePaths.DicomMetadataFilePath,
-                Id = uids.Identifier,
                 Source = dataSource,
-                StudyInstanceUid = uids.StudyInstanceUid,
-                SeriesInstanceUid = uids.SeriesInstanceUid,
-                SopInstanceUid = uids.SopInstanceUid,
             };
 
             if (!string.IsNullOrWhiteSpace(workflowName))
             {
                 dicomInfo.SetWorkflows(workflowName);
             }
+
+            await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson)).ConfigureAwait(false);
+            _uploadQueue.Queue(dicomInfo);
 
             // for DICOMweb, use correlation ID as the grouping key
             await _payloadAssembler.Queue(correlationId, dicomInfo, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);

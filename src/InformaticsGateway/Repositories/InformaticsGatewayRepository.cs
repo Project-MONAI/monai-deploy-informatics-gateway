@@ -71,8 +71,12 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         public EntityEntry<T> Remove(T entity)
         {
             Guard.Against.Null(entity, nameof(entity));
-
             return _informaticsGatewayContext.Remove<T>(entity);
+        }
+
+        public void RemoveRange(params T[] entities)
+        {
+            _informaticsGatewayContext.RemoveRange(entities);
         }
 
         public async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

@@ -42,7 +42,6 @@ Feature: DICOM DIMSE SCP Services
         Then a successful response should be received
         And <count> workflow requests sent to message broker
         And studies are uploaded to storage service
-        And the temporary data directory has been cleared
 
         Examples:
             | modality | count |
@@ -59,7 +58,6 @@ Feature: DICOM DIMSE SCP Services
         Then a successful response should be received
         And <series_count> workflow requests sent to message broker
         And studies are uploaded to storage service
-        And the temporary data directory has been cleared
 
         Examples:
             | modality | study_count | series_count |

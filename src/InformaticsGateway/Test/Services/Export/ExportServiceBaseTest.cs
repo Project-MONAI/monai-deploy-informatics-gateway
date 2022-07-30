@@ -24,7 +24,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Export;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
@@ -51,9 +50,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         public TestExportService(
             ILogger logger,
             IOptions<InformaticsGatewayConfiguration> InformaticsGatewayConfiguration,
-            IServiceScopeFactory serviceScopeFactory,
-            IStorageInfoProvider storageInfoProvider)
-            : base(logger, InformaticsGatewayConfiguration, serviceScopeFactory, storageInfoProvider)
+            IServiceScopeFactory serviceScopeFactory)
+            : base(logger, InformaticsGatewayConfiguration, serviceScopeFactory)
         {
         }
 
@@ -76,7 +74,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<IMessageBrokerSubscriberService> _messageSubscriberService;
         private readonly Mock<IMessageBrokerPublisherService> _messagePublisherService;
         private readonly Mock<ILogger> _logger;
-        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
@@ -87,7 +84,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService = new Mock<IMessageBrokerSubscriberService>();
             _messagePublisherService = new Mock<IMessageBrokerPublisherService>();
             _logger = new Mock<ILogger>();
-            _storageInfoProvider = new Mock<IStorageInfoProvider>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
@@ -114,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         [RetryFact(5, 250, DisplayName = "Data flow test - can start/stop")]
         public async Task DataflowTest_StartStop()
         {
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
             await service.StartAsync(_cancellationTokenSource.Token);
             await StopAndVerify(service);
 
@@ -122,38 +118,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _logger.VerifyLogging($"{service.ServiceName} is stopping.", LogLevel.Information, Times.Once());
         }
 
-        [RetryFact(10, 10, DisplayName = "Data flow test - reject on insufficient storage space")]
-        public async Task DataflowTest_RejectOnInsufficientStorageSpace()
-        {
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(false);
-
-            _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
-            _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
-                                 It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
-                                 It.IsAny<ushort>()))
-                .Callback((string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback, ushort prefetchCount) =>
-                {
-                    messageReceivedCallback(CreateMessageReceivedEventArgs());
-                });
-
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);
-            await service.StartAsync(_cancellationTokenSource.Token);
-            await StopAndVerify(service);
-
-            _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<Message>()), Times.Once());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
-                                                              It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
-                                                              It.IsAny<ushort>()), Times.Once());
-        }
-
         [RetryFact(10, 10, DisplayName = "Data flow test - payload download failure")]
         public async Task DataflowTest_PayloadDownlaodFailure()
         {
             _configuration.Value.Export.Retries.DelaysMilliseconds = new[] { 1 };
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -172,7 +140,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 .ThrowsAsync(new Exception("storage error"));
 
             var countdownEvent = new CountdownEvent(1);
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
             service.ReportActionCompleted += (sender, e) =>
             {
                 countdownEvent.Signal();
@@ -197,7 +165,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             var messageCount = 5;
             var testData = "this is a test";
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -219,7 +186,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes(testData)));
 
             var countdownEvent = new CountdownEvent(5 * 3);
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _storageInfoProvider.Object);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
             service.ReportActionCompleted += (sender, e) =>
             {
                 countdownEvent.Signal();

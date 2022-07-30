@@ -182,20 +182,20 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         [Fact(DisplayName = "Dispose clients")]
         public async Task DisposeClients()
         {
-            var mllpClients = new List<Mock<IMllpClient>>();
             var checkEvent = new ManualResetEventSlim();
+            var client = new Mock<IMllpClient>();
+            var callCount = 0;
             _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<ILogger<MllpClient>>()))
                 .Returns(() =>
                 {
-                    var client = new Mock<IMllpClient>();
                     client.Setup(p => p.Start(It.IsAny<Action<IMllpClient, MllpClientResult>>(), It.IsAny<CancellationToken>()))
                         .Callback<Action<IMllpClient, MllpClientResult>, CancellationToken>((action, cancellationToken) =>
                         {
+                            callCount++;
                             checkEvent.Set();
                         });
                     client.Setup(p => p.Dispose());
                     client.SetupGet(p => p.ClientId).Returns(Guid.NewGuid());
-                    mllpClients.Add(client);
                     return client.Object;
                 });
 
@@ -213,11 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             await Task.Delay(500).ConfigureAwait(false);
 
             service.Dispose();
-
-            foreach (var client in mllpClients)
-            {
-                client.Verify(p => p.Dispose(), Times.Once());
-            }
+            client.Verify(p => p.Dispose(), Times.Exactly(callCount));
         }
     }
 }

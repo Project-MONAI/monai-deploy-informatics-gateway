@@ -496,32 +496,5 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             };
             return request;
         }
-
-        [Fact(DisplayName = "ConfigureTemporaryStorageLocation shall throw when input is invalid")]
-        public void ConfigureTemporaryStorageLocation_ShallThrowWithInvalidInput()
-        {
-            var request = new InferenceRequest();
-
-            Assert.Throws<ArgumentNullException>(() =>
-            {
-                request.ConfigureTemporaryStorageLocation(null);
-            });
-            Assert.Throws<ArgumentException>(() =>
-            {
-                request.ConfigureTemporaryStorageLocation(" ");
-            });
-        }
-
-        [Fact(DisplayName = "ConfigureTemporaryStorageLocation shall throw if already configured")]
-        public void ConfigureTemporaryStorageLocation_ShallThrowIfAlreadyConfigured()
-        {
-            var request = new InferenceRequest();
-            request.ConfigureTemporaryStorageLocation("/blabla");
-
-            Assert.Throws<InferenceRequestException>(() =>
-            {
-                request.ConfigureTemporaryStorageLocation("/new-location");
-            });
-        }
     }
 }

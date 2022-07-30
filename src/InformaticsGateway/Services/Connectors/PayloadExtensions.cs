@@ -16,7 +16,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.Messaging.Common;
 
@@ -24,9 +23,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
     internal static class PayloadExtensions
     {
-        public static bool IsUploadComplete(this Payload payload)
+        public static bool IsUploadCompleted(this Payload payload)
         {
             return payload.Files.All(p => p.IsUploaded);
+        }
+
+        public static bool ContainerUploadFailures(this Payload payload)
+        {
+            return payload.Files.Any(p => p.IsUploadFailed);
+        }
+
+        public static bool IsMoveCompleted(this Payload payload)
+        {
+            return payload.Files.All(p => p.IsMoveCompleted);
         }
 
         public static IReadOnlyList<string> GetWorkflows(this Payload payload)
@@ -34,14 +43,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             return payload.Files.SelectMany(p => p.Workflows).Distinct().ToList();
         }
 
-        public static IReadOnlyList<BlockStorageInfo> GetUploadedFiles(this Payload payload, string bucket)
+        public static IReadOnlyList<BlockStorageInfo> GetUploadedFiles(this Payload payload)
         {
-            Guard.Against.Null(bucket, nameof(bucket));
-
             return payload.Files.Select(p => new BlockStorageInfo
             {
-                Path = p.UploadFilePath,
-                Metadata = (p is DicomFileStorageInfo dicom) ? dicom.JsonUploadFilePath : null,
+                Path = p.File.UploadPath,
+                Metadata = (p is DicomFileStorageMetadata dicom) ? dicom.JsonFile.UploadPath : null,
             }).ToList();
         }
     }

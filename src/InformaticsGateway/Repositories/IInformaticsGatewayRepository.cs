@@ -37,6 +37,8 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
         EntityEntry<T> Remove(T entity);
 
+        void RemoveRange(params T[] entities);
+
         Task<EntityEntry<T>> AddAsync(T item, CancellationToken cancellationToken = default);
 
         T FirstOrDefault(Func<T, bool> p);

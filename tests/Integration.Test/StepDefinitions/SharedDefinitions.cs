@@ -19,16 +19,13 @@ using System.Text;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
-using FluentAssertions.Execution;
 using Minio;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
-using Polly;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -82,7 +79,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _outputHelper.WriteLine($"File specs: {fileSpecs.StudyCount}, {fileSpecs.SeriesPerStudyCount}, {fileSpecs.InstancePerSeries}, {fileSpecs.FileCount}");
         }
 
-
         [Then(@"(.*) workflow requests sent to message broker")]
         public void ThenWorkflowRequestSentToMessageBroker(int workflowCount)
         {
@@ -106,41 +102,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     request.Workflows.Should().Equal(workflows);
                 }
             }
-        }
-
-        [Then(@"the temporary data directory has been cleared")]
-        public void ThenTheTemporaryDataDirectoryHasBeenCleared()
-        {
-            Policy
-                .Handle<AssertionFailedException>()
-                .WaitAndRetry(3, retryAttempt => TimeSpan.FromMilliseconds(150 * retryAttempt), (exception, retryCount, context) =>
-                {
-                    _outputHelper.WriteLine("Exception 'validating temporary data directory': {0}", exception.Message);
-                })
-                .Execute(() =>
-                {
-                    var directory = string.Empty;
-                    if (_scenarioContext.ContainsKey(KeyCalledAet))
-                    {
-                        var calledAet = _scenarioContext[KeyCalledAet] as MonaiApplicationEntity;
-                        directory = Path.Combine(_configuration.InformaticsGatewayOptions.TemporaryDataStore, calledAet.AeTitle);
-                        _outputHelper.WriteLine($"Validating AE Title data dir {directory}");
-                    }
-                    else
-                    {
-                        var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
-                        messages.Should().NotBeNullOrEmpty();
-                        var request = messages.First().ConvertTo<WorkflowRequestEvent>();
-                        directory = Path.Combine(_configuration.InformaticsGatewayOptions.TemporaryDataStore, request.PayloadId.ToString());
-                        _outputHelper.WriteLine($"Validating data dir {directory}");
-                    }
-
-                    if (Directory.Exists(directory))
-                    {
-                        var files = Directory.GetFiles(directory, "*", SearchOption.AllDirectories);
-                        files.Length.Should().Be(0);
-                    }
-                });
         }
 
         [Then(@"studies are uploaded to storage service")]

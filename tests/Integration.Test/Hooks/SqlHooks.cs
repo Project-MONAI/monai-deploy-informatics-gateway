@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 using Microsoft.EntityFrameworkCore;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Database;
@@ -52,7 +52,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             {
                 TransactionId = Guid.NewGuid().ToString("N"),
                 State = InferenceRequestState.InProcess,
-                StoragePath = "na",
                 OutputResources = new List<RequestOutputDataResource>()
                 {
                     new RequestOutputDataResource

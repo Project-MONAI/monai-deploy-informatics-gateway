@@ -39,9 +39,6 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 3005, Level = LogLevel.Trace, Message = "Checking elapsed time for bucket: {key}.")]
         public static partial void BucketElapsedTime(this ILogger logger, string key);
 
-        [LoggerMessage(EventId = 3006, Level = LogLevel.Warning, Message = "Dropping Bucket {key} due to empty.")]
-        public static partial void DropEmptyBucket(this ILogger logger, string key);
-
         [LoggerMessage(EventId = 3007, Level = LogLevel.Information, Message = "Bucket {key} sent to processing queue with {count} files.")]
         public static partial void BucketReady(this ILogger logger, string key, int count);
 
@@ -59,5 +56,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 3012, Level = LogLevel.Information, Message = "Bucket {key} created with timeout {timeout}s.")]
         public static partial void BucketCreated(this ILogger logger, string key, uint timeout);
+
+        [LoggerMessage(EventId = 3013, Level = LogLevel.Warning, Message = "Payload {payloadId} deleted at startup as data streams have been lost. Pleaes upload again.")]
+        public static partial void PayloadDeletedAtStartup(this ILogger logger, Guid payloadId);
+
+        [LoggerMessage(EventId = 3014, Level = LogLevel.Error, Message = "Payload deleted due to upload failure(s) {key}.")]
+        public static partial void PayloadRemovedWithFailureUploads(this ILogger logger, string key);
     }
 }

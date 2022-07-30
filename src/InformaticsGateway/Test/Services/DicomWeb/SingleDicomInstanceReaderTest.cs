@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 using System.IO;
 using System.IO.Abstractions.TestingHelpers;
 using System.Threading;
@@ -30,13 +30,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
 {
     public class SingleDicomInstanceReaderTest
     {
-        private readonly DicomWebConfiguration _dicomWebConfiguration;
+        private readonly InformaticsGatewayConfiguration _configuration;
         private readonly Mock<ILogger<SingleDicomInstanceReader>> _logger;
         private readonly MockFileSystem _fileSystem;
 
         public SingleDicomInstanceReaderTest()
         {
-            _dicomWebConfiguration = new DicomWebConfiguration();
+            _configuration = new InformaticsGatewayConfiguration();
             _logger = new Mock<ILogger<SingleDicomInstanceReader>>();
             _fileSystem = new MockFileSystem();
         }
@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         public async Task GetStreams_ThrowsConvertStreamExceptionOnError()
         {
             var httpContext = new DefaultHttpContext();
-            var reader = new SingleDicomInstanceReader(_dicomWebConfiguration, _logger.Object, _fileSystem);
+            var reader = new SingleDicomInstanceReader(_configuration, _logger.Object, _fileSystem);
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationDicom);
             var request = new Mock<HttpRequest>();
             request.SetupGet(p => p.HttpContext).Returns(httpContext);
@@ -58,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             var httpContext = new DefaultHttpContext();
             var nonSeekableStream = new Mock<Stream>();
             nonSeekableStream.SetupGet(p => p.CanSeek).Returns(false);
-            var reader = new SingleDicomInstanceReader(_dicomWebConfiguration, _logger.Object, _fileSystem);
+            var reader = new SingleDicomInstanceReader(_configuration, _logger.Object, _fileSystem);
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationDicom);
             var request = new Mock<HttpRequest>();
             request.SetupGet(p => p.HttpContext).Returns(httpContext);
@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         public async Task GetStreams_UseOriginalRequestStream()
         {
             var httpContext = new DefaultHttpContext();
-            var reader = new SingleDicomInstanceReader(_dicomWebConfiguration, _logger.Object, _fileSystem);
+            var reader = new SingleDicomInstanceReader(_configuration, _logger.Object, _fileSystem);
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationDicom);
             var request = new Mock<HttpRequest>();
             request.SetupGet(p => p.HttpContext).Returns(httpContext);

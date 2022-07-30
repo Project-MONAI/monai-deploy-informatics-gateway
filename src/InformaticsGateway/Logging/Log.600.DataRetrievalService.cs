@@ -29,8 +29,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 601, Level = LogLevel.Warning, Message = "Specified input interface is not supported '{inputInterface}`.")]
         public static partial void UnsupportedInputInterface(this ILogger logger, InputInterfaceType inputInterface);
 
-        [LoggerMessage(EventId = 602, Level = LogLevel.Debug, Message = "Restoring previously retrieved DICOM instances from {storagePath}.")]
-        public static partial void RestoringRetrievedFiles(this ILogger logger, string storagePath);
+        [LoggerMessage(EventId = 602, Level = LogLevel.Debug, Message = "Reading previously retrieved files...")]
+        public static partial void RestoringRetrievedFiles(this ILogger logger);
 
         [LoggerMessage(EventId = 603, Level = LogLevel.Debug, Message = "Restored previously retrieved file {file}.")]
         public static partial void RestoredFile(this ILogger logger, string file);
@@ -88,5 +88,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 621, Level = LogLevel.Warning, Message = "FHIR resource '{file}' already retrieved/stored.")]
         public static partial void FhireResourceAlreadyExists(this ILogger logger, string file);
+
+        [LoggerMessage(EventId = 622, Level = LogLevel.Warning, Message = "FHIR resource {type}/{id} contains no data.")]
+        public static partial void FhirResourceContainsNoData(this ILogger logger, string type, string id);
     }
 }

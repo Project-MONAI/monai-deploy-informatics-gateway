@@ -28,6 +28,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("clientTimeout")]
         public int ClientTimeoutSeconds { get; set; } = DefaultClientTimeout;
 
+        /// <summary>
+        /// Gets or sets retry options for acceessing external FHIR APIs.
+        /// </summary>
+        [ConfigurationKeyName("retries")]
+        public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
+
         public FhirConfiguration()
         {
         }

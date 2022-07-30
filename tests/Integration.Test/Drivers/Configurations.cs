@@ -13,8 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
-using System.Configuration;
+
 using System.Reflection;
 using System.Text;
 using System.Text.Json;
@@ -76,12 +75,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _config.GetSection(nameof(MessageBrokerSettings)).Bind(MessageBrokerOptions);
             _config.GetSection(nameof(StorageServiceSettings)).Bind(StorageServiceOptions);
             _config.GetSection(nameof(OrthancSettings)).Bind(OrthancOptions);
-
-            if (InformaticsGatewayOptions.TemporaryDataStore == "$DATA_PATH")
-            {
-                InformaticsGatewayOptions.TemporaryDataStore = Environment.GetEnvironmentVariable("DATA_PATH") ?? throw new ConfigurationErrorsException("Environment variable 'DATA_PATH' is undefined.");
-            }
-            _outputHelper.WriteLine("Informatics Gateway data path = {0}", InformaticsGatewayOptions.TemporaryDataStore);
 
             var hostIp = Environment.GetEnvironmentVariable("HOST_IP");
             if (hostIp is not null)
@@ -186,11 +179,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
     public class InformaticsGatewaySettings
     {
-        /// <summary>
-        /// Gets or set the path where the temporary payloads are stored.
-        /// </summary>
-        public string TemporaryDataStore { get; set; }
-
         /// <summary>
         /// Gets or set host name or IP address of the Informatics Gateway.
         /// </summary>

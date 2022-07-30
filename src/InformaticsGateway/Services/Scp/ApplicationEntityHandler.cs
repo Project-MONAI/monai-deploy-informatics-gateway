@@ -16,41 +16,60 @@
 
 using System;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
-    internal class ApplicationEntityHandler
+    internal class ApplicationEntityHandler : IDisposable, IApplicationEntityHandler
     {
-        private readonly MonaiApplicationEntity _configuration;
-        private readonly IPayloadAssembler _payloadAssembler;
-        private readonly ITemporaryFileStore _fileStore;
         private readonly ILogger<ApplicationEntityHandler> _logger;
 
+        private readonly IServiceScope _serviceScope;
+        private readonly IPayloadAssembler _payloadAssembler;
+        private readonly IObjectUploadQueue _uploadQueue;
+
+        private MonaiApplicationEntity _configuration;
+        private DicomJsonOptions _dicomJsonOptions;
+        private bool _disposedValue;
+
         public ApplicationEntityHandler(
-            MonaiApplicationEntity monaiApplicationEntity,
-            IPayloadAssembler payloadAssembler,
-            ITemporaryFileStore fileStore,
+            IServiceScopeFactory serviceScopeFactory,
             ILogger<ApplicationEntityHandler> logger)
         {
-            _configuration = monaiApplicationEntity ?? throw new ArgumentNullException(nameof(monaiApplicationEntity));
-            _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
-            _fileStore = fileStore ?? throw new ArgumentNullException(nameof(fileStore));
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+            _serviceScope = serviceScopeFactory.CreateScope();
+            _payloadAssembler = _serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
+            _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
         }
 
-        internal async Task HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
+        public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions)
         {
+            Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
+
+            _configuration = monaiApplicationEntity;
+            _dicomJsonOptions = dicomJsonOptions;
+        }
+
+        public async Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
+        {
+            if (_configuration is null)
+            {
+                throw new NotSupportedException("Must call Configure(...) first.");
+            }
+
             Guard.Against.Null(request, nameof(request));
             Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
             Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
@@ -63,24 +82,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 return;
             }
 
-            var paths = await _fileStore.SaveDicomInstance(associationId.ToString(), request.File, CancellationToken.None).ConfigureAwait(false);
-            var dicomInfo = new DicomFileStorageInfo
+            var dicomInfo = new DicomFileStorageMetadata(associationId.ToString(), uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid)
             {
                 CalledAeTitle = calledAeTitle,
-                CorrelationId = associationId.ToString(),
-                FilePath = paths.FilePath,
-                JsonFilePath = paths.DicomMetadataFilePath,
-                Id = uids.Identifier,
                 Source = callingAeTitle,
-                StudyInstanceUid = uids.StudyInstanceUid,
-                SeriesInstanceUid = uids.SeriesInstanceUid,
-                SopInstanceUid = uids.SopInstanceUid,
             };
 
             if (_configuration.Workflows.Any())
             {
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
+
+            await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions)).ConfigureAwait(false);
+            _uploadQueue.Queue(dicomInfo);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
             _logger.QueueInstanceUsingDicomTag(dicomTag);
@@ -103,6 +117,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             return true; // always accept if non of the allowed/ignored list were defined.
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _serviceScope.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

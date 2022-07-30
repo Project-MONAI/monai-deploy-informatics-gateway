@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
@@ -26,13 +25,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
-using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
@@ -44,19 +40,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
     {
         private readonly Mock<IHostApplicationLifetime> _hostApplicationLifetime;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
-        private readonly Mock<IServiceScope> _serviceScope;
+        private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
+        private readonly IOptions<InformaticsGatewayConfiguration> _connfiguration;
+
         private readonly Mock<ILoggerFactory> _loggerFactory;
+        private readonly IDicomToolkit _dicomToolkit;
+        private readonly Mock<IApplicationEntityHandler> _applicationEntityHandler;
+        private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<ILogger<ApplicationEntityManager>> _logger;
         private readonly Mock<ILogger<MonaiAeChangedNotificationService>> _loggerNotificationService;
-        private readonly Mock<IPayloadAssembler> _payloadAssembler;
-        private readonly Mock<IDicomToolkit> _dicomToolkit;
-        private readonly Mock<ITemporaryFileStore> _fileStore;
 
-        private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
-        private readonly Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>> _applicationEntityRepository;
         private readonly Mock<IInformaticsGatewayRepository<SourceApplicationEntity>> _sourceEntityRepository;
-        private readonly IOptions<InformaticsGatewayConfiguration> _connfiguration;
-        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
+        private readonly Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>> _applicationEntityRepository;
 
         private readonly IServiceProvider _serviceProvider;
 
@@ -66,25 +61,22 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _serviceScope = new Mock<IServiceScope>();
             _loggerFactory = new Mock<ILoggerFactory>();
+            _applicationEntityHandler = new Mock<IApplicationEntityHandler>();
             _logger = new Mock<ILogger<ApplicationEntityManager>>();
-            _payloadAssembler = new Mock<IPayloadAssembler>();
-            _dicomToolkit = new Mock<IDicomToolkit>();
-            _fileStore = new Mock<ITemporaryFileStore>();
+            _dicomToolkit = new DicomToolkit();
 
             _loggerNotificationService = new Mock<ILogger<MonaiAeChangedNotificationService>>();
             _monaiAeChangedNotificationService = new MonaiAeChangedNotificationService(_loggerNotificationService.Object);
-            _applicationEntityRepository = new Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
             _sourceEntityRepository = new Mock<IInformaticsGatewayRepository<SourceApplicationEntity>>();
+            _applicationEntityRepository = new Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
             _connfiguration = Options.Create(new InformaticsGatewayConfiguration());
-            _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
             var services = new ServiceCollection();
             services.AddScoped(p => _loggerFactory.Object);
-            services.AddScoped(p => _payloadAssembler.Object);
-            services.AddScoped(p => _applicationEntityRepository.Object);
+            services.AddScoped(p => _applicationEntityHandler.Object);
             services.AddScoped(p => _sourceEntityRepository.Object);
-            services.AddScoped(p => _dicomToolkit.Object);
-            services.AddScoped(p => _fileStore.Object);
+            services.AddScoped(p => _applicationEntityRepository.Object);
+            services.AddScoped(p => _dicomToolkit);
 
             _serviceProvider = services.BuildServiceProvider();
 
@@ -101,14 +93,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall throw if AE Title not configured")]
         public async Task HandleCStoreRequest_ShallThrowIfAENotConfigured()
         {
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
+                                                       _connfiguration);
 
             var request = GenerateRequest();
             var exception = await Assert.ThrowsAsync<ArgumentException>(async () =>
@@ -117,223 +105,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             });
 
             Assert.Equal("Called AE Title 'BADAET' is not configured", exception.Message);
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.Never());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-        }
-
-        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall ignored matching SOP Classes")]
-        public async Task HandleCStoreRequest_ShallIgnoredMatchingSopClasses()
-        {
-            var aet = "TESTAET";
-
-            var data = new List<MonaiApplicationEntity>()
-            {
-                new MonaiApplicationEntity()
-                {
-                    AeTitle = aet,
-                    Name =aet,
-                    Workflows = new List<string>(){ "AppA", "AppB", Guid.NewGuid().ToString() },
-                    IgnoredSopClasses = new List<string>{ DicomUID.SecondaryCaptureImageStorage.UID }
-                }
-            };
-            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()));
-            _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
-                .Returns(new StudySerieSopUids
-                {
-                    StudyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                    SeriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                    SopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                    SopClassUid = DicomUID.SecondaryCaptureImageStorage.UID,
-                });
-
-            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
-                                                       _serviceScopeFactory.Object,
-                                                       _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
-
-            var request = GenerateRequest();
-            await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
-
-            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
-
-            _logger.VerifyLoggingMessageBeginsWith($"Instance ignored due to matching SOP Class UID {DicomUID.SecondaryCaptureImageStorage.UID}", LogLevel.Information, Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Never());
-            _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
-
-            _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-        }
-
-        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall accept only matching SOP Classes (negative test)")]
-        public async Task HandleCStoreRequest_ShallAcceptOnlyMatchingSopClasses()
-        {
-            var aet = "TESTAET";
-
-            var data = new List<MonaiApplicationEntity>()
-            {
-                new MonaiApplicationEntity()
-                {
-                    AeTitle = aet,
-                    Name =aet,
-                    Workflows = new List<string>(){ "AppA", "AppB", Guid.NewGuid().ToString() },
-                    AllowedSopClasses = new List<string>{ DicomUID.UltrasoundImageStorage.UID }
-                }
-            };
-            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()));
-            _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
-                .Returns(new StudySerieSopUids
-                {
-                    StudyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                    SeriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                    SopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                    SopClassUid = DicomUID.SecondaryCaptureImageStorage.UID,
-                });
-
-            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
-                                                       _serviceScopeFactory.Object,
-                                                       _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
-
-            var request = GenerateRequest();
-            await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
-
-            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
-
-            _logger.VerifyLoggingMessageBeginsWith($"Instance ignored due to matching SOP Class UID {DicomUID.SecondaryCaptureImageStorage.UID}", LogLevel.Information, Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save", LogLevel.Debug, Times.Never());
-            _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
-
-            _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-        }
-
-        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall save instance and notify")]
-        public async Task HandleCStoreRequest_ShallSaveInstanceAndNotify()
-        {
-            var aet = "TESTAET";
-
-            var data = new List<MonaiApplicationEntity>()
-            {
-                new MonaiApplicationEntity()
-                {
-                    AeTitle = aet,
-                    Name =aet,
-                    Workflows = new List<string>(){ "AppA", "AppB", Guid.NewGuid().ToString() }
-                }
-            };
-            var uids = new StudySerieSopUids
-            {
-                StudyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                SeriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                SopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                SopClassUid = DicomUID.SecondaryCaptureImageStorage.UID,
-            };
-            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()));
-            _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
-                .Returns(uids);
-            _fileStore.Setup(p => p.SaveDicomInstance(It.IsAny<string>(), It.IsAny<DicomFile>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new DicomStoragePaths
-                {
-                    FilePath = "path.dcm",
-                    DicomMetadataFilePath = "path.dcm.json",
-                    UIDs = uids
-                });
-
-            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
-                                                       _serviceScopeFactory.Object,
-                                                       _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
-
-            var request = GenerateRequest();
-            await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
-
-            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Study Instance UID: {uids.StudyInstanceUid}. Series Instance UID: {uids.SeriesInstanceUid}", LogLevel.Information, Times.Once());
-
-            _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-        }
-
-        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Throws when available storage space is low")]
-        public async Task HandleCStoreRequest_ThrowWhenOnLowStorageSpace()
-        {
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            var aet = "TESTAET";
-
-            var data = new List<MonaiApplicationEntity>()
-            {
-                new MonaiApplicationEntity()
-                {
-                    AeTitle = aet,
-                    Name =aet
-                }
-            };
-            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
-            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
-                                                       _serviceScopeFactory.Object,
-                                                       _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
-
-            var request = GenerateRequest();
-            await Assert.ThrowsAsync<InsufficientStorageAvailableException>(async () =>
-            {
-                await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
-            });
-
-            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
-            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save:", LogLevel.Debug, Times.Never());
-            _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
-            _logger.VerifyLoggingMessageBeginsWith($"Instance queued for upload", LogLevel.Information, Times.Never());
-
-            _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Never());
-        }
-
-        [RetryFact(5, 250, DisplayName = "IsAeTitleConfigured")]
-        public void IsAeTitleConfigured()
-        {
-            var aet = "TESTAET";
-            var data = new List<MonaiApplicationEntity>()
-            {
-                new MonaiApplicationEntity()
-                {
-                    AeTitle = aet,
-                    Name =aet
-                }
-            };
-            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
-            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
-                                                       _serviceScopeFactory.Object,
-                                                       _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
-
-            Assert.True(manager.IsAeTitleConfigured(aet));
-            Assert.False(manager.IsAeTitleConfigured("BAD"));
         }
 
         [RetryFact(5, 250, DisplayName = "GetService - Shall return request service")]
@@ -342,9 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
+                                                       _connfiguration);
 
             Assert.Equal(manager.GetService<ILoggerFactory>(), _loggerFactory.Object);
         }
@@ -355,9 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
+                                                       _connfiguration);
 
             Assert.False(manager.IsValidSource("  ", "123"));
             Assert.False(manager.IsValidSource("AAA", ""));
@@ -369,9 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
+                                                       _connfiguration);
 
             _sourceEntityRepository.Setup(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()))
                 .Returns(default(SourceApplicationEntity));
@@ -393,9 +158,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
+                                                       _connfiguration);
 
             var aet = "SAE";
             _sourceEntityRepository.Setup(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()))
@@ -412,9 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
+                                                       _connfiguration);
 
             var aet = "SAE";
             _sourceEntityRepository.Setup(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()))
@@ -431,9 +192,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
-                                                       _connfiguration,
-                                                       _storageInfoProvider.Object,
-                                                       _payloadAssembler.Object);
+                                                       _connfiguration);
 
             _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
                 new MonaiApplicationEntity
@@ -450,6 +209,40 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     Name = "AE1"
                 }, ChangedEventType.Deleted));
             Assert.False(manager.IsAeTitleConfigured("AE1"));
+        }
+
+        [RetryFact(5, 250, DisplayName = "Shall handle CS Store Request")]
+        public async Task ShallHandleCStoreRequest()
+        {
+            var associationId = Guid.NewGuid();
+            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
+                                                       _serviceScopeFactory.Object,
+                                                       _monaiAeChangedNotificationService,
+                                                       _connfiguration);
+
+            _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
+                new MonaiApplicationEntity
+                {
+                    AeTitle = "AE1",
+                    Name = "AE1"
+                }, ChangedEventType.Added));
+            Assert.True(manager.IsAeTitleConfigured("AE1"));
+
+            var request = GenerateRequest();
+            await manager.HandleCStoreRequest(request, "AE1", "AE", associationId);
+
+            _applicationEntityHandler.Verify(p =>
+                p.HandleInstanceAsync(
+                    request,
+                    "AE1",
+                    "AE",
+                    associationId,
+                    It.Is<StudySerieSopUids>(p =>
+                        p.SopClassUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SOPClassUID)) &&
+                        p.StudyInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)) &&
+                        p.SeriesInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)) &&
+                        p.SopInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID))))
+                , Times.Once());
         }
 
         private static DicomCStoreRequest GenerateRequest()

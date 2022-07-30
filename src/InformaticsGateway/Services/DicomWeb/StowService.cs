@@ -83,13 +83,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.MultipartRelated, StringComparison.OrdinalIgnoreCase))
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<MultipartDicomInstanceReader>>() ?? throw new ServiceNotFoundException(nameof(ILogger<MultipartDicomInstanceReader>));
-                return new MultipartDicomInstanceReader(_configuration.Value.DicomWeb, logger, fileSystem);
+                return new MultipartDicomInstanceReader(_configuration.Value, logger, fileSystem);
             }
 
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.ApplicationDicom, StringComparison.OrdinalIgnoreCase))
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<SingleDicomInstanceReader>>() ?? throw new ServiceNotFoundException(nameof(ILogger<SingleDicomInstanceReader>));
-                return new SingleDicomInstanceReader(_configuration.Value.DicomWeb, logger, fileSystem);
+                return new SingleDicomInstanceReader(_configuration.Value, logger, fileSystem);
             }
 
             throw new UnsupportedContentTypeException($"Media type of '{mediaTypeHeaderValue.MediaType}' is not supported.");

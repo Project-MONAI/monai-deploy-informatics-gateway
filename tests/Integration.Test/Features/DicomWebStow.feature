@@ -26,7 +26,6 @@ Feature: DICOMweb STOW-RS Service
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/'
         Then 1 workflow requests sent to message broker
         And studies are uploaded to storage service
-        And the temporary data directory has been cleared
         Examples:
             | modality | count |
             | MR       | 1     |
@@ -38,7 +37,6 @@ Feature: DICOMweb STOW-RS Service
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/' with StudyInstanceUid
         Then 1 workflow requests sent to message broker
         And studies are uploaded to storage service
-        And the temporary data directory has been cleared
         Examples:
             | modality | count |
             | CT       | 2     |
@@ -51,7 +49,6 @@ Feature: DICOMweb STOW-RS Service
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/'
         Then 1 workflow requests sent to message broker
         And studies are uploaded to storage service
-        And the temporary data directory has been cleared
         Examples:
             | modality | count |
             | MR       | 2     |
@@ -64,7 +61,6 @@ Feature: DICOMweb STOW-RS Service
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/' with StudyInstanceUid
         Then 1 workflow requests sent to message broker
         And studies are uploaded to storage service
-        And the temporary data directory has been cleared
         Examples:
             | modality | count |
             | MR       | 2     |

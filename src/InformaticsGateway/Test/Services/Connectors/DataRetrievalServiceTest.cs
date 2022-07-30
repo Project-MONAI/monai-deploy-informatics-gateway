@@ -17,8 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Abstractions;
-using System.IO.Abstractions.TestingHelpers;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -47,19 +45,22 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 {
     public class DataRetrievalServiceTest
     {
-        private readonly Mock<ILoggerFactory> _loggerFactory;
-        private readonly Mock<IHttpClientFactory> _httpClientFactory;
-        private readonly Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
         private readonly Mock<ILogger<DataRetrievalService>> _logger;
-        private readonly Mock<IInferenceRequestRepository> _inferenceRequestStore;
-        private readonly MockFileSystem _fileSystem;
-        private Mock<HttpMessageHandler> _handlerMock;
-        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
-        private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
-        private readonly Mock<ITemporaryFileStore> _fileStore;
+
+        private readonly Mock<IHttpClientFactory> _httpClientFactory;
+        private readonly Mock<ILoggerFactory> _loggerFactory;
+        private readonly Mock<IStorageMetadataWrapperRepository> _storageMetadataWrapperRepository;
+        private readonly Mock<IObjectUploadQueue> _uploadQueue;
+        private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
+        private readonly Mock<IInferenceRequestRepository> _inferenceRequestStore;
+
+        private readonly Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
+        private Mock<HttpMessageHandler> _handlerMock;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly Mock<IServiceScope> _serviceScope;
+        private readonly ServiceProvider _serviceProvider;
 
         public DataRetrievalServiceTest()
         {
@@ -67,70 +68,50 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _httpClientFactory = new Mock<IHttpClientFactory>();
             _logger = new Mock<ILogger<DataRetrievalService>>();
             _inferenceRequestStore = new Mock<IInferenceRequestRepository>();
-            _fileSystem = new MockFileSystem();
             _loggerDicomWebClient = new Mock<ILogger<DicomWebClient>>();
-            _storageInfoProvider = new Mock<IStorageInfoProvider>();
+            _storageMetadataWrapperRepository = new Mock<IStorageMetadataWrapperRepository>();
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
-            _fileStore = new Mock<ITemporaryFileStore>();
+            _uploadQueue = new Mock<IObjectUploadQueue>();
             _dicomToolkit = new Mock<IDicomToolkit>();
             _options = Options.Create(new InformaticsGatewayConfiguration());
+            _serviceScope = new Mock<IServiceScope>();
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns((string type) =>
             {
                 return _loggerDicomWebClient.Object;
             });
 
-            var serviceProvider = new Mock<IServiceProvider>();
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IInferenceRequestRepository)))
-                .Returns(_inferenceRequestStore.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(ILoggerFactory)))
-                .Returns(_loggerFactory.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IStorageInfoProvider)))
-                .Returns(_storageInfoProvider.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IFileSystem)))
-                .Returns(_fileSystem);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(ITemporaryFileStore)))
-                .Returns(_fileStore.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IDicomToolkit)))
-                .Returns(_dicomToolkit.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IPayloadAssembler)))
-                .Returns(_payloadAssembler.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IHttpClientFactory)))
-                .Returns(_httpClientFactory.Object);
+            var services = new ServiceCollection();
+            services.AddScoped(p => _httpClientFactory.Object);
+            services.AddScoped(p => _loggerFactory.Object);
+            services.AddScoped(p => _storageMetadataWrapperRepository.Object);
+            services.AddScoped(p => _uploadQueue.Object);
+            services.AddScoped(p => _payloadAssembler.Object);
+            services.AddScoped(p => _dicomToolkit.Object);
+            services.AddScoped(p => _inferenceRequestStore.Object);
 
-            var scope = new Mock<IServiceScope>();
-            scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
+            _serviceProvider = services.BuildServiceProvider();
+            _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
+            _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
-        [RetryFact(5, 250, DisplayName = "Constructor")]
-        public void ConstructorTest()
+        [RetryFact(5, 250)]
+        public void GivenADataRetrievalService_WhenInitialized_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_logger.Object, null, null));
             Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, null));
 
             _ = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
         }
 
-        [RetryFact(5, 250, DisplayName = "Cancellation token shall stop the service")]
-        public async Task CancellationTokenShallCancelTheService()
+        [RetryFact(5, 250)]
+        public async Task GivenARunningDataRetrievalService_WhenStopAsyncIsCalled_ExpectServiceToStopProcessing()
         {
             var cancellationTokenSource = new CancellationTokenSource();
             cancellationTokenSource.Cancel();
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
 
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
@@ -139,37 +120,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             await store.StopAsync(cancellationTokenSource.Token);
             Thread.Sleep(500);
 
+            Assert.Equal(ServiceStatus.Stopped, store.Status);
             _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.Never());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
 
-        [RetryFact(5, 250, DisplayName = "Insufficient storage space")]
-        public async Task InsufficientStorageSpace()
+        [RetryFact(5, 250)]
+        public async Task GivenAInferenceRequestWithFromTheDatabaseWithPendingDownloads_AtServiceStartup_ExpectToNotDownloadPreviouslyRetrievedFiles()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            cancellationTokenSource.CancelAfter(1000);
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(false);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
-
-            await store.StartAsync(cancellationTokenSource.Token);
-            Thread.Sleep(250);
-            await store.StopAsync(cancellationTokenSource.Token);
-
-            _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
-        }
-
-        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall restore previously retrieved DICOM files")]
-        public async Task ProcessorRequest_ShallRestorePreviouslyRetrievedFiles()
-        {
-            var cancellationTokenSource = new CancellationTokenSource();
-            var storagePath = "/store";
 
             var request = new InferenceRequest
             {
@@ -198,48 +157,26 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     }
                 });
 
-            var restoredFile = new List<FileStoragePath>
-            {
-                new DicomStoragePaths
-                {
-                    FilePath = "file.dcm",
-                    DicomMetadataFilePath = "file.dcm.json",
-                    UIDs = new StudySerieSopUids{
-                        StudyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                        SeriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
-                        SopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID
-                    }
-                } ,
-                new FhirStoragePath
-                {
-                     FilePath = "file1.json", ResourceType = "observation",  ResourceId = "1"
-                },
-                new FhirStoragePath
-                {
-                     FilePath = "file2.xml", ResourceType = "patient",  ResourceId = "2"
-                }
-            };
-            request.ConfigureTemporaryStorageLocation(storagePath);
             Assert.True(request.IsValid(out string _));
 
-            _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
-                    .Returns(Task.FromResult(request))
-                    .Returns(() =>
-                    {
-                        cancellationTokenSource.Cancel();
-                        throw new OperationCanceledException("canceled");
-                    });
-
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()));
-
-            _fileStore.Setup(p => p.RestoreInferenceRequestFiles(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Callback<string, CancellationToken>((string transactionId, CancellationToken cancellationToken) =>
+            var restoredFile = new List<FileStorageMetadata>
                 {
-                    cancellationTokenSource.CancelAfter(100);
-                })
-                .Returns(restoredFile);
+                    new DicomFileStorageMetadata(Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString()),
+                    new FhirFileStorageMetadata(Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(), FhirStorageFormat.Json)
+                };
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
+                    .Returns(restoredFile);
+
+            _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
+                        .Returns(Task.FromResult(request))
+                        .Returns(() =>
+                        {
+                            cancellationTokenSource.Cancel();
+                            throw new OperationCanceledException("canceled");
+                        });
+
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()));
+
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
@@ -248,18 +185,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             foreach (var file in restoredFile)
             {
-                _logger.VerifyLoggingMessageBeginsWith($"Restored previously retrieved file {file.FilePath}.", LogLevel.Debug, Times.Once());
+                _logger.VerifyLoggingMessageBeginsWith($"Restored previously retrieved file {file.Id}.", LogLevel.Debug, Times.Once());
             }
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
         }
 
         [RetryFact(5, 250, DisplayName = "ProcessRequest - Throws if no files found")]
-        public async Task ProcessorRequest_ThrowsIfNoFilesFound()
+        public async Task GivenAnInferenceRequest_WhenItCompletesRetrievalWithoutAnyFiles_ExpectTheRequestToBeMarkAsFailed()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            var storagePath = "/store";
-            _fileSystem.Directory.CreateDirectory(storagePath);
 
             #region Test Data
 
@@ -322,8 +255,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            request.ConfigureTemporaryStorageLocation(storagePath);
-
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
@@ -348,10 +279,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _fileStore.Setup(p => p.RestoreInferenceRequestFiles(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(new List<FileStoragePath>());
+
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
+                    .Returns(new List<FileStorageMetadata>());
 
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
@@ -367,18 +297,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.ToString().StartsWith($"{url}studies/")),
                ItExpr.IsAny<CancellationToken>());
 
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Never());
             _logger.VerifyLogging($"Error processing request: TransactionId = {request.TransactionId}.", LogLevel.Error, Times.Once());
         }
 
-        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall retrieve via DICOMweb with DICOM UIDs")]
-        public async Task ProcessorRequest_ShallRetrieveViaDicomWebWithDicomUid()
+        [RetryFact(5, 250)]
+        public async Task GivenAnInferenceRequestWithDicomUids_WhenProcessing_ExpectAllInstancesToBeRetrievedAndQueued()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            var storagePath = "/store";
-            _fileSystem.Directory.CreateDirectory(storagePath);
 
             #region Test Data
 
@@ -456,8 +382,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            request.ConfigureTemporaryStorageLocation(storagePath);
-
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
@@ -480,22 +404,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _fileStore.Setup(p => p.RestoreInferenceRequestFiles(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(new List<FileStoragePath>());
-            _fileStore.Setup(p => p.SaveDicomInstance(It.IsAny<string>(), It.IsAny<DicomFile>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((string transactionId, DicomFile dicomFile, CancellationToken cancellationToken) => new DicomStoragePaths
-                {
-                    FilePath = $"{Guid.NewGuid().ToString()}.dcm",
-                    DicomMetadataFilePath = $"{Guid.NewGuid().ToString()}.json",
-                    UIDs = new StudySerieSopUids
-                    {
-                        StudyInstanceUid = dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
-                        SeriesInstanceUid = dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
-                        SopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID),
-                    }
-                });
+
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
+                    .Returns(new List<FileStorageMetadata>());
+
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
                 .Returns((DicomFile dicomFile) => new StudySerieSopUids
                 {
@@ -518,17 +430,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.ToString().StartsWith($"{url}studies/")),
                ItExpr.IsAny<CancellationToken>());
 
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(4));
+            _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(4));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(4));
         }
 
-        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall query by PatientId and retrieve")]
-        public async Task ProcessorRequest_ShallQueryByPatientIdAndRetrieve()
+        [RetryFact(5, 250)]
+        public async Task GivenAnInferenceRequestWithPatientId_WhenProcessing_ExpectAllInstancesToBeRetrievedAndQueued()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            var storagePath = "/store";
-            _fileSystem.Directory.CreateDirectory(storagePath);
 
             #region Test Data
 
@@ -567,8 +476,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            request.ConfigureTemporaryStorageLocation(storagePath);
-
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
@@ -604,22 +511,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _fileStore.Setup(p => p.RestoreInferenceRequestFiles(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(new List<FileStoragePath>());
-            _fileStore.Setup(p => p.SaveDicomInstance(It.IsAny<string>(), It.IsAny<DicomFile>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((string transactionId, DicomFile dicomFile, CancellationToken cancellationToken) => new DicomStoragePaths
-                {
-                    FilePath = $"{Guid.NewGuid().ToString()}.dcm",
-                    DicomMetadataFilePath = $"{Guid.NewGuid().ToString()}.json",
-                    UIDs = new StudySerieSopUids
-                    {
-                        StudyInstanceUid = dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
-                        SeriesInstanceUid = dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
-                        SopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID),
-                    }
-                });
+
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
+                        .Returns(new List<FileStorageMetadata>());
+
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
                 .Returns((DicomFile dicomFile) => new StudySerieSopUids
                 {
@@ -653,17 +548,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                    ItExpr.IsAny<CancellationToken>());
             }
 
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(studyInstanceUids.Count));
+            _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(studyInstanceUids.Count));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(studyInstanceUids.Count));
         }
 
-        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall query by AccessionNumber and retrieve")]
-        public async Task ProcessorRequest_ShallQueryByAccessionNumberAndRetrieve()
+        [RetryFact(5, 250)]
+        public async Task GivenAnInferenceRequestWithAccessionNumber_WhenProcessing_ExpectAllInstancesToBeRetrievedAndQueued()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            var storagePath = "/store";
-            _fileSystem.Directory.CreateDirectory(storagePath);
 
             #region Test Data
 
@@ -702,8 +594,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            request.ConfigureTemporaryStorageLocation(storagePath);
-
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
@@ -739,22 +629,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _fileStore.Setup(p => p.RestoreInferenceRequestFiles(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(new List<FileStoragePath>());
-            _fileStore.Setup(p => p.SaveDicomInstance(It.IsAny<string>(), It.IsAny<DicomFile>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((string transactionId, DicomFile dicomFile, CancellationToken cancellationToken) => new DicomStoragePaths
-                {
-                    FilePath = $"{Guid.NewGuid().ToString()}.dcm",
-                    DicomMetadataFilePath = $"{Guid.NewGuid().ToString()}.json",
-                    UIDs = new StudySerieSopUids
-                    {
-                        StudyInstanceUid = dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
-                        SeriesInstanceUid = dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
-                        SopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID),
-                    }
-                });
+
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
+                        .Returns(new List<FileStorageMetadata>());
+
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
                 .Returns((DicomFile dicomFile) => new StudySerieSopUids
                 {
@@ -788,17 +666,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                    ItExpr.IsAny<CancellationToken>());
             }
 
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(2));
+            _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(2));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(2));
         }
 
-        [RetryFact(5, 250, DisplayName = "ProcessRequest - Shall retrieve FHIR resources")]
-        public async Task ProcessorRequest_ShallRetrieveFhirResources()
+        [RetryFact(5, 250)]
+        public async Task GivenAnInferenceRequestWithFhirResources_WhenProcessing_ExpectAllInstancesToBeRetrievedAndQueued()
         {
             var cancellationTokenSource = new CancellationTokenSource();
-            var storagePath = "/store";
-            _fileSystem.Directory.CreateDirectory(storagePath);
 
             #region Test Data
 
@@ -859,8 +734,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            request.ConfigureTemporaryStorageLocation(storagePath);
-
             _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
@@ -880,17 +753,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
 
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
-            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
-            _fileStore.Setup(p => p.RestoreInferenceRequestFiles(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .Returns(new List<FileStoragePath>());
-            _fileStore.Setup(p => p.SaveFhirResource(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<FhirStorageFormat>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync((string transactionId, string resourceType, string resourceId, FhirStorageFormat storageFormat, string data, CancellationToken cancellationToken) => new FhirStoragePath
-                {
-                    FilePath = $"{Guid.NewGuid().ToString()}.dcm",
-                    ResourceId = resourceId,
-                    ResourceType = resourceType,
-                });
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
+                        .Returns(new List<FileStorageMetadata>());
+
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
@@ -912,9 +777,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.PathAndQuery.Contains("Observation/2")),
                ItExpr.IsAny<CancellationToken>());
 
-            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
-            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageInfo>()), Times.Exactly(2));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(2));
         }
 
         private static HttpResponseMessage GenerateQueryResult(DicomTag dicomTag, string queryValue, List<string> studyInstanceUids)

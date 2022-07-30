@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,7 +67,6 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
             builder.Property(j => j.State).IsRequired();
             builder.Property(j => j.Status).IsRequired();
-            builder.Property(j => j.StoragePath).IsRequired();
             builder.Property(j => j.TryCount).IsRequired();
 
             builder.Ignore(p => p.Application);

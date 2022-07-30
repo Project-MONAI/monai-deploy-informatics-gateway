@@ -35,7 +35,6 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
@@ -59,9 +58,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DicomWebExportService> logger,
             IOptions<InformaticsGatewayConfiguration> configuration,
-            IStorageInfoProvider storageInfoProvider,
             IDicomToolkit dicomToolkit)
-            : base(logger, configuration, serviceScopeFactory, storageInfoProvider)
+            : base(logger, configuration, serviceScopeFactory)
         {
             _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));

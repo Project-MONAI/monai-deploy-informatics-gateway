@@ -1,58 +1,58 @@
 {
   "MR": {
-      "SeriesMin": 1,
-      "SeriesMax": 2,
-      "InstanceMin": 64,
-      "InstanceMax": 128,
-      "SizeMin": 0.36,
-      "SizeMax": 2
+    "SeriesMin": 1,
+    "SeriesMax": 2,
+    "InstanceMin": 64,
+    "InstanceMax": 128,
+    "SizeMin": 0.36,
+    "SizeMax": 2
   },
   "CT": {
-      "SeriesMin": 1,
-      "SeriesMax": 2,
-      "InstanceMin": 60,
-      "InstanceMax": 1000,
-      "SizeMin": 0.5,
-      "SizeMax": 1
+    "SeriesMin": 1,
+    "SeriesMax": 2,
+    "InstanceMin": 60,
+    "InstanceMax": 1000,
+    "SizeMin": 0.5,
+    "SizeMax": 1
   },
   "MG": {
-      "SeriesMin": 4,
-      "SeriesMax": 8,
-      "InstanceMin": 1,
-      "InstanceMax": 1,
-      "SizeMin": 5,
-      "SizeMax": 75
+    "SeriesMin": 4,
+    "SeriesMax": 8,
+    "InstanceMin": 1,
+    "InstanceMax": 1,
+    "SizeMin": 5,
+    "SizeMax": 75
   },
   "TOMO": {
-      "SeriesMin": 4,
-      "SeriesMax": 8,
-      "InstanceMin": 1,
-      "InstanceMax": 1,
-      "SizeMin": 300,
-      "SizeMax": 750
+    "SeriesMin": 4,
+    "SeriesMax": 8,
+    "InstanceMin": 1,
+    "InstanceMax": 1,
+    "SizeMin": 300,
+    "SizeMax": 750
   },
   "US": {
-      "SeriesMin": 1,
-      "SeriesMax": 4,
-      "InstanceMin": 1,
-      "InstanceMax": 1,
-      "SizeMin": 25,
-      "SizeMax": 100
+    "SeriesMin": 1,
+    "SeriesMax": 4,
+    "InstanceMin": 1,
+    "InstanceMax": 1,
+    "SizeMin": 25,
+    "SizeMax": 100
   },
   "Pathology": {
-      "SeriesMin": 1,
-      "SeriesMax": 4,
-      "InstanceMin": 1,
-      "InstanceMax": 1,
-      "SizeMin": 10000,
-      "SizeMax": 20000
+    "SeriesMin": 1,
+    "SeriesMax": 4,
+    "InstanceMin": 1,
+    "InstanceMax": 1,
+    "SizeMin": 10000,
+    "SizeMax": 20000
   },
   "Tiny": {
-      "SeriesMin": 1,
-      "SeriesMax": 1,
-      "InstanceMin": 1,
-      "InstanceMax": 1,
-      "SizeMin": 1,
-      "SizeMax": 2
+    "SeriesMin": 1,
+    "SeriesMax": 1,
+    "InstanceMin": 1,
+    "InstanceMax": 1,
+    "SizeMin": 1,
+    "SizeMax": 2
   }
 }

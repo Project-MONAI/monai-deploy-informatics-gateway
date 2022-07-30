@@ -29,8 +29,6 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
-using Monai.Deploy.InformaticsGateway.Services.Connectors;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -38,33 +36,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IServiceScope _serviceScope;
-        private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<ApplicationEntityManager> _logger;
         private readonly IDicomToolkit _dicomToolkit;
-        private readonly ITemporaryFileStore _temporaryFileStore;
         private readonly ILoggerFactory _loggerFactory;
-        private readonly ConcurrentDictionary<string, ApplicationEntityHandler> _aeTitles;
+        private readonly ConcurrentDictionary<string, IApplicationEntityHandler> _aeTitles;
         private readonly IDisposable _unsubscriberForMonaiAeChangedNotificationService;
-        private readonly IStorageInfoProvider _storageInfoProvider;
-        private readonly IPayloadAssembler _payloadAssembler;
         private bool _disposedValue;
 
         public IOptions<InformaticsGatewayConfiguration> Configuration { get; }
 
-        public bool CanStore
-        {
-            get
-            {
-                return _storageInfoProvider.HasSpaceAvailableToStore;
-            }
-        }
+        public bool CanStore => true;
 
         public ApplicationEntityManager(IHostApplicationLifetime applicationLifetime,
                                         IServiceScopeFactory serviceScopeFactory,
                                         IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
-                                        IOptions<InformaticsGatewayConfiguration> configuration,
-                                        IStorageInfoProvider storageInfoProvider,
-                                        IPayloadAssembler payloadAssembler)
+                                        IOptions<InformaticsGatewayConfiguration> configuration)
         {
             if (applicationLifetime is null)
             {
@@ -73,21 +59,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
-            _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
 
             _serviceScope = serviceScopeFactory.CreateScope();
-            _serviceProvider = _serviceScope.ServiceProvider;
+            var serviceProvider = _serviceScope.ServiceProvider;
 
-            _loggerFactory = _serviceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
+            _loggerFactory = serviceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
             _logger = _loggerFactory.CreateLogger<ApplicationEntityManager>();
 
-            _dicomToolkit = _serviceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
-
-            _temporaryFileStore = _serviceProvider.GetService<ITemporaryFileStore>() ?? throw new NullReferenceException(nameof(ITemporaryFileStore));
+            _dicomToolkit = serviceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
 
             _unsubscriberForMonaiAeChangedNotificationService = monaiAeChangedNotificationService.Subscribe(this);
-            _aeTitles = new ConcurrentDictionary<string, ApplicationEntityHandler>();
+            _aeTitles = new ConcurrentDictionary<string, IApplicationEntityHandler>();
             applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
 
             InitializeMonaiAeTitles();
@@ -113,11 +95,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new ArgumentException($"Called AE Title '{calledAeTitle}' is not configured");
             }
 
-            if (!_storageInfoProvider.HasSpaceAvailableToStore)
-            {
-                throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
-            }
-
             await HandleInstance(request, calledAeTitle, callingAeTitle, associationId).ConfigureAwait(false);
         }
 
@@ -129,18 +106,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             {
                 _logger.InstanceInformation(uids.StudyInstanceUid, uids.SeriesInstanceUid);
 
-                await _aeTitles[calledAeTitle].HandleInstance(request, calledAeTitle, callingAeTitle, associationId, uids).ConfigureAwait(false);
+                await _aeTitles[calledAeTitle].HandleInstanceAsync(request, calledAeTitle, callingAeTitle, associationId, uids).ConfigureAwait(false);
             }
         }
 
         public bool IsAeTitleConfigured(string calledAe)
         {
-            return !string.IsNullOrWhiteSpace(calledAe) && _aeTitles.ContainsKey(calledAe);
+            Guard.Against.NullOrWhiteSpace(calledAe, nameof(calledAe));
+
+            return _aeTitles.ContainsKey(calledAe);
         }
 
         public T GetService<T>()
         {
-            return (T)_serviceProvider.GetService(typeof(T));
+            return (T)_serviceScope.ServiceProvider.GetService(typeof(T));
         }
 
         public ILogger GetLogger(string calledAeTitle)
@@ -162,8 +141,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private void AddNewAeTitle(MonaiApplicationEntity entity)
         {
-            using var scope = _serviceScopeFactory.CreateScope();
-            var handler = new ApplicationEntityHandler(entity, _payloadAssembler, _temporaryFileStore, _loggerFactory.CreateLogger<ApplicationEntityHandler>());
+            var scope = _serviceScopeFactory.CreateScope();
+            var handler = scope.ServiceProvider.GetService<IApplicationEntityHandler>() ?? throw new ServiceNotFoundException(nameof(IApplicationEntityHandler));
+            handler.Configure(entity, Configuration.Value.Dicom.WriteDicomJson);
+
             if (!_aeTitles.TryAdd(entity.AeTitle, handler))
             {
                 _logger.AeTitleCannotBeAdded(entity.AeTitle, _aeTitles.ContainsKey(entity.AeTitle));

@@ -20,16 +20,16 @@
       "publisherSettings": {
         "endpoint": "rabbitmq",
         "username": "rabbitmq",
-        "password": "qmtibbar",
-        "virtualHost": "/",
+        "password": "rabbitmq",
+        "virtualHost": "monaideploy",
         "exchange": "monaideploy"
       },
       "subscriberServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
       "subscriberSettings": {
         "endpoint": "rabbitmq",
         "username": "rabbitmq",
-        "password": "qmtibbar",
-        "virtualHost": "/",
+        "password": "rabbitmq",
+        "virtualHost": "monaideploy",
         "exchange": "monaideploy",
         "exportRequestQueue": "export_tasks",
         "deadLetterExchange": "monaideploy-dead-letter",
@@ -38,9 +38,11 @@
       }
     },
     "storage": {
-      "temporary": "/payloads",
-      "bucketName": "monai",
-      "watermarkPercent": 95,
+      "bufferRootPath": "./temp",
+      "tempStorageRootPath": "/incoming",
+      "bucketName": "monaideploy",
+      "storageRootPath": "/payloads",
+      "temporaryBucketName": "monaideploy",
       "serviceAssemblyName": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO",
       "settings": {
         "endpoint": "minio:9000",
@@ -60,8 +62,7 @@
       "Microsoft.EntityFrameworkCore": "Warning",
       "Microsoft.Hosting.Lifetime": "Warning",
       "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker": "Error",
-      "Monai": "Information",
-      "Monai.Deploy.InformaticsGateway.Services.Export": "Trace"
+      "Monai": "Trace"
     },
     "Console": {
       "FormatterName": "Simple",

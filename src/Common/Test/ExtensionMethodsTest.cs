@@ -14,8 +14,12 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Common.Test
@@ -70,6 +74,23 @@ namespace Monai.Deploy.InformaticsGateway.Common.Test
             var input = "team" + invalidChars + "monai";
 
             Assert.Equal("teammonai", input.RemoveInvalidPathChars());
+        }
+
+        [Fact]
+        public async Task GivenAnActionBlock_WhenPostWIithDelayIsCalled_ExpectADelayBeforeCallingPost()
+        {
+            var stopwatch = new Stopwatch();
+            var input = "HELLO WORLD";
+            var delay = TimeSpan.FromMilliseconds(500);
+            var actionBlock = new ActionBlock<string>(value =>
+            {
+                stopwatch.Stop();
+                Assert.Equal(input, value);
+                Assert.True(stopwatch.Elapsed > delay);
+            });
+
+            stopwatch.Start();
+            await actionBlock.Post(input, delay);
         }
     }
 }

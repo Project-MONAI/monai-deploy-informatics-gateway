@@ -41,11 +41,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     internal sealed partial class PayloadAssembler : IPayloadAssembler, IDisposable
     {
         internal const int DEFAULT_TIMEOUT = 5;
-        private readonly BlockingCollection<Payload> _workItems;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly ILogger<PayloadAssembler> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
+
         private readonly ConcurrentDictionary<string, AsyncLazy<Payload>> _payloads;
+        private readonly BlockingCollection<Payload> _workItems;
         private readonly System.Timers.Timer _timer;
 
         public PayloadAssembler(
@@ -78,34 +79,44 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             var payloads = repository.AsQueryable().Where(p => p.State == Payload.PayloadState.Created);
             var restored = 0;
-#pragma warning disable S3267 // Loops should be simplified with "LINQ" expressions
+
             foreach (var payload in payloads)
             {
+                if (!payload.IsUploadCompleted())
+                {
+                    // if there are any objects in a payload that is still pending upload,
+                    // then it has to be dropped since objects are stored in the memory before uploading
+                    // to the designated temporary location on the storage service.
+
+                    payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).Wait();
+                    _logger.PayloadDeletedAtStartup(payload.Id);
+                    continue;
+                }
+
                 if (_payloads.TryAdd(payload.Key, new AsyncLazy<Payload>(payload)))
                 {
                     _logger.PayloadRestored(payload.Id);
                     restored++;
                 }
             }
-#pragma warning restore S3267 // Loops should be simplified with "LINQ" expressions
 
             _logger.TotalNumberOfPayloadsRestored(restored);
         }
 
         /// <summary>
-        /// Queues a new instance of FileStorageInfo to the bucket with default timeout of 5 seconds.
+        /// Queues a new instance of <see cref="FileStorageMetadata"/> to the bucket with default timeout of 5 seconds.
         /// </summary>
         /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
-        public async Task Queue(string bucket, FileStorageInfo file) => await Queue(bucket, file, DEFAULT_TIMEOUT).ConfigureAwait(false);
+        public async Task Queue(string bucket, FileStorageMetadata file) => await Queue(bucket, file, DEFAULT_TIMEOUT).ConfigureAwait(false);
 
         /// <summary>
-        /// Queues a new instance of FileStorageInfo.
+        /// Queues a new instance of <see cref="FileStorageMetadata"/>.
         /// </summary>
         /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
         /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
-        public async Task Queue(string bucket, FileStorageInfo file, uint timeout)
+        public async Task Queue(string bucket, FileStorageMetadata file, uint timeout)
         {
             Guard.Against.Null(file, nameof(file));
 
@@ -137,21 +148,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     _logger.BucketElapsedTime(key);
                     var payload = await _payloads[key].Task.ConfigureAwait(false);
+                    using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Correlation ID", payload.CorrelationId } });
                     if (payload.HasTimedOut)
                     {
-                        if (_payloads.TryRemove(key, out _))
+                        if (payload.ContainerUploadFailures())
                         {
-                            if (payload.Files.Count == 0)
-                            {
-                                _logger.DropEmptyBucket(key);
-                                return;
-                            }
-
-                            await QueueBucketForNotification(key, payload).ConfigureAwait(false);
+                            _payloads.TryRemove(key, out _);
+                            _logger.PayloadRemovedWithFailureUploads(key);
                         }
-                        else
+                        else if (payload.IsUploadCompleted())
                         {
-                            _logger.BucketRemoveError(key);
+                            if (_payloads.TryRemove(key, out _))
+                            {
+                                await QueueBucketForNotification(key, payload).ConfigureAwait(false);
+                            }
+                            else
+                            {
+                                _logger.BucketRemoveError(key);
+                            }
                         }
                     }
                 }
@@ -174,7 +188,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             try
             {
-                payload.State = Payload.PayloadState.Upload;
+                payload.State = Payload.PayloadState.Move;
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
                 await payload.UpdatePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
