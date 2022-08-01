@@ -47,6 +47,8 @@ COPY --from=build /tools /opt/dotnetcore-tools
 EXPOSE 104
 EXPOSE 5000
 
+RUN mkdir /database/
+
 RUN ls -lR /opt/monai/ig
 ENV PATH="/opt/dotnetcore-tools:${PATH}"
 

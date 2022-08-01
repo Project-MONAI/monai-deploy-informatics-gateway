@@ -3,7 +3,7 @@
     "Monai.Deploy.InformaticsGateway": {
       "commandName": "Project",
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
+        "DOTNET_ENVIRONMENT": "Local"
       }
     }
   }

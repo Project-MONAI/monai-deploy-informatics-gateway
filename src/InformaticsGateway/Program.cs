@@ -76,7 +76,8 @@ namespace Monai.Deploy.InformaticsGateway
                     var env = builderContext.HostingEnvironment;
                     config
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                        .AddEnvironmentVariables();
                 })
                 .ConfigureLogging((builderContext, configureLogging) =>
                 {

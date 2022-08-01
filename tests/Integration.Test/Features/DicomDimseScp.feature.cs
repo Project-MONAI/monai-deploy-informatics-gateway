@@ -86,9 +86,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         
         public virtual void FeatureBackground()
         {
-#line 18
+#line 29
     #line hidden
-#line 19
+#line 30
         testRunner.Given("a calling AE Title \'TEST-RUNNER\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
         }
@@ -106,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Response to C-ECHO-RQ", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 21
+#line 32
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -116,17 +116,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 18
+#line 29
     this.FeatureBackground();
 #line hidden
-#line 22
+#line 33
         testRunner.Given("a called AE Title named \'C-ECHO-TEST\' that groups by \'0020,000D\' for 5 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 23
+#line 34
         testRunner.When("a C-ECHO-RQ is sent to \'C-ECHO-TEST\' from \'TEST-RUNNER\' with timeout of 30 second" +
                         "s", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 24
+#line 35
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -156,7 +156,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             argumentsOfScenario.Add("modality", modality);
             argumentsOfScenario.Add("count", count);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Study Instance UID", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 27
+#line 38
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -166,29 +166,29 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 18
+#line 29
     this.FeatureBackground();
 #line hidden
-#line 28
+#line 39
         testRunner.Given("a called AE Title named \'C-STORE-STUDY\' that groups by \'0020,000D\' for 3 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 29
+#line 40
         testRunner.And(string.Format("{0} {1} studies", count, modality), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 30
+#line 41
         testRunner.When("a C-STORE-RQ is sent to \'Informatics Gateway\' with AET \'C-STORE-STUDY\' from \'TEST" +
                         "-RUNNER\' with timeout of 300 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 31
+#line 42
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 32
+#line 43
         testRunner.And(string.Format("{0} workflow requests sent to message broker", count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
+#line 44
         testRunner.And("studies are uploaded to storage service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 34
+#line 45
         testRunner.And("the temporary data directory has been cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
@@ -219,7 +219,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             argumentsOfScenario.Add("study_count", study_Count);
             argumentsOfScenario.Add("series_count", series_Count);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Respond to C-STORE-RQ and group data by Series Instance UID", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 44
+#line 55
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -229,30 +229,30 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 18
+#line 29
     this.FeatureBackground();
 #line hidden
-#line 45
+#line 56
         testRunner.Given("a called AE Title named \'C-STORE-SERIES\' that groups by \'0020,000E\' for 3 seconds" +
                         "", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 46
+#line 57
         testRunner.And(string.Format("{0} {1} studies with {2} series per study", study_Count, modality, series_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 47
+#line 58
         testRunner.When("a C-STORE-RQ is sent to \'Informatics Gateway\' with AET \'C-STORE-SERIES\' from \'TES" +
                         "T-RUNNER\' with timeout of 300 seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 48
+#line 59
         testRunner.Then("a successful response should be received", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 49
+#line 60
         testRunner.And(string.Format("{0} workflow requests sent to message broker", series_Count), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 50
+#line 61
         testRunner.And("studies are uploaded to storage service", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 51
+#line 62
         testRunner.And("the temporary data directory has been cleared", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             }
