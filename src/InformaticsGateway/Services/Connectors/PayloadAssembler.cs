@@ -177,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 payload.State = Payload.PayloadState.Upload;
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                await payload.UpdatePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
                 _workItems.Add(payload);
                 _logger.BucketReady(key, payload.Count);
             }
@@ -201,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
                 var newPayload = new Payload(key, correationId, timeout);
-                await newPayload.AddPayaloadToDatabase(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                await newPayload.AddPayaloadToDatabase(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
                 _logger.BucketCreated(key, timeout);
                 return newPayload;
             }));

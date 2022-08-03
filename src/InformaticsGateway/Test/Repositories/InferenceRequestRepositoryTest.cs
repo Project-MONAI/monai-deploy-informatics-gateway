@@ -18,7 +18,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
@@ -31,21 +33,24 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
     {
         private readonly Mock<ILogger<InferenceRequestRepository>> _logger;
         private readonly Mock<IInformaticsGatewayRepository<InferenceRequest>> _inferenceRequestRepository;
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         public InferenceRequestRepositoryTest()
         {
             _logger = new Mock<ILogger<InferenceRequestRepository>>();
             _inferenceRequestRepository = new Mock<IInformaticsGatewayRepository<InferenceRequest>>();
+            _options = Options.Create(new InformaticsGatewayConfiguration());
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor")]
         public void ConstructorTest()
         {
-            Assert.Throws<ArgumentNullException>(() => new InferenceRequestRepository(null, null));
-            Assert.Throws<ArgumentNullException>(() => new InferenceRequestRepository(_logger.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new InferenceRequestRepository(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new InferenceRequestRepository(_logger.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, null));
 
-            _ = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            _ = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
         }
 
         [RetryFact(5, 250, DisplayName = "Add - Shall retry on failure")]
@@ -59,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
 
             await Assert.ThrowsAsync<Exception>(async () => await store.Add(inferenceRequest));
 
@@ -75,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             await store.Add(inferenceRequest);
 
             _inferenceRequestRepository.Verify(p => p.AddAsync(It.IsAny<InferenceRequest>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -93,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
 
             _inferenceRequestRepository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
 
             await Assert.ThrowsAsync<Exception>(() => store.Update(inferenceRequest, InferenceRequestStatus.Success));
 
@@ -110,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                 TryCount = 3
             };
 
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
 
             await store.Update(inferenceRequest, InferenceRequestStatus.Fail);
 
@@ -128,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
 
             await store.Update(inferenceRequest, InferenceRequestStatus.Fail);
 
@@ -150,7 +155,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             _inferenceRequestRepository.SetupSequence(p => p.FirstOrDefault(It.IsAny<Func<InferenceRequest, bool>>()))
                 .Returns(inferenceRequest);
 
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
 
             _ = await store.Take(cancellationSource.Token);
 
@@ -164,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             _inferenceRequestRepository.Setup(p => p.FirstOrDefault(It.IsAny<Func<InferenceRequest, bool>>()))
                 .Returns(default(InferenceRequest));
 
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             cancellationSource.CancelAfter(100);
             await Assert.ThrowsAsync<TaskCanceledException>(async () => await store.Take(cancellationSource.Token));
         }
@@ -172,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
         [RetryFact(5, 250, DisplayName = "Exists - throws if no arguments provided")]
         public void Exists_ThrowsIfNoArgumentsProvided()
         {
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             Assert.Throws<ArgumentException>(() => store.Exists(string.Empty));
         }
 
@@ -181,7 +186,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
         {
             _inferenceRequestRepository.Setup(p => p.FirstOrDefault(It.IsAny<Func<InferenceRequest, bool>>()))
                 .Returns(new InferenceRequest());
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             Assert.True(store.Exists("abc"));
             _inferenceRequestRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<InferenceRequest, bool>>()), Times.Once());
         }
@@ -189,21 +194,21 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
         [RetryFact(5, 250, DisplayName = "Get transationId - throws if no arguments provided")]
         public void GetTransactionId_ThrowsIfNoArgumentsProvided()
         {
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             Assert.Throws<ArgumentException>(() => store.GetInferenceRequest(string.Empty));
         }
 
         [RetryFact(5, 250, DisplayName = "Get inferenceRequestId - throws if no arguments provided")]
         public async Task GetInferenceRequestId_ThrowsIfNoArgumentsProvided()
         {
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             await Assert.ThrowsAsync<ArgumentException>(async () => await store.GetInferenceRequest(Guid.Empty));
         }
 
         [RetryFact(5, 250, DisplayName = "Get - retrieves by transationId")]
         public void Get_RetrievesByJobId()
         {
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             _ = store.GetInferenceRequest("id");
             _inferenceRequestRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<InferenceRequest, bool>>()), Times.Once());
         }
@@ -211,7 +216,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
         [RetryFact(5, 250, DisplayName = "Get - retrieves by inferenceRequestId")]
         public void Get_RetrievesByPayloadId()
         {
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             var id = Guid.NewGuid();
             _ = store.GetInferenceRequest(id);
             _inferenceRequestRepository.Verify(p => p.FindAsync(It.IsAny<object[]>()), Times.Once());
@@ -226,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                     TransactionId = "My Transaction ID",
                 });
 
-            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object);
+            var store = new InferenceRequestRepository(_logger.Object, _inferenceRequestRepository.Object, _options);
             var id = Guid.NewGuid().ToString();
             var status = await store.GetStatus(id);
 

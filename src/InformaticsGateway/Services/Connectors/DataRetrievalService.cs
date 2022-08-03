@@ -28,10 +28,12 @@ using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
@@ -45,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     internal class DataRetrievalService : IHostedService, IMonaiService, IDisposable
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly ILogger<DataRetrievalService> _logger;
         private readonly IServiceScope _rootScope;
 
@@ -63,9 +66,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public DataRetrievalService(
             ILogger<DataRetrievalService> logger,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            IOptions<InformaticsGatewayConfiguration> options)
         {
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             _rootScope = _serviceScopeFactory.CreateScope();
@@ -343,11 +348,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(acceptHeader));
             var response = await Policy
                 .HandleResult<HttpResponseMessage>(p => !p.IsSuccessStatusCode)
-                .WaitAndRetryAsync(3,
-                    (retryAttempt) =>
-                    {
-                        return retryAttempt == 1 ? TimeSpan.FromMilliseconds(250) : TimeSpan.FromMilliseconds(500);
-                    },
+                .WaitAndRetryAsync(
+                    _options.Value.Database.Retries.RetryDelays,
                     (result, timeSpan, retryCount, context) =>
                     {
                         _logger.ErrorRetrievingFhirResourceWithRetry(resource.Type, resource.Id, result.Result.StatusCode, retryCount, result.Exception);

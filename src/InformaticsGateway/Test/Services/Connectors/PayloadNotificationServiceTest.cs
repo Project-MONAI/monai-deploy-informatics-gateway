@@ -91,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
 
-            _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1 };
+            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1 };
             _options.Value.Storage.StorageServiceBucketName = "bucket";
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }

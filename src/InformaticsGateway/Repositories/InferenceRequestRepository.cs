@@ -20,8 +20,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Polly;
 
@@ -29,19 +31,20 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 {
     public class InferenceRequestRepository : IInferenceRequestRepository
     {
-        private const int MaxRetryLimit = 3;
-
         private readonly ILogger<InferenceRequestRepository> _logger;
         private readonly IInformaticsGatewayRepository<InferenceRequest> _inferenceRequestRepository;
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
 
         public InferenceRequestRepository(
             ILogger<InferenceRequestRepository> logger,
-            IInformaticsGatewayRepository<InferenceRequest> inferenceRequestRepository)
+            IInformaticsGatewayRepository<InferenceRequest> inferenceRequestRepository,
+            IOptions<InformaticsGatewayConfiguration> options)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _inferenceRequestRepository = inferenceRequestRepository ?? throw new ArgumentNullException(nameof(inferenceRequestRepository));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
         }
 
         public async Task Add(InferenceRequest inferenceRequest)
@@ -52,8 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             await Policy
                 .Handle<Exception>()
                 .WaitAndRetryAsync(
-                    3,
-                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    _options.Value.Database.Retries.RetryDelays,
                     (exception, timeSpan, retryCount, context) =>
                 {
                     _logger.ErrorSavingInferenceRequest(timeSpan, retryCount, exception);
@@ -81,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             }
             else
             {
-                if (++inferenceRequest.TryCount > MaxRetryLimit)
+                if (++inferenceRequest.TryCount > _options.Value.Database.Retries.DelaysMilliseconds.Length)
                 {
                     _logger.InferenceRequestUpdateExceededMaximumRetries();
                     inferenceRequest.State = InferenceRequestState.Completed;
@@ -158,8 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             await Policy
                  .Handle<Exception>()
                  .WaitAndRetryAsync(
-                     3,
-                     retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    _options.Value.Database.Retries.RetryDelays,
                      (exception, timeSpan, retryCount, context) =>
                      {
                          _logger.InferenceRequestUpdateError(timeSpan, retryCount, exception);
