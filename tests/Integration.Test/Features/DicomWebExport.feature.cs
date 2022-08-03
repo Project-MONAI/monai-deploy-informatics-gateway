@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
             argumentsOfScenario.Add("modality", modality);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Export to a DICOMweb service", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 14
+#line 25
     this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -119,13 +119,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
             else
             {
                 this.ScenarioStart();
-#line 15
+#line 26
         testRunner.Given(string.Format("1 {0} studies for export", modality), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 16
+#line 27
         testRunner.When("a export request is sent for \'md.export.request.monaidicomweb\'", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 17
+#line 28
         testRunner.Then("Informatics Gateway exports the studies to Orthanc", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }

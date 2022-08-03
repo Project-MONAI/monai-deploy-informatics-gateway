@@ -34,11 +34,11 @@ the repository and install it.
 
 ```bash
 # Download the CLI
-curl -LO https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases/download/0.1.0/mig-cli-0.1.0-linux-x64.zip
+curl -LO https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases/download/0.2.0/mig-cli-0.2.0-linux-x64.zip
 # Calculate the SHA256 checksum and verify the output with the checksum on the Releases page.
-sha256sum mig-cli-0.1.0-linux-x64.zip
+sha256sum mig-cli-0.2.0-linux-x64.zip
 # Unzip the CLI
-unzip mig-cli-0.1.0-linux-x64.zip
+unzip mig-cli-0.2.0-linux-x64.zip
 # Install it in bin
 sudo mv mig-cli /usr/local/bin
 ```
@@ -47,11 +47,11 @@ sudo mv mig-cli /usr/local/bin
 
 ```powershell
 # Download the CLI
-curl -LO https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases/download/0.1.0/mig-cli-0.1.0-win-x64.zip
+curl -LO https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases/download/0.2.0/mig-cli-0.2.0-win-x64.zip
 # Calculate the SHA256 checksum and verify the output with the checksum on the Releases page.
-Get-FileHash mig-cli-0.1.0-win-x64.zip
+Get-FileHash mig-cli-0.2.0-win-x64.zip
 # Unzip the CLI
-Expand-Archive -Path mig-cli-0.1.0-win-x64.zip
+Expand-Archive -Path mig-cli-0.2.0-win-x64.zip
 ```
 
 ### Informatics Gateway Docker Image
@@ -63,7 +63,7 @@ page and locate the version to download.
 # for the latest build
 docker pull ghcr.io/project-monai/monai-deploy-informatics-gateway:latest
 # or for a versioned build
-docker pull ghcr.io/project-monai/monai-deploy-informatics-gateway:0.1.0
+docker pull ghcr.io/project-monai/monai-deploy-informatics-gateway:0.2.0
 ```
 
 ## Configure Informatics Gateway
@@ -72,12 +72,12 @@ Use the following commands to initialize the Informatics Gateway and default con
 
 ```bash
 mig-cli config init
-mig-cli config endpoint http://localhost:5000
+mig-cli config endpoint http://localhost:5000 #skip if running locally
 ```
 
 ```powershell
 mig-cli.exe config init
-mig-cli.exe config endpoint http://localhost:5000
+mig-cli.exe config endpoint http://localhost:5000 #skip if running locally
 ```
 
 The first command extracts the default `appsettings.json` file into the home directory:
@@ -93,6 +93,7 @@ The second command passes the endpoint for the Informatics Gateway RESTful API t
 
 > [!Note]
 > To see available commands, simply execute `mig-cli` or `mig-cli.exe`.
+> Refer to [CLI](./cli.md) for complete reference.
 
 ## Storage Consideration & Configuration
 
@@ -116,6 +117,7 @@ To change the temporary storage location, locate the `./InformaticsGateway/stora
 > size of a single study multiplied by the number of configured AE Titles.
 
 ### Shared Storage
+
 Informatics Gateway includes MinIO as the default storage service provider. To integrate with another storage service provider, please refer to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#data-storage) section of the SRS.
 
 Download and install MinIO by following the [quickstart guide](https://docs.min.io/docs/minio-quickstart-guide.html). Once MinIO is installed and configured, modify the storage configuration to enable communication between the Informatics Gateway and MinIO.
@@ -131,11 +133,15 @@ Locate the storage section of the configuration in `appsettings.json`:
     "dicom": { ... },
     "storage": {
       "storageServiceCredentials": {
-        "endpoint": "192.168.1.1:9000", # IP & port to MinIO instance
+        "endpoint": "localhost:9000", # IP & port to MinIO instance
         "accessKey": "admin", # Access key or username
-        "accessToken": "password" # Access token or password
+        "accessToken": "password", # Access token or password
+        "securedConnection": false, # Indicates if connection should be secured using HTTPS
+        "region": "local", # Region
+        "executableLocation": "/bin/mc", # Path to minio client
+        "serviceName": "MinIO" # Name of the service
       },
-      "storageService": "Monai.Deploy.InformaticsGateway.Storage.MinIoStorageService, Monai.Deploy.InformaticsGateway.Storage.MinIo", # Fully qualified type name of the storage service
+      "storageService": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO", # Fully qualified type name of the storage service
       "securedConnection": false, # Indicates if a secured connection is required to access MinIO
       "storageServiceBucketName": "igbucket" # The name of the bucket where data is uploaded to
     },
@@ -144,23 +150,38 @@ Locate the storage section of the configuration in `appsettings.json`:
 }
 ```
 
+#### Install the Stoage Plug-in
+
+As shown above, the default plug-in configured is __MinIO__.
+
+To install the default MinIO plug-in, download the `Monai.Deploy.Storage.MinIO.zip` plug-in from [MONAI Deploy Storage](https://github.com/Project-MONAI/monai-deploy-storage/releases) 
+and unzip the files to the `plug-ins` directory in your home directory:
+
+* Linux: `~/.mig/plug-ins`
+* Windows: `C:\Users\[username]\.mig\plug-ins`
+
+> [!Note]
+> If a plug-in other than MinIO is used, update the `storageService` parameter in the `appsettings.json` file.
+
+
 ### Message broker
 
-The nformatics Gateway communicates with other MONAI Deploy components through a message broker. The default messaging service
+The Informatics Gateway communicates with other MONAI Deploy components through a message broker. The default messaging service
 included is provided by [RabbitMQ](https://www.rabbitmq.com/). To integrate with another storage service provider, refer
 to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#message-broker) section of the SRS.
 
 To use the default messaging service, download and install RabbitMQ by following the
 [Get Started](https://www.rabbitmq.com/#getstarted) page.
 
-Before launching Informatics Gateway, update `appsettings.json` to configure the publisher and subscriber settings.
-The Informatics Gateway publishes all messages to an *exchange* under the specified *virtual host*. Therefore, please confirm the values before starting
-Informatics Gateway.
+The Informatics Gateway publishes all messages to an *exchange* under the specified *virtual host*.
+Before launching Informatics Gateway, update the `appsettings.json` file to configure the publisher
+and subscriber settings.
 
 ```json
 {
   "InformaticsGateway": {
     "messaging": {
+      "publisherServiceAssemblyName":"Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ",
       "publisherSettings": {
         "endpoint": "localhost",
         "username": "username",
@@ -168,6 +189,7 @@ Informatics Gateway.
         "virtualHost": "monaideploy",
         "exchange": "monaideploy"
       },
+      "subscriberServiceAssemblyName":"Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
       "subscriberSettings": {
         "endpoint": "localhost",
         "username": "username",
@@ -181,9 +203,26 @@ Informatics Gateway.
 }
 ```
 
+#### Install the Messaging Plug-in
+
+As shown above, the default plug-in configured is __RabbitMQ__.
+
+To install the default RabbitMQ plug-in, download the `Monai.Deploy.Messaging.RabbitMQ.zip` plug-in
+rom [MONAI Deploy Messaging](https://github.com/Project-MONAI/monai-deploy-messaging/releases) 
+and unzip the files to the `plug-ins` directory in your home directory:
+
+* Linux: `~/.mig/plug-ins`
+* Windows: `C:\Users\[username]\.mig\plug-ins`
+
+> [!Note]
+> If a plug-in other than Rabbit is used, update the `publisherServiceAssemblyName` and `subscriberServiceAssemblyName` parameters in the `appsettings.json` file.
+
+
 ## Start/Stop Informatics Gateway
 
-To start or stop the Informatics Gateway, update the value of `DockerImagePrefix` in `appsettings.json` with the repository name of the Docker image:
+To start or stop the Informatics Gateway, update the value of the `DockerImagePrefix` parameter in
+the `appsettings.json` file with the repository name of the Docker image (the default value is
+shown below):
 
 ```json
 {
@@ -213,8 +252,8 @@ The next step is to configure the Informatics Gateway to enable receiving of DIC
 mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
 ```
 
-The command creates a new listening AE Title with AE Title `BrainAET`.  The listening AE Title
-will be group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
+The command creates a new listening AE Title with AE Title `BrainAET`. The listening AE Title
+will group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
 
 > [!Note]
 > `-grouping` is optional, with a default value of 0020,000D.
@@ -231,11 +270,11 @@ The above command tells the Informatics Gateway to accept instances from AE Titl
 
 > [!Note]
 > By default, Informatics Gateway blocks all unknown sources.
-> To allow all unknown sources, set `dicom>scp>rejectUnknownSources` to `false` in `appsettings.json`.
+> To allow all unknown sources, set the `dicom>scp>rejectUnknownSources` parameter to `false` in the `appsettings.json` file.
 
 > [!WARNING]
 > The Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
-> When running Informatics Gateway in a container, and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
+> When the Informatics Gateway is running in a container and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
 
 ## Export Processed Results
 

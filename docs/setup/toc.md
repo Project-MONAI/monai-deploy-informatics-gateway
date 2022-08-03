@@ -16,3 +16,4 @@
 
 # [Setup](setup.md)
 # [Configuration](schema.md)
+# [CLI](cli.md)

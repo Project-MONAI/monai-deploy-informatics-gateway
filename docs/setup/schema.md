@@ -40,14 +40,15 @@ The configuration file (`appsettings.json`) controls the behaviors and parameter
 
 The `InformaticsGateway` configuration section contains the following sub-sections:
 
-| Section  | Description                                                                         | Reference                                                                                             |
-| -------- | ----------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| dicom    | DICOM DIMSE service configuration options                                           | [DicomConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration)           |
-| dicomWeb | DICOMweb service configuration options                                              | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)     |
-| export   | Export service configuration options                                                | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration) |
-| fhir     | FHIR service configuration options                                                  | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)             |
-| storage  | Storage configuration options, including storage service and disk usage monitoring  | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)       |
-| Cli      | The configuration used by the CLI                                                   | -                                                                                                     |
+| Section   | Description                                                                        | Reference                                                                                                   |
+| --------- | ---------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| dicom     | DICOM DIMSE service configuration options                                          | [DicomConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration)                 |
+| dicomWeb  | DICOMweb service configuration options                                             | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)           |
+| export    | Export service configuration options                                               | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration)       |
+| fhir      | FHIR service configuration options                                                 | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)                   |
+| storage   | Storage configuration options, including storage service and disk usage monitoring | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)             |
+| messaging | Message broker configuration options                                               | [MessageBrokerConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration) |
+| Cli       | The configuration used by the CLI                                                  | -                                                                                                           |
 
 ---
 
@@ -72,6 +73,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
       }
     },
     "messaging": {
+      "publisherServiceAssemblyName":"Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ",
       "publisherSettings": {
         "endpoint": "localhost",
         "username": "username",
@@ -79,6 +81,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
         "virtualHost": "monaideploy",
         "exchange": "monaideploy"
       },
+      "subscriberServiceAssemblyName":"Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
       "subscriberSettings": {
         "endpoint": "localhost",
         "username": "username",
@@ -89,15 +92,15 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
       }
     },
     "storage": {
-      "temporary": "./payloads",
+      "temporary": "/payloads",
       "bucketName": "monaideploy",
+      "serviceAssemblyName": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO",
       "settings": {
         "endpoint": "localhost:9000",
-        "accessKey": "username",
+        "accessKey": "admin",
         "accessToken": "password",
         "securedConnection": false,
-        "region": "na",
-        "credentialServiceUrl": "http://localhost:9000"
+        "region": "local"
       }
     }
   },
@@ -149,12 +152,14 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
   "Cli": {
     "Runner": "Docker",
     "HostDataStorageMount": "~/.mig/data",
+    "HostPlugInsStorageMount": "~/.mig/plug-ins",
     "HostDatabaseStorageMount": "~/.mig/database",
     "HostLogsStorageMount": "~/.mig/logs",
     "InformaticsGatewayServerEndpoint": "http://localhost:5000",
     "DockerImagePrefix": "ghcr.io/project-monai/monai-deploy-informatics-gateway"
   }
 }
+
 ```
 
 ### Configuration Validation

@@ -25,6 +25,7 @@ header:
     - '**/obj/**'
     - '**/*.json'
     - '**/*.ruleset'
+    - '**/*.feature.cs'
     - 'src/.sonarlint/**'
     - 'src/coverlet.runsettings'
     - 'demos/**/.env/**'
