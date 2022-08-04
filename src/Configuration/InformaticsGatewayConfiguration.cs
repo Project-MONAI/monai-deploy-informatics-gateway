@@ -68,6 +68,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("messaging")]
         public MessageBrokerConfiguration Messaging { get; set; }
 
+        /// <summary>
+        /// Represents the <c>database</c> section of the configuration file.
+        /// </summary>
+        [ConfigurationKeyName("database")]
+        public DatabaseConfiguration Database { get; set; }
+
         public InformaticsGatewayConfiguration()
         {
             Dicom = new DicomConfiguration();
@@ -76,6 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             Fhir = new FhirConfiguration();
             Export = new DataExportConfiguration();
             Messaging = new MessageBrokerConfiguration();
+            Database = new DatabaseConfiguration();
         }
     }
 }

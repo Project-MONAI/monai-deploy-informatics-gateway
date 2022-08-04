@@ -182,7 +182,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
                     var scope = _serviceScopeFactory.CreateScope();
                     var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                    await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    await payload.UpdatePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
 
                     _publishQueue.Post(payload);
                     _logger.PayloadReadyToBePublished(payload.Id);
@@ -267,7 +267,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                await payload.DeletePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -293,16 +293,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             try
             {
-                if (payload.RetryCount > _options.Value.Storage.Retries.DelaysMilliseconds.Length)
+                if (payload.RetryCount > _options.Value.Database.Retries.DelaysMilliseconds.Length)
                 {
                     _logger.UploadFailureStopRetry(payload.Id);
-                    await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    await payload.DeletePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
                     return PayloadAction.Deleted;
                 }
                 else
                 {
                     _logger.UploadFailureRetryLater(payload.Id, payload.State, payload.RetryCount);
-                    await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    await payload.UpdatePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
                     return PayloadAction.Updated;
                 }
             }

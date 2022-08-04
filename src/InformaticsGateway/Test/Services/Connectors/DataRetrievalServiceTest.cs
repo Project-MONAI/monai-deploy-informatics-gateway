@@ -117,10 +117,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(5, 250, DisplayName = "Constructor")]
         public void ConstructorTest()
         {
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(null, null));
-            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_logger.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_logger.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, null));
 
-            _ = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            _ = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
         }
 
         [RetryFact(5, 250, DisplayName = "Cancellation token shall stop the service")]
@@ -131,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
             _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
 
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
             Thread.Sleep(250);
@@ -152,7 +153,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(false);
             _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
 
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
             Thread.Sleep(250);
@@ -239,7 +240,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     cancellationTokenSource.CancelAfter(100);
                 })
                 .Returns(restoredFile);
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -352,7 +353,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _fileStore.Setup(p => p.RestoreInferenceRequestFiles(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(new List<FileStoragePath>());
 
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -503,7 +504,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     SopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID),
                 });
 
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -627,7 +628,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     SopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID),
                 });
 
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -762,7 +763,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     SopInstanceUid = dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID),
                 });
 
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 
@@ -890,7 +891,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     ResourceId = resourceId,
                     ResourceType = resourceType,
                 });
-            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object);
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
 

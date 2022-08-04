@@ -36,6 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
     internal class SpaceReclaimerService : IHostedService, IMonaiService
     {
         private readonly ILogger<SpaceReclaimerService> _logger;
+        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IInstanceCleanupQueue _taskQueue;
         private readonly IFileSystem _fileSystem;
         private readonly string _payloadDirectory;
@@ -49,13 +50,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             IOptions<InformaticsGatewayConfiguration> configuration,
             IFileSystem fileSystem)
         {
-            if (configuration is null)
-            {
-                throw new ArgumentNullException(nameof(configuration));
-            }
-
             _taskQueue = taskQueue ?? throw new ArgumentNullException(nameof(taskQueue));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _payloadDirectory = configuration.Value.Storage.TemporaryDataDirFullPath;
         }
@@ -97,8 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
             Policy.Handle<Exception>()
                 .WaitAndRetry(
-                    3,
-                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt)),
+                    _configuration.Value.Storage.Retries.RetryDelays,
                     (exception, timespan, retryCount, context) =>
                     {
                         _logger.ErrorDeletingFIle(file.FilePath, retryCount, exception);
