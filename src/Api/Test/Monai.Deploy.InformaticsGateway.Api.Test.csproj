@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   ~ Copyright 2021-2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.0.18" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.0.24" />
     <PackageReference Include="xRetry" Version="1.8.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">

@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   ~ Copyright 2021-2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@
     <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="System.IO.Abstractions" Version="17.0.18" />
+    <PackageReference Include="System.IO.Abstractions" Version="17.0.24" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
   </ItemGroup>
 

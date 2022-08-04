@@ -118,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void SetupPolling()
         {
-            _messageSubscriber.Subscribe(RoutingKey, String.Empty, OnMessageReceivedCallback);
+            _messageSubscriber.Subscribe(RoutingKey, RoutingKey, OnMessageReceivedCallback);
             _logger.ExportEventSubscription(ServiceName, RoutingKey);
         }
 
@@ -127,7 +127,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             if (!_storageInfoProvider.HasSpaceAvailableForExport)
             {
                 _logger.ExportPausedDueToInsufficientStorageSpace(ServiceName, _storageInfoProvider.AvailableFreeSpace);
-                _messageSubscriber.Reject(eventArgs.Message);
+                _messageSubscriber.RequeueWithDelay(eventArgs.Message);
                 return;
             }
 

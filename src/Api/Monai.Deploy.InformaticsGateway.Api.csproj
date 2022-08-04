@@ -29,9 +29,9 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.6" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.2" />
-    <PackageReference Include="Monai.Deploy.Storage" Version="0.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.7" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.3-rc0010" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.0-rc0012" />
     <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 

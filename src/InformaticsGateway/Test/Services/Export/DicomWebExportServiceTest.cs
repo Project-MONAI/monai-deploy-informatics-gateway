@@ -124,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
-            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
+            _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
                 p => p.Subscribe(It.IsAny<string>(),
                                  It.IsAny<string>(),
@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 p => p.Publish(It.IsAny<string>(),
                                It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
-            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
@@ -181,7 +181,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
-            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
+            _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
                 p => p.Subscribe(It.IsAny<string>(),
                                  It.IsAny<string>(),
@@ -220,7 +220,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 p => p.Publish(It.IsAny<string>(),
                                It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
-            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
@@ -250,7 +250,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
-            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
+            _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
                 p => p.Subscribe(It.IsAny<string>(),
                                  It.IsAny<string>(),
@@ -302,7 +302,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 p => p.Publish(It.IsAny<string>(),
                                It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
-            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
@@ -336,7 +336,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
-            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
+            _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
                 p => p.Subscribe(It.IsAny<string>(),
                                  It.IsAny<string>(),
@@ -393,7 +393,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 p => p.Publish(It.IsAny<string>(),
                                It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == (httpStatusCode == HttpStatusCode.OK ? ExportStatus.Success : ExportStatus.Failure))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
-            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),

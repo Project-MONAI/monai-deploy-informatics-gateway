@@ -12,6 +12,10 @@
  <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <AdditionalFiles Include="..\..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Client.Common\Monai.Deploy.InformaticsGateway.Client.Common.csproj" />
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
   </ItemGroup>
@@ -22,6 +26,7 @@
     <AssemblyName>dicomweb-cli</AssemblyName>
     <PublishTrimmed>true</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
+    <CodeAnalysisRuleSet>..\..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -29,7 +34,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ConsoleAppFramework" Version="4.1.0" />
+    <PackageReference Include="ConsoleAppFramework" Version="4.2.2" />
     <PackageReference Include="fo-dicom" Version="5.0.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
   </ItemGroup>
