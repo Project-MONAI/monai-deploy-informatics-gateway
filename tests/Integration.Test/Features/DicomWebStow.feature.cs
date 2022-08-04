@@ -41,8 +41,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Features
         {
             testRunner = TechTalk.SpecFlow.TestRunnerManager.GetTestRunner();
             TechTalk.SpecFlow.FeatureInfo featureInfo = new TechTalk.SpecFlow.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "DICOMweb STOW-RS Service", "    This feature tests the DICOMweb STOW-rS services provided by the Informatics " +
-                    "Gateway.\n\n    Requirements covered:\n    - [STOW-RS] MIG SHALL be able to allow u" +
-                    "sers to upload DICOM objects via DICOMweb STOW-RS", ProgrammingLanguage.CSharp, featureTags);
+                    "Gateway.\r\n\r\n    Requirements covered:\r\n    - [STOW-RS] MIG SHALL be able to allo" +
+                    "w users to upload DICOM objects via DICOMweb STOW-RS", ProgrammingLanguage.CSharp, featureTags);
             testRunner.OnFeatureStart(featureInfo);
         }
         
