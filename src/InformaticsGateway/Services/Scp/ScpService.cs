@@ -25,6 +25,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
@@ -53,13 +54,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                                 IOptions<InformaticsGatewayConfiguration> configuration)
         {
             _serviceScope = serviceScopeFactory.CreateScope();
-            _associationDataProvider = applicationEntityManager ?? throw new ArgumentNullException(nameof(applicationEntityManager));
+            _associationDataProvider = applicationEntityManager ?? throw new ServiceNotFoundException(nameof(applicationEntityManager));
 
             var logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>();
 
             _logger = logginFactory.CreateLogger<ScpService>();
-            _appLifetime = appLifetime ?? throw new ArgumentNullException(nameof(appLifetime));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _appLifetime = appLifetime ?? throw new ServiceNotFoundException(nameof(appLifetime));
+            _configuration = configuration ?? throw new ServiceNotFoundException(nameof(configuration));
             _ = DicomDictionary.Default;
         }
 

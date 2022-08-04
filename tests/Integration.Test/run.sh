@@ -110,15 +110,16 @@ function start_services() {
 
     set +e
     COUNTER=0
+    EXPECTEDSERVICE=7
     while true; do
         info "Waiting for Informatics Gateway ($COUNTER)..."
         count=$(curl -s http://$HOST_IP:5000/health/status | jq | grep "running" | wc -l)
         info "$count services running..."
-        if [ $count -eq 6 ]; then
+        if [ $count -eq $EXPECTEDSERVICE ]; then
             break
         fi
         if [ $COUNTER -gt 100 ]; then
-            fatal "Timeout waiting for Informatics Gateway ($COUNTER)."
+            fatal "Timeout waiting for Informatics Gateway services to be ready ($COUNTER/$EXPECTEDSERVICE)."
         fi
         let COUNTER=COUNTER+1
         sleep 1s

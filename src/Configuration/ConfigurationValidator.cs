@@ -54,12 +54,21 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             valid &= IsDicomWebValid(options.DicomWeb);
             valid &= IsFhirValid(options.Fhir);
             valid &= IsStorageValid(options.Storage);
+            valid &= IsHl7Valid(options.Hl7);
 
 #pragma warning disable CA2254 // Template should be a static expression
             _validationErrors.ForEach(p => _logger.Log(LogLevel.Error, p));
 #pragma warning restore CA2254 // Template should be a static expression
 
             return valid ? ValidateOptionsResult.Success : ValidateOptionsResult.Fail(string.Join(Environment.NewLine, _validationErrors));
+        }
+
+        private bool IsHl7Valid(Hl7Configuration hl7)
+        {
+            var valid = true;
+
+            valid &= ValidationExtensions.IsPortValid("InformaticsGateway>hl7>port", hl7.Port, _validationErrors);
+            return valid;
         }
 
         private bool IsStorageValid(StorageConfiguration storage)

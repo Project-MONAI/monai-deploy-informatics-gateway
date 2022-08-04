@@ -20,7 +20,7 @@
 *.db
 *.db-*
 src/InformaticsGateway/payloads
-
+.run/
 # docfx temp files
 _site/
 
