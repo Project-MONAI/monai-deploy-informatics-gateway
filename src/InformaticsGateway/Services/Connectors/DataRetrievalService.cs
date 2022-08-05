@@ -69,7 +69,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _options = options ?? throw new ArgumentNullException(nameof(options));
 
             _rootScope = _serviceScopeFactory.CreateScope();
 
@@ -205,6 +204,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             foreach (var file in files)
             {
+                if (cancellationToken.IsCancellationRequested)
+                {
+                    break;
+                }
                 if (file is DicomFileStorageMetadata dicomFileInfo)
                 {
                     retrievedInstances.Add(dicomFileInfo.Id, dicomFileInfo);
@@ -327,7 +330,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
 
                 var fhirFile = new FhirFileStorageMetadata(transactionId, resource.Type, resource.Id, fhirFormat);
-                await fhirFile.SetDataStream(json).ConfigureAwait(false);
+                fhirFile.SetDataStream(json);
                 retrievedResources.Add(fhirFile.Id, fhirFile);
                 return true;
             }

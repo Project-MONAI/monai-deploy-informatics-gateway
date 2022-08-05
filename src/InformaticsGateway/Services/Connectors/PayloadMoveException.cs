@@ -34,5 +34,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Reason = reason;
         }
+
+        protected PayloadNotifyException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

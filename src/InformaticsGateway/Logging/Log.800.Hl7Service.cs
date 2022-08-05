@@ -31,5 +31,23 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 807, Level = LogLevel.Critical, Message = "Socket error: {error}")]
         public static partial void Hl7SocketException(this ILogger logger, string error);
+
+        [LoggerMessage(EventId = 808, Level = LogLevel.Critical, Message = "Error handling HL7 results.")]
+        public static partial void ErrorHandlingHl7Results(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 809, Level = LogLevel.Debug, Message = "Acknowledgment type={value}.")]
+        public static partial void AcknowledgmentType(this ILogger logger, string value);
+
+        [LoggerMessage(EventId = 810, Level = LogLevel.Information, Message = "Acknowledgment sent: length={length}.")]
+        public static partial void AcknowledgmentSent(this ILogger logger, int length);
+
+        [LoggerMessage(EventId = 811, Level = LogLevel.Debug, Message = "HL7  bytes received: {length}.")]
+        public static partial void Hl7MessageBytesRead(this ILogger logger, int length);
+
+        [LoggerMessage(EventId = 812, Level = LogLevel.Debug, Message = "Parsing message with {length} bytes.")]
+        public static partial void Hl7GenerateMessage(this ILogger logger, int length);
+
+        [LoggerMessage(EventId = 813, Level = LogLevel.Debug, Message = "Waiting for HL7 message.")]
+        public static partial void HL7ReadingMessage(this ILogger logger);
     }
 }

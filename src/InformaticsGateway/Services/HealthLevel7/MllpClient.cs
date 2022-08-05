@@ -24,6 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         private readonly ILogger<MllpClient> _logger;
         private readonly List<Exception> _exceptions;
         private readonly List<Message> _messages;
+        private readonly IDisposable _loggerScope;
         private bool _disposedValue;
 
         public Guid ClientId { get; }
@@ -38,10 +39,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _exceptions = new List<Exception>();
             _messages = new List<Message>();
 
-            _logger.BeginScope(new LoggingDataDictionary<string, object> { { "End point", _client.RemoteEndPoint }, { "CorrelationId", ClientId } });
+            _loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "End point", _client.RemoteEndPoint }, { "CorrelationId", ClientId } });
         }
 
-        public async Task Start(Action<IMllpClient, MllpClientResult> onDisconnect, CancellationToken cancellationToken)
+        public async Task Start(Func<IMllpClient, MllpClientResult, Task> onDisconnect, CancellationToken cancellationToken)
         {
             using var clientStream = _client.GetStream();
             clientStream.ReadTimeout = _configurations.ClientTimeoutMilliseconds;
@@ -52,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
             if (onDisconnect is not null)
             {
-                onDisconnect(this, new MllpClientResult(_messages, _exceptions.Count > 0 ? new AggregateException(_exceptions) : null));
+                await onDisconnect(this, new MllpClientResult(_messages, _exceptions.Count > 0 ? new AggregateException(_exceptions) : null));
             }
         }
 
@@ -64,12 +65,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             int bytesRead;
             var data = string.Empty;
             var messages = new List<Message>();
+            var linkedCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             while (true)
             {
                 try
                 {
-                    bytesRead = await clientStream.ReadAsync(messageBuffer, cancellationToken).ConfigureAwait(false);
+                    _logger.HL7ReadingMessage();
+                    linkedCancellationTokenSource.CancelAfter(_configurations.ClientTimeoutMilliseconds);
+                    bytesRead = await clientStream.ReadAsync(messageBuffer, linkedCancellationTokenSource.Token).ConfigureAwait(false);
+                    _logger.Hl7MessageBytesRead(bytesRead);
+                    if (!linkedCancellationTokenSource.TryReset())
+                    {
+                        linkedCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -85,24 +94,32 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
                 data += Encoding.UTF8.GetString(messageBuffer.ToArray());
 
-                var startIndex = data.IndexOf(Resources.AsciiVT);
-                if (startIndex >= 0)
+                do
                 {
-                    var endIndex = data.IndexOf(Resources.AsciiFS);
-
-                    if (endIndex > startIndex)
+                    var startIndex = data.IndexOf(Resources.AsciiVT);
+                    if (startIndex >= 0)
                     {
-                        if (!CreateMessage(startIndex, endIndex, ref data, out var message))
+                        var endIndex = data.IndexOf(Resources.AsciiFS);
+
+                        if (endIndex > startIndex)
                         {
-                            break;
-                        }
-                        else
-                        {
-                            await SendAcknowledgment(clientStream, message, cancellationToken).ConfigureAwait(false);
-                            messages.Add(message);
+                            if (!CreateMessage(startIndex, endIndex, ref data, out var message))
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                await SendAcknowledgment(clientStream, message, cancellationToken).ConfigureAwait(false);
+                                messages.Add(message);
+                            }
+
                         }
                     }
-                }
+                    else
+                    {
+                        break;
+                    }
+                } while (true);
             }
             return messages;
         }
@@ -124,7 +141,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 try
                 {
                     await clientStream.WriteAsync(ackData, cancellationToken).ConfigureAwait(false);
-                    await clientStream.FlushAsync(cancellationToken);
+                    await clientStream.FlushAsync(cancellationToken).ConfigureAwait(false);
+                    _logger.AcknowledgmentSent(ackData.Length);
                 }
                 catch (Exception ex)
                 {
@@ -144,6 +162,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 {
                     return true;
                 }
+
+                _logger.AcknowledgmentType(value.Value);
+
                 return value.Value switch
                 {
                     Resources.AcknowledgmentTypeNever => false,
@@ -166,7 +187,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             var messageEndIndex = endIndex + 1;
             try
             {
-                message = new Message(data.Substring(messageStartIndex, endIndex - messageStartIndex));
+                var text = data.Substring(messageStartIndex, endIndex - messageStartIndex);
+                _logger.Hl7GenerateMessage(text.Length);
+                message = new Message(text);
                 message.ParseMessage();
                 data = data.Length > endIndex ? data.Substring(messageEndIndex) : string.Empty;
                 return true;
@@ -187,6 +210,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 if (disposing)
                 {
                     _client.Dispose();
+                    _loggerScope.Dispose();
                 }
 
                 _disposedValue = true;

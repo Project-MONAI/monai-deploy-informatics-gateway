@@ -34,8 +34,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         [Fact]
         public void GivenAStorageObjectMetadata_WhenSetUploadIsCalled_ExpectUplaodValuesToBeSetAndDataStreamDisposed()
         {
-            var metadata = new StorageObjectMetadata(".txt");
-            metadata.Data = new MemoryStream();
+            var metadata = new StorageObjectMetadata(".txt")
+            {
+                Data = new MemoryStream()
+            };
             metadata.SetUploaded("MYBUCKET");
 
             Assert.Equal("MYBUCKET", metadata.TemporaryBucketName);

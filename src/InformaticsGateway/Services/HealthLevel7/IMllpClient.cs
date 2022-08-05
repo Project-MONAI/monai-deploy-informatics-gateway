@@ -13,6 +13,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         void Dispose();
 
-        Task Start(Action<IMllpClient, MllpClientResult> onDisconnect, CancellationToken cancellationToken);
+        Task Start(Func<IMllpClient, MllpClientResult, Task> onDisconnect, CancellationToken cancellationToken);
     }
 }

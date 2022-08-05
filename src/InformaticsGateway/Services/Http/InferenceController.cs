@@ -22,10 +22,8 @@ using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 
@@ -36,16 +34,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     public class InferenceController : ControllerBase
     {
         private readonly IInferenceRequestRepository _inferenceRequestRepository;
-        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly ILogger<InferenceController> _logger;
 
         public InferenceController(
             IInferenceRequestRepository inferenceRequestRepository,
-            IOptions<InformaticsGatewayConfiguration> configuration,
             ILogger<InferenceController> logger)
         {
             _inferenceRequestRepository = inferenceRequestRepository ?? throw new ArgumentNullException(nameof(inferenceRequestRepository));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 

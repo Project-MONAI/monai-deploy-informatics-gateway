@@ -34,19 +34,21 @@ namespace Monai.Deploy.InformaticsGateway.Common
             await dicomFile.SaveAsync(dicomFileStorageMetadata.File.Data).ConfigureAwait(false);
             dicomFileStorageMetadata.File.Data.Seek(0, SeekOrigin.Begin);
 
-            dicomFileStorageMetadata.JsonFile.Data = new MemoryStream(Encoding.UTF8.GetBytes(dicomJson));
-            dicomFileStorageMetadata.JsonFile.Data.Seek(0, SeekOrigin.Begin);
+            SetTextStream(dicomFileStorageMetadata.JsonFile, dicomJson);
         }
 
-        public static async Task SetDataStream(this FhirFileStorageMetadata fhirFileStorageMetadata, string json)
-        {
-            Guard.Against.Null(json, nameof(json)); // allow empty here
+        public static void SetDataStream(this FhirFileStorageMetadata fhirFileStorageMetadata, string json)
+            => SetTextStream(fhirFileStorageMetadata.File, json);
 
-            fhirFileStorageMetadata.File.Data = new MemoryStream();
-            var sw = new StreamWriter(fhirFileStorageMetadata.File.Data, Encoding.UTF8);
-            await sw.WriteAsync(json).ConfigureAwait(false);
-            await sw.FlushAsync().ConfigureAwait(false);
-            fhirFileStorageMetadata.File.Data.Seek(0, SeekOrigin.Begin);
+        public static void SetDataStream(this Hl7FileStorageMetadata hl7FileStorageMetadata, string message)
+            => SetTextStream(hl7FileStorageMetadata.File, message);
+
+        private static void SetTextStream(StorageObjectMetadata storageObjectMetadata, string message)
+        {
+            Guard.Against.Null(message, nameof(message)); // allow empty here
+
+            storageObjectMetadata.Data = new MemoryStream(Encoding.UTF8.GetBytes(message));
+            storageObjectMetadata.Data.Seek(0, SeekOrigin.Begin);
         }
     }
 }

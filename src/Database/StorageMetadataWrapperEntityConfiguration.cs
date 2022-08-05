@@ -15,15 +15,8 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Database
 {
@@ -31,16 +24,6 @@ namespace Monai.Deploy.InformaticsGateway.Database
     {
         public void Configure(EntityTypeBuilder<StorageMetadataWrapper> builder)
         {
-            var filesComparer = new ValueComparer<IList<FileStorageMetadata>>(
-                (c1, c2) => c1.SequenceEqual(c2),
-                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
-                c => c.ToList());
-
-            var jsonSerializerSettings = new JsonSerializerOptions
-            {
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            };
-
             builder.HasKey(j => new
             {
                 j.CorrelationId,
