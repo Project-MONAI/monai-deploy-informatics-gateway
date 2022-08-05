@@ -8,9 +8,9 @@ fontawesome f0f8 "Hospital\nDICOM Devices" as DICOM
 
 participantgroup #00CC66 Informatics\nGateway
 participant "DICOM SCP" as SCP
-participant "Payload Assembler" as PA
-participant "Payload Notification" as PN
-fontawesome f0a0 "Temporary Storage" as TS
+participant "Payload Assembler Service" as PA
+participant "Payload Notification Service" as PN
+participant "Object Upload Service" as OUS
 end 
 
 participantgroup #FF9966 Virtual\nStorage
@@ -44,11 +44,11 @@ activate DICOM
 SCP->DB: Query for \nconfigured\nsources
 SCP<--DB: Response
 SCP->SCP: Validate
-SCP->TS: Save to disk
 SCP->SCP: Extract DICOM headers
-activate SCP
-SCP->DB: Save instance info with DICOM headers
-deactivate SCP
+SCP->OUS: Queue for upload
+activate OUS
+OUS->DISK: Upload to temporary bucket path
+deactivate OUS
 SCP->PA: Notify data arrival
 activate PA
 PA->PA: Queue instance
@@ -64,7 +64,7 @@ PA->PN: Queue Payload ready message
 activate PN
 PA<--PN: Response
 deactivate PA
-PN->DISK: Upload files associated with the payload
+PN->DISK: Move files associated with the payload to payload directory
 PN->PS: Publish new workflow request
 PN<--PS: Response
 end

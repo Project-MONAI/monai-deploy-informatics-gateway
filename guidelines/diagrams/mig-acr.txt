@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache License 2.0
 
 # Created at https://sequencediagram.org/
-title MONAI Informatics Gateway - SCP
+title MONAI Informatics Gateway - ACR API
 
 fontawesome f0f8 "Hospital\nDevices" as HIS
 
@@ -10,9 +10,9 @@ participantgroup #00CC66 Informatics\nGateway
 participant "ACR API" as ACR
 participant "Inference Request\nQueue" as IRQ
 participant "Data Retrieval Service" as DRS
-participant "Payload Assembler" as PA
-participant "Payload Notification" as PN
-fontawesome f0a0 "Temporary Storage" as TS
+participant "Payload Assembler Service" as PA
+participant "Payload Notification Service" as PN
+participant "Object Upload Service" as OUS
 end 
 
 participantgroup #FF9966 Virtual\nStorage
@@ -38,12 +38,17 @@ DRS->DRS: Process request
 activate DRS
 DRS->HIS: Query & retrieve via DICOMweb
 DRS<--HIS: Response
-DRS->TS: Save DICOM
 DRS->DRS: Extract DICOM headers
-DRS->DB: Save instance info with DICOM headers
+DRS->OUS: Queue DICOM+JSON for upload
+activate OUS
+OUS->DISK: Upload to temporary bucket path
+deactivate OUS
 DRS->HIS: Query & retrieve via FHIR
 DRS<--HIS: Response
-DRS->TS: Save FHIR
+DRS->OUS: Queue FHIR for upload
+activate OUS
+OUS->DISK: Upload to temporary bucket path
+deactivate OUS
 DRS->DB: Save resource info with headers
 
 DRS->PA: Notify data arrival
@@ -58,6 +63,6 @@ PA->PN: Queue Payload ready message
 activate PN
 PA<--PN: Response
 deactivate PA
-PN->DISK: Upload files associated with the payload
+PN->DISK: Move files associated with the payload to payload directory
 PN->PS: Publish new workflow request
 PN<--PS: Response
