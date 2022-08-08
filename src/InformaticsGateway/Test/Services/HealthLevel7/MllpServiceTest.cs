@@ -66,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
-        [Fact(DisplayName = "Constructor")]
+        [RetryFact(DisplayName = "Constructor")]
         public void Constructor()
         {
             Assert.Throws<ArgumentNullException>(() => new MllpService(null, null));
@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             new MllpService(_serviceScopeFactory.Object, _options);
         }
 
-        [Fact(DisplayName = "Can start service")]
+        [RetryFact(DisplayName = "Can start service")]
         public void CanStart()
         {
             var service = new MllpService(_serviceScopeFactory.Object, _options);
@@ -85,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Equal(ServiceStatus.Running, service.Status);
         }
 
-        [Fact(DisplayName = "Can stop service")]
+        [RetryFact(DisplayName = "Can stop service")]
         public void CanStop()
         {
             _tcpListener.Setup(p => p.Stop());
@@ -97,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _tcpListener.Verify(p => p.Stop(), Times.Once());
         }
 
-        [RetryFact(DisplayName = "Tracks active connections")]
+        [RetryFact(10, 100, DisplayName = "Tracks active connections")]
         public void TracksActiveConnections()
         {
             var actions = new Dictionary<IMllpClient, Action<IMllpClient, MllpClientResult>>();
@@ -146,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Equal(0, service.ActiveConnections);
         }
 
-        [Fact(DisplayName = "Abides by the maximum connection limit")]
+        [RetryFact(DisplayName = "Abides by the maximum connection limit")]
         public void AbidesByMaximumConnectionLimit()
         {
             var checkEvent = new CountdownEvent(_options.Value.Hl7.MaximumNumberOfConnections);
@@ -179,23 +179,23 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _logger.VerifyLoggingMessageBeginsWith($"Maximum number {_options.Value.Hl7.MaximumNumberOfConnections} of clients reached.", LogLevel.Information, Times.AtLeastOnce());
         }
 
-        [Fact(DisplayName = "Dispose clients")]
+        [RetryFact(DisplayName = "Dispose clients")]
         public async Task DisposeClients()
         {
-            var mllpClients = new List<Mock<IMllpClient>>();
             var checkEvent = new ManualResetEventSlim();
+            var client = new Mock<IMllpClient>();
+            var callCount = 0;
             _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<ILogger<MllpClient>>()))
                 .Returns(() =>
                 {
-                    var client = new Mock<IMllpClient>();
                     client.Setup(p => p.Start(It.IsAny<Action<IMllpClient, MllpClientResult>>(), It.IsAny<CancellationToken>()))
                         .Callback<Action<IMllpClient, MllpClientResult>, CancellationToken>((action, cancellationToken) =>
                         {
+                            callCount++;
                             checkEvent.Set();
                         });
                     client.Setup(p => p.Dispose());
                     client.SetupGet(p => p.ClientId).Returns(Guid.NewGuid());
-                    mllpClients.Add(client);
                     return client.Object;
                 });
 
@@ -213,11 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             await Task.Delay(500).ConfigureAwait(false);
 
             service.Dispose();
-
-            foreach (var client in mllpClients)
-            {
-                client.Verify(p => p.Dispose(), Times.Once());
-            }
+            client.Verify(p => p.Dispose(), Times.Exactly(callCount));
         }
     }
 }

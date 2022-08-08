@@ -35,17 +35,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
     internal abstract class DicomInstanceReaderBase
     {
         private static readonly object SyncLock = new();
-        private const string BufferDirectoryName = "IGTEMP";
-        protected DicomWebConfiguration Configuration { get; }
+        protected InformaticsGatewayConfiguration Configuration { get; }
         protected ILogger Logger { get; }
         protected IFileSystem FileSystem { get; }
 
         protected DicomInstanceReaderBase(
-            DicomWebConfiguration dicomWebConfiguration,
+            InformaticsGatewayConfiguration configuration,
             ILogger logger,
             IFileSystem fileSystem)
         {
-            Configuration = dicomWebConfiguration ?? throw new ArgumentNullException(nameof(dicomWebConfiguration));
+            Configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             Logger = logger ?? throw new ArgumentNullException(nameof(logger));
             FileSystem = fileSystem;
         }
@@ -72,15 +71,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             Stream seekableStream;
             if (!sourceStream.CanSeek)
             {
-                var tempPath = FileSystem.Path.Combine(Path.GetTempPath(), BufferDirectoryName);
-
                 lock (SyncLock)
                 {
-                    FileSystem.Directory.CreateDirectoryIfNotExists(tempPath);
+                    FileSystem.Directory.CreateDirectoryIfNotExists(Configuration.Storage.BufferStorageRootPath);
                 }
 
-                Logger.ConvertingStreamToFileBufferingReadStream(Configuration.MemoryThreshold, tempPath);
-                seekableStream = new FileBufferingReadStream(sourceStream, Configuration.MemoryThreshold, null, tempPath);
+                Logger.ConvertingStreamToFileBufferingReadStream(Configuration.Storage.MemoryThreshold, Configuration.Storage.BufferStorageRootPath);
+                seekableStream = new FileBufferingReadStream(sourceStream, Configuration.Storage.MemoryThreshold, null, Configuration.Storage.BufferStorageRootPath);
                 httpContext.Response.RegisterForDisposeAsync(seekableStream);
                 await seekableStream.DrainAsync(cancellationToken).ConfigureAwait(false);
             }

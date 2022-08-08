@@ -20,7 +20,6 @@ using System.Text;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using FellowOakDicom.Serialization;
-using FluentAssertions.Execution;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Client;
@@ -30,7 +29,6 @@ using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
-using Polly;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -239,28 +237,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     await minioClient.GetObjectAsync(getMetadataObjectArgs);
                 }
             }
-        }
-
-        [Then(@"the temporary data directory is cleared")]
-        public void ThenTheTemporaryDataDirectoryIsCleared()
-        {
-            var inferenceRequest = _scenarioContext[KeyInferenceRequest] as InferenceRequest;
-            var dataDir = Path.Combine(_configuration.InformaticsGatewayOptions.TemporaryDataStore, inferenceRequest.TransactionId);
-            _outputHelper.WriteLine($"Validating temporary data dir {dataDir}");
-            Policy
-                .Handle<AssertionFailedException>()
-                .WaitAndRetry(3, retryAttempt => TimeSpan.FromMilliseconds(150 * retryAttempt), (exception, retryCount, context) =>
-                {
-                    _outputHelper.WriteLine("Exception 'validating temporary data directory': {0}", exception.Message);
-                })
-                .Execute(() =>
-                {
-                    if (Directory.Exists(dataDir))
-                    {
-                        var files = Directory.GetFiles(dataDir, "*", SearchOption.AllDirectories);
-                        files.Length.Should().Be(0);
-                    }
-                });
         }
     }
 }

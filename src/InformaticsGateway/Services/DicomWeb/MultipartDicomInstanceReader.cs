@@ -33,8 +33,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal class MultipartDicomInstanceReader : DicomInstanceReaderBase, IStowRequestReader
     {
-        public MultipartDicomInstanceReader(DicomWebConfiguration dicomWebConfiguration, ILogger<MultipartDicomInstanceReader> logger, IFileSystem fileSystem)
-            : base(dicomWebConfiguration, logger, fileSystem)
+        public MultipartDicomInstanceReader(InformaticsGatewayConfiguration configuration, ILogger<MultipartDicomInstanceReader> logger, IFileSystem fileSystem)
+            : base(configuration, logger, fileSystem)
         {
         }
 
@@ -74,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             {
                 var multipartReader = new MultipartReader(boundary, request.Body)
                 {
-                    BodyLengthLimit = Configuration.MaxAllowedFileSize
+                    BodyLengthLimit = Configuration.DicomWeb.MaxAllowedFileSize
                 };
 
                 var streams = new List<Stream>();

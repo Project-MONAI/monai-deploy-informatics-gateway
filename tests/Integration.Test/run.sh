@@ -30,7 +30,6 @@ FEATURE=
 STREAMID=
 export STUDYJSON="study.json"
 
-export DATA_PATH="$RUN_DIR/ig/payloads/"
 set -euo pipefail
 
 function info() {

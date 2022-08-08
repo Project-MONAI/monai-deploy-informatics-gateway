@@ -40,6 +40,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             _logger = new Mock<ILogger<InferenceRequestRepository>>();
             _inferenceRequestRepository = new Mock<IInformaticsGatewayRepository<InferenceRequest>>();
             _options = Options.Create(new InformaticsGatewayConfiguration());
+
+            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 

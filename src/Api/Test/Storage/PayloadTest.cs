@@ -29,10 +29,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         public async Task Payload_AddsNewInstance()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
-            payload.Add(new TestStorageInfo("file"));
+            payload.Add(new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt"));
             await Task.Delay(450).ConfigureAwait(false);
             Assert.False(payload.HasTimedOut);
-            payload.Add(new TestStorageInfo("file"));
+            payload.Add(new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file2", ".txt"));
             await Task.Delay(450).ConfigureAwait(false);
             Assert.False(payload.HasTimedOut);
             Assert.Equal("key", payload.Key);
@@ -42,26 +42,16 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         public async Task Payload_ShallNotResetTimer()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
-            payload.Add(new TestStorageInfo("file"));
+            payload.Add(new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt"));
             await Task.Delay(1001).ConfigureAwait(false);
             Assert.True(payload.HasTimedOut);
-        }
-
-        [RetryFact(DisplayName = "Payload shall allow retry up to 3 times")]
-        public void Payload_ShallAllowRetryUpTo3Times()
-        {
-            var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
-
-            Assert.True(payload.CanRetry());
-            Assert.True(payload.CanRetry());
-            Assert.False(payload.CanRetry());
         }
 
         [RetryFact(DisplayName = "Payload shall dispose timer")]
         public void Payload_ShallDisposeTimer()
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), 1);
-            payload.Add(new TestStorageInfo("file"));
+            payload.Add(new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt"));
             Assert.Single(payload.Files);
             payload.Dispose();
             Assert.Empty(payload.Files);

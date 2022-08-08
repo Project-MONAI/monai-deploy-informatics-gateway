@@ -29,7 +29,6 @@ LOADDEV="--env-file .env.dev"
 STREAMID=
 export STUDYJSON="study.json.dev"
 
-export DATA_PATH="$RUN_DIR/ig/payloads/"
 set -euo pipefail
 
 function info() {

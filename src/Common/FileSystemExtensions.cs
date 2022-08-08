@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-using System;
 using System.IO.Abstractions;
 using Ardalis.GuardClauses;
 
@@ -30,43 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
             {
                 directory.CreateDirectory(path);
             }
-        }
-
-        public static bool TryDelete(this IDirectory directory, string dirPath)
-        {
-            Guard.Against.NullOrWhiteSpace(dirPath, nameof(dirPath));
-            try
-            {
-                directory.Delete(dirPath);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static bool TryGenerateDirectory(this IDirectory directory, string path, out string generatedPath)
-        {
-            Guard.Against.NullOrWhiteSpace(path, nameof(path));
-
-            var tryCount = 0;
-            do
-            {
-                generatedPath = $"{path}-{DateTime.UtcNow.Millisecond}";
-                try
-                {
-                    directory.CreateDirectory(generatedPath);
-                    return true;
-                }
-                catch
-                {
-                    if (++tryCount > 5)
-                    {
-                        return false;
-                    }
-                }
-            } while (true);
         }
     }
 }

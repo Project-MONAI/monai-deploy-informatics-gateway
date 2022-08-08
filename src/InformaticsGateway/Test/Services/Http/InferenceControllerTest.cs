@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.IO.Abstractions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -71,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                         Instance = instance
                     };
                 });
-            _controller = new InferenceController(_inferenceRequestRepository.Object, _configuration, _logger.Object, _fileSystem.Object)
+            _controller = new InferenceController(_inferenceRequestRepository.Object, _configuration, _logger.Object)
             {
                 ProblemDetailsFactory = _problemDetailsFactory.Object
             };
@@ -190,58 +189,58 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(409, problem.Status);
         }
 
-        [RetryFact(5, 250, DisplayName = "NewInferenceRequest - shall return problem if failed to creaet working dir")]
-        public void NewInferenceRequest_ShallReturnProblemIfFailedToCreateWorkingDir()
-        {
-            _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()))
-                .Throws(new IOException());
-            _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
+        //[RetryFact(5, 250, DisplayName = "NewInferenceRequest - shall return problem if failed to creaet working dir")]
+        //public void NewInferenceRequest_ShallReturnProblemIfFailedToCreateWorkingDir()
+        //{
+        //    _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()))
+        //        .Throws(new IOException());
+        //    _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
 
-            var input = new InferenceRequest
-            {
-                TransactionId = Guid.NewGuid().ToString(),
-                InputResources = new List<RequestInputDataResource>()
-                {
-                    new RequestInputDataResource
-                    {
-                        Interface = InputInterfaceType.Algorithm,
-                        ConnectionDetails = new InputConnectionDetails()
-                    },
-                    new RequestInputDataResource
-                    {
-                        Interface = InputInterfaceType.DicomWeb,
-                        ConnectionDetails = new InputConnectionDetails
-                        {
-                            Uri = "http://my.svc/api"
-                        }
-                    }
-                },
-                InputMetadata = new InferenceRequestMetadata
-                {
-                    Details = new InferenceRequestDetails
-                    {
-                        Type = InferenceRequestType.DicomUid,
-                        Studies = new List<RequestedStudy>
-                    {
-                        new RequestedStudy
-                        {
-                            StudyInstanceUid = "1"
-                        }
-                    }
-                    }
-                }
-            };
+        //    var input = new InferenceRequest
+        //    {
+        //        TransactionId = Guid.NewGuid().ToString(),
+        //        InputResources = new List<RequestInputDataResource>()
+        //        {
+        //            new RequestInputDataResource
+        //            {
+        //                Interface = InputInterfaceType.Algorithm,
+        //                ConnectionDetails = new InputConnectionDetails()
+        //            },
+        //            new RequestInputDataResource
+        //            {
+        //                Interface = InputInterfaceType.DicomWeb,
+        //                ConnectionDetails = new InputConnectionDetails
+        //                {
+        //                    Uri = "http://my.svc/api"
+        //                }
+        //            }
+        //        },
+        //        InputMetadata = new InferenceRequestMetadata
+        //        {
+        //            Details = new InferenceRequestDetails
+        //            {
+        //                Type = InferenceRequestType.DicomUid,
+        //                Studies = new List<RequestedStudy>
+        //            {
+        //                new RequestedStudy
+        //                {
+        //                    StudyInstanceUid = "1"
+        //                }
+        //            }
+        //            }
+        //        }
+        //    };
 
-            var result = _controller.NewInferenceRequest(input);
+        //    var result = _controller.NewInferenceRequest(input);
 
-            Assert.NotNull(result);
-            var objectResult = result.Result as ObjectResult;
-            Assert.NotNull(objectResult);
-            var problem = objectResult.Value as ProblemDetails;
-            Assert.NotNull(problem);
-            Assert.Equal("Failed to generate a temporary storage location for request.", problem.Title);
-            Assert.Equal(500, problem.Status);
-        }
+        //    Assert.NotNull(result);
+        //    var objectResult = result.Result as ObjectResult;
+        //    Assert.NotNull(objectResult);
+        //    var problem = objectResult.Value as ProblemDetails;
+        //    Assert.NotNull(problem);
+        //    Assert.Equal("Failed to generate a temporary storage location for request.", problem.Title);
+        //    Assert.Equal(500, problem.Status);
+        //}
 
         [RetryFact(5, 250, DisplayName = "NewInferenceRequest - shall return problem if failed to add job")]
         public void NewInferenceRequest_ShallReturnProblemIfFailedToAddJob()

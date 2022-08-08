@@ -63,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// Defaults to 0020,000D (Study Instance UID).
         /// Valid DICOM Tags: > Study Instance UID (0020,000D) and Series Instance UID (0020,000E).
         /// </summary>
-        public string Grouping { get; set; } = "0020,000D";
+        public string Grouping { get; set; }
 
         /// <summary>
         /// Optional field to map AE to one or more workflows.
@@ -99,6 +99,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
             if (string.IsNullOrWhiteSpace(Name))
             {
                 Name = AeTitle;
+            }
+
+            if (string.IsNullOrWhiteSpace(Grouping))
+            {
+                Grouping = "0020,000D";
             }
 
             if (Workflows is null)

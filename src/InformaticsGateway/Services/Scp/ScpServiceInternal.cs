@@ -74,11 +74,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId).ConfigureAwait(false);
                 return new DicomCStoreResponse(request, DicomStatus.Success);
             }
-            catch (InsufficientStorageAvailableException ex)
-            {
-                _logger?.CStoreFailedWithNoSpace(ex);
-                return new DicomCStoreResponse(request, DicomStatus.StorageStorageOutOfResources);
-            }
             catch (System.IO.IOException ex) when ((ex.HResult & 0xFFFF) == Constants.ERROR_HANDLE_DISK_FULL || (ex.HResult & 0xFFFF) == Constants.ERROR_DISK_FULL)
             {
                 _logger?.CStoreFailedWithNoSpace(ex);

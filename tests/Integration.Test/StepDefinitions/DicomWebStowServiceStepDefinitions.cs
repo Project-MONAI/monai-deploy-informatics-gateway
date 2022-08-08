@@ -34,6 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         private readonly Configurations _configuration;
         private readonly DicomInstanceGenerator _dicomInstanceGenerator;
         private readonly RabbitMqHooks _rabbitMqHooks;
+
         public DicomWebStowServiceStepDefinitions(
             ScenarioContext scenarioContext,
             ISpecFlowOutputHelper outputHelper,
@@ -111,7 +112,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _scenarioContext[SharedDefinitions.KeyDicomHashes] = dicomFileSize;
             dicomFileSpec.Files.Clear();
-
         }
     }
 }

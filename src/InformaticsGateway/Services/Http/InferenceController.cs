@@ -16,7 +16,6 @@
  */
 
 using System;
-using System.IO.Abstractions;
 using System.Net;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -26,7 +25,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
@@ -40,18 +38,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         private readonly IInferenceRequestRepository _inferenceRequestRepository;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly ILogger<InferenceController> _logger;
-        private readonly IFileSystem _fileSystem;
 
         public InferenceController(
             IInferenceRequestRepository inferenceRequestRepository,
             IOptions<InformaticsGatewayConfiguration> configuration,
-            ILogger<InferenceController> logger,
-            IFileSystem fileSystem)
+            ILogger<InferenceController> logger)
         {
             _inferenceRequestRepository = inferenceRequestRepository ?? throw new ArgumentNullException(nameof(inferenceRequestRepository));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
         }
 
         [HttpGet("status/{transactionId}")]
@@ -102,24 +97,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             if (_inferenceRequestRepository.Exists(request.TransactionId))
             {
                 return Problem(title: "Conflict", statusCode: (int)HttpStatusCode.Conflict, detail: "An existing request with same transaction ID already exists.");
-            }
-
-            try
-            {
-                if (_fileSystem.Directory.TryGenerateDirectory(_fileSystem.Path.Combine(_configuration.Value.Storage.TemporaryDataDirFullPath, request.TransactionId),
-                    out var storagePath))
-                {
-                    request.ConfigureTemporaryStorageLocation(storagePath);
-                }
-                else
-                {
-                    throw new InferenceRequestException("Failed to generate a temporary storage location for request.");
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.ErrorConfiguringStorageLocation(request.TransactionId, ex);
-                return Problem(title: ex.Message, statusCode: (int)HttpStatusCode.InternalServerError, detail: ex.Message);
             }
 
             try

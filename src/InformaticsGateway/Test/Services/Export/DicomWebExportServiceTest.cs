@@ -32,7 +32,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
@@ -57,7 +56,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<ILogger<DicomWebExportService>> _logger;
         private readonly Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
-        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private Mock<HttpMessageHandler> _handlerMock;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
@@ -74,8 +72,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _logger = new Mock<ILogger<DicomWebExportService>>();
             _loggerDicomWebClient = new Mock<ILogger<DicomWebClient>>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
-            _storageInfoProvider = new Mock<IStorageInfoProvider>();
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _dicomToolkit = new Mock<IDicomToolkit>();
@@ -106,20 +102,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]
         public void Constructor_ThrowsOnNullParams()
         {
-            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(null, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, _logger.Object, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, _logger.Object, _configuration, null, null));
-            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, _logger.Object, _configuration, _storageInfoProvider.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(null, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, _logger.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomWebExportService(_loggerFactory.Object, _httpClientFactory.Object, _serviceScopeFactory.Object, _logger.Object, _configuration, null));
         }
 
         [RetryFact(5, 250, DisplayName = "ExportDataBlockCallback - Returns null if inference request cannot be found")]
         public async Task ExportDataBlockCallback_ReturnsNullIfInferenceRequestCannotBeFound()
         {
             var transactionId = Guid.NewGuid().ToString();
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -145,7 +139,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _serviceScopeFactory.Object,
                 _logger.Object,
                 _configuration,
-                _storageInfoProvider.Object,
                 _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
@@ -176,7 +169,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             var transactionId = Guid.NewGuid().ToString();
             var inferenceRequest = new InferenceRequest();
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -202,7 +194,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _serviceScopeFactory.Object,
                 _logger.Object,
                 _configuration,
-                _storageInfoProvider.Object,
                 _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
@@ -245,8 +236,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 }
             });
 
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
-
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
@@ -284,7 +273,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _serviceScopeFactory.Object,
                 _logger.Object,
                 _configuration,
-                _storageInfoProvider.Object,
                 _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
@@ -331,8 +319,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 }
             });
 
-            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
-
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
@@ -375,7 +361,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 _serviceScopeFactory.Object,
                 _logger.Object,
                 _configuration,
-                _storageInfoProvider.Object,
                 _dicomToolkit.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);

@@ -18,21 +18,19 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.SharedTest;
 
-internal record TestStorageInfo : FileStorageInfo
+internal record TestStorageInfo : FileStorageMetadata
 {
-    public TestStorageInfo(string filePath, string fileExtension)
-        : base(fileExtension)
+    public TestStorageInfo(string correlationsId, string identifier, string filePath, string fileExtension)
+        : base(correlationsId, identifier)
     {
-        FilePath = filePath;
+        File = new StorageObjectMetadata(fileExtension)
+        {
+            UploadPath = filePath,
+            TemporaryPath = filePath
+        };
     }
 
-    public TestStorageInfo(string filePath)
-        : base(".test")
-    {
-        FilePath = filePath;
-    }
+    public override string DataTypeDirectoryName => "dir";
 
-    public override string UploadFilePath => $"/test/{FilePath}.test";
-
-    protected override string SubDirectoryPath => "dir";
+    public override StorageObjectMetadata File { get; set; }
 }

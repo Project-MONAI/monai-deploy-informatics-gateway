@@ -33,7 +33,6 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
@@ -52,7 +51,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly ILogger _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
-        private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly InformaticsGatewayConfiguration _configuration;
         private readonly IMessageBrokerSubscriberService _messageSubscriber;
         private readonly IMessageBrokerPublisherService _messagePublisher;
@@ -77,8 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         protected ExportServiceBase(
             ILogger logger,
             IOptions<InformaticsGatewayConfiguration> configuration,
-            IServiceScopeFactory serviceScopeFactory,
-            IStorageInfoProvider storageInfoProvider)
+            IServiceScopeFactory serviceScopeFactory)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -90,7 +87,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 throw new ArgumentNullException(nameof(configuration));
             }
 
-            _storageInfoProvider = storageInfoProvider ?? throw new ArgumentNullException(nameof(storageInfoProvider));
             _configuration = configuration.Value;
 
             _messageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
@@ -124,13 +120,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
         {
-            if (!_storageInfoProvider.HasSpaceAvailableForExport)
-            {
-                _logger.ExportPausedDueToInsufficientStorageSpace(ServiceName, _storageInfoProvider.AvailableFreeSpace);
-                _messageSubscriber.RequeueWithDelay(eventArgs.Message);
-                return;
-            }
-
             try
             {
                 var executionOptions = new ExecutionDataflowBlockOptions

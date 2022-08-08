@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-version: "3.7"
+version: "3.9"
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -25,7 +25,6 @@ services:
         RABBITMQ_DEFAULT_PASS: "rabbitmq"
         RABBITMQ_DEFAULT_VHOST: "monaideploy"
         RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
-
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 15s

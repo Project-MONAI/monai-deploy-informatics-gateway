@@ -30,8 +30,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal class SingleDicomInstanceReader : DicomInstanceReaderBase, IStowRequestReader
     {
-        public SingleDicomInstanceReader(DicomWebConfiguration dicomWebConfiguration, ILogger<SingleDicomInstanceReader> logger, IFileSystem fileSystem)
-            : base(dicomWebConfiguration, logger, fileSystem)
+        public SingleDicomInstanceReader(InformaticsGatewayConfiguration configuration, ILogger<SingleDicomInstanceReader> logger, IFileSystem fileSystem)
+            : base(configuration, logger, fileSystem)
         {
         }
 

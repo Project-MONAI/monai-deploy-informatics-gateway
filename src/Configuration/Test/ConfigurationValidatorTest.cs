@@ -92,11 +92,45 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             _logger.VerifyLogging(validationMessage, LogLevel.Error, Times.Once());
         }
 
+        [Fact(DisplayName = "ConfigurationValidator test with missing temporaryBucketName")]
+        public void StorageWithInvalidTemporaryBucketName()
+        {
+            var config = MockValidConfiguration();
+            config.Storage.TemporaryStorageBucket = " ";
+
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
+
+            var validationMessages = new[] { "Value for InformaticsGateway>storage>temporaryBucketName is required.", "Value for InformaticsGateway>storage>temporaryBucketName does not conform to Amazon S3 bucket naming requirements." };
+            Assert.Equal(string.Join(Environment.NewLine, validationMessages), valid.FailureMessage);
+            foreach (var message in validationMessages)
+            {
+                _logger.VerifyLogging(message, LogLevel.Error, Times.Once());
+            }
+        }
+
+        [Fact(DisplayName = "ConfigurationValidator test with missing bucketName")]
+        public void StorageWithInvalidBucketName()
+        {
+            var config = MockValidConfiguration();
+            config.Storage.StorageServiceBucketName = "";
+
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
+
+            var validationMessages = new[] { "Value for InformaticsGateway>storage>bucketName is required.", "Value for InformaticsGateway>storage>bucketName does not conform to Amazon S3 bucket naming requirements." };
+            Assert.Equal(string.Join(Environment.NewLine, validationMessages), valid.FailureMessage);
+            foreach (var message in validationMessages)
+            {
+                _logger.VerifyLogging(message, LogLevel.Error, Times.Once());
+            }
+        }
+
         private static InformaticsGatewayConfiguration MockValidConfiguration()
         {
             var config = new InformaticsGatewayConfiguration();
             config.Dicom.Scp.RejectUnknownSources = true;
             config.Storage.Watermark = 50;
+            config.Storage.TemporaryStorageBucket = "temp-bucket";
+            config.Storage.StorageServiceBucketName = "bucket";
             return config;
         }
     }

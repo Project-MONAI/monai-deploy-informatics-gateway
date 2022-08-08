@@ -13,10 +13,10 @@
 # limitations under the License.
 
 .github/
-.docs/
-.demos/
-.guidelines/
-.tests/
+docs/
+demos/
+guidelines/
+tests/
 
 
 ### Csharp ###

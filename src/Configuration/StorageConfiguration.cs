@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-using System.IO.Abstractions;
-using System.Text.Json.Serialization;
 using Microsoft.Extensions.Configuration;
 using Monai.Deploy.Storage.Configuration;
 
@@ -24,38 +22,53 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public class StorageConfiguration : StorageServiceConfiguration
     {
-        private readonly IFileSystem _fileSystem;
-
-        public StorageConfiguration() : this(new FileSystem())
-        { }
-
-        public StorageConfiguration(IFileSystem fileSystem) => _fileSystem = fileSystem ?? throw new System.ArgumentNullException(nameof(fileSystem));
+        /// <summary>
+        /// Gets or sets the path used for buffering incoming data.
+        /// Defaults to <c>./temp</c>.
+        /// </summary>
+        [ConfigurationKeyName("bufferRootPath")]
+        public string BufferStorageRootPath { get; set; } = "./temp";
 
         /// <summary>
-        /// Gets or sets temporary storage path.
-        /// This is used to store all instances received to a temporary folder.
+        /// Gets or set the maximum memory buffer size in bytes with default to 30MiB.
         /// </summary>
-        /// <value></value>
-        [ConfigurationKeyName("temporary")]
-        public string Temporary { get; set; } = "./payloads";
+        [ConfigurationKeyName("memoryThreshold")]
+        public int MemoryThreshold { get; set; } = 31457280;
+
+        /// <summary>
+        /// Gets or sets the name of the bucket where payloads are uploaded to.
+        /// </summary>
+        [ConfigurationKeyName("bucketName")]
+        public string StorageServiceBucketName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets the name of the bucket used for storing objects before they are assembled into payloads.
+        /// </summary>
+        [ConfigurationKeyName("temporaryBucketName")]
+        public string TemporaryStorageBucket { get; set; }
+
+        /// <summary>
+        /// Gets or sets root directory path for storing incoming data in the <c>temporaryBucketName</c>.
+        /// Defaults to <c>/incoming</c>.
+        /// </summary>
+        [ConfigurationKeyName("tempStorageRootPath")]
+        public string TemporaryStorageRootPath { get; set; } = "/incoming";
 
         /// <summary>
         /// Gets or sets the watermark for disk usage with default value of 75%,
         /// meaning that MONAI Deploy Informatics Gateway will stop accepting (C-STORE-RQ) associations,
-        /// stop exporting and stop retreiving data via DICOMweb when used disk space
+        /// stop exporting and stop retrieving data via DICOMweb when used disk space
         /// is above the watermark.
         /// </summary>
-        /// <value></value>
         [ConfigurationKeyName("watermarkPercent")]
         public uint Watermark { get; set; } = 75;
 
         /// <summary>
         /// Gets or sets the reserved disk space for the MONAI Deploy Informatics Gateway with default value of 5GB.
         /// MONAI Deploy Informatics Gateway will stop accepting (C-STORE-RQ) associations,
-        /// stop exporting and stop retreiving data via DICOMweb when available disk space
+        /// stop exporting and stop retrieving data via DICOMweb when available disk space
         /// is less than the value.
         /// </summary>
-        /// <value></value>
         [ConfigurationKeyName("reserveSpaceGB")]
         public uint ReserveSpaceGB { get; set; } = 5;
 
@@ -76,20 +89,5 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// </summary>
         [ConfigurationKeyName("concurrentUploads")]
         public int ConcurrentUploads { get; set; } = 2;
-
-        [JsonIgnore]
-        public string TemporaryDataDirFullPath
-        {
-            get
-            {
-                return _fileSystem.Path.GetFullPath(Temporary);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the bucket where payloads are uploaded to.
-        /// </summary>
-        [ConfigurationKeyName("bucketName")]
-        public string StorageServiceBucketName { get; set; } = string.Empty;
     }
 }

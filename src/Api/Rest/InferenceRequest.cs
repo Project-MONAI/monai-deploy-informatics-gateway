@@ -145,15 +145,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         public InferenceRequestStatus Status { get; set; } = InferenceRequestStatus.Unknown;
 
         /// <summary>
-        /// Internal use only - get or sets the status of a inference request.
-        /// </summary>
-        /// <remarks>
-        /// Internal use only.
-        /// </remarks>
-        [JsonPropertyName("storagePath")]
-        public string StoragePath { get; set; }
-
-        /// <summary>
         /// Internal use only - get or sets number of retries performed.
         /// </summary>
         /// <remarks>
@@ -177,21 +168,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         {
             InputResources = new List<RequestInputDataResource>();
             OutputResources = new List<RequestOutputDataResource>();
-        }
-
-        /// <summary>
-        /// Configures temporary storage location used to store retrieved data.
-        /// </summary>
-        /// <param name="temporaryStorageRoot">Root path to the temporary storage location.</param>
-        public void ConfigureTemporaryStorageLocation(string storagePath)
-        {
-            Guard.Against.NullOrWhiteSpace(storagePath, nameof(storagePath));
-            if (!string.IsNullOrWhiteSpace(StoragePath))
-            {
-                throw new InferenceRequestException("StoragePath already configured.");
-            }
-
-            StoragePath = storagePath;
         }
 
         public bool IsValid(out string details)

@@ -30,7 +30,6 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
-using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
@@ -50,9 +49,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             ILogger<ScuExportService> logger,
             IServiceScopeFactory serviceScopeFactory,
             IOptions<InformaticsGatewayConfiguration> configuration,
-            IStorageInfoProvider storageInfoProvider,
             IDicomToolkit dicomToolkit)
-            : base(logger, configuration, serviceScopeFactory, storageInfoProvider)
+            : base(logger, configuration, serviceScopeFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));

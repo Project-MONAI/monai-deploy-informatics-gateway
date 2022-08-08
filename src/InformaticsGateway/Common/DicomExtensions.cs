@@ -17,12 +17,18 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
+using Ardalis.GuardClauses;
 using FellowOakDicom;
+using FellowOakDicom.Serialization;
+using Monai.Deploy.InformaticsGateway.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
     public static class DicomExtensions
     {
+        private static readonly IList<DicomVR> DicomVrsToIgnore = new List<DicomVR>() { DicomVR.OB, DicomVR.OD, DicomVR.OF, DicomVR.OL, DicomVR.OV, DicomVR.OW, DicomVR.UN };
+
         /// <summary>
         /// Converts list of SOP Class UIDs to list of DicomTransferSyntax.
         /// DicomTransferSyntax.Parse internally throws DicomDataException if UID is invalid.
@@ -44,6 +50,26 @@ namespace Monai.Deploy.InformaticsGateway.Common
                 dicomTransferSyntaxes.Add(DicomTransferSyntax.Lookup(DicomUID.Parse(uid)));
             }
             return dicomTransferSyntaxes.ToArray();
+        }
+
+        public static string ToJson(this DicomFile dicomFile, DicomJsonOptions dicomJsonOptions)
+        {
+            Guard.Against.Null(dicomFile, nameof(dicomFile));
+
+            var options = new JsonSerializerOptions();
+            options.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: true));
+            options.WriteIndented = false;
+
+            if (dicomJsonOptions == DicomJsonOptions.Complete)
+            {
+                return JsonSerializer.Serialize(dicomFile.Dataset, options);
+            }
+            else
+            {
+                var dataset = dicomFile.Dataset.Clone();
+                dataset.Remove(i => DicomVrsToIgnore.Contains(i.ValueRepresentation));
+                return JsonSerializer.Serialize(dataset, options);
+            }
         }
     }
 }

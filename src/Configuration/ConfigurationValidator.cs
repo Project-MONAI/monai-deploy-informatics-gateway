@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
@@ -74,8 +75,25 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         private bool IsStorageValid(StorageConfiguration storage)
         {
             var valid = true;
+            valid &= IsValidBucketName("InformaticsGateway>storage>bucketName", storage.StorageServiceBucketName);
+            valid &= IsValidBucketName("InformaticsGateway>storage>temporaryBucketName", storage.TemporaryStorageBucket);
+            valid &= IsNotNullOrWhiteSpace("InformaticsGateway>storage>temporary", storage.TemporaryStorageRootPath);
             valid &= IsValueInRange("InformaticsGateway>storage>watermark", 1, 100, storage.Watermark);
             valid &= IsValueInRange("InformaticsGateway>storage>reserveSpaceGB", 1, 999, storage.ReserveSpaceGB);
+            valid &= IsValueInRange("InformaticsGateway>storage>payloadProcessThreads", 1, 128, storage.PayloadProcessThreads);
+            valid &= IsValueInRange("InformaticsGateway>storage>concurrentUploads", 1, 128, storage.ConcurrentUploads);
+            return valid;
+        }
+
+        private bool IsValidBucketName(string source, string bucketName)
+        {
+            var valid = IsNotNullOrWhiteSpace(source, bucketName);
+            var regex = new Regex("(?=^.{3,63}$)(^[a-z0-9]+[a-z0-9\\-]+[a-z0-9]+$)");
+            if (!regex.IsMatch(bucketName))
+            {
+                valid = false;
+                _validationErrors.Add($"Value for {source} does not conform to Amazon S3 bucket naming requirements.");
+            }
             return valid;
         }
 
@@ -108,6 +126,14 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
             valid &= IsValueInRange("InformaticsGateway>fhir>clientTimeout.", 1, Int32.MaxValue, configuration.ClientTimeoutSeconds);
             return valid;
+        }
+
+        private bool IsNotNullOrWhiteSpace(string source, string value)
+        {
+            if (!string.IsNullOrWhiteSpace(value)) return true;
+
+            _validationErrors.Add($"Value for {source} is required.");
+            return false;
         }
 
         private bool IsValueInRange(string source, int minValue, int maxValue, int actualValue)

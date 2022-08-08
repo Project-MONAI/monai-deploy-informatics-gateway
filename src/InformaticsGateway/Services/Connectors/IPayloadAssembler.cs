@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// </summary>
         /// <param name="bucket">The bucket group the file belongs to.</param>
         /// <param name="file">Path to the file to be added to the payload bucket.</param>
-        Task Queue(string bucket, FileStorageInfo file);
+        Task Queue(string bucket, FileStorageMetadata file);
 
         /// <summary>
         /// Queue a new file for the spcified payload bucket.
@@ -38,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="bucket">The bucket group the file belongs to.</param>
         /// <param name="file">Path to the file to be added to the payload bucket.</param>
         /// <param name="timeout">Number of seconds to wait for additional files.</param>
-        Task Queue(string bucket, FileStorageInfo file, uint timeout);
+        Task Queue(string bucket, FileStorageMetadata file, uint timeout);
 
         /// <summary>
         /// Dequeue a payload from the queue for the message broker to notify subscribers.

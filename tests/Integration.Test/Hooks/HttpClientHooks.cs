@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
- 
+
 using BoDi;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Client;
