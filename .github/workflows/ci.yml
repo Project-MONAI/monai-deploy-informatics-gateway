@@ -199,7 +199,7 @@ jobs:
     needs: [build]
     strategy:
       matrix:
-        feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow]
+        feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7]
       fail-fast: false
     env:
       TAG: ${{ needs.build.outputs.TAG }}
