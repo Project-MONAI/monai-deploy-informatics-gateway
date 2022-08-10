@@ -7,11 +7,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public class Hl7Configuration
     {
-        public static readonly int DefaultClientTimeout = 300000;
+        public static readonly int DefaultClientTimeout = 60000;
         public const int DefaultMaximumNumberOfConnections = 10;
 
         /// <summary>
         /// Gets or sets the client connection timeout in milliseconds.
+        /// Defaults to 60,000ms.
         /// </summary>
         [ConfigurationKeyName("clientTimeout")]
         public int ClientTimeoutMilliseconds { get; set; } = DefaultClientTimeout;
@@ -27,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets the MLLP listening port.
         /// Defaults to 2575.
         /// </summary>
-        [ConfigurationKeyName("clientTimeout")]
+        [ConfigurationKeyName("port")]
         public int Port { get; set; } = 2575;
 
         /// <summary>

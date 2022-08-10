@@ -61,14 +61,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         {
             Guard.Against.Null(clientStream, nameof(clientStream));
 
-            var messageBuffer = new Memory<byte>(new byte[_configurations.BufferSize]);
-            int bytesRead;
             var data = string.Empty;
             var messages = new List<Message>();
             var linkedCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             while (true)
             {
+                var messageBuffer = new Memory<byte>(new byte[_configurations.BufferSize]);
+                int bytesRead;
                 try
                 {
                     _logger.HL7ReadingMessage();
@@ -112,11 +112,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                                 await SendAcknowledgment(clientStream, message, cancellationToken).ConfigureAwait(false);
                                 messages.Add(message);
                             }
-
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
                     else
                     {
+                        data = string.Empty;
                         break;
                     }
                 } while (true);

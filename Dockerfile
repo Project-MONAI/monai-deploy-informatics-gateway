@@ -45,6 +45,7 @@ COPY --from=build /app/out .
 COPY --from=build /tools /opt/dotnetcore-tools
 
 EXPOSE 104
+EXPOSE 2575
 EXPOSE 5000
 
 RUN ls -lR /opt/monai/ig
