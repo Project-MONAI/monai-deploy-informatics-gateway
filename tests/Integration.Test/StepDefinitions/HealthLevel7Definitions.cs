@@ -161,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         }
 
         [Then(@"acknowledgement are received")]
-        public async Task ThenAcknowledgementAreReceived()
+        public void ThenAcknowledgementAreReceived()
         {
             foreach (var file in _output.Keys)
             {
@@ -175,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         }
 
         [Then(@"a workflow requests sent to message broker")]
-        public async Task ThenAWorkflowRequestIsSentToMessageBroker()
+        public void ThenAWorkflowRequestIsSentToMessageBroker()
         {
             _rabbitMqHooks.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
         }
