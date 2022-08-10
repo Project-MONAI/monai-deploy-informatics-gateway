@@ -82,7 +82,7 @@
     <None Include="./appsettings.Development.json" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
-  <Target Name="CopyPlugins" AfterTargets="AfterPublish">
+  <Target Name="CopyPlugins" AfterTargets="Publish">
     <ItemGroup>
       <PluginDlls Include="$(PublishDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(PublishDir)Monai.Deploy.Storage.MinIO.dll;$(PublishDir)Minio.dll" />
     </ItemGroup>
