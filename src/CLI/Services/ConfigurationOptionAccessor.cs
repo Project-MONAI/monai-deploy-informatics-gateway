@@ -31,6 +31,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         int DicomListeningPort { get; set; }
 
         /// <summary>
+        /// Gets or sets the HL7 listening port from appsettings.json.
+        /// </summary>
+        int Hl7ListeningPort { get; set; }
+
+        /// <summary>
         /// Gets or sets the Docker image prefix from appsettings.json.
         /// This is used to query the Informatics Gateway Docker containers that are installed.
         /// </summary>
@@ -105,9 +110,24 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             }
             set
             {
-                Guard.Against.OutOfRangePort(value, nameof(InformaticsGatewayServerEndpoint));
+                Guard.Against.OutOfRangePort(value, nameof(DicomListeningPort));
                 var jObject = ReadConfigurationFile();
                 jObject["InformaticsGateway"]["dicom"]["scp"]["port"] = value;
+                SaveConfigurationFile(jObject);
+            }
+        }
+
+        public int Hl7ListeningPort
+        {
+            get
+            {
+                return GetValueFromJsonPath<int>("InformaticsGateway.hl7.port");
+            }
+            set
+            {
+                Guard.Against.OutOfRangePort(value, nameof(Hl7ListeningPort));
+                var jObject = ReadConfigurationFile();
+                jObject["InformaticsGateway"]["hl7"]["port"] = value;
                 SaveConfigurationFile(jObject);
             }
         }
