@@ -24,7 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
         private readonly System.Net.Sockets.TcpClient _tcpClient;
         private bool _disposedValue;
 
-        public EndPoint? RemoteEndPoint
+        public EndPoint RemoteEndPoint
         {
             get
             {
