@@ -15,4 +15,5 @@
 -->
 
 # [DICOM](dicom.md)
+# [HL7](hl7.md)
 # [Open Source Licenses](open-source-licenses.md)
