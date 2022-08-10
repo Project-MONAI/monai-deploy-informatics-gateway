@@ -150,7 +150,7 @@ Locate the storage section of the configuration in `appsettings.json`:
 }
 ```
 
-#### Install the Stoage Plug-in
+#### Install the Storage Plug-in
 
 As shown above, the default plug-in configured is __MinIO__.
 
