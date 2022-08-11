@@ -39,7 +39,7 @@ The HL7 listener can be configured in the `appsettings.json` file. Refer to [Con
 
 ### Acknowledgement Mode
 
-The listner supports acknowledgement mode dicatated in the MSH.15 field.  If no value is specified, the listeners defaults to the configuration option `sendAck`.
+The listener supports the acknowledgment mode dictated in the MSH.15 field. If no value is specified, the listener defaults to the configuration option `sendAck`.
 
 ### Supported Character Sets
 

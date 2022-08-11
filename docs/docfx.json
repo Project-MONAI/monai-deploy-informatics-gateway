@@ -4,17 +4,16 @@
             "src": [
                 {
                     "files": [
-                        "Api/Monai.Deploy.InformaticsGateway.Api.csproj",
-                        "Client/Monai.Deploy.InformaticsGateway.Client.csproj",
-                        "Client.Common/Monai.Deploy.InformaticsGateway.Client.Common.csproj",
-                        "Common/Monai.Deploy.InformaticsGateway.Common.csproj",
-                        "Configuration/Monai.Deploy.InformaticsGateway.Configuration.csproj",
-                        "DicomWebClient/Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj"
+                        "Api/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Api.dll",
+                        "Client/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Client.dll",
+                        "Client.Common/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Client.Common.dll",
+                        "Common/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Common.dll",
+                        "Configuration/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Configuration.dll",
+                        "DicomWebClient/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.DicomWeb.Client.dll"
                     ],
                     "exclude": [
-                        "**/bin/**",
                         "**/obj/**",
-                        "Test/**",
+                        "**Test/**",
                         "_site/**"
                     ],
                     "src": "../src"

@@ -46,7 +46,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
 | dicomWeb  | DICOMweb service configuration options                                             | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)           |
 | export    | Export service configuration options                                               | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration)       |
 | fhir      | FHIR service configuration options                                                 | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)                   |
-| hl7       | HL7 listener configuration options                                                 | [Hl7Configuration](Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration)                          |
+| hl7       | HL7 listener configuration options                                                 | [Hl7Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration)                          |
 | storage   | Storage configuration options, including storage service and disk usage monitoring | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)             |
 | messaging | Message broker configuration options                                               | [MessageBrokerConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration) |
 | Cli       | The configuration used by the CLI                                                  | -                                                                                                           |
