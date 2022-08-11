@@ -407,6 +407,10 @@ jobs:
         run: dotnet restore
         working-directory: ./src
 
+      - name: Build Solution
+        run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
+        working-directory: ./src
+
       - name: Update docs version
         run: |
           sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/docfx.json
