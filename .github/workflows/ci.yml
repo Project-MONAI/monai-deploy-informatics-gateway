@@ -110,6 +110,7 @@ jobs:
       working-directory: ./src
 
     - name: NuGetDefense Scanning
+      continue-on-error: true
       run: |
         sed -i "s/OSSINDEXAPI_TOKEN/$OSSINDEXAPI_TOKEN/g" NuGetDefense.json
         sed -i "s/OSSINDEXAPI_USERNAME/$OSSINDEXAPI_USERNAME/g" NuGetDefense.json
