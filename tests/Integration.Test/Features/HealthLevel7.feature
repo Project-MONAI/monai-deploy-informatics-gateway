@@ -32,7 +32,7 @@ Feature: Health Level 7
             | 2.6     |
             | 2.8     |
             
-    @messaging_workflow_request @messaging
+    @messaging_workflow_request @messaging @retry(10)
     Scenario Outline: Ability to receive and store multiple messages in a single batch
         Given HL7 messages in version <version>
         When the message are sent to Informatics Gateway in one batch
