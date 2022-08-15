@@ -110,6 +110,7 @@ jobs:
       working-directory: ./src
 
     - name: NuGetDefense Scanning
+      continue-on-error: true
       run: |
         sed -i "s/OSSINDEXAPI_TOKEN/$OSSINDEXAPI_TOKEN/g" NuGetDefense.json
         sed -i "s/OSSINDEXAPI_USERNAME/$OSSINDEXAPI_USERNAME/g" NuGetDefense.json
@@ -382,7 +383,7 @@ jobs:
         run: echo "::set-output name=${{ matrix.os }}-TAG::${{ fromJSON(steps.meta.outputs.json).labels['org.opencontainers.image.version'] }}"
 
   docs:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: [calc-version]
     env:
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
@@ -403,8 +404,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget
 
+      - name: Setup DocFX
+        uses: crazy-max/ghaction-chocolatey@v1
+        with:
+          args: install docfx
+
       - name: Restore dependencies
         run: dotnet restore
+        working-directory: ./src
+
+      - name: Build Solution
+        run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
         working-directory: ./src
 
       - name: Update docs version
@@ -412,18 +422,16 @@ jobs:
           sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/docfx.json
           sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/index.md
 
-      - uses: nikeee/docfx-action@v1.0.0
-        name: Build Docs
-        with:
-          args: docs/docfx.json
+      - name: Build Docs
+        working-directory: docs
+        run: docfx docfx.json
+        continue-on-error: false
 
       - name: Package docs
         run: |
-          mkdir ~/release
-          pushd docs/_site
-          zip -r ~/release/mig-docs-${{ env.SEMVER }}.zip *
-          popd
-          ls -lR ~/release
+          mkdir ~\release
+          Compress-Archive -Path docs\_site\* -DestinationPath ~\release\mig-docs-${{ env.SEMVER }}.zip
+          Get-ChildItem ~\release -Recurse   
 
       - name: Upload docs
         uses: actions/upload-artifact@v2.3.1

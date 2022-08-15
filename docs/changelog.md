@@ -20,12 +20,13 @@
 ## 0.3.0
 [Github Milestone 0.3.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/3)
 
+- Adds HL7 (MLLP) service to enable triggering of workflow requests using HL7 messages.
 - Breaking changes with how Informatics Gateway handles incoming data and uploading to the storage service.
   All incoming data are now immediately queued for upload to the storage service instead of saving to the local disk.
   Therefore, if Informatics Gateway restarts or crashes during upload, any queued or incomplete uploads are lost. 
   In addition, during the Informatics Gateway startup, the payload assembly service removes any payloads containing 
   any pending files. Files that were successfully uploaded to the temporary location (`storage>temporary`) in the 
-  bucket (`storage>temporaryBucketName`) are then moved to the payload bucket (`storage>bucketName`) before sending a workflow request.
+  bucket (`storage>temporaryBucketName`) are then moved to the payload bucket (`storage>bucketName`) before sending a workflow request.  
 
 ## 0.2.0
 

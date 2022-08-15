@@ -1,27 +1,34 @@
 {
-    "metadata": [{
-        "src": [{
-            "files": [
-                "Api/Monai.Deploy.InformaticsGateway.Api.csproj",
-                "Client/Monai.Deploy.InformaticsGateway.Client.csproj",
-                "Client.Common/Monai.Deploy.InformaticsGateway.Client.Common.csproj",
-                "Common/Monai.Deploy.InformaticsGateway.Common.csproj",
-                "Configuration/Monai.Deploy.InformaticsGateway.Configuration.csproj",
-                "DicomWebClient/Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj"
+    "metadata": [
+        {
+            "src": [
+                {
+                    "files": [
+                        "Api/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Api.dll",
+                        "Client/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Client.dll",
+                        "Client.Common/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Client.Common.dll",
+                        "Common/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Common.dll",
+                        "Configuration/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Configuration.dll",
+                        "DicomWebClient/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.DicomWeb.Client.dll"
+                    ],
+                    "exclude": [
+                        "**/obj/**",
+                        "**Test/**",
+                        "_site/**"
+                    ],
+                    "src": "../src"
+                }
             ],
-            "exclude": [
-                "**/bin/**",
-                "**/obj/**",
-                "Test/**",
-                "_site/**"
-            ],
-            "src": "../src"
-        }],
-        "dest": "obj/api/dotnet",
-        "filter": "filterConfig.yml"
-    }],
+            "dest": "obj/api/dotnet",
+            "filter": "filterConfig.yml",
+            "properties": {
+                "TargetFramework": "net6.0"
+            }
+        }
+    ],
     "build": {
-        "content": [{
+        "content": [
+            {
                 "files": [
                     "**/*.yml"
                 ],
@@ -36,15 +43,17 @@
                 ]
             }
         ],
-        "resource": [{
-            "files": [
-                "images/**"
-            ],
-            "exclude": [
-                "obj/**",
-                "_site/**"
-            ]
-        }],
+        "resource": [
+            {
+                "files": [
+                    "images/**"
+                ],
+                "exclude": [
+                    "obj/**",
+                    "_site/**"
+                ]
+            }
+        ],
         "globalMetadata": {
             "_appTitle": "MONAI Deploy Informatics Gateway v0.0.0",
             "_enableSearch": true,

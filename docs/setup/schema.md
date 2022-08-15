@@ -46,6 +46,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
 | dicomWeb  | DICOMweb service configuration options                                             | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)           |
 | export    | Export service configuration options                                               | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration)       |
 | fhir      | FHIR service configuration options                                                 | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)                   |
+| hl7       | HL7 listener configuration options                                                 | [Hl7Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration)                          |
 | storage   | Storage configuration options, including storage service and disk usage monitoring | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)             |
 | messaging | Message broker configuration options                                               | [MessageBrokerConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration) |
 | Cli       | The configuration used by the CLI                                                  | -                                                                                                           |
@@ -73,7 +74,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
       }
     },
     "messaging": {
-      "publisherServiceAssemblyName":"Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ",
+      "publisherServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ",
       "publisherSettings": {
         "endpoint": "localhost",
         "username": "username",
@@ -81,7 +82,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
         "virtualHost": "monaideploy",
         "exchange": "monaideploy"
       },
-      "subscriberServiceAssemblyName":"Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
+      "subscriberServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
       "subscriberSettings": {
         "endpoint": "localhost",
         "username": "username",
@@ -95,16 +96,27 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
       }
     },
     "storage": {
-      "temporary": "/payloads",
+      "bufferRootPath": "./temp",
+      "tempStorageRootPath": "/incoming",
       "bucketName": "monaideploy",
+      "storageRootPath": "/payloads",
+      "temporaryBucketName": "monaideploy",
       "serviceAssemblyName": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO",
       "settings": {
         "endpoint": "localhost:9000",
         "accessKey": "admin",
         "accessToken": "password",
         "securedConnection": false,
-        "region": "local"
+        "region": "local",
+        "executableLocation": "/bin/mc",
+        "serviceName": "MinIO"
       }
+    },
+    "hl7": {
+      "port": 2575,
+      "maximumNumberOfConnections": 10,
+      "clientTimeout": 60000,
+      "sendAck": true
     }
   },
   "Logging": {
