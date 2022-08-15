@@ -15,7 +15,7 @@
 
 
 # enable(1)/disable(0) VS code attach debuger
-export VSTEST_HOST_DEBUG=1
+export VSTEST_HOST_DEBUG=0
 
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 TEST_DIR="$SCRIPT_DIR/"

@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         Task NotifyAsync(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default);
     }
 
-    internal class PayloadNotificationActionHandler : IPayloadNotificationActionHandler
+    internal class PayloadNotificationActionHandler : IPayloadNotificationActionHandler, IDisposable
     {
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<PayloadNotificationActionHandler> _logger;
@@ -47,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private readonly IServiceScope _scope;
         private readonly IMessageBrokerPublisherService _messageBrokerPublisherService;
+        private bool _disposedValue;
 
         public PayloadNotificationActionHandler(IServiceScopeFactory serviceScopeFactory,
                                                 ILogger<PayloadNotificationActionHandler> logger,
@@ -167,6 +168,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 _logger.ErrorUpdatingPayload(payload.Id, ex);
                 return PayloadAction.Updated;
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _scope.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

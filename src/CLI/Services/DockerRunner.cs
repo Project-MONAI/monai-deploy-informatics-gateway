@@ -119,6 +119,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             createContainerParams.ExposedPorts.Add($"{_configurationService.Configurations.DicomListeningPort}/tcp", new EmptyStruct());
             createContainerParams.HostConfig.PortBindings.Add($"{_configurationService.Configurations.DicomListeningPort}/tcp", new List<PortBinding> { new PortBinding { HostPort = $"{_configurationService.Configurations.DicomListeningPort}" } });
 
+            _logger.DockerPrtBinding(_configurationService.Configurations.Hl7ListeningPort);
+            createContainerParams.ExposedPorts.Add($"{_configurationService.Configurations.Hl7ListeningPort}/tcp", new EmptyStruct());
+            createContainerParams.HostConfig.PortBindings.Add($"{_configurationService.Configurations.Hl7ListeningPort}/tcp", new List<PortBinding> { new PortBinding { HostPort = $"{_configurationService.Configurations.Hl7ListeningPort}" } });
+
             _logger.DockerPrtBinding(_configurationService.Configurations.InformaticsGatewayServerPort);
             createContainerParams.ExposedPorts.Add($"{_configurationService.Configurations.InformaticsGatewayServerPort}/tcp", new EmptyStruct());
             createContainerParams.HostConfig.PortBindings.Add($"{_configurationService.Configurations.InformaticsGatewayServerPort}/tcp", new List<PortBinding> { new PortBinding { HostPort = $"{_configurationService.Configurations.InformaticsGatewayServerPort}" } });

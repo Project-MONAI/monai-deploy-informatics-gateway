@@ -1,20 +1,37 @@
-﻿// SPDX-FileCopyrightText: © 2022 MONAI Consortium
-// SPDX-License-Identifier: Apache License 2.0
+/*
+ * Copyright 2022 MONAI Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.InformaticsGateway.Services.Connectors;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
@@ -24,6 +41,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         private bool _disposedValue;
         private readonly ITcpListener _tcpListener;
         private readonly IMllpClientFactory _mllpClientFactory;
+        private readonly IObjectUploadQueue _uploadQueue;
+        private readonly IPayloadAssembler _payloadAssembler;
         private readonly IServiceScope _serviceScope;
         private readonly ILoggerFactory _logginFactory;
         private readonly ILogger<MllpService> _logger;
@@ -58,6 +77,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             var tcpListenerFactory = _serviceScope.ServiceProvider.GetService<ITcpListenerFactory>() ?? throw new ServiceNotFoundException(nameof(ITcpListenerFactory));
             _tcpListener = tcpListenerFactory.CreateTcpListener(System.Net.IPAddress.Any, _configuration.Value.Hl7.Port);
             _mllpClientFactory = _serviceScope.ServiceProvider.GetService<IMllpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IMllpClientFactory));
+            _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
+            _payloadAssembler = _serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _activeTasks = new ConcurrentDictionary<Guid, IMllpClient>();
         }
 
@@ -90,19 +111,27 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         {
             while (!cancellationToken.IsCancellationRequested)
             {
+                IMllpClient mllpClient = null;
                 try
                 {
                     WaitUntilAvailable(_configuration.Value.Hl7.MaximumNumberOfConnections);
                     var client = await _tcpListener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
                     _logger.ClientConnected();
 
-                    var mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
+                    mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
                     _ = mllpClient.Start(OnDisconnect, cancellationToken);
                     _activeTasks.TryAdd(mllpClient.ClientId, mllpClient);
                 }
                 catch (System.Net.Sockets.SocketException ex)
                 {
                     _logger.Hl7SocketException(ex.Message);
+
+                    if (mllpClient is not null)
+                    {
+                        mllpClient.Dispose();
+                        _activeTasks.Remove(mllpClient.ClientId, out _);
+                    }
+
                     if (ex.ErrorCode == SOCKET_OPERATION_CANCELLED)
                     {
                         break;
@@ -117,9 +146,27 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _logger.ServiceCancelled(ServiceName);
         }
 
-        private void OnDisconnect(IMllpClient client, MllpClientResult result)
+        private async Task OnDisconnect(IMllpClient client, MllpClientResult result)
         {
+            Guard.Against.Null(client, nameof(client));
+            Guard.Against.Null(result, nameof(result));
+
             _activeTasks.Remove(client.ClientId, out _);
+
+            try
+            {
+                foreach (var message in result.Messages)
+                {
+                    var hl7Fileetadata = new Hl7FileStorageMetadata(client.ClientId.ToString());
+                    hl7Fileetadata.SetDataStream(message.HL7Message);
+                    _uploadQueue.Queue(hl7Fileetadata);
+                    await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata).ConfigureAwait(false);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorHandlingHl7Results(ex);
+            }
         }
 
         private void WaitUntilAvailable(int maximumNumberOfConnections)

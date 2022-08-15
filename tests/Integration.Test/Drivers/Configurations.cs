@@ -195,6 +195,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         public int ApiPort { get; set; }
 
         /// <summary>
+        /// Gets or sets the HL7 listening port on the Informatics Gateway.
+        /// </summary>
+        public int Hl7Port { get; set; }
+
+        /// <summary>
         /// Gets or sets the name of the bucket used by the storage service.
         /// </summary>
         public string StorageServiceBucketName { get; set; }

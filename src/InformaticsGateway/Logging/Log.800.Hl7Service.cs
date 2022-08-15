@@ -1,5 +1,18 @@
-﻿// SPDX-FileCopyrightText: © 2022 MONAI Consortium
-// SPDX-License-Identifier: Apache License 2.0
+/*
+ * Copyright 2022 MONAI Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
 using System;
 using Microsoft.Extensions.Logging;
@@ -31,5 +44,23 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 807, Level = LogLevel.Critical, Message = "Socket error: {error}")]
         public static partial void Hl7SocketException(this ILogger logger, string error);
+
+        [LoggerMessage(EventId = 808, Level = LogLevel.Critical, Message = "Error handling HL7 results.")]
+        public static partial void ErrorHandlingHl7Results(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 809, Level = LogLevel.Debug, Message = "Acknowledgment type={value}.")]
+        public static partial void AcknowledgmentType(this ILogger logger, string value);
+
+        [LoggerMessage(EventId = 810, Level = LogLevel.Information, Message = "Acknowledgment sent: length={length}.")]
+        public static partial void AcknowledgmentSent(this ILogger logger, int length);
+
+        [LoggerMessage(EventId = 811, Level = LogLevel.Debug, Message = "HL7  bytes received: {length}.")]
+        public static partial void Hl7MessageBytesRead(this ILogger logger, int length);
+
+        [LoggerMessage(EventId = 812, Level = LogLevel.Debug, Message = "Parsing message with {length} bytes.")]
+        public static partial void Hl7GenerateMessage(this ILogger logger, int length);
+
+        [LoggerMessage(EventId = 813, Level = LogLevel.Debug, Message = "Waiting for HL7 message.")]
+        public static partial void HL7ReadingMessage(this ILogger logger);
     }
 }

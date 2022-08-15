@@ -24,6 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="fo-dicom" Version="5.0.2" />
+    <PackageReference Include="HL7-dotnetcore" Version="2.29.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.7" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
@@ -51,6 +52,10 @@
   <ItemGroup>
     <Folder Include="Features\" />
     <Folder Include="Support\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(ProjectDir)data\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

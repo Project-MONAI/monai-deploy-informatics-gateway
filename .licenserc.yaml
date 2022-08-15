@@ -28,6 +28,8 @@ header:
     - '**/*.feature.cs'
     - 'src/.sonarlint/**'
     - 'src/coverlet.runsettings'
+    - 'src/Monai.Deploy.InformaticsGateway.sln'
+    - 'src/Database/Migrations/**'
     - 'demos/**/.env/**'
     - 'docs/templates/**'
     - 'tests/Integration.Test/*.dev'
