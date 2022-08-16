@@ -29,7 +29,6 @@ RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deplo
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
 
 ENV DEBIAN_FRONTEND=noninteractive
-
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
@@ -39,10 +38,11 @@ RUN apt-get clean \
    && rm -rf /var/lib/apt/lists
 
 WORKDIR /opt/monai/ig
-COPY --from=build /app/out .
-#COPY docs/compliance/open-source-licenses.md .
 
+COPY --from=build /app/out .
 COPY --from=build /tools /opt/dotnetcore-tools
+COPY LICENSE ./
+COPY docs/compliance/third-party-licenses.md ./
 
 EXPOSE 104
 EXPOSE 2575
