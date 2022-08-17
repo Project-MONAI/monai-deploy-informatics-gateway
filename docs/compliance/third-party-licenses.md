@@ -16,6 +16,7 @@
 
 # Third-Party Licenses
 
+
 <details>
 <summary>Microsoft .NET 6 6.0</summary>
 
@@ -964,14 +965,14 @@ SOFTWARE.
 
 
 <details>
-<summary>DotNext 4.6.1</summary>
+<summary>DotNext 4.7.0</summary>
 
 ## DotNext
 
-- Version: 4.6.1
+- Version: 4.7.0
 - Authors: .NET Foundation and Contributors
 - Project URL: https://dotnet.github.io/dotNext/
-- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.6.1)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.7.0)
 - License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
 
 
@@ -1003,14 +1004,14 @@ SOFTWARE.
 
 
 <details>
-<summary>DotNext.Threading 4.6.1</summary>
+<summary>DotNext.Threading 4.7.0</summary>
 
 ## DotNext.Threading
 
-- Version: 4.6.1
+- Version: 4.7.0
 - Authors: .NET Foundation and Contributors
 - Project URL: https://dotnet.github.io/dotNext/
-- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.6.1)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.7.0)
 - License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
 
 
@@ -3192,15 +3193,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Data.Sqlite.Core 6.0.7</summary>
+<summary>Microsoft.Data.Sqlite.Core 6.0.8</summary>
 
 ## Microsoft.Data.Sqlite.Core
 
-- Version: 6.0.7
+- Version: 6.0.8
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/dotnet/standard/data/sqlite/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/6.0.8)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
@@ -3233,56 +3234,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore 6.0.7</summary>
+<summary>Microsoft.EntityFrameworkCore 6.0.8</summary>
 
 ## Microsoft.EntityFrameworkCore
 
-- Version: 6.0.7
+- Version: 6.0.8
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) .NET Foundation and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>Microsoft.EntityFrameworkCore.Abstractions 6.0.7</summary>
-
-## Microsoft.EntityFrameworkCore.Abstractions
-
-- Version: 6.0.7
-- Authors: Microsoft
-- Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.8)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
@@ -3323,7 +3283,7 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.8)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
@@ -3356,15 +3316,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Analyzers 6.0.7</summary>
+<summary>Microsoft.EntityFrameworkCore.Analyzers 6.0.8</summary>
 
 ## Microsoft.EntityFrameworkCore.Analyzers
 
-- Version: 6.0.7
+- Version: 6.0.8
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/6.0.8)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
@@ -3397,15 +3357,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Design 6.0.7</summary>
+<summary>Microsoft.EntityFrameworkCore.Design 6.0.8</summary>
 
 ## Microsoft.EntityFrameworkCore.Design
 
-- Version: 6.0.7
+- Version: 6.0.8
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/6.0.8)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
@@ -3438,15 +3398,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.InMemory 6.0.7</summary>
+<summary>Microsoft.EntityFrameworkCore.InMemory 6.0.8</summary>
 
 ## Microsoft.EntityFrameworkCore.InMemory
 
-- Version: 6.0.7
+- Version: 6.0.8
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/6.0.8)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
@@ -3479,15 +3439,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Relational 6.0.7</summary>
+<summary>Microsoft.EntityFrameworkCore.Relational 6.0.8</summary>
 
 ## Microsoft.EntityFrameworkCore.Relational
 
-- Version: 6.0.7
+- Version: 6.0.8
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/6.0.8)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
@@ -3520,15 +3480,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite 6.0.7</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite 6.0.8</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite
 
-- Version: 6.0.7
+- Version: 6.0.8
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/6.0.8)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
@@ -3561,15 +3521,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 6.0.7</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 6.0.8</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite.Core
 
-- Version: 6.0.7
+- Version: 6.0.8
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/6.0.7)
-- License: [MIT](https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/6.0.8)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```

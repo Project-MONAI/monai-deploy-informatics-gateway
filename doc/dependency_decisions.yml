@@ -109,14 +109,14 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
     :versions:
-    - 4.6.1
+    - 4.7.0
     :when: 2022-08-16 23:05:32.857032968 Z
 - - :approve
   - DotNext.Threading
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
     :versions:
-    - 4.6.1
+    - 4.7.0
     :when: 2022-08-16 23:05:33.298402277 Z
 - - :approve
   - FluentAssertions
@@ -373,72 +373,65 @@
 - - :approve
   - Microsoft.Data.Sqlite.Core
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.7
+    - 6.0.8
     :when: 2022-08-16 23:05:49.698463427 Z
 - - :approve
   - Microsoft.EntityFrameworkCore
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.7
+    - 6.0.8
     :when: 2022-08-16 23:05:50.137694970 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Abstractions
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
-    :versions:
-    - 6.0.7
-    :when: 2022-08-16 23:05:50.567409499 Z
-- - :approve
-  - Microsoft.EntityFrameworkCore.Abstractions
-  - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.8
     :when: 2022-08-16 23:05:51.008105271 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Analyzers
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.7
+    - 6.0.8
     :when: 2022-08-16 23:05:51.445711308 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Design
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.7
+    - 6.0.8
     :when: 2022-08-16 23:05:51.922790944 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.InMemory
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.7
+    - 6.0.8
     :when: 2022-08-16 23:05:52.375150938 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Relational
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.7
+    - 6.0.8
     :when: 2022-08-16 23:05:52.828879230 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.7
+    - 6.0.8
     :when: 2022-08-16 23:05:53.270526921 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite.Core
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/efcore/raw/release/7.0/LICENSE.txt)
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.7
+    - 6.0.8
     :when: 2022-08-16 23:05:53.706997823 Z
 - - :approve
   - Microsoft.Extensions.ApiDescription.Server
