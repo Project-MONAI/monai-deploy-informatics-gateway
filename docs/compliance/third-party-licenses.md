@@ -8683,14 +8683,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging 0.1.3-rc0010</summary>
+<summary>Monai.Deploy.Messaging 0.1.3</summary>
 
 ## Monai.Deploy.Messaging
 
-- Version: 0.1.3-rc0010
+- Version: 0.1.3
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.3-rc0010)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.3)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -8902,14 +8902,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging.RabbitMQ 0.1.3-rc0010</summary>
+<summary>Monai.Deploy.Messaging.RabbitMQ 0.1.3</summary>
 
 ## Monai.Deploy.Messaging.RabbitMQ
 
-- Version: 0.1.3-rc0010
+- Version: 0.1.3
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.3-rc0010)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.3)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -9121,14 +9121,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Storage 0.2.0-rc0014</summary>
+<summary>Monai.Deploy.Storage 0.2.0</summary>
 
 ## Monai.Deploy.Storage
 
-- Version: 0.2.0-rc0014
+- Version: 0.2.0
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.2.0-rc0014)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.2.0)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -9340,14 +9340,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Storage.MinIO 0.2.0-rc0014</summary>
+<summary>Monai.Deploy.Storage.MinIO 0.2.0</summary>
 
 ## Monai.Deploy.Storage.MinIO
 
-- Version: 0.2.0-rc0014
+- Version: 0.2.0
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.2.0-rc0014)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.2.0)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -9559,14 +9559,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Storage.S3Policy 0.2.0-rc0014</summary>
+<summary>Monai.Deploy.Storage.S3Policy 0.2.0</summary>
 
 ## Monai.Deploy.Storage.S3Policy
 
-- Version: 0.2.0-rc0014
+- Version: 0.2.0
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.2.0-rc0014)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.2.0)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
