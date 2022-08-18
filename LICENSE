@@ -199,3 +199,12 @@
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
+   
+---
+
+Copyright (c) MONAI Consortium. All rights reserved.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
+
+By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](third-party-licenses.md) page.
