@@ -1,0 +1,263 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Command-line Interface (CLI) | MONAI Deploy Informatics Gateway v </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Command-line Interface (CLI) | MONAI Deploy Informatics Gateway v ">
+    <meta name="generator" content="docfx 2.59.3.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/MONAI-logo-color.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="command-line-interface-cli">Command-line Interface (CLI)</h1>
+<!--
+  ~ Copyright 2021-2022 MONAI Consortium
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<p>The command-line interface (CLI) allows users to configure settings and
+control the Informatics Gateway.</p>
+<h2 id="available-commands">Available Commands</h2>
+<p>Use the <code>mig-cli</code> command to see all available commands:</p>
+<pre><code class="lang-bash">&gt; mig-cli
+
+mig-cli
+  MONAI Deploy Informatics Gateway CLI
+
+Usage:
+  mig-cli [options] [command]
+
+Options:
+  -v, --verbose   Show verbose output [default: False]
+  --version       Show version information
+  -?, -h, --help  Show help and usage information
+
+Commands:
+  config                  Configure the CLI endpoint
+  start                   Start the MONAI Deploy Informatics Gateway service
+  stop                    Stop the MONAI Deploy Informatics Gateway service
+  restart                 Restart the MONAI Deploy Informatics Gateway service
+  aet, aetitle            Configure SCP Application Entities
+  source, src             Configure DICOM sources
+  dest, destination, dst  Configure DICOM destinations
+  status                  MONAI Deploy Informatics Gateway service status
+</code></pre>
+<h2 id="help--logging">Help &amp; Logging</h2>
+<p>The verbose switch <code>-v</code> and help switch <code>-h</code> are available for all commands.</p>
+<p>The following command gets help for the <code>aet add</code> command:</p>
+<pre><code class="lang-bash">&gt; mig-cli aet add -h
+
+add
+  Add a new SCP Application Entity
+
+Usage:
+  mig-cli [options] aet add
+
+Options:
+  -n, --name &lt;name&gt;                   Name of the SCP Application Entity
+  -a, --aetitle &lt;aetitle&gt; (REQUIRED)  AE Title of the SCP
+  -g, --grouping &lt;grouping&gt;           DICOM tag used to group instances [default: 0020,000D]
+  -t, --timeout &lt;timeout&gt;             Timeout, in seconds, to wait for instances [default: 5]
+  -w, --workflows &lt;workflows&gt;         A space separated list of workflow names or IDs to be associated with the SCP AE Title [default: ]
+  -i, --ignored-sops &lt;ignored-sops&gt;   A space separated list of SOP Class UIDs to be ignoredS [default: ]
+  -v, --verbose                       Show verbose output [default: False]
+  -?, -h, --help                      Show help and usage information
+</code></pre>
+<h2 id="controlling-informatics-gateway">Controlling Informatics Gateway</h2>
+<p>Use the following commands to start, stop, or restart the Informatics Gateway:</p>
+<pre><code class="lang-bash">mig-cli start
+mig-cli stop
+mig-cli restart
+</code></pre>
+<h2 id="system-health">System Health</h2>
+<p>The <code>mig-cli status</code> command displays the status of all running services inside the Informatics
+Gateway, as well as the number of active associations.</p>
+<pre><code class="lang-bash">&gt; mig-cli status
+
+info: Number of active DIMSE connections: 8
+info: Service Status:
+info:           space Reclaimer Service: Running
+info:           dicom SCP Service: Running
+info:           dicoMweb Export Service: Running
+info:           dicom Export Service: Running
+info:           data Retrieval Service: Running
+info:           payload Notification Service: Running
+</code></pre>
+<h2 id="configure-ae-titles">Configure AE Titles</h2>
+<p>The CLI provides commands to configure the listening, source, and destination AE Titles. Each
+command allows you to add (<code>add</code>), delete (<code>rm</code>), and list (<code>list</code>) configured AE Titles. Use the
+<code>-h</code> switch for additional options.</p>
+<h3 id="listening-ae-titles">Listening AE Titles</h3>
+<pre><code class="lang-bash">&gt; mig-cli aet
+
+Description:
+  Configure SCP Application Entities
+
+Usage:
+  mig-cli aet [command] [options]
+
+Options:
+  -?, -h, --help  Show help and usage information
+  -v, --verbose   Show verbose output [default: False]
+
+Commands:
+  add       Add a new SCP Application Entity
+  del, rm   Remove a SCP Application Entity
+  list, ls  List all SCP Application Entities
+</code></pre>
+<h3 id="source-ae-titles">Source AE Titles</h3>
+<pre><code class="lang-bash">&gt; mig-cli src
+
+Description:
+  Configure DICOM sources
+
+Usage:
+  mig-cli src [command] [options]
+
+Options:
+  -?, -h, --help  Show help and usage information
+  -v, --verbose   Show verbose output [default: False]
+
+Commands:
+  add       Add a new DICOM source
+  del, rm   Remove a DICOM source
+  list, ls  List all DICOM sources
+
+</code></pre>
+<h3 id="destinationexport-ae-titles">Destination/Export AE Titles</h3>
+<pre><code class="lang-bash">&gt;  mig-cli dst
+
+Description:
+  Configure DICOM destinations
+
+Usage:
+  mig-cli dst [command] [options]
+
+Options:
+  -?, -h, --help  Show help and usage information
+  -v, --verbose   Show verbose output [default: False]
+
+Commands:
+  add       Add a new DICOM destination
+  del, rm   Remove a DICOM destination
+  list, ls  List all DICOM destinations
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/docs//#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

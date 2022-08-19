@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Interface IWadoService
-   | MONAI Deploy Informatics Gateway v0.1.1 </title>
+   | MONAI Deploy Informatics Gateway v </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IWadoService
-   | MONAI Deploy Informatics Gateway v0.1.1 ">
-    <meta name="generator" content="docfx 2.56.7.0">
+   | MONAI Deploy Informatics Gateway v ">
+    <meta name="generator" content="docfx 2.59.3.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -83,9 +83,7 @@
   
   <h1 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService" class="text-break">Interface IWadoService
   </h1>
-  <div class="markdown level0 summary"><p>IWadoService provides APIs to retrieve data according to
-DICOMweb WADO-RS specs.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -103,15 +101,12 @@ DICOMweb WADO-RS specs.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CDicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_FellowOakDicom_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CFellowOakDicom.DicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L37">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,DicomTransferSyntax[])">Retrieve(String, DicomTransferSyntax[])</h4>
-  <div class="markdown level1 summary"><p>Retrieves all DICOM instances specified in the study.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_FellowOakDicom_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,FellowOakDicom.DicomTransferSyntax[])">Retrieve(String, DicomTransferSyntax[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -130,14 +125,12 @@ DICOMweb WADO-RS specs.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTransferSyntax</span>[]</td>
+        <td><span class="xref">FellowOakDicom.DicomTransferSyntax</span>[]</td>
         <td><span class="parametername">transferSyntaxes</span></td>
-        <td><p>An array of supported transfer syntaxes. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -151,23 +144,19 @@ DICOMweb WADO-RS specs.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IAsyncEnumerable</span>&lt;<span class="xref">DicomFile</span>&gt;</td>
-        <td><p>A list of <a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomFile.cs">DicomFile</a> containing DICOM instances for the study.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;<span class="xref">FellowOakDicom.DicomFile</span>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CDicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_FellowOakDicom_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CFellowOakDicom.DicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L57">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,DicomTransferSyntax[])">Retrieve(String, String, DicomTransferSyntax[])</h4>
-  <div class="markdown level1 summary"><p>Retrieves all DICOM instances secified in the series.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_FellowOakDicom_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,FellowOakDicom.DicomTransferSyntax[])">Retrieve(String, String, DicomTransferSyntax[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -186,20 +175,17 @@ DICOMweb WADO-RS specs.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">seriesInstanceUid</span></td>
-        <td><p>Series Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTransferSyntax</span>[]</td>
+        <td><span class="xref">FellowOakDicom.DicomTransferSyntax</span>[]</td>
         <td><span class="parametername">transferSyntaxes</span></td>
-        <td><p>An array of supported transfer syntaxes. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -213,23 +199,19 @@ DICOMweb WADO-RS specs.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IAsyncEnumerable</span>&lt;<span class="xref">DicomFile</span>&gt;</td>
-        <td><p>A list of <a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomFile.cs">DicomFile</a> containing DICOM instances for the series.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;<span class="xref">FellowOakDicom.DicomFile</span>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_DicomTag_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CSystem.String%2CDicomTag%2CDicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_FellowOakDicom_DicomTag_FellowOakDicom_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CSystem.String%2CFellowOakDicom.DicomTag%2CFellowOakDicom.DicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L125">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_DicomTag_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,System.String,DicomTag,DicomTransferSyntax[])">Retrieve(String, String, String, DicomTag, DicomTransferSyntax[])</h4>
-  <div class="markdown level1 summary"><p>Retrieves bulkdata in a DICOM instance.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_FellowOakDicom_DicomTag_FellowOakDicom_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,System.String,FellowOakDicom.DicomTag,FellowOakDicom.DicomTransferSyntax[])">Retrieve(String, String, String, DicomTag, DicomTransferSyntax[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -248,32 +230,27 @@ DICOMweb WADO-RS specs.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">seriesInstanceUid</span></td>
-        <td><p>Series Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">sopInstanceUid</span></td>
-        <td><p>SOP Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTag</span></td>
+        <td><span class="xref">FellowOakDicom.DicomTag</span></td>
         <td><span class="parametername">dicomTag</span></td>
-        <td><p>DICOM tag containing to bulkdata</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTransferSyntax</span>[]</td>
+        <td><span class="xref">FellowOakDicom.DicomTransferSyntax</span>[]</td>
         <td><span class="parametername">transferSyntaxes</span></td>
-        <td><p>An array of supported transfer syntaxes to be used to encode the bulkdata. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -287,27 +264,23 @@ DICOMweb WADO-RS specs.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
-        <td><p>A byte array containing the bulkdata.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_DicomTag_Tuple_System_Int32_System_Nullable_System_Int32___DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CSystem.String%2CDicomTag%2CTuple%7BSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D%7D%2CDicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_FellowOakDicom_DicomTag_System_Tuple_System_Int32_System_Nullable_System_Int32___FellowOakDicom_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CSystem.String%2CFellowOakDicom.DicomTag%2CSystem.Tuple%7BSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D%7D%2CFellowOakDicom.DicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L144">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_DicomTag_Tuple_System_Int32_System_Nullable_System_Int32___DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,System.String,DicomTag,Tuple{System.Int32,System.Nullable{System.Int32}},DicomTransferSyntax[])">Retrieve(String, String, String, DicomTag, Tuple&lt;Int32, Nullable&lt;Int32&gt;&gt;, DicomTransferSyntax[])</h4>
-  <div class="markdown level1 summary"><p>Retrieves a specific range of bulkdata in a DICOM instance.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_FellowOakDicom_DicomTag_System_Tuple_System_Int32_System_Nullable_System_Int32___FellowOakDicom_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,System.String,FellowOakDicom.DicomTag,System.Tuple{System.Int32,System.Nullable{System.Int32}},FellowOakDicom.DicomTransferSyntax[])">Retrieve(String, String, String, DicomTag, Tuple&lt;Int32, Nullable&lt;Int32&gt;&gt;, DicomTransferSyntax[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;byte[]&gt; Retrieve(string studyInstanceUid, string seriesInstanceUid, string sopInstanceUid, DicomTag dicomTag, Tuple&lt;int, int?&gt; byteRange = null, params DicomTransferSyntax[] transferSyntaxes)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;byte[]&gt; Retrieve(string studyInstanceUid, string seriesInstanceUid, string sopInstanceUid, DicomTag dicomTag, Tuple&lt;int, Nullable&lt;int&gt;&gt; byteRange = null, params DicomTransferSyntax[] transferSyntaxes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -322,40 +295,32 @@ DICOMweb WADO-RS specs.</p>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">seriesInstanceUid</span></td>
-        <td><p>Series Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">sopInstanceUid</span></td>
-        <td><p>SOP Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTag</span></td>
+        <td><span class="xref">FellowOakDicom.DicomTag</span></td>
         <td><span class="parametername">dicomTag</span></td>
-        <td><p>DICOM tag containing to bulkdata</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">Tuple</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.tuple-2">Tuple</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
         <td><span class="parametername">byteRange</span></td>
-        <td><p>Range of data to retrieve.
-Entire range if <code>null</code>.
-If <code>byteRange.Item2</code> is not specified then value specified in <code>byteRange.Item1</code>(start) to the end is retrieved.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTransferSyntax</span>[]</td>
+        <td><span class="xref">FellowOakDicom.DicomTransferSyntax</span>[]</td>
         <td><span class="parametername">transferSyntaxes</span></td>
-        <td><p>An array of supported transfer syntaxes to be used to encode the bulkdata. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -369,23 +334,19 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
-        <td><p>A byte array containing the bulkdata.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CSystem.String%2CDicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_FellowOakDicom_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CSystem.String%2CFellowOakDicom.DicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L81">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,System.String,DicomTransferSyntax[])">Retrieve(String, String, String, DicomTransferSyntax[])</h4>
-  <div class="markdown level1 summary"><p>Retrieves a DICOM instance.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_FellowOakDicom_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,System.String,FellowOakDicom.DicomTransferSyntax[])">Retrieve(String, String, String, DicomTransferSyntax[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -404,26 +365,22 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">seriesInstanceUid</span></td>
-        <td><p>Series Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">sopInstanceUid</span></td>
-        <td><p>SOP Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTransferSyntax</span>[]</td>
+        <td><span class="xref">FellowOakDicom.DicomTransferSyntax</span>[]</td>
         <td><span class="parametername">transferSyntaxes</span></td>
-        <td><p>An array of supported transfer syntaxes. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -437,23 +394,19 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<span class="xref">DicomFile</span>&gt;</td>
-        <td><p>A <a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomFile.cs">DicomFile</a> representing the DICOM instance.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">FellowOakDicom.DicomFile</span>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_IReadOnlyList_System_UInt32__DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CSystem.String%2CIReadOnlyList%7BSystem.UInt32%7D%2CDicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyList_System_UInt32__FellowOakDicom_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String%2CSystem.String%2CSystem.String%2CSystem.Collections.Generic.IReadOnlyList%7BSystem.UInt32%7D%2CFellowOakDicom.DicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L109">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_IReadOnlyList_System_UInt32__DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,System.String,IReadOnlyList{System.UInt32},DicomTransferSyntax[])">Retrieve(String, String, String, IReadOnlyList&lt;UInt32&gt;, DicomTransferSyntax[])</h4>
-  <div class="markdown level1 summary"><p>Retrieves one or more frames from a multi-frame DICOM instance.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_String_System_String_System_String_System_Collections_Generic_IReadOnlyList_System_UInt32__FellowOakDicom_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.String,System.String,System.String,System.Collections.Generic.IReadOnlyList{System.UInt32},FellowOakDicom.DicomTransferSyntax[])">Retrieve(String, String, String, IReadOnlyList&lt;UInt32&gt;, DicomTransferSyntax[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -472,32 +425,27 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">seriesInstanceUid</span></td>
-        <td><p>Series Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">sopInstanceUid</span></td>
-        <td><p>SOP Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">IReadOnlyList</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ireadonlylist-1">IReadOnlyList</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uint32">UInt32</a>&gt;</td>
         <td><span class="parametername">frameNumbers</span></td>
-        <td><p>The frames to retrieve within a multi-frame instance. (One-based indices)</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTransferSyntax</span>[]</td>
+        <td><span class="xref">FellowOakDicom.DicomTransferSyntax</span>[]</td>
         <td><span class="parametername">transferSyntaxes</span></td>
-        <td><p>An array of supported transfer syntaxes. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -511,23 +459,19 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<span class="xref">DicomFile</span>&gt;</td>
-        <td><p>A <a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomFile.cs">DicomFile</a> representing the DICOM instance.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<span class="xref">FellowOakDicom.DicomFile</span>&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_Uri_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(Uri%2CDicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_Uri_FellowOakDicom_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.Uri%2CFellowOakDicom.DicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L158">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_Uri_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(Uri,DicomTransferSyntax[])">Retrieve(Uri, DicomTransferSyntax[])</h4>
-  <div class="markdown level1 summary"><p>Retrieves bulkdata in a DICOM instance.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_Uri_FellowOakDicom_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.Uri,FellowOakDicom.DicomTransferSyntax[])">Retrieve(Uri, DicomTransferSyntax[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -544,16 +488,14 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Uri</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uri">Uri</a></td>
         <td><span class="parametername">bulkdataUri</span></td>
-        <td><p>URI to the instance.  The DICOM tag to retrieve must specified in the URI.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTransferSyntax</span>[]</td>
+        <td><span class="xref">FellowOakDicom.DicomTransferSyntax</span>[]</td>
         <td><span class="parametername">transferSyntaxes</span></td>
-        <td><p>An array of supported transfer syntaxes to be used to encode the bulkdata. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -567,27 +509,23 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
-        <td><p>A byte array containing the bulkdata.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_Uri_Tuple_System_Int32_System_Nullable_System_Int32___DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(Uri%2CTuple%7BSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D%7D%2CDicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_Uri_System_Tuple_System_Int32_System_Nullable_System_Int32___FellowOakDicom_DicomTransferSyntax___.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.Uri%2CSystem.Tuple%7BSystem.Int32%2CSystem.Nullable%7BSystem.Int32%7D%7D%2CFellowOakDicom.DicomTransferSyntax%5B%5D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L171">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_Uri_Tuple_System_Int32_System_Nullable_System_Int32___DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(Uri,Tuple{System.Int32,System.Nullable{System.Int32}},DicomTransferSyntax[])">Retrieve(Uri, Tuple&lt;Int32, Nullable&lt;Int32&gt;&gt;, DicomTransferSyntax[])</h4>
-  <div class="markdown level1 summary"><p>Retrieves a specific range of bulkdata in a DICOM instance.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_Retrieve_System_Uri_System_Tuple_System_Int32_System_Nullable_System_Int32___FellowOakDicom_DicomTransferSyntax___" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.Retrieve(System.Uri,System.Tuple{System.Int32,System.Nullable{System.Int32}},FellowOakDicom.DicomTransferSyntax[])">Retrieve(Uri, Tuple&lt;Int32, Nullable&lt;Int32&gt;&gt;, DicomTransferSyntax[])</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">Task&lt;byte[]&gt; Retrieve(Uri bulkdataUri, Tuple&lt;int, int?&gt; byteRange = null, params DicomTransferSyntax[] transferSyntaxes)</code></pre>
+    <pre><code class="lang-csharp hljs">Task&lt;byte[]&gt; Retrieve(Uri bulkdataUri, Tuple&lt;int, Nullable&lt;int&gt;&gt; byteRange = null, params DicomTransferSyntax[] transferSyntaxes)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -600,24 +538,19 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Uri</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.uri">Uri</a></td>
         <td><span class="parametername">bulkdataUri</span></td>
-        <td><p>URI to the instance.  The DICOM tag to retrieve must specified in the URI.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">Tuple</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.tuple-2">Tuple</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>, <a class="xref" href="https://docs.microsoft.com/dotnet/api/system.nullable-1">Nullable</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.int32">Int32</a>&gt;&gt;</td>
         <td><span class="parametername">byteRange</span></td>
-        <td><p>Range of data to retrieve.
-Entire range if <code>null</code>.
-If <code>byteRange.Item2</code> is not specified then value specified in <code>byteRange.Item1</code>(start) to the end is retrieved.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">DicomTransferSyntax</span>[]</td>
+        <td><span class="xref">FellowOakDicom.DicomTransferSyntax</span>[]</td>
         <td><span class="parametername">transferSyntaxes</span></td>
-        <td><p>An array of supported transfer syntaxes to be used to encode the bulkdata. Default set to Explicit VR Little Endian (1.2.840.10008.1.2.1)</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -631,9 +564,8 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
-        <td><p>A byte array containing the bulkdata.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.byte">Byte</a>[]&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -641,13 +573,10 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata__1_System_String_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata%60%601(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L47">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata__1_System_String_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata``1(System.String)">RetrieveMetadata&lt;T&gt;(String)</h4>
-  <div class="markdown level1 summary"><p>Retrieves the metadata of all instances specified in the study.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -666,8 +595,7 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -681,9 +609,8 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IAsyncEnumerable</span>&lt;T&gt;</td>
-        <td><p>An enumerable of <code>T</code> containing DICOM instances for the study.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;T&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -698,8 +625,7 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>T must be type of <a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</a> or <a href="https://docs.microsoft.com/dotnet/api/system.string">System.String</a>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -707,13 +633,10 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata__1_System_String_System_String_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata%60%601(System.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L69">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata__1_System_String_System_String_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata``1(System.String,System.String)">RetrieveMetadata&lt;T&gt;(String, String)</h4>
-  <div class="markdown level1 summary"><p>Retrieves the metadata of all instances specified in the study.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -732,14 +655,12 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">seriesInstanceUid</span></td>
-        <td><p>Series Instance UID</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -753,9 +674,8 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IAsyncEnumerable</span>&lt;T&gt;</td>
-        <td><p>An enumerable of <code>T</code> containing DICOM instances for the series.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.iasyncenumerable-1">IAsyncEnumerable</a>&lt;T&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -770,8 +690,7 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>T must be type of <a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</a> or <a href="https://docs.microsoft.com/dotnet/api/system.string">System.String</a>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -779,13 +698,10 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata__1_System_String_System_String_System_String_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata%60%601(System.String%2CSystem.String%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L95">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService_RetrieveMetadata__1_System_String_System_String_System_String_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.RetrieveMetadata``1(System.String,System.String,System.String)">RetrieveMetadata&lt;T&gt;(String, String, String)</h4>
-  <div class="markdown level1 summary"><p>Retrieves the metadata of the specified DICOM instance.</p>
-</div>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -804,20 +720,17 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">seriesInstanceUid</span></td>
-        <td><p>Series Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">sopInstanceUid</span></td>
-        <td><p>SOP Instance UID</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -831,9 +744,8 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;T&gt;</td>
-        <td><p>A <code>T</code> containing DICOM metadata for the instance.</p>
-</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;T&gt;</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -848,8 +760,7 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
     <tbody>
       <tr>
         <td><span class="parametername">T</span></td>
-        <td><p>T must be type of <a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</a> or <a href="https://docs.microsoft.com/dotnet/api/system.string">System.String</a>.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -862,9 +773,6 @@ If <code>byteRange.Item2</code> is not specified then value specified in <code>b
                 <ul class="nav">
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IWadoService.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IWadoService.cs/#L29" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

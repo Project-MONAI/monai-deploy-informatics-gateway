@@ -6,11 +6,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Interface IStowService
-   | MONAI Deploy Informatics Gateway v0.1.1 </title>
+   | MONAI Deploy Informatics Gateway v </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Interface IStowService
-   | MONAI Deploy Informatics Gateway v0.1.1 ">
-    <meta name="generator" content="docfx 2.56.7.0">
+   | MONAI Deploy Informatics Gateway v ">
+    <meta name="generator" content="docfx 2.59.3.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -83,11 +83,7 @@
   
   <h1 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService" class="text-break">Interface IStowService
   </h1>
-  <div class="markdown level0 summary"><p>IStowService provides APIs to store DICOM instances to a remote
-DICOMweb server.
-This client does not transcode the input data; all input DICOM  dataset
-are transfered as-is using the stored Transfer Syntax.</p>
-</div>
+  <div class="markdown level0 summary"></div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -105,15 +101,12 @@ are transfered as-is using the stored Transfer Syntax.</p>
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_IEnumerable_DicomFile__CancellationToken_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store(IEnumerable%7BDicomFile%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_System_Collections_Generic_IEnumerable_FellowOakDicom_DicomFile__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store(System.Collections.Generic.IEnumerable%7BFellowOakDicom.DicomFile%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IStowService.cs/#L38">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_IEnumerable_DicomFile__CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store(IEnumerable{DicomFile},CancellationToken)">Store(IEnumerable&lt;DicomFile&gt;, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Stores all DICOM files to the remote DICOMweb server.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_System_Collections_Generic_IEnumerable_FellowOakDicom_DicomFile__System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store(System.Collections.Generic.IEnumerable{FellowOakDicom.DicomFile},System.Threading.CancellationToken)">Store(IEnumerable&lt;DicomFile&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -130,16 +123,14 @@ are transfered as-is using the stored Transfer Syntax.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">DicomFile</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">FellowOakDicom.DicomFile</span>&gt;</td>
         <td><span class="parametername">dicomFiles</span></td>
-        <td><p>DICOM files to be stored.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -153,23 +144,19 @@ are transfered as-is using the stored Transfer Syntax.</p>
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebResponse-1.html">DicomWebResponse</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebResponse-1.html">DicomWebResponse</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_System_String_IEnumerable_DicomFile__CancellationToken_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store(System.String%2CIEnumerable%7BDicomFile%7D%2CCancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_System_String_System_Collections_Generic_IEnumerable_FellowOakDicom_DicomFile__System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store(System.String%2CSystem.Collections.Generic.IEnumerable%7BFellowOakDicom.DicomFile%7D%2CSystem.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IStowService.cs/#L47">View Source</a>
-  </span>
+  
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_System_String_IEnumerable_DicomFile__CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store(System.String,IEnumerable{DicomFile},CancellationToken)">Store(String, IEnumerable&lt;DicomFile&gt;, CancellationToken)</h4>
-  <div class="markdown level1 summary"><p>Stores all DICOM files for the specified Study Instance UID.
-Note: any files found not matching the specified <code>studyInstanceUid</code> may be rejected.</p>
-</div>
+  <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService_Store_System_String_System_Collections_Generic_IEnumerable_FellowOakDicom_DicomFile__System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.Store(System.String,System.Collections.Generic.IEnumerable{FellowOakDicom.DicomFile},System.Threading.CancellationToken)">Store(String, IEnumerable&lt;DicomFile&gt;, CancellationToken)</h4>
+  <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -188,20 +175,17 @@ Note: any files found not matching the specified <code>studyInstanceUid</code> m
       <tr>
         <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">studyInstanceUid</span></td>
-        <td><p>Study Instance UID</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">IEnumerable</span>&lt;<span class="xref">DicomFile</span>&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.collections.generic.ienumerable-1">IEnumerable</a>&lt;<span class="xref">FellowOakDicom.DicomFile</span>&gt;</td>
         <td><span class="parametername">dicomFiles</span></td>
-        <td><p>DICOM files to be stored.</p>
-</td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">CancellationToken</span></td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
         <td><span class="parametername">cancellationToken</span></td>
-        <td><p>Cancellation token.</p>
-</td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -215,7 +199,7 @@ Note: any files found not matching the specified <code>studyInstanceUid</code> m
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">Task</span>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebResponse-1.html">DicomWebResponse</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
+        <td><a class="xref" href="https://docs.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebResponse-1.html">DicomWebResponse</a>&lt;<a class="xref" href="https://docs.microsoft.com/dotnet/api/system.string">String</a>&gt;&gt;</td>
         <td></td>
       </tr>
     </tbody>
@@ -229,9 +213,6 @@ Note: any files found not matching the specified <code>studyInstanceUid</code> m
                 <ul class="nav">
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_IStowService.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/API/IStowService.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

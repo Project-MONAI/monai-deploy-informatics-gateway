@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Health APIs | MONAI Deploy Informatics Gateway v0.1.1 </title>
+    <title>Health APIs | MONAI Deploy Informatics Gateway v </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Health APIs | MONAI Deploy Informatics Gateway v0.1.1 ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="title" content="Health APIs | MONAI Deploy Informatics Gateway v ">
+    <meta name="generator" content="docfx 2.59.3.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -78,10 +78,25 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="health-apis">Health APIs</h1>
+<!--
+  ~ Copyright 2021-2022 MONAI Consortium
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
 
-<p>The <em>health</em> endpoint provides the following APIs to get statues of the internals of Informatics Gateway.</p>
+<p>The <em>health</em> endpoint provides the following APIs to get the status of the internals of the Informatics Gateway.</p>
 <h2 id="get-healthstatus">GET /health/status</h2>
-<p>MONAI Informatics Gateway service status:</p>
+<p>Returns the MONAI Informatics Gateway service status:</p>
 <ul>
 <li>Active DICOM DIMSE associations</li>
 <li>Internal service status</li>
@@ -104,7 +119,7 @@
 </tr>
 <tr>
 <td>500</td>
-<td>Server error. A <a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a> object with server error details.</td>
+<td>Server error. The response will be a <a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a> object with server error details.</td>
 </tr>
 </tbody>
 </table>
@@ -126,13 +141,13 @@
 </code></pre>
 <hr>
 <h2 id="get-healthready--get-healthlive">GET /health/ready &amp; GET /health/live</h2>
-<p>MONAI Deploy Informatics Gateway service readiness and liveness.</p>
+<p>Returns the MONAI Deploy Informatics Gateway service readiness and liveness.</p>
 <h3 id="parameters-1">Parameters</h3>
 <p>N/A</p>
 <h3 id="responses-1">Responses</h3>
 <p>Response Content Type: JSON</p>
 <ul>
-<li><code>Health</code>: All services are running.</li>
+<li><code>Healthy</code>: All services are running.</li>
 <li><code>Unhealthy</code>: One or more services have stopped or crashed.</li>
 </ul>
 <table>
@@ -153,7 +168,7 @@
 </tr>
 <tr>
 <td>500</td>
-<td>Server error. A <a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a> object with server error details.</td>
+<td>Server error. The response will be a <a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a> object with server error details.</td>
 </tr>
 </tbody>
 </table>

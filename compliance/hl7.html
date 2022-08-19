@@ -5,22 +5,20 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Enum ExportStatus
-   | MONAI Deploy Informatics Gateway v0.1.1 </title>
+    <title>HL7 (Health Level 7) | MONAI Deploy Informatics Gateway v </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Enum ExportStatus
-   | MONAI Deploy Informatics Gateway v0.1.1 ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="title" content="HL7 (Health Level 7) | MONAI Deploy Informatics Gateway v ">
+    <meta name="generator" content="docfx 2.59.3.0">
     
-    <link rel="shortcut icon" href="../../images/favicon.ico">
-    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
-    <link rel="stylesheet" href="../../styles/docfx.css">
-    <link rel="stylesheet" href="../../styles/main.css">
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
-    <meta property="docfx:navrel" content="../../toc.html">
-    <meta property="docfx:tocrel" content="../toc.html">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
     
-    <meta property="docfx:rel" content="../../">
+    <meta property="docfx:rel" content="../">
     
   </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
     <div id="wrapper">
@@ -36,8 +34,8 @@
                 <span class="icon-bar"></span>
               </button>
               
-              <a class="navbar-brand" href="../../index.html">
-                <img id="logo" class="svg" src="../../images/MONAI-logo-color.svg" alt="">
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/MONAI-logo-color.svg" alt="">
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbar">
@@ -78,47 +76,42 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportStatus">
-  
-  
-  <h1 id="Monai_Deploy_InformaticsGateway_Api_MessageBroker_ExportStatus" data-uid="Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportStatus" class="text-break">Enum ExportStatus
-  </h1>
-  <div class="markdown level0 summary"></div>
-  <div class="markdown level0 conceptual"></div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.MessageBroker.html">Monai.Deploy.InformaticsGateway.Api.MessageBroker</a></h6>
-  <h6><strong>Assembly</strong>: Monai.Deploy.InformaticsGateway.Api.dll</h6>
-  <h5 id="Monai_Deploy_InformaticsGateway_Api_MessageBroker_ExportStatus_syntax">Syntax</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public enum ExportStatus : int</code></pre>
-  </div>
-  <h3 id="fields">Fields
-  </h3>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    <thead>
-    <tbody>
-      <tr>
-        <td id="Monai_Deploy_InformaticsGateway_Api_MessageBroker_ExportStatus_Failure">Failure</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="Monai_Deploy_InformaticsGateway_Api_MessageBroker_ExportStatus_PartialFailure">PartialFailure</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="Monai_Deploy_InformaticsGateway_Api_MessageBroker_ExportStatus_Success">Success</td>
-        <td></td>
-      </tr>
-      <tr>
-        <td id="Monai_Deploy_InformaticsGateway_Api_MessageBroker_ExportStatus_Unknown">Unknown</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </thead></thead></table>
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="hl7-health-level-7">HL7 (Health Level 7)</h1>
+<!--
+  ~ Copyright 2022 MONAI Consortium
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<p>The following reference describes the connectivity capabilities of MONAI Deploy SDK out of the box.
+Users implementing the MONAI Deploy SDK must update their HL7 Conformance Statement according
+to the actual capabilities of their application.</p>
+<h2 id="hl7-mllp-listener">HL7 MLLP Listener</h2>
+<p>The HL7 listener adheres to the Minimal Lower Layer Protocol (MLLP) which accepts Health Level 7
+messages via TCP/IP connections at port 2575 (default). The Informatics Gateway provides basic syntax validation
+based on <a href="https://github.com/Efferent-Health/HL7-dotnetcore">HL7-dotnetcore</a> toolkit. All validated messages are stored
+regardless of the message types.</p>
+<h3 id="communication">Communication</h3>
+<p>The Informatics Gateway allows concurrent connections for the HL7 listener and allows multiple messages to be transmitted
+in a single connection or in a single command. Messages received are immediately assembled into a payload for the
+<a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager">MONAI Deploy Workflow Manager</a> to consume.</p>
+<h3 id="configurations">Configurations</h3>
+<p>The HL7 listener can be configured in the <code>appsettings.json</code> file. Refer to <a href="../setup/schema.html">Configuration</a> for additional details.</p>
+<h3 id="acknowledgement-mode">Acknowledgement Mode</h3>
+<p>The listener supports the acknowledgment mode dictated in the MSH.15 field. If no value is specified, the listener defaults to the configuration option <code>sendAck</code>.</p>
+<h3 id="supported-character-sets">Supported Character Sets</h3>
+<p>The HL7 listener supports Unicode UTF8 or any 8-bit character sets.</p>
 </article>
           </div>
           
@@ -127,10 +120,7 @@
               <div class="contribution">
                 <ul class="nav">
                   <li>
-                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MessageBroker_ExportStatus.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MessageBroker.ExportStatus%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
-                  </li>
-                  <li>
-                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MessageBroker/ExportCompleteMessage.cs/#L19" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/docs//#L1" class="contribution-link">Improve this Doc</a>
                   </li>
                 </ul>
               </div>
@@ -157,8 +147,8 @@
       </footer>
     </div>
     
-    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
-    <script type="text/javascript" src="../../styles/docfx.js"></script>
-    <script type="text/javascript" src="../../styles/main.js"></script>
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
   </body>
 </html>

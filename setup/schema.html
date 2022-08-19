@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Configuration | MONAI Deploy Informatics Gateway v0.1.1 </title>
+    <title>Configuration | MONAI Deploy Informatics Gateway v </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Configuration | MONAI Deploy Informatics Gateway v0.1.1 ">
-    <meta name="generator" content="docfx 2.56.7.0">
+    <meta name="title" content="Configuration | MONAI Deploy Informatics Gateway v ">
+    <meta name="generator" content="docfx 2.59.3.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
     <link rel="stylesheet" href="../styles/docfx.vendor.css">
@@ -78,9 +78,24 @@
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="configuration">Configuration</h1>
+<!--
+  ~ Copyright 2021-2022 MONAI Consortium
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
 
 <h2 id="informatics-gateway-configuration-file">Informatics Gateway Configuration File</h2>
-<p>The configuration file is a JSON formatted file used to control the behaviors and parameters of the internal services. The file, <code>appsettings.json</code>, is stored next to the main application binary and provides a subset of the default configuration options by default. Please refer to the <a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.html">Monai.Deploy.InformaticsGateway.Configuration</a> namespace for complete reference.</p>
+<p>The configuration file (<code>appsettings.json</code>) controls the behaviors and parameters of the internal services. The file is stored next to the main application binary and provides a subset of the default configuration options by default. Please refer to the <a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.html">Monai.Deploy.InformaticsGateway.Configuration</a> namespace for complete reference.</p>
 <h3 id="configuration-sections">Configuration Sections</h3>
 <p><code>appsettings.json</code> contains the following top-level sections:</p>
 <pre><code class="lang-json">{
@@ -124,13 +139,23 @@
 <td><a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration.html">FhirConfiguration</a></td>
 </tr>
 <tr>
+<td>hl7</td>
+<td>HL7 listener configuration options</td>
+<td><a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration.html">Hl7Configuration</a></td>
+</tr>
+<tr>
 <td>storage</td>
-<td>Storage configuration options including storage service &amp; disk usage monitoring</td>
+<td>Storage configuration options, including storage service and disk usage monitoring</td>
 <td><a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html">StorageConfiguration</a></td>
 </tr>
 <tr>
+<td>messaging</td>
+<td>Message broker configuration options</td>
+<td><a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration.html">MessageBrokerConfiguration</a></td>
+</tr>
+<tr>
 <td>Cli</td>
-<td>Configuration used by the CLI</td>
+<td>The configuration used by the CLI</td>
 <td>-</td>
 </tr>
 </tbody>
@@ -155,6 +180,7 @@
       }
     },
     &quot;messaging&quot;: {
+      &quot;publisherServiceAssemblyName&quot;: &quot;Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ&quot;,
       &quot;publisherSettings&quot;: {
         &quot;endpoint&quot;: &quot;localhost&quot;,
         &quot;username&quot;: &quot;username&quot;,
@@ -162,17 +188,41 @@
         &quot;virtualHost&quot;: &quot;monaideploy&quot;,
         &quot;exchange&quot;: &quot;monaideploy&quot;
       },
+      &quot;subscriberServiceAssemblyName&quot;: &quot;Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ&quot;,
       &quot;subscriberSettings&quot;: {
         &quot;endpoint&quot;: &quot;localhost&quot;,
         &quot;username&quot;: &quot;username&quot;,
         &quot;password&quot;: &quot;password&quot;,
         &quot;virtualHost&quot;: &quot;monaideploy&quot;,
         &quot;exchange&quot;: &quot;monaideploy&quot;,
-        &quot;exportRequestQueue&quot;: &quot;export_tasks&quot;
+        &quot;exportRequestQueue&quot;: &quot;export_tasks&quot;,
+        &quot;deadLetterExchange&quot;: &quot;monaideploy-dead-letter&quot;,
+        &quot;deliveryLimit&quot;: 3,
+        &quot;requeueDelay&quot;: 30
       }
     },
     &quot;storage&quot;: {
-      &quot;temporary&quot;: &quot;/payloads&quot;
+      &quot;bufferRootPath&quot;: &quot;./temp&quot;,
+      &quot;tempStorageRootPath&quot;: &quot;/incoming&quot;,
+      &quot;bucketName&quot;: &quot;monaideploy&quot;,
+      &quot;storageRootPath&quot;: &quot;/payloads&quot;,
+      &quot;temporaryBucketName&quot;: &quot;monaideploy&quot;,
+      &quot;serviceAssemblyName&quot;: &quot;Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO&quot;,
+      &quot;settings&quot;: {
+        &quot;endpoint&quot;: &quot;localhost:9000&quot;,
+        &quot;accessKey&quot;: &quot;admin&quot;,
+        &quot;accessToken&quot;: &quot;password&quot;,
+        &quot;securedConnection&quot;: false,
+        &quot;region&quot;: &quot;local&quot;,
+        &quot;executableLocation&quot;: &quot;/bin/mc&quot;,
+        &quot;serviceName&quot;: &quot;MinIO&quot;
+      }
+    },
+    &quot;hl7&quot;: {
+      &quot;port&quot;: 2575,
+      &quot;maximumNumberOfConnections&quot;: 10,
+      &quot;clientTimeout&quot;: 60000,
+      &quot;sendAck&quot;: true
     }
   },
   &quot;Logging&quot;: {
@@ -223,12 +273,14 @@
   &quot;Cli&quot;: {
     &quot;Runner&quot;: &quot;Docker&quot;,
     &quot;HostDataStorageMount&quot;: &quot;~/.mig/data&quot;,
+    &quot;HostPlugInsStorageMount&quot;: &quot;~/.mig/plug-ins&quot;,
     &quot;HostDatabaseStorageMount&quot;: &quot;~/.mig/database&quot;,
     &quot;HostLogsStorageMount&quot;: &quot;~/.mig/logs&quot;,
     &quot;InformaticsGatewayServerEndpoint&quot;: &quot;http://localhost:5000&quot;,
-    &quot;DockerImagePrefix&quot;: &quot;monai/informatics-gateway&quot;
+    &quot;DockerImagePrefix&quot;: &quot;ghcr.io/project-monai/monai-deploy-informatics-gateway&quot;
   }
 }
+
 </code></pre>
 <h3 id="configuration-validation">Configuration Validation</h3>
 <p>Informatics Gateway validates all configuration options at startup. Any provided values that are invalid or missing may cause the service to crash.</p>
@@ -240,23 +292,23 @@
 <p>Informatics Gateway, by default, is configured to writes all logs to the console as well as text files. The behaviors may be changed in the <code>Logging</code> section of the <code>appsettings.json</code> file.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent filling up storage space. Please refer to <a href="https://docs.docker.com/config/containers/logging/configure/">Docker</a> for additional information.</p>
+<p>If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent filling up storage space. Refer to the <a href="https://docs.docker.com/config/containers/logging/configure/">Docker documentation</a> for additional information.</p>
 </div>
 <h4 id="log-levels">Log Levels</h4>
-<p>Log level may be adjusted on a per-module basis. For example, given the following log entries:</p>
+<p>By default, the Monai namespace logs all Information level logs. However, the log level may be adjusted on a per-module basis. For example, given the following log entries:</p>
 <pre><code> 14:26:13 info: Monai.Deploy.InformaticsGateway.Services.Connectors.WorkloadManagerNotificationService[0]
       MONAI Workload Manager Notification Hosted Service is running.
  14:26:13 info: Monai.Deploy.InformaticsGateway.Services.Storage.SpaceReclaimerService[0]
       Disk Space Reclaimer Hosted Service is running.
 </code></pre>
-<p>By default, the <code>Monai</code> namespace is to log all <code>Information</code> level logs. However, if additional information is required to debug the <strong>WorkloadManagerNotificationService</strong> module or to turn down the noise, add a new entry under the <code>LogLevel</code> section of the configuration file to adjust it:</p>
+<p>If additional information is required to debug the <strong>WorkloadManagerNotificationService</strong> module or to turn down the noise, add a new entry under the LogLevel section of the configuration file to adjust it:</p>
 <pre><code> &quot;Logging&quot;: {
     &quot;LogLevel&quot;: {
       &quot;Monai&quot;: &quot;Information&quot;,
       &quot;Monai.Deploy.InformaticsGateway.Services.Connectors.WorkloadManagerNotificationService&quot;: &quot;Debug&quot;,
       ...
 </code></pre>
-<p>The following log level may be used:</p>
+<p>The following log levels may be used:</p>
 <ul>
 <li>Trace</li>
 <li>Debug</li>
