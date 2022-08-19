@@ -17,9 +17,11 @@
 
 # Changelog
 
-## 0.3.0
-[Github Milestone 0.3.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/3)
+## 0.2.0
 
+[GitHub Milestone 0.2.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/6)
+
+- Adds DICOMWeb STOW-RS service to enable triggering of workflow requests via DICOMWeb standard.
 - Adds HL7 (MLLP) service to enable triggering of workflow requests using HL7 messages.
 - Breaking changes with how Informatics Gateway handles incoming data and uploading to the storage service.
   All incoming data are now immediately queued for upload to the storage service instead of saving to the local disk.
@@ -27,12 +29,6 @@
   In addition, during the Informatics Gateway startup, the payload assembly service removes any payloads containing 
   any pending files. Files that were successfully uploaded to the temporary location (`storage>temporary`) in the 
   bucket (`storage>temporaryBucketName`) are then moved to the payload bucket (`storage>bucketName`) before sending a workflow request.  
-
-## 0.2.0
-
-[GitHub Milestone 0.2.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/6)
-
-- Adds DICOMWeb STOW-RS service to enable triggering of workflow requests via DICOMWeb standard.
 - Breaking changes in the storage configuration to allow dynamic key-value pairs.
 - Breaking changes to enable dynamic loadig of the storage & the messaging libraries.
 
