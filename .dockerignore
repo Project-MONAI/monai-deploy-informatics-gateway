@@ -13,7 +13,6 @@
 # limitations under the License.
 
 .github/
-docs/
 demos/
 guidelines/
 tests/

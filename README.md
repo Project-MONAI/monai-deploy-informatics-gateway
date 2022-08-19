@@ -81,6 +81,15 @@ Join the conversation on Twitter [@ProjectMONAI](https://twitter.com/ProjectMONA
 
 Ask and answer questions over on [MONAI Deploy Informatics Gateway's GitHub Discussions tab](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/discussions).
 
+## License
+
+Copyright (c) MONAI Consortium. All rights reserved.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
+
+By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](docs/compliance/third-party-licenses.md) page.
+
 ## Links
 
 - Website: <https://monai.io>
