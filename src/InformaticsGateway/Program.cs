@@ -34,6 +34,7 @@ using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Export;
+using Monai.Deploy.InformaticsGateway.Services.Fhir;
 using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
@@ -103,6 +104,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
                     services.AddTransient<IStowService, StowService>();
+                    services.AddTransient<IFhirService, FhirService>();
                     services.AddTransient<IStreamsWriter, StreamsWriter>();
                     services.AddTransient<IApplicationEntityHandler, ApplicationEntityHandler>();
 

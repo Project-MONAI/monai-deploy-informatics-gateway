@@ -20,10 +20,12 @@ using FellowOakDicom.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Monai.Deploy.InformaticsGateway.Services.Fhir;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -53,6 +55,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter(JsonNamingPolicy.CamelCase, false));
                 opts.JsonSerializerOptions.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: false));
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
+            });
+
+            services.Configure<RouteOptions>(options =>
+            {
+                options.ConstraintMap.Add("fhirResource", typeof(FhirResourceTypesRouteConstraint));
             });
 
             services.AddSwaggerGen(c =>
