@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             FhirStoreResult content;
             try
             {
-                content = await reader.GetContent(request, correlationId, resourceType, mediaTypeHeaderValue, cancellationToken).ConfigureAwait(false);
+                content = await reader.GetContentAsync(request, correlationId, resourceType, mediaTypeHeaderValue, cancellationToken).ConfigureAwait(false);
             }
             catch (JsonException ex)
             {
@@ -84,7 +84,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 throw new FhirStoreException(correlationId, $"Provided resource is of type '{content.InternalResourceType}' but request targeted type '{resourceType}'.", IssueType.Invalid);
             }
 
-            await _payloadAssembler.Queue(correlationId, content.Metadata, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
+            _uploadQueue.Queue(content.Metadata);
+            await _payloadAssembler.Queue(correlationId, content.Metadata, Resources.PayloadAssemblerTimeout).ConfigureAwait(false);
             _logger.QueuedStowInstance();
 
             content.StatusCode = StatusCodes.Status201Created;
@@ -99,13 +100,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.ApplicationFhirJson, StringComparison.OrdinalIgnoreCase))
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<FhirJsonReader>>() ?? throw new ServiceNotFoundException(nameof(ILogger<FhirJsonReader>));
-                return new FhirJsonReader(_configuration.Value, logger);
+                return new FhirJsonReader(logger);
             }
 
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.ApplicationFhirXml, StringComparison.OrdinalIgnoreCase))
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<FhirXmlReader>>() ?? throw new ServiceNotFoundException(nameof(ILogger<FhirXmlReader>));
-                return new FhirXmlReader(_configuration.Value, logger);
+                return new FhirXmlReader(logger);
             }
 
             throw new UnsupportedContentTypeException($"Media type of '{mediaTypeHeaderValue.MediaType}' is not supported.");

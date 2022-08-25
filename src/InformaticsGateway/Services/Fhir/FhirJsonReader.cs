@@ -26,26 +26,27 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 {
     internal class FhirJsonReader : IFHirRequestReader
     {
-        private readonly InformaticsGatewayConfiguration _config;
         private readonly ILogger<FhirJsonReader> _logger;
 
-        public FhirJsonReader(InformaticsGatewayConfiguration value, ILogger<FhirJsonReader> logger)
+        public FhirJsonReader(ILogger<FhirJsonReader> logger)
         {
-            _config = value ?? throw new ArgumentNullException(nameof(value));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<FhirStoreResult> GetContent(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken)
+        public async Task<FhirStoreResult> GetContentAsync(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken)
         {
             Guard.Against.Null(request, nameof(request));
-            Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.NullOrInvalidInput(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue), (value) =>
+            {
+                return value.MediaType.Value.Equals(ContentTypes.ApplicationFhirJson, StringComparison.OrdinalIgnoreCase);
+            });
 
             _logger.ParsingFhirJson();
 
@@ -62,18 +63,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 result.InternalResourceType = jsonDoc[Resources.PropertyResourceType].GetValue<string>();
             }
 
-            SetIdIfMIssing(correlationId, jsonDoc);
+            var resourceId = SetIdIfMIssing(correlationId, jsonDoc);
 
             result.RawData = jsonDoc.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
 
-            var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, correlationId, Api.Rest.FhirStorageFormat.Json);
+            var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, resourceId, Api.Rest.FhirStorageFormat.Json);
             fileMetadata.SetDataStream(result.RawData);
 
             result.Metadata = fileMetadata;
             return result;
         }
 
-        private static void SetIdIfMIssing(string correlationId, JsonNode jsonDoc)
+        private static string SetIdIfMIssing(string correlationId, JsonNode jsonDoc)
         {
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
             Guard.Against.Null(jsonDoc, nameof(jsonDoc));
@@ -82,6 +83,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             {
                 jsonDoc[Resources.PropertyId] = correlationId;
             }
+
+            return jsonDoc[Resources.PropertyId].GetValue<string>();
         }
     }
 }

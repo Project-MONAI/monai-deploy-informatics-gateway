@@ -94,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     {
                         break;
                     }
-                    
+
                     responseData = Encoding.UTF8.GetString(buffer.ToArray());
 
                     var startIndex = responseData.IndexOf((char)0x0B);
@@ -124,12 +124,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             {
                 _outputHelper.WriteLine($"Sending file {file}...");
                 var data = _input[file].GetMLLP();
-                messages.AddRange(data);                
+                messages.AddRange(data);
             }
 
             using var tcpClient = new TcpClient();
             await tcpClient.ConnectAsync(_configuration.InformaticsGatewayOptions.Host, _configuration.InformaticsGatewayOptions.Hl7Port);
-            var networkStream = tcpClient.GetStream();            
+            var networkStream = tcpClient.GetStream();
             await networkStream.WriteAsync(messages.ToArray(), 0, messages.Count);
             var buffer = new byte[512];
             var responseData = string.Empty;
@@ -140,18 +140,18 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 {
                     break;
                 }
-                
+
                 responseData = Encoding.UTF8.GetString(buffer.ToArray());
                 var rawHl7Messages = HL7.Dotnetcore.MessageHelper.ExtractMessages(responseData);
 
-                foreach(var message in rawHl7Messages)
+                foreach (var message in rawHl7Messages)
                 {
                     var hl7Message = new HL7.Dotnetcore.Message(message);
                     hl7Message.ParseMessage();
                     var segment = hl7Message.DefaultSegment("MSH");
                     _output[segment.Fields(10).Value] = message;
                 }
-                
+
                 if (_output.Count == _input.Count)
                 {
                     break;

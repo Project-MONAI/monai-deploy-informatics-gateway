@@ -15,17 +15,38 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
+using System.Xml.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 {
+    [DataContract(Namespace = Resources.FhirXmlNamespace)]
     public class OperationOutcome
     {
+        [DataMember]
         public string ResourceType { get; set; }
+
+        [DataMember]
         public string Id { get; set; }
 
-        [JsonPropertyName("issue")]
+        [XmlIgnore, JsonPropertyName("issue")]
         public IList<Issue> Issues { get; set; }
+
+        [DataMember, JsonIgnore]
+        public Issue Issue
+        {
+            get
+            {
+                return Issues.FirstOrDefault();
+            }
+            set
+            {
+                Issues.Clear();
+                Issues.Add(value);
+            }
+        }
 
         public OperationOutcome()
         {
@@ -33,10 +54,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
         }
     }
 
+    [DataContract(Namespace = Resources.FhirXmlNamespace)]
     public class Issue
     {
+        [DataMember]
         public IssueSeverity Severity { get; set; }
+
+        [DataMember]
         public IssueType Code { get; set; }
+
+        [DataMember]
         public IList<IssueDetails> Details { get; set; }
 
         public Issue()
@@ -45,23 +72,39 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
         }
     }
 
+    [DataContract(Namespace = Resources.FhirXmlNamespace)]
     public class IssueDetails
     {
+        [DataMember]
         public string Text { get; set; }
     }
 
+    [DataContract(Namespace = Resources.FhirXmlNamespace)]
     public enum IssueType
     {
+        [EnumMember]
         Invalid,
+
+        [EnumMember]
         Structure,
+
+        [EnumMember]
         Exception
     }
 
+    [DataContract(Namespace = Resources.FhirXmlNamespace)]
     public enum IssueSeverity
     {
+        [EnumMember]
         Information,
+
+        [EnumMember]
         Warning,
+
+        [EnumMember]
         Error,
+
+        [EnumMember]
         Fatal,
     }
 }

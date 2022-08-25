@@ -44,7 +44,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 #pragma warning restore CA1822 // Mark members as static
         {
             services.AddHttpContextAccessor();
-            services.AddControllers().AddJsonOptions(opts =>
+            services.AddControllers(opts =>
+            {
+                opts.RespectBrowserAcceptHeader = true;
+                var jsonSerializerOptions = new JsonSerializerOptions
+                {
+                    DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
+                    PropertyNameCaseInsensitive = true,
+                    DictionaryKeyPolicy = JsonNamingPolicy.CamelCase,
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    NumberHandling = JsonNumberHandling.AllowReadingFromString,
+                    WriteIndented = false
+                };
+
+                jsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter(JsonNamingPolicy.CamelCase, false));
+                jsonSerializerOptions.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: false));
+                jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
+                opts.OutputFormatters.Add(new FhirJsonFormatters(jsonSerializerOptions));
+                opts.OutputFormatters.Add(new FhirXmlFormatters());
+            })
+            .AddJsonOptions(opts =>
             {
                 opts.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 opts.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
@@ -55,7 +74,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter(JsonNamingPolicy.CamelCase, false));
                 opts.JsonSerializerOptions.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: false));
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
-            });
+            })
+            .AddXmlSerializerFormatters();
 
             services.Configure<RouteOptions>(options =>
             {

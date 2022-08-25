@@ -38,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Test
 
             var unwrapped = wrapper.GetObject() as FhirFileStorageMetadata;
 
-            Assert.Equal(metadata.CorrelationId, unwrapped.CorrelationId);
+            Assert.Equal(metadata.CorrelationId, unwrapped!.CorrelationId);
             Assert.Equal(metadata.Id, unwrapped.Id);
             Assert.Equal(metadata.DataTypeDirectoryName, unwrapped.DataTypeDirectoryName);
             Assert.Equal(metadata.DateReceived, unwrapped.DateReceived);
@@ -79,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Test
 
             var unwrapped = wrapper.GetObject() as DicomFileStorageMetadata;
 
-            Assert.Equal(metadata.CalledAeTitle, unwrapped.CalledAeTitle);
+            Assert.Equal(metadata.CalledAeTitle, unwrapped!.CalledAeTitle);
             Assert.Equal(metadata.CallingAeTitle, unwrapped.CallingAeTitle);
             Assert.Equal(metadata.CorrelationId, unwrapped.CorrelationId);
             Assert.Equal(metadata.Id, unwrapped.Id);

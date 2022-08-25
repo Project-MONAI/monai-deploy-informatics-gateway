@@ -23,6 +23,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 {
     internal interface IFHirRequestReader
     {
-        Task<FhirStoreResult> GetContent(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken);
+        Task<FhirStoreResult> GetContentAsync(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken);
     }
 }

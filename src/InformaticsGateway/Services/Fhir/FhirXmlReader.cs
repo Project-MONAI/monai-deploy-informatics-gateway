@@ -26,27 +26,27 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 {
     internal class FhirXmlReader : IFHirRequestReader
     {
-        private readonly InformaticsGatewayConfiguration _config;
         private readonly ILogger<FhirXmlReader> _logger;
 
-        public FhirXmlReader(InformaticsGatewayConfiguration value, ILogger<FhirXmlReader> logger)
+        public FhirXmlReader(ILogger<FhirXmlReader> logger)
         {
-            _config = value ?? throw new ArgumentNullException(nameof(value));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<FhirStoreResult> GetContent(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken)
+        public async Task<FhirStoreResult> GetContentAsync(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken)
         {
             Guard.Against.Null(request, nameof(request));
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
-            Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
+            Guard.Against.NullOrInvalidInput(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue), (value) =>
+            {
+                return value.MediaType.Value.Equals(ContentTypes.ApplicationFhirXml, StringComparison.OrdinalIgnoreCase);
+            });
 
             _logger.ParsingFhirXml();
 
@@ -58,15 +58,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
             var xmlDocument = new XmlDocument();
             xmlDocument.LoadXml(result.RawData);
+            var rootNode = xmlDocument.DocumentElement;
+
+            if (!rootNode.NamespaceURI.Equals(Resources.FhirXmlNamespace, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new FhirStoreException(correlationId, $"XML content is not a valid FHIR resource.", IssueType.Invalid);
+            }
 
             var xmlNamespaceManager = new XmlNamespaceManager(xmlDocument.NameTable);
-            xmlNamespaceManager.AddNamespace(Resources.XmlNamespacePrefix, Resources.XmlNamespace);
+            xmlNamespaceManager.AddNamespace(Resources.XmlNamespacePrefix, Resources.FhirXmlNamespace);
 
-            var rootNode = xmlDocument.DocumentElement;
-            SetIdIfMIssing(correlationId, xmlNamespaceManager, rootNode);
+            var resourceId = SetIdIfMIssing(correlationId, xmlNamespaceManager, rootNode);
 
             var sb = new StringBuilder();
-            using (var xmlWriter = XmlWriter.Create(sb, new XmlWriterSettings { Indent = true }))
+            using (var xmlWriter = XmlWriter.Create(sb, new XmlWriterSettings { Encoding = Encoding.UTF8, Indent = true }))
             {
                 xmlDocument.Save(xmlWriter);
             }
@@ -74,14 +79,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             result.RawData = sb.ToString();
             result.InternalResourceType = rootNode.Name;
 
-            var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, correlationId, Api.Rest.FhirStorageFormat.Xml);
+            var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, resourceId, Api.Rest.FhirStorageFormat.Xml);
             fileMetadata.SetDataStream(result.RawData);
 
             result.Metadata = fileMetadata;
             return result;
         }
 
-        private static void SetIdIfMIssing(string correlationId, XmlNamespaceManager xmlNamespaceManager, XmlElement rootNode)
+        private static string SetIdIfMIssing(string correlationId, XmlNamespaceManager xmlNamespaceManager, XmlElement rootNode)
         {
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
             Guard.Against.Null(xmlNamespaceManager, nameof(xmlNamespaceManager));
@@ -90,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             var idNode = rootNode.SelectSingleNode($"{Resources.XmlNamespacePrefix}:{Resources.PropertyId}", xmlNamespaceManager);
             if (idNode is null)
             {
-                idNode = rootNode.OwnerDocument.CreateElement(Resources.PropertyId, Resources.XmlNamespace);
+                idNode = rootNode.OwnerDocument.CreateElement(Resources.PropertyId, Resources.FhirXmlNamespace);
                 rootNode.PrependChild(idNode);
             }
 
@@ -100,6 +105,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 value.Value = correlationId;
                 idNode.Attributes.Append(value);
             }
+
+            return idNode.Attributes[Resources.AttributeValue].Value;
         }
     }
 }

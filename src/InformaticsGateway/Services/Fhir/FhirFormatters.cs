@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
+using System.Text.Json;
+using Microsoft.AspNetCore.Mvc.Formatters;
+
 namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 {
-    internal static class Resources
+    internal class FhirJsonFormatters : SystemTextJsonOutputFormatter
     {
-        public const string RouteNameResourceType = "resourceType";
-        public const string ResourceTypeRouteConstraint = "fhirResource";
+        public FhirJsonFormatters(JsonSerializerOptions jsonSerializerOptions) : base(jsonSerializerOptions)
+        {
+            SupportedMediaTypes.Clear();
+            SupportedMediaTypes.Add(ContentTypes.ApplicationFhirJson);
+        }
+    }
 
-        public const string ResourceOperationOutcome = "OperationOutcome";
+    internal class FhirXmlFormatters : XmlDataContractSerializerOutputFormatter
 
-        public const string FhirXmlNamespace = "http://hl7.org/fhir";
-        public const string XmlNamespacePrefix = "hl7";
-        public const string PropertyResourceType = "resourceType";
-        public const string PropertyId = "id";
-        public const string AttributeValue = "value";
-        public const uint PayloadAssemblerTimeout = 1;
+    {
+        public FhirXmlFormatters()
+        {
+            SupportedMediaTypes.Clear();
+            SupportedMediaTypes.Add(ContentTypes.ApplicationFhirXml);
+        }
     }
 }

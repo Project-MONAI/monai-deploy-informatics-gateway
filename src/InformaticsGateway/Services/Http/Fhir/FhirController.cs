@@ -29,10 +29,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
 {
     [ApiController]
     [Route("fhir")]
-    public class FhirController : ControllerBase
+    public class FhirController : ControllerBase, IDisposable
     {
+        private readonly IServiceScope _scope;
         private readonly IFhirService _fhirService;
         private readonly ILogger<FhirController> _logger;
+        private bool _disposedValue;
 
         public FhirController(IServiceScopeFactory serviceScopeFactory)
         {
@@ -40,10 +42,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
             {
                 throw new ArgumentNullException(nameof(serviceScopeFactory));
             }
-            var scope = serviceScopeFactory.CreateScope();
 
-            _fhirService = scope.ServiceProvider.GetService<IFhirService>() ?? throw new ServiceNotFoundException(nameof(IFhirService));
-            _logger = scope.ServiceProvider.GetService<ILogger<FhirController>>() ?? throw new ServiceNotFoundException(nameof(ILogger<FhirController>));
+            _scope = serviceScopeFactory.CreateScope();
+            _fhirService = _scope.ServiceProvider.GetService<IFhirService>() ?? throw new ServiceNotFoundException(nameof(IFhirService));
+            _logger = _scope.ServiceProvider.GetService<ILogger<FhirController>>() ?? throw new ServiceNotFoundException(nameof(ILogger<FhirController>));
         }
 
         [HttpPost]
@@ -54,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
         [Produces("application/fhir+json")]
         public async Task<IActionResult> Create()
         {
-            return await Create(string.Empty);
+            return await Create(string.Empty).ConfigureAwait(false);
         }
 
         [HttpPost]
@@ -72,14 +74,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
             try
             {
                 var result = await _fhirService.StoreAsync(Request, correlationId, resourceType, HttpContext.RequestAborted).ConfigureAwait(false);
-                Response.StatusCode = StatusCodes.Status201Created;
-                return Content(result.RawData, Request.ContentType);
+                return new ContentResult
+                {
+                    Content = result.RawData,
+                    ContentType = Request.ContentType,
+                    StatusCode = result.StatusCode
+                };
             }
             catch (FhirStoreException ex)
             {
                 _logger.FhirStoreException(ex);
-                Response.StatusCode = StatusCodes.Status400BadRequest;
-                return new JsonResult(ex.OperationOutcome);
+                return new ObjectResult(ex.OperationOutcome)
+                {
+                    StatusCode = StatusCodes.Status400BadRequest
+                };
             }
             catch (Exception ex)
             {
@@ -88,7 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
             }
         }
 
-        private IActionResult OperatorionOutcome(string correlationId, Exception exception, int httpStatusCode)
+        private static IActionResult OperatorionOutcome(string correlationId, Exception exception, int httpStatusCode)
         {
             var operationOutput = new OperationOutcome
             {
@@ -107,8 +115,30 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
                 Text = exception.Message
             });
 
-            Response.StatusCode = httpStatusCode;
-            return new JsonResult(operationOutput);
+            return new ObjectResult(operationOutput)
+            {
+                StatusCode = httpStatusCode
+            };
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _scope.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
