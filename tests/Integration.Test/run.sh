@@ -56,22 +56,36 @@ function env_setup() {
 
     [ -d $BIN_DIR ] && info "Removing $BIN_DIR..." && sudo rm -r $BIN_DIR
 
-    set +u
-    if [ "$1" = "--dev" ]; then
-        info "Using .env.dev..."
-        LOADDEV="--env-file .env.dev"
-        info "Using study.json.dev..."
-        STUDYJSON="study.json.dev"
-    elif [ "$1" = "--feature" ]; then
-        if [ -z "$2" ]; then
-            fatal "--feature used without specifying a feature"
-        fi
-        FEATURE="--filter $2"
-        info "Filtering by feature=$FEATURE"
-    fi
+    SHORT=f:,d
+    LONG=feature:,dev
+    OPTS=$(getopt -a -n weather --options $SHORT --longoptions $LONG -- "$@")
 
+    eval set -- "$OPTS"
 
-    set -u
+    while :
+    do
+    case "$1" in
+        -f | --feature )
+            FEATURE="--filter $2"
+            info "Filtering by feature=$FEATURE"
+            shift 2
+            ;;
+        -d | --dev )
+            info "Using .env.dev..."
+            LOADDEV="--env-file .env.dev"
+            info "Using study.json.dev..."
+            STUDYJSON="study.json.dev"
+            shift;
+            ;;
+        --)
+            shift;
+            break
+            ;;
+        *)
+        echo "Unexpected option: $1"
+        ;;
+    esac
+    done
 
     if [[ $(docker-compose ps -q | wc -l) -ne 0 ]]; then
         info "Stopping existing services..."

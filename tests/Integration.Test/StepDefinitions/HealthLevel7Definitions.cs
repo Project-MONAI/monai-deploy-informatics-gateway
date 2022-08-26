@@ -219,6 +219,16 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                                 break;
                             }
                         }
+                        if (!matchFound)
+                        {
+                            _outputHelper.WriteLine($"HL7 message on MinIO: {hl7Message.HL7Message}");
+                            _outputHelper.WriteLine($"HL7 message in memory:");
+
+                            foreach (var file in _input.Values)
+                            {
+                                _outputHelper.WriteLine($"file=>{file.SerializeMessage(true)}");
+                            }
+                        }
                         matchFound.Should().BeTrue();
                     });
                 await minioClient.GetObjectAsync(getObjectArgs);
