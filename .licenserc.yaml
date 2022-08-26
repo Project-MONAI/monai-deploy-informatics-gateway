@@ -33,6 +33,7 @@ header:
     - 'demos/**/.env/**'
     - 'docs/templates/**'
     - 'tests/Integration.Test/*.dev'
+    - 'tests/Integration.Test/data/**'
 
   comment: on-failure
 
