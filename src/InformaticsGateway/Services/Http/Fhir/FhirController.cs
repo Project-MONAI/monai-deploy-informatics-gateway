@@ -51,9 +51,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
         [HttpPost]
         [Consumes(ContentTypes.ApplicationFhirJson, ContentTypes.ApplicationFhirXml)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
-        [Produces("application/fhir+json")]
+        [ProducesResponseType(typeof(OperationOutcome), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(OperationOutcome), StatusCodes.Status500InternalServerError)]
+        [Produces(ContentTypes.ApplicationFhirJson, ContentTypes.ApplicationFhirXml)]
         public async Task<IActionResult> Create()
         {
             return await Create(string.Empty).ConfigureAwait(false);
