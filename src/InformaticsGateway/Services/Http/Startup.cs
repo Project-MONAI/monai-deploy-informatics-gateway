@@ -25,7 +25,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Monai.Deploy.InformaticsGateway.Database;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
+using Monai.Deploy.Messaging;
+using Monai.Deploy.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -101,6 +104,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     return result;
                 };
             });
+
+            services.AddHealthChecks()
+                .AddCheck<MonaiHealthCheck>("Informatics Gateway Services")
+                .AddDbContextCheck<InformaticsGatewayContext>()
+                .AddMonaiDeployStorageHealthCheck(services, Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value)
+                .AddMonaiDeployMessageBrokerSubscriberHealthCheck(services, Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value)
+                .AddMonaiDeployMessageBrokerPublisherHealthCheck(services, Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value);
         }
 
 #pragma warning disable CA1822 // Mark members as static
@@ -119,6 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
         }
