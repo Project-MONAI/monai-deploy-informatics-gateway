@@ -14,11 +14,15 @@
  * limitations under the License.
  */
 
+using System.Linq;
+using System.Net.Mime;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FellowOakDicom.Serialization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -107,10 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
             services.AddHealthChecks()
                 .AddCheck<MonaiHealthCheck>("Informatics Gateway Services")
-                .AddDbContextCheck<InformaticsGatewayContext>()
-                .AddMonaiDeployStorageHealthCheck(services, Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value)
-                .AddMonaiDeployMessageBrokerSubscriberHealthCheck(services, Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value)
-                .AddMonaiDeployMessageBrokerPublisherHealthCheck(services, Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value);
+                .AddDbContextCheck<InformaticsGatewayContext>("Database");
         }
 
 #pragma warning disable CA1822 // Mark members as static
@@ -126,10 +127,27 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
 
             app.UseRouting();
+            app.UseHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+            {
+                ResponseWriter = async (context, report) =>
+                {
+                    var result = System.Text.Json.JsonSerializer.Serialize(new
+                    {
+                        status = report.Status.ToString(),
+                        checks = report.Entries.Select(c => new
+                        {
+                            check = c.Key,
+                            result = c.Value.Status.ToString()
+                        }),
+                    });
+
+                    context.Response.ContentType = MediaTypeNames.Application.Json;
+                    await context.Response.WriteAsync(result);
+                }
+            });
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/health");
                 endpoints.MapControllers();
             });
         }

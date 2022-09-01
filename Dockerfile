@@ -35,6 +35,7 @@ RUN apt-get clean \
     libssl1.1 \
     openssl \
     sqlite3 \
+    curl \
    && rm -rf /var/lib/apt/lists
 
 WORKDIR /opt/monai/ig
@@ -47,6 +48,8 @@ COPY docs/compliance/third-party-licenses.md ./
 EXPOSE 104
 EXPOSE 2575
 EXPOSE 5000
+
+HEALTHCHECK --interval=10s --retries=10 CMD curl --fail http://localhost:5000/health || exit 1
 
 RUN ls -lR /opt/monai/ig
 ENV PATH="/opt/dotnetcore-tools:${PATH}"
