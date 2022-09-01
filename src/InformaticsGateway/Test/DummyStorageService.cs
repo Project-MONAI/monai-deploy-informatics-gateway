@@ -21,6 +21,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Amazon.SecurityToken.Model;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Monai.Deploy.Storage;
 using Monai.Deploy.Storage.API;
 
@@ -28,11 +29,13 @@ namespace Monai.Deploy.InformaticsGateway.Test
 {
     internal class DummyStorageRegistrar : ServiceRegistrationBase
     {
-        public DummyStorageRegistrar(string fullyQualifiedAssemblyName) : base(fullyQualifiedAssemblyName)
-        {
-        }
-
         public override IServiceCollection Configure(IServiceCollection services) => services;
+    }
+
+    internal class DummyStorageHealthCheck : HealthCheckRegistrationBase
+    {
+        public override IHealthChecksBuilder ConfigureAdminHealthCheck(IHealthChecksBuilder builder, HealthStatus? failureStatus = null, IEnumerable<string> tags = null, TimeSpan? timeout = null) => builder;
+        public override IHealthChecksBuilder ConfigureHealthCheck(IHealthChecksBuilder builder, HealthStatus? failureStatus = null, IEnumerable<string> tags = null, TimeSpan? timeout = null) => builder;
     }
 
     internal class DummyStorageService : IStorageService
