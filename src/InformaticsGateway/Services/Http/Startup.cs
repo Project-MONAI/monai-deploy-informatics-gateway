@@ -20,7 +20,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using FellowOakDicom.Serialization;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -31,8 +30,6 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Monai.Deploy.InformaticsGateway.Database;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
-using Monai.Deploy.Messaging;
-using Monai.Deploy.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
