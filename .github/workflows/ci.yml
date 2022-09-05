@@ -462,7 +462,7 @@ jobs:
         run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
 
       - name: Extract owner and repo
-        uses: jungwinter/split@v1
+        uses: jungwinter/split@v2
         id: repo
         with:
           seperator: "/"
