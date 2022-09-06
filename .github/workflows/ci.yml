@@ -41,7 +41,7 @@ jobs:
       majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -72,7 +72,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
@@ -149,7 +149,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           
@@ -211,7 +211,7 @@ jobs:
       TAG: ${{ needs.build.outputs.TAG }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -242,7 +242,7 @@ jobs:
           popd
 
       - name: Upload Integration Test Results
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3.1.0
         if: always()
         with:
           name: integration-${{ matrix.feature }}
@@ -276,7 +276,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -321,7 +321,7 @@ jobs:
           dir -r ~/release
 
       - name: Upload CLI
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: artifacts
           path: ~/release
@@ -389,7 +389,7 @@ jobs:
     env:
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -435,7 +435,7 @@ jobs:
           Get-ChildItem ~\release -Recurse   
 
       - name: Upload docs
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: artifacts
           path: ~/release
@@ -451,7 +451,7 @@ jobs:
       MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
