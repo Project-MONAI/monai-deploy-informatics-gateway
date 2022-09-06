@@ -14,17 +14,21 @@
  * limitations under the License.
  */
 
+using System.Linq;
+using System.Net.Mime;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using FellowOakDicom.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Monai.Deploy.InformaticsGateway.Database;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -101,6 +105,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     return result;
                 };
             });
+
+            services.AddHealthChecks()
+                .AddCheck<MonaiHealthCheck>("Informatics Gateway Services")
+                .AddDbContextCheck<InformaticsGatewayContext>("Database");
         }
 
 #pragma warning disable CA1822 // Mark members as static
@@ -116,6 +124,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
 
             app.UseRouting();
+            app.UseHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+            {
+                ResponseWriter = async (context, report) =>
+                {
+                    var result = System.Text.Json.JsonSerializer.Serialize(new
+                    {
+                        status = report.Status.ToString(),
+                        checks = report.Entries.Select(c => new
+                        {
+                            check = c.Key,
+                            result = c.Value.Status.ToString()
+                        }),
+                    });
+
+                    context.Response.ContentType = MediaTypeNames.Application.Json;
+                    await context.Response.WriteAsync(result);
+                }
+            });
 
             app.UseEndpoints(endpoints =>
             {

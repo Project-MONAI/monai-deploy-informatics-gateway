@@ -18,6 +18,67 @@
 
 The _health_ endpoint provides the following APIs to get the status of the internals of the Informatics Gateway.
 
+
+
+## GET /health/
+
+Returns the MONAI Deploy Informatics Gateway service readiness and liveness.
+
+### Parameters
+
+N/A
+
+### Responses
+
+Response Content Type: JSON
+
+- `Healthy`: All services are running.
+- `Unhealthy`: One or more services have stopped or crashed.
+
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | Service is healthy.                                                                                                                     |
+| 503  | Service is unhealthy.                                                                                                                   |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+
+### Example Request
+
+```bash
+curl --location --request GET 'http://localhost:5000/health'
+```
+
+### Example Response
+
+```json
+{
+  "status": "Healthy",
+  "checks": [
+    {
+      "check": "Informatics Gateway Services",
+      "result": "Healthy"
+    },
+    {
+      "check": "InformaticsGatewayContext",
+      "result": "Healthy"
+    },
+    {
+      "check": "minio",
+      "result": "Healthy"
+    },
+    {
+      "check": "Rabbit MQ Subscriber",
+      "result": "Healthy"
+    },
+    {
+      "check": "Rabbit MQ Publisher",
+      "result": "Healthy"
+    }
+  ]
+}
+```
+
+---
+
 ## GET /health/status
 
 Returns the MONAI Informatics Gateway service status:
@@ -58,39 +119,4 @@ curl --location --request GET 'http://localhost:5000/health/status'
     "Workload Manager Notification Service": "Running"
   }
 }
-```
-
----
-
-## GET /health/ready & GET /health/live
-
-Returns the MONAI Deploy Informatics Gateway service readiness and liveness.
-
-### Parameters
-
-N/A
-
-### Responses
-
-Response Content Type: JSON
-
-- `Healthy`: All services are running.
-- `Unhealthy`: One or more services have stopped or crashed.
-
-| Code | Description                                                                                                                             |
-| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| 200  | Service is healthy.                                                                                                                     |
-| 503  | Service is unhealthy.                                                                                                                   |
-| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
-
-### Example Request
-
-```bash
-curl --location --request GET 'http://localhost:5000/health/live'
-```
-
-### Example Response
-
-```json
-"Healthy"
 ```

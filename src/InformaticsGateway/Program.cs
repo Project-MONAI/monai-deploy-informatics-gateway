@@ -79,7 +79,8 @@ namespace Monai.Deploy.InformaticsGateway
                     var env = builderContext.HostingEnvironment;
                     config
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: false);
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: false)
+                        .AddEnvironmentVariables();
                 })
                 .ConfigureLogging((builderContext, configureLogging) =>
                 {
@@ -114,10 +115,11 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddScoped<IPayloadMoveActionHandler, PayloadMoveActionHandler>();
                     services.AddScoped<IPayloadNotificationActionHandler, PayloadNotificationActionHandler>();
 
-                    services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value);
+                    services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
 
-                    services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value);
-                    services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value);
+
+                    services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value, true);
+                    services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value, true);
 
                     services.AddSingleton<ConfigurationValidator>();
                     services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
