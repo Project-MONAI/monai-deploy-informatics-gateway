@@ -465,7 +465,7 @@ jobs:
         uses: jungwinter/split@v2
         id: repo
         with:
-          seperator: "/"
+          separator: "/"
           msg: ${{ github.repository }}
 
       - name: Install GitReleaseManager
