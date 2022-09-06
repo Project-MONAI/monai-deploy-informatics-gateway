@@ -41,7 +41,7 @@ jobs:
       majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -72,7 +72,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
@@ -149,7 +149,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           
@@ -211,7 +211,7 @@ jobs:
       TAG: ${{ needs.build.outputs.TAG }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -276,7 +276,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -389,7 +389,7 @@ jobs:
     env:
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
@@ -451,7 +451,7 @@ jobs:
       MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
