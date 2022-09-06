@@ -16,7 +16,6 @@
 
 
 # Changelog
-
 ## 0.3.1
 
 [GitHub Milestone 0.3.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/7)
