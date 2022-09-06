@@ -12,13 +12,11 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build-cli",
-            "program": "${workspaceFolder}/src/CLI/bin/Debug/net5.0/linux-x64/mig-cli",
+            "program": "${workspaceFolder}/src/CLI/bin/Debug/net6.0/linux-x64/mig-cli",
             "args": [
-                "config",
-                "endpoint",
-                "http://localhost:4500"
+                "start"
             ],
-            "cwd": "${workspaceFolder}/src/CLI/bin/Debug/net5.0/linux-x64",
+            "cwd": "${workspaceFolder}/src/CLI/bin/Debug/net6.0/linux-x64",
             "stopAtEntry": true,
             "console": "internalConsole"
         },

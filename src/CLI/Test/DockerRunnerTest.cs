@@ -176,7 +176,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                         c.ExposedPorts.ContainsKey("200/tcp") &&
                         c.HostConfig.Mounts.Count(m => m.ReadOnly && m.Source == Common.ConfigFilePath && m.Target == Common.MountedConfigFilePath) == 1 &&
                         c.HostConfig.Mounts.Count(m => !m.ReadOnly && m.Source == "/database" && m.Target == Common.MountedDatabasePath) == 1 &&
-                        c.HostConfig.Mounts.Count(m => !m.ReadOnly && m.Source == "/storage" && m.Target == "/tempdata") == 1 &&
                         c.HostConfig.Mounts.Count(m => !m.ReadOnly && m.Source == "/logs" && m.Target == "/templogs") == 1), It.IsAny<CancellationToken>()), Times.Exactly(2));
 
             _logger.VerifyLogging("Warnings: warning1", LogLevel.Warning, Times.Once());
