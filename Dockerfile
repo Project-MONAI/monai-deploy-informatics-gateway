@@ -32,8 +32,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
-    libssl1.1 \
-    openssl \
     sqlite3 \
     curl \
    && rm -rf /var/lib/apt/lists
