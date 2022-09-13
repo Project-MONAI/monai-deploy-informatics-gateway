@@ -16,6 +16,12 @@
 
 
 # Changelog
+## 0.3.0
+
+[GitHub Milestone 0.3.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/3)
+
+- Adds a basic [FHIR service](api/rest/config.md) to accept any versions of FHIR.
+- Updates [Health Check API](api/rest/health.md) to replace `/health/live` and `/health/ready` APIs with `/health` API.
 
 ## 0.2.0
 

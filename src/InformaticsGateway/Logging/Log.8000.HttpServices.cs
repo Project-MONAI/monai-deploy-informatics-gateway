@@ -112,12 +112,29 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void StowFailedWithNoSpace(this ILogger logger, Exception ex = null);
 
         [LoggerMessage(EventId = 8108, Level = LogLevel.Information, Message = "STOW instance queued.")]
-        public static partial void QueuedInstanceUsingCorrelationId(this ILogger logger);
+        public static partial void QueuedStowInstance(this ILogger logger);
 
         [LoggerMessage(EventId = 8109, Level = LogLevel.Information, Message = "Saving {count} DICOMWeb STOW-RS streams.")]
         public static partial void SavingStream(this ILogger logger, int count);
 
         [LoggerMessage(EventId = 8110, Level = LogLevel.Warning, Message = "Ignoring zero length stream.")]
         public static partial void ZeroLengthDicomWebStowStream(this ILogger logger);
+
+        // FHIR Serer
+
+        [LoggerMessage(EventId = 8200, Level = LogLevel.Debug, Message = "Parsing FHIR as JSON.")]
+        public static partial void ParsingFhirJson(this ILogger logger);
+
+        [LoggerMessage(EventId = 8201, Level = LogLevel.Debug, Message = "Parsing FHIR as XML.")]
+        public static partial void ParsingFhirXml(this ILogger logger);
+
+        [LoggerMessage(EventId = 8202, Level = LogLevel.Information, Message = "FHIR instance queued.")]
+        public static partial void QueueFhirInstance(this ILogger logger);
+
+        [LoggerMessage(EventId = 8203, Level = LogLevel.Error, Message = "Error storing FHIR object.")]
+        public static partial void FhirStoreException(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8204, Level = LogLevel.Error, Message = "Failed to store FHIR resource.")]
+        public static partial void ErrorStoringFhirResource(this ILogger logger, Exception ex);
     }
 }

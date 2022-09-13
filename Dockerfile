@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-jammy as build
 
 # Install the tools
 RUN dotnet tool install --tool-path /tools dotnet-trace
@@ -26,16 +26,15 @@ RUN echo "Building MONAI Deploy Informatics Gateway..."
 RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
-    libssl1.1 \
-    openssl \
     sqlite3 \
-   && rm -rf /var/lib/apt/lists
+    curl \
+    && rm -rf /var/lib/apt/lists
 
 WORKDIR /opt/monai/ig
 
@@ -47,6 +46,8 @@ COPY docs/compliance/third-party-licenses.md ./
 EXPOSE 104
 EXPOSE 2575
 EXPOSE 5000
+
+HEALTHCHECK --interval=10s --retries=10 CMD curl --fail http://localhost:5000/health || exit 1
 
 RUN ls -lR /opt/monai/ig
 ENV PATH="/opt/dotnetcore-tools:${PATH}"

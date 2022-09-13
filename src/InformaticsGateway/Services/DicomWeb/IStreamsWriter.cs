@@ -170,7 +170,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
             // for DICOMweb, use correlation ID as the grouping key
             await _payloadAssembler.Queue(correlationId, dicomInfo, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
-            _logger.QueuedInstanceUsingCorrelationId();
+            _logger.QueuedStowInstance();
 
             AddSuccess(null, uids);
 

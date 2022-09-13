@@ -20,6 +20,7 @@ header:
   paths-ignore:
     - 'LICENSE'
     - '.github/**/*.md'
+    - '.github/dependabot.yml'
     - '**/*.log'
     - '**/bin/**'
     - '**/obj/**'
@@ -33,6 +34,7 @@ header:
     - 'demos/**/.env/**'
     - 'docs/templates/**'
     - 'tests/Integration.Test/*.dev'
+    - 'tests/Integration.Test/data/**'
 
   comment: on-failure
 

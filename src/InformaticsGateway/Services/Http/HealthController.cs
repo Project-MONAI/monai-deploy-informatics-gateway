@@ -16,7 +16,6 @@
  */
 
 using System;
-using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -58,32 +57,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 };
 
                 return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                _logger.ErrorCollectingSystemStatus(ex);
-                return Problem(title: "Error collecting system status.", statusCode: (int)HttpStatusCode.InternalServerError, detail: ex.Message);
-            }
-        }
-
-        [HttpGet("ready")]
-        [HttpGet("live")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status503ServiceUnavailable)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult Ready()
-        {
-            try
-            {
-                var services = _monaiServiceLocator.GetServiceStatus();
-
-                if (services.Values.Any((p) => p != ServiceStatus.Running))
-                {
-                    return StatusCode((int)HttpStatusCode.ServiceUnavailable, "Unhealthy");
-                }
-
-                return Ok("Healthy");
             }
             catch (Exception ex)
             {

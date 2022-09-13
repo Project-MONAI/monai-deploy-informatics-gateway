@@ -41,11 +41,11 @@ jobs:
       majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
           dotnet-version: "6.0.x"
           
@@ -54,7 +54,7 @@ jobs:
 
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.11
+        uses: gittools/actions/gitversion/execute@v0.9.13
         with:
           useConfigFile: true
           configFilePath: .github/.gitversion.yml
@@ -72,11 +72,11 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v1
+    - uses: actions/setup-dotnet@v2
       with:
         dotnet-version: "6.0.x"
 
@@ -86,7 +86,7 @@ jobs:
         tools: licensefinder
 
     - name: Enable NuGet cache
-      uses: actions/cache@v2.1.7
+      uses: actions/cache@v3.0.8
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -132,23 +132,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 11
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 1.11
+          distribution: zulu
+          java-version: '11'
 
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
           dotnet-version: "6.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.0.8
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
           
@@ -188,7 +189,7 @@ jobs:
         run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
         working-directory: ./src
           
-      - uses: codecov/codecov-action@v2
+      - uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: "src/${{ env.TEST_RESULTS }}"
@@ -204,22 +205,22 @@ jobs:
     needs: [build]
     strategy:
       matrix:
-        feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7]
+        feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7, Fhir]
       fail-fast: false
     env:
       TAG: ${{ needs.build.outputs.TAG }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
           dotnet-version: "6.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.0.8
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -241,7 +242,7 @@ jobs:
           popd
 
       - name: Upload Integration Test Results
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3.1.0
         if: always()
         with:
           name: integration-${{ matrix.feature }}
@@ -275,16 +276,16 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
           dotnet-version: "6.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.0.8
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -320,14 +321,14 @@ jobs:
           dir -r ~/release
 
       - name: Upload CLI
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: artifacts
           path: ~/release
           retention-days: 7
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v1.12.0
+        uses: docker/login-action@v2.0.0
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           registry: ${{ env.REGISTRY }}
@@ -336,7 +337,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v3.6.2
+        uses: docker/metadata-action@v4.0.1
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -345,7 +346,7 @@ jobs:
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v2.9.0
+        uses: docker/build-push-action@v3.1.1
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           context: .
@@ -363,7 +364,7 @@ jobs:
 
       - name: Anchore container scan
         id: anchore-scan
-        uses: anchore/scan-action@v3.2.0
+        uses: anchore/scan-action@v3.2.5
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
@@ -388,16 +389,16 @@ jobs:
     env:
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
           dotnet-version: "6.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v2.1.7
+        uses: actions/cache@v3.0.8
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -405,7 +406,7 @@ jobs:
             ${{ runner.os }}-nuget
 
       - name: Setup DocFX
-        uses: crazy-max/ghaction-chocolatey@v1
+        uses: crazy-max/ghaction-chocolatey@v2
         with:
           args: install docfx
 
@@ -434,7 +435,7 @@ jobs:
           Get-ChildItem ~\release -Recurse   
 
       - name: Upload docs
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: artifacts
           path: ~/release
@@ -450,30 +451,30 @@ jobs:
       MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         id: download
 
       - name: List artifacts
         run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
 
       - name: Extract owner and repo
-        uses: jungwinter/split@v1
+        uses: jungwinter/split@v2
         id: repo
         with:
-          seperator: "/"
+          separator: "/"
           msg: ${{ github.repository }}
 
       - name: Install GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/setup@v0.9.11
+        uses: gittools/actions/gitreleasemanager/setup@v0.9.13
         with:
           versionSpec: "0.13.x"
 
       - name: Create release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/create@v0.9.11
+        uses: gittools/actions/gitreleasemanager/create@v0.9.13
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -486,7 +487,7 @@ jobs:
             artifacts/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/publish@v0.9.11
+        uses: gittools/actions/gitreleasemanager/publish@v0.9.13
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -495,7 +496,7 @@ jobs:
           tagName: ${{ env.MAJORMINORPATCH }}
 
       - name: Close release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/close@v0.9.11
+        uses: gittools/actions/gitreleasemanager/close@v0.9.13
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

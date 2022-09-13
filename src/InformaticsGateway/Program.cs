@@ -34,6 +34,7 @@ using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Export;
+using Monai.Deploy.InformaticsGateway.Services.Fhir;
 using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
@@ -78,7 +79,8 @@ namespace Monai.Deploy.InformaticsGateway
                     var env = builderContext.HostingEnvironment;
                     config
                         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
-                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: false);
+                        .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: false)
+                        .AddEnvironmentVariables();
                 })
                 .ConfigureLogging((builderContext, configureLogging) =>
                 {
@@ -103,6 +105,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
                     services.AddTransient<IStowService, StowService>();
+                    services.AddTransient<IFhirService, FhirService>();
                     services.AddTransient<IStreamsWriter, StreamsWriter>();
                     services.AddTransient<IApplicationEntityHandler, ApplicationEntityHandler>();
 
@@ -112,10 +115,11 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddScoped<IPayloadMoveActionHandler, PayloadMoveActionHandler>();
                     services.AddScoped<IPayloadNotificationActionHandler, PayloadNotificationActionHandler>();
 
-                    services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value);
+                    services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
 
-                    services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value);
-                    services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value);
+
+                    services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value, true);
+                    services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value, true);
 
                     services.AddSingleton<ConfigurationValidator>();
                     services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
