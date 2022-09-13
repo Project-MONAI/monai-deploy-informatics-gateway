@@ -20,7 +20,7 @@ The `fhir/` endpoint implements the specifications defined in [section 3.1.0 RES
 defined by HL7 (Health Level 7 International) to enable triggering new workflows. The FHIR service supports multiple versions of the Fast Healthcare Interoperability Resources (FHIR) specifications published by Health Level 7 International (HL7).
 
 [!Note]
-The service does not support `CapabilityStatement` at this moment and does not group the incoming FHIR resources. Therefore, each incoming FHIR resource will trigger a new workflow request.
+The service does not support [CapabilityStatement](https://www.hl7.org/fhir/capabilitystatement.html) at this moment and does not group the incoming FHIR resources. Therefore, each incoming FHIR resource will trigger a new workflow request.
 
 The *FHIR* service provides the following endpoint.
 
@@ -61,6 +61,3 @@ If the `Accept` header is missing or a none supported value exists, the service 
 | 400  | [OperationOutcome](http://hl7.org/fhir/operationoutcome.html) | Unable to parse the resource or mismatching resource type specified.. |
 | 415  | `none`                                                        | Unsupported media type                                                |
 | 500  | [OperationOutcome](http://hl7.org/fhir/operationoutcome.html) | Server error.                                                         |
-
-[!Note]
-The `Location` header in the response given that the resources created are for inference only.
