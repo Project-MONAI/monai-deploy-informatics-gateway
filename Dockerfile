@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-jammy as build
+FROM mcr.microsoft.com/dotnet/sdk:6.0-focal as build
 
 # Install the tools
 RUN dotnet tool install --tool-path /tools dotnet-trace
@@ -26,7 +26,7 @@ RUN echo "Building MONAI Deploy Informatics Gateway..."
 RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
 
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
@@ -34,7 +34,6 @@ RUN apt-get clean \
  && apt-get install -y --no-install-recommends \
     sqlite3 \
     curl \
-    tar \
    && rm -rf /var/lib/apt/lists
 
 WORKDIR /opt/monai/ig
