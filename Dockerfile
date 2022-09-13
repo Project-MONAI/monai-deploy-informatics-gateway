@@ -34,6 +34,7 @@ RUN apt-get clean \
  && apt-get install -y --no-install-recommends \
     sqlite3 \
     curl \
+    tar \
    && rm -rf /var/lib/apt/lists
 
 WORKDIR /opt/monai/ig
