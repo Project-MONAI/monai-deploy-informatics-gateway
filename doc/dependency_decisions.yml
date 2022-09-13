@@ -1192,7 +1192,7 @@
 - - :approve
   - System.Configuration.ConfigurationManager
   - :who: mocsharp
-    :why: MIT ( https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+    :why: MIT ( https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
     - 4.5.0
     :when: 2022-08-16 23:06:43.335979768 Z
@@ -1493,7 +1493,7 @@
 - - :approve
   - System.Reflection.Metadata
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+    :why: MIT (https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
     - 1.6.0
     :when: 2022-08-16 23:07:03.120522282 Z
@@ -1535,7 +1535,7 @@
 - - :approve
   - System.Runtime.CompilerServices.Unsafe
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+    :why: MIT (https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
     - 4.5.1
     :when: 2022-08-16 23:07:05.893799510 Z
@@ -1612,7 +1612,7 @@
 - - :approve
   - System.Security.AccessControl
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+    :why: MIT (https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
     - 4.5.0
     :when: 2022-08-16 23:07:11.063425328 Z
@@ -1668,7 +1668,7 @@
 - - :approve
   - System.Security.Cryptography.ProtectedData
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+    :why: MIT (https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
     - 4.5.0
     :when: 2022-08-16 23:07:14.759818552 Z
@@ -1682,7 +1682,7 @@
 - - :approve
   - System.Security.Permissions
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+    :why: MIT (https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
     - 4.5.0
     :when: 2022-08-16 23:07:15.681971110 Z
@@ -1717,7 +1717,7 @@
 - - :approve
   - System.Text.Encoding.CodePages
   - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+    :why: MIT (https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
     - 4.6.0
     :when: 2022-08-16 23:07:17.991171210 Z

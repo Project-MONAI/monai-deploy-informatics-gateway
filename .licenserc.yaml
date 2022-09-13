@@ -20,6 +20,7 @@ header:
   paths-ignore:
     - 'LICENSE'
     - '.github/**/*.md'
+    - '.github/dependabot.yml'
     - '**/*.log'
     - '**/bin/**'
     - '**/obj/**'
