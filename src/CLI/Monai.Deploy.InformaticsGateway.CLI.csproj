@@ -52,7 +52,7 @@
 
   <ItemGroup>
     <PackageReference Include="Crayon" Version="2.0.64" />
-    <PackageReference Include="Docker.DotNet" Version="3.125.10" />
+    <PackageReference Include="Docker.DotNet" Version="3.125.11" />
     <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
         <PrivateAssets>All</PrivateAssets>
     </PackageReference>
@@ -62,6 +62,6 @@
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
     <PackageReference Include="System.CommandLine.Hosting" Version="0.4.0-alpha.22272.1" />
     <PackageReference Include="System.CommandLine.Rendering" Version="0.4.0-alpha.22272.1" />
-    <PackageReference Include="System.IO.Abstractions" Version="17.1.1" />
+    <PackageReference Include="System.IO.Abstractions" Version="17.2.1" />
   </ItemGroup>
 </Project>
