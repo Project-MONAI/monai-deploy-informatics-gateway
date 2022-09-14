@@ -81,7 +81,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/Docker.DotNet/raw/master/LICENSE)
     :versions:
-    - 3.125.10
+    - 3.125.11
     :when: 2022-08-16 23:05:32.422217566 Z
 - - :approve
   - DotNext
@@ -716,28 +716,14 @@
 - - :approve
   - Microsoft.NET.Test.Sdk
   - :who: mocsharp
-    :why: MIT ( https://aka.ms/deprecateLicenseUrl)
-    :versions:
-    - 17.1.0
-    :when: 2022-08-16 23:06:12.107365387 Z
-- - :approve
-  - Microsoft.NET.Test.Sdk
-  - :who: mocsharp
-    :why: MIT ( https://aka.ms/deprecateLicenseUrl)
-    :versions:
-    - 17.2.0
-    :when: 2022-08-16 23:06:12.556082109 Z
-- - :approve
-  - Microsoft.NET.Test.Sdk
-  - :who: mocsharp
-    :why: MIT ( https://aka.ms/deprecateLicenseUrl)
+    :why: MIT (https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
     :versions:
     - 17.3.1
     :when: 2022-09-01 23:06:13.008314524 Z
 - - :approve
   - Microsoft.NETCore.Platforms
   - :who: mocsharp
-    :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
+    :why: MICROSOFT .NET LIBRARY License (http://go.microsoft.com/fwlink/?LinkId=329770)
     :versions:
     - 1.1.0
     :when: 2022-08-16 23:06:13.457444370 Z
@@ -1299,28 +1285,14 @@
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
-    - 17.0.24
-    :when: 2022-08-16 23:06:50.154940671 Z
-- - :approve
-  - System.IO.Abstractions
-  - :who: mocsharp
-    :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
-    :versions:
-    - 17.1.1
+    - 17.2.1
     :when: 2022-08-16 23:06:50.602318269 Z
 - - :approve
   - System.IO.Abstractions.TestingHelpers
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
-    - 17.0.24
-    :when: 2022-08-16 23:06:51.058360011 Z
-- - :approve
-  - System.IO.Abstractions.TestingHelpers
-  - :who: mocsharp
-    :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
-    :versions:
-    - 17.1.1
+    - 17.2.1
     :when: 2022-08-16 23:06:51.524564913 Z
 - - :approve
   - System.IO.Compression
@@ -2428,3 +2400,4 @@
     :versions:
     - 4.0.1
     :when: 2022-08-16 23:10:21.184627612 Z
+    
