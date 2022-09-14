@@ -8,7 +8,7 @@
     <title>Health APIs | MONAI Deploy Informatics Gateway v </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Health APIs | MONAI Deploy Informatics Gateway v ">
-    <meta name="generator" content="docfx 2.59.3.0">
+    <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
     <link rel="stylesheet" href="../../styles/docfx.vendor.css">
@@ -95,56 +95,11 @@
 -->
 
 <p>The <em>health</em> endpoint provides the following APIs to get the status of the internals of the Informatics Gateway.</p>
-<h2 id="get-healthstatus">GET /health/status</h2>
-<p>Returns the MONAI Informatics Gateway service status:</p>
-<ul>
-<li>Active DICOM DIMSE associations</li>
-<li>Internal service status</li>
-</ul>
+<h2 id="get-health">GET /health/</h2>
+<p>Returns the MONAI Deploy Informatics Gateway service readiness and liveness.</p>
 <h3 id="parameters">Parameters</h3>
 <p>N/A</p>
 <h3 id="responses">Responses</h3>
-<p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.HealthStatusResponse.html">HealthStatusResponse</a>.</p>
-<table>
-<thead>
-<tr>
-<th>Code</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>200</td>
-<td>Status is available.</td>
-</tr>
-<tr>
-<td>500</td>
-<td>Server error. The response will be a <a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a> object with server error details.</td>
-</tr>
-</tbody>
-</table>
-<h3 id="example-request">Example Request</h3>
-<pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/health/status'
-</code></pre>
-<h3 id="example-response">Example Response</h3>
-<pre><code class="lang-json">{
-  &quot;activeDimseConnections&quot;: 8,
-  &quot;services&quot;: {
-    &quot;Space Reclaimer Service&quot;: &quot;Running&quot;,
-    &quot;DICOM SCP Service&quot;: &quot;Running&quot;,
-    &quot;DICOMweb Export Service&quot;: &quot;Running&quot;,
-    &quot;DICOM Export Service&quot;: &quot;Running&quot;,
-    &quot;Data Retrieval Service&quot;: &quot;Running&quot;,
-    &quot;Workload Manager Notification Service&quot;: &quot;Running&quot;
-  }
-}
-</code></pre>
-<hr>
-<h2 id="get-healthready--get-healthlive">GET /health/ready &amp; GET /health/live</h2>
-<p>Returns the MONAI Deploy Informatics Gateway service readiness and liveness.</p>
-<h3 id="parameters-1">Parameters</h3>
-<p>N/A</p>
-<h3 id="responses-1">Responses</h3>
 <p>Response Content Type: JSON</p>
 <ul>
 <li><code>Healthy</code>: All services are running.</li>
@@ -172,11 +127,80 @@
 </tr>
 </tbody>
 </table>
+<h3 id="example-request">Example Request</h3>
+<pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/health'
+</code></pre>
+<h3 id="example-response">Example Response</h3>
+<pre><code class="lang-json">{
+  &quot;status&quot;: &quot;Healthy&quot;,
+  &quot;checks&quot;: [
+    {
+      &quot;check&quot;: &quot;Informatics Gateway Services&quot;,
+      &quot;result&quot;: &quot;Healthy&quot;
+    },
+    {
+      &quot;check&quot;: &quot;InformaticsGatewayContext&quot;,
+      &quot;result&quot;: &quot;Healthy&quot;
+    },
+    {
+      &quot;check&quot;: &quot;minio&quot;,
+      &quot;result&quot;: &quot;Healthy&quot;
+    },
+    {
+      &quot;check&quot;: &quot;Rabbit MQ Subscriber&quot;,
+      &quot;result&quot;: &quot;Healthy&quot;
+    },
+    {
+      &quot;check&quot;: &quot;Rabbit MQ Publisher&quot;,
+      &quot;result&quot;: &quot;Healthy&quot;
+    }
+  ]
+}
+</code></pre>
+<hr>
+<h2 id="get-healthstatus">GET /health/status</h2>
+<p>Returns the MONAI Informatics Gateway service status:</p>
+<ul>
+<li>Active DICOM DIMSE associations</li>
+<li>Internal service status</li>
+</ul>
+<h3 id="parameters-1">Parameters</h3>
+<p>N/A</p>
+<h3 id="responses-1">Responses</h3>
+<p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.HealthStatusResponse.html">HealthStatusResponse</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>Status is available.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Server error. The response will be a <a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a> object with server error details.</td>
+</tr>
+</tbody>
+</table>
 <h3 id="example-request-1">Example Request</h3>
-<pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/health/live'
+<pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/health/status'
 </code></pre>
 <h3 id="example-response-1">Example Response</h3>
-<pre><code class="lang-json">&quot;Healthy&quot;
+<pre><code class="lang-json">{
+  &quot;activeDimseConnections&quot;: 8,
+  &quot;services&quot;: {
+    &quot;Space Reclaimer Service&quot;: &quot;Running&quot;,
+    &quot;DICOM SCP Service&quot;: &quot;Running&quot;,
+    &quot;DICOMweb Export Service&quot;: &quot;Running&quot;,
+    &quot;DICOM Export Service&quot;: &quot;Running&quot;,
+    &quot;Data Retrieval Service&quot;: &quot;Running&quot;,
+    &quot;Workload Manager Notification Service&quot;: &quot;Running&quot;
+  }
+}
 </code></pre>
 </article>
           </div>
