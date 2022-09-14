@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-next-version: 0.2.0
+next-version: 0.3.0
 assembly-versioning-scheme: MajorMinorPatchTag
 mode: ContinuousDelivery
 branches:
