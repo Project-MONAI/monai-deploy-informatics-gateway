@@ -805,6 +805,13 @@
     - 17.3.1
     :when: 2022-09-01 23:06:18.619013325 Z
 - - :approve
+  - Microsoft.Toolkit.HighPerformance
+  - :who: mocsharp
+    :why: MIT (https://github.com/CommunityToolkit/WindowsCommunityToolkit/raw/main/License.md)
+    :versions:
+    - 7.1.2
+    :when: 2022-09-20 00:42:18.619013325 Z
+- - :approve
   - Microsoft.Win32.Primitives
   - :who: mocsharp
     :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
