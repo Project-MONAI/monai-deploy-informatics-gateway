@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -40,7 +41,59 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
                 Guid.NewGuid().ToString());
 
             var dicom = InstanceGenerator.GenerateDicomFile();
-            var json = dicom.ToJson(DicomJsonOptions.Complete);
+            var json = dicom.ToJson(DicomJsonOptions.Complete, false);
+            await metadata.SetDataStreams(dicom, json).ConfigureAwait(false);
+
+            Assert.NotNull(metadata.File.Data);
+            Assert.NotNull(metadata.JsonFile.Data);
+
+            var ms = new MemoryStream();
+            await dicom.SaveAsync(ms).ConfigureAwait(false);
+            Assert.Equal(ms.ToArray(), (metadata.File.Data as MemoryStream).ToArray());
+
+            var jsonFromStream = Encoding.UTF8.GetString((metadata.JsonFile.Data as MemoryStream).ToArray());
+            Assert.Equal(json.Trim(), jsonFromStream.Trim());
+
+            var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
+            Assert.Equal(dicom.Dataset, dicomFileFromJson);
+        }
+
+        [Fact]
+        public async Task GivenADicomFileStorageMetadataWithInvalidDSValue_WhenSetDataStreamsIsCalledWithValidation_ThrowsFormatException()
+        {
+            var metadata = new DicomFileStorageMetadata(
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString());
+
+            var dicom = InstanceGenerator.GenerateDicomFile();
+#pragma warning disable CS0618 // Type or member is obsolete
+            dicom.Dataset.AutoValidate = false;
+#pragma warning restore CS0618 // Type or member is obsolete
+            dicom.Dataset.Add(DicomTag.PixelSpacing, "0.68300002813334234234392", "0.235425246583524352345");
+
+            Assert.Throws<FormatException>(() => dicom.ToJson(DicomJsonOptions.Complete, true));
+        }
+
+        [Fact]
+        public async Task GivenADicomFileStorageMetadataWithInvalidDSValue_WhenSetDataStreamsIsCalled_ExpectDataStreamsAreSet()
+        {
+            var metadata = new DicomFileStorageMetadata(
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString());
+
+            var dicom = InstanceGenerator.GenerateDicomFile();
+#pragma warning disable CS0618 // Type or member is obsolete
+            dicom.Dataset.AutoValidate = false;
+#pragma warning restore CS0618 // Type or member is obsolete
+            dicom.Dataset.Add(DicomTag.PixelSpacing, "0.68300002813334234392234", "0.2354257587243524352345");
+
+            var json = dicom.ToJson(DicomJsonOptions.Complete, false);
             await metadata.SetDataStreams(dicom, json).ConfigureAwait(false);
 
             Assert.NotNull(metadata.File.Data);
