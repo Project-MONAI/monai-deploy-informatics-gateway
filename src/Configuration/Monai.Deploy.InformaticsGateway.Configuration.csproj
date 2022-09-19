@@ -32,7 +32,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.4" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.5" />
-    <PackageReference Include="System.IO.Abstractions" Version="17.2.1" />
+    <PackageReference Include="System.IO.Abstractions" Version="17.2.3" />
   </ItemGroup>
 
   <ItemGroup>
