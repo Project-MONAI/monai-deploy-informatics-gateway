@@ -21,8 +21,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
-using FellowOakDicom.Imaging.Codec;
-using FellowOakDicom.Log;
 using FellowOakDicom.Network;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -44,8 +42,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private IDisposable _loggerScope;
         private Guid _associationId;
 
-        public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
-                : base(stream, fallbackEncoding, log, logManager, network, transcoder)
+        public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, DicomServiceDependencies dicomServiceDependencies)
+                : base(stream, fallbackEncoding, log, dicomServiceDependencies)
         {
         }
 

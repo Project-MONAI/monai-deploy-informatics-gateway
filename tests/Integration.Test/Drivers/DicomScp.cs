@@ -16,7 +16,6 @@
 
 using System.Text;
 using FellowOakDicom;
-using FellowOakDicom.Imaging.Codec;
 using FellowOakDicom.Log;
 using FellowOakDicom.Network;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
@@ -36,8 +35,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         private static readonly Object SyncLock = new Object();
         internal static readonly string PayloadsRoot = "./payloads";
 
-        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
-            : base(stream, fallbackEncoding, log, logManager, network, transcoder)
+        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, ILogger log, DicomServiceDependencies dicomServiceDependencies)
+            : base(stream, fallbackEncoding, log, dicomServiceDependencies)
         {
         }
 

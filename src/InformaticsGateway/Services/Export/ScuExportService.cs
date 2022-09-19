@@ -78,7 +78,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             Guard.Against.Null(exportRequestData, nameof(exportRequestData));
 
             var manualResetEvent = new ManualResetEvent(false);
-            IDicomClient client = null;
             DestinationApplicationEntity destination = null;
             try
             {
@@ -93,38 +92,38 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             try
             {
-                client = DicomClientFactory.Create(
-                    destination.HostIp,
-                    destination.Port,
-                    false,
-                    _configuration.Value.Dicom.Scu.AeTitle,
-                    destination.AeTitle);
+                await Policy
+                   .Handle<Exception>()
+                   .WaitAndRetryAsync(
+                       _configuration.Value.Export.Retries.RetryDelays,
+                       (exception, timeSpan, retryCount, context) =>
+                       {
+                           _logger.DimseExportErrorWithRetry(timeSpan, retryCount, exception);
+                       })
+                   .ExecuteAsync(async () =>
+                   {
+                       var client = DicomClientFactory.Create(
+                               destination.HostIp,
+                               destination.Port,
+                               false,
+                               _configuration.Value.Dicom.Scu.AeTitle,
+                               destination.AeTitle);
 
-                client.AssociationAccepted += (sender, args) => _logger.AssociationAccepted();
-                client.AssociationRejected += (sender, args) => _logger.AssociationRejected();
-                client.AssociationReleased += (sender, args) => _logger.AssociationReleased();
-                client.ServiceOptions.LogDataPDUs = _configuration.Value.Dicom.Scu.LogDataPdus;
-                client.ServiceOptions.LogDimseDatasets = _configuration.Value.Dicom.Scu.LogDimseDatasets;
+                       client.AssociationAccepted += (sender, args) => _logger.AssociationAccepted();
+                       client.AssociationRejected += (sender, args) => _logger.AssociationRejected();
+                       client.AssociationReleased += (sender, args) => _logger.AssociationReleased();
+                       client.ServiceOptions.LogDataPDUs = _configuration.Value.Dicom.Scu.LogDataPdus;
+                       client.ServiceOptions.LogDimseDatasets = _configuration.Value.Dicom.Scu.LogDimseDatasets;
 
-                client.NegotiateAsyncOps();
-                if (GenerateRequests(exportRequestData, client, manualResetEvent))
-                {
-                    await Policy
-                       .Handle<Exception>()
-                       .WaitAndRetryAsync(
-                           _configuration.Value.Export.Retries.RetryDelays,
-                           (exception, timeSpan, retryCount, context) =>
-                           {
-                               _logger.DimseExportErrorWithRetry(timeSpan, retryCount, exception);
-                           })
-                       .ExecuteAsync(async () =>
+                       client.NegotiateAsyncOps();
+                       if (await GenerateRequestsAsync(exportRequestData, client, manualResetEvent))
                        {
                            _logger.DimseExporting(destination.AeTitle, destination.HostIp, destination.Port);
                            await client.SendAsync(cancellationToken).ConfigureAwait(false);
                            manualResetEvent.WaitOne();
                            _logger.DimseExportComplete(destination.AeTitle);
-                       }).ConfigureAwait(false);
-                }
+                       }
+                   }).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -151,7 +150,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             return destination;
         }
 
-        private bool GenerateRequests(
+        private async Task<bool> GenerateRequestsAsync(
             ExportRequestDataMessage exportRequestData,
             IDicomClient client,
             ManualResetEvent manualResetEvent)
@@ -177,7 +176,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     manualResetEvent.Set();
                 };
 
-                client.AddRequestAsync(request).ConfigureAwait(false);
+                await client.AddRequestAsync(request).ConfigureAwait(false);
                 return true;
             }
             catch (Exception exception)
