@@ -26864,14 +26864,14 @@ SOFTWARE.
 
 
 <details>
-<summary>fo-dicom 5.0.2</summary>
+<summary>fo-dicom 5.0.3</summary>
 
 ## fo-dicom
 
-- Version: 5.0.2
+- Version: 5.0.3
 - Authors: fo-dicom contributors
 - Project URL: https://github.com/fo-dicom/fo-dicom
-- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.0.2)
+- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.0.3)
 - License: [Microsoft Public License](https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
 
 

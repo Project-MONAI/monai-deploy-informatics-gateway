@@ -1866,7 +1866,7 @@
   - :who: mocsharp
     :why: Microsoft Public License (https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
     :versions:
-    - 5.0.2
+    - 5.0.3
     :when: 2022-08-16 23:07:29.574869349 Z
 - - :approve
   - runtime.any.System.Collections
@@ -2400,4 +2400,3 @@
     :versions:
     - 4.0.1
     :when: 2022-08-16 23:10:21.184627612 Z
-    
