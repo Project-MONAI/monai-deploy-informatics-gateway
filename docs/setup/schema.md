@@ -68,7 +68,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
         "rejectUnknownSources": true
       },
       "scu": {
-        "aeTitle": "MonaiSCU",
+        "aeTitle": "MONAISCU",
         "logDimseDatasets": false,
         "logDataPDUs": false
       }
