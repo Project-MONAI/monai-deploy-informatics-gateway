@@ -41,5 +41,11 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// </summary>
         [ConfigurationKeyName("writeDicomJson")]
         public DicomJsonOptions WriteDicomJson { get; set; } = DicomJsonOptions.IgnoreOthers;
+
+        /// <summary>
+        /// Gets or sets whether to automatically validate the DICOM values when serializing to JSON.
+        /// Defaults to False.
+        /// </summary>
+        public bool ValidateDicomOnSerialization { get; set; } = false;
     }
 }

@@ -104,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
 
             var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object);
-            handler.Configure(aet, Configuration.DicomJsonOptions.Complete);
+            handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();
             var dicomToolkit = new DicomToolkit();
@@ -128,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
 
             var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object);
-            handler.Configure(aet, Configuration.DicomJsonOptions.Complete);
+            handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();
             var dicomToolkit = new DicomToolkit();
@@ -151,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             };
 
             var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object);
-            handler.Configure(aet, Configuration.DicomJsonOptions.Complete);
+            handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();
             var dicomToolkit = new DicomToolkit();

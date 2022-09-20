@@ -41,6 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private MonaiApplicationEntity _configuration;
         private DicomJsonOptions _dicomJsonOptions;
+        private bool _validateDicomValueOnJsonSerialization;
         private bool _disposedValue;
 
         public ApplicationEntityHandler(
@@ -55,12 +56,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
         }
 
-        public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions)
+        public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions, bool validateDicomValuesOnJsonSerialization)
         {
             Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
 
             _configuration = monaiApplicationEntity;
             _dicomJsonOptions = dicomJsonOptions;
+            _validateDicomValueOnJsonSerialization = validateDicomValuesOnJsonSerialization;
         }
 
         public async Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
@@ -93,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
-            await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions)).ConfigureAwait(false);
+            await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization)).ConfigureAwait(false);
             _uploadQueue.Queue(dicomInfo);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
