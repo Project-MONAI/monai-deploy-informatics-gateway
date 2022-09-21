@@ -52,12 +52,15 @@ namespace Monai.Deploy.InformaticsGateway.Common
             return dicomTransferSyntaxes.ToArray();
         }
 
-        public static string ToJson(this DicomFile dicomFile, DicomJsonOptions dicomJsonOptions)
+        public static string ToJson(this DicomFile dicomFile, DicomJsonOptions dicomJsonOptions, bool validateDicom)
         {
             Guard.Against.Null(dicomFile, nameof(dicomFile));
 
             var options = new JsonSerializerOptions();
-            options.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: true));
+            options.Converters.Add(new DicomJsonConverter(
+                writeTagsAsKeywords: false,
+                autoValidate: validateDicom,
+                numberSerializationMode: validateDicom ? NumberSerializationMode.AsNumber : NumberSerializationMode.PreferablyAsNumber));
             options.WriteIndented = false;
 
             if (dicomJsonOptions == DicomJsonOptions.Complete)

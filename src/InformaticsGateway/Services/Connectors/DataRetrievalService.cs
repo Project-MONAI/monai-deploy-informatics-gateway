@@ -509,7 +509,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     }
 
                     var dicomFileStorageMetadata = SaveFile(transactionId, file, uids);
-                    await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson)).ConfigureAwait(false);
+                    await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization)).ConfigureAwait(false);
                     retrievedInstance.Add(uids.Identifier, dicomFileStorageMetadata);
                     count++;
                 }
@@ -539,7 +539,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
 
                 var dicomFileStorageMetadata = SaveFile(transactionId, file, uids);
-                await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson)).ConfigureAwait(false);
+                await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization)).ConfigureAwait(false);
                 retrievedInstance.Add(uids.Identifier, dicomFileStorageMetadata);
             }
         }

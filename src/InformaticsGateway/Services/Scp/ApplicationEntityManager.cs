@@ -143,7 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             var scope = _serviceScopeFactory.CreateScope();
             var handler = scope.ServiceProvider.GetService<IApplicationEntityHandler>() ?? throw new ServiceNotFoundException(nameof(IApplicationEntityHandler));
-            handler.Configure(entity, Configuration.Value.Dicom.WriteDicomJson);
+            handler.Configure(entity, Configuration.Value.Dicom.WriteDicomJson, Configuration.Value.Dicom.ValidateDicomOnSerialization);
 
             if (!_aeTitles.TryAdd(entity.AeTitle, handler))
             {
