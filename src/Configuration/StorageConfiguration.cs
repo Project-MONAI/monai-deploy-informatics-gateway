@@ -26,7 +26,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets whether to store temporary data in <c>Memory</c> or on <c>Disk</c>.
         /// Defaults to <c>Memory</c>.
         /// </summary>
-        [ConfigurationKeyName("bufferRootPath")]
+        [ConfigurationKeyName("tempStorageLocation")]
         public TemporaryDataStorageLocation TemporaryDataStorage { get; set; } = TemporaryDataStorageLocation.Memory;
 
         /// <summary>
