@@ -10,7 +10,7 @@
         "rejectUnknownSources": true
       },
       "scu": {
-        "aeTitle": "MonaiSCU",
+        "aeTitle": "MONAISCU",
         "logDimseDatasets": false,
         "logDataPDUs": false
       }
