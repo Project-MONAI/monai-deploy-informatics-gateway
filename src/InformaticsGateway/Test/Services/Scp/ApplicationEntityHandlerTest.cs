@@ -16,14 +16,17 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -41,7 +44,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
-
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly Mock<IFileSystem> _fileSystem;
         private readonly IServiceProvider _serviceProvider;
 
         public ApplicationEntityHandlerTest()
@@ -52,10 +56,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _uploadQueue = new Mock<IObjectUploadQueue>();
+            _options = Options.Create<InformaticsGatewayConfiguration>(new InformaticsGatewayConfiguration());
+            _fileSystem = new Mock<IFileSystem>();
 
             var services = new ServiceCollection();
             services.AddScoped(p => _payloadAssembler.Object);
             services.AddScoped(p => _uploadQueue.Object);
+            services.AddScoped(p => _fileSystem.Object);
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
@@ -66,10 +73,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250)]
         public void GivenAApplicationEntityHandler_WhenInitialized_ExpectParametersToBeValidated()
         {
-            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(null, null));
-            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(_serviceScopeFactory.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(_serviceScopeFactory.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, null));
 
-            _ = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object);
+            _ = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
         }
 
         [RetryFact(5, 250)]
@@ -83,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 IgnoredSopClasses = new List<string> { DicomUID.SecondaryCaptureImageStorage.UID }
             };
 
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var request = GenerateRequest();
             var dicomToolkit = new DicomToolkit();
@@ -103,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 IgnoredSopClasses = new List<string> { DicomUID.SecondaryCaptureImageStorage.UID }
             };
 
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
             handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();
@@ -127,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 AllowedSopClasses = new List<string> { DicomUID.UltrasoundImageStorage.UID }
             };
 
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
             handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();
@@ -150,7 +158,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 Workflows = new List<string>() { "AppA", "AppB", Guid.NewGuid().ToString() }
             };
 
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
             handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();

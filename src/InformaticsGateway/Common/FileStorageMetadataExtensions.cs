@@ -14,41 +14,92 @@
  * limitations under the License.
  */
 
-using System.IO;
+using System.IO.Abstractions;
 using System.Text;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.InformaticsGateway.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
     internal static class FileStorageMetadataExtensions
     {
-        public static async Task SetDataStreams(this DicomFileStorageMetadata dicomFileStorageMetadata, DicomFile dicomFile, string dicomJson)
+        public static async Task SetDataStreams(
+            this DicomFileStorageMetadata dicomFileStorageMetadata,
+            DicomFile dicomFile,
+            string dicomJson,
+            TemporaryDataStorageLocation storageLocation,
+            IFileSystem fileSystem = null,
+            string temporaryStoragePath = "")
         {
             Guard.Against.Null(dicomFile, nameof(dicomFile));
             Guard.Against.Null(dicomJson, nameof(dicomJson)); // allow empty here
 
-            dicomFileStorageMetadata.File.Data = new MemoryStream();
-            await dicomFile.SaveAsync(dicomFileStorageMetadata.File.Data).ConfigureAwait(false);
-            dicomFileStorageMetadata.File.Data.Seek(0, SeekOrigin.Begin);
+            switch (storageLocation)
+            {
+                case TemporaryDataStorageLocation.Disk:
+                    Guard.Against.Null(fileSystem, nameof(fileSystem));
+                    Guard.Against.NullOrWhiteSpace(temporaryStoragePath, nameof(temporaryStoragePath));
 
-            SetTextStream(dicomFileStorageMetadata.JsonFile, dicomJson);
+                    var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{System.DateTime.UtcNow.Ticks}.tmp");
+                    dicomFileStorageMetadata.File.Data = fileSystem.File.Create(tempFile);
+                    break;
+                default:
+                    dicomFileStorageMetadata.File.Data = new System.IO.MemoryStream();
+                    break;
+            }
+
+            await dicomFile.SaveAsync(dicomFileStorageMetadata.File.Data).ConfigureAwait(false);
+            dicomFileStorageMetadata.File.Data.Seek(0, System.IO.SeekOrigin.Begin);
+
+            await SetTextStream(dicomFileStorageMetadata.JsonFile, dicomJson, storageLocation, fileSystem, temporaryStoragePath);
         }
 
-        public static void SetDataStream(this FhirFileStorageMetadata fhirFileStorageMetadata, string json)
-            => SetTextStream(fhirFileStorageMetadata.File, json);
+        public static async Task SetDataStream(
+            this FhirFileStorageMetadata fhirFileStorageMetadata,
+            string json,
+            TemporaryDataStorageLocation storageLocation,
+            IFileSystem fileSystem = null,
+            string temporaryStoragePath = "")
+            => await SetTextStream(fhirFileStorageMetadata.File, json, storageLocation, fileSystem, temporaryStoragePath);
 
-        public static void SetDataStream(this Hl7FileStorageMetadata hl7FileStorageMetadata, string message)
-            => SetTextStream(hl7FileStorageMetadata.File, message);
+        public static async Task SetDataStream(
+            this Hl7FileStorageMetadata hl7FileStorageMetadata,
+             string message,
+             TemporaryDataStorageLocation storageLocation,
+            IFileSystem fileSystem = null,
+             string temporaryStoragePath = "")
+            => await SetTextStream(hl7FileStorageMetadata.File, message, storageLocation, fileSystem, temporaryStoragePath);
 
-        private static void SetTextStream(StorageObjectMetadata storageObjectMetadata, string message)
+        private static async Task SetTextStream(
+            StorageObjectMetadata storageObjectMetadata,
+            string message,
+            TemporaryDataStorageLocation storageLocation,
+            IFileSystem fileSystem = null,
+            string temporaryStoragePath = "")
         {
             Guard.Against.Null(message, nameof(message)); // allow empty here
 
-            storageObjectMetadata.Data = new MemoryStream(Encoding.UTF8.GetBytes(message));
-            storageObjectMetadata.Data.Seek(0, SeekOrigin.Begin);
+            switch (storageLocation)
+            {
+                case TemporaryDataStorageLocation.Disk:
+                    Guard.Against.Null(fileSystem, nameof(fileSystem));
+                    Guard.Against.NullOrWhiteSpace(temporaryStoragePath, nameof(temporaryStoragePath));
+
+                    var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{System.DateTime.UtcNow.Ticks}.tmp");
+                    var stream = fileSystem.File.Create(tempFile);
+                    var data = Encoding.UTF8.GetBytes(message);
+                    await stream.WriteAsync(data, 0, data.Length);
+                    storageObjectMetadata.Data = stream;
+                    break;
+                default:
+                    storageObjectMetadata.Data = new System.IO.MemoryStream(Encoding.UTF8.GetBytes(message));
+                    break;
+            }
+
+            storageObjectMetadata.Data.Seek(0, System.IO.SeekOrigin.Begin);
         }
     }
 }
