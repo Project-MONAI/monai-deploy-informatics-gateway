@@ -17,6 +17,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -29,6 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
     public class ConfigurationValidator : IValidateOptions<InformaticsGatewayConfiguration>
     {
         private readonly ILogger<ConfigurationValidator> _logger;
+        private readonly IFileSystem _fileSystem;
         private readonly List<string> _validationErrors;
 
         /// <summary>
@@ -36,9 +39,10 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// </summary>
         /// <param name="configuration">InformaticsGatewayConfiguration to be validated</param>
         /// <param name="logger">Logger to be used by ConfigurationValidator</param>
-        public ConfigurationValidator(ILogger<ConfigurationValidator> logger)
+        public ConfigurationValidator(ILogger<ConfigurationValidator> logger, IFileSystem fileSystem)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _validationErrors = new List<string>();
         }
 
@@ -82,6 +86,38 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             valid &= IsValueInRange("InformaticsGateway>storage>reserveSpaceGB", 1, 999, storage.ReserveSpaceGB);
             valid &= IsValueInRange("InformaticsGateway>storage>payloadProcessThreads", 1, 128, storage.PayloadProcessThreads);
             valid &= IsValueInRange("InformaticsGateway>storage>concurrentUploads", 1, 128, storage.ConcurrentUploads);
+            valid &= IsValueInRange("InformaticsGateway>storage>memoryThreshold", 1, int.MaxValue, storage.MemoryThreshold);
+
+            if (storage.TemporaryDataStorage == TemporaryDataStorageLocation.Disk)
+            {
+                valid &= IsNotNullOrWhiteSpace("InformaticsGateway>storage>bufferRootPath", storage.BufferStorageRootPath);
+                valid &= IsValidDirectory("InformaticsGateway>storage>bufferRootPath", storage.BufferStorageRootPath);
+                valid &= IsValueInRange("InformaticsGateway>storage>bufferSize", 1, int.MaxValue, storage.BufferSize);
+            }
+
+            return valid;
+        }
+
+        private bool IsValidDirectory(string source, string directory)
+        {
+            var valid = true;
+            try
+            {
+                if (!_fileSystem.Directory.Exists(directory))
+                {
+                    valid = false;
+                    _validationErrors.Add($"Directory `{directory}` specified in `{source}` does not exist.");
+                }
+                else
+                {
+                    using var _ = _fileSystem.File.Create(Path.Combine(directory, Path.GetRandomFileName()), 1, FileOptions.DeleteOnClose);
+                }
+            }
+            catch (Exception ex)
+            {
+                valid = false;
+                _validationErrors.Add($"Directory `{directory}` specified in `{source}` is not accessible: {ex.Message}.");
+            }
             return valid;
         }
 
