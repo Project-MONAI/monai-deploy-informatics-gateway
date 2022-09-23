@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
                     Guard.Against.Null(fileSystem, nameof(fileSystem));
                     Guard.Against.NullOrWhiteSpace(temporaryStoragePath, nameof(temporaryStoragePath));
 
-                    var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{System.DateTime.UtcNow.Ticks}.tmp");
+                    var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{fileSystem.Path.GetRandomFileName()}");
                     dicomFileStorageMetadata.File.Data = fileSystem.File.Create(tempFile);
                     break;
                 default:
@@ -88,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
                     Guard.Against.Null(fileSystem, nameof(fileSystem));
                     Guard.Against.NullOrWhiteSpace(temporaryStoragePath, nameof(temporaryStoragePath));
 
-                    var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{System.DateTime.UtcNow.Ticks}.tmp");
+                    var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{fileSystem.Path.GetRandomFileName()}");
                     var stream = fileSystem.File.Create(tempFile);
                     var data = Encoding.UTF8.GetBytes(message);
                     await stream.WriteAsync(data, 0, data.Length);
