@@ -16,6 +16,15 @@
 
 
 # Changelog
+
+## 0.3.1
+
+[GitHub Milestone 0.3.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/7)
+
+- The SCU AE Title is now uppercase MONAISCU.
+- Update fo-dicom to 5.0.3
+- Defaults temporary storage to use disk with ability to switch to memory.
+
 ## 0.3.0
 
 [GitHub Milestone 0.3.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/3)
@@ -36,7 +45,7 @@
   any pending files. Files that were successfully uploaded to the temporary location (`storage>temporary`) in the 
   bucket (`storage>temporaryBucketName`) are then moved to the payload bucket (`storage>bucketName`) before sending a workflow request.  
 - Breaking changes in the storage configuration to allow dynamic key-value pairs.
-- Breaking changes to enable dynamic loadig of the storage & the messaging libraries.
+- Breaking changes to enable dynamic loading of the storage & the messaging libraries.
 
 ## 0.1.1
 
