@@ -16,6 +16,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<ITcpListener> _tcpListener;
-
+        private readonly Mock<IFileSystem> _fileSystem;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<ILogger<MllpService>> _logger;
@@ -64,6 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _uploadQueue = new Mock<IObjectUploadQueue>();
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _tcpListener = new Mock<ITcpListener>();
+            _fileSystem = new Mock<IFileSystem>();
 
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScope = new Mock<IServiceScope>();
@@ -77,6 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             services.AddScoped(p => _mllpClientFactory.Object);
             services.AddScoped(p => _uploadQueue.Object);
             services.AddScoped(p => _payloadAssembler.Object);
+            services.AddScoped(p => _fileSystem.Object);
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);

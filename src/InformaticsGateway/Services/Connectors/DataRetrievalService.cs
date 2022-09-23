@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -55,6 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IDicomToolkit _dicomToolkit;
+        private readonly IFileSystem _fileSystem;
         private bool _disposedValue;
 
         public ServiceStatus Status { get; set; }
@@ -77,6 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _uploadQueue = _rootScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _payloadAssembler = _rootScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _dicomToolkit = _rootScope.ServiceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
+            _fileSystem = _rootScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -330,7 +333,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
 
                 var fhirFile = new FhirFileStorageMetadata(transactionId, resource.Type, resource.Id, fhirFormat);
-                fhirFile.SetDataStream(json);
+                await fhirFile.SetDataStream(json, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath);
                 retrievedResources.Add(fhirFile.Id, fhirFile);
                 return true;
             }
@@ -509,7 +512,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     }
 
                     var dicomFileStorageMetadata = SaveFile(transactionId, file, uids);
-                    await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization)).ConfigureAwait(false);
+                    await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath).ConfigureAwait(false);
                     retrievedInstance.Add(uids.Identifier, dicomFileStorageMetadata);
                     count++;
                 }
@@ -539,7 +542,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
 
                 var dicomFileStorageMetadata = SaveFile(transactionId, file, uids);
-                await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization)).ConfigureAwait(false);
+                await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath).ConfigureAwait(false);
                 retrievedInstance.Add(uids.Identifier, dicomFileStorageMetadata);
             }
         }
