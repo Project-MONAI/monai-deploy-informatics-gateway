@@ -34,6 +34,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         {
             _logger = new Mock<ILogger<ConfigurationValidator>>();
             _fileSystem = new Mock<IFileSystem>();
+            _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(true);
+            _fileSystem.Setup(p => p.File.Create(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<FileOptions>())).Returns(FileStream.Null);
         }
 
         [Fact(DisplayName = "ConfigurationValidator test with all valid settings")]
@@ -131,7 +133,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         [Fact(DisplayName = "ConfigurationValidator test with inaccessible directory")]
         public void StorageWithInaccessbleDirectory()
         {
-            _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(true);
             _fileSystem.Setup(p => p.File.Create(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<FileOptions>())).Throws(new UnauthorizedAccessException("error"));
 
             var config = MockValidConfiguration();

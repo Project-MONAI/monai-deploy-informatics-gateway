@@ -38,7 +38,7 @@
       }
     },
     "storage": {
-      "bufferRootPath": "./temp",
+      "bufferRootPath": "/payloads",
       "tempStorageRootPath": "/incoming",
       "bucketName": "monaideploy",
       "storageRootPath": "/payloads",

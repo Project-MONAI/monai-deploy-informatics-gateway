@@ -43,6 +43,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             _logger = new Mock<ILogger<FhirJsonReader>>();
             _options = Options.Create<InformaticsGatewayConfiguration>(new InformaticsGatewayConfiguration());
             _fileSystem = new MockFileSystem();
+
+            _options.Value.Storage.TemporaryDataStorage = TemporaryDataStorageLocation.Memory;
         }
 
         [Fact]

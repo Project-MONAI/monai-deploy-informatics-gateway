@@ -82,6 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _options.Value.Storage.TemporaryDataStorage = TemporaryDataStorageLocation.Memory;
         }
 
         [RetryFact]
