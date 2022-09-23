@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.IO.Abstractions;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -42,7 +41,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
         private readonly ILogger<FhirService> _logger;
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IObjectUploadQueue _uploadQueue;
-        private readonly IFileSystem _fileSystem;
 
         public FhirService(IServiceScopeFactory serviceScopeFactory, IOptions<InformaticsGatewayConfiguration> configuration)
         {
@@ -53,7 +51,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             _logger = scope.ServiceProvider.GetService<ILogger<FhirService>>() ?? throw new ServiceNotFoundException(nameof(ILogger<FhirService>));
             _payloadAssembler = scope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _uploadQueue = scope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
-            _fileSystem = scope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
         }
 
         public async Task<FhirStoreResult> StoreAsync(HttpRequest request, string correlationId, string resourceType, CancellationToken cancellationToken)
@@ -103,13 +100,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.ApplicationFhirJson, StringComparison.OrdinalIgnoreCase))
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<FhirJsonReader>>() ?? throw new ServiceNotFoundException(nameof(ILogger<FhirJsonReader>));
-                return new FhirJsonReader(logger, _configuration, _fileSystem);
+                return new FhirJsonReader(logger);
             }
 
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.ApplicationFhirXml, StringComparison.OrdinalIgnoreCase))
             {
                 var logger = scope.ServiceProvider.GetService<ILogger<FhirXmlReader>>() ?? throw new ServiceNotFoundException(nameof(ILogger<FhirXmlReader>));
-                return new FhirXmlReader(logger, _configuration, _fileSystem);
+                return new FhirXmlReader(logger);
             }
 
             throw new UnsupportedContentTypeException($"Media type of '{mediaTypeHeaderValue.MediaType}' is not supported.");

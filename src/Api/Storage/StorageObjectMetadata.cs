@@ -16,7 +16,6 @@
 
 using System;
 using System.IO;
-using System.Runtime;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
 
@@ -124,27 +123,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
             if (Data is not null && Data.CanSeek)
             {
-                if (Data is FileStream fileStream)
-                {
-                    var filename = fileStream.Name;
-                    Data.Close();
-                    Data.Dispose();
-                    Data = null;
-                    System.IO.File.Delete(filename);
-                }
-                else // MemoryStream
-                {
-                    Data.Close();
-                    Data.Dispose();
-                    Data = null;
-
-                    // When IG stores all received/downloaded data in-memory using MemoryStream, LOH grows tremendously and thus impacts the performance and
-                    //  memory usage. The following makes sure LOH is compacted after the data is uploaded.
-                    GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
-#pragma warning disable S1215 // "GC.Collect" should not be called
-                    GC.Collect();
-#pragma warning restore S1215 // "GC.Collect" should not be called
-                }
+                Data.Close();
+                Data.Dispose();
+                Data = null;
             }
         }
 

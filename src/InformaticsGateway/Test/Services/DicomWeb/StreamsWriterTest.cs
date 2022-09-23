@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
@@ -39,7 +38,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
     public class StreamsWriterTest
     {
         private readonly Mock<ILogger<StreamsWriter>> _logger;
-        private readonly MockFileSystem _fileSystem;
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
@@ -52,19 +50,17 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _logger = new Mock<ILogger<StreamsWriter>>();
-            _fileSystem = new MockFileSystem();
         }
 
         [Fact]
         public void GivenAStreamsWriter_WhenInitialized_ExpectParametersToBeValidated()
         {
-            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(null, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, null, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, null, null));
-            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, null));
-            var exception = Record.Exception(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem));
+            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, null));
+            var exception = Record.Exception(() => new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object));
 
             Assert.Null(exception);
         }
@@ -76,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 .Throws(new Exception("error"));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var writer = new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
+            var writer = new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object);
 
             var streams = GenerateDicomStreams(studyInstanceUid);
             var result = await writer.Save(
@@ -98,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var writer = new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
+            var writer = new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object);
 
             var correlationId = Guid.NewGuid().ToString();
             var streams = GenerateDicomStreams(studyInstanceUid);
@@ -136,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
-            var writer = new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
+            var writer = new StreamsWriter(_uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object);
 
             var correlationId = Guid.NewGuid().ToString();
             var streams = GenerateDicomStreams(studyInstanceUid);

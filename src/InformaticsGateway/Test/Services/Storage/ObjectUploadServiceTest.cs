@@ -45,6 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly Mock<IStorageService> _storageService;
         private readonly Mock<IStorageMetadataWrapperRepository> _storageMetadataWrapperRepository;
+
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly ServiceProvider _serviceProvider;
         private readonly Mock<IServiceScope> _serviceScope;
@@ -123,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         }
 
         [Fact]
-        public async Task GivenAFhirFileStorageMetadata_WhenQueuedForUpload_ExpectSingleFileToBeUploaded()
+        public void GivenAFhirFileStorageMetadata_WhenQueuedForUpload_ExpectSingleFileToBeUploaded()
         {
             var countdownEvent = new CountdownEvent(1);
             _storageService.Setup(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()))
@@ -136,7 +137,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 
             Assert.Equal(ServiceStatus.Running, svc.Status);
 
-            var file = await GenerateFhirFileStorageMetadata();
+            var file = GenerateFhirFileStorageMetadata();
             _uploadQueue.Queue(file);
 
             Assert.True(countdownEvent.Wait(TimeSpan.FromSeconds(3)));
@@ -144,11 +145,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        private async Task<FhirFileStorageMetadata> GenerateFhirFileStorageMetadata()
+        private FhirFileStorageMetadata GenerateFhirFileStorageMetadata()
         {
             var file = new FhirFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), FhirStorageFormat.Json);
 
-            await file.SetDataStream("[]", TemporaryDataStorageLocation.Memory);
+            file.SetDataStream("[]");
             return file;
         }
 
@@ -168,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
                 { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage.UID }
             };
             var dicomFile = new DicomFile(dataset);
-            await file.SetDataStreams(dicomFile, "[]", TemporaryDataStorageLocation.Memory);
+            await file.SetDataStreams(dicomFile, "[]");
             return file;
         }
     }

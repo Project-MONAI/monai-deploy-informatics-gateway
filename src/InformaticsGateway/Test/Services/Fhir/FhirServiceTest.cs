@@ -16,7 +16,6 @@
 
 using System;
 using System.IO;
-using System.IO.Abstractions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -44,7 +43,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
         private readonly Mock<ILogger<FhirService>> _logger;
         private readonly Mock<ILogger<FhirJsonReader>> _loggerJson;
         private readonly Mock<ILogger<FhirXmlReader>> _loggerXml;
-        private readonly Mock<IFileSystem> _fileSystem;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
 
@@ -64,7 +62,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             _logger = new Mock<ILogger<FhirService>>();
             _loggerJson = new Mock<ILogger<FhirJsonReader>>();
             _loggerXml = new Mock<ILogger<FhirXmlReader>>();
-            _fileSystem = new Mock<IFileSystem>();
 
             _httpRequest = new Mock<HttpRequest>();
 
@@ -76,7 +73,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             services.AddScoped(p => _loggerXml.Object);
             services.AddScoped(p => _uploadQueue.Object);
             services.AddScoped(p => _payloadAssembler.Object);
-            services.AddScoped(p => _fileSystem.Object);
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);

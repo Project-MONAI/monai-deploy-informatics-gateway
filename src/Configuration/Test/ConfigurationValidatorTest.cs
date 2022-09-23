@@ -15,8 +15,6 @@
  */
 
 using System;
-using System.IO;
-using System.IO.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.SharedTest;
@@ -28,7 +26,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
     public class ConfigurationValidatorTest
     {
         private readonly Mock<ILogger<ConfigurationValidator>> _logger;
-        private readonly Mock<IFileSystem> _fileSystem;
 
         public ConfigurationValidatorTest()
         {
@@ -42,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         public void AllValid()
         {
             var config = MockValidConfiguration();
-            var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
             Assert.True(valid == ValidateOptionsResult.Success);
         }
 
@@ -52,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var config = MockValidConfiguration();
             config.Dicom.Scp.Port = Int32.MaxValue;
 
-            var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
 
             var validationMessage = $"Invalid port number '{Int32.MaxValue}' specified for InformaticsGateway>dicom>scp>port.";
             Assert.Equal(validationMessage, valid.FailureMessage);
@@ -65,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var config = MockValidConfiguration();
             config.Dicom.Scp.MaximumNumberOfAssociations = 0;
 
-            var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
 
             var validationMessage = $"Value of InformaticsGateway>dicom>scp>max-associations must be between {1} and {1000}.";
             Assert.Equal(validationMessage, valid.FailureMessage);
@@ -78,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var config = MockValidConfiguration();
             config.Storage.Watermark = 1000;
 
-            var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
 
             var validationMessage = "Value of InformaticsGateway>storage>watermark must be between 1 and 100.";
             Assert.Equal(validationMessage, valid.FailureMessage);
@@ -91,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var config = MockValidConfiguration();
             config.Storage.ReserveSpaceGB = 9999;
 
-            var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
 
             var validationMessage = "Value of InformaticsGateway>storage>reserveSpaceGB must be between 1 and 999.";
             Assert.Equal(validationMessage, valid.FailureMessage);
@@ -104,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var config = MockValidConfiguration();
             config.Storage.TemporaryStorageBucket = " ";
 
-            var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
 
             var validationMessages = new[] { "Value for InformaticsGateway>storage>temporaryBucketName is required.", "Value for InformaticsGateway>storage>temporaryBucketName does not conform to Amazon S3 bucket naming requirements." };
             Assert.Equal(string.Join(Environment.NewLine, validationMessages), valid.FailureMessage);
@@ -120,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             var config = MockValidConfiguration();
             config.Storage.StorageServiceBucketName = "";
 
-            var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
+            var valid = new ConfigurationValidator(_logger.Object).Validate("", config);
 
             var validationMessages = new[] { "Value for InformaticsGateway>storage>bucketName is required.", "Value for InformaticsGateway>storage>bucketName does not conform to Amazon S3 bucket naming requirements." };
             Assert.Equal(string.Join(Environment.NewLine, validationMessages), valid.FailureMessage);
