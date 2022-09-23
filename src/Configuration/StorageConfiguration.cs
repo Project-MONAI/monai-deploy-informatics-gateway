@@ -23,26 +23,11 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
     public class StorageConfiguration : StorageServiceConfiguration
     {
         /// <summary>
-        /// Gets or sets whether to store temporary data in <c>Memory</c> or on <c>Disk</c>.
-        /// Defaults to <c>Memory</c>.
-        /// </summary>
-        [ConfigurationKeyName("tempStorageLocation")]
-        public TemporaryDataStorageLocation TemporaryDataStorage { get; set; } = TemporaryDataStorageLocation.Memory;
-
-        /// <summary>
         /// Gets or sets the path used for buffering incoming data.
         /// Defaults to <c>./temp</c>.
         /// </summary>
         [ConfigurationKeyName("bufferRootPath")]
         public string BufferStorageRootPath { get; set; } = "./temp";
-
-        /// <summary>
-        /// Gets or sets the number of bytes buffered for reads and writes to the temporary file.
-        /// Defaults to <c>128000</c>.
-        /// </summary>
-        [ConfigurationKeyName("bufferSize")]
-        public int BufferSize { get; set; } = 128000;
-
 
         /// <summary>
         /// Gets or set the maximum memory buffer size in bytes with default to 30MiB.

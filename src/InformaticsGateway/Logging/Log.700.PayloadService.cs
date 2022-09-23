@@ -53,8 +53,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 711, Level = LogLevel.Information, Message = "Publishing workflow request message ID={messageId}...")]
         public static partial void PublishingWorkflowRequest(this ILogger logger, string messageId);
 
-        [LoggerMessage(EventId = 712, Level = LogLevel.Information, Message = "Workflow request published to {queue}, message ID={messageId}. Payload took {payloadElapsedTime} to complete.")]
-        public static partial void WorkflowRequestPublished(this ILogger logger, string queue, string messageId, TimeSpan payloadElapsedTime);
+        [LoggerMessage(EventId = 712, Level = LogLevel.Information, Message = "Workflow request published to {queue}, message ID={messageId}.")]
+        public static partial void WorkflowRequestPublished(this ILogger logger, string queue, string messageId);
 
         [LoggerMessage(EventId = 713, Level = LogLevel.Information, Message = "Restoring payloads from database.")]
         public static partial void StartupRestoreFromDatabase(this ILogger logger);
