@@ -66,8 +66,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
 
-        public TimeSpan Elapsed { get { return DateTime.UtcNow.Subtract(DateTimeCreated); } }
-
         public string CallingAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
 
         public string CalledAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CalledAeTitle).FirstOrDefault(); }

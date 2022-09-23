@@ -16,16 +16,12 @@
 
 using System;
 using System.IO;
-using System.IO.Abstractions;
-using System.IO.Abstractions.TestingHelpers;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
 using Moq;
 using Xunit;
@@ -35,15 +31,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
     public class FhirXmlReaderTest
     {
         private readonly Mock<ILogger<FhirXmlReader>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
-        private readonly IFileSystem _fileSystem;
 
         public FhirXmlReaderTest()
         {
             _logger = new Mock<ILogger<FhirXmlReader>>();
-            _options = Options.Create<InformaticsGatewayConfiguration>(new InformaticsGatewayConfiguration());
-            _fileSystem = new MockFileSystem();
-
         }
 
         [Fact]
@@ -52,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             var request = new Mock<HttpRequest>();
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
-            var reader = new FhirXmlReader(_logger.Object, _options, _fileSystem);
+            var reader = new FhirXmlReader(_logger.Object);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await reader.GetContentAsync(null, null, null, null, CancellationToken.None));
             await Assert.ThrowsAsync<ArgumentNullException>(async () => await reader.GetContentAsync(request.Object, null, null, null, CancellationToken.None));
@@ -68,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationFhirXml);
-            var reader = new FhirXmlReader(_logger.Object, _options, _fileSystem);
+            var reader = new FhirXmlReader(_logger.Object);
 
             await Assert.ThrowsAsync<ArgumentNullException>(async () =>
             {
@@ -89,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationFhirXml);
-            var reader = new FhirXmlReader(_logger.Object, _options, _fileSystem);
+            var reader = new FhirXmlReader(_logger.Object);
 
             await Assert.ThrowsAsync<XmlException>(async () =>
             {
@@ -109,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationFhirXml);
-            var reader = new FhirXmlReader(_logger.Object, _options, _fileSystem);
+            var reader = new FhirXmlReader(_logger.Object);
 
             await Assert.ThrowsAsync<FhirStoreException>(async () =>
             {
@@ -132,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationFhirXml);
-            var reader = new FhirXmlReader(_logger.Object, _options, _fileSystem);
+            var reader = new FhirXmlReader(_logger.Object);
 
             var data = System.Text.Encoding.UTF8.GetBytes(xml);
             using var stream = new System.IO.MemoryStream();

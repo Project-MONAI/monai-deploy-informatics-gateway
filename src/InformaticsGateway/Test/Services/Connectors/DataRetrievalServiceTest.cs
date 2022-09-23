@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Abstractions;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -55,7 +54,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
-        private readonly Mock<IFileSystem> _fileSystem;
         private readonly Mock<IInferenceRequestRepository> _inferenceRequestStore;
 
         private readonly Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
@@ -76,7 +74,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _uploadQueue = new Mock<IObjectUploadQueue>();
             _dicomToolkit = new Mock<IDicomToolkit>();
-            _fileSystem = new Mock<IFileSystem>();
             _options = Options.Create(new InformaticsGatewayConfiguration());
             _serviceScope = new Mock<IServiceScope>();
 
@@ -93,7 +90,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             services.AddScoped(p => _payloadAssembler.Object);
             services.AddScoped(p => _dicomToolkit.Object);
             services.AddScoped(p => _inferenceRequestStore.Object);
-            services.AddScoped(p => _fileSystem.Object);
 
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
