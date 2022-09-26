@@ -16,6 +16,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.IO.Abstractions;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -47,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<ITcpListener> _tcpListener;
-
+        private readonly Mock<IFileSystem> _fileSystem;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<ILogger<MllpService>> _logger;
@@ -64,6 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _uploadQueue = new Mock<IObjectUploadQueue>();
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _tcpListener = new Mock<ITcpListener>();
+            _fileSystem = new Mock<IFileSystem>();
 
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScope = new Mock<IServiceScope>();
@@ -77,9 +80,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             services.AddScoped(p => _mllpClientFactory.Object);
             services.AddScoped(p => _uploadQueue.Object);
             services.AddScoped(p => _payloadAssembler.Object);
+            services.AddScoped(p => _fileSystem.Object);
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
+
+            _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
+            _fileSystem.Setup(p => p.File.Create(It.IsAny<string>())).Returns(FileStream.Null);
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
             _tcpListenerFactory.Setup(p => p.CreateTcpListener(It.IsAny<IPAddress>(), It.IsAny<int>())).Returns(_tcpListener.Object);

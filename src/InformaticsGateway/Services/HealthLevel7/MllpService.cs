@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -43,6 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         private readonly IMllpClientFactory _mllpClientFactory;
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IPayloadAssembler _payloadAssembler;
+        private readonly IFileSystem _fileSystem;
         private readonly IServiceScope _serviceScope;
         private readonly ILoggerFactory _logginFactory;
         private readonly ILogger<MllpService> _logger;
@@ -79,6 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _mllpClientFactory = _serviceScope.ServiceProvider.GetService<IMllpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IMllpClientFactory));
             _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _payloadAssembler = _serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
+            _fileSystem = _serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
             _activeTasks = new ConcurrentDictionary<Guid, IMllpClient>();
         }
 
@@ -158,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 foreach (var message in result.Messages)
                 {
                     var hl7Fileetadata = new Hl7FileStorageMetadata(client.ClientId.ToString());
-                    hl7Fileetadata.SetDataStream(message.HL7Message);
+                    await hl7Fileetadata.SetDataStream(message.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.BufferStorageRootPath);
                     _uploadQueue.Queue(hl7Fileetadata);
                     await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata).ConfigureAwait(false);
                 }

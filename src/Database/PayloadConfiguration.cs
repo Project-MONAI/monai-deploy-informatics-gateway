@@ -57,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
             builder.Ignore(j => j.CalledAeTitle);
             builder.Ignore(j => j.CallingAeTitle);
             builder.Ignore(j => j.HasTimedOut);
+            builder.Ignore(j => j.Elapsed);
             builder.Ignore(j => j.Count);
         }
     }
