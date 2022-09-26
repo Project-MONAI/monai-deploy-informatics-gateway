@@ -16,6 +16,7 @@
 
 using System;
 using System.IO;
+using System.IO.Abstractions;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,9 +24,11 @@ using System.Xml;
 using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Fhir
@@ -33,10 +36,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
     internal class FhirXmlReader : IFHirRequestReader
     {
         private readonly ILogger<FhirXmlReader> _logger;
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IFileSystem _fileSystem;
 
-        public FhirXmlReader(ILogger<FhirXmlReader> logger)
+        public FhirXmlReader(ILogger<FhirXmlReader> logger, IOptions<InformaticsGatewayConfiguration> options, IFileSystem fileSystem)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
+            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
         }
 
         public async Task<FhirStoreResult> GetContentAsync(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken)
@@ -80,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             result.InternalResourceType = rootNode.Name;
 
             var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, resourceId, Api.Rest.FhirStorageFormat.Xml);
-            fileMetadata.SetDataStream(result.RawData);
+            await fileMetadata.SetDataStream(result.RawData, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath);
 
             result.Metadata = fileMetadata;
             return result;

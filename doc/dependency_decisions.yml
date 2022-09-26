@@ -18,7 +18,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
-    - 3.7.12.26
+    - 3.7.13.8
     :when: 2022-09-01 23:05:22.203089302 Z
 - - :approve
   - AWSSDK.S3
@@ -32,7 +32,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
-    - 3.7.1.190
+    - 3.7.1.203
     :when: 2022-09-01 23:05:28.920368903 Z
 - - :approve
   - BoDi
@@ -81,7 +81,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/Docker.DotNet/raw/master/LICENSE)
     :versions:
-    - 3.125.11
+    - 3.125.12
     :when: 2022-08-16 23:05:32.422217566 Z
 - - :approve
   - DotNext
@@ -89,6 +89,7 @@
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
     :versions:
     - 4.7.1
+    - 4.7.2
     :when: 2022-09-01 23:05:32.857032968 Z
 - - :approve
   - DotNext.Threading
@@ -96,6 +97,7 @@
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
     :versions:
     - 4.7.1
+    - 4.7.2
     :when: 2022-09-01 23:05:33.298402277 Z
 - - :approve
   - FluentAssertions
@@ -355,6 +357,7 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:49.698463427 Z
 - - :approve
   - Microsoft.EntityFrameworkCore
@@ -362,6 +365,7 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:50.137694970 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Abstractions
@@ -369,6 +373,7 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:51.008105271 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Analyzers
@@ -376,20 +381,21 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:51.445711308 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Design
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:51.922790944 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.InMemory
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:52.375150938 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Relational
@@ -397,6 +403,7 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:52.828879230 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite
@@ -404,6 +411,7 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:53.270526921 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite.Core
@@ -411,6 +419,7 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-16 23:05:53.706997823 Z
 - - :approve
   - Microsoft.Extensions.ApiDescription.Server
@@ -551,6 +560,7 @@
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
@@ -558,6 +568,7 @@
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
@@ -565,6 +576,7 @@
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
     - 6.0.8
+    - 6.0.9
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.FileProviders.Abstractions
@@ -628,13 +640,8 @@
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
     :versions:
     - 6.0.0
-    :when: 2022-08-16 23:06:06.283078378 Z
-- - :approve
-  - Microsoft.Extensions.Logging.Abstractions
-  - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
-    :versions:
     - 6.0.1
+    - 6.0.2
     :when: 2022-08-16 23:06:06.728283354 Z
 - - :approve
   - Microsoft.Extensions.Logging.Configuration
@@ -805,6 +812,13 @@
     - 17.3.1
     :when: 2022-09-01 23:06:18.619013325 Z
 - - :approve
+  - Microsoft.Toolkit.HighPerformance
+  - :who: mocsharp
+    :why: MIT (https://github.com/CommunityToolkit/WindowsCommunityToolkit/raw/main/License.md)
+    :versions:
+    - 7.1.2
+    :when: 2022-09-20 00:42:18.619013325 Z
+- - :approve
   - Microsoft.Win32.Primitives
   - :who: mocsharp
     :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
@@ -837,35 +851,35 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.4
+    - 0.1.5
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.4
+    - 0.1.5
     :when: 2022-08-16 23:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.5
+    - 0.2.7
     :when: 2022-08-16 23:06:21.988183476 Z
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.5
+    - 0.2.7
     :when: 2022-08-16 23:06:22.426838304 Z
 - - :approve
   - Monai.Deploy.Storage.S3Policy
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.5
+    - 0.2.7
     :when: 2022-08-16 23:06:22.881956546 Z
 - - :approve
   - Moq
@@ -1286,6 +1300,7 @@
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
     - 17.2.1
+    - 17.2.3
     :when: 2022-08-16 23:06:50.602318269 Z
 - - :approve
   - System.IO.Abstractions.TestingHelpers
@@ -1293,6 +1308,7 @@
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
     - 17.2.1
+    - 17.2.3
     :when: 2022-08-16 23:06:51.524564913 Z
 - - :approve
   - System.IO.Compression
@@ -1721,19 +1737,15 @@
     :versions:
     - 4.7.2
     :when: 2022-08-16 23:07:19.845361666 Z
+
 - - :approve
   - System.Text.Json
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
     :versions:
     - 6.0.0
-    :when: 2022-08-16 23:07:20.328932726 Z
-- - :approve
-  - System.Text.Json
-  - :who: mocsharp
-    :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
-    :versions:
     - 6.0.5
+    - 6.0.6
     :when: 2022-08-16 23:07:20.787263056 Z
 - - :approve
   - System.Text.RegularExpressions
@@ -1867,6 +1879,7 @@
     :why: Microsoft Public License (https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
     :versions:
     - 5.0.2
+    - 5.0.3
     :when: 2022-08-16 23:07:29.574869349 Z
 - - :approve
   - runtime.any.System.Collections

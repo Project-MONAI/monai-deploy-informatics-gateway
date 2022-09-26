@@ -15,12 +15,14 @@
  */
 
 using System;
+using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -34,33 +36,39 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
     internal class ApplicationEntityHandler : IDisposable, IApplicationEntityHandler
     {
         private readonly ILogger<ApplicationEntityHandler> _logger;
+        private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         private readonly IServiceScope _serviceScope;
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IObjectUploadQueue _uploadQueue;
-
+        private readonly IFileSystem _fileSystem;
         private MonaiApplicationEntity _configuration;
         private DicomJsonOptions _dicomJsonOptions;
+        private bool _validateDicomValueOnJsonSerialization;
         private bool _disposedValue;
 
         public ApplicationEntityHandler(
             IServiceScopeFactory serviceScopeFactory,
-            ILogger<ApplicationEntityHandler> logger)
+            ILogger<ApplicationEntityHandler> logger,
+            IOptions<InformaticsGatewayConfiguration> options)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
 
             _serviceScope = serviceScopeFactory.CreateScope();
             _payloadAssembler = _serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
+            _fileSystem = _serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
         }
 
-        public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions)
+        public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions, bool validateDicomValuesOnJsonSerialization)
         {
             Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
 
             _configuration = monaiApplicationEntity;
             _dicomJsonOptions = dicomJsonOptions;
+            _validateDicomValueOnJsonSerialization = validateDicomValuesOnJsonSerialization;
         }
 
         public async Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
@@ -93,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
-            await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions)).ConfigureAwait(false);
+            await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath).ConfigureAwait(false);
             _uploadQueue.Queue(dicomInfo);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);

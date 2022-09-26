@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Abstractions;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -43,6 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
     internal class StreamsWriter : IStreamsWriter
     {
         private readonly ILogger<StreamsWriter> _logger;
+        private readonly IFileSystem _fileSystem;
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IDicomToolkit _dicomToolkit;
         private readonly IPayloadAssembler _payloadAssembler;
@@ -56,13 +58,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             IDicomToolkit dicomToolkit,
             IPayloadAssembler payloadAssembler,
             IOptions<InformaticsGatewayConfiguration> configuration,
-            ILogger<StreamsWriter> logger)
+            ILogger<StreamsWriter> logger,
+            IFileSystem fileSystem)
         {
             _uploadQueue = fileStore ?? throw new ArgumentNullException(nameof(fileStore));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _resultDicomDataset = new DicomDataset();
             _failureCount = 0;
             _storedCount = 0;
@@ -165,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 dicomInfo.SetWorkflows(workflowName);
             }
 
-            await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson)).ConfigureAwait(false);
+            await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson, _configuration.Value.Dicom.ValidateDicomOnSerialization), _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.BufferStorageRootPath).ConfigureAwait(false);
             _uploadQueue.Queue(dicomInfo);
 
             // for DICOMweb, use correlation ID as the grouping key

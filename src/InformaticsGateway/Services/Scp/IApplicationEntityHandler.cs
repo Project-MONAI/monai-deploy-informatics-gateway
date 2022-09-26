@@ -25,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal interface IApplicationEntityHandler
     {
-        void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions);
+        void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions, bool validateDicomValuesOnJsonSerialization);
 
         Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids);
     }

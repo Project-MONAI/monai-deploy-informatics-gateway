@@ -19,8 +19,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FellowOakDicom;
-using FellowOakDicom.Imaging.Codec;
-using FellowOakDicom.Log;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
 
@@ -78,8 +76,8 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
 
     public class CStoreScp : DicomService, IDicomServiceProvider, IDicomCStoreProvider, IDicomCEchoProvider
     {
-        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, ILogManager logManager, INetworkManager network, ITranscoderManager transcoder)
-                : base(stream, fallbackEncoding, log, logManager, network, transcoder)
+        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, DicomServiceDependencies dicomServiceDependencies)
+                : base(stream, fallbackEncoding, log, dicomServiceDependencies)
         {
         }
 

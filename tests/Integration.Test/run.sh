@@ -87,9 +87,9 @@ function env_setup() {
     esac
     done
 
-    if [[ $(docker-compose ps -q | wc -l) -ne 0 ]]; then
+    if [[ $(docker compose ps -q | wc -l) -ne 0 ]]; then
         info "Stopping existing services..."
-        docker-compose $LOADDEV down
+        docker compose $LOADDEV down
     fi
 
     if (dotnet tool list --global | grep livingdoc &>/dev/null); then
@@ -110,8 +110,8 @@ function build() {
 }
 
 function start_services() {
-    info "Starting dependencies docker-compose $LOADDEV up -d --force-recreate..."
-    docker-compose $LOADDEV up -d --force-recreate
+    info "Starting dependencies docker compose $LOADDEV up -d --force-recreate..."
+    docker compose $LOADDEV up -d --force-recreate
 
     HOST_IP=$(docker network inspect testrunner | jq -r .[0].IPAM.Config[0].Gateway)
     info "Host IP = $HOST_IP"
@@ -190,7 +190,7 @@ function generate_reports() {
 function save_logs() {
     [ -d $RUN_DIR ] && info "Clearning $RUN_DIR..." && sudo rm -r $RUN_DIR
     info "Saving service log..."
-    docker-compose $LOADDEV logs --no-color -t > "$LOG_DIR/services.log"
+    docker compose $LOADDEV logs --no-color -t > "$LOG_DIR/services.log"
 }
 
 function tear_down() {
@@ -200,7 +200,7 @@ function tear_down() {
     set -e
 
     info "Stopping services..."
-    docker-compose $LOADDEV down --remove-orphans
+    docker compose $LOADDEV down --remove-orphans
 }
 
 function main() {
