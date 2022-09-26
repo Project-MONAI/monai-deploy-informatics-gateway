@@ -80,6 +80,9 @@ jobs:
       with:
         dotnet-version: "6.0.x"
 
+    - name: Enable Homebrew
+      run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
+
     - name: Install License Finder tool with Homebrew
       uses: tecoli-com/actions-use-homebrew-tools@v0.4
       with:
