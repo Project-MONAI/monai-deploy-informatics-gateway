@@ -2492,6 +2492,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose
   fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose
   nameWithType: Payload.Dispose
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed
+  name: Elapsed
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Elapsed
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed
+  nameWithType: Payload.Elapsed
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed*
+  name: Elapsed
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Elapsed_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed
+  nameWithType: Payload.Elapsed
 - uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ElapsedTime
   name: ElapsedTime()
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ElapsedTime
@@ -3582,15 +3594,15 @@ references:
   commentId: T:Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator
   fullName: Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator
   nameWithType: ConfigurationValidator
-- uid: Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.#ctor(Microsoft.Extensions.Logging.ILogger{Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator})
-  name: ConfigurationValidator(ILogger<ConfigurationValidator>)
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.html#Monai_Deploy_InformaticsGateway_Configuration_ConfigurationValidator__ctor_Microsoft_Extensions_Logging_ILogger_Monai_Deploy_InformaticsGateway_Configuration_ConfigurationValidator__
-  commentId: M:Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.#ctor(Microsoft.Extensions.Logging.ILogger{Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator})
-  name.vb: ConfigurationValidator(ILogger(Of ConfigurationValidator))
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.ConfigurationValidator(Microsoft.Extensions.Logging.ILogger<Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator>)
-  fullName.vb: Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.ConfigurationValidator(Microsoft.Extensions.Logging.ILogger(Of Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator))
-  nameWithType: ConfigurationValidator.ConfigurationValidator(ILogger<ConfigurationValidator>)
-  nameWithType.vb: ConfigurationValidator.ConfigurationValidator(ILogger(Of ConfigurationValidator))
+- uid: Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.#ctor(Microsoft.Extensions.Logging.ILogger{Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator},System.IO.Abstractions.IFileSystem)
+  name: ConfigurationValidator(ILogger<ConfigurationValidator>, IFileSystem)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.html#Monai_Deploy_InformaticsGateway_Configuration_ConfigurationValidator__ctor_Microsoft_Extensions_Logging_ILogger_Monai_Deploy_InformaticsGateway_Configuration_ConfigurationValidator__System_IO_Abstractions_IFileSystem_
+  commentId: M:Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.#ctor(Microsoft.Extensions.Logging.ILogger{Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator},System.IO.Abstractions.IFileSystem)
+  name.vb: ConfigurationValidator(ILogger(Of ConfigurationValidator), IFileSystem)
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.ConfigurationValidator(Microsoft.Extensions.Logging.ILogger<Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator>, System.IO.Abstractions.IFileSystem)
+  fullName.vb: Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.ConfigurationValidator(Microsoft.Extensions.Logging.ILogger(Of Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator), System.IO.Abstractions.IFileSystem)
+  nameWithType: ConfigurationValidator.ConfigurationValidator(ILogger<ConfigurationValidator>, IFileSystem)
+  nameWithType.vb: ConfigurationValidator.ConfigurationValidator(ILogger(Of ConfigurationValidator), IFileSystem)
 - uid: Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.#ctor*
   name: ConfigurationValidator
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ConfigurationValidator.html#Monai_Deploy_InformaticsGateway_Configuration_ConfigurationValidator__ctor_
@@ -3711,6 +3723,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.Scu
   fullName: Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.Scu
   nameWithType: DicomConfiguration.Scu
+- uid: Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.ValidateDicomOnSerialization
+  name: ValidateDicomOnSerialization
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_DicomConfiguration_ValidateDicomOnSerialization
+  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.ValidateDicomOnSerialization
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.ValidateDicomOnSerialization
+  nameWithType: DicomConfiguration.ValidateDicomOnSerialization
+- uid: Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.ValidateDicomOnSerialization*
+  name: ValidateDicomOnSerialization
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_DicomConfiguration_ValidateDicomOnSerialization_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.ValidateDicomOnSerialization
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.ValidateDicomOnSerialization
+  nameWithType: DicomConfiguration.ValidateDicomOnSerialization
 - uid: Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.WriteDicomJson
   name: WriteDicomJson
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.DicomConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_DicomConfiguration_WriteDicomJson
@@ -4437,6 +4461,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.#ctor
   fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageConfiguration
   nameWithType: StorageConfiguration.StorageConfiguration
+- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize
+  name: BufferSize
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferSize
+  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize
+  nameWithType: StorageConfiguration.BufferSize
+- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize*
+  name: BufferSize
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferSize_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize
+  nameWithType: StorageConfiguration.BufferSize
 - uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferStorageRootPath
   name: BufferStorageRootPath
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferStorageRootPath
@@ -4521,6 +4557,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceBucketName
   fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceBucketName
   nameWithType: StorageConfiguration.StorageServiceBucketName
+- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage
+  name: TemporaryDataStorage
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryDataStorage
+  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage
+  nameWithType: StorageConfiguration.TemporaryDataStorage
+- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage*
+  name: TemporaryDataStorage
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryDataStorage_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage
+  nameWithType: StorageConfiguration.TemporaryDataStorage
 - uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageBucket
   name: TemporaryStorageBucket
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryStorageBucket
@@ -4557,6 +4605,30 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Watermark
   fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Watermark
   nameWithType: StorageConfiguration.Watermark
+- uid: Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation
+  name: TemporaryDataStorageLocation
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation
+  nameWithType: TemporaryDataStorageLocation
+- uid: Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.Disk
+  name: Disk
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.html#Monai_Deploy_InformaticsGateway_Configuration_TemporaryDataStorageLocation_Disk
+  commentId: F:Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.Disk
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.Disk
+  nameWithType: TemporaryDataStorageLocation.Disk
+- uid: Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.Memory
+  name: Memory
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.html#Monai_Deploy_InformaticsGateway_Configuration_TemporaryDataStorageLocation_Memory
+  commentId: F:Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.Memory
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.Memory
+  nameWithType: TemporaryDataStorageLocation.Memory
+- uid: Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.value__
+  name: value__
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.html#Monai_Deploy_InformaticsGateway_Configuration_TemporaryDataStorageLocation_value__
+  commentId: F:Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.value__
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.value__
+  nameWithType: TemporaryDataStorageLocation.value__
 - uid: Monai.Deploy.InformaticsGateway.Configuration.ValidationExtensions
   name: ValidationExtensions
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.ValidationExtensions.html
