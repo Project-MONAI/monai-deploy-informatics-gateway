@@ -197,6 +197,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             foreach (var file in request.Payload)
             {
+                var retryCount = 0;
+                var matchFound = false;
+            RetryVerifyFileUpload:
                 var getObjectArgs = new GetObjectArgs()
                     .WithBucket(request.Bucket)
                     .WithObject($"{request.PayloadId}/{file.Path}")
@@ -210,7 +213,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         var hl7Message = new HL7.Dotnetcore.Message(data);
                         hl7Message.ParseMessage();
 
-                        var matchFound = false;
                         foreach (var key in _input.Keys)
                         {
                             if (hl7Message.HL7Message.Equals(_input[key].SerializeMessage(true)))
@@ -219,19 +221,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                                 break;
                             }
                         }
-                        if (!matchFound)
-                        {
-                            _outputHelper.WriteLine($"HL7 message on MinIO: {hl7Message.HL7Message}");
-                            _outputHelper.WriteLine($"HL7 message in memory:");
 
-                            foreach (var file in _input.Values)
-                            {
-                                _outputHelper.WriteLine($"file=>{file.SerializeMessage(true)}");
-                            }
-                        }
-                        matchFound.Should().BeTrue();
                     });
                 await minioClient.GetObjectAsync(getObjectArgs);
+                if (retryCount++ < 3 && !matchFound)
+                {
+                    goto RetryVerifyFileUpload;
+                }
+                matchFound.Should().BeTrue();
             }
         }
     }
