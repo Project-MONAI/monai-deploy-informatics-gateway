@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
@@ -90,6 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")]
         public async Task<ActionResult<string>> Create(DestinationApplicationEntity item)
@@ -105,14 +107,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 _logger.DestinationApplicationEntityAdded(item.AeTitle, item.HostIp);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
+            catch (ObjectExistsException ex)
+            {
+                return Problem(title: "DICOM destination already exists", statusCode: (int)System.Net.HttpStatusCode.Conflict, detail: ex.Message);
+            }
             catch (ConfigurationException ex)
             {
-                return Problem(title: "Validation error.", statusCode: (int)System.Net.HttpStatusCode.BadRequest, detail: ex.Message);
+                return Problem(title: "Validation error", statusCode: (int)System.Net.HttpStatusCode.BadRequest, detail: ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.ErrorAddingDestinationApplicationEntity(ex);
-                return Problem(title: "Error adding new DICOM destination.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error adding new DICOM destination", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
@@ -148,11 +154,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             if (_repository.Any(p => p.Name.Equals(item.Name)))
             {
-                throw new ConfigurationException($"A DICOM destination with the same name '{item.Name}' already exists.");
+                throw new ObjectExistsException($"A DICOM destination with the same name '{item.Name}' already exists.");
             }
             if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port)))
             {
-                throw new ConfigurationException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
+                throw new ObjectExistsException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
             }
             if (!item.IsValid(out var validationErrors))
             {

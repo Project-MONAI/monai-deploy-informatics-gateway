@@ -195,6 +195,32 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
+        [RetryFact(5, 250, DisplayName = "Create - Shall return conflict if entity already exists")]
+        public async Task Create_ShallReturnConflictIfEntityAlreadyExists()
+        {
+            var aeTitle = "AET";
+            var aeTitles = new SourceApplicationEntity
+            {
+                AeTitle = aeTitle,
+                HostIp = "host",
+                Name = aeTitle,
+            };
+
+            _repository.Setup(p => p.Any(It.IsAny<Func<SourceApplicationEntity, bool>>())).Returns(true);
+
+            var result = await _controller.Create(aeTitles);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("DICOM source already exists", problem.Title);
+            Assert.Equal("A DICOM source with the same name 'AET' already exists.", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.Conflict, problem.Status);
+
+            _repository.Verify(p => p.AddAsync(It.IsAny<SourceApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Never());
+        }
+
         [RetryFact(5, 250, DisplayName = "Create - Shall return problem if failed to add")]
         public async Task Create_ShallReturnBadRequestOnAddFailure()
         {

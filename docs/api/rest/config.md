@@ -34,6 +34,7 @@ Response Content Type: JSON - Array of [MonaiApplicationEntity](xref:Monai.Deplo
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 200  | AE Titles retrieved successfully.                                                                                                       |
 | 404  | AE Title not found.                                                                                                                     |
+| 409  | Entity already exists with the same name or AE Title.                                                                                   |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
@@ -136,6 +137,7 @@ Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.Informa
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | 201  | AE Title created successfully.                                                                                                              |
 | 400  | Validation error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| 409  | Entity already exists with the same name or entity already exists with the same AE Title and port combination.                              |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.     |
 
 ### Example Request
@@ -301,6 +303,7 @@ Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.Inform
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 201  | AE Title created successfully.                                                                                                          |
 | 400  | Validation error.                                                                                                                       |
+| 409  | Entity already exists with the same name or entity already exists with the same AE Title, host/IP address and port combination.         |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
