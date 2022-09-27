@@ -336,21 +336,9 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
     :versions:
     - 17.1.0
-    :when: 2022-08-16 23:05:48.342748414 Z
-- - :approve
-  - Microsoft.CodeCoverage
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
-    :versions:
     - 17.2.0
-    :when: 2022-08-16 23:05:48.787754812 Z
-- - :approve
-  - Microsoft.CodeCoverage
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
-    :versions:
-    - 17.3.1
-    :when: 2022-09-01 23:05:49.229587689 Z
+    - 17.3.2
+    :when: 2022-08-16 23:05:48.342748414 Z
 - - :approve
   - Microsoft.Data.Sqlite.Core
   - :who: mocsharp
@@ -725,7 +713,7 @@
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
     :versions:
-    - 17.3.1
+    - 17.3.2
     :when: 2022-09-01 23:06:13.008314524 Z
 - - :approve
   - Microsoft.NETCore.Platforms
@@ -775,42 +763,18 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
     :versions:
     - 17.1.0
-    :when: 2022-08-16 23:06:16.175705981 Z
-- - :approve
-  - Microsoft.TestPlatform.ObjectModel
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.2.0/LICENSE)
-    :versions:
     - 17.2.0
-    :when: 2022-08-16 23:06:16.642573372 Z
-- - :approve
-  - Microsoft.TestPlatform.ObjectModel
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.3.1/LICENSE)
-    :versions:
-    - 17.3.1
-    :when: 2022-09-01 23:06:17.198633634 Z
+    - 17.3.2
+    :when: 2022-08-16 23:06:16.175705981 Z
 - - :approve
   - Microsoft.TestPlatform.TestHost
   - :who: mocsharp
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
     :versions:
     - 17.1.0
-    :when: 2022-08-16 23:06:17.671459450 Z
-- - :approve
-  - Microsoft.TestPlatform.TestHost
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.2.0/LICENSE)
-    :versions:
     - 17.2.0
-    :when: 2022-08-16 23:06:18.130472318 Z
-- - :approve
-  - Microsoft.TestPlatform.TestHost
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.3.1/LICENSE)
-    :versions:
-    - 17.3.1
-    :when: 2022-09-01 23:06:18.619013325 Z
+    - 17.3.2
+    :when: 2022-08-16 23:06:17.671459450 Z
 - - :approve
   - Microsoft.Toolkit.HighPerformance
   - :who: mocsharp

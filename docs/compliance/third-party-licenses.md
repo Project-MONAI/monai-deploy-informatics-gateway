@@ -3014,15 +3014,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.CodeCoverage 17.3.1</summary>
+<summary>Microsoft.CodeCoverage 17.3.2</summary>
 
 ## Microsoft.CodeCoverage
 
-- Version: 17.3.1
+- Version: 17.3.2
 - Authors: Microsoft
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.3.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.3.2)
 - License: [MIT](https://github.com/microsoft/vstest/raw/main/LICENSE)
 
 
@@ -5595,15 +5595,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.NET.Test.Sdk 17.3.1</summary>
+<summary>Microsoft.NET.Test.Sdk 17.3.2</summary>
 
 ## Microsoft.NET.Test.Sdk
 
-- Version: 17.3.1
+- Version: 17.3.2
 - Authors: Microsoft
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.3.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.3.2)
 - License: [MIT](https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
 
 
@@ -6394,7 +6394,7 @@ SOFTWARE.
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.2.0)
-- License: [MIT](https://github.com/microsoft/vstest/raw/v17.2.0/LICENSE)
+- License: [MIT](https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
 
 
 ```
@@ -6423,16 +6423,16 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.TestPlatform.ObjectModel 17.3.1</summary>
+<summary>Microsoft.TestPlatform.ObjectModel 17.3.2</summary>
 
 ## Microsoft.TestPlatform.ObjectModel
 
-- Version: 17.3.1
+- Version: 17.3.2
 - Authors: Microsoft
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.3.1)
-- License: [MIT](https://github.com/microsoft/vstest/raw/v17.3.1/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.3.2)
+- License: [MIT](https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
 
 
 ```
@@ -6508,7 +6508,7 @@ SOFTWARE.
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.2.0)
-- License: [MIT](https://github.com/microsoft/vstest/raw/v17.2.0/LICENSE)
+- License: [MIT](https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
 
 
 ```
@@ -6537,16 +6537,16 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.TestPlatform.TestHost 17.3.1</summary>
+<summary>Microsoft.TestPlatform.TestHost 17.3.2</summary>
 
 ## Microsoft.TestPlatform.TestHost
 
-- Version: 17.3.1
+- Version: 17.3.2
 - Authors: Microsoft
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.3.1)
-- License: [MIT](https://github.com/microsoft/vstest/raw/v17.3.1/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.3.2)
+- License: [MIT](https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
 
 
 ```

@@ -76,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             }
             catch (ProblemException ex)
             {
-                if (ex.ProblemDetails.Status == (int)HttpStatusCode.BadRequest &&
+                if (ex.ProblemDetails.Status == (int)HttpStatusCode.Conflict &&
                     ex.ProblemDetails.Detail.Contains("already exists"))
                 {
                     await _informaticsGatewayClient.DicomSources.GetAeTitle(callingAeTitle, CancellationToken.None);
@@ -128,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             }
             catch (ProblemException ex)
             {
-                if (ex.ProblemDetails.Status == (int)HttpStatusCode.BadRequest &&
+                if (ex.ProblemDetails.Status == (int)HttpStatusCode.Conflict &&
                     ex.ProblemDetails.Detail.Contains("already exists"))
                 {
                     _scenarioContext[SharedDefinitions.KeyCalledAet] = await _informaticsGatewayClient.MonaiScpAeTitle.GetAeTitle(calledAeTitle, CancellationToken.None);
