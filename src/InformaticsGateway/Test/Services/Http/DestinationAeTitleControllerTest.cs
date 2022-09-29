@@ -192,9 +192,36 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Validation error.", problem.Title);
+            Assert.Equal("Validation error", problem.Title);
             Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: DestinationApplicationEntity).", problem.Detail);
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
+        }
+
+        [RetryFact(5, 250, DisplayName = "Create - Shall return Conflict if entity already exists")]
+        public async Task Create_ShallReturnConflictIfEntityAlreadyExists()
+        {
+            var aeTitle = "AET";
+            var aeTitles = new DestinationApplicationEntity
+            {
+                Name = aeTitle,
+                AeTitle = aeTitle,
+                HostIp = "host",
+                Port = 1
+            };
+
+            _repository.Setup(p => p.Any(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(true);
+
+            var result = await _controller.Create(aeTitles);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("DICOM destination already exists", problem.Title);
+            Assert.Equal("A DICOM destination with the same name 'AET' already exists.", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.Conflict, problem.Status);
+
+            _repository.Verify(p => p.AddAsync(It.IsAny<DestinationApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Never());
         }
 
         [RetryFact(5, 250, DisplayName = "Create - Shall return problem if failed to add")]
@@ -217,7 +244,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Error adding new DICOM destination.", problem.Title);
+            Assert.Equal("Error adding new DICOM destination", problem.Title);
             Assert.Equal($"error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
 

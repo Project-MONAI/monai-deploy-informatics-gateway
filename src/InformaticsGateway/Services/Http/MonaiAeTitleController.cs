@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
@@ -96,6 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")]
         public async Task<ActionResult<MonaiApplicationEntity>> Create(MonaiApplicationEntity item)
@@ -111,6 +113,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(item, ChangedEventType.Added));
                 _logger.MonaiApplicationEntityAdded(item.AeTitle);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
+            }
+            catch (ObjectExistsException ex)
+            {
+                return Problem(title: "AE Title already exists", statusCode: (int)System.Net.HttpStatusCode.Conflict, detail: ex.Message);
             }
             catch (ConfigurationException ex)
             {
@@ -158,11 +164,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
             if (_repository.Any(p => p.Name.Equals(item.Name)))
             {
-                throw new ConfigurationException($"A MONAI Application Entity with the same name '{item.Name}' already exists.");
+                throw new ObjectExistsException($"A MONAI Application Entity with the same name '{item.Name}' already exists.");
             }
             if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle)))
             {
-                throw new ConfigurationException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
+                throw new ObjectExistsException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
             }
             if (item.IgnoredSopClasses.Any() && item.AllowedSopClasses.Any())
             {

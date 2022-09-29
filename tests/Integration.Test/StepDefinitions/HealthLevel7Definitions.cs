@@ -195,6 +195,21 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
                 .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
 
+            var listOjbectsArgs = new ListObjectsArgs()
+                    .WithBucket(request.Bucket)
+                    .WithPrefix(request.PayloadId.ToString())
+                    .WithRecursive(true);
+            var results = minioClient.ListObjectsAsync(listOjbectsArgs);
+            results.Subscribe(item =>
+            {
+                _outputHelper.WriteLine($"File => {item.Key}...");
+            },
+            exception =>
+            {
+                _outputHelper.WriteLine($"Error listing files {exception.Message}");
+
+            });
+
             foreach (var file in request.Payload)
             {
                 var retryCount = 0;

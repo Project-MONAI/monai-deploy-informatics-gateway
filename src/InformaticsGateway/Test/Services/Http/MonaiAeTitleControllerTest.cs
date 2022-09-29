@@ -17,9 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -177,28 +179,38 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #endregion GetAeTitle
 
         #region Create
-
-        [RetryTheory(DisplayName = "Create - Shall return BadRequest when validation fails")]
-        [InlineData("AeTitleIsTooooooLooooong", "'AeTitleIsTooooooLooooong' is not a valid AE Title (source: MonaiApplicationEntity).")]
-        [InlineData("AET1", "A MONAI Application Entity with the same name 'AET1' already exists.")]
-        public async Task Create_ShallReturnBadRequestOnValidationFailure(string aeTitle, string errorMessage)
+        [Fact(DisplayName = "Create - Shall return Conflict if entity already exists")]
+        public async Task Create_ShallReturnConflictIfIEntityAlreadyExists()
         {
-            var data = new List<MonaiApplicationEntity>();
-            for (var i = 1; i <= 3; i++)
-            {
-                data.Add(new MonaiApplicationEntity()
-                {
-                    AeTitle = $"AET{i}",
-                    Name = $"AET{i}",
-                    Workflows = new List<string> { "A", "B" }
-                });
-            }
-            _repository.Setup(p => p.Any(It.IsAny<Func<MonaiApplicationEntity, bool>>())).Returns(aeTitle == "AET1");
+            _repository.Setup(p => p.Any(It.IsAny<Func<MonaiApplicationEntity, bool>>())).Returns(true);
 
             var monaiAeTitle = new MonaiApplicationEntity
             {
-                Name = aeTitle,
-                AeTitle = aeTitle,
+                Name = "AET1",
+                AeTitle = "AET1",
+                Workflows = new List<string> { "A", "B" }
+            };
+
+            var result = await _controller.Create(monaiAeTitle);
+
+            Assert.NotNull(result);
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("AE Title already exists", problem.Title);
+            Assert.Equal("A MONAI Application Entity with the same name 'AET1' already exists.", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.Conflict, problem.Status);
+
+        }
+
+        [Fact(DisplayName = "Create - Shall return BadRequest when validation fails")]
+        public async Task Create_ShallReturnBadRequestOnValidationFailure()
+        {
+            var monaiAeTitle = new MonaiApplicationEntity
+            {
+                Name = "AeTitleIsTooooooLooooong",
+                AeTitle = "AeTitleIsTooooooLooooong",
                 Workflows = new List<string> { "A", "B" }
             };
 
@@ -210,23 +222,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
             Assert.Equal("Validation error.", problem.Title);
-            Assert.Equal(errorMessage, problem.Detail);
+            Assert.Equal("'AeTitleIsTooooooLooooong' is not a valid AE Title (source: MonaiApplicationEntity).", problem.Detail);
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
         [RetryFact(DisplayName = "Create - Shall return BadRequest when both allowed & ignored SOP classes are defined")]
         public async Task Create_ShallReturnBadRequestWhenBothAllowedAndIgnoredSopsAreDefined()
         {
-            var data = new List<MonaiApplicationEntity>();
-            for (var i = 1; i <= 3; i++)
-            {
-                data.Add(new MonaiApplicationEntity()
-                {
-                    AeTitle = $"AET{i}",
-                    Name = $"AET{i}",
-                    Workflows = new List<string> { "A", "B" }
-                });
-            }
             _repository.Setup(p => p.Any(It.IsAny<Func<MonaiApplicationEntity, bool>>())).Returns(false);
 
             var monaiAeTitle = new MonaiApplicationEntity
