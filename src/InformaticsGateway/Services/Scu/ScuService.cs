@@ -45,12 +45,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         public string ServiceName => "DICOM SCU Service";
 
         public ScuService(IServiceScopeFactory serviceScopeFactory,
-                          IOptions<InformaticsGatewayConfiguration> configuration,
-                          ILogger<ScuService> logger)
+                          ILogger<ScuService> logger,
+                          IOptions<InformaticsGatewayConfiguration> configuration)
         {
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+
             _scope = serviceScopeFactory.CreateScope();
-            _logger = logger ?? throw new ServiceNotFoundException(nameof(logger));
-            _configuration = configuration ?? throw new ServiceNotFoundException(nameof(configuration));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             _workQueue = _scope.ServiceProvider.GetService<IScuQueue>() ?? throw new ServiceNotFoundException(nameof(IScuQueue));
         }
@@ -130,15 +132,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 };
                 client.AssociationRejected += (sender, args) =>
                 {
-                    scuResponse.Status = ResponseStatus.Failure;
-                    scuResponse.Error = ResponseError.AssociationRejected;
                     _logger.ScuAssociationRejected();
-                    manualResetEvent.Set();
                 };
                 client.AssociationReleased += (sender, args) =>
                 {
                     _logger.ScuAssociationReleased();
-                    manualResetEvent.Set();
                 };
                 client.ServiceOptions.LogDataPDUs = _configuration.Value.Dicom.Scu.LogDataPdus;
                 client.ServiceOptions.LogDimseDatasets = _configuration.Value.Dicom.Scu.LogDimseDatasets;
@@ -162,6 +160,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 };
                 await client.AddRequestAsync(cechoRequest).ConfigureAwait(false);
                 await client.SendAsync(cancellationToken).ConfigureAwait(false);
+            }
+            catch (DicomAssociationRejectedException ex)
+            {
+                scuResponse.Status = ResponseStatus.Failure;
+                scuResponse.Error = ResponseError.AssociationRejected;
+                scuResponse.Message = ex.Message;
+                _logger.CEchoFailure(ex.Message);
+            }
+            catch (DicomAssociationAbortedException ex)
+            {
+                scuResponse.Status = ResponseStatus.Failure;
+                scuResponse.Error = ResponseError.AssociationAborted;
+                scuResponse.Message = ex.Message;
+                _logger.CEchoFailure(ex.Message);
             }
             catch (Exception ex)
             {

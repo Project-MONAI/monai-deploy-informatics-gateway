@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorQueryingDatabase(ex);
-                return Problem(title: "Error querying database.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error querying database.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorListingDestinationApplicationEntities(ex);
-                return Problem(title: "Error querying DICOM destinations.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error querying DICOM destinations.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
@@ -102,6 +102,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             var traceId = HttpContext?.TraceIdentifier ?? Guid.NewGuid().ToString();
             try
             {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    return NotFound();
+                }
+
                 var destinationApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
 
                 if (destinationApplicationEntity is null)
@@ -112,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 var request = new ScuRequest(traceId, RequestType.CEcho, destinationApplicationEntity.HostIp, destinationApplicationEntity.Port, destinationApplicationEntity.AeTitle);
                 var response = await _scuQueue.Queue(request, HttpContext.RequestAborted).ConfigureAwait(false);
 
-                if (response.Status == ResponseStatus.Failure)
+                if (response.Status != ResponseStatus.Success)
                 {
                     return Problem(
                         title: "C-ECHO Failure",
@@ -125,11 +130,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.ErrorListingDestinationApplicationEntities(ex);
+                _logger.ErrorCEechoDestinationApplicationEntity(name, ex);
                 return Problem(
-                    title: "Error querying DICOM destinations.",
+                    title: $"Error performing C-ECHO",
                     instance: traceId,
-                    statusCode: (int)System.Net.HttpStatusCode.InternalServerError,
+                    statusCode: StatusCodes.Status500InternalServerError,
                     detail: ex.Message);
             }
         }
@@ -165,7 +170,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorAddingDestinationApplicationEntity(ex);
-                return Problem(title: "Error adding new DICOM destination", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error adding new DICOM destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
@@ -193,7 +198,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorDeletingDestinationApplicationEntity(ex);
-                return Problem(title: "Error deleting DICOM destination.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error deleting DICOM destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 

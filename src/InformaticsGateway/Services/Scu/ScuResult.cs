@@ -30,7 +30,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         CEchoError,
         Unhandled,
         UnsupportedRequestType,
-        Unknown
+        Unknown,
+        AssociationAborted
     }
 
     public class ScuResponse
@@ -38,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         internal static readonly ScuResponse NullResponse = new ScuResponse { Status = ResponseStatus.Unknown, Error = ResponseError.Unknown };
 
         public ResponseStatus Status { get; set; }
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
         public ResponseError Error { get; internal set; }
     }
 }

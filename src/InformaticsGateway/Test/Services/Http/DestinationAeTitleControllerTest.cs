@@ -70,12 +70,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             _repository = new Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
 
+            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
             _controller = new DestinationAeTitleController(
                  _logger.Object,
                  _repository.Object,
                  _scuQueue.Object)
             {
-                ProblemDetailsFactory = _problemDetailsFactory.Object
+                ProblemDetailsFactory = _problemDetailsFactory.Object,
+                ControllerContext = controllerContext
             };
         }
 
@@ -175,6 +177,104 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         #endregion GetAeTitle
+
+        #region C-Echo
+
+        [RetryFact(5, 250)]
+        public async Task GivenAnEmptyString_WhenCEchoIsCalled_Returns404()
+        {
+            var result = await _controller.CEcho(string.Empty);
+            var notFoundResult = result as NotFoundResult;
+            Assert.NotNull(notFoundResult);
+            Assert.Equal(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [RetryFact(5, 250)]
+        public async Task GivenADestinationName_WhenCEchoIsCalledAndEntityCannotBeFound_Returns404()
+        {
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).ReturnsAsync(default(DestinationApplicationEntity));
+            var result = await _controller.CEcho("AET");
+            var notFoundResult = result as NotFoundResult;
+            Assert.NotNull(notFoundResult);
+            Assert.Equal(StatusCodes.Status404NotFound, notFoundResult.StatusCode);
+        }
+
+        [RetryFact(5, 250)]
+        public async Task GivenADestinationName_WhenCEchoIsCalledWithAnError_Returns502()
+        {
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>()))
+                .ReturnsAsync(new DestinationApplicationEntity
+                {
+                    AeTitle = "AET",
+                    HostIp = "1.2.3.4",
+                    Port = 104,
+                    Name = "AET"
+                });
+            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ScuResponse
+                {
+                    Status = ResponseStatus.Failure,
+                    Error = ResponseError.AssociationRejected,
+                    Message = "error"
+                });
+            var result = await _controller.CEcho("AET");
+            var objectResult = result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problemDetails = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problemDetails);
+            Assert.Equal(StatusCodes.Status502BadGateway, problemDetails.Status);
+            Assert.Equal("C-ECHO Failure", problemDetails.Title);
+            Assert.Equal("error", problemDetails.Detail);
+        }
+
+        [RetryFact(5, 250)]
+        public async Task GivenADestinationName_WhenCEchoIsCalledWithUnhandledError_Returns500()
+        {
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>()))
+                .ReturnsAsync(new DestinationApplicationEntity
+                {
+                    AeTitle = "AET",
+                    HostIp = "1.2.3.4",
+                    Port = 104,
+                    Name = "AET"
+                });
+            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuRequest>(), It.IsAny<CancellationToken>()))
+                .ThrowsAsync(new Exception("error"));
+            var result = await _controller.CEcho("AET");
+            var objectResult = result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problemDetails = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problemDetails);
+            Assert.Equal(StatusCodes.Status500InternalServerError, problemDetails.Status);
+            Assert.Equal("Error performing C-ECHO", problemDetails.Title);
+            Assert.Equal("error", problemDetails.Detail);
+        }
+
+        [RetryFact(5, 250)]
+        public async Task GivenADestinationName_WhenCEchoIsCalledSuccessfully_Returns200()
+        {
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>()))
+                .ReturnsAsync(new DestinationApplicationEntity
+                {
+                    AeTitle = "AET",
+                    HostIp = "1.2.3.4",
+                    Port = 104,
+                    Name = "AET"
+                });
+            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ScuResponse
+                {
+                    Status = ResponseStatus.Success,
+                    Error = ResponseError.None,
+                    Message = ""
+                });
+            var result = await _controller.CEcho("AET");
+            var okResult = result as OkResult;
+            Assert.NotNull(okResult);
+            Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+        }
+
+        #endregion C-Echo
 
         #region Create
 
