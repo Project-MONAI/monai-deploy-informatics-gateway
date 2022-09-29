@@ -27,6 +27,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Http;
+using Monai.Deploy.InformaticsGateway.Services.Scu;
 using Moq;
 using xRetry;
 using Xunit;
@@ -38,11 +39,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         private readonly DestinationAeTitleController _controller;
         private readonly Mock<ProblemDetailsFactory> _problemDetailsFactory;
         private readonly Mock<ILogger<DestinationAeTitleController>> _logger;
+        private readonly Mock<IScuQueue> _scuQueue;
         private readonly Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>> _repository;
 
         public DestinationAeTitleControllerTest()
         {
             _logger = new Mock<ILogger<DestinationAeTitleController>>();
+            _scuQueue = new Mock<IScuQueue>();
 
             _problemDetailsFactory = new Mock<ProblemDetailsFactory>();
             _problemDetailsFactory.Setup(_ => _.CreateProblemDetails(
@@ -69,7 +72,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             _controller = new DestinationAeTitleController(
                  _logger.Object,
-                 _repository.Object)
+                 _repository.Object,
+                 _scuQueue.Object)
             {
                 ProblemDetailsFactory = _problemDetailsFactory.Object
             };

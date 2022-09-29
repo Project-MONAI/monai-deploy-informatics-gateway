@@ -27,6 +27,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Scu;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -36,13 +37,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     {
         private readonly ILogger<DestinationAeTitleController> _logger;
         private readonly IInformaticsGatewayRepository<DestinationApplicationEntity> _repository;
+        private readonly IScuQueue _scuQueue;
 
         public DestinationAeTitleController(
             ILogger<DestinationAeTitleController> logger,
-            IInformaticsGatewayRepository<DestinationApplicationEntity> repository)
+            IInformaticsGatewayRepository<DestinationApplicationEntity> repository,
+            IScuQueue scuQueue)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _scuQueue = scuQueue ?? throw new ArgumentNullException(nameof(scuQueue));
         }
 
         [HttpGet]
@@ -84,6 +88,49 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 _logger.ErrorListingDestinationApplicationEntities(ex);
                 return Problem(title: "Error querying DICOM destinations.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+            }
+        }
+
+        [HttpGet("cecho/{name}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status502BadGateway)]
+        [ActionName(nameof(GetAeTitle))]
+        public async Task<IActionResult> CEcho(string name)
+        {
+            var traceId = HttpContext?.TraceIdentifier ?? Guid.NewGuid().ToString();
+            try
+            {
+                var destinationApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+
+                if (destinationApplicationEntity is null)
+                {
+                    return NotFound();
+                }
+
+                var request = new ScuRequest(traceId, RequestType.CEcho, destinationApplicationEntity.HostIp, destinationApplicationEntity.Port, destinationApplicationEntity.AeTitle);
+                var response = await _scuQueue.Queue(request, HttpContext.RequestAborted).ConfigureAwait(false);
+
+                if (response.Status == ResponseStatus.Failure)
+                {
+                    return Problem(
+                        title: "C-ECHO Failure",
+                        instance: traceId,
+                        detail: response.Message,
+                        statusCode: StatusCodes.Status502BadGateway);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorListingDestinationApplicationEntities(ex);
+                return Problem(
+                    title: "Error querying DICOM destinations.",
+                    instance: traceId,
+                    statusCode: (int)System.Net.HttpStatusCode.InternalServerError,
+                    detail: ex.Message);
             }
         }
 

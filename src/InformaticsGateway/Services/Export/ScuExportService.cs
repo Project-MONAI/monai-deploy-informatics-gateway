@@ -109,9 +109,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                                _configuration.Value.Dicom.Scu.AeTitle,
                                destination.AeTitle);
 
-                       client.AssociationAccepted += (sender, args) => _logger.AssociationAccepted();
-                       client.AssociationRejected += (sender, args) => _logger.AssociationRejected();
-                       client.AssociationReleased += (sender, args) => _logger.AssociationReleased();
+                       client.AssociationAccepted += (sender, args) => _logger.ExportAssociationAccepted();
+                       client.AssociationRejected += (sender, args) => _logger.ExportAssociationRejected();
+                       client.AssociationReleased += (sender, args) => _logger.ExportAssociationReleased();
                        client.ServiceOptions.LogDataPDUs = _configuration.Value.Dicom.Scu.LogDataPdus;
                        client.ServiceOptions.LogDimseDatasets = _configuration.Value.Dicom.Scu.LogDimseDatasets;
 

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
@@ -32,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         public ObjectUploadQueue(ILogger<ObjectUploadQueue> logger)
         {
             _workItems = new BlockingCollection<FileStorageMetadata>();
-            _logger = logger;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void Queue(FileStorageMetadata file)
