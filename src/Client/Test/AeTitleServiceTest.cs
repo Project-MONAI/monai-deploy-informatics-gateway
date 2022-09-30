@@ -324,5 +324,72 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }
+
+        [Fact(DisplayName = "Destination - C-ECHO")]
+        public async Task CEcho()
+        {
+            var aet = new SourceApplicationEntity()
+            {
+                AeTitle = "Test",
+                Name = "Test",
+                HostIp = "1.2.3.4"
+            };
+
+            var json = JsonSerializer.Serialize(aet, Configuration.JsonSerializationOptions);
+
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/destination";
+
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
+
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Get, httpResponse);
+
+            var service = new AeTitleService<DestinationApplicationEntity>(uriPath, httpClient, _logger.Object);
+
+            var exception = await Record.ExceptionAsync(async () => await service.CEcho(aet.Name, CancellationToken.None));
+            Assert.Null(exception);
+
+        }
+
+        [Fact(DisplayName = "Destination - C-ECHO returns a problem")]
+        public async Task CEcho_ReturnsAProblem()
+        {
+            var aet = new SourceApplicationEntity()
+            {
+                AeTitle = "Test",
+                Name = "Test Name",
+                HostIp = "1.2.3.4"
+            };
+
+            var problem = new ProblemDetails
+            {
+                Title = "Problem Title",
+                Detail = "Problem Detail",
+                Status = 500
+            };
+
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
+
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/destination";
+
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
+
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Get, httpResponse);
+
+            var service = new AeTitleService<DestinationApplicationEntity>(uriPath, httpClient, _logger.Object);
+
+            var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.CEcho(aet.Name, CancellationToken.None));
+
+            Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
+        }
     }
 }

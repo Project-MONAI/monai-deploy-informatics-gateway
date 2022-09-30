@@ -32,7 +32,6 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.9" />
     <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.5" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.7" />
-    <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
   </ItemGroup>
 
   <ItemGroup>

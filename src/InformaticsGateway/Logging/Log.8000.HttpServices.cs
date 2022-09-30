@@ -55,6 +55,9 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8014, Level = LogLevel.Error, Message = "Error deleting DICOM destination.")]
         public static partial void ErrorDeletingDestinationApplicationEntity(this ILogger logger, Exception ex);
 
+        [LoggerMessage(EventId = 8015, Level = LogLevel.Error, Message = "Error C-ECHO to DICOM destination {name}.")]
+        public static partial void ErrorCEechoDestinationApplicationEntity(this ILogger logger, string name, Exception ex);
+
         // Source AE Title Controller
         [LoggerMessage(EventId = 8020, Level = LogLevel.Information, Message = "DICOM source added AE Title={aeTitle}, Host/IP={hostIp}.")]
         public static partial void SourceApplicationEntityAdded(this ILogger logger, string aeTitle, string hostIp);

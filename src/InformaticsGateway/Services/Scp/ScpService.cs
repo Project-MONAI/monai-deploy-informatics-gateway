@@ -19,13 +19,13 @@ using System;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
@@ -53,14 +53,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                                 IHostApplicationLifetime appLifetime,
                                 IOptions<InformaticsGatewayConfiguration> configuration)
         {
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(applicationEntityManager, nameof(applicationEntityManager));
+            Guard.Against.Null(appLifetime, nameof(appLifetime));
+            Guard.Against.Null(configuration, nameof(configuration));
+
             _serviceScope = serviceScopeFactory.CreateScope();
-            _associationDataProvider = applicationEntityManager ?? throw new ServiceNotFoundException(nameof(applicationEntityManager));
+            _associationDataProvider = applicationEntityManager;
 
             var logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>();
 
             _logger = logginFactory.CreateLogger<ScpService>();
-            _appLifetime = appLifetime ?? throw new ServiceNotFoundException(nameof(appLifetime));
-            _configuration = configuration ?? throw new ServiceNotFoundException(nameof(configuration));
+            _appLifetime = appLifetime;
+            _configuration = configuration;
             _ = DicomDictionary.Default;
         }
 

@@ -23,6 +23,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Api;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Services
 {
@@ -35,6 +36,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         Task<T> Create(T item, CancellationToken cancellationToken);
 
         Task<T> Delete(string aeTitle, CancellationToken cancellationToken);
+
+        Task CEcho(string name, CancellationToken cancellationToken);
     }
 
     internal class AeTitleService<T> : ServiceBase, IAeTitleService<T>
@@ -87,6 +90,19 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
             var list = await response.Content.ReadFromJsonAsync<IEnumerable<T>>(Configuration.JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
             return list.ToList().AsReadOnly();
+        }
+
+        public async Task CEcho(string name, CancellationToken cancellationToken)
+        {
+            if (typeof(T) != typeof(DestinationApplicationEntity))
+            {
+                throw new NotSupportedException($"C-ECHO is not supported for {typeof(T).Name}");
+            }
+            name = Uri.EscapeDataString(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Logger.SendingRequestTo($"{Route}/{name}");
+            var response = await HttpClient.GetAsync($"{Route}/cecho/{name}", cancellationToken).ConfigureAwait(false);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
         }
     }
 }

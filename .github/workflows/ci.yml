@@ -423,8 +423,8 @@ jobs:
 
       - name: Update docs version
         run: |
-          sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/docfx.json
-          sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/index.md
+          sed -i -e "s,v0.0.0,v${{ env.SEMVER }},g" ./docs/docfx.json
+          sed -i -e "s,v0.0.0,v${{ env.SEMVER }},g" ./docs/index.md
 
       - name: Build Docs
         working-directory: docs

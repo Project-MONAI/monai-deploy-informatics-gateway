@@ -212,6 +212,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             foreach (var file in request.Payload)
             {
+                _outputHelper.WriteLine($"Verifying file => {request.PayloadId}/{file.Path}...");
                 var retryCount = 0;
                 var matchFound = false;
             RetryVerifyFileUpload:
@@ -230,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
                         foreach (var key in _input.Keys)
                         {
-                            if (hl7Message.HL7Message.Equals(_input[key].SerializeMessage(true)))
+                            if (hl7Message.SerializeMessage(true).Equals(_input[key].SerializeMessage(true)))
                             {
                                 matchFound = true;
                                 break;

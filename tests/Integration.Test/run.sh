@@ -123,7 +123,7 @@ function start_services() {
 
     set +e
     COUNTER=0
-    EXPECTEDSERVICE=7
+    EXPECTEDSERVICE=8
     while true; do
         info "Waiting for Informatics Gateway ($COUNTER)..."
         count=$(curl -s http://$HOST_IP:5000/health/status | jq | grep "running" | wc -l)
