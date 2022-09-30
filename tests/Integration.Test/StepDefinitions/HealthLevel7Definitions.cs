@@ -212,7 +212,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             foreach (var file in request.Payload)
             {
-                _outputHelper.WriteLine($"Verifying file => {file}...");
+                _outputHelper.WriteLine($"Verifying file => {request.PayloadId}/{file.Path}...");
                 var retryCount = 0;
                 var matchFound = false;
             RetryVerifyFileUpload:
