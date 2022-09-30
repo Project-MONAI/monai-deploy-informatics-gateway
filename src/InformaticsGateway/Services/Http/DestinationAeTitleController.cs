@@ -170,7 +170,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorAddingDestinationApplicationEntity(ex);
-                return Problem(title: "Error adding new DICOM destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+                return Problem(title: "Error adding new DICOM destination", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 

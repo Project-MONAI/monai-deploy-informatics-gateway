@@ -31,6 +31,7 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Storage.API;
 using Moq;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
@@ -122,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
         }
 
-        [Fact]
+        [RetryFact]
         public async Task GivenAFhirFileStorageMetadata_WhenQueuedForUpload_ExpectSingleFileToBeUploaded()
         {
             var countdownEvent = new CountdownEvent(1);
