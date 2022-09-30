@@ -23,6 +23,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Api;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Services
 {
@@ -93,6 +94,10 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
         public async Task CEcho(string name, CancellationToken cancellationToken)
         {
+            if (typeof(T) != typeof(DestinationApplicationEntity))
+            {
+                throw new NotSupportedException($"C-ECHO is not supported for {typeof(T).Name}");
+            }
             name = Uri.EscapeDataString(name);
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
             Logger.SendingRequestTo($"{Route}/{name}");
