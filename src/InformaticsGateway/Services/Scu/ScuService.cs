@@ -83,20 +83,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger.ServiceCancelled(ServiceName);
         }
 
-        private async Task Process(ScuRequest request, CancellationToken cancellationToken)
+        private async Task Process(ScuWorkRequest request, CancellationToken cancellationToken)
         {
-            ScuResponse response = null;
+            ScuWorkResponse response = null;
             try
             {
                 response = request.RequestType switch
                 {
                     RequestType.CEcho => await HandleCEchoRequest(request, cancellationToken).ConfigureAwait(false),
-                    _ => new ScuResponse { Status = ResponseStatus.Failure, Error = ResponseError.UnsupportedRequestType },
+                    _ => new ScuWorkResponse { Status = ResponseStatus.Failure, Error = ResponseError.UnsupportedRequestType },
                 };
             }
             catch (Exception exception)
             {
-                response = new ScuResponse { Status = ResponseStatus.Failure, Error = ResponseError.Unhandled, Message = exception.Message };
+                response = new ScuWorkResponse { Status = ResponseStatus.Failure, Error = ResponseError.Unhandled, Message = exception.Message };
             }
             finally
             {
@@ -104,11 +104,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        private async Task<ScuResponse> HandleCEchoRequest(ScuRequest request, CancellationToken cancellationToken)
+        private async Task<ScuWorkResponse> HandleCEchoRequest(ScuWorkRequest request, CancellationToken cancellationToken)
         {
             Guard.Against.Null(request, nameof(request));
 
-            var scuResponse = new ScuResponse();
+            var scuResponse = new ScuWorkResponse();
             var manualResetEvent = new ManualResetEventSlim();
             try
             {

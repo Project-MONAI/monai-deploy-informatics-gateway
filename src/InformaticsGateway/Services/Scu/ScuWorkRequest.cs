@@ -22,10 +22,10 @@ using DotNext.Threading;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scu
 {
-    public class ScuRequest : IDisposable
+    public class ScuWorkRequest : IDisposable
     {
         private readonly AsyncManualResetEvent _awaiter;
-        private ScuResponse _response;
+        private ScuWorkResponse _response;
         private bool _disposedValue;
 
         public string CorrelationId { get; }
@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         public int Port { get; }
         public string AeTitle { get; }
 
-        public ScuRequest(string correlationId, RequestType requestType, string hostIp, int port, string aeTitle)
+        public ScuWorkRequest(string correlationId, RequestType requestType, string hostIp, int port, string aeTitle)
         {
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
             Guard.Against.NullOrWhiteSpace(hostIp, nameof(hostIp));
@@ -54,18 +54,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         /// In case the response is null, a NullResponse is used.
         /// </summary>
         /// <param name="response"></param>
-        public void Complete(ScuResponse response)
+        public void Complete(ScuWorkResponse response)
         {
-            if (response is null)
-            {
-                response = ScuResponse.NullResponse;
-            }
+            response ??= ScuWorkResponse.NullResponse;
 
             _response = response;
             _awaiter.Set();
         }
 
-        public async Task<ScuResponse> WaitAsync(CancellationToken cancellationToken = default)
+        public async Task<ScuWorkResponse> WaitAsync(CancellationToken cancellationToken = default)
         {
             await _awaiter.WaitAsync(cancellationToken).ConfigureAwait(false);
             return _response;

@@ -163,6 +163,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         [LoggerMessage(EventId = 30053, Level = LogLevel.Information, Message = "\n\nFound {count} items.")]
         public static partial void ListedNItems(this ILogger logger, int count);
 
+        [LoggerMessage(EventId = 30054, Level = LogLevel.Information, Message = "C-ECHO to {name} completed successfully.")]
+        public static partial void DicomCEchoSuccessful(this ILogger logger, string name);
+
+        [LoggerMessage(EventId = 30055, Level = LogLevel.Critical, Message = "C-ECHO to {name} failed: {error}.")]
+        public static partial void ErrorCEchogDicomDestination(this ILogger logger, string name, string error);
+
         // Docker Runner
         [LoggerMessage(EventId = 31000, Level = LogLevel.Debug, Message = "Checking for existing {applicationName} ({version}) containers...")]
         public static partial void CheckingExistingAppContainer(this ILogger logger, string applicationName, string version);

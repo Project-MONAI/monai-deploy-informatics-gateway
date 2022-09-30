@@ -114,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     return NotFound();
                 }
 
-                var request = new ScuRequest(traceId, RequestType.CEcho, destinationApplicationEntity.HostIp, destinationApplicationEntity.Port, destinationApplicationEntity.AeTitle);
+                var request = new ScuWorkRequest(traceId, RequestType.CEcho, destinationApplicationEntity.HostIp, destinationApplicationEntity.Port, destinationApplicationEntity.AeTitle);
                 var response = await _scuQueue.Queue(request, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 if (response.Status != ResponseStatus.Success)

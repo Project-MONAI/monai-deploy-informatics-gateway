@@ -34,12 +34,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         AssociationAborted
     }
 
-    public class ScuResponse
+    public class ScuWorkResponse
     {
-        internal static readonly ScuResponse NullResponse = new ScuResponse { Status = ResponseStatus.Unknown, Error = ResponseError.Unknown };
+        public static readonly ScuWorkResponse NullResponse = new ScuWorkResponse { Status = ResponseStatus.Unknown, Error = ResponseError.Unknown };
 
         public ResponseStatus Status { get; set; }
         public string Message { get; set; } = string.Empty;
-        public ResponseError Error { get; internal set; }
+        public ResponseError Error { get; set; }
     }
 }

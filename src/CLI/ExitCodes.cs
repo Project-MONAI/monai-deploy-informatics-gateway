@@ -32,6 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public const int DestinationAe_ErrorList = 300;
         public const int DestinationAe_ErrorDelete = 301;
         public const int DestinationAe_ErrorCreate = 302;
+        public const int DestinationAe_ErrorCEcho = 303;
 
         public const int SourceAe_ErrorList = 400;
         public const int SourceAe_ErrorDelete = 401;

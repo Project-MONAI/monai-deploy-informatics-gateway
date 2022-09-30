@@ -210,8 +210,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                     Port = 104,
                     Name = "AET"
                 });
-            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ScuResponse
+            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuWorkRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ScuWorkResponse
                 {
                     Status = ResponseStatus.Failure,
                     Error = ResponseError.AssociationRejected,
@@ -238,7 +238,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                     Port = 104,
                     Name = "AET"
                 });
-            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuRequest>(), It.IsAny<CancellationToken>()))
+            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuWorkRequest>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new Exception("error"));
             var result = await _controller.CEcho("AET");
             var objectResult = result as ObjectResult;
@@ -261,8 +261,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                     Port = 104,
                     Name = "AET"
                 });
-            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuRequest>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new ScuResponse
+            _scuQueue.Setup(p => p.Queue(It.IsAny<ScuWorkRequest>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new ScuWorkResponse
                 {
                     Status = ResponseStatus.Success,
                     Error = ResponseError.None,

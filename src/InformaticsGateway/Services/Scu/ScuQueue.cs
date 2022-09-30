@@ -25,21 +25,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
 {
     internal class ScuQueue : IScuQueue
     {
-        private readonly BlockingCollection<ScuRequest> _workItems;
+        private readonly BlockingCollection<ScuWorkRequest> _workItems;
         private readonly ILogger<ScuQueue> _logger;
 
         public ScuQueue(ILogger<ScuQueue> logger)
         {
-            _workItems = new BlockingCollection<ScuRequest>();
+            _workItems = new BlockingCollection<ScuWorkRequest>();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public ScuRequest Dequeue(CancellationToken cancellationToken)
+        public ScuWorkRequest Dequeue(CancellationToken cancellationToken)
         {
             return _workItems.Take(cancellationToken);
         }
 
-        public async Task<ScuResponse> Queue(ScuRequest request, CancellationToken cancellationToken)
+        public async Task<ScuWorkResponse> Queue(ScuWorkRequest request, CancellationToken cancellationToken)
         {
             Guard.Against.Null(request, nameof(request));
             _workItems.Add(request, cancellationToken);

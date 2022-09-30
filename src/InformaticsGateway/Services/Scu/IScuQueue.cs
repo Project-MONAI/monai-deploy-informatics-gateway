@@ -31,13 +31,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         /// </summary>
         /// <param name="request">SCU Request for the SCU Service.</param>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        Task<ScuResponse> Queue(ScuRequest request, CancellationToken cancellationToken);
+        Task<ScuWorkResponse> Queue(ScuWorkRequest request, CancellationToken cancellationToken);
 
         /// <summary>
         /// Dequeue a ScuRequest from the queue for processing.
         /// The default implementation blocks the call until a file is available from the queue.
         /// </summary>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        ScuRequest Dequeue(CancellationToken cancellationToken);
+        ScuWorkRequest Dequeue(CancellationToken cancellationToken);
     }
 }
