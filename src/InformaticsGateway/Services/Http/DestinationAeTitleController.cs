@@ -161,11 +161,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (ObjectExistsException ex)
             {
-                return Problem(title: "DICOM destination already exists", statusCode: (int)System.Net.HttpStatusCode.Conflict, detail: ex.Message);
+                return Problem(title: "DICOM destination already exists", statusCode: StatusCodes.Status409Conflict, detail: ex.Message);
             }
             catch (ConfigurationException ex)
             {
-                return Problem(title: "Validation error", statusCode: (int)System.Net.HttpStatusCode.BadRequest, detail: ex.Message);
+                return Problem(title: "Validation error", statusCode: StatusCodes.Status400BadRequest, detail: ex.Message);
             }
             catch (Exception ex)
             {
