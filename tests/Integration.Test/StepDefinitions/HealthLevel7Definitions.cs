@@ -213,9 +213,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             foreach (var file in request.Payload)
             {
                 _outputHelper.WriteLine($"Verifying file => {request.PayloadId}/{file.Path}...");
-                var retryCount = 0;
-                var matchFound = false;
-            RetryVerifyFileUpload:
                 var getObjectArgs = new GetObjectArgs()
                     .WithBucket(request.Bucket)
                     .WithObject($"{request.PayloadId}/{file.Path}")
@@ -227,24 +224,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         var data = Encoding.UTF8.GetString(memoryStream.ToArray());
 
                         var hl7Message = new HL7.Dotnetcore.Message(data);
-                        hl7Message.ParseMessage();
-
-                        foreach (var key in _input.Keys)
-                        {
-                            if (hl7Message.SerializeMessage(true).Equals(_input[key].SerializeMessage(true)))
-                            {
-                                matchFound = true;
-                                break;
-                            }
-                        }
-
+                        hl7Message.ParseMessage().Should().BeTrue();
                     });
                 await minioClient.GetObjectAsync(getObjectArgs);
-                if (retryCount++ < 3 && !matchFound)
-                {
-                    goto RetryVerifyFileUpload;
-                }
-                matchFound.Should().BeTrue();
             }
         }
     }
