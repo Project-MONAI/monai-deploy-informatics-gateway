@@ -231,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
                         foreach (var key in _input.Keys)
                         {
-                            if (hl7Message.HL7Message.Equals(_input[key].SerializeMessage(true)))
+                            if (hl7Message.SerializeMessage(true).Equals(_input[key].SerializeMessage(true)))
                             {
                                 matchFound = true;
                                 break;
