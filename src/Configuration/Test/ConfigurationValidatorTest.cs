@@ -137,7 +137,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
 
             var config = MockValidConfiguration();
             config.Storage.TemporaryDataStorage = TemporaryDataStorageLocation.Disk;
-            config.Storage.BufferStorageRootPath = "/blabla";
+            config.Storage.LocalTemporaryStoragePath = "/blabla";
 
             var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
 

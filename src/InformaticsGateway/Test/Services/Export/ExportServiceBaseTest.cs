@@ -24,6 +24,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Export;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
@@ -74,6 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<IMessageBrokerSubscriberService> _messageSubscriberService;
         private readonly Mock<IMessageBrokerPublisherService> _messagePublisherService;
         private readonly Mock<ILogger> _logger;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
@@ -84,6 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService = new Mock<IMessageBrokerSubscriberService>();
             _messagePublisherService = new Mock<IMessageBrokerPublisherService>();
             _logger = new Mock<ILogger>();
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
@@ -98,6 +101,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             serviceProvider
                 .Setup(x => x.GetService(typeof(IStorageService)))
                 .Returns(_storageService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IStorageInfoProvider)))
+                .Returns(_storageInfoProvider.Object);
+
 
             var scope = new Mock<IServiceScope>();
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
@@ -105,6 +112,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Data flow test - can start/stop")]
@@ -116,6 +124,33 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _logger.VerifyLogging($"{service.ServiceName} subscribed to {service.RoutingKey} messages.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"{service.ServiceName} is stopping.", LogLevel.Information, Times.Once());
+        }
+
+        [RetryFact(10, 10, DisplayName = "Data flow test - reject on insufficient storage space")]
+        public async Task DataflowTest_RejectOnInsufficientStorageSpace()
+        {
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(false);
+
+            _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
+            _messageSubscriberService.Setup(
+                p => p.Subscribe(It.IsAny<string>(),
+                                 It.IsAny<string>(),
+                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<ushort>()))
+                .Callback((string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback, ushort prefetchCount) =>
+                {
+                    messageReceivedCallback(CreateMessageReceivedEventArgs());
+                });
+
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
+            await service.StartAsync(_cancellationTokenSource.Token);
+            await StopAndVerify(service);
+
+            _messageSubscriberService.Verify(p => p.Reject(It.IsAny<Message>(), It.IsAny<bool>()), Times.Once());
+            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+                                                              It.IsAny<string>(),
+                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<ushort>()), Times.Once());
         }
 
         [RetryFact(10, 10, DisplayName = "Data flow test - payload download failure")]

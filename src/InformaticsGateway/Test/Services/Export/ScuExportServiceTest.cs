@@ -29,6 +29,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
@@ -52,6 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
         private readonly Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>> _repository;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly DicomScpFixture _dicomScp;
@@ -72,6 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomToolkit = new Mock<IDicomToolkit>();
             _cancellationTokenSource = new CancellationTokenSource();
             _repository = new Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider
@@ -86,6 +89,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             serviceProvider
                 .Setup(x => x.GetService(typeof(IStorageService)))
                 .Returns(_storageService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IStorageInfoProvider)))
+                .Returns(_storageInfoProvider.Object);
 
             var scope = new Mock<IServiceScope>();
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
@@ -95,6 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomScp.Start(_port);
             _configuration.Value.Export.Retries.DelaysMilliseconds = new[] { 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]

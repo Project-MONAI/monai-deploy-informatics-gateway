@@ -94,5 +94,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 211, Level = LogLevel.Warning, Message = "Verification service is disabled: rejecting association.")]
         public static partial void VerificationServiceDisabled(this ILogger logger);
+
+        [LoggerMessage(EventId = 212, Level = LogLevel.Error, Message = "Failed to process C-STORE request, out of storage space.")]
+        public static partial void CStoreFailedDueToLowStorageSpace(this ILogger logger, Exception ex);
     }
 }

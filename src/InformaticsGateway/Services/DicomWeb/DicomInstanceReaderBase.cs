@@ -73,11 +73,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             {
                 lock (SyncLock)
                 {
-                    FileSystem.Directory.CreateDirectoryIfNotExists(Configuration.Storage.BufferStorageRootPath);
+                    FileSystem.Directory.CreateDirectoryIfNotExists(Configuration.Storage.LocalTemporaryStoragePath);
                 }
 
-                Logger.ConvertingStreamToFileBufferingReadStream(Configuration.Storage.MemoryThreshold, Configuration.Storage.BufferStorageRootPath);
-                seekableStream = new FileBufferingReadStream(sourceStream, Configuration.Storage.MemoryThreshold, null, Configuration.Storage.BufferStorageRootPath);
+                Logger.ConvertingStreamToFileBufferingReadStream(Configuration.Storage.MemoryThreshold, Configuration.Storage.LocalTemporaryStoragePath);
+                seekableStream = new FileBufferingReadStream(sourceStream, Configuration.Storage.MemoryThreshold, null, Configuration.Storage.LocalTemporaryStoragePath);
                 httpContext.Response.RegisterForDisposeAsync(seekableStream);
                 await seekableStream.DrainAsync(cancellationToken).ConfigureAwait(false);
             }

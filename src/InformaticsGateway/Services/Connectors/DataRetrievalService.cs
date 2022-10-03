@@ -57,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IDicomToolkit _dicomToolkit;
         private readonly IFileSystem _fileSystem;
+        private readonly IStorageInfoProvider _storageInfoProvider;
         private bool _disposedValue;
 
         public ServiceStatus Status { get; set; }
@@ -80,6 +81,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _payloadAssembler = _rootScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _dicomToolkit = _rootScope.ServiceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
             _fileSystem = _rootScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
+            _storageInfoProvider = _rootScope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
+
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -109,6 +112,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 using var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
+
+                if (!_storageInfoProvider.HasSpaceAvailableToRetrieve)
+                {
+                    _logger.DataRetrievalServiceStoppedDueToLowStorageSpace(_storageInfoProvider.AvailableFreeSpace);
+                    await Task.Delay(5000, cancellationToken).ConfigureAwait(false);
+                    continue;
+                }
 
                 InferenceRequest request = null;
                 try
@@ -333,7 +343,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
 
                 var fhirFile = new FhirFileStorageMetadata(transactionId, resource.Type, resource.Id, fhirFormat);
-                await fhirFile.SetDataStream(json, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath);
+                await fhirFile.SetDataStream(json, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath);
                 retrievedResources.Add(fhirFile.Id, fhirFile);
                 return true;
             }
@@ -512,7 +522,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     }
 
                     var dicomFileStorageMetadata = SaveFile(transactionId, file, uids);
-                    await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath).ConfigureAwait(false);
+                    await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
                     retrievedInstance.Add(uids.Identifier, dicomFileStorageMetadata);
                     count++;
                 }
@@ -542,7 +552,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
 
                 var dicomFileStorageMetadata = SaveFile(transactionId, file, uids);
-                await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath).ConfigureAwait(false);
+                await dicomFileStorageMetadata.SetDataStreams(file, file.ToJson(_options.Value.Dicom.WriteDicomJson, _options.Value.Dicom.ValidateDicomOnSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
                 retrievedInstance.Add(uids.Identifier, dicomFileStorageMetadata);
             }
         }

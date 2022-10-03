@@ -146,6 +146,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<IPayloadAssembler, PayloadAssembler>();
                     services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
+                    services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();
                     services.AddSingleton<ITcpListenerFactory, TcpListenerFactory>();
                     services.AddSingleton<IMllpClientFactory, MllpClientFactory>();

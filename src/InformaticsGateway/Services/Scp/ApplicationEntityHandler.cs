@@ -101,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
-            await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath).ConfigureAwait(false);
+            await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
             _uploadQueue.Queue(dicomInfo);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);

@@ -33,6 +33,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
@@ -56,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IMessageBrokerPublisherService _messagePublisher;
         private readonly IServiceScope _scope;
         private readonly Dictionary<string, ExportRequestEventDetails> _exportRequests;
+        private readonly IStorageInfoProvider _storageInfoProvider;
         private bool _disposedValue;
 
         public abstract string RoutingKey { get; }
@@ -91,6 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _messageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
             _messagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
+            _storageInfoProvider = _scope.ServiceProvider.GetRequiredService<IStorageInfoProvider>();
 
             _exportRequests = new Dictionary<string, ExportRequestEventDetails>();
         }
@@ -120,6 +123,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
         {
+            if (!_storageInfoProvider.HasSpaceAvailableForExport)
+            {
+                _logger.ExportServiceStoppedDueToLowStorageSpace(_storageInfoProvider.AvailableFreeSpace);
+                _messageSubscriber.Reject(eventArgs.Message);
+                return;
+            }
+
             try
             {
                 var executionOptions = new ExecutionDataflowBlockOptions
