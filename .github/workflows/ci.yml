@@ -84,9 +84,10 @@ jobs:
       run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
       
     - name: Install License Finder tool with Homebrew
-      uses: tecoli-com/actions-use-homebrew-tools@v0
+      uses: tecoli-com/actions-use-homebrew-tools@v0.4
       with:
         tools: licensefinder
+        cache: yes
 
     - name: Enable NuGet cache
       uses: actions/cache@v3.0.10

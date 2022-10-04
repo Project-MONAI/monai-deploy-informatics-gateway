@@ -34,12 +34,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
 {
     public class FhirJsonReaderTest
     {
+        private readonly InformaticsGatewayConfiguration _config;
         private readonly Mock<ILogger<FhirJsonReader>> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly IFileSystem _fileSystem;
 
         public FhirJsonReaderTest()
         {
+            _config = new InformaticsGatewayConfiguration();
             _logger = new Mock<ILogger<FhirJsonReader>>();
             _options = Options.Create<InformaticsGatewayConfiguration>(new InformaticsGatewayConfiguration());
             _fileSystem = new MockFileSystem();

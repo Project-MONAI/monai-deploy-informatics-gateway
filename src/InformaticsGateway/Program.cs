@@ -17,7 +17,9 @@
 using System;
 using System.IO;
 using System.IO.Abstractions;
+using System.Reflection;
 using Ardalis.GuardClauses;
+using Elastic.CommonSchema.Serilog;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,6 +46,9 @@ using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Configuration;
 using Monai.Deploy.Storage;
 using Monai.Deploy.Storage.Configuration;
+using Serilog;
+using Serilog.Events;
+using Serilog.Exceptions;
 
 namespace Monai.Deploy.InformaticsGateway
 {
@@ -88,6 +93,20 @@ namespace Monai.Deploy.InformaticsGateway
                     configureLogging.AddConfiguration(builderContext.Configuration.GetSection("Logging"));
                     configureLogging.AddFile(o => o.RootPath = AppContext.BaseDirectory);
                 })
+                .UseSerilog((context, services, configuration) => configuration
+                    .ReadFrom.Configuration(context.Configuration)
+                    .ReadFrom.Services(services)
+                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
+                    .MinimumLevel.Debug()
+                    .Enrich.FromLogContext()
+                    .Enrich.WithExceptionDetails()
+                    .Enrich.WithProperty("dllversion", Assembly.GetEntryAssembly().GetName().Version)
+                    .Enrich.WithProperty("dllName", Assembly.GetEntryAssembly().GetName().Name)
+                    .WriteTo.File(
+                        path: "logs/MWM-.log",
+                        rollingInterval: RollingInterval.Day,
+                        formatter: new EcsTextFormatter())
+                    .WriteTo.Console())
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<InformaticsGatewayConfiguration>()
