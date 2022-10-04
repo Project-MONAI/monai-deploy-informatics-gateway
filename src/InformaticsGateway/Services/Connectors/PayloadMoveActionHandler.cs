@@ -152,13 +152,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger.MovingFileToPayloadDirectory(payloadId, identity);
             await _storageService.CopyObjectAsync(
                 file.TemporaryBucketName,
-                file.GetTempStoragPath(_options.Value.Storage.TemporaryStorageRootPath),
+                file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath),
                 _options.Value.Storage.StorageServiceBucketName,
                 file.GetPayloadPath(payloadId),
                 cancellationToken).ConfigureAwait(false);
 
             _logger.DeletingFileFromTemporaryBbucket(file.TemporaryBucketName, identity, file.TemporaryPath);
-            await _storageService.RemoveObjectAsync(file.TemporaryBucketName, file.GetTempStoragPath(_options.Value.Storage.TemporaryStorageRootPath), cancellationToken);
+            await _storageService.RemoveObjectAsync(file.TemporaryBucketName, file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), cancellationToken);
 
             file.SetMoved(_options.Value.Storage.StorageServiceBucketName);
         }

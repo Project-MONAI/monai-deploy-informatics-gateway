@@ -26,6 +26,7 @@ using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Scu;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
@@ -70,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
             _dicomScp.Start(_port);
         }
 
-        [Fact]
+        [RetryFact]
         public void GivenAScuService_WhenInitialized_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new ScuService(null, null, null));
@@ -79,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
             _ = new ScuService(_serviceScopeFactory.Object, _logger.Object, _options);
         }
 
-        [Fact]
+        [RetryFact]
         public void GivenAScuService_WhenStartAsyncIsCalled_ExpectServiceStatusToBeSet()
         {
             var svc = new ScuService(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -88,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
             Assert.Equal(ServiceStatus.Running, svc.Status);
         }
 
-        [Fact]
+        [RetryFact]
         public async Task GivenAValidDicomEntity_WhenRequestToCEcho_ExpectToReturnSucess()
         {
             var svc = new ScuService(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -105,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
             Assert.Empty(response.Message);
         }
 
-        [Fact]
+        [RetryFact]
         public async Task GivenACEchoRequest_WhenRejected_ReturnStatusAssociationRejected()
         {
             var svc = new ScuService(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -122,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
             Assert.StartsWith("Association rejected", response.Message);
         }
 
-        [Fact]
+        [RetryFact]
         public async Task GivenACEchoRequest_WhenAborted_ReturnStatusAssociationAborted()
         {
             var svc = new ScuService(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -139,7 +140,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
             Assert.StartsWith("Association Abort", response.Message);
         }
 
-        [Fact]
+        [RetryFact]
         public async Task GivenACEchoRequest_WhenRemoteServerIsUnreachable_ReturnStatusAssociationRejected()
         {
             var svc = new ScuService(_serviceScopeFactory.Object, _logger.Object, _options);

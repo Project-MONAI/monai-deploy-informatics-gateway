@@ -24,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
 {
@@ -34,6 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
         private readonly IServiceScope _scope;
         private readonly IFhirService _fhirService;
         private readonly ILogger<FhirController> _logger;
+        private readonly IStorageInfoProvider _storageInfoProvider;
         private bool _disposedValue;
 
         public FhirController(IServiceScopeFactory serviceScopeFactory)
@@ -46,6 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
             _scope = serviceScopeFactory.CreateScope();
             _fhirService = _scope.ServiceProvider.GetService<IFhirService>() ?? throw new ServiceNotFoundException(nameof(IFhirService));
             _logger = _scope.ServiceProvider.GetService<ILogger<FhirController>>() ?? throw new ServiceNotFoundException(nameof(ILogger<FhirController>));
+            _storageInfoProvider = _scope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
         }
 
         [HttpPost]
@@ -53,6 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(OperationOutcome), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(OperationOutcome), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status507InsufficientStorage)]
         [Produces(ContentTypes.ApplicationFhirJson, ContentTypes.ApplicationFhirXml)]
         public async Task<IActionResult> Create()
         {
@@ -65,12 +69,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.Fhir
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(OperationOutcome), StatusCodes.Status400BadRequest)]
         [ProducesResponseType(typeof(OperationOutcome), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status507InsufficientStorage)]
         [Produces(ContentTypes.ApplicationFhirJson, ContentTypes.ApplicationFhirXml)]
         public async Task<IActionResult> Create(string resourceType)
         {
             var correlationId = Guid.NewGuid().ToString();
             using var logger = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", correlationId } });
 
+            if (!_storageInfoProvider.HasSpaceAvailableToStore)
+            {
+                return StatusCode(
+                    StatusCodes.Status507InsufficientStorage,
+                    Problem(title: $"Insufficient Storage", statusCode: StatusCodes.Status507InsufficientStorage));
+            }
             try
             {
                 var result = await _fhirService.StoreAsync(Request, correlationId, resourceType, HttpContext.RequestAborted).ConfigureAwait(false);

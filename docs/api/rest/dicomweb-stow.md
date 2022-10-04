@@ -56,8 +56,9 @@ Response Content Type: `JSON`
 | 202  | [DicomDataset](https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs) | All instances are received and stored with warnings (e.g. for a mismatched StudyInstanceUID. |
 | 204  | `none`                                                                                              | No data is provided.                                                                         |
 | 400  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Request contains invalid values.                                                             |
-| 415  | `none`                                                                                              | Unsupported media type                                                                       |
-| 500  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Server error                                                                                 |
+| 415  | `none`                                                                                              | Unsupported media typ.                                                                       |
+| 500  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Server error.                                                                                |
+| 507  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Insufficient storage.                                                                        |
 
 ---
 
@@ -97,3 +98,4 @@ Response Content Type: `JSON`
 | 400  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Request contains invalid values.                                                             |
 | 415  | `none`                                                                                              | Unsupported media type                                                                       |
 | 500  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Server error                                                                                 |
+| 507  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Insufficient storage.                                                                        |

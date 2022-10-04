@@ -217,7 +217,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                    storageObjectMetadata.Data.Seek(0, System.IO.SeekOrigin.Begin);
                    await _storageService.PutObjectAsync(
                        _configuration.Value.Storage.TemporaryStorageBucket,
-                       storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.TemporaryStorageRootPath),
+                       storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath),
                        storageObjectMetadata.Data,
                        storageObjectMetadata.Data.Length,
                        storageObjectMetadata.ContentType,

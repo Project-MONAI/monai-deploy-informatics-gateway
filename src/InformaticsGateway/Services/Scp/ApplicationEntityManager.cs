@@ -29,6 +29,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -39,13 +40,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly ILogger<ApplicationEntityManager> _logger;
         private readonly IDicomToolkit _dicomToolkit;
         private readonly ILoggerFactory _loggerFactory;
+        private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly ConcurrentDictionary<string, IApplicationEntityHandler> _aeTitles;
         private readonly IDisposable _unsubscriberForMonaiAeChangedNotificationService;
         private bool _disposedValue;
 
         public IOptions<InformaticsGatewayConfiguration> Configuration { get; }
 
-        public bool CanStore => true;
+        public bool CanStore
+        {
+            get
+            {
+                return _storageInfoProvider.HasSpaceAvailableToStore;
+            }
+        }
 
         public ApplicationEntityManager(IHostApplicationLifetime applicationLifetime,
                                         IServiceScopeFactory serviceScopeFactory,
@@ -67,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger = _loggerFactory.CreateLogger<ApplicationEntityManager>();
 
             _dicomToolkit = serviceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
-
+            _storageInfoProvider = serviceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
             _unsubscriberForMonaiAeChangedNotificationService = monaiAeChangedNotificationService.Subscribe(this);
             _aeTitles = new ConcurrentDictionary<string, IApplicationEntityHandler>();
             applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
@@ -93,6 +101,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             if (!_aeTitles.ContainsKey(calledAeTitle))
             {
                 throw new ArgumentException($"Called AE Title '{calledAeTitle}' is not configured");
+            }
+
+            if (!_storageInfoProvider.HasSpaceAvailableToStore)
+            {
+                throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
             }
 
             await HandleInstance(request, calledAeTitle, callingAeTitle, associationId).ConfigureAwait(false);

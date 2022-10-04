@@ -101,9 +101,9 @@ The Informatics Gateway operates on two storage locations. In the first location
 
 ### Temporary Storage of Incoming Dataset
 
-By default, the temporary storage location is set to `/payloads` in the `appsettings.json` file.
+By default, the temporary storage location is set to use `Disk` and stores any incoming files inside `/payloads`.  This can be modified to user a different location, such as `Memory` or a different path.
 
-To change the temporary storage location, locate the `./InformaticsGateway/storage/temporary` property in the `appsettings.json` file and modify it.
+To change the temporary storage path, locate the `InformaticsGateway>storage>localTemporaryStoragePath` property in the `appsettings.json` file and modify it.
 
 > [!Note]
 > You will need to calculate the required temporary storage based on the number of studies and the size of each study.
@@ -116,7 +116,7 @@ To change the temporary storage location, locate the `./InformaticsGateway/stora
 > the expected number of studies and size of each study. The suggested value for `reserveSpaceGB` is 2x to 3x the
 > size of a single study multiplied by the number of configured AE Titles.
 
-### Shared Storage
+### Storage Service
 
 Informatics Gateway includes MinIO as the default storage service provider. To integrate with another storage service provider, please refer to the [Data Storage](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/guidelines/srs.md#data-storage) section of the SRS.
 
@@ -138,7 +138,6 @@ Locate the storage section of the configuration in `appsettings.json`:
         "accessToken": "password", # Access token or password
         "securedConnection": false, # Indicates if connection should be secured using HTTPS
         "region": "local", # Region
-        "executableLocation": "/bin/mc", # Path to minio client
         "serviceName": "MinIO" # Name of the service
       },
       "storageService": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO", # Fully qualified type name of the storage service

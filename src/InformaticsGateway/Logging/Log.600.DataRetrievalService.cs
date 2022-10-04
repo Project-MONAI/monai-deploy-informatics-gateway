@@ -91,5 +91,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 622, Level = LogLevel.Warning, Message = "FHIR resource {type}/{id} contains no data.")]
         public static partial void FhirResourceContainsNoData(this ILogger logger, string type, string id);
+
+        [LoggerMessage(EventId = 623, Level = LogLevel.Warning, Message = "Data retrieval paused due to insufficient storage space.  Available storage space: {availableFreeSpace:D}.")]
+        public static partial void DataRetrievalServiceStoppedDueToLowStorageSpace(this ILogger logger, long availableFreeSpace);
     }
 }

@@ -25,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Moq;
 using Xunit;
 
@@ -38,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<IStowService> _stowService;
         private readonly Mock<ILogger<StowController>> _logger;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
         public StowControllerTest()
         {
@@ -45,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
             _stowService = new Mock<IStowService>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _serviceScope = new Mock<IServiceScope>();
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
             _problemDetailsFactory = new Mock<ProblemDetailsFactory>();
             _problemDetailsFactory.Setup(_ => _.CreateProblemDetails(
@@ -75,6 +78,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
             serviceProvider
                 .Setup(x => x.GetService(typeof(IStowService)))
                 .Returns(_stowService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IStorageInfoProvider)))
+                .Returns(_storageInfoProvider.Object);
 
             _serviceScope.SetupGet(p => p.ServiceProvider).Returns(serviceProvider.Object);
             _serviceScopeFactory.Setup(p => p.CreateScope())
@@ -87,6 +93,27 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
                 ProblemDetailsFactory = _problemDetailsFactory.Object,
                 ControllerContext = controllerContext
             };
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
+        }
+
+        [Theory(DisplayName = "StoreInstances - returns ProblemDetails when storage space is low")]
+        [InlineData("")]
+        [InlineData("workflow")]
+        public async Task StoreInstances_ReturnsProblemDetailWhenStorageSpaceIsLow(string workflow)
+        {
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
+
+            var result = await _controller.StoreInstances(workflow);
+            Assert.NotNull(result);
+            var objectResult = result as ObjectResult;
+            Assert.NotNull(objectResult);
+            objectResult = objectResult.Value as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Insufficient Storage", problem.Title);
+            Assert.Null(problem.Detail);
+            Assert.Equal(StatusCodes.Status507InsufficientStorage, problem.Status);
         }
 
         [Theory(DisplayName = "StoreInstances - returns ProblemDetails on exception")]

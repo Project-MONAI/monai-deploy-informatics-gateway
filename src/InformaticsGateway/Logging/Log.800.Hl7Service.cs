@@ -62,5 +62,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 813, Level = LogLevel.Debug, Message = "Waiting for HL7 message.")]
         public static partial void HL7ReadingMessage(this ILogger logger);
+
+        [LoggerMessage(EventId = 814, Level = LogLevel.Warning, Message = "HL7 service paused due to insufficient storage space.  Available storage space: {availableFreeSpace:D}.")]
+        public static partial void Hl7DisconnectedDueToLowStorageSpace(this ILogger logger, long availableFreeSpace);
     }
 }

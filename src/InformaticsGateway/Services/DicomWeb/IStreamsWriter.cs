@@ -169,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 dicomInfo.SetWorkflows(workflowName);
             }
 
-            await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson, _configuration.Value.Dicom.ValidateDicomOnSerialization), _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.BufferStorageRootPath).ConfigureAwait(false);
+            await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson, _configuration.Value.Dicom.ValidateDicomOnSerialization), _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
             _uploadQueue.Queue(dicomInfo);
 
             // for DICOMweb, use correlation ID as the grouping key

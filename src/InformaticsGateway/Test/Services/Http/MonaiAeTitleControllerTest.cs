@@ -17,11 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -179,6 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #endregion GetAeTitle
 
         #region Create
+
         [Fact(DisplayName = "Create - Shall return Conflict if entity already exists")]
         public async Task Create_ShallReturnConflictIfIEntityAlreadyExists()
         {
@@ -201,7 +200,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal("AE Title already exists", problem.Title);
             Assert.Equal("A MONAI Application Entity with the same name 'AET1' already exists.", problem.Detail);
             Assert.Equal((int)HttpStatusCode.Conflict, problem.Status);
-
         }
 
         [Fact(DisplayName = "Create - Shall return BadRequest when validation fails")]

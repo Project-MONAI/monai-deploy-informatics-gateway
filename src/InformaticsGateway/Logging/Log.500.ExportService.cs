@@ -114,5 +114,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 530, Level = LogLevel.Error, Message = "{message}")]
         public static partial void ExportException(this ILogger logger, string message, Exception ex);
+
+        [LoggerMessage(EventId = 531, Level = LogLevel.Warning, Message = "Export service paused due to insufficient storage space.  Available storage space: {availableFreeSpace:D}")]
+        public static partial void ExportServiceStoppedDueToLowStorageSpace(this ILogger logger, long availableFreeSpace);
     }
 }
