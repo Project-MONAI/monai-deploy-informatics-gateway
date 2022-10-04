@@ -21,9 +21,15 @@ using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
+using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.SharedTest
 {
+    [CollectionDefinition("SCP Listener")]
+    public class DicomScpFixtureCollection : ICollectionFixture<DicomScpFixture>
+    {
+    }
+
     public class DicomScpFixture : IDisposable
     {
         internal static string s_aETITLE = "STORESCP";
@@ -37,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
         {
         }
 
-        public void Start(int port = 11104)
+        public void Start(int port = 1104)
         {
             if (_server is null)
             {
