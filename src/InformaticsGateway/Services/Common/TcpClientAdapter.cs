@@ -35,10 +35,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
         public TcpClientAdapter(System.Net.Sockets.TcpClient tcpClient)
             => _tcpClient = tcpClient ?? throw new ArgumentNullException(nameof(tcpClient));
 
-        public INetworkStream GetStream()
-        {
-            return new NetworkStreamAdapter(_tcpClient.GetStream());
-        }
+        public INetworkStream GetStream() => new NetworkStreamAdapter(_tcpClient.GetStream());
+
+        public void Close() => _tcpClient.Close();
 
         protected virtual void Dispose(bool disposing)
         {

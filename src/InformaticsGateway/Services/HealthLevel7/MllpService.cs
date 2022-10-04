@@ -49,6 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         private readonly ILoggerFactory _logginFactory;
         private readonly ILogger<MllpService> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
+        private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly ConcurrentDictionary<Guid, IMllpClient> _activeTasks;
 
         public int ActiveConnections
@@ -82,6 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _payloadAssembler = _serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _fileSystem = _serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
+            _storageInfoProvider = _serviceScope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
             _activeTasks = new ConcurrentDictionary<Guid, IMllpClient>();
         }
 
@@ -120,6 +122,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                     WaitUntilAvailable(_configuration.Value.Hl7.MaximumNumberOfConnections);
                     var client = await _tcpListener.AcceptTcpClientAsync(cancellationToken).ConfigureAwait(false);
                     _logger.ClientConnected();
+
+                    if (!_storageInfoProvider.HasSpaceAvailableToStore)
+                    {
+                        _logger.Hl7DisconnectedDueToLowStorageSpace(_storageInfoProvider.AvailableFreeSpace);
+                        client.Close();
+                        await Task.Delay(5000, cancellationToken).ConfigureAwait(false);
+                        continue;
+                    }
 
                     mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
                     _ = mllpClient.Start(OnDisconnect, cancellationToken);
@@ -169,6 +179,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             catch (Exception ex)
             {
                 _logger.ErrorHandlingHl7Results(ex);
+            }
+            finally
+            {
+                client.Dispose();
             }
         }
 

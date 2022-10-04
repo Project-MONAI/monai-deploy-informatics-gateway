@@ -54,6 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<ILogger<MllpService>> _logger;
         private readonly IServiceProvider _serviceProvider;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
         public MllpServiceTest()
         {
@@ -67,6 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _tcpListener = new Mock<ITcpListener>();
             _fileSystem = new Mock<IFileSystem>();
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScope = new Mock<IServiceScope>();
@@ -81,6 +83,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             services.AddScoped(p => _uploadQueue.Object);
             services.AddScoped(p => _payloadAssembler.Object);
             services.AddScoped(p => _fileSystem.Object);
+            services.AddScoped(p => _storageInfoProvider.Object);
+
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
@@ -91,6 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
             _tcpListenerFactory.Setup(p => p.CreateTcpListener(It.IsAny<IPAddress>(), It.IsAny<int>())).Returns(_tcpListener.Object);
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
         }
 
         [RetryFact()]
@@ -241,6 +246,28 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
             service.Dispose();
             client.Verify(p => p.Dispose(), Times.Exactly(callCount));
+        }
+
+        [RetryFact]
+        public async Task GivenATcpClientWithHl7Messages_WhenStorageSpaceIsLow_ExpectToDisconnect()
+        {
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
+            var checkEvent = new ManualResetEventSlim();
+            var client = new Mock<IMllpClient>();
+            var clientAdapter = new Mock<ITcpClientAdapter>();
+
+            _tcpListener.Setup(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()))
+                .Returns(ValueTask.FromResult(clientAdapter.Object));
+
+            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            _ = service.StartAsync(_cancellationTokenSource.Token);
+
+            _cancellationTokenSource.CancelAfter(400);
+            await Task.Delay(500).ConfigureAwait(false);
+
+            clientAdapter.Verify(p => p.Close(), Times.AtLeastOnce());
+            _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
 
         [RetryFact]

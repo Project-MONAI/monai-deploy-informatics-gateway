@@ -9,6 +9,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+using System.IO;
 using System.IO.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -39,6 +40,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _fileSystem.Setup(p => p.DriveInfo.FromDriveName(It.IsAny<string>()))
                     .Returns(_driveInfo.Object);
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
+            _fileSystem.Setup(p => p.Path.GetFullPath(It.IsAny<string>())).Returns((string path) => System.IO.Path.GetFullPath(path));
+            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Available free space")]
@@ -50,11 +53,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _driveInfo.Setup(p => p.TotalSize).Returns(totalSize);
             _configuration.Value.Storage.Watermark = 10;
             _configuration.Value.Storage.ReserveSpaceGB = 1;
+            _configuration.Value.Storage.LocalTemporaryStoragePath = "./payloads";
 
+            var path = Path.GetFullPath(_configuration.Value.Storage.LocalTemporaryStoragePath);
             var storageInfoProvider = new StorageInfoProvider(_configuration, _fileSystem.Object, _logger.Object);
 
             Assert.Equal(freeSpace, storageInfoProvider.AvailableFreeSpace);
-            _logger.VerifyLogging($"Storage Size: {totalSize:N0}. Reserved: {(9 * OneGB):N0}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Temporary Storage Path={path}. Storage Size: {totalSize:N0}. Reserved: {(9 * OneGB):N0}.", LogLevel.Information, Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Space is available...")]

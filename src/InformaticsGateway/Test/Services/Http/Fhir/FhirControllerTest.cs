@@ -23,6 +23,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
 using Monai.Deploy.InformaticsGateway.Services.Http.Fhir;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Moq;
 using Xunit;
 using ContentTypes = Monai.Deploy.InformaticsGateway.Services.Fhir.ContentTypes;
@@ -38,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.Fhir
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
         private readonly FhirController _controller;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
         public FhirControllerTest()
         {
@@ -45,11 +47,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.Fhir
             _fhirService = new Mock<IFhirService>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _serviceScope = new Mock<IServiceScope>();
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
             var services = new ServiceCollection();
             services.AddScoped(p => _fhirService.Object);
             services.AddScoped(p => _serviceScopeFactory.Object);
             services.AddScoped(p => _logger.Object);
+            services.AddScoped(p => _storageInfoProvider.Object);
 
             _serviceProvider = services.BuildServiceProvider();
 
@@ -64,6 +68,23 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.Fhir
             };
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
+        }
+
+        [Theory]
+        [InlineData(ContentTypes.ApplicationFhirJson)]
+        [InlineData(ContentTypes.ApplicationFhirXml)]
+        public async Task Create_WhenStorageSpaceIsLow_Returns507(string contentType)
+        {
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
+
+            var result = await _controller.Create();
+            Assert.NotNull(result);
+            var objectResult = result as ObjectResult;
+            Assert.NotNull(objectResult);
+            Assert.Equal(StatusCodes.Status507InsufficientStorage, objectResult.StatusCode);
+
+            _controller.Dispose();
         }
 
         [Theory]

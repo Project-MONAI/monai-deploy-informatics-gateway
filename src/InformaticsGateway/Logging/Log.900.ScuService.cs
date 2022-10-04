@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System;
 using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Logging

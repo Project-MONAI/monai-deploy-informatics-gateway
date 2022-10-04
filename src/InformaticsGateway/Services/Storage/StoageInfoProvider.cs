@@ -26,12 +26,12 @@
  * limitations under the License.
  */
 
+using System;
+using System.IO.Abstractions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using System;
-using System.IO;
-using System.IO.Abstractions;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
 {
@@ -73,7 +73,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _localTemporaryStoragePath = _fileSystem.Path.GetFullPath(_storageConfiguration.LocalTemporaryStoragePath);
-            _logger.Log(LogLevel.Information, $"Temporary Storage Path={_localTemporaryStoragePath}.");
 
             Initialize();
         }
@@ -83,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             var driveInfo = _fileSystem.DriveInfo.FromDriveName(_localTemporaryStoragePath);
             _reservedSpace = (long)(driveInfo.TotalSize * (1 - (_storageConfiguration.Watermark / 100.0)));
             _reservedSpace = Math.Max(_reservedSpace, _storageConfiguration.ReserveSpaceGB * OneGB);
-            _logger.Log(LogLevel.Information, $"Storage Size: {driveInfo.TotalSize:N0}. Reserved: {_reservedSpace:N0}.");
+            _logger.StorageInfoProviderStartup(_localTemporaryStoragePath, driveInfo.TotalSize, _reservedSpace);
         }
 
         private bool IsSpaceAvailable()
@@ -94,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
             if (freeSpace <= _reservedSpace)
             {
-                _logger.Log(LogLevel.Information, $"Storage Size: {driveInfo.TotalSize:N0}. Reserved: {_reservedSpace:N0}. Available: {freeSpace:N0}.");
+                _logger.CurrentStorageSize(driveInfo.TotalSize, _reservedSpace, freeSpace);
             }
 
             return freeSpace > _reservedSpace;

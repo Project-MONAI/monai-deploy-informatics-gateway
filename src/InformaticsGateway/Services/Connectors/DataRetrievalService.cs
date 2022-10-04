@@ -82,7 +82,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _dicomToolkit = _rootScope.ServiceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
             _fileSystem = _rootScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
             _storageInfoProvider = _rootScope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
-
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

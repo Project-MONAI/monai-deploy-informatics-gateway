@@ -74,9 +74,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         /// </summary>
         /// <param name="serviceType"><c>ServiceType</c> to be configured</param>
         /// <param name="urlPrefix">Url prefix</param>
-        #pragma warning disable CA1054
+#pragma warning disable CA1054
         void ConfigureServicePrefix(DicomWebServiceType serviceType, string urlPrefix);
-        #pragma warning restore CA1054
+#pragma warning restore CA1054
         /// <summary>
         /// Configures the authentication header for the DICOMweb client.
         /// </summary>

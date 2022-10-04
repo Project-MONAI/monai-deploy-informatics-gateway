@@ -141,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
 
             var valid = new ConfigurationValidator(_logger.Object, _fileSystem.Object).Validate("", config);
 
-            var validationMessages = new[] { $"Directory `/blabla` specified in `InformaticsGateway>storage>bufferRootPath` is not accessible: error." };
+            var validationMessages = new[] { $"Directory `/blabla` specified in `InformaticsGateway>storage>localTemporaryStoragePath` is not accessible: error." };
             Assert.Equal(string.Join(Environment.NewLine, validationMessages), valid.FailureMessage);
             foreach (var message in validationMessages)
             {
