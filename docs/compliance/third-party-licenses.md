@@ -589,14 +589,14 @@ limitations under the License.
 
 
 <details>
-<summary>ConsoleAppFramework 4.2.2</summary>
+<summary>ConsoleAppFramework 4.2.3</summary>
 
 ## ConsoleAppFramework
 
-- Version: 4.2.2
+- Version: 4.2.3
 - Authors: Cysharp
 - Project URL: https://github.com/Cysharp/ConsoleAppFramework
-- Source: [NuGet](https://www.nuget.org/packages/ConsoleAppFramework/4.2.2)
+- Source: [NuGet](https://www.nuget.org/packages/ConsoleAppFramework/4.2.3)
 - License: [MIT](https://github.com/Cysharp/ConsoleAppFramework/raw/master/LICENSE)
 
 
