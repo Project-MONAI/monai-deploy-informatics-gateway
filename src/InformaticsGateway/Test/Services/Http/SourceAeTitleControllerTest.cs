@@ -65,13 +65,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                     };
                 });
 
+            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
             _repository = new Mock<IInformaticsGatewayRepository<SourceApplicationEntity>>();
 
             _controller = new SourceAeTitleController(
                  _logger.Object,
                  _repository.Object)
             {
-                ProblemDetailsFactory = _problemDetailsFactory.Object
+                ProblemDetailsFactory = _problemDetailsFactory.Object,
+                ControllerContext = controllerContext
             };
         }
 
@@ -271,9 +273,92 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #endregion Create
 
+        #region Update
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return updated")]
+        public async Task Update_ReturnsUpdated()
+        {
+            var entity = new SourceApplicationEntity
+            {
+                AeTitle = "AET",
+                HostIp = "host",
+                Name = "AET",
+            };
+
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.Remove(It.IsAny<SourceApplicationEntity>()));
+            _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.Update(It.IsAny<SourceApplicationEntity>()));
+
+            var result = await _controller.Edit(entity);
+            var okResult = result.Result as OkObjectResult;
+            Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+            var updatedEntity = okResult.Value as SourceApplicationEntity;
+
+            Assert.Equal(entity.AeTitle, updatedEntity.AeTitle);
+            Assert.Equal(entity.HostIp, updatedEntity.HostIp);
+            Assert.Equal(entity.Name, updatedEntity.Name);
+
+            _repository.Verify(p => p.FindAsync(entity.Name), Times.Once());
+            _repository.Verify(p => p.Update(entity), Times.Once());
+            _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return 404 if input is null")]
+        public async Task Update_Returns404IfInputIsNull()
+        {
+            var result = await _controller.Edit(null);
+
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return 404 if not found")]
+        public async Task Update_Returns404IfNotFound()
+        {
+            var entity = new SourceApplicationEntity
+            {
+                AeTitle = "AET",
+                HostIp = "host",
+                Name = "AET",
+            };
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(default(SourceApplicationEntity)));
+
+            var result = await _controller.Edit(entity);
+
+            Assert.IsType<NotFoundResult>(result.Result);
+            _repository.Verify(p => p.FindAsync(entity.Name), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return problem on failure")]
+        public async Task Update_ShallReturnProblemOnFailure()
+        {
+            var value = "AET";
+            var entity = new SourceApplicationEntity
+            {
+                AeTitle = value,
+                HostIp = "host",
+                Name = value,
+            };
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.Update(It.IsAny<SourceApplicationEntity>())).Throws(new Exception("error"));
+
+            var result = await _controller.Edit(entity);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Error updating DICOM source.", problem.Title);
+            Assert.Equal("error", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
+            _repository.Verify(p => p.FindAsync(value), Times.Once());
+        }
+
+        #endregion Update
+
         #region Delete
 
-        [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return deleted object")]
+        [RetryFact(5, 250, DisplayName = "Delete - Shall return deleted object")]
         public async Task Delete_ReturnsDeleted()
         {
             var value = "AET";
@@ -297,7 +382,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return 404 if not found")]
+        [RetryFact(5, 250, DisplayName = "Delete - Shall return 404 if not found")]
         public async Task Delete_Returns404IfNotFound()
         {
             var value = "AET";

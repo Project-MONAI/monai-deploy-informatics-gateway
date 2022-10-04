@@ -153,7 +153,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 item.SetDefaultValues();
 
-                Validate(item);
+                ValidateCreate(item);
 
                 await _repository.AddAsync(item).ConfigureAwait(false);
                 await _repository.SaveChangesAsync().ConfigureAwait(false);
@@ -172,6 +172,46 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 _logger.ErrorAddingDestinationApplicationEntity(ex);
                 return Problem(title: "Error adding new DICOM destination", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<DestinationApplicationEntity>> Edit(DestinationApplicationEntity item)
+        {
+            try
+            {
+                if (item is null)
+                {
+                    return NotFound();
+                }
+
+                var destinationApplicationEntity = await _repository.FindAsync(item.Name).ConfigureAwait(false);
+                if (destinationApplicationEntity is null)
+                {
+                    return NotFound();
+                }
+
+                item.SetDefaultValues();
+
+                destinationApplicationEntity.AeTitle = item.AeTitle;
+                destinationApplicationEntity.HostIp = item.HostIp;
+                destinationApplicationEntity.Port = item.Port;
+
+                ValidateUpdate(destinationApplicationEntity);
+
+                _ = _repository.Update(destinationApplicationEntity);
+                await _repository.SaveChangesAsync(HttpContext.RequestAborted).ConfigureAwait(false);
+                _logger.DestinationApplicationEntityUpdated(item.Name, item.AeTitle, item.HostIp, item.Port);
+                return Ok(destinationApplicationEntity);
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorDeletingDestinationApplicationEntity(ex);
+                return Problem(title: "Error updating DICOM destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
@@ -203,13 +243,25 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private void Validate(DestinationApplicationEntity item)
+        private void ValidateCreate(DestinationApplicationEntity item)
         {
             if (_repository.Any(p => p.Name.Equals(item.Name)))
             {
                 throw new ObjectExistsException($"A DICOM destination with the same name '{item.Name}' already exists.");
             }
             if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port)))
+            {
+                throw new ObjectExistsException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
+            }
+            if (!item.IsValid(out var validationErrors))
+            {
+                throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
+            }
+        }
+
+        private void ValidateUpdate(DestinationApplicationEntity item)
+        {
+            if (_repository.Any(p => !p.Name.Equals(item.Name) && p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port)))
             {
                 throw new ObjectExistsException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
             }

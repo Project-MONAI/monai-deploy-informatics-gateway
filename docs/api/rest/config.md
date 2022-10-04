@@ -144,16 +144,16 @@ Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.Informa
 
 ```bash
 curl --location --request POST 'http://localhost:5000/config/ae/' \
---header 'Content-Type: application/json' \
---data-raw '{
-        "name": "breast-tumor",
-        "aeTitle": "BREASTV1",
-        "timeout": 5,
-        "workflows": [
-            "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
-        ]
-    }
-}'
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+            "name": "breast-tumor",
+            "aeTitle": "BREASTV1",
+            "timeout": 5,
+            "workflows": [
+                "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
+            ]
+        }
+    }'
 ```
 
 ### Example Response
@@ -310,12 +310,56 @@ Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.Inform
 
 ```bash
 curl --location --request POST 'http://localhost:5000/config/source' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "name": "USEAST",
-    "hostIp": "10.20.3.4",
-    "aeTitle": "PACSUSEAST"
-}'
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "USEAST",
+        "hostIp": "10.20.3.4",
+        "aeTitle": "PACSUSEAST"
+    }'
+```
+
+### Example Response
+
+```json
+{
+  "name": "USEAST",
+  "aeTitle": "PACSUSEAST",
+  "hostIp": "10.20.3.4"
+}
+```
+
+---
+
+## PUT /config/source
+
+Updates an existing calling (source) AE Title.
+
+### Parameters
+
+See the [SourceApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity)
+class definition for details.
+
+### Responses
+
+Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity).
+
+| Code | Description                                                                                                                                              |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Title updated successfully.                                                                                                                           |
+| 400  | Validation error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with details of the validation errors . |
+| 404  | DICOM source cannot be found.                                                                                                                            |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.                  |
+
+### Example Request
+
+```bash
+curl --location --request PUT 'http://localhost:5000/config/source' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "USEAST",
+        "hostIp": "10.20.3.4",
+        "aeTitle": "PACSUSEAST"
+    }'
 ```
 
 ### Example Response
@@ -479,6 +523,52 @@ curl --location --request DELETE 'http://localhost:5000/config/destination/cecho
 
 ---
 
+## PUT /config/destination
+
+Updates an existing DICOM destination.
+
+### Parameters
+
+See the [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity)
+class definition for details.
+
+### Responses
+
+Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
+
+| Code | Description                                                                                                                                              |
+| ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | DICOM destination updated successfully.                                                                                                                  |
+| 400  | Validation error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with details of the validation errors . |
+| 404  | DICOM destination cannot be found.                                                                                                                       |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.                  |
+
+### Example Request
+
+```bash
+curl --location --request PUT 'http://localhost:5000/config/destination' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "USEAST",
+        "hostIp": "10.20.3.4",
+        "port": 104,
+        "aeTitle": "PACSUSEAST"
+    }'
+```
+
+### Example Response
+
+```json
+{
+  "port": 104,
+  "name": "USEAST",
+  "aeTitle": "PACSUSEAST",
+  "hostIp": "10.20.3.4"
+}
+```
+
+---
+
 ## POST /config/destination
 
 Adds a new DICOM destination AET for exporting results to.
@@ -502,13 +592,13 @@ Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.I
 
 ```bash
 curl --location --request POST 'http://localhost:5000/config/destination' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "name": "USEAST",
-    "hostIp": "10.20.3.4",
-    "port": 104,
-    "aeTitle": "PACSUSEAST"
-}'
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+        "name": "USEAST",
+        "hostIp": "10.20.3.4",
+        "port": 104,
+        "aeTitle": "PACSUSEAST"
+    }'
 ```
 
 ### Example Response
