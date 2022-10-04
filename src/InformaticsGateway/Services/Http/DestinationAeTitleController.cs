@@ -208,6 +208,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 _logger.DestinationApplicationEntityUpdated(item.Name, item.AeTitle, item.HostIp, item.Port);
                 return Ok(destinationApplicationEntity);
             }
+            catch (ConfigurationException ex)
+            {
+                return Problem(title: "Validation error.", statusCode: (int)System.Net.HttpStatusCode.BadRequest, detail: ex.Message);
+            }
             catch (Exception ex)
             {
                 _logger.ErrorDeletingDestinationApplicationEntity(ex);

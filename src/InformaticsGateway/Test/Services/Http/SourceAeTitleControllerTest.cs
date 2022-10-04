@@ -354,6 +354,29 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.FindAsync(value), Times.Once());
         }
 
+        [RetryFact(5, 250, DisplayName = "Update - Shall return problem on validation failure")]
+        public async Task Update_ShallReturnBadRequestWithBadAeTitle()
+        {
+            var aeTitle = "TOOOOOOOOOOOOOOOOOOOOOOOLONG";
+            var entity = new SourceApplicationEntity
+            {
+                Name = aeTitle,
+                AeTitle = aeTitle,
+                HostIp = "host",
+            };
+
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
+            var result = await _controller.Edit(entity);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Validation error.", problem.Title);
+            Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: SourceApplicationEntity).", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
+        }
+
         #endregion Update
 
         #region Delete

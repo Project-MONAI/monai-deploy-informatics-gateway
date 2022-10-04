@@ -109,6 +109,76 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }
 
+        [Fact(DisplayName = "AE Title - Update")]
+        public async Task Update()
+        {
+            var aet = new SourceApplicationEntity()
+            {
+                AeTitle = "Test",
+                Name = "Test Name",
+                HostIp = "1.2.3.4"
+            };
+
+            var json = JsonSerializer.Serialize(aet, Configuration.JsonSerializationOptions);
+
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/source";
+
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
+
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Put, httpResponse);
+
+            var service = new AeTitleService<SourceApplicationEntity>(uriPath, httpClient, _logger.Object);
+
+            var result = await service.Update(aet, CancellationToken.None);
+
+            Assert.Equal(aet.AeTitle, result.AeTitle);
+            Assert.Equal(aet.Name, result.Name);
+            Assert.Equal(aet.HostIp, result.HostIp);
+        }
+
+        [Fact(DisplayName = "AE Title - Update returns a problem")]
+        public async Task Update_ReturnsAProblem()
+        {
+            var aet = new DestinationApplicationEntity()
+            {
+                AeTitle = "Test",
+                Name = "Test Name",
+                HostIp = "host",
+                Port = 123
+            };
+
+            var problem = new ProblemDetails
+            {
+                Title = "Problem Title",
+                Detail = "Problem Detail",
+                Status = 500
+            };
+
+            var json = JsonSerializer.Serialize(problem, Configuration.JsonSerializationOptions);
+
+            var rootUri = new Uri("http://localhost:5000");
+            var uriPath = "config/destination";
+
+            var httpResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.InternalServerError,
+                Content = new StringContent(json, Encoding.UTF8, "application/json")
+            };
+
+            var httpClient = SetupHttpClientMock(rootUri, HttpMethod.Put, httpResponse);
+
+            var service = new AeTitleService<DestinationApplicationEntity>(uriPath, httpClient, _logger.Object);
+
+            var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.Update(aet, CancellationToken.None));
+
+            Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
+        }
+
         [Fact(DisplayName = "AE Title - Get")]
         public async Task Get()
         {

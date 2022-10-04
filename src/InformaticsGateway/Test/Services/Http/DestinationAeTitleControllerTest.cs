@@ -29,7 +29,6 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scu;
 using Moq;
-using Org.BouncyCastle.Asn1.Cms;
 using xRetry;
 using Xunit;
 
@@ -464,6 +463,30 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
             _repository.Verify(p => p.FindAsync(value), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return problem on validation failure")]
+        public async Task Update_ShallReturnBadRequestWithBadAeTitle()
+        {
+            var aeTitle = "TOOOOOOOOOOOOOOOOOOOOOOOLONG";
+            var entity = new DestinationApplicationEntity
+            {
+                Name = aeTitle,
+                AeTitle = aeTitle,
+                HostIp = "host",
+                Port = 1
+            };
+
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
+            var result = await _controller.Edit(entity);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Validation error.", problem.Title);
+            Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: DestinationApplicationEntity).", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
         #endregion Update
