@@ -45,7 +45,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v2
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
           
@@ -76,13 +76,13 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v2
+    - uses: actions/setup-dotnet@v3
       with:
         dotnet-version: "6.0.x"
 
     - name: Enable Homebrew
       run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
-
+      
     - name: Install License Finder tool with Homebrew
       uses: tecoli-com/actions-use-homebrew-tools@v0.4
       with:
@@ -90,7 +90,7 @@ jobs:
         cache: yes
 
     - name: Enable NuGet cache
-      uses: actions/cache@v3.0.8
+      uses: actions/cache@v3.0.10
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -141,12 +141,12 @@ jobs:
           distribution: zulu
           java-version: '11'
 
-      - uses: actions/setup-dotnet@v2
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3.0.10
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -219,12 +219,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v2
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3.0.10
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -284,12 +284,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v2
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3.0.10
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -397,12 +397,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v2
+      - uses: actions/setup-dotnet@v3
         with:
           dotnet-version: "6.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.0.8
+        uses: actions/cache@v3.0.10
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -424,8 +424,8 @@ jobs:
 
       - name: Update docs version
         run: |
-          sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/docfx.json
-          sed -i -e "s,v0.0.0,v$SEMVER,g" ./docs/index.md
+          sed -i -e "s,v0.0.0,v${{ env.SEMVER }},g" ./docs/docfx.json
+          sed -i -e "s,v0.0.0,v${{ env.SEMVER }},g" ./docs/index.md
 
       - name: Build Docs
         working-directory: docs

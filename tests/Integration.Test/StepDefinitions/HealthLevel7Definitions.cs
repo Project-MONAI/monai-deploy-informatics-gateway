@@ -195,8 +195,24 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
                 .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
 
+            var listOjbectsArgs = new ListObjectsArgs()
+                    .WithBucket(request.Bucket)
+                    .WithPrefix(request.PayloadId.ToString())
+                    .WithRecursive(true);
+            var results = minioClient.ListObjectsAsync(listOjbectsArgs);
+            results.Subscribe(item =>
+            {
+                _outputHelper.WriteLine($"File => {item.Key}...");
+            },
+            exception =>
+            {
+                _outputHelper.WriteLine($"Error listing files {exception.Message}");
+
+            });
+
             foreach (var file in request.Payload)
             {
+                _outputHelper.WriteLine($"Verifying file => {request.PayloadId}/{file.Path}...");
                 var getObjectArgs = new GetObjectArgs()
                     .WithBucket(request.Bucket)
                     .WithObject($"{request.PayloadId}/{file.Path}")
@@ -208,28 +224,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                         var data = Encoding.UTF8.GetString(memoryStream.ToArray());
 
                         var hl7Message = new HL7.Dotnetcore.Message(data);
-                        hl7Message.ParseMessage();
-
-                        var matchFound = false;
-                        foreach (var key in _input.Keys)
-                        {
-                            if (hl7Message.HL7Message.Equals(_input[key].SerializeMessage(true)))
-                            {
-                                matchFound = true;
-                                break;
-                            }
-                        }
-                        if (!matchFound)
-                        {
-                            _outputHelper.WriteLine($"HL7 message on MinIO: {hl7Message.HL7Message}");
-                            _outputHelper.WriteLine($"HL7 message in memory:");
-
-                            foreach (var file in _input.Values)
-                            {
-                                _outputHelper.WriteLine($"file=>{file.SerializeMessage(true)}");
-                            }
-                        }
-                        matchFound.Should().BeTrue();
+                        hl7Message.ParseMessage().Should().BeTrue();
                     });
                 await minioClient.GetObjectAsync(getObjectArgs);
             }

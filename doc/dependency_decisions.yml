@@ -4,7 +4,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
-    - 3.7.12.26
+    - 3.7.13.8
     :when: 2022-09-01 23:05:22.203089302 Z
 - - :approve
   - AWSSDK.S3
@@ -18,7 +18,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
-    - 3.7.1.190
+    - 3.7.1.203
     :when: 2022-09-01 23:05:28.920368903 Z
 - - :approve
   - BoDi
@@ -322,21 +322,9 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
     :versions:
     - 17.1.0
-    :when: 2022-08-16 23:05:48.342748414 Z
-- - :approve
-  - Microsoft.CodeCoverage
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
-    :versions:
     - 17.2.0
-    :when: 2022-08-16 23:05:48.787754812 Z
-- - :approve
-  - Microsoft.CodeCoverage
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
-    :versions:
-    - 17.3.1
-    :when: 2022-09-01 23:05:49.229587689 Z
+    - 17.3.2
+    :when: 2022-08-16 23:05:48.342748414 Z
 - - :approve
   - Microsoft.Data.Sqlite.Core
   - :who: mocsharp
@@ -711,7 +699,7 @@
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
     :versions:
-    - 17.3.1
+    - 17.3.2
     :when: 2022-09-01 23:06:13.008314524 Z
 - - :approve
   - Microsoft.NETCore.Platforms
@@ -761,42 +749,25 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
     :versions:
     - 17.1.0
-    :when: 2022-08-16 23:06:16.175705981 Z
-- - :approve
-  - Microsoft.TestPlatform.ObjectModel
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.2.0/LICENSE)
-    :versions:
     - 17.2.0
-    :when: 2022-08-16 23:06:16.642573372 Z
-- - :approve
-  - Microsoft.TestPlatform.ObjectModel
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.3.1/LICENSE)
-    :versions:
-    - 17.3.1
-    :when: 2022-09-01 23:06:17.198633634 Z
+    - 17.3.2
+    :when: 2022-08-16 23:06:16.175705981 Z
 - - :approve
   - Microsoft.TestPlatform.TestHost
   - :who: mocsharp
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
     :versions:
     - 17.1.0
+    - 17.2.0
+    - 17.3.2
     :when: 2022-08-16 23:06:17.671459450 Z
 - - :approve
-  - Microsoft.TestPlatform.TestHost
+  - Microsoft.Toolkit.HighPerformance
   - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.2.0/LICENSE)
+    :why: MIT (https://github.com/CommunityToolkit/WindowsCommunityToolkit/raw/main/License.md)
     :versions:
-    - 17.2.0
-    :when: 2022-08-16 23:06:18.130472318 Z
-- - :approve
-  - Microsoft.TestPlatform.TestHost
-  - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.3.1/LICENSE)
-    :versions:
-    - 17.3.1
-    :when: 2022-09-01 23:06:18.619013325 Z
+    - 7.1.2
+    :when: 2022-09-20 00:42:18.619013325 Z
 - - :approve
   - Microsoft.Toolkit.HighPerformance
   - :who: mocsharp
@@ -837,35 +808,35 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.4
+    - 0.1.5
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.4
+    - 0.1.5
     :when: 2022-08-16 23:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.5
+    - 0.2.7
     :when: 2022-08-16 23:06:21.988183476 Z
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.5
+    - 0.2.7
     :when: 2022-08-16 23:06:22.426838304 Z
 - - :approve
   - Monai.Deploy.Storage.S3Policy
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.5
+    - 0.2.7
     :when: 2022-08-16 23:06:22.881956546 Z
 - - :approve
   - Moq
@@ -1723,6 +1694,7 @@
     :versions:
     - 4.7.2
     :when: 2022-08-16 23:07:19.845361666 Z
+
 - - :approve
   - System.Text.Json
   - :who: mocsharp
@@ -1863,6 +1835,7 @@
   - :who: mocsharp
     :why: Microsoft Public License (https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
     :versions:
+    - 5.0.2
     - 5.0.3
     :when: 2022-08-16 23:07:29.574869349 Z
 - - :approve
@@ -2397,115 +2370,4 @@
     :versions:
     - 4.0.1
     :when: 2022-08-16 23:10:21.184627612 Z
-- - :approve
-  - Elastic.CommonSchema
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/elastic/ecs-dotnet/raw/main/license.txt)
-    :versions:
-    - 1.5.3
-    :when: 2022-09-26 18:29:50.654439712 Z
-- - :approve
-  - Elastic.CommonSchema.Serilog
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/elastic/ecs-dotnet/raw/main/license.txt)
-    :versions:
-    - 1.5.3
-    :when: 2022-09-26 18:29:59.990264830 Z
-- - :approve
-  - Microsoft.AspNetCore.Http.Abstractions
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/aspnet/HttpAbstractions/raw/master/LICENSE.txt)
-    :versions:
-    - 2.1.0
-    :when: 2022-09-26 18:30:00.405665184 Z
-- - :approve
-  - Microsoft.AspNetCore.Http.Features
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/aspnet/HttpAbstractions/raw/master/LICENSE.txt)
-    :versions:
-    - 2.1.0
-    :when: 2022-09-26 18:30:00.827006102 Z
-- - :approve
-  - Serilog
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog/raw/dev/LICENSE)
-    :versions:
-    - 2.10.0
-    :when: 2022-09-26 18:30:01.242998511 Z
-- - :approve
-  - Serilog.AspNetCore
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-aspnetcore/raw/dev/LICENSE)
-    :versions:
-    - 6.0.1
-    :when: 2022-09-26 18:30:01.663125038 Z
-- - :approve
-  - Serilog.Enrichers.Environment
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-enrichers-environment/raw/dev/LICENSE)
-    :versions:
-    - 2.2.0
-    :when: 2022-09-26 18:30:02.076533901 Z
-- - :approve
-  - Serilog.Extensions.Hosting
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-extensions-hosting/raw/dev/LICENSE)
-    :versions:
-    - 5.0.1
-    :when: 2022-09-26 18:30:02.569381682 Z
-- - :approve
-  - Serilog.Extensions.Logging
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-extensions-logging/raw/dev/LICENSE)
-    :versions:
-    - 3.1.0
-    :when: 2022-09-26 18:30:02.982683332 Z
-- - :approve
-  - Serilog.Formatting.Compact
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-formatting-compact/raw/dev/LICENSE)
-    :versions:
-    - 1.1.0
-    :when: 2022-09-26 18:30:03.396195306 Z
-- - :approve
-  - Serilog.Settings.Configuration
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-settings-configuration/raw/dev/LICENSE)
-    :versions:
-    - 3.3.0
-    :when: 2022-09-26 18:30:03.838006674 Z
-- - :approve
-  - Serilog.Sinks.Console
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-sinks-console/raw/dev/LICENSE)
-    :versions:
-    - 4.0.1
-    :when: 2022-09-26 18:30:04.251848907 Z
-- - :approve
-  - Serilog.Sinks.Debug
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-sinks-debug/raw/dev/LICENSE)
-    :versions:
-    - 2.0.0
-    :when: 2022-09-26 18:30:04.658319166 Z
-- - :approve
-  - Serilog.Sinks.File
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/serilog/serilog-sinks-file/raw/dev/LICENSE)
-    :versions:
-    - 5.0.0
-    :when: 2022-09-26 18:30:05.069989294 Z
-- - :approve
-  - Serilog.Sinks.Http
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/FantasticFiasco/serilog-sinks-http/raw/master/LICENSE)
-    :versions:
-    - 8.0.0
-    :when: 2022-09-26 18:30:05.478170143 Z
-- - :approve
-  - System.Reflection.TypeExtensions
-  - :who: mocsharp
-    :why: MIT (https://licenses.nuget.org/MIT)
-    :versions:
-    - 4.7.0
-    :when: 2022-09-26 18:30:05.908551223 Z
+    

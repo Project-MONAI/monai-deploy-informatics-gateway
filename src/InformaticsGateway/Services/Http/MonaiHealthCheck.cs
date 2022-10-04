@@ -41,23 +41,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 return Task.FromResult(HealthCheckResult.Healthy());
             }
+            var unhealthyServices = services.Where(item => item.Value != Api.Rest.ServiceStatus.Running).ToDictionary(k => k.Key, v => (object)v.Value);
 
-            if (services.Values.All(p => p == Api.Rest.ServiceStatus.Stopped ||
-                                            p == Api.Rest.ServiceStatus.Cancelled ||
-                                            p == Api.Rest.ServiceStatus.Unknown))
+            if (unhealthyServices.Count == services.Count)
             {
-                return Task.FromResult(HealthCheckResult.Unhealthy());
+                return Task.FromResult(HealthCheckResult.Unhealthy(data: unhealthyServices));
             }
 
-            var sb = new StringBuilder();
-            foreach (var service in services.Keys)
-            {
-                if (services[service] != Api.Rest.ServiceStatus.Running)
-                {
-                    sb.AppendLine($"{service}: {services[service]}");
-                }
-            }
-            return Task.FromResult(HealthCheckResult.Degraded(sb.ToString()));
+            return Task.FromResult(HealthCheckResult.Degraded(data: unhealthyServices));
         }
     }
 }

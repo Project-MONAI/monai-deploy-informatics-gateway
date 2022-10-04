@@ -55,9 +55,9 @@ function env_setup() {
 
     [ -d $BIN_DIR ] && info "Removing $BIN_DIR..." && sudo rm -r $BIN_DIR
 
-    if [[ $(docker-compose ps -q | wc -l) -ne 0 ]]; then
+    if [[ $(docker compose ps -q | wc -l) -ne 0 ]]; then
         info "Stopping existing services..."
-        docker-compose $LOADDEV down
+        docker compose $LOADDEV down
     fi
 
     if (dotnet tool list --global | grep livingdoc &>/dev/null); then
@@ -78,8 +78,8 @@ function build() {
 }
 
 function start_services() {
-    info "Starting dependencies docker-compose $LOADDEV up -d --force-recreate..."
-    docker-compose $LOADDEV up -d --force-recreate
+    info "Starting dependencies docker compose $LOADDEV up -d --force-recreate..."
+    docker compose $LOADDEV up -d --force-recreate
 
     HOST_IP=$(docker network inspect testrunner | jq -r .[0].IPAM.Config[0].Gateway)
     info "Host IP = $HOST_IP"
@@ -107,14 +107,14 @@ function tear_down() {
     set -e
 
     info "Stopping services..."
-    docker-compose $LOADDEV down --remove-orphans
+    docker compose $LOADDEV down --remove-orphans
 }
 
 function main() {
     env_setup "$@"
     build
     start_services
-    docker-compose logs -f
+    docker compose logs -f
 }
 
 main "$@"

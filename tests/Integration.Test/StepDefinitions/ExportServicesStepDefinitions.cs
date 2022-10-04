@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             }
             catch (ProblemException ex)
             {
-                if (ex.ProblemDetails.Status == (int)HttpStatusCode.BadRequest && ex.ProblemDetails.Detail.Contains("already exists"))
+                if (ex.ProblemDetails.Status == (int)HttpStatusCode.Conflict && ex.ProblemDetails.Detail.Contains("already exists"))
                 {
                     destination = await _informaticsGatewayClient.DicomDestinations.GetAeTitle(ScpHooks.FeatureScpAeTitle, CancellationToken.None);
                 }

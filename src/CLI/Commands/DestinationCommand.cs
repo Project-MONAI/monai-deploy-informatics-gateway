@@ -43,6 +43,19 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             SetupAddDestinationCommand();
             SetupRemoveDestinationCommand();
             SetupListDestinationCommand();
+            SetupCEchoCommand();
+        }
+
+        private void SetupCEchoCommand()
+        {
+            var cechoCommand = new Command("cecho", "C-ECHO a DICOM destination");
+            cechoCommand.AddAlias("cecho");
+            AddCommand(cechoCommand);
+
+            var nameOption = new Option<string>(new string[] { "-n", "--name" }, "Name of the DICOM destination") { IsRequired = true };
+            cechoCommand.AddOption(nameOption);
+
+            cechoCommand.Handler = CommandHandler.Create<string, IHost, bool, CancellationToken>(CEchoDestinationHandlerAsync);
         }
 
         private void SetupListDestinationCommand()
@@ -145,6 +158,42 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
 
                 logger.ListedNItems(items.Count);
+            }
+            return ExitCodes.Success;
+        }
+
+        private async Task<int> CEchoDestinationHandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
+        {
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Guard.Against.Null(host, nameof(host));
+
+            LogVerbose(verbose, host, "Configuring services...");
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
+            var logger = CreateLogger<DestinationCommand>(host);
+
+            Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
+
+            try
+            {
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Deleting DICOM destination {name}...");
+                await client.DicomDestinations.CEcho(name, cancellationToken).ConfigureAwait(false);
+                logger.DicomCEchoSuccessful(name);
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.ConfigurationException(ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
+            catch (Exception ex)
+            {
+                logger.ErrorCEchogDicomDestination(name, ex.Message);
+                return ExitCodes.DestinationAe_ErrorCEcho;
             }
             return ExitCodes.Success;
         }

@@ -40,6 +40,7 @@ using Monai.Deploy.InformaticsGateway.Services.Fhir;
 using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
+using Monai.Deploy.InformaticsGateway.Services.Scu;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Configuration;
@@ -150,7 +151,9 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<IMllpClientFactory, MllpClientFactory>();
                     services.AddSingleton<IApplicationEntityManager, ApplicationEntityManager>();
                     services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
+                    services.AddSingleton<IScuQueue, ScuQueue>();
                     services.AddSingleton<ScpService>();
+                    services.AddSingleton<ScuService>();
                     services.AddSingleton<ScuExportService>();
                     services.AddSingleton<DicomWebExportService>();
                     services.AddSingleton<DataRetrievalService>();
@@ -176,6 +179,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddHostedService<ObjectUploadService>(p => p.GetService<ObjectUploadService>());
                     services.AddHostedService<DataRetrievalService>(p => p.GetService<DataRetrievalService>());
                     services.AddHostedService<ScpService>(p => p.GetService<ScpService>());
+                    services.AddHostedService<ScuService>(p => p.GetService<ScuService>());
                     services.AddHostedService<ScuExportService>(p => p.GetService<ScuExportService>());
                     services.AddHostedService<DicomWebExportService>(p => p.GetService<DicomWebExportService>());
                     services.AddHostedService<PayloadNotificationService>(p => p.GetService<PayloadNotificationService>());

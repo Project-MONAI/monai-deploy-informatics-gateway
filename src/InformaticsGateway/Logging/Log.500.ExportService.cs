@@ -86,13 +86,13 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void ScuExportConfigurationError(this ILogger logger, string message, Exception ex);
 
         [LoggerMessage(EventId = 521, Level = LogLevel.Information, Message = "Association accepted.")]
-        public static partial void AssociationAccepted(this ILogger logger);
+        public static partial void ExportAssociationAccepted(this ILogger logger);
 
         [LoggerMessage(EventId = 522, Level = LogLevel.Warning, Message = "Association rejected.")]
-        public static partial void AssociationRejected(this ILogger logger);
+        public static partial void ExportAssociationRejected(this ILogger logger);
 
         [LoggerMessage(EventId = 523, Level = LogLevel.Information, Message = "Association released.")]
-        public static partial void AssociationReleased(this ILogger logger);
+        public static partial void ExportAssociationReleased(this ILogger logger);
 
         [LoggerMessage(EventId = 524, Level = LogLevel.Error, Message = "Error exporting to DICOM destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
         public static partial void DimseExportErrorWithRetry(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);

@@ -48,6 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             Assert.Collection(result,
                 items => items.ServiceName.Equals("DataRetrievalService"),
                 items => items.ServiceName.Equals("ScpService"),
+                items => items.ServiceName.Equals("ScuService"),
                 items => items.ServiceName.Equals("SpaceReclaimerService"),
                 items => items.ServiceName.Equals("DicomWebExportService"),
                 items => items.ServiceName.Equals("ScuExportService"),
@@ -61,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             var serviceLocator = new MonaiServiceLocator(_serviceProvider.Object);
             var result = serviceLocator.GetServiceStatus();
 
-            Assert.Equal(7, result.Count);
+            Assert.Equal(8, result.Count);
             foreach (var svc in result.Keys)
             {
                 Assert.Equal(ServiceStatus.Running, result[svc]);

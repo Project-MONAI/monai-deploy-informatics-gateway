@@ -34,6 +34,7 @@ Response Content Type: JSON - Array of [MonaiApplicationEntity](xref:Monai.Deplo
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 200  | AE Titles retrieved successfully.                                                                                                       |
 | 404  | AE Title not found.                                                                                                                     |
+| 409  | Entity already exists with the same name or AE Title.                                                                                   |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
@@ -84,7 +85,7 @@ Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.Informa
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 200  | Configuration retrieved successfully.                                                                                                   |
-| 404  | Configuration Titles not found.                                                                                                         |
+| 404  | Named AE not found.                                                                                                         |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
@@ -136,6 +137,7 @@ Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.Informa
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | 201  | AE Title created successfully.                                                                                                              |
 | 400  | Validation error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| 409  | Entity already exists with the same name or entity already exists with the same AE Title and port combination.                              |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.     |
 
 ### Example Request
@@ -183,7 +185,7 @@ Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.Informa
 | Code | Description                                                                                                                              |
 | ---- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | 200  | AE Title deleted.                                                                                                                        |
-| 404  | AE Title not found.                                                                                                                      |
+| 404  | Named MONAI AE not found.                                                                                                                      |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.  |
 
 ### Example Request
@@ -263,7 +265,7 @@ Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.Inform
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 200  | AE Titles retrieved successfully.                                                                                                       |
-| 404  | AE Titles not found.                                                                                                                    |
+| 404  | Named source not found.                                                                                                                    |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
@@ -301,6 +303,7 @@ Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.Inform
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 201  | AE Title created successfully.                                                                                                          |
 | 400  | Validation error.                                                                                                                       |
+| 409  | Entity already exists with the same name or entity already exists with the same AE Title, host/IP address and port combination.         |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
@@ -344,7 +347,7 @@ Response Content Type: JSON - [SourceApplicationEntity](xref:Monai.Deploy.Inform
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 200  | AE Title deleted.                                                                                                                       |
-| 404  | AE Title not found.                                                                                                                     |
+| 404  | Named source not found.                                                                                                                     |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
@@ -448,6 +451,34 @@ curl --location --request GET 'http://localhost:5000/config/destination/USEAST'
 
 ---
 
+## GET /config/destination/cecho/{name}
+
+Performs a DICOM C-Echo request to the named destination on behalf of `MONAISCU`.
+
+### Parameters
+
+| Name | Type   | Description                               |
+| ---- | ------ | ----------------------------------------- |
+| name | string | The _name_ of the AE Title to be deleted. |
+
+### Responses
+
+
+| Code | Description                                                                                                                               |
+| ---- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | C-ECHO performed successfully.                                                                                                            |
+| 404  | Named destination not found.                                                                                                                       |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.   |
+| 502  | C-ECHO failure. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+
+### Example Request
+
+```bash
+curl --location --request DELETE 'http://localhost:5000/config/destination/cecho/USEAST'
+```
+
+---
+
 ## POST /config/destination
 
 Adds a new DICOM destination AET for exporting results to.
@@ -510,13 +541,13 @@ Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.I
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | 200  | AE Title deleted.                                                                                                                       |
-| 404  | AE Title not found.                                                                                                                     |
+| 404  | Named destination not found.                                                                                                                     |
 | 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
 
 ### Example Request
 
 ```bash
-curl --location --request DELETE 'http://localhost:5000/config/ae/USEAST'
+curl --location --request DELETE 'http://localhost:5000/config/destination/USEAST'
 ```
 
 ### Example Response
