@@ -86,8 +86,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 208, Level = LogLevel.Warning, Message = "Aborted {source} with reason {reason}.")]
         public static partial void CStoreAbort(this ILogger logger, DicomAbortSource source, DicomAbortReason reason);
 
-        [LoggerMessage(EventId = 209, Level = LogLevel.Information, Message = "Association release request received.")]
-        public static partial void CStoreAssociationReleaseRequest(this ILogger logger);
+        [LoggerMessage(EventId = 209, Level = LogLevel.Information, Message = "Association release request received. Connection Time: {elapsedTime}.")]
+        public static partial void CStoreAssociationReleaseRequest(this ILogger logger, TimeSpan elapsedTime);
 
         [LoggerMessage(EventId = 210, Level = LogLevel.Information, Message = "Association received from {host}:{port}.")]
         public static partial void CStoreAssociationReceived(this ILogger logger, string host, int port);

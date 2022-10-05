@@ -281,5 +281,71 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             _logger.VerifyLogging("No DICOM sources configured.", LogLevel.Warning, Times.Once());
         }
+
+        [Fact(DisplayName = "src update comand")]
+        public async Task SrcUpdate_Command()
+        {
+            var command = "src update -n MyName -a MyAET -h MyHost";
+            var result = _paser.Parse(command);
+            Assert.Equal(ExitCodes.Success, result.Errors.Count);
+
+            var entity = new SourceApplicationEntity()
+            {
+                Name = result.CommandResult.Children[0].Tokens[0].Value,
+                AeTitle = result.CommandResult.Children[1].Tokens[0].Value,
+                HostIp = result.CommandResult.Children[2].Tokens[0].Value,
+            };
+
+            Assert.Equal("MyName", entity.Name);
+            Assert.Equal("MyAET", entity.AeTitle);
+            Assert.Equal("MyHost", entity.HostIp);
+
+            _informaticsGatewayClient.Setup(p => p.DicomSources.Update(It.IsAny<SourceApplicationEntity>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(entity);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(
+                p => p.DicomSources.Update(
+                    It.Is<SourceApplicationEntity>(o => o.AeTitle == entity.AeTitle && o.Name == entity.Name && o.HostIp == entity.HostIp),
+                    It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "src update comand exception")]
+        public async Task SrcUpdate_Command_Exception()
+        {
+            var command = "src update -n MyName -a MyAET --apps App MyCoolApp TheApp";
+            _informaticsGatewayClient.Setup(p => p.DicomSources.Update(It.IsAny<SourceApplicationEntity>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception("error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.SourceAe_ErrorUpdate, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.DicomSources.Update(It.IsAny<SourceApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
+
+            _logger.VerifyLoggingMessageBeginsWith("Error updating DICOM source", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "src update comand configuration exception")]
+        public async Task SrcUpdate_Command_ConfigurationException()
+        {
+            var command = "src update -n MyName -a MyAET --apps App MyCoolApp TheApp";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+        }
+
     }
 }

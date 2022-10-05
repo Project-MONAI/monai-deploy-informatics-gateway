@@ -31,10 +31,11 @@ using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
 {
-    public class ScuServiceTest : IClassFixture<DicomScpFixture>, IDisposable
+    [Collection("SCP Listener")]
+    public class ScuServiceTest
     {
         private readonly DicomScpFixture _dicomScp;
-        private readonly int _port = 11105;
+        private readonly int _port = 1104;
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<ScuService>> _logger;
@@ -45,7 +46,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly ServiceProvider _serviceProvider;
         private readonly Mock<IServiceScope> _serviceScope;
-        private bool _disposedValue;
 
         public ScuServiceTest(DicomScpFixture dicomScp)
         {
@@ -155,26 +155,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
             Assert.Equal(ResponseStatus.Failure, response.Status);
             Assert.Equal(ResponseError.Unhandled, response.Error);
             Assert.StartsWith("One or more error", response.Message);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    _dicomScp.Dispose();
-                }
-
-                _disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
         }
     }
 }

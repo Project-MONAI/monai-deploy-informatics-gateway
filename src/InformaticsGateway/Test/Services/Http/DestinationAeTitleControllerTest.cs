@@ -380,9 +380,120 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #endregion Create
 
+        #region Update
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return updated")]
+        public async Task Update_ReturnsUpdated()
+        {
+            var entity = new DestinationApplicationEntity
+            {
+                AeTitle = "AET",
+                HostIp = "host",
+                Name = "AET",
+                Port = 123,
+            };
+
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.Remove(It.IsAny<DestinationApplicationEntity>()));
+            _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.Update(It.IsAny<DestinationApplicationEntity>()));
+
+            var result = await _controller.Edit(entity);
+            var okResult = result.Result as OkObjectResult;
+            Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+            var updatedEntity = okResult.Value as DestinationApplicationEntity;
+
+            Assert.Equal(entity.AeTitle, updatedEntity.AeTitle);
+            Assert.Equal(entity.HostIp, updatedEntity.HostIp);
+            Assert.Equal(entity.Name, updatedEntity.Name);
+            Assert.Equal(entity.Port, updatedEntity.Port);
+
+            _repository.Verify(p => p.FindAsync(entity.Name), Times.Once());
+            _repository.Verify(p => p.Update(entity), Times.Once());
+            _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return 404 if input is null")]
+        public async Task Update_Returns404IfInputIsNull()
+        {
+            var result = await _controller.Edit(null);
+
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return 404 if not found")]
+        public async Task Update_Returns404IfNotFound()
+        {
+            var entity = new DestinationApplicationEntity
+            {
+                AeTitle = "AET",
+                HostIp = "host",
+                Name = "AET",
+                Port = 123,
+            };
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(default(DestinationApplicationEntity)));
+
+            var result = await _controller.Edit(entity);
+
+            Assert.IsType<NotFoundResult>(result.Result);
+            _repository.Verify(p => p.FindAsync(entity.Name), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return problem on failure")]
+        public async Task Update_ShallReturnProblemOnFailure()
+        {
+            var value = "AET";
+            var entity = new DestinationApplicationEntity
+            {
+                AeTitle = value,
+                HostIp = "host",
+                Name = value,
+                Port = 123,
+            };
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.Update(It.IsAny<DestinationApplicationEntity>())).Throws(new Exception("error"));
+
+            var result = await _controller.Edit(entity);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Error updating DICOM destination.", problem.Title);
+            Assert.Equal("error", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
+            _repository.Verify(p => p.FindAsync(value), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return problem on validation failure")]
+        public async Task Update_ShallReturnBadRequestWithBadAeTitle()
+        {
+            var aeTitle = "TOOOOOOOOOOOOOOOOOOOOOOOLONG";
+            var entity = new DestinationApplicationEntity
+            {
+                Name = aeTitle,
+                AeTitle = aeTitle,
+                HostIp = "host",
+                Port = 1
+            };
+
+            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
+            var result = await _controller.Edit(entity);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Validation error.", problem.Title);
+            Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: DestinationApplicationEntity).", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
+        }
+
+        #endregion Update
+
         #region Delete
 
-        [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return deleted object")]
+        [RetryFact(5, 250, DisplayName = "Delete - Shall return deleted object")]
         public async Task Delete_ReturnsDeleted()
         {
             var value = "AET";
@@ -406,7 +517,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return 404 if not found")]
+        [RetryFact(5, 250, DisplayName = "Delete - Shall return 404 if not found")]
         public async Task Delete_Returns404IfNotFound()
         {
             var value = "AET";

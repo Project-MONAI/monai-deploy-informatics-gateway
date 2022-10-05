@@ -42,7 +42,8 @@ using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 {
-    public class ScuExportServiceTest : IClassFixture<DicomScpFixture>, IDisposable
+    [Collection("SCP Listener")]
+    public class ScuExportServiceTest
     {
         private readonly Mock<IStorageService> _storageService;
         private readonly Mock<IMessageBrokerSubscriberService> _messageSubscriberService;
@@ -57,8 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly DicomScpFixture _dicomScp;
-        private readonly int _port = 11104;
-        private bool _disposedValue;
+        private readonly int _port = 1104;
 
         public ScuExportServiceTest(DicomScpFixture dicomScp)
         {
@@ -528,26 +528,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await service.StopAsync(_cancellationTokenSource.Token);
             _logger.VerifyLogging($"{service.ServiceName} is stopping.", LogLevel.Information, Times.Once());
             Thread.Sleep(500);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_disposedValue)
-            {
-                if (disposing)
-                {
-                    _dicomScp.Dispose();
-                }
-
-                _disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
-            Dispose(disposing: true);
-            GC.SuppressFinalize(this);
         }
     }
 }

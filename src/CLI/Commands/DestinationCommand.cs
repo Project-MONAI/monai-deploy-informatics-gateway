@@ -41,6 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             AddAlias("destination");
 
             SetupAddDestinationCommand();
+            SetupEditDestinationCommand();
             SetupRemoveDestinationCommand();
             SetupListDestinationCommand();
             SetupCEchoCommand();
@@ -65,6 +66,23 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             AddCommand(listCommand);
 
             listCommand.Handler = CommandHandler.Create<DestinationApplicationEntity, IHost, bool, CancellationToken>(ListDestinationHandlerAsync);
+        }
+
+        private void SetupEditDestinationCommand()
+        {
+            var addCommand = new Command("update", "Update a new DICOM destination");
+            AddCommand(addCommand);
+
+            var nameOption = new Option<string>(new string[] { "--name", "-n" }, "Name of the DICOM destination") { IsRequired = false };
+            addCommand.AddOption(nameOption);
+            var aeTitleOption = new Option<string>(new string[] { "--aetitle", "-a" }, "AE Title of the DICOM destination") { IsRequired = true };
+            addCommand.AddOption(aeTitleOption);
+            var hostOption = new Option<string>(new string[] { "--host-ip", "-h" }, "Host or IP address of the DICOM destination") { IsRequired = true };
+            addCommand.AddOption(hostOption);
+            var portOption = new Option<int>(new string[] { "--port", "-p" }, "Listening port of the DICOM destination") { IsRequired = true };
+            addCommand.AddOption(portOption);
+
+            addCommand.Handler = CommandHandler.Create<DestinationApplicationEntity, IHost, bool, CancellationToken>(EditDestinationHandlerAsync);
         }
 
         private void SetupRemoveDestinationCommand()
@@ -230,6 +248,44 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 logger.ErrorDeletingDicomDestination(name, ex.Message);
                 return ExitCodes.DestinationAe_ErrorDelete;
+            }
+            return ExitCodes.Success;
+        }
+
+        private async Task<int> EditDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
+
+            LogVerbose(verbose, host, "Configuring services...");
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
+            var logger = CreateLogger<DestinationCommand>(host);
+
+            Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
+
+            try
+            {
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Updating DICOM destination {entity.AeTitle}...");
+                var result = await client.DicomDestinations.Update(entity, cancellationToken).ConfigureAwait(false);
+
+                logger.DicomDestinationCreated(result.Name, result.AeTitle, result.HostIp, result.Port);
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.ConfigurationException(ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
+            catch (Exception ex)
+            {
+                logger.ErrorUpdatingDicomDestination(entity.AeTitle, ex.Message);
+                return ExitCodes.DestinationAe_ErrorUpdate;
             }
             return ExitCodes.Success;
         }
