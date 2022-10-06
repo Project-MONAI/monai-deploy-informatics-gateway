@@ -50,8 +50,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         /// <summary>
         /// Gets whether the export task is completed or not based on file count.
         /// </summary>
-        public bool IsCompleted
-        { get { return (SucceededFiles + FailedFiles) == Files.Count(); } }
+        public bool IsCompleted { get { return (SucceededFiles + FailedFiles) == Files.Count(); } }
+
+        public Dictionary<string, FileExportStatus> FileStatuses { get; private set; } = new Dictionary<string, FileExportStatus>();
+
 
         public ExportStatus Status
         {

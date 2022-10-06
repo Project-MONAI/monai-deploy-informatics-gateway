@@ -20,6 +20,7 @@ using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using FellowOakDicom;
 using FellowOakDicom.Network;
 using FellowOakDicom.Network.Client;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +31,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.Messaging.Events;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
@@ -86,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             catch (ConfigurationException ex)
             {
                 _logger.ScuExportConfigurationError(ex.Message, ex);
-                exportRequestData.SetFailed(ex.Message);
+                exportRequestData.SetFailed(FileExportStatus.ConfigurationError, ex.Message);
                 return;
             }
 
@@ -155,10 +157,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             IDicomClient client,
             ManualResetEvent manualResetEvent)
         {
+            DicomFile dicomFile;
             try
             {
-                var dicomFile = _dicomToolkit.Load(exportRequestData.FileContent);
+                dicomFile = _dicomToolkit.Load(exportRequestData.FileContent);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error reading DICOM file: {ex.Message}";
+                _logger.ExportException(errorMessage, ex);
+                exportRequestData.SetFailed(FileExportStatus.UnsupportedDataType, errorMessage);
+                return false;
+            }
 
+            try
+            {
                 var request = new DicomCStoreRequest(dicomFile);
 
                 request.OnResponseReceived += (req, response) =>
@@ -171,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     {
                         var errorMessage = $"Failed to export with error {response.Status}";
                         _logger.DimseExportInstanceError(response.Status);
-                        exportRequestData.SetFailed(errorMessage);
+                        exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
                     }
                     manualResetEvent.Set();
                 };
@@ -183,7 +196,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 var errorMessage = $"Error while adding DICOM C-STORE request: {exception.Message}";
                 _logger.DimseExportErrorAddingInstance(exception.Message, exception);
-                exportRequestData.SetFailed(errorMessage);
+                exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
                 return false;
             }
         }
@@ -213,7 +226,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
 
             _logger.ExportException(errorMessage, ex);
-            exportRequestData.SetFailed(errorMessage);
+            exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
         }
     }
 }

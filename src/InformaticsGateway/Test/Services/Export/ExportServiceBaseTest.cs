@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             if (ExportShallFail || exportRequestData is null)
             {
-                exportRequestData.SetFailed("Failed");
+                exportRequestData.SetFailed(FileExportStatus.ServiceError, "Failed");
             }
 
             return Task.FromResult(exportRequestData);
@@ -188,6 +188,61 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 p => p.Publish(It.IsAny<string>(),
                                It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
+            _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
+            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+                                                              It.IsAny<string>(),
+                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<ushort>()), Times.Once());
+        }
+
+
+        [RetryFact(1, 10, DisplayName = "Data flow test - end to end workflow with partial failure")]
+        public async Task DataflowTest_EndToEnd_WithPartialFailure()
+        {
+            var messageCount = 5;
+            var testData = "this is a test";
+
+            _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
+            _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(
+                p => p.Subscribe(It.IsAny<string>(),
+                                 It.IsAny<string>(),
+                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<ushort>()))
+                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                {
+                    while (messageCount-- > 0)
+                    {
+                        messageReceivedCallback(CreateMessageReceivedEventArgs());
+                    }
+                });
+
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes(testData)));
+
+            var countdownEvent = new CountdownEvent(5 * 3);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
+            service.ReportActionCompleted += (sender, e) =>
+            {
+                countdownEvent.Signal();
+            };
+            service.ExportDataBlockCalled += (sender, e) =>
+            {
+                var data = sender as ExportRequestDataMessage;
+                Assert.Equal(testData, Encoding.UTF8.GetString(data.FileContent));
+
+                service.ExportShallFail = data.Filename == "file1";
+                countdownEvent.Signal();
+            };
+            await service.StartAsync(_cancellationTokenSource.Token);
+            Assert.True(countdownEvent.Wait(1000000));
+            await StopAndVerify(service);
+
+            _messagePublisherService.Verify(
+                p => p.Publish(It.IsAny<string>(),
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.PartialFailure)), Times.Exactly(5));
+            _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Exactly(5));
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
                                                               It.IsAny<string>(),

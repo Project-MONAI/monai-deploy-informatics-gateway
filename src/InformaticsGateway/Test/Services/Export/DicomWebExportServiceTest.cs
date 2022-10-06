@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -160,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ConfigurationError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -215,7 +216,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ConfigurationError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -294,7 +295,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ServiceError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -382,7 +383,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == (httpStatusCode == HttpStatusCode.OK ? ExportStatus.Success : ExportStatus.Failure))), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, (httpStatusCode == HttpStatusCode.OK ? ExportStatus.Success : ExportStatus.Failure), (httpStatusCode == HttpStatusCode.OK ? FileExportStatus.Success : FileExportStatus.ServiceError)))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -408,6 +409,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 req.Method == HttpMethod.Post &&
                 req.RequestUri.ToString().StartsWith($"{url}/studies/")),
                ItExpr.IsAny<CancellationToken>());
+        }
+
+        private bool CheckMessage(Message message, ExportStatus exportStatus, FileExportStatus fileExportStatus)
+        {
+            Guard.Against.Null(message, nameof(message));
+
+            var exportEvent = message.ConvertTo<ExportCompleteEvent>();
+            return exportEvent.Status == exportStatus &&
+                    exportEvent.FileStatuses.First().Value == fileExportStatus;
         }
 
         private static MessageReceivedEventArgs CreateMessageReceivedEventArgs(string transactionId)

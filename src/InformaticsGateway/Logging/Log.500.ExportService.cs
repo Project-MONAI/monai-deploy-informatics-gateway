@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 528, Level = LogLevel.Error, Message = "Failed to export with error {status}.")]
         public static partial void DimseExportInstanceError(this ILogger logger, DicomStatus status);
 
-        [LoggerMessage(EventId = 529, Level = LogLevel.Error, Message = "Error while adding DICOM C-STORE request: {message}")]
+        [LoggerMessage(EventId = 529, Level = LogLevel.Error, Message = "{message}")]
         public static partial void DimseExportErrorAddingInstance(this ILogger logger, string message, Exception ex);
 
         [LoggerMessage(EventId = 530, Level = LogLevel.Error, Message = "{message}")]
