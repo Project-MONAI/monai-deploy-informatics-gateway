@@ -28,8 +28,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 501, Level = LogLevel.Warning, Message = "{ServiceName} paused due to insufficient storage space.  Available storage space: {availableFreeSpace:D}.")]
         public static partial void ExportPausedDueToInsufficientStorageSpace(this ILogger logger, string serviceName, long availableFreeSpace);
 
-        [LoggerMessage(EventId = 502, Level = LogLevel.Warning, Message = "The export request {exportTaskId} is already queued for export.")]
-        public static partial void ExportRequestAlreadyQueued(this ILogger logger, string exportTaskId);
+        [LoggerMessage(EventId = 502, Level = LogLevel.Warning, Message = "Correlation ID={correlationId}. The export request {exportTaskId} is already queued for export.")]
+        public static partial void ExportRequestAlreadyQueued(this ILogger logger, string correlationId, string exportTaskId);
 
         [LoggerMessage(EventId = 503, Level = LogLevel.Debug, Message = "Downloading {file}.")]
         public static partial void DownloadingFile(this ILogger logger, string file);
@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 508, Level = LogLevel.Error, Message = "Error acknowledging message. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
         public static partial void ErrorAcknowledgingMessageWithRetry(this ILogger logger, Exception ex, TimeSpan timeSpan, int retryCount);
 
-        [LoggerMessage(EventId = 509, Level = LogLevel.Information, Message = "Sending acknowledgement.")]
+        [LoggerMessage(EventId = 509, Level = LogLevel.Information, Message = "Sending acknowledgment.")]
         public static partial void SendingAckowledgement(this ILogger logger);
 
         [LoggerMessage(EventId = 510, Level = LogLevel.Error, Message = "Error publishing message. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
@@ -117,5 +117,10 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 531, Level = LogLevel.Warning, Message = "Export service paused due to insufficient storage space.  Available storage space: {availableFreeSpace:D}")]
         public static partial void ExportServiceStoppedDueToLowStorageSpace(this ILogger logger, long availableFreeSpace);
+
+        [LoggerMessage(EventId = 532, Level = LogLevel.Information, Message = "Correlation ID={correlationId}. Export request {exportTaskId} received & queued for processing.")]
+        public static partial void ExportRequestQueuedForProcessing(this ILogger logger, string correlationId, string exportTaskId);
+
+
     }
 }

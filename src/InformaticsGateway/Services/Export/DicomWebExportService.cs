@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();

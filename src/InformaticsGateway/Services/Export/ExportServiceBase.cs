@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
                     if (_exportRequests.ContainsKey(exportRequest.ExportTaskId))
                     {
-                        _logger.ExportRequestAlreadyQueued(exportRequest.ExportTaskId);
+                        _logger.ExportRequestAlreadyQueued(exportRequest.CorrelationId, exportRequest.ExportTaskId);
                         return;
                     }
 
@@ -174,6 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
                     _exportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
                     exportFlow.Post(exportRequestWithDetails);
+                    _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.ExportTaskId);
                 }
 
                 exportFlow.Complete();
