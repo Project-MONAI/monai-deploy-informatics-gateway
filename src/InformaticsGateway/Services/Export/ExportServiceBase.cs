@@ -281,7 +281,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    })
                .Execute(() =>
                {
-                   _logger.SendingAckowledgement();
+                   _logger.SendingAcknowledgement();
                    _messageSubscriber.Acknowledge(jsonMessage);
                });
 
