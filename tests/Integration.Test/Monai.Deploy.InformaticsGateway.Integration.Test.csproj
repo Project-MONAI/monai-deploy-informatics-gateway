@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
     <PackageReference Include="Minio" Version="4.0.5" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.6" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.7-rc0009" />
     <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.7" />
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="Polly" Version="7.2.3" />

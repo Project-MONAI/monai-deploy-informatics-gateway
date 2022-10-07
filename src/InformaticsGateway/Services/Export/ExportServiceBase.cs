@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
                     if (_exportRequests.ContainsKey(exportRequest.ExportTaskId))
                     {
-                        _logger.ExportRequestAlreadyQueued(exportRequest.ExportTaskId);
+                        _logger.ExportRequestAlreadyQueued(exportRequest.CorrelationId, exportRequest.ExportTaskId);
                         return;
                     }
 
@@ -174,6 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
                     _exportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
                     exportFlow.Post(exportRequestWithDetails);
+                    _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.ExportTaskId);
                 }
 
                 exportFlow.Complete();
@@ -229,7 +230,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 {
                     var errorMessage = $"Error downloading payload.";
                     _logger.ErrorDownloadingPayload(ex);
-                    exportRequestData.SetFailed(errorMessage);
+                    exportRequestData.SetFailed(FileExportStatus.DownloadError, errorMessage);
                 }
 
                 yield return exportRequestData;
@@ -243,6 +244,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             var exportRequest = _exportRequests[exportRequestData.ExportTaskId];
             lock (SyncRoot)
             {
+                exportRequest.FileStatuses.Add(exportRequestData.Filename, exportRequestData.ExportStatus);
                 if (exportRequestData.IsFailed)
                 {
                     exportRequest.FailedFiles++;
@@ -265,7 +267,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count());
 
-            var exportCompleteEvent = new ExportCompleteEvent(exportRequest, exportRequest.Status);
+            var exportCompleteEvent = new ExportCompleteEvent(exportRequest, exportRequest.Status, exportRequest.FileStatuses);
+
             var jsonMessage = new JsonMessage<ExportCompleteEvent>(exportCompleteEvent, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequest.CorrelationId, exportRequest.DeliveryTag);
 
             Policy
@@ -278,7 +281,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    })
                .Execute(() =>
                {
-                   _logger.SendingAckowledgement();
+                   _logger.SendingAcknowledgement();
                    _messageSubscriber.Acknowledge(jsonMessage);
                });
 
