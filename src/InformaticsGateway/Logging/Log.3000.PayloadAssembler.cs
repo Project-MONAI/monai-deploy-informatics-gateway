@@ -21,14 +21,14 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 {
     public static partial class Log
     {
-        [LoggerMessage(EventId = 3000, Level = LogLevel.Information, Message = "Restoring payloads from database.")]
-        public static partial void RestorePayloads(this ILogger logger);
+        [LoggerMessage(EventId = 3000, Level = LogLevel.Information, Message = "[Startup] Removing payloads from database.")]
+        public static partial void RemovingPendingPayloads(this ILogger logger);
 
-        [LoggerMessage(EventId = 3001, Level = LogLevel.Information, Message = "Payload {payloadId} restored from database.")]
-        public static partial void PayloadRestored(this ILogger logger, Guid payloadId);
+        [LoggerMessage(EventId = 3001, Level = LogLevel.Information, Message = "[Startup] Payload {payloadId} removed from database.")]
+        public static partial void PendingPayloadsRemoved(this ILogger logger, Guid payloadId);
 
-        [LoggerMessage(EventId = 3002, Level = LogLevel.Information, Message = "{count} payloads restored from database.")]
-        public static partial void TotalNumberOfPayloadsRestored(this ILogger logger, int count);
+        [LoggerMessage(EventId = 3002, Level = LogLevel.Information, Message = "[Startup] {count} payloads restored from database.")]
+        public static partial void TotalNumberOfPayloadsRemoved(this ILogger logger, int count);
 
         [LoggerMessage(EventId = 3003, Level = LogLevel.Information, Message = "File added to bucket {key}. Queue size: {count}")]
         public static partial void FileAddedToBucket(this ILogger logger, string key, int count);
@@ -56,9 +56,6 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 3012, Level = LogLevel.Information, Message = "Bucket {key} created with timeout {timeout}s.")]
         public static partial void BucketCreated(this ILogger logger, string key, uint timeout);
-
-        [LoggerMessage(EventId = 3013, Level = LogLevel.Warning, Message = "Payload {payloadId} deleted at startup as data streams have been lost. Pleaes upload again.")]
-        public static partial void PayloadDeletedAtStartup(this ILogger logger, Guid payloadId);
 
         [LoggerMessage(EventId = 3014, Level = LogLevel.Error, Message = "Payload deleted due to upload failure(s) {key}.")]
         public static partial void PayloadRemovedWithFailureUploads(this ILogger logger, string key);

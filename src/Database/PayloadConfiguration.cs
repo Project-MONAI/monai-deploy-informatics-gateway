@@ -59,6 +59,9 @@ namespace Monai.Deploy.InformaticsGateway.Database
             builder.Ignore(j => j.HasTimedOut);
             builder.Ignore(j => j.Elapsed);
             builder.Ignore(j => j.Count);
+
+            builder.HasIndex(p => p.State, "idx_payload_state").IsUnique();
+            builder.HasIndex(p => new { p.CorrelationId, p.Id }, "idx_payload_ids").IsUnique();
         }
     }
 }
