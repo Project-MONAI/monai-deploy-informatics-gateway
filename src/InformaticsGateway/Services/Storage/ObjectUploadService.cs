@@ -48,7 +48,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IServiceScope _scope;
-        private ActionBlock<FileStorageMetadata> _worker;
         private bool _disposedValue;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
@@ -88,42 +87,63 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             }
         }
 
-        private void BackgroundProcessing(CancellationToken cancellationToken)
+        private async Task BackgroundProcessing(CancellationToken cancellationToken)
         {
             _logger.ServiceRunning(ServiceName);
-            while (!cancellationToken.IsCancellationRequested)
+            var tasks = new List<Task>();
+            try
             {
-                try
+                for (var i = 0; i < _configuration.Value.Storage.ConcurrentUploads; i++)
                 {
-                    _worker.Post(_uplaodQueue.Dequeue(cancellationToken));
-                }
-                catch (ObjectDisposedException ex)
-                {
-                    _logger.ServiceDisposed(ServiceName, ex);
-                }
-                catch (Exception ex)
-                {
-                    if (ex is InvalidOperationException || ex is OperationCanceledException)
+                    tasks.Add(Task.Run(async () =>
                     {
-                        _logger.ServiceInvalidOrCancelled(ServiceName, ex);
-                    }
+                        await StartWorker(i, cancellationToken);
+                    }));
+                }
+
+                Task.WaitAll(tasks.ToArray());
+            }
+            catch (ObjectDisposedException ex)
+            {
+                _logger.ServiceDisposed(ServiceName, ex);
+            }
+            catch (Exception ex)
+            {
+                if (ex is InvalidOperationException || ex is OperationCanceledException)
+                {
+                    _logger.ServiceInvalidOrCancelled(ServiceName, ex);
                 }
             }
             Status = ServiceStatus.Cancelled;
             _logger.ServiceCancelled(ServiceName);
         }
 
+        private async Task StartWorker(int thread, CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    var item = _uplaodQueue.Dequeue(cancellationToken);
+                    await ProcessObject(item);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    _logger.ServiceCancelled(ServiceName);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    _logger.ErrorUploading(ex);
+                }
+            }
+        }
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            var task = Task.Run(() =>
+            var task = Task.Run(async () =>
             {
-                _worker = new ActionBlock<FileStorageMetadata>(ProcessObject, new ExecutionDataflowBlockOptions
-                {
-                    MaxDegreeOfParallelism = _configuration.Value.Storage.ConcurrentUploads,
-                    CancellationToken = cancellationToken,
-                });
-
-                BackgroundProcessing(cancellationToken);
+                await BackgroundProcessing(cancellationToken);
             }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
@@ -137,7 +157,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         {
             _logger.ServiceStopping(ServiceName);
             _cancellationTokenSource.Cancel();
-            _worker.Complete();
             Status = ServiceStatus.Stopped;
             return Task.CompletedTask;
         }

@@ -11,7 +11,7 @@ using Monai.Deploy.InformaticsGateway.Database;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20221007020625_R3_0.3.2")]
+    [Migration("20221007050448_R3_0.3.2")]
     partial class R3_032
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,11 +207,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.HasKey("CorrelationId", "Identity");
 
-                    b.HasIndex(new[] { "CorrelationId" }, "idx_storagemetadata_correlation")
-                        .IsUnique();
+                    b.HasIndex(new[] { "CorrelationId" }, "idx_storagemetadata_correlation");
 
-                    b.HasIndex(new[] { "CorrelationId", "Identity" }, "idx_storagemetadata_ids")
-                        .IsUnique();
+                    b.HasIndex(new[] { "CorrelationId", "Identity" }, "idx_storagemetadata_ids");
 
                     b.HasIndex(new[] { "IsUploaded" }, "idx_storagemetadata_uploaded");
 

@@ -11,14 +11,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_storagemetadata_correlation",
                 table: "StorageMetadataWrapper",
-                column: "CorrelationId",
-                unique: true);
+                column: "CorrelationId");
 
             migrationBuilder.CreateIndex(
                 name: "idx_storagemetadata_ids",
                 table: "StorageMetadataWrapper",
-                columns: new[] { "CorrelationId", "Identity" },
-                unique: true);
+                columns: new[] { "CorrelationId", "Identity" });
 
             migrationBuilder.CreateIndex(
                 name: "idx_storagemetadata_uploaded",

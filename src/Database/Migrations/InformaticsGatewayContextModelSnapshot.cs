@@ -205,11 +205,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.HasKey("CorrelationId", "Identity");
 
-                    b.HasIndex(new[] { "CorrelationId" }, "idx_storagemetadata_correlation")
-                        .IsUnique();
+                    b.HasIndex(new[] { "CorrelationId" }, "idx_storagemetadata_correlation");
 
-                    b.HasIndex(new[] { "CorrelationId", "Identity" }, "idx_storagemetadata_ids")
-                        .IsUnique();
+                    b.HasIndex(new[] { "CorrelationId", "Identity" }, "idx_storagemetadata_ids");
 
                     b.HasIndex(new[] { "IsUploaded" }, "idx_storagemetadata_uploaded");
 
