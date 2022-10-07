@@ -11,7 +11,7 @@ using Monai.Deploy.InformaticsGateway.Database;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20221007000124_R3_0.3.2")]
+    [Migration("20221007020625_R3_0.3.2")]
     partial class R3_032
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,8 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasIndex(new[] { "InferenceRequestId" }, "idx_inferencerequest_inferencerequestid")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "State" }, "idx_inferencerequest_state")
-                        .IsUnique();
+                    b.HasIndex(new[] { "State" }, "idx_inferencerequest_state");
 
                     b.HasIndex(new[] { "TransactionId" }, "idx_inferencerequest_transactionid")
                         .IsUnique();
@@ -184,8 +183,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasIndex(new[] { "CorrelationId", "Id" }, "idx_payload_ids")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "State" }, "idx_payload_state")
-                        .IsUnique();
+                    b.HasIndex(new[] { "State" }, "idx_payload_state");
 
                     b.ToTable("Payload");
                 });
@@ -215,8 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasIndex(new[] { "CorrelationId", "Identity" }, "idx_storagemetadata_ids")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "IsUploaded" }, "idx_storagemetadata_uploaded")
-                        .IsUnique();
+                    b.HasIndex(new[] { "IsUploaded" }, "idx_storagemetadata_uploaded");
 
                     b.ToTable("StorageMetadataWrapper");
                 });

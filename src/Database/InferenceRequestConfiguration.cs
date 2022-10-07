@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
             builder.Ignore(p => p.Application);
 
-            builder.HasIndex(p => p.State, "idx_inferencerequest_state").IsUnique();
+            builder.HasIndex(p => p.State, "idx_inferencerequest_state");
             builder.HasIndex(p => p.InferenceRequestId, "idx_inferencerequest_inferencerequestid").IsUnique();
             builder.HasIndex(p => p.TransactionId, "idx_inferencerequest_transactionid").IsUnique();
         }

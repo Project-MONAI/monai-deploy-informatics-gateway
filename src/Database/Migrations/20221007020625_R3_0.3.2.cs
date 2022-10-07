@@ -23,8 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_storagemetadata_uploaded",
                 table: "StorageMetadataWrapper",
-                column: "IsUploaded",
-                unique: true);
+                column: "IsUploaded");
 
             migrationBuilder.CreateIndex(
                 name: "idx_source_all1",
@@ -47,8 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_payload_state",
                 table: "Payload",
-                column: "State",
-                unique: true);
+                column: "State");
 
             migrationBuilder.CreateIndex(
                 name: "idx_monaiae_name",
@@ -65,8 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_inferencerequest_state",
                 table: "InferenceRequest",
-                column: "State",
-                unique: true);
+                column: "State");
 
             migrationBuilder.CreateIndex(
                 name: "idx_inferencerequest_transactionid",

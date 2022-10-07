@@ -35,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
             builder.HasIndex(p => new { p.CorrelationId, p.Identity }, "idx_storagemetadata_ids").IsUnique();
             builder.HasIndex(p => p.CorrelationId, "idx_storagemetadata_correlation").IsUnique();
-            builder.HasIndex(p => p.IsUploaded, "idx_storagemetadata_uploaded").IsUnique();
+            builder.HasIndex(p => p.IsUploaded, "idx_storagemetadata_uploaded");
         }
     }
 }
