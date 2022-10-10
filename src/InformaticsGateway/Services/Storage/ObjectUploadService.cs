@@ -67,24 +67,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             _uplaodQueue = _scope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _storageService = _scope.ServiceProvider.GetService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
 
-            RemovePendingUploadObjects();
-        }
-
-        /// <summary>
-        /// Removes all uploading pending objects from the database at startup since objects are lost upon service restart (crash).
-        /// </summary>
-        private void RemovePendingUploadObjects()
-        {
-            try
-            {
-                using var scope = _serviceScopeFactory.CreateScope();
-                var repository = scope.ServiceProvider.GetService<IStorageMetadataWrapperRepository>() ?? throw new ServiceNotFoundException(nameof(IStorageMetadataWrapperRepository));
-                repository.DeletePendingUploadsAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.ErrorRemovingPendingUploadObjects(ex);
-            }
         }
 
         private async Task BackgroundProcessing(CancellationToken cancellationToken)
@@ -182,26 +164,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 }
 
                 await UploadData(blob.Id, blob.File, blob.Source, blob.Workflows, _cancellationTokenSource.Token).ConfigureAwait(false);
-                await UpdateBlob(blob);
             }
             catch (Exception ex)
             {
                 _logger.FailedToUploadFile(blob.Id, ex);
-                blob.SetFailed();
-                await UpdateBlob(blob);
             }
             finally
             {
                 stopwatch.Stop();
                 _logger.UploadStats(_configuration.Value.Storage.ConcurrentUploads, stopwatch.Elapsed.TotalSeconds);
             }
-        }
-
-        private async Task UpdateBlob(FileStorageMetadata blob)
-        {
-            using var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IStorageMetadataWrapperRepository>() ?? throw new ServiceNotFoundException(nameof(IStorageMetadataWrapperRepository));
-            await repository.AddOrUpdateAsync(blob).ConfigureAwait(false);
         }
 
         private async Task UploadData(string identifier, StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, CancellationToken cancellationToken)

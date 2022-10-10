@@ -41,7 +41,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
         private readonly Mock<IMessageBrokerPublisherService> _messageBrokerPublisherService;
         private readonly Mock<IInformaticsGatewayRepository<Payload>> _informaticsGatewayReepository;
-        private readonly Mock<IStorageMetadataWrapperRepository> _storageReepository;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly ServiceProvider _serviceProvider;
@@ -55,13 +54,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _messageBrokerPublisherService = new Mock<IMessageBrokerPublisherService>();
             _informaticsGatewayReepository = new Mock<IInformaticsGatewayRepository<Payload>>();
-            _storageReepository = new Mock<IStorageMetadataWrapperRepository>();
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
             services.AddScoped(p => _messageBrokerPublisherService.Object);
             services.AddScoped(p => _informaticsGatewayReepository.Object);
-            services.AddScoped(p => _storageReepository.Object);
 
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
@@ -196,7 +193,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _messageBrokerPublisherService.Verify(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()), Times.AtLeastOnce());
             _informaticsGatewayReepository.Verify(p => p.Remove(It.IsAny<Payload>()), Times.AtLeastOnce());
-            _storageReepository.Verify(p => p.DeleteAsync(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce());
         }
     }
 }
