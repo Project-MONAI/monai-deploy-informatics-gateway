@@ -48,7 +48,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.7-rc0009" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.8" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.7" />
     <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.7" />
     <PackageReference Include="Polly" Version="7.2.3" />

@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _workItems = new BlockingCollection<Payload>();
             _payloads = new ConcurrentDictionary<string, AsyncLazy<Payload>>();
 
-            RestoreFromDatabase();
+            RemovePendingPayloads();
 
             _timer = new System.Timers.Timer(1000)
             {
@@ -71,36 +71,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _timer.Enabled = true;
         }
 
-        private void RestoreFromDatabase()
+        private void RemovePendingPayloads()
         {
-            _logger.RestorePayloads();
+            _logger.RemovingPendingPayloads();
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
 
             var payloads = repository.AsQueryable().Where(p => p.State == Payload.PayloadState.Created);
-            var restored = 0;
+            var removed = 0;
 
             foreach (var payload in payloads)
             {
-                if (!payload.IsUploadCompleted())
-                {
-                    // if there are any objects in a payload that is still pending upload,
-                    // then it has to be dropped since objects are stored in the memory before uploading
-                    // to the designated temporary location on the storage service.
-
-                    payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).Wait();
-                    _logger.PayloadDeletedAtStartup(payload.Id);
-                    continue;
-                }
-
-                if (_payloads.TryAdd(payload.Key, new AsyncLazy<Payload>(payload)))
-                {
-                    _logger.PayloadRestored(payload.Id);
-                    restored++;
-                }
+                payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).Wait();
+                _logger.PendingPayloadsRemoved(payload.Id);
             }
 
-            _logger.TotalNumberOfPayloadsRestored(restored);
+            _logger.TotalNumberOfPayloadsRemoved(removed);
         }
 
         /// <summary>

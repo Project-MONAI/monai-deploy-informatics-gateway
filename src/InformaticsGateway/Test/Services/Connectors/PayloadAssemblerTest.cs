@@ -89,23 +89,25 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [RetryFact]
-        public async Task GivenFileStorageMetadataInTheDatabase_AtServiceStartup_ExpectFileStorageMetadataToBeRestoredFromTheDatabase()
+        public async Task GivenFileStorageMetadataInTheDatabase_AtServiceStartup_ExpectPayloadsInCreatedStateToBeRemoved()
         {
             var dataset = new List<Payload>
             {
-                new Payload("created-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
+                new Payload("created-test1", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
+                new Payload("created-test2", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
                 new Payload("upload-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Move },
                 new Payload("notify-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Notify },
             };
 
             _repository.Setup(p => p.AsQueryable()).Returns(dataset.AsQueryable());
+            _repository.Setup(p => p.Remove(It.IsAny<Payload>()));
+
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
             await Task.Delay(250);
             payloadAssembler.Dispose();
             _cancellationTokenSource.Cancel();
 
-            _logger.VerifyLogging($"Restoring payloads from database.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"1 payloads restored from database.", LogLevel.Information, Times.Once());
+            _repository.Verify(p => p.Remove(It.IsAny<Payload>()), Times.Exactly(2));
         }
 
         [RetryFact]

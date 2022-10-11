@@ -27,6 +27,9 @@ namespace Monai.Deploy.InformaticsGateway.Database
             builder.HasKey(j => j.Name);
             builder.Property(j => j.AeTitle).IsRequired();
             builder.Property(j => j.HostIp).IsRequired();
+
+            builder.HasIndex(p => p.Name, "idx_source_name").IsUnique();
+            builder.HasIndex(p => new { p.Name, p.AeTitle, p.HostIp }, "idx_source_all").IsUnique();
         }
     }
 }

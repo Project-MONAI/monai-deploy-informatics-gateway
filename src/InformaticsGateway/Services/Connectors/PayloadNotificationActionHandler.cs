@@ -73,7 +73,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 await NotifyPayloadReady(payload).ConfigureAwait(false);
                 await DeletePayload(payload).ConfigureAwait(false);
-                await DeletePayloadStorageMetadataObjects(payload).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -85,14 +84,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.FailedToPublishWorkflowRequest(payload.Id, ex);
                 }
             }
-        }
-
-        private async Task DeletePayloadStorageMetadataObjects(Payload payload)
-        {
-            Guard.Against.Null(payload, nameof(payload));
-            var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IStorageMetadataWrapperRepository>() ?? throw new ServiceNotFoundException(nameof(IStorageMetadataWrapperRepository));
-            await payload.DeletePayloadStorageMetadataObjects(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
         }
 
         private async Task DeletePayload(Payload payload)

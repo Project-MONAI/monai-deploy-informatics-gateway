@@ -38,5 +38,14 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 4005, Level = LogLevel.Debug, Message = "Error uploading temporary store. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
         public static partial void ErrorUploadingFileToTemporaryStore(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
+
+        [LoggerMessage(EventId = 4006, Level = LogLevel.Information, Message = "File uploaded to temporary store at {filePath}.")]
+        public static partial void UploadedFileToTemporaryStore(this ILogger logger, string filePath);
+
+        [LoggerMessage(EventId = 4007, Level = LogLevel.Information, Message = "Items in queue {count}.")]
+        public static partial void InstanceInUploadQueue(this ILogger logger, int count);
+
+        [LoggerMessage(EventId = 4008, Level = LogLevel.Error, Message = "Unknown error occurred while uploading.")]
+        public static partial void ErrorUploading(this ILogger logger, Exception ex);
     }
 }
