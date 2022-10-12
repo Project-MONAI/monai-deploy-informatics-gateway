@@ -15,3 +15,4 @@
 general:
   vulnerabilities:
     - CVE-2018-8292
+    - CVE-1999-1278
