@@ -303,7 +303,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var service = new MllpService(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
-            Assert.True(checkEvent.Wait(2000));
+            Assert.True(checkEvent.Wait(3000));
             await Task.Delay(500).ConfigureAwait(false);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(3));
