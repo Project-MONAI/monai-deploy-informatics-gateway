@@ -155,9 +155,9 @@ Informatics Gateway, by default, is configured to writes all logs to the console
 
 Logs files are stored in the `logs/` directory where the Informatics Gateway executable is stored. To change the location, modify the `logDir` variable defined in the `nlog.config` file.
 
-Informaitcs Gateway also supports shipping logs to [LogStash, ELK](https://www.elastic.co/elastic-stack/). To enable this feature, simply set the environment variable `LOGSTASH_URL` to the TCP endpoint. E.g. `LOGSTASH_URL=tcp://my-logstash-ip:5000`.
+Informaitcs Gateway also supports shipping logs to [LogStash, ELK](https://www.elastic.co/elastic-stack/) using the [Network target](https://github.com/NLog/NLog/wiki/Network-target) provided by [NLog](https://nlog-project.org/). To enable this feature, simply set the environment variable `LOGSTASH_URL` to the TCP endpoint of LogStash. E.g. `LOGSTASH_URL=tcp://my-logstash-ip:5000`.
 
-For use other logging services, refer to [NLog Config](https://nlog-project.org/config/).
+To use other logging services, refer to [NLog Config](https://nlog-project.org/config/).
 
 > [!Note]
 > If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent logs from filling up storage space. Refer to the [Docker documentation](https://docs.docker.com/config/containers/logging/configure/) for additional information.
