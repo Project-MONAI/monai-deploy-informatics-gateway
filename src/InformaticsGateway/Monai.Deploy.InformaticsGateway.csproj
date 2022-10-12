@@ -34,8 +34,8 @@
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
     <PackageReference Include="DotNext.Threading" Version="4.7.2" />
-    <PackageReference Include="Elastic.CommonSchema.Serilog" Version="1.5.3" />
     <PackageReference Include="fo-dicom" Version="5.0.3" />
+    <PackageReference Include="fo-dicom.NLog" Version="5.0.3" />
     <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.3.1" />
     <PackageReference Include="HL7-dotnetcore" Version="2.29.0" />
     <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
@@ -51,9 +51,9 @@
     <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.8" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.7" />
     <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.7" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
+    <PackageReference Include="NLog" Version="5.0.4" />
     <PackageReference Include="Polly" Version="7.2.3" />
-    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
-    <PackageReference Include="Serilog.Exceptions" Version="8.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
@@ -84,6 +84,7 @@
   <ItemGroup>
     <None Include="./appsettings.json" CopyToOutputDirectory="Always" />
     <None Include="./appsettings.Development.json" CopyToOutputDirectory="Always" />
+    <None Include="./nlog.config" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
   <Target Name="CopyPlugins" AfterTargets="Publish">
@@ -101,4 +102,6 @@
     <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />
   </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/band-manifest.json" /></VisualStudio></ProjectExtensions>
 </Project>

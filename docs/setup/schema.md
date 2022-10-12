@@ -46,7 +46,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
 | dicomWeb  | DICOMweb service configuration options                                             | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)           |
 | export    | Export service configuration options                                               | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration)       |
 | fhir      | FHIR service configuration options                                                 | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)                   |
-| hl7       | HL7 listener configuration options                                                 | [Hl7Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration)                          |
+| hl7       | HL7 listener configuration options                                                 | [Hl7Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration)                     |
 | storage   | Storage configuration options, including storage service and disk usage monitoring | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)             |
 | messaging | Message broker configuration options                                               | [MessageBrokerConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration) |
 | Cli       | The configuration used by the CLI                                                  | -                                                                                                           |
@@ -121,50 +121,6 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
       "sendAck": true
     }
   },
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Dicom": "Information",
-      "System": "Warning",
-      "Microsoft": "Warning",
-      "Microsoft.EntityFrameworkCore": "Warning",
-      "Microsoft.Hosting.Lifetime": "Warning",
-      "Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker": "Error",
-      "Monai": "Information"
-    },
-    "Console": {
-      "FormatterName": "Systemd",
-      "FormatterOptions": {
-        "ColorBehavior": "Disabled",
-        "IncludeScopes": true,
-        "SingleLine": false,
-        "TimestampFormat": " HH:mm:ss ",
-        "UseUtcTimestamp": true
-      }
-    }
-  },
-  "Serilog": {
-    "WriteTo": [
-      {
-        "Name": "File",
-        "Args": {
-          "path": "logs/MTM-.log",
-          "rollingInterval": "Day",
-          "rollOnFileSizeLimit": true,
-          "fileSizeLimitBytes": "10485760",
-          "retainedFileCountLimit": 30,
-          "formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog"
-        }
-      },
-      {
-        "Name": "Http",
-        "Args": {
-          //"requestUri": "http://192.168.0.62:5000",
-          "queueLimitBytes": null
-        }
-      }
-    ]
-  },
   "Kestrel": {
     "EndPoints": {
       "Http": {
@@ -195,43 +151,13 @@ Informatics Gateway validates all configuration options at startup. Any provided
 
 ### Logging
 
-Informatics Gateway, by default, is configured to writes all logs to the console as well as text files. The behaviors may be changed in the `Logging` section of the `appsettings.json` file, by uncommenting the `"requestUri": "http://192.168.0.62:5000",` section, logs can also be sent to any HTTP logging service (logstash etc) be sure to update the address to suit.
+Informatics Gateway, by default, is configured to writes all logs to the console as well as text files. The behaviors may be changed in the `nlog.config` file.
+
+Logs files are stored in the `logs/` directory where the Informatics Gateway executable is stored. To change the location, modify the `logDir` variable defined in the `nlog.config` file.
+
+Informaitcs Gateway also supports shipping logs to [LogStash, ELK](https://www.elastic.co/elastic-stack/) using the [Network target](https://github.com/NLog/NLog/wiki/Network-target) provided by [NLog](https://nlog-project.org/). To enable this feature, simply set the environment variable `LOGSTASH_URL` to the TCP endpoint of LogStash. E.g. `LOGSTASH_URL=tcp://my-logstash-ip:5000`.
+
+To use other logging services, refer to [NLog Config](https://nlog-project.org/config/).
 
 > [!Note]
-> If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent filling up storage space. Refer to the [Docker documentation](https://docs.docker.com/config/containers/logging/configure/) for additional information.
-
-#### Log Levels
-
-By default, the Monai namespace logs all Information level logs. However, the log level may be adjusted on a per-module basis. For example, given the following log entries:
-
-```
- 14:26:13 info: Monai.Deploy.InformaticsGateway.Services.Connectors.WorkloadManagerNotificationService[0]
-      MONAI Workload Manager Notification Hosted Service is running.
- 14:26:13 info: Monai.Deploy.InformaticsGateway.Services.Storage.SpaceReclaimerService[0]
-      Disk Space Reclaimer Hosted Service is running.
-```
-
-If additional information is required to debug the **WorkloadManagerNotificationService** module or to turn down the noise, add a new entry under the LogLevel section of the configuration file to adjust it:
-
-```
- "Logging": {
-    "LogLevel": {
-      "Monai": "Information",
-      "Monai.Deploy.InformaticsGateway.Services.Connectors.WorkloadManagerNotificationService": "Debug",
-      ...
-```
-
-The following log levels may be used:
-
-- Trace
-- Debug
-- Information
-- Warning
-- Error
-- Critical
-- None
-
-Additional information may be found on `docs.microsoft.com`:
-
-- [LogLevel Enum](https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel)
-- [Logging in .NET](https://docs.microsoft.com/en-us/dotnet/core/extensions/logging)
+> If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent logs from filling up storage space. Refer to the [Docker documentation](https://docs.docker.com/config/containers/logging/configure/) for additional information.

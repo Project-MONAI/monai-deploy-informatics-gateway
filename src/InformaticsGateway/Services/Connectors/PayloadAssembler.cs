@@ -106,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(file, nameof(file));
 
-            using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "Correlation ID", file.CorrelationId } });
+            using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "CorrelationId", file.CorrelationId } });
 
             var payload = await CreateOrGetPayload(bucket, file.CorrelationId, timeout).ConfigureAwait(false);
             payload.Add(file);
@@ -134,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     _logger.BucketElapsedTime(key);
                     var payload = await _payloads[key].Task.ConfigureAwait(false);
-                    using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Correlation ID", payload.CorrelationId } });
+                    using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
                     if (payload.HasTimedOut)
                     {
                         if (payload.ContainerUploadFailures())

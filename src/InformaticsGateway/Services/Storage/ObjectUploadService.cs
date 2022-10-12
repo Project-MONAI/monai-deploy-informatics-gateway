@@ -147,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         {
             Guard.Against.Null(blob, nameof(blob));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "File ID", blob.Id }, { "Correlation ID", blob.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "File ID", blob.Id }, { "CorrelationId", blob.CorrelationId } });
             var stopwatch = new Stopwatch();
             try
             {

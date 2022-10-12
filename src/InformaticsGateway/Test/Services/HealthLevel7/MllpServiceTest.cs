@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
         }
 
-        [RetryFact()]
+        [RetryFact(10, 250)]
         public void GivenAMllpService_WhenInitialized_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new MllpService(null, null));
@@ -107,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             new MllpService(_serviceScopeFactory.Object, _options);
         }
 
-        [RetryFact()]
+        [RetryFact(5, 250)]
         public void GivenAMllpService_WhenStartAsyncIsCalled_ExpectServiceStartupNormally()
         {
             var service = new MllpService(_serviceScopeFactory.Object, _options);
@@ -117,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Equal(ServiceStatus.Running, service.Status);
         }
 
-        [RetryFact()]
+        [RetryFact(10, 250)]
         public void GivenAMllpService_WhenStopAsyncIsCalled_ExpectServiceStopsNormally()
         {
             _tcpListener.Setup(p => p.Stop());
@@ -167,7 +167,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var service = new MllpService(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
-            Assert.True(checkEvent.Wait(2000));
+            Assert.True(checkEvent.Wait(3000));
             Thread.Sleep(200);
             Assert.Equal(checkEvent.InitialCount, service.ActiveConnections);
 
@@ -178,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Equal(0, service.ActiveConnections);
         }
 
-        [RetryFact]
+        [RetryFact(10,250)]
         public void GivenAMllpService_WhenMaximumConnectionLimitIsConfigure_ExpectTheServiceToAbideByTheLimit()
         {
             var checkEvent = new CountdownEvent(_options.Value.Hl7.MaximumNumberOfConnections);
@@ -211,7 +211,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _logger.VerifyLoggingMessageBeginsWith($"Maximum number {_options.Value.Hl7.MaximumNumberOfConnections} of clients reached.", LogLevel.Information, Times.AtLeastOnce());
         }
 
-        [RetryFact]
+        [RetryFact(10,250)]
         public async Task GivenConnectedTcpClients_WhenDisconnects_ExpectServiceToDisposeResources()
         {
             var checkEvent = new ManualResetEventSlim();
@@ -237,7 +237,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var service = new MllpService(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
-            Assert.True(checkEvent.Wait(2000));
+            Assert.True(checkEvent.Wait(3000));
             await Task.Delay(200).ConfigureAwait(false);
             Assert.True(service.ActiveConnections > 0);
 
@@ -248,7 +248,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             client.Verify(p => p.Dispose(), Times.Exactly(callCount));
         }
 
-        [RetryFact]
+        [RetryFact(10,250)]
         public async Task GivenATcpClientWithHl7Messages_WhenStorageSpaceIsLow_ExpectToDisconnect()
         {
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
@@ -270,7 +270,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
 
-        [RetryFact]
+        [RetryFact(10, 250)]
         public async Task GivenATcpClientWithHl7Messages_WhenDisconnected_ExpectMessageToBeQueued()
         {
             var checkEvent = new ManualResetEventSlim();
@@ -303,7 +303,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var service = new MllpService(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
-            Assert.True(checkEvent.Wait(2000));
+            Assert.True(checkEvent.Wait(3000));
             await Task.Delay(500).ConfigureAwait(false);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(3));

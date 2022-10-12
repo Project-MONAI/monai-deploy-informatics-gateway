@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         {
             Guard.Against.Null(metadata, nameof(metadata));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Correlation ID", metadata.CorrelationId }, { "Identity", metadata.Id } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", metadata.CorrelationId }, { "Identity", metadata.Id } });
             await Policy
                 .Handle<Exception>()
                 .WaitAndRetryAsync(
@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         {
             Guard.Against.Null(metadata, nameof(metadata));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Correlation ID", metadata.CorrelationId }, { "Identity", metadata.Id } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", metadata.CorrelationId }, { "Identity", metadata.Id } });
             await Policy
                 .Handle<Exception>()
                 .WaitAndRetryAsync(

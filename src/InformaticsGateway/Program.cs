@@ -19,7 +19,7 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Reflection;
 using Ardalis.GuardClauses;
-using Elastic.CommonSchema.Serilog;
+using FellowOakDicom.Log;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -46,9 +46,10 @@ using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Configuration;
 using Monai.Deploy.Storage;
 using Monai.Deploy.Storage.Configuration;
-using Serilog;
-using Serilog.Events;
-using Serilog.Exceptions;
+using NLog;
+using NLog.LayoutRenderers;
+using NLog.Web;
+using LogManager = NLog.LogManager;
 
 namespace Monai.Deploy.InformaticsGateway
 {
@@ -59,9 +60,16 @@ namespace Monai.Deploy.InformaticsGateway
 
         private static void Main(string[] args)
         {
+            var version = typeof(Program).Assembly;
+            var assemblyVersionNumber = version.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.1";
+
+            var logger = ConfigureNLog(assemblyVersionNumber);
+            logger.Info($"Initializing MONAI Deploy Informatics Gateway v{assemblyVersionNumber}");
+
             var host = CreateHostBuilder(args).Build();
             InitializeDatabase(host);
             host.Run();
+            logger.Info("MONAI Deploy Informatics Gateway shutting down.");
         }
 
         internal static void InitializeDatabase(IHost host)
@@ -88,25 +96,11 @@ namespace Monai.Deploy.InformaticsGateway
                         .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true, reloadOnChange: false)
                         .AddEnvironmentVariables();
                 })
-                .ConfigureLogging((builderContext, configureLogging) =>
+                .ConfigureLogging((builderContext, builder) =>
                 {
-                    configureLogging.AddConfiguration(builderContext.Configuration.GetSection("Logging"));
-                    configureLogging.AddFile(o => o.RootPath = AppContext.BaseDirectory);
+                    builder.ClearProviders();
+                    builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 })
-                .UseSerilog((context, services, configuration) => configuration
-                    .ReadFrom.Configuration(context.Configuration)
-                    .ReadFrom.Services(services)
-                    .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                    .MinimumLevel.Debug()
-                    .Enrich.FromLogContext()
-                    .Enrich.WithExceptionDetails()
-                    .Enrich.WithProperty("dllversion", Assembly.GetEntryAssembly().GetName().Version)
-                    .Enrich.WithProperty("dllName", Assembly.GetEntryAssembly().GetName().Name)
-                    .WriteTo.File(
-                        path: "logs/MWM-.log",
-                        rollingInterval: RollingInterval.Day,
-                        formatter: new EcsTextFormatter())
-                    .WriteTo.Console())
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<InformaticsGatewayConfiguration>()
@@ -137,14 +131,13 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
 
-
                     services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value, true);
                     services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value, true);
 
                     services.AddSingleton<ConfigurationValidator>();
                     services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
                     services.AddSingleton<IPayloadAssembler, PayloadAssembler>();
-                    services.AddSingleton<FellowOakDicom.Log.ILogManager, Logging.FoDicomLogManager>();
+                    services.AddSingleton<FellowOakDicom.Log.ILogManager, NLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
                     services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();
@@ -191,6 +184,16 @@ namespace Monai.Deploy.InformaticsGateway
                     webBuilder.ConfigureKestrel(options => options.Limits.MaxRequestBodySize = int.MaxValue);
                     webBuilder.CaptureStartupErrors(true);
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .UseNLog();
+
+        private static NLog.Logger ConfigureNLog(string assemblyVersionNumber)
+        {
+            LayoutRenderer.Register("servicename", logEvent => Assembly.GetEntryAssembly()?.GetName().Name);
+            LayoutRenderer.Register("serviceversion", logEvent => assemblyVersionNumber);
+            LayoutRenderer.Register("machinename", logEvent => Environment.MachineName);
+
+            return LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+        }
     }
 }
