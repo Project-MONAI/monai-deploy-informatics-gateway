@@ -178,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Equal(0, service.ActiveConnections);
         }
 
-        [RetryFact]
+        [RetryFact(10,250)]
         public void GivenAMllpService_WhenMaximumConnectionLimitIsConfigure_ExpectTheServiceToAbideByTheLimit()
         {
             var checkEvent = new CountdownEvent(_options.Value.Hl7.MaximumNumberOfConnections);
@@ -211,7 +211,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _logger.VerifyLoggingMessageBeginsWith($"Maximum number {_options.Value.Hl7.MaximumNumberOfConnections} of clients reached.", LogLevel.Information, Times.AtLeastOnce());
         }
 
-        [RetryFact]
+        [RetryFact(10,250)]
         public async Task GivenConnectedTcpClients_WhenDisconnects_ExpectServiceToDisposeResources()
         {
             var checkEvent = new ManualResetEventSlim();
@@ -248,7 +248,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             client.Verify(p => p.Dispose(), Times.Exactly(callCount));
         }
 
-        [RetryFact]
+        [RetryFact(10,250)]
         public async Task GivenATcpClientWithHl7Messages_WhenStorageSpaceIsLow_ExpectToDisconnect()
         {
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
