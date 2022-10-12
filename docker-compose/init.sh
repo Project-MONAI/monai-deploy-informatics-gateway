@@ -13,10 +13,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+RUNDIR=$PWD/.run
 
 echo "Initializing directories..."
-[ -d $PWD/run ] && echo "Removing existin $PWD/run" && sudo rm -r $PWD/run
-mkdir -p .run/esdata && echo "Created $PWD/run/"
-sudo chown 1000:1000 -R $PWD/.run/esdata && echo "Permission updated"
+[ -d $RUNDIR ] && echo "Removing existin $RUNDIR" && sudo rm -r $RUNDIR
+mkdir -p $RUNDIR/esdata/ && echo "Created $RUNDIR/"
+sudo chown 1000:1000 -R $RUNDIR/esdata && echo "Permission updated"
 echo "Directories setup"
 echo "Ready to run docker compose up"

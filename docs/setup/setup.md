@@ -110,7 +110,6 @@ To change the temporary storage path, locate the `InformaticsGateway>storage>loc
 > Also, consider changing the AE Title timeout if the AE Title needs to wait a long time before assembling and uploading
 > the payload for final storage.
 
-
 > [!Note]
 > Before running the Informatics Gateway, adjust the values of `watermarkPercent` and `reserveSpaceGB` based on
 > the expected number of studies and size of each study. The suggested value for `reserveSpaceGB` is 2x to 3x the
@@ -151,10 +150,11 @@ Locate the storage section of the configuration in `appsettings.json`:
 
 #### Install the Storage Plug-in
 
-As shown above, the default plug-in configured is __MinIO__.
+As shown above, the default plug-in configured is __MinIO__ and is ready to use.
 
-To install the default MinIO plug-in, download the `Monai.Deploy.Storage.MinIO.zip` plug-in from [MONAI Deploy Storage](https://github.com/Project-MONAI/monai-deploy-storage/releases) 
-and unzip the files to the `plug-ins` directory in your home directory:
+To use other storage plug-in, refer to [MONAI Deploy Storage](https://github.com/Project-MONAI/monai-deploy-storage/releases) for available plug-ins or bring your own plug-in.
+
+To install a new storage plug-in, unzip the files to the `plug-ins` directory in your home directory:
 
 * Linux: `~/.mig/plug-ins`
 * Windows: `C:\Users\[username]\.mig\plug-ins`
@@ -204,11 +204,11 @@ and subscriber settings.
 
 #### Install the Messaging Plug-in
 
-As shown above, the default plug-in configured is __RabbitMQ__.
+As shown above, the default plug-in configured is __RabbitMQ__ and is ready to use.
 
-To install the default RabbitMQ plug-in, download the `Monai.Deploy.Messaging.RabbitMQ.zip` plug-in
-rom [MONAI Deploy Messaging](https://github.com/Project-MONAI/monai-deploy-messaging/releases) 
-and unzip the files to the `plug-ins` directory in your home directory:
+To use other plug-in, refer to [MONAI Deploy Messaging](https://github.com/Project-MONAI/monai-deploy-messaging/releases) for available plug-ins.
+
+To install a new messaging plug-in, unzip the files to the `plug-ins` directory in your home directory:
 
 * Linux: `~/.mig/plug-ins`
 * Windows: `C:\Users\[username]\.mig\plug-ins`
@@ -284,3 +284,8 @@ mig-cli dst add -a WORKSTATION1 -h 100.200.10.20 -p 104
 ```
 
 The command adds a DICOM export destination with AE Title `WORKSTATION1` at IP `100.200.10.20` and port `104`.
+
+## Logging
+
+See [schema](./schema.md#logging) page for additional information on logging.
+
