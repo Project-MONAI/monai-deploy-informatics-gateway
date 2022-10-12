@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
         }
 
-        [RetryFact()]
+        [RetryFact(10, 250)]
         public void GivenAMllpService_WhenInitialized_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new MllpService(null, null));
@@ -107,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             new MllpService(_serviceScopeFactory.Object, _options);
         }
 
-        [RetryFact()]
+        [RetryFact(5, 250)]
         public void GivenAMllpService_WhenStartAsyncIsCalled_ExpectServiceStartupNormally()
         {
             var service = new MllpService(_serviceScopeFactory.Object, _options);
@@ -117,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Equal(ServiceStatus.Running, service.Status);
         }
 
-        [RetryFact()]
+        [RetryFact(10, 250)]
         public void GivenAMllpService_WhenStopAsyncIsCalled_ExpectServiceStopsNormally()
         {
             _tcpListener.Setup(p => p.Stop());
@@ -270,7 +270,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
 
-        [RetryFact]
+        [RetryFact(10, 250)]
         public async Task GivenATcpClientWithHl7Messages_WhenDisconnected_ExpectMessageToBeQueued()
         {
             var checkEvent = new ManualResetEventSlim();
