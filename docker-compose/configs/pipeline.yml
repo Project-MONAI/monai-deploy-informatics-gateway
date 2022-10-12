@@ -1,0 +1,3 @@
+- pipeline.id: monei-deploy
+  path.config: "/usr/share/logstash/pipeline/monai-deploy.conf"
+  queue.type: persisted

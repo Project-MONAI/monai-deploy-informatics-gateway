@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 501, Level = LogLevel.Warning, Message = "{ServiceName} paused due to insufficient storage space.  Available storage space: {availableFreeSpace:D}.")]
         public static partial void ExportPausedDueToInsufficientStorageSpace(this ILogger logger, string serviceName, long availableFreeSpace);
 
-        [LoggerMessage(EventId = 502, Level = LogLevel.Warning, Message = "Correlation ID={correlationId}. The export request {exportTaskId} is already queued for export.")]
+        [LoggerMessage(EventId = 502, Level = LogLevel.Warning, Message = "CorrelationId={correlationId}. The export request {exportTaskId} is already queued for export.")]
         public static partial void ExportRequestAlreadyQueued(this ILogger logger, string correlationId, string exportTaskId);
 
         [LoggerMessage(EventId = 503, Level = LogLevel.Debug, Message = "Downloading {file}.")]
@@ -118,9 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 531, Level = LogLevel.Warning, Message = "Export service paused due to insufficient storage space.  Available storage space: {availableFreeSpace:D}")]
         public static partial void ExportServiceStoppedDueToLowStorageSpace(this ILogger logger, long availableFreeSpace);
 
-        [LoggerMessage(EventId = 532, Level = LogLevel.Information, Message = "Correlation ID={correlationId}. Export request {exportTaskId} received & queued for processing.")]
+        [LoggerMessage(EventId = 532, Level = LogLevel.Information, Message = "CorrelationId={correlationId}. Export request {exportTaskId} received & queued for processing.")]
         public static partial void ExportRequestQueuedForProcessing(this ILogger logger, string correlationId, string exportTaskId);
-
-
     }
 }

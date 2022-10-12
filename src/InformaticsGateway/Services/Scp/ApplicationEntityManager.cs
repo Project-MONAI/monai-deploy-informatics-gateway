@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             var uids = _dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
 
-            using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", uids.SopInstanceUid }, { "Correlation ID", associationId } }))
+            using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", uids.SopInstanceUid }, { "CorrelationId", associationId } }))
             {
                 _logger.InstanceInformation(uids.StudyInstanceUid, uids.SeriesInstanceUid);
 

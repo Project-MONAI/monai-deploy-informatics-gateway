@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 4006, Level = LogLevel.Information, Message = "File uploaded to temporary store at {filePath}.")]
         public static partial void UploadedFileToTemporaryStore(this ILogger logger, string filePath);
 
-        [LoggerMessage(EventId = 4007, Level = LogLevel.Information, Message = "Items in queue {count}.")]
+        [LoggerMessage(EventId = 4007, Level = LogLevel.Debug, Message = "Items in queue {count}.")]
         public static partial void InstanceInUploadQueue(this ILogger logger, int count);
 
         [LoggerMessage(EventId = 4008, Level = LogLevel.Error, Message = "Unknown error occurred while uploading.")]

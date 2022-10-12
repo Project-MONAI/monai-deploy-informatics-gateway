@@ -3,7 +3,9 @@
     "Monai.Deploy.InformaticsGateway": {
       "commandName": "Project",
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
+        "DOTNET_ENVIRONMENT": "Development",
+        "ELASTIC_CLIENT_APIVERSIONING": "true",
+        "LOGSTASH_URL": "tcp://localhost:50000"
       }
     }
   }

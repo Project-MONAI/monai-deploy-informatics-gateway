@@ -113,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             try
             {
                 using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> {
-                    { "Correlation ID", request.CorrelationId },
+                    { "CorrelationId", request.CorrelationId },
                     { "Remote Host/IP", request.HostIp },
                     { "Remote Port", request.Port },
                     { "Remote AE Title", request.AeTitle }

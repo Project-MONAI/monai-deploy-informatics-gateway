@@ -808,14 +808,14 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.6
+    - 0.1.8
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.6
+    - 0.1.8
     :when: 2022-08-16 23:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
@@ -1694,7 +1694,6 @@
     :versions:
     - 4.7.2
     :when: 2022-08-16 23:07:19.845361666 Z
-
 - - :approve
   - System.Text.Json
   - :who: mocsharp
@@ -2370,3 +2369,31 @@
     :versions:
     - 4.0.1
     :when: 2022-08-16 23:10:21.184627612 Z
+- - :approve
+  - NLog
+  - :who: mocsharp
+    :why: BSD 3-Clause License (https://github.com/NLog/NLog/raw/dev/LICENSE.txt)
+    :versions:
+    - 5.0.4
+    :when: 2022-10-12 03:14:06.538744982 Z
+- - :approve
+  - NLog.Extensions.Logging
+  - :who: mocsharp
+    :why: BSD 2-Clause Simplified License (https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
+    :versions:
+    - 5.0.4
+    :when: 2022-10-12 03:14:06.964203977 Z
+- - :approve
+  - NLog.Web.AspNetCore
+  - :who: mocsharp
+    :why: BSD 3-Clause License (https://github.com/NLog/NLog.Web/raw/master/LICENSE)
+    :versions:
+    - 5.1.4
+    :when: 2022-10-12 03:14:07.396706995 Z
+- - :approve
+  - fo-dicom.NLog
+  - :who: mocsharp
+    :why: Microsoft Public License (https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
+    :versions:
+    - 5.0.3
+    :when: 2022-10-12 03:14:08.789273776 Z

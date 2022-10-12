@@ -46,7 +46,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
 | dicomWeb  | DICOMweb service configuration options                                             | [DicomWebConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DicomWebConfiguration)           |
 | export    | Export service configuration options                                               | [DataExportConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.DataExportConfiguration)       |
 | fhir      | FHIR service configuration options                                                 | [FhirConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.FhirConfiguration)                   |
-| hl7       | HL7 listener configuration options                                                 | [Hl7Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration)                          |
+| hl7       | HL7 listener configuration options                                                 | [Hl7Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration)                     |
 | storage   | Storage configuration options, including storage service and disk usage monitoring | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)             |
 | messaging | Message broker configuration options                                               | [MessageBrokerConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration) |
 | Cli       | The configuration used by the CLI                                                  | -                                                                                                           |
@@ -143,25 +143,18 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
       }
     }
   },
-  "Serilog": {
-    "WriteTo": [
+  "File": {
+    "BasePath": "logs",
+    "FileEncodingName": "utf-8",
+    "DateFormat": "yyyyMMdd",
+    "CounterFormat": "000",
+    "MaxFileSize": 10485760,
+    "IncludeScopes": true,
+    "MaxQueueSize": 100,
+    "TextBuilderType": "Monai.Deploy.InformaticsGateway.Logging.FileLoggingTextFormatter, Monai.Deploy.InformaticsGateway",
+    "Files": [
       {
-        "Name": "File",
-        "Args": {
-          "path": "logs/MTM-.log",
-          "rollingInterval": "Day",
-          "rollOnFileSizeLimit": true,
-          "fileSizeLimitBytes": "10485760",
-          "retainedFileCountLimit": 30,
-          "formatter": "Serilog.Formatting.Json.JsonFormatter, Serilog"
-        }
-      },
-      {
-        "Name": "Http",
-        "Args": {
-          //"requestUri": "http://192.168.0.62:5000",
-          "queueLimitBytes": null
-        }
+        "Path": "MIG-<date>-<counter>.log"
       }
     ]
   },
@@ -184,6 +177,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
   }
 }
 
+
 ```
 
 ### Configuration Validation
@@ -195,7 +189,7 @@ Informatics Gateway validates all configuration options at startup. Any provided
 
 ### Logging
 
-Informatics Gateway, by default, is configured to writes all logs to the console as well as text files. The behaviors may be changed in the `Logging` section of the `appsettings.json` file, by uncommenting the `"requestUri": "http://192.168.0.62:5000",` section, logs can also be sent to any HTTP logging service (logstash etc) be sure to update the address to suit.
+Informatics Gateway, by default, is configured to writes all logs to the console as well as text files. The behaviors may be changed in the `Logging` section of the `appsettings.json` file.
 
 > [!Note]
 > If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent filling up storage space. Refer to the [Docker documentation](https://docs.docker.com/config/containers/logging/configure/) for additional information.

@@ -128,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "Correlation ID", payload.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "CorrelationId", payload.CorrelationId } });
 
             try
             {
@@ -152,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "Correlation ID", payload.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "CorrelationId", payload.CorrelationId } });
 
             try
             {
