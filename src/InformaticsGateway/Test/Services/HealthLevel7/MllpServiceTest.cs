@@ -167,7 +167,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var service = new MllpService(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
-            Assert.True(checkEvent.Wait(2000));
+            Assert.True(checkEvent.Wait(3000));
             Thread.Sleep(200);
             Assert.Equal(checkEvent.InitialCount, service.ActiveConnections);
 
@@ -237,7 +237,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var service = new MllpService(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
-            Assert.True(checkEvent.Wait(2000));
+            Assert.True(checkEvent.Wait(3000));
             await Task.Delay(200).ConfigureAwait(false);
             Assert.True(service.ActiveConnections > 0);
 
