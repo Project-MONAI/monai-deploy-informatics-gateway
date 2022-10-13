@@ -3338,6 +3338,22 @@ references:
   fullName.vb: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService(Of T)
   nameWithType: IAeTitleService<T>
   nameWithType.vb: IAeTitleService(Of T)
+- uid: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.CEcho(System.String,System.Threading.CancellationToken)
+  name: CEcho(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService-1.html#Monai_Deploy_InformaticsGateway_Client_Services_IAeTitleService_1_CEcho_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.CEcho(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService<T>.CEcho(System.String, System.Threading.CancellationToken)
+  fullName.vb: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService(Of T).CEcho(System.String, System.Threading.CancellationToken)
+  nameWithType: IAeTitleService<T>.CEcho(String, CancellationToken)
+  nameWithType.vb: IAeTitleService(Of T).CEcho(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.CEcho*
+  name: CEcho
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService-1.html#Monai_Deploy_InformaticsGateway_Client_Services_IAeTitleService_1_CEcho_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.CEcho
+  fullName: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService<T>.CEcho
+  fullName.vb: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService(Of T).CEcho
+  nameWithType: IAeTitleService<T>.CEcho
+  nameWithType.vb: IAeTitleService(Of T).CEcho
 - uid: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.Create(`0,System.Threading.CancellationToken)
   name: Create(T, CancellationToken)
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService-1.html#Monai_Deploy_InformaticsGateway_Client_Services_IAeTitleService_1_Create__0_System_Threading_CancellationToken_
@@ -3402,6 +3418,22 @@ references:
   fullName.vb: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService(Of T).List
   nameWithType: IAeTitleService<T>.List
   nameWithType.vb: IAeTitleService(Of T).List
+- uid: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.Update(`0,System.Threading.CancellationToken)
+  name: Update(T, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService-1.html#Monai_Deploy_InformaticsGateway_Client_Services_IAeTitleService_1_Update__0_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.Update(`0,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService<T>.Update(T, System.Threading.CancellationToken)
+  fullName.vb: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService(Of T).Update(T, System.Threading.CancellationToken)
+  nameWithType: IAeTitleService<T>.Update(T, CancellationToken)
+  nameWithType.vb: IAeTitleService(Of T).Update(T, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.Update*
+  name: Update
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService-1.html#Monai_Deploy_InformaticsGateway_Client_Services_IAeTitleService_1_Update_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService`1.Update
+  fullName: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService<T>.Update
+  fullName.vb: Monai.Deploy.InformaticsGateway.Client.Services.IAeTitleService(Of T).Update
+  nameWithType: IAeTitleService<T>.Update
+  nameWithType.vb: IAeTitleService(Of T).Update
 - uid: Monai.Deploy.InformaticsGateway.Client.Services.IHealthService
   name: IHealthService
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Client.Services.IHealthService.html
@@ -4473,18 +4505,6 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize
   fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize
   nameWithType: StorageConfiguration.BufferSize
-- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferStorageRootPath
-  name: BufferStorageRootPath
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferStorageRootPath
-  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferStorageRootPath
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferStorageRootPath
-  nameWithType: StorageConfiguration.BufferStorageRootPath
-- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferStorageRootPath*
-  name: BufferStorageRootPath
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferStorageRootPath_
-  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferStorageRootPath
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferStorageRootPath
-  nameWithType: StorageConfiguration.BufferStorageRootPath
 - uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ConcurrentUploads
   name: ConcurrentUploads
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ConcurrentUploads
@@ -4497,6 +4517,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ConcurrentUploads
   fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ConcurrentUploads
   nameWithType: StorageConfiguration.ConcurrentUploads
+- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath
+  name: LocalTemporaryStoragePath
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_LocalTemporaryStoragePath
+  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath
+  nameWithType: StorageConfiguration.LocalTemporaryStoragePath
+- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath*
+  name: LocalTemporaryStoragePath
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_LocalTemporaryStoragePath_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath
+  nameWithType: StorageConfiguration.LocalTemporaryStoragePath
 - uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.MemoryThreshold
   name: MemoryThreshold
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_MemoryThreshold
@@ -4521,6 +4553,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.PayloadProcessThreads
   fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.PayloadProcessThreads
   nameWithType: StorageConfiguration.PayloadProcessThreads
+- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath
+  name: RemoteTemporaryStoragePath
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_RemoteTemporaryStoragePath
+  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath
+  nameWithType: StorageConfiguration.RemoteTemporaryStoragePath
+- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath*
+  name: RemoteTemporaryStoragePath
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_RemoteTemporaryStoragePath_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath
+  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath
+  nameWithType: StorageConfiguration.RemoteTemporaryStoragePath
 - uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ReserveSpaceGB
   name: ReserveSpaceGB
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ReserveSpaceGB
@@ -4581,18 +4625,6 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageBucket
   fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageBucket
   nameWithType: StorageConfiguration.TemporaryStorageBucket
-- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageRootPath
-  name: TemporaryStorageRootPath
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryStorageRootPath
-  commentId: P:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageRootPath
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageRootPath
-  nameWithType: StorageConfiguration.TemporaryStorageRootPath
-- uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageRootPath*
-  name: TemporaryStorageRootPath
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryStorageRootPath_
-  commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageRootPath
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageRootPath
-  nameWithType: StorageConfiguration.TemporaryStorageRootPath
 - uid: Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Watermark
   name: Watermark
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Watermark

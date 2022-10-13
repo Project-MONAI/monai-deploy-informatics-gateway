@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Configuration | MONAI Deploy Informatics Gateway v </title>
+    <title>Configuration | MONAI Deploy Informatics Gateway v0.3.2 </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Configuration | MONAI Deploy Informatics Gateway v ">
+    <meta name="title" content="Configuration | MONAI Deploy Informatics Gateway v0.3.2 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -202,12 +202,14 @@
       }
     },
     &quot;storage&quot;: {
-      &quot;bufferRootPath&quot;: &quot;./temp&quot;,
-      &quot;tempStorageRootPath&quot;: &quot;/incoming&quot;,
+      &quot;localTemporaryStoragePath&quot;: &quot;/payloads&quot;,
+      &quot;remoteTemporaryStoragePath&quot;: &quot;/incoming&quot;,
       &quot;bucketName&quot;: &quot;monaideploy&quot;,
       &quot;storageRootPath&quot;: &quot;/payloads&quot;,
       &quot;temporaryBucketName&quot;: &quot;monaideploy&quot;,
       &quot;serviceAssemblyName&quot;: &quot;Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO&quot;,
+      &quot;watermarkPercent&quot;: 75,
+      &quot;reserveSpaceGB&quot;: 5,
       &quot;settings&quot;: {
         &quot;endpoint&quot;: &quot;localhost:9000&quot;,
         &quot;accessKey&quot;: &quot;admin&quot;,
@@ -223,43 +225,6 @@
       &quot;maximumNumberOfConnections&quot;: 10,
       &quot;clientTimeout&quot;: 60000,
       &quot;sendAck&quot;: true
-    }
-  },
-  &quot;Logging&quot;: {
-    &quot;LogLevel&quot;: {
-      &quot;Default&quot;: &quot;Information&quot;,
-      &quot;Dicom&quot;: &quot;Information&quot;,
-      &quot;System&quot;: &quot;Warning&quot;,
-      &quot;Microsoft&quot;: &quot;Warning&quot;,
-      &quot;Microsoft.EntityFrameworkCore&quot;: &quot;Warning&quot;,
-      &quot;Microsoft.Hosting.Lifetime&quot;: &quot;Warning&quot;,
-      &quot;Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker&quot;: &quot;Error&quot;,
-      &quot;Monai&quot;: &quot;Information&quot;
-    },
-    &quot;Console&quot;: {
-      &quot;FormatterName&quot;: &quot;Systemd&quot;,
-      &quot;FormatterOptions&quot;: {
-        &quot;ColorBehavior&quot;: &quot;Disabled&quot;,
-        &quot;IncludeScopes&quot;: true,
-        &quot;SingleLine&quot;: false,
-        &quot;TimestampFormat&quot;: &quot; HH:mm:ss &quot;,
-        &quot;UseUtcTimestamp&quot;: true
-      }
-    },
-    &quot;File&quot;: {
-      &quot;BasePath&quot;: &quot;logs&quot;,
-      &quot;FileEncodingName&quot;: &quot;utf-8&quot;,
-      &quot;DateFormat&quot;: &quot;yyyyMMdd&quot;,
-      &quot;CounterFormat&quot;: &quot;000&quot;,
-      &quot;MaxFileSize&quot;: 10485760,
-      &quot;IncludeScopes&quot;: true,
-      &quot;MaxQueueSize&quot;: 100,
-      &quot;TextBuilderType&quot;: &quot;Monai.Deploy.InformaticsGateway.Logging.FileLoggingTextFormatter, Monai.Deploy.InformaticsGateway&quot;,
-      &quot;Files&quot;: [
-        {
-          &quot;Path&quot;: &quot;MIG-&lt;date&gt;-&lt;counter&gt;.log&quot;
-        }
-      ]
     }
   },
   &quot;Kestrel&quot;: {
@@ -289,40 +254,14 @@
 <p>If the Informatics Gateway is running with Kubernetes/Helm and is reporting the <code>CrashLoopBack</code> error, it may be indicating a startup error due to misconfiguration, simply run <code>kubectl logs &lt;name-of-dicom-adapter-pod&gt;</code> to review the validation errors.</p>
 </div>
 <h3 id="logging">Logging</h3>
-<p>Informatics Gateway, by default, is configured to writes all logs to the console as well as text files. The behaviors may be changed in the <code>Logging</code> section of the <code>appsettings.json</code> file.</p>
+<p>Informatics Gateway, by default, is configured to writes all logs to the console as well as text files. The behaviors may be changed in the <code>nlog.config</code> file.</p>
+<p>Logs files are stored in the <code>logs/</code> directory where the Informatics Gateway executable is stored. To change the location, modify the <code>logDir</code> variable defined in the <code>nlog.config</code> file.</p>
+<p>Informaitcs Gateway also supports shipping logs to <a href="https://www.elastic.co/elastic-stack/">LogStash, ELK</a> using the <a href="https://github.com/NLog/NLog/wiki/Network-target">Network target</a> provided by <a href="https://nlog-project.org/">NLog</a>. To enable this feature, simply set the environment variable <code>LOGSTASH_URL</code> to the TCP endpoint of LogStash. E.g. <code>LOGSTASH_URL=tcp://my-logstash-ip:5000</code>.</p>
+<p>To use other logging services, refer to <a href="https://nlog-project.org/config/">NLog Config</a>.</p>
 <div class="NOTE">
 <h5>Note</h5>
-<p>If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent filling up storage space. Refer to the <a href="https://docs.docker.com/config/containers/logging/configure/">Docker documentation</a> for additional information.</p>
+<p>If the Informatics Gateway is running inside a Docker container, additional configuration may be required to limit the size to prevent logs from filling up storage space. Refer to the <a href="https://docs.docker.com/config/containers/logging/configure/">Docker documentation</a> for additional information.</p>
 </div>
-<h4 id="log-levels">Log Levels</h4>
-<p>By default, the Monai namespace logs all Information level logs. However, the log level may be adjusted on a per-module basis. For example, given the following log entries:</p>
-<pre><code> 14:26:13 info: Monai.Deploy.InformaticsGateway.Services.Connectors.WorkloadManagerNotificationService[0]
-      MONAI Workload Manager Notification Hosted Service is running.
- 14:26:13 info: Monai.Deploy.InformaticsGateway.Services.Storage.SpaceReclaimerService[0]
-      Disk Space Reclaimer Hosted Service is running.
-</code></pre>
-<p>If additional information is required to debug the <strong>WorkloadManagerNotificationService</strong> module or to turn down the noise, add a new entry under the LogLevel section of the configuration file to adjust it:</p>
-<pre><code> &quot;Logging&quot;: {
-    &quot;LogLevel&quot;: {
-      &quot;Monai&quot;: &quot;Information&quot;,
-      &quot;Monai.Deploy.InformaticsGateway.Services.Connectors.WorkloadManagerNotificationService&quot;: &quot;Debug&quot;,
-      ...
-</code></pre>
-<p>The following log levels may be used:</p>
-<ul>
-<li>Trace</li>
-<li>Debug</li>
-<li>Information</li>
-<li>Warning</li>
-<li>Error</li>
-<li>Critical</li>
-<li>None</li>
-</ul>
-<p>Additional information may be found on <code>docs.microsoft.com</code>:</p>
-<ul>
-<li><a href="https://docs.microsoft.com/en-us/dotnet/api/microsoft.extensions.logging.loglevel">LogLevel Enum</a></li>
-<li><a href="https://docs.microsoft.com/en-us/dotnet/core/extensions/logging">Logging in .NET</a></li>
-</ul>
 </article>
           </div>
           
