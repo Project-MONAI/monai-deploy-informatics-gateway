@@ -189,7 +189,7 @@ namespace Monai.Deploy.InformaticsGateway
 
         private static NLog.Logger ConfigureNLog(string assemblyVersionNumber)
         {
-            LayoutRenderer.Register("servicename", logEvent => Assembly.GetEntryAssembly()?.GetName().Name);
+            LayoutRenderer.Register("servicename", logEvent => typeof(Program).Namespace);
             LayoutRenderer.Register("serviceversion", logEvent => assemblyVersionNumber);
             LayoutRenderer.Register("machinename", logEvent => Environment.MachineName);
 
