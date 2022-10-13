@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using Ardalis.GuardClauses;
@@ -26,19 +28,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 {
     internal class ObjectUploadQueue : IObjectUploadQueue
     {
-        private readonly BlockingCollection<FileStorageMetadata> _workItems;
+        private readonly ConcurrentQueue<FileStorageMetadata> _workItems;
         private readonly ILogger<ObjectUploadQueue> _logger;
 
         public ObjectUploadQueue(ILogger<ObjectUploadQueue> logger)
         {
-            _workItems = new BlockingCollection<FileStorageMetadata>();
-            _logger = logger;
+            _workItems = new ConcurrentQueue<FileStorageMetadata>();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public void Queue(FileStorageMetadata file)
         {
             Guard.Against.Null(file, nameof(file));
-            _workItems.Add(file);
+            _workItems.Enqueue(file);
 
             var process = Process.GetCurrentProcess();
 
@@ -47,7 +49,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         public FileStorageMetadata Dequeue(CancellationToken cancellationToken)
         {
-            return _workItems.Take(cancellationToken);
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                if (_workItems.TryDequeue(out var reuslt))
+                {
+                    _logger.InstanceInUploadQueue(_workItems.Count);
+                    return reuslt;
+                }
+            }
+            throw new OperationCanceledException("Cancellation requested.");
         }
     }
 }

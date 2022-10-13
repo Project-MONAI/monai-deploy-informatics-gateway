@@ -15,6 +15,8 @@
  */
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 
 namespace Monai.Deploy.InformaticsGateway.Database
@@ -40,5 +42,33 @@ namespace Monai.Deploy.InformaticsGateway.Database
             modelBuilder.ApplyConfiguration(new PayloadConfiguration());
             modelBuilder.ApplyConfiguration(new StorageMetadataWrapperEntityConfiguration());
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+            => optionsBuilder.ConfigureWarnings(c => c.Log(
+                (CoreEventId.SaveChangesCompleted, LogLevel.Trace),
+                (CoreEventId.SaveChangesStarting, LogLevel.Trace),
+                (CoreEventId.DetectChangesStarting, LogLevel.Trace),
+                (CoreEventId.DetectChangesCompleted, LogLevel.Trace),
+                (CoreEventId.StartedTracking, LogLevel.Trace),
+                (CoreEventId.ContextInitialized, LogLevel.Trace),
+                (CoreEventId.StateChanged, LogLevel.Trace),
+                (CoreEventId.QueryCompilationStarting, LogLevel.Trace),
+                (CoreEventId.QueryExecutionPlanned, LogLevel.Trace),
+                (RelationalEventId.CommandExecuting, LogLevel.Trace),
+                (RelationalEventId.CommandExecuted, LogLevel.Trace),
+                (RelationalEventId.ConnectionClosing, LogLevel.Trace),
+                (RelationalEventId.ConnectionClosed, LogLevel.Trace),
+                (RelationalEventId.DataReaderDisposing, LogLevel.Trace),
+                (RelationalEventId.ConnectionOpening, LogLevel.Trace),
+                (RelationalEventId.ConnectionOpened, LogLevel.Trace),
+                (RelationalEventId.CommandCreating, LogLevel.Trace),
+                (RelationalEventId.CommandCreating, LogLevel.Trace),
+                (RelationalEventId.TransactionStarted, LogLevel.Trace),
+                (RelationalEventId.TransactionStarting, LogLevel.Trace),
+                (RelationalEventId.TransactionCommitted, LogLevel.Trace),
+                (RelationalEventId.TransactionCommitting, LogLevel.Trace),
+                (RelationalEventId.TransactionDisposed, LogLevel.Trace),
+                (RelationalEventId.CommandCreated, LogLevel.Trace)
+                ));
     }
 }

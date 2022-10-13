@@ -74,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(_options, _logger.Object, null));
         }
 
-        [RetryFact]
+        [RetryFact(10,200)]
         public async Task GivenAFileStorageMetadata_WhenQueueingWihtoutSpecifyingATimeout_ExpectDefaultTimeoutToBeUsed()
         {
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
@@ -88,27 +88,29 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cancellationTokenSource.Cancel();
         }
 
-        [RetryFact]
-        public async Task GivenFileStorageMetadataInTheDatabase_AtServiceStartup_ExpectFileStorageMetadataToBeRestoredFromTheDatabase()
+        [RetryFact(10,200)]
+        public async Task GivenFileStorageMetadataInTheDatabase_AtServiceStartup_ExpectPayloadsInCreatedStateToBeRemoved()
         {
             var dataset = new List<Payload>
             {
-                new Payload("created-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
+                new Payload("created-test1", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
+                new Payload("created-test2", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
                 new Payload("upload-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Move },
                 new Payload("notify-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Notify },
             };
 
             _repository.Setup(p => p.AsQueryable()).Returns(dataset.AsQueryable());
+            _repository.Setup(p => p.Remove(It.IsAny<Payload>()));
+
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
             await Task.Delay(250);
             payloadAssembler.Dispose();
             _cancellationTokenSource.Cancel();
 
-            _logger.VerifyLogging($"Restoring payloads from database.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"1 payloads restored from database.", LogLevel.Information, Times.Once());
+            _repository.Verify(p => p.Remove(It.IsAny<Payload>()), Times.Exactly(2));
         }
 
-        [RetryFact]
+        [RetryFact(10,200)]
         public async Task GivenAPayloadAssembler_WhenDisposed_ExpectResourceToBeCleanedUp()
         {
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
@@ -124,7 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLoggingMessageBeginsWith($"Number of collections in queue", LogLevel.Trace, Times.Never());
         }
 
-        [RetryFact]
+        [RetryFact(10,200)]
         public async Task GivenFileStorageMetadata_WhenQueueingWithDatabaseError_ExpectToRetryXTimes()
         {
             int callCount = 0;
@@ -150,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLoggingMessageBeginsWith($"Number of buckets active: 1.", LogLevel.Trace, Times.AtLeastOnce());
         }
 
-        [RetryFact]
+        [RetryFact(10,200)]
         public async Task GivenAPayloadThatHasNotCompleteUploads_WhenProcessedByTimedEvent_ExpectToBeAddedToQueue()
         {
             _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>())).Callback(() =>
@@ -169,7 +171,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue", LogLevel.Information, Times.Never());
         }
 
-        [RetryFact]
+        [RetryFact(10,200)]
         public async Task GivenAPayloadThatHasCompletedUploads_WhenProcessedByTimedEvent_ExpectToBeAddedToQueue()
         {
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);

@@ -81,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             var valid = true;
             valid &= IsValidBucketName("InformaticsGateway>storage>bucketName", storage.StorageServiceBucketName);
             valid &= IsValidBucketName("InformaticsGateway>storage>temporaryBucketName", storage.TemporaryStorageBucket);
-            valid &= IsNotNullOrWhiteSpace("InformaticsGateway>storage>temporary", storage.TemporaryStorageRootPath);
+            valid &= IsNotNullOrWhiteSpace("InformaticsGateway>storage>temporary", storage.RemoteTemporaryStoragePath);
             valid &= IsValueInRange("InformaticsGateway>storage>watermark", 1, 100, storage.Watermark);
             valid &= IsValueInRange("InformaticsGateway>storage>reserveSpaceGB", 1, 999, storage.ReserveSpaceGB);
             valid &= IsValueInRange("InformaticsGateway>storage>payloadProcessThreads", 1, 128, storage.PayloadProcessThreads);
@@ -90,8 +90,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
             if (storage.TemporaryDataStorage == TemporaryDataStorageLocation.Disk)
             {
-                valid &= IsNotNullOrWhiteSpace("InformaticsGateway>storage>bufferRootPath", storage.BufferStorageRootPath);
-                valid &= IsValidDirectory("InformaticsGateway>storage>bufferRootPath", storage.BufferStorageRootPath);
+                valid &= IsNotNullOrWhiteSpace("InformaticsGateway>storage>localTemporaryStoragePath", storage.LocalTemporaryStoragePath);
+                valid &= IsValidDirectory("InformaticsGateway>storage>localTemporaryStoragePath", storage.LocalTemporaryStoragePath);
                 valid &= IsValueInRange("InformaticsGateway>storage>bufferSize", 1, int.MaxValue, storage.BufferSize);
             }
 
@@ -105,13 +105,9 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             {
                 if (!_fileSystem.Directory.Exists(directory))
                 {
-                    valid = false;
-                    _validationErrors.Add($"Directory `{directory}` specified in `{source}` does not exist.");
+                    _fileSystem.Directory.CreateDirectory(directory);
                 }
-                else
-                {
-                    using var _ = _fileSystem.File.Create(Path.Combine(directory, Path.GetRandomFileName()), 1, FileOptions.DeleteOnClose);
-                }
+                using var _ = _fileSystem.File.Create(Path.Combine(directory, Path.GetRandomFileName()), 1, FileOptions.DeleteOnClose);
             }
             catch (Exception ex)
             {

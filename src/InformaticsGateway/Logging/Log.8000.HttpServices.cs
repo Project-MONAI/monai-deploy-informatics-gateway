@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8010, Level = LogLevel.Information, Message = "DICOM destination added AE Title={aeTitle}, Host/IP={hostIp}.")]
         public static partial void DestinationApplicationEntityAdded(this ILogger logger, string aeTitle, string hostIp);
 
-        [LoggerMessage(EventId = 8011, Level = LogLevel.Information, Message = "MONAI SCP Application Entity deleted {name}.")]
+        [LoggerMessage(EventId = 8011, Level = LogLevel.Information, Message = "DICOM destination deleted {name}.")]
         public static partial void DestinationApplicationEntityDeleted(this ILogger logger, string name);
 
         [LoggerMessage(EventId = 8012, Level = LogLevel.Error, Message = "Error querying DICOM destinations.")]
@@ -54,6 +54,12 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8014, Level = LogLevel.Error, Message = "Error deleting DICOM destination.")]
         public static partial void ErrorDeletingDestinationApplicationEntity(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8015, Level = LogLevel.Error, Message = "Error C-ECHO to DICOM destination {name}.")]
+        public static partial void ErrorCEechoDestinationApplicationEntity(this ILogger logger, string name, Exception ex);
+
+        [LoggerMessage(EventId = 8016, Level = LogLevel.Information, Message = "DICOM destination updated {name}: AE Title={aeTitle}, Host/IP={hostIp}, Port={port}.")]
+        public static partial void DestinationApplicationEntityUpdated(this ILogger logger, string name, string aeTitle, string hostIp, int port);
 
         // Source AE Title Controller
         [LoggerMessage(EventId = 8020, Level = LogLevel.Information, Message = "DICOM source added AE Title={aeTitle}, Host/IP={hostIp}.")]
@@ -70,6 +76,9 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8024, Level = LogLevel.Error, Message = "Error deleting DICOM source.")]
         public static partial void ErrorDeletingSourceApplicationEntity(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8025, Level = LogLevel.Information, Message = "DICOM source updated {name}: AE Title={aeTitle}, Host/IP={hostIp}.")]
+        public static partial void SourceApplicationEntityUpdated(this ILogger logger, string name, string aeTitle, string hostIp);
 
         // Inference API
         [LoggerMessage(EventId = 8030, Level = LogLevel.Error, Message = "Failed to retrieve status for TransactionId/JobId={transactionId}.")]

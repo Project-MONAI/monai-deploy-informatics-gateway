@@ -33,8 +33,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets the path used for buffering incoming data.
         /// Defaults to <c>./temp</c>.
         /// </summary>
-        [ConfigurationKeyName("bufferRootPath")]
-        public string BufferStorageRootPath { get; set; } = "./temp";
+        [ConfigurationKeyName("localTemporaryStoragePath")]
+        public string LocalTemporaryStoragePath { get; set; } = "/payloads";
 
         /// <summary>
         /// Gets or sets the number of bytes buffered for reads and writes to the temporary file.
@@ -66,8 +66,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets root directory path for storing incoming data in the <c>temporaryBucketName</c>.
         /// Defaults to <c>/incoming</c>.
         /// </summary>
-        [ConfigurationKeyName("tempStorageRootPath")]
-        public string TemporaryStorageRootPath { get; set; } = "/incoming";
+        [ConfigurationKeyName("remoteTemporaryStoragePath")]
+        public string RemoteTemporaryStoragePath { get; set; } = "/incoming";
 
         /// <summary>
         /// Gets or sets the watermark for disk usage with default value of 75%,

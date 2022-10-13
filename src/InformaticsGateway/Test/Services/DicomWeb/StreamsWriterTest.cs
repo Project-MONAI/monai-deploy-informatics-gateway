@@ -53,6 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _logger = new Mock<ILogger<StreamsWriter>>();
             _fileSystem = new MockFileSystem();
+            _configuration.Value.Storage.LocalTemporaryStoragePath = "./temp";
         }
 
         [Fact]

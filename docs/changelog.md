@@ -17,10 +17,26 @@
 
 # Changelog
 
+## 0.3.2
+
+[GitHub Milestone 0.3.2](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/8)
+
+- The default logging framework has changed to [NLog](https://nlog-project.org/) to enable logging to ELK and other logging services.
+- New APIs for managing DICOM sources & DICOM destinations
+  - `PUT /config/source`: [Update DICOM source](./api/rest/config.md#put-configsource)
+  - `PUT /config/destination`: [Update DICOM destination](./api/rest/config.md#put-configdestination)
+  - `GET /config/destination/cecho/{name}`: [C-ECHO DICOM destination](./api/rest/config.md#get-configdestinationcechoname)
+- Updated the following APIs to return 409 if entity already existed:
+  - `POST /config/ae`: [Create MONAI SCP AE](./api/rest/config.md#post-configae)
+  - `POST /config/source`: [Create DICOM source](./api/rest/config.md#post-configsource)
+  - `POST /config/destination`: [Create DICOM destination](./api/rest/config.md#post-configdestination)
+  - Bug fixes & performance improvements.
+
 ## 0.3.1
 
-[GitHub Milestone 0.3.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/7)
+[GitHub Milestone 0.3.1](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/7)
 
+- New [C-ECHO API](api/rest/config.md) to perform a DICOM C-ECHO to a configured DICOM destination.
 - The SCU AE Title is now uppercase MONAISCU.
 - Update fo-dicom to 5.0.3
 - Defaults temporary storage to use disk with ability to switch to memory.
@@ -29,7 +45,7 @@
 
 [GitHub Milestone 0.3.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/3)
 
-- Adds a basic [FHIR service](api/rest/config.md) to accept any versions of FHIR.
+- Adds a basic [FHIR service](api/rest/fhir.md) to accept any versions of FHIR.
 - Updates [Health Check API](api/rest/health.md) to replace `/health/live` and `/health/ready` APIs with `/health` API.
 
 ## 0.2.0

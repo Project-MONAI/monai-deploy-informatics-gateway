@@ -24,5 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
         EndPoint RemoteEndPoint { get; }
 
         INetworkStream GetStream();
+
+        void Close();
     }
 }

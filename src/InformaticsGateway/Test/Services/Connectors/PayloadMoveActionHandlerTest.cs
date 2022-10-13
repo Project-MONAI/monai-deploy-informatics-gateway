@@ -28,6 +28,7 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.Storage.API;
 using Moq;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
@@ -69,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _options.Value.Storage.StorageServiceBucketName = "bucket";
         }
 
-        [Fact]
+        [RetryFact(10,200)]
         public void GivenAPayloadMoveActionHandler_WhenInitialized_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new PayloadMoveActionHandler(null, null, null));
@@ -79,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _ = new PayloadMoveActionHandler(_serviceScopeFactory.Object, _logger.Object, _options);
         }
 
-        [Fact]
+        [RetryFact(10,200)]
         public async Task GivenAPayloadInIncorrectState_WhenHandlerIsCalled_ExpectExceptionToBeThrown()
         {
             var resetEvent = new ManualResetEventSlim();
@@ -143,7 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             Assert.Equal(retryCount + 1, payload.RetryCount);
         }
 
-        [Fact]
+        [RetryFact(10,200)]
         public async Task GivenAPayloadThatHasReachedMaximumRetries_WhenHandlerFailedToCopyFiles_ExpectPayloadToBeDeleted()
         {
             var moveAction = new ActionBlock<Payload>(payload =>
@@ -174,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _repository.Verify(p => p.Remove(payload), Times.Once());
         }
 
-        [Fact]
+        [RetryFact(10,200)]
         public async Task GivenAPayload_WhenAllFilesAreMove_ExpectPayloadToBeAddedToNotificationQueue()
         {
             var notifyEvent = new ManualResetEventSlim();

@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             result.InternalResourceType = rootNode.Name;
 
             var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, resourceId, Api.Rest.FhirStorageFormat.Xml);
-            await fileMetadata.SetDataStream(result.RawData, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.BufferStorageRootPath);
+            await fileMetadata.SetDataStream(result.RawData, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath);
 
             result.Metadata = fileMetadata;
             return result;

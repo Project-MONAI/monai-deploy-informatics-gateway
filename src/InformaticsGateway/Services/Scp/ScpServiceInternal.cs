@@ -41,6 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private IApplicationEntityManager _associationDataProvider;
         private IDisposable _loggerScope;
         private Guid _associationId;
+        private DateTimeOffset? _associationReceived;
 
         public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, DicomServiceDependencies dicomServiceDependencies)
                 : base(stream, fallbackEncoding, log, dicomServiceDependencies)
@@ -72,6 +73,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId).ConfigureAwait(false);
                 return new DicomCStoreResponse(request, DicomStatus.Success);
             }
+            catch (InsufficientStorageAvailableException ex)
+            {
+                _logger?.CStoreFailedDueToLowStorageSpace(ex);
+                return new DicomCStoreResponse(request, DicomStatus.ResourceLimitation);
+            }
             catch (System.IO.IOException ex) when ((ex.HResult & 0xFFFF) == Constants.ERROR_HANDLE_DISK_FULL || (ex.HResult & 0xFFFF) == Constants.ERROR_DISK_FULL)
             {
                 _logger?.CStoreFailedWithNoSpace(ex);
@@ -101,13 +107,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// <returns></returns>
         public Task OnReceiveAssociationReleaseRequestAsync()
         {
-            _logger?.CStoreAssociationReleaseRequest();
+            var associationElapsed = TimeSpan.Zero;
+            if (_associationReceived.HasValue)
+            {
+                associationElapsed = DateTimeOffset.UtcNow.Subtract(_associationReceived.Value);
+            }
+
+            _logger?.CStoreAssociationReleaseRequest(associationElapsed);
             return SendAssociationReleaseResponseAsync();
         }
 
         public Task OnReceiveAssociationRequestAsync(DicomAssociation association)
         {
             Interlocked.Increment(ref ScpService.ActiveConnections);
+            _associationReceived = DateTimeOffset.UtcNow;
             _associationDataProvider = UserState as IApplicationEntityManager;
 
             if (_associationDataProvider is null)

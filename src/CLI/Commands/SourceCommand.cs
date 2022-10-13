@@ -40,9 +40,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             AddAlias("source");
 
             SetupAddSourceCommand();
+            SetupUpdateSourceCommand();
             SetupRemoveSourceCommand();
             SetupListSourceCommand();
         }
+
 
         private void SetupListSourceCommand()
         {
@@ -78,6 +80,20 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.AddOption(hostOption);
 
             addCommand.Handler = CommandHandler.Create<SourceApplicationEntity, IHost, bool, CancellationToken>(AddSourceHandlerAsync);
+        }
+        private void SetupUpdateSourceCommand()
+        {
+            var addCommand = new Command("update", "Update a new DICOM source");
+            AddCommand(addCommand);
+
+            var nameOption = new Option<string>(new string[] { "--name", "-n" }, "Name of the DICOM source") { IsRequired = false };
+            addCommand.AddOption(nameOption);
+            var aeTitleOption = new Option<string>(new string[] { "--aetitle", "-a" }, "AE Title of the DICOM source") { IsRequired = true };
+            addCommand.AddOption(aeTitleOption);
+            var hostOption = new Option<string>(new string[] { "--host-ip", "-h" }, "Host or IP address of the DICOM source") { IsRequired = true };
+            addCommand.AddOption(hostOption);
+
+            addCommand.Handler = CommandHandler.Create<SourceApplicationEntity, IHost, bool, CancellationToken>(UpdateSourceHandlerAsync);
         }
 
         private async Task<int> ListSourceHandlerAsync(SourceApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationTokena)
@@ -214,6 +230,42 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 logger.ErrorCreatingDicomSource(entity.AeTitle, ex.Message);
                 return ExitCodes.SourceAe_ErrorCreate;
+            }
+            return ExitCodes.Success;
+        }
+        private async Task<int> UpdateSourceHandlerAsync(SourceApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationTokena)
+        {
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
+
+            LogVerbose(verbose, host, "Configuring services...");
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
+            var logger = CreateLogger<SourceCommand>(host);
+
+            Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
+
+            try
+            {
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Updating DICOM source {entity.AeTitle}...");
+                var result = await client.DicomSources.Update(entity, cancellationTokena).ConfigureAwait(false);
+
+                logger.DicomSourceUpdated(result.Name, result.AeTitle, result.HostIp);
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.ConfigurationException(ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
+            catch (Exception ex)
+            {
+                logger.ErrorUpdatingDicomSource(entity.AeTitle, ex.Message);
+                return ExitCodes.SourceAe_ErrorUpdate;
             }
             return ExitCodes.Success;
         }

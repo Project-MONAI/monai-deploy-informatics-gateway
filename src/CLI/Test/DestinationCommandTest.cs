@@ -79,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
-        [Fact(DisplayName = "dst comand")]
+        [Fact(DisplayName = "dst command")]
         public async Task Dst_Command()
         {
             var command = "dst";
@@ -90,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             Assert.Equal(ExitCodes.Success, exitCode);
         }
 
-        [Fact(DisplayName = "dst add comand")]
+        [Fact(DisplayName = "dst add command")]
         public async Task DstAdd_Command()
         {
             var command = "dst add -n MyName -a MyAET -h MyHost -p 100";
@@ -124,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                     It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [Fact(DisplayName = "dst add comand exception")]
+        [Fact(DisplayName = "dst add command exception")]
         public async Task DstAdd_Command_Exception()
         {
             var command = "dst add -n MyName -a MyAET --apps App MyCoolApp TheApp";
@@ -141,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLoggingMessageBeginsWith("Error creating DICOM destination", LogLevel.Critical, Times.Once());
         }
 
-        [Fact(DisplayName = "dst add comand configuration exception")]
+        [Fact(DisplayName = "dst add command configuration exception")]
         public async Task DstAdd_Command_ConfigurationException()
         {
             var command = "dst add -n MyName -a MyAET --apps App MyCoolApp TheApp";
@@ -157,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
-        [Fact(DisplayName = "dst remove comand")]
+        [Fact(DisplayName = "dst remove command")]
         public async Task DstRemove_Command()
         {
             var command = "dst rm -n MyName";
@@ -177,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.Delete(It.Is<string>(o => o.Equals(name)), It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [Fact(DisplayName = "dst remove comand exception")]
+        [Fact(DisplayName = "dst remove command exception")]
         public async Task DstRemove_Command_Exception()
         {
             var command = "dst rm -n MyName";
@@ -194,7 +194,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLoggingMessageBeginsWith("Error deleting DICOM destination", LogLevel.Critical, Times.Once());
         }
 
-        [Fact(DisplayName = "dst remove comand configuration exception")]
+        [Fact(DisplayName = "dst remove command configuration exception")]
         public async Task DstRemove_Command_ConfigurationException()
         {
             var command = "dst rm -n MyName";
@@ -210,7 +210,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
-        [Fact(DisplayName = "dst list comand")]
+        [Fact(DisplayName = "dst list command")]
         public async Task DstList_Command()
         {
             var command = "dst list";
@@ -236,7 +236,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Once());
         }
 
-        [Fact(DisplayName = "dst list comand exception")]
+        [Fact(DisplayName = "dst list command exception")]
         public async Task DstList_Command_Exception()
         {
             var command = "dst list";
@@ -253,7 +253,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLoggingMessageBeginsWith("Error retrieving DICOM destinations", LogLevel.Critical, Times.Once());
         }
 
-        [Fact(DisplayName = "dst list comand configuration exception")]
+        [Fact(DisplayName = "dst list command configuration exception")]
         public async Task DstList_Command_ConfigurationException()
         {
             var command = "dst list";
@@ -269,7 +269,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
-        [Fact(DisplayName = "dst list comand empty")]
+        [Fact(DisplayName = "dst list command empty")]
         public async Task DstList_Command_Empty()
         {
             var command = "dst list";
@@ -284,6 +284,127 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLogging("No DICOM destinations configured.", LogLevel.Warning, Times.Once());
+        }
+
+        [Fact(DisplayName = "dst cecho command")]
+        public async Task DstCEcho_Command()
+        {
+            var command = "dst cecho -n MyName";
+            var result = _paser.Parse(command);
+            Assert.Equal(ExitCodes.Success, result.Errors.Count);
+
+            var name = result.CommandResult.Children[0].Tokens[0].Value;
+            Assert.Equal("MyName", name);
+
+            _informaticsGatewayClient.Setup(p => p.DicomDestinations.Delete(It.IsAny<string>(), It.IsAny<CancellationToken>()));
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.CEcho(It.Is<string>(o => o.Equals(name)), It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "dst cecho command exception")]
+        public async Task DstCEcho_Command_Exception()
+        {
+            var command = "dst cecho -n MyName";
+            _informaticsGatewayClient.Setup(p => p.DicomDestinations.CEcho(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception("error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.DestinationAe_ErrorCEcho, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.CEcho(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
+
+            _logger.VerifyLoggingMessageBeginsWith("C-ECHO to MyName failed", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "dst cecho command configuration exception")]
+        public async Task DstCEcho_Command_ConfigurationException()
+        {
+            var command = "dst cecho -n MyName";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.CEcho(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+        }
+
+
+        [Fact(DisplayName = "dst update command")]
+        public async Task DstUpdate_Command()
+        {
+            var command = "dst update -n MyName -a MyAET -h MyHost -p 100";
+            var result = _paser.Parse(command);
+            Assert.Equal(ExitCodes.Success, result.Errors.Count);
+
+            var entity = new DestinationApplicationEntity()
+            {
+                Name = result.CommandResult.Children[0].Tokens[0].Value,
+                AeTitle = result.CommandResult.Children[1].Tokens[0].Value,
+                HostIp = result.CommandResult.Children[2].Tokens[0].Value,
+                Port = int.Parse(result.CommandResult.Children[3].Tokens[0].Value, System.Globalization.NumberStyles.Integer, CultureInfo.InvariantCulture),
+            };
+
+            Assert.Equal("MyName", entity.Name);
+            Assert.Equal("MyAET", entity.AeTitle);
+            Assert.Equal("MyHost", entity.HostIp);
+            Assert.Equal(100, entity.Port);
+
+            _informaticsGatewayClient.Setup(p => p.DicomDestinations.Update(It.IsAny<DestinationApplicationEntity>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(entity);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(
+                p => p.DicomDestinations.Update(
+                    It.Is<DestinationApplicationEntity>(o => o.AeTitle == entity.AeTitle && o.Name == entity.Name && o.HostIp == entity.HostIp && o.Port == entity.Port),
+                    It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "dst update command exception")]
+        public async Task DstUpdate_Command_Exception()
+        {
+            var command = "dst update -n MyName -a MyAET --apps App MyCoolApp TheApp";
+            _informaticsGatewayClient.Setup(p => p.DicomDestinations.Update(It.IsAny<DestinationApplicationEntity>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception("error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.DestinationAe_ErrorUpdate, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.Update(It.IsAny<DestinationApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
+
+            _logger.VerifyLoggingMessageBeginsWith("Error updating DICOM destination", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "dst update command configuration exception")]
+        public async Task DstUpdate_Command_ConfigurationException()
+        {
+            var command = "dst update -n MyName -a MyAET --apps App MyCoolApp TheApp";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
     }
 }

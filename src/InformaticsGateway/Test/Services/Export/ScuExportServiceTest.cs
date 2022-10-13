@@ -16,9 +16,11 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +31,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
@@ -41,7 +44,8 @@ using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 {
-    public class ScuExportServiceTest : IClassFixture<DicomScpFixture>
+    [Collection("SCP Listener")]
+    public class ScuExportServiceTest
     {
         private readonly Mock<IStorageService> _storageService;
         private readonly Mock<IMessageBrokerSubscriberService> _messageSubscriberService;
@@ -52,10 +56,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
         private readonly Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>> _repository;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly DicomScpFixture _dicomScp;
-        private readonly int _port = 11104;
+        private readonly int _port = 1104;
 
         public ScuExportServiceTest(DicomScpFixture dicomScp)
         {
@@ -71,6 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomToolkit = new Mock<IDicomToolkit>();
             _cancellationTokenSource = new CancellationTokenSource();
             _repository = new Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider
@@ -85,6 +91,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             serviceProvider
                 .Setup(x => x.GetService(typeof(IStorageService)))
                 .Returns(_storageService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IStorageInfoProvider)))
+                .Returns(_storageInfoProvider.Object);
 
             var scope = new Mock<IServiceScope>();
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
@@ -94,6 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _dicomScp.Start(_port);
             _configuration.Value.Export.Retries.DelaysMilliseconds = new[] { 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]
@@ -138,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ConfigurationError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -183,7 +193,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ConfigurationError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -233,7 +243,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ServiceError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -285,7 +295,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ServiceError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -336,7 +346,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ServiceError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -387,7 +397,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.UnsupportedDataType))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -395,7 +405,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
 
-            _logger.VerifyLogging("Error while adding DICOM C-STORE request: error", LogLevel.Error, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Error reading DICOM file: error", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 250, DisplayName = "Unreachable Server")]
@@ -438,7 +448,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ServiceError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -448,7 +458,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _logger.VerifyLoggingMessageBeginsWith("Association aborted with error", LogLevel.Error, Times.Once());
         }
 
-        [RetryFact(10, 250, DisplayName = "C-STORe success")]
+        [RetryFact(10, 250, DisplayName = "C-STORE success")]
         public async Task ExportCompletes()
         {
             _scpLogger.Invocations.Clear();
@@ -488,7 +498,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Success)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Success, FileExportStatus.Success))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -497,6 +507,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<ushort>()), Times.Once());
             _logger.VerifyLogging("Association accepted.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Instance sent successfully.", LogLevel.Information, Times.Once());
+        }
+
+        private bool CheckMessage(Message message, ExportStatus exportStatus, FileExportStatus fileExportStatus)
+        {
+            Guard.Against.Null(message, nameof(message));
+
+            var exportEvent = message.ConvertTo<ExportCompleteEvent>();
+            return exportEvent.Status == exportStatus &&
+                    exportEvent.FileStatuses.First().Value == fileExportStatus;
         }
 
         private static MessageReceivedEventArgs CreateMessageReceivedEventArgs(string destination)

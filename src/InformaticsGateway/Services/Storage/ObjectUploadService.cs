@@ -48,7 +48,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IServiceScope _scope;
-        private ActionBlock<FileStorageMetadata> _worker;
         private bool _disposedValue;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
@@ -68,62 +67,65 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             _uplaodQueue = _scope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _storageService = _scope.ServiceProvider.GetService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
 
-            RemovePendingUploadObjects();
         }
 
-        /// <summary>
-        /// Removes all uploading pending objects from the database at startup since objects are lost upon service restart (crash).
-        /// </summary>
-        private void RemovePendingUploadObjects()
+        private async Task BackgroundProcessing(CancellationToken cancellationToken)
         {
+            _logger.ServiceRunning(ServiceName);
+            var tasks = new List<Task>();
             try
             {
-                using var scope = _serviceScopeFactory.CreateScope();
-                var repository = scope.ServiceProvider.GetService<IStorageMetadataWrapperRepository>() ?? throw new ServiceNotFoundException(nameof(IStorageMetadataWrapperRepository));
-                repository.DeletePendingUploadsAsync();
+                for (var i = 0; i < _configuration.Value.Storage.ConcurrentUploads; i++)
+                {
+                    tasks.Add(Task.Run(async () =>
+                    {
+                        await StartWorker(i, cancellationToken);
+                    }));
+                }
+
+                Task.WaitAll(tasks.ToArray());
+            }
+            catch (ObjectDisposedException ex)
+            {
+                _logger.ServiceDisposed(ServiceName, ex);
             }
             catch (Exception ex)
             {
-                _logger.ErrorRemovingPendingUploadObjects(ex);
-            }
-        }
-
-        private void BackgroundProcessing(CancellationToken cancellationToken)
-        {
-            _logger.ServiceRunning(ServiceName);
-            while (!cancellationToken.IsCancellationRequested)
-            {
-                try
+                if (ex is InvalidOperationException || ex is OperationCanceledException)
                 {
-                    _worker.Post(_uplaodQueue.Dequeue(cancellationToken));
-                }
-                catch (ObjectDisposedException ex)
-                {
-                    _logger.ServiceDisposed(ServiceName, ex);
-                }
-                catch (Exception ex)
-                {
-                    if (ex is InvalidOperationException || ex is OperationCanceledException)
-                    {
-                        _logger.ServiceInvalidOrCancelled(ServiceName, ex);
-                    }
+                    _logger.ServiceInvalidOrCancelled(ServiceName, ex);
                 }
             }
             Status = ServiceStatus.Cancelled;
             _logger.ServiceCancelled(ServiceName);
         }
 
+        private async Task StartWorker(int thread, CancellationToken cancellationToken)
+        {
+            while (!cancellationToken.IsCancellationRequested)
+            {
+                try
+                {
+                    var item = _uplaodQueue.Dequeue(cancellationToken);
+                    await ProcessObject(item);
+                }
+                catch (OperationCanceledException ex)
+                {
+                    _logger.ServiceCancelled(ServiceName);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    _logger.ErrorUploading(ex);
+                }
+            }
+        }
+
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            var task = Task.Run(() =>
+            var task = Task.Run(async () =>
             {
-                _worker = new ActionBlock<FileStorageMetadata>(ProcessObject, new ExecutionDataflowBlockOptions
-                {
-                    MaxDegreeOfParallelism = _configuration.Value.Storage.ConcurrentUploads,
-                    CancellationToken = cancellationToken,
-                });
-
-                BackgroundProcessing(cancellationToken);
+                await BackgroundProcessing(cancellationToken);
             }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
@@ -137,7 +139,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         {
             _logger.ServiceStopping(ServiceName);
             _cancellationTokenSource.Cancel();
-            _worker.Complete();
             Status = ServiceStatus.Stopped;
             return Task.CompletedTask;
         }
@@ -146,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         {
             Guard.Against.Null(blob, nameof(blob));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "File ID", blob.Id }, { "Correlation ID", blob.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "File ID", blob.Id }, { "CorrelationId", blob.CorrelationId } });
             var stopwatch = new Stopwatch();
             try
             {
@@ -163,26 +164,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 }
 
                 await UploadData(blob.Id, blob.File, blob.Source, blob.Workflows, _cancellationTokenSource.Token).ConfigureAwait(false);
-                await UpdateBlob(blob);
             }
             catch (Exception ex)
             {
                 _logger.FailedToUploadFile(blob.Id, ex);
-                blob.SetFailed();
-                await UpdateBlob(blob);
             }
             finally
             {
                 stopwatch.Stop();
                 _logger.UploadStats(_configuration.Value.Storage.ConcurrentUploads, stopwatch.Elapsed.TotalSeconds);
             }
-        }
-
-        private async Task UpdateBlob(FileStorageMetadata blob)
-        {
-            using var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IStorageMetadataWrapperRepository>() ?? throw new ServiceNotFoundException(nameof(IStorageMetadataWrapperRepository));
-            await repository.AddOrUpdateAsync(blob).ConfigureAwait(false);
         }
 
         private async Task UploadData(string identifier, StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, CancellationToken cancellationToken)
@@ -214,9 +205,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                    })
                .ExecuteAsync(async () =>
                {
+                   storageObjectMetadata.Data.Seek(0, System.IO.SeekOrigin.Begin);
                    await _storageService.PutObjectAsync(
                        _configuration.Value.Storage.TemporaryStorageBucket,
-                       storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.TemporaryStorageRootPath),
+                       storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath),
                        storageObjectMetadata.Data,
                        storageObjectMetadata.Data.Length,
                        storageObjectMetadata.ContentType,

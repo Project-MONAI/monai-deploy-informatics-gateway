@@ -23,9 +23,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Scu;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -35,13 +37,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     {
         private readonly ILogger<DestinationAeTitleController> _logger;
         private readonly IInformaticsGatewayRepository<DestinationApplicationEntity> _repository;
+        private readonly IScuQueue _scuQueue;
 
         public DestinationAeTitleController(
             ILogger<DestinationAeTitleController> logger,
-            IInformaticsGatewayRepository<DestinationApplicationEntity> repository)
+            IInformaticsGatewayRepository<DestinationApplicationEntity> repository,
+            IScuQueue scuQueue)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+            _scuQueue = scuQueue ?? throw new ArgumentNullException(nameof(scuQueue));
         }
 
         [HttpGet]
@@ -57,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorQueryingDatabase(ex);
-                return Problem(title: "Error querying database.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error querying database.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
@@ -82,7 +87,56 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorListingDestinationApplicationEntities(ex);
-                return Problem(title: "Error querying DICOM destinations.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error querying DICOM destinations.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+            }
+        }
+
+        [HttpGet("cecho/{name}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status502BadGateway)]
+        [ActionName(nameof(GetAeTitle))]
+        public async Task<IActionResult> CEcho(string name)
+        {
+            var traceId = HttpContext?.TraceIdentifier ?? Guid.NewGuid().ToString();
+            try
+            {
+                if (string.IsNullOrWhiteSpace(name))
+                {
+                    return NotFound();
+                }
+
+                var destinationApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+
+                if (destinationApplicationEntity is null)
+                {
+                    return NotFound();
+                }
+
+                var request = new ScuWorkRequest(traceId, RequestType.CEcho, destinationApplicationEntity.HostIp, destinationApplicationEntity.Port, destinationApplicationEntity.AeTitle);
+                var response = await _scuQueue.Queue(request, HttpContext.RequestAborted).ConfigureAwait(false);
+
+                if (response.Status != ResponseStatus.Success)
+                {
+                    return Problem(
+                        title: "C-ECHO Failure",
+                        instance: traceId,
+                        detail: response.Message,
+                        statusCode: StatusCodes.Status502BadGateway);
+                }
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorCEechoDestinationApplicationEntity(name, ex);
+                return Problem(
+                    title: $"Error performing C-ECHO",
+                    instance: traceId,
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    detail: ex.Message);
             }
         }
 
@@ -90,6 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")]
         public async Task<ActionResult<string>> Create(DestinationApplicationEntity item)
@@ -98,12 +153,60 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 item.SetDefaultValues();
 
-                Validate(item);
+                ValidateCreate(item);
 
                 await _repository.AddAsync(item).ConfigureAwait(false);
                 await _repository.SaveChangesAsync().ConfigureAwait(false);
                 _logger.DestinationApplicationEntityAdded(item.AeTitle, item.HostIp);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
+            }
+            catch (ObjectExistsException ex)
+            {
+                return Problem(title: "DICOM destination already exists", statusCode: StatusCodes.Status409Conflict, detail: ex.Message);
+            }
+            catch (ConfigurationException ex)
+            {
+                return Problem(title: "Validation error", statusCode: StatusCodes.Status400BadRequest, detail: ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorAddingDestinationApplicationEntity(ex);
+                return Problem(title: "Error adding new DICOM destination", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<DestinationApplicationEntity>> Edit(DestinationApplicationEntity item)
+        {
+            try
+            {
+                if (item is null)
+                {
+                    return NotFound();
+                }
+
+                var destinationApplicationEntity = await _repository.FindAsync(item.Name).ConfigureAwait(false);
+                if (destinationApplicationEntity is null)
+                {
+                    return NotFound();
+                }
+
+                item.SetDefaultValues();
+
+                destinationApplicationEntity.AeTitle = item.AeTitle;
+                destinationApplicationEntity.HostIp = item.HostIp;
+                destinationApplicationEntity.Port = item.Port;
+
+                ValidateUpdate(destinationApplicationEntity);
+
+                _ = _repository.Update(destinationApplicationEntity);
+                await _repository.SaveChangesAsync(HttpContext.RequestAborted).ConfigureAwait(false);
+                _logger.DestinationApplicationEntityUpdated(item.Name, item.AeTitle, item.HostIp, item.Port);
+                return Ok(destinationApplicationEntity);
             }
             catch (ConfigurationException ex)
             {
@@ -111,8 +214,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.ErrorAddingDestinationApplicationEntity(ex);
-                return Problem(title: "Error adding new DICOM destination.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.ErrorDeletingDestinationApplicationEntity(ex);
+                return Problem(title: "Error updating DICOM destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
@@ -140,19 +243,31 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorDeletingDestinationApplicationEntity(ex);
-                return Problem(title: "Error deleting DICOM destination.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error deleting DICOM destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
-        private void Validate(DestinationApplicationEntity item)
+        private void ValidateCreate(DestinationApplicationEntity item)
         {
             if (_repository.Any(p => p.Name.Equals(item.Name)))
             {
-                throw new ConfigurationException($"A DICOM destination with the same name '{item.Name}' already exists.");
+                throw new ObjectExistsException($"A DICOM destination with the same name '{item.Name}' already exists.");
             }
             if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port)))
             {
-                throw new ConfigurationException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
+                throw new ObjectExistsException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
+            }
+            if (!item.IsValid(out var validationErrors))
+            {
+                throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
+            }
+        }
+
+        private void ValidateUpdate(DestinationApplicationEntity item)
+        {
+            if (_repository.Any(p => !p.Name.Equals(item.Name) && p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port)))
+            {
+                throw new ObjectExistsException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
             }
             if (!item.IsValid(out var validationErrors))
             {

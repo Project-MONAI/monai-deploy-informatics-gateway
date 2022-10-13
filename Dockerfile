@@ -28,7 +28,10 @@ RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deplo
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy
 
+# Enable elastic client compatibility mode
+ENV ELASTIC_CLIENT_APIVERSIONING=true
 ENV DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends \

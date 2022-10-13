@@ -57,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         private readonly Mock<IDicomToolkit> _dicomToolkit;
         private readonly Mock<IFileSystem> _fileSystem;
         private readonly Mock<IInferenceRequestRepository> _inferenceRequestStore;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
         private readonly Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
         private Mock<HttpMessageHandler> _handlerMock;
@@ -79,6 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _fileSystem = new Mock<IFileSystem>();
             _options = Options.Create(new InformaticsGatewayConfiguration());
             _serviceScope = new Mock<IServiceScope>();
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns((string type) =>
             {
@@ -94,6 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             services.AddScoped(p => _dicomToolkit.Object);
             services.AddScoped(p => _inferenceRequestStore.Object);
             services.AddScoped(p => _fileSystem.Object);
+            services.AddScoped(p => _storageInfoProvider.Object);
 
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
@@ -101,6 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
             _options.Value.Storage.TemporaryDataStorage = TemporaryDataStorageLocation.Memory;
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(true);
         }
 
         [RetryFact(5, 250)]
@@ -128,6 +132,27 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             Assert.Equal(ServiceStatus.Stopped, store.Status);
             _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());
+        }
+
+        [RetryFact(5, 250)]
+        public async Task GivenARunningDataRetrievalService_WhenStorageSpaceIsLow_ExpectNotToRetrieve()
+        {
+            var cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(1000);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToRetrieve).Returns(false);
+            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
+
+            var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
+
+            await store.StartAsync(cancellationTokenSource.Token);
+            Thread.Sleep(250);
+            await store.StopAsync(cancellationTokenSource.Token);
+            Thread.Sleep(500);
+
+            _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());
+            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToRetrieve, Times.AtLeastOnce());
+            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
 
         [RetryFact(5, 250)]

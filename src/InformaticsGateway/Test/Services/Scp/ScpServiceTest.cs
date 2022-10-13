@@ -232,6 +232,38 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.True(countdownEvent.Wait(2000));
         }
 
+        [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - InsufficientStorageAvailableException")]
+        public async Task CStore_OnCStoreRequest_InsufficientStorageAvailableException()
+        {
+            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.CanStore).Returns(true);
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new InsufficientStorageAvailableException());
+
+            var countdownEvent = new CountdownEvent(3);
+            var service = CreateService();
+
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
+            var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
+            await client.AddRequestAsync(request);
+            client.AssociationAccepted += (sender, e) =>
+            {
+                countdownEvent.Signal();
+            };
+            client.AssociationReleased += (sender, e) =>
+            {
+                countdownEvent.Signal();
+            };
+            request.OnResponseReceived += (DicomCStoreRequest request, DicomCStoreResponse response) =>
+            {
+                Assert.Equal(DicomStatus.ResourceLimitation, response.Status);
+                countdownEvent.Signal();
+            };
+
+            await client.SendAsync();
+            Assert.True(countdownEvent.Wait(2000));
+        }
+
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - IOException")]
         public async Task CStore_OnCStoreRequest_IoException()
         {

@@ -19,8 +19,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 {
     public interface IServiceBase
     {
-        #pragma warning disable CA1054
+#pragma warning disable CA1054
         bool TryConfigureServiceUriPrefix(string uriPrefix);
-        #pragma warning restore CA1054
+#pragma warning restore CA1054
     }
 }

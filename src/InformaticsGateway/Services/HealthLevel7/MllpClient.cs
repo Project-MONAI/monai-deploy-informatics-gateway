@@ -226,6 +226,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             {
                 if (disposing)
                 {
+                    _client.Close();
                     _client.Dispose();
                     _loggerScope.Dispose();
                 }

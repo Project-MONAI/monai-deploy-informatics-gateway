@@ -35,6 +35,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.Messaging.Events;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
@@ -74,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
@@ -98,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 var errorMessage = $"The specified inference request '{transaction}' cannot be found and will not be exported.";
                 _logger.InferenceRequestExportDestinationNotFound(transaction);
-                exportRequestData.SetFailed(errorMessage);
+                exportRequestData.SetFailed(FileExportStatus.ConfigurationError, errorMessage);
                 return;
             }
 
@@ -108,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 var errorMessage = "The inference request '{transaction}' contains no `outputResources` nor any DICOMweb export destinations.";
                 _logger.InferenceRequestExportNoDestinationNotFound();
-                exportRequestData.SetFailed(errorMessage);
+                exportRequestData.SetFailed(FileExportStatus.ConfigurationError, errorMessage);
                 return;
             }
 
@@ -126,9 +127,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private async Task ExportToDicomWebDestination(IDicomWebClient dicomWebClient, ExportRequestDataMessage exportRequestData, RequestOutputDataResource destination, CancellationToken cancellationToken)
         {
+            DicomFile dicomFile;
             try
             {
-                var dicomFile = _dicomToolkit.Load(exportRequestData.FileContent);
+                dicomFile = _dicomToolkit.Load(exportRequestData.FileContent);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error reading DICOM file: {ex.Message}.";
+                _logger.ExportException(errorMessage, ex);
+                exportRequestData.SetFailed(FileExportStatus.UnsupportedDataType, errorMessage);
+                return;
+            }
+
+            try
+            {
                 await Policy
                    .Handle<Exception>()
                    .WaitAndRetryAsync(
@@ -147,7 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 var errorMessage = ex.Message;
                 _logger.ExportException(errorMessage, ex);
-                exportRequestData.SetFailed(errorMessage);
+                exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
             }
         }
 

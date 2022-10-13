@@ -128,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "Correlation ID", payload.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "CorrelationId", payload.CorrelationId } });
 
             try
             {
@@ -152,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "Correlation ID", payload.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "CorrelationId", payload.CorrelationId } });
 
             try
             {
@@ -182,11 +182,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 try
                 {
                     payload = _payloadAssembler.Dequeue(cancellationToken);
-                    using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "Correlation ID", payload.CorrelationId } }))
-                    {
-                        _moveFileQueue.Post(payload);
-                        _logger.PayloadQueuedForProcessing(payload.Id, ServiceName);
-                    }
+                    _moveFileQueue.Post(payload);
+                    _logger.PayloadQueuedForProcessing(payload.Id, ServiceName);
                 }
                 catch (OperationCanceledException ex)
                 {

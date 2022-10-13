@@ -25,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
 {
@@ -34,6 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
     {
         private readonly IStowService _stowService;
         private readonly ILogger<StowController> _logger;
+        private readonly IStorageInfoProvider _storageInfoProvider;
 
         public StowController(IServiceScopeFactory serviceScopeFactory)
         {
@@ -45,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
 
             _stowService = scope.ServiceProvider.GetService<IStowService>() ?? throw new ServiceNotFoundException(nameof(IStowService));
             _logger = scope.ServiceProvider.GetService<ILogger<StowController>>() ?? throw new ServiceNotFoundException(nameof(ILogger<StowController>));
+            _storageInfoProvider = scope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
         }
 
         [HttpPost("studies")]
@@ -58,6 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(string), StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status507InsufficientStorage)]
         public async Task<IActionResult> StoreInstances(string workflowName = "")
         {
             return await StoreInstances(string.Empty, workflowName).ConfigureAwait(false);
@@ -74,6 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status409Conflict)]
         [ProducesResponseType(typeof(string), StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status507InsufficientStorage)]
         public async Task<IActionResult> StoreInstancesToStudy(string studyInstanceUid, string workflowName = "")
         {
             return await StoreInstances(studyInstanceUid, workflowName).ConfigureAwait(false);
@@ -83,6 +88,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         {
             var correlationId = Guid.NewGuid().ToString();
             using var logger = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", correlationId }, { "StudyInstanceUID", studyInstanceUid }, { "Workflow", workflowName } });
+
+            if (!_storageInfoProvider.HasSpaceAvailableToStore)
+            {
+                return StatusCode(
+                    StatusCodes.Status507InsufficientStorage,
+                    Problem(title: $"Insufficient Storage", statusCode: StatusCodes.Status507InsufficientStorage));
+            }
 
             try
             {

@@ -22,6 +22,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -32,6 +33,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Common;
@@ -56,6 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<ILogger<DicomWebExportService>> _logger;
         private readonly Mock<ILogger<DicomWebClient>> _loggerDicomWebClient;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private Mock<HttpMessageHandler> _handlerMock;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
@@ -75,6 +78,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _dicomToolkit = new Mock<IDicomToolkit>();
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
 
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider
@@ -89,6 +94,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             serviceProvider
                 .Setup(x => x.GetService(typeof(IStorageService)))
                 .Returns(_storageService.Object);
+            serviceProvider
+                .Setup(x => x.GetService(typeof(IStorageInfoProvider)))
+                .Returns(_storageInfoProvider.Object);
 
             var scope = new Mock<IServiceScope>();
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
@@ -153,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ConfigurationError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -208,7 +216,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ConfigurationError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -287,7 +295,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ServiceError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -375,7 +383,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messagePublisherService.Verify(
                 p => p.Publish(It.IsAny<string>(),
-                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == (httpStatusCode == HttpStatusCode.OK ? ExportStatus.Success : ExportStatus.Failure))), Times.Once());
+                               It.Is<Message>(match => CheckMessage(match, (httpStatusCode == HttpStatusCode.OK ? ExportStatus.Success : ExportStatus.Failure), (httpStatusCode == HttpStatusCode.OK ? FileExportStatus.Success : FileExportStatus.ServiceError)))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
             _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
@@ -401,6 +409,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 req.Method == HttpMethod.Post &&
                 req.RequestUri.ToString().StartsWith($"{url}/studies/")),
                ItExpr.IsAny<CancellationToken>());
+        }
+
+        private bool CheckMessage(Message message, ExportStatus exportStatus, FileExportStatus fileExportStatus)
+        {
+            Guard.Against.Null(message, nameof(message));
+
+            var exportEvent = message.ConvertTo<ExportCompleteEvent>();
+            return exportEvent.Status == exportStatus &&
+                    exportEvent.FileStatuses.First().Value == fileExportStatus;
         }
 
         private static MessageReceivedEventArgs CreateMessageReceivedEventArgs(string transactionId)

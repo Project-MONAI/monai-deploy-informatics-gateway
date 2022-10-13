@@ -28,6 +28,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         public byte[] FileContent { get; private set; }
         public bool IsFailed { get; private set; }
         public IList<string> Messages { get; init; }
+        public FileExportStatus ExportStatus { get; private set; }
+        public string Filename { get; }
 
         public string ExportTaskId
         {
@@ -44,8 +46,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             get { return _exportRequest.Destinations; }
         }
 
-        public string Filename { get; }
-
         public ExportRequestDataMessage(ExportRequestEvent exportRequest, string filename)
         {
             IsFailed = false;
@@ -53,6 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _exportRequest = exportRequest ?? throw new System.ArgumentNullException(nameof(exportRequest));
             Filename = filename ?? throw new System.ArgumentNullException(nameof(filename));
+            ExportStatus = FileExportStatus.Success;
         }
 
         public void SetData(byte[] data)
@@ -61,9 +62,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             FileContent = data;
         }
 
-        public void SetFailed(string errorMessage)
+        public void SetFailed(FileExportStatus fileExportStatus, string errorMessage)
         {
             Guard.Against.NullOrWhiteSpace(errorMessage, nameof(errorMessage));
+
+            ExportStatus = fileExportStatus;
             IsFailed = true;
             Messages.Add(errorMessage);
         }

@@ -32,9 +32,13 @@ header:
     - 'src/Monai.Deploy.InformaticsGateway.sln'
     - 'src/Database/Migrations/**'
     - 'demos/**/.env/**'
+    - 'demos/**/*.txt'
+    - 'doc/dependency_decisions.yml'
+    - 'docker-compose/configs/kibana.ndjson'
     - 'docs/templates/**'
     - 'tests/Integration.Test/*.dev'
     - 'tests/Integration.Test/data/**'
+    - 'guidelines/diagrams/*.txt'
 
   comment: on-failure
 

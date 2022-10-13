@@ -170,6 +170,7 @@ Options:
 
 Commands:
   add       Add a new DICOM destination
+  cecho     C-ECHO a DICOM destination
   del, rm   Remove a DICOM destination
   list, ls  List all DICOM destinations
 ```

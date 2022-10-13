@@ -29,6 +29,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
 using xRetry;
@@ -49,6 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly Mock<ILogger<ApplicationEntityManager>> _logger;
         private readonly Mock<ILogger<MonaiAeChangedNotificationService>> _loggerNotificationService;
+        private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
         private readonly Mock<IInformaticsGatewayRepository<SourceApplicationEntity>> _sourceEntityRepository;
         private readonly Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>> _applicationEntityRepository;
@@ -67,6 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             _loggerNotificationService = new Mock<ILogger<MonaiAeChangedNotificationService>>();
             _monaiAeChangedNotificationService = new MonaiAeChangedNotificationService(_loggerNotificationService.Object);
+            _storageInfoProvider = new Mock<IStorageInfoProvider>();
             _sourceEntityRepository = new Mock<IInformaticsGatewayRepository<SourceApplicationEntity>>();
             _applicationEntityRepository = new Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
             _connfiguration = Options.Create(new InformaticsGatewayConfiguration());
@@ -77,6 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             services.AddScoped(p => _sourceEntityRepository.Object);
             services.AddScoped(p => _applicationEntityRepository.Object);
             services.AddScoped(p => _dicomToolkit);
+            services.AddScoped(p => _storageInfoProvider.Object);
 
             _serviceProvider = services.BuildServiceProvider();
 
@@ -88,6 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 return _logger.Object;
             });
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall throw if AE Title not configured")]
@@ -105,6 +110,43 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             });
 
             Assert.Equal("Called AE Title 'BADAET' is not configured", exception.Message);
+        }
+
+        [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Throws when available storage space is low")]
+        public async Task HandleCStoreRequest_ThrowWhenOnLowStorageSpace()
+        {
+            _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
+            _storageInfoProvider.Setup(p => p.AvailableFreeSpace).Returns(100);
+            var aet = "TESTAET";
+
+            var data = new List<MonaiApplicationEntity>()
+            {
+                new MonaiApplicationEntity()
+                {
+                    AeTitle = aet,
+                    Name =aet
+                }
+            };
+            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
+            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
+                                                       _serviceScopeFactory.Object,
+                                                       _monaiAeChangedNotificationService,
+                                                       _connfiguration);
+
+            var request = GenerateRequest();
+            await Assert.ThrowsAsync<InsufficientStorageAvailableException>(async () =>
+            {
+                await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
+            });
+
+            _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Preparing to save:", LogLevel.Debug, Times.Never());
+            _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
+            _logger.VerifyLoggingMessageBeginsWith($"Instance queued for upload", LogLevel.Information, Times.Never());
+
+            _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
+            _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
+            _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
 
         [RetryFact(5, 250, DisplayName = "GetService - Shall return request service")]

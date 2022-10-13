@@ -46,7 +46,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         private readonly IServiceScope _scope;
-        private readonly IMessageBrokerPublisherService _messageBrokerPublisherService;
         private bool _disposedValue;
 
         public PayloadNotificationActionHandler(IServiceScopeFactory serviceScopeFactory,
@@ -58,7 +57,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _options = options ?? throw new ArgumentNullException(nameof(options));
 
             _scope = _serviceScopeFactory.CreateScope();
-            _messageBrokerPublisherService = _scope.ServiceProvider.GetService<IMessageBrokerPublisherService>() ?? throw new ServiceNotFoundException(nameof(IMessageBrokerPublisherService));
         }
 
         public async Task NotifyAsync(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
@@ -75,7 +73,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 await NotifyPayloadReady(payload).ConfigureAwait(false);
                 await DeletePayload(payload).ConfigureAwait(false);
-                await DeletePayloadStorageMetadataObjects(payload).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -87,14 +84,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.FailedToPublishWorkflowRequest(payload.Id, ex);
                 }
             }
-        }
-
-        private async Task DeletePayloadStorageMetadataObjects(Payload payload)
-        {
-            Guard.Against.Null(payload, nameof(payload));
-            var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IStorageMetadataWrapperRepository>() ?? throw new ServiceNotFoundException(nameof(IStorageMetadataWrapperRepository));
-            await payload.DeletePayloadStorageMetadataObjects(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
         }
 
         private async Task DeletePayload(Payload payload)
@@ -134,7 +123,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             _logger.PublishingWorkflowRequest(message.MessageId);
 
-            await _messageBrokerPublisherService.Publish(
+            var messageBrokerPublisherService = _scope.ServiceProvider.GetService<IMessageBrokerPublisherService>() ?? throw new ServiceNotFoundException(nameof(IMessageBrokerPublisherService));
+            await messageBrokerPublisherService.Publish(
                 _options.Value.Messaging.Topics.WorkflowRequest,
                 message.ToMessage()).ConfigureAwait(false);
 

@@ -31,6 +31,7 @@ using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Storage.API;
 using Moq;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
@@ -44,7 +45,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         private readonly Mock<ILogger<ObjectUploadQueue>> _uploadQueueLogger;
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly Mock<IStorageService> _storageService;
-        private readonly Mock<IStorageMetadataWrapperRepository> _storageMetadataWrapperRepository;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly ServiceProvider _serviceProvider;
         private readonly Mock<IServiceScope> _serviceScope;
@@ -57,14 +57,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _storageService = new Mock<IStorageService>();
             _logger = new Mock<ILogger<ObjectUploadService>>();
             _options = Options.Create(new InformaticsGatewayConfiguration());
-            _storageMetadataWrapperRepository = new Mock<IStorageMetadataWrapperRepository>();
 
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScope = new Mock<IServiceScope>();
 
             var services = new ServiceCollection();
             services.AddScoped(p => _uploadQueue);
-            services.AddScoped(p => _storageMetadataWrapperRepository.Object);
             services.AddScoped(p => _storageService.Object);
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
@@ -74,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _options.Value.Storage.TemporaryStorageBucket = "bucket";
         }
 
-        [Fact]
+        [RetryFact(10,250)]
         public void GivenAObjectUploadService_WhenInitialized_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new ObjectUploadService(null, null, null));
@@ -83,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _ = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
         }
 
-        [Fact]
+        [RetryFact(10,250)]
         public void GivenAObjectUploadService_WhenStartAsyncIsCalled_ExpectServiceStatusToBeSet()
         {
             var svc = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -92,15 +90,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             Assert.Equal(ServiceStatus.Running, svc.Status);
         }
 
-        [Fact]
+        [RetryFact(10,250)]
         public void GivenAObjectUploadService_WhenInitialized_ExpectItToRemovingAllPendingObjects()
         {
             var svc = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            _storageMetadataWrapperRepository.Verify(p => p.DeletePendingUploadsAsync(), Times.Once());
         }
 
-        [Fact]
+        [RetryFact(10,250)]
         public async Task GivenADicomFileStorageMetadata_WhenQueuedForUpload_ExpectTwoFilesToBeUploaded()
         {
             var countdownEvent = new CountdownEvent(2);
@@ -122,7 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
         }
 
-        [Fact]
+        [RetryFact(10,250)]
         public async Task GivenAFhirFileStorageMetadata_WhenQueuedForUpload_ExpectSingleFileToBeUploaded()
         {
             var countdownEvent = new CountdownEvent(1);

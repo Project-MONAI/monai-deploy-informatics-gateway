@@ -55,9 +55,10 @@ Depending on the `Accept` header or the original document, the response supports
 
 If the `Accept` header is missing or a none supported value exists, the service will return the same type as the posted document.
 
-| Code | Data Type                                                     | Description                                                           |
-| ---- | ------------------------------------------------------------- | --------------------------------------------------------------------- |
-| 201  | Original JSON or XML document.                                | Resource created & stored successfully.                               |
-| 400  | [OperationOutcome](http://hl7.org/fhir/operationoutcome.html) | Unable to parse the resource or mismatching resource type specified.. |
-| 415  | `none`                                                        | Unsupported media type                                                |
-| 500  | [OperationOutcome](http://hl7.org/fhir/operationoutcome.html) | Server error.                                                         |
+| Code | Data Type                                                       | Description                                                           |
+| ---- | --------------------------------------------------------------- | --------------------------------------------------------------------- |
+| 201  | Original JSON or XML document.                                  | Resource created & stored successfully.                               |
+| 400  | [OperationOutcome](http://hl7.org/fhir/operationoutcome.html)   | Unable to parse the resource or mismatching resource type specified.. |
+| 415  | `none`                                                          | Unsupported media type                                                |
+| 500  | [OperationOutcome](http://hl7.org/fhir/operationoutcome.html)   | Server error.                                                         |
+| 507  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)| Insufficient storage.                                                 |

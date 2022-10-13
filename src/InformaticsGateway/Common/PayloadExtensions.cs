@@ -98,31 +98,5 @@ namespace Monai.Deploy.InformaticsGateway.Common
                .ConfigureAwait(false);
         }
 
-        public static async Task DeletePayloadStorageMetadataObjects(this Payload payload, IEnumerable<TimeSpan> retryDelays, ILogger logger, IStorageMetadataWrapperRepository repository)
-        {
-            Guard.Against.Null(payload, nameof(payload));
-            Guard.Against.NullOrEmpty(retryDelays, nameof(retryDelays));
-            Guard.Against.Null(logger, nameof(logger));
-            Guard.Against.Null(repository, nameof(repository));
-
-            var retryPolicy = Policy
-               .Handle<Exception>()
-               .WaitAndRetryAsync(
-                   retryDelays,
-                   (exception, timeSpan, retryCount, context) =>
-                   {
-                       logger.ErrorDeletingPayloadAssociatedStorageMetadataObjects(payload.Id, timeSpan, retryCount, exception);
-                   });
-
-            foreach (var metadata in payload.Files)
-            {
-                await retryPolicy.ExecuteAsync(async () =>
-                {
-                    await repository.DeleteAsync(metadata.CorrelationId, metadata.Id).ConfigureAwait(false);
-                    logger.StorageMetadataObjectDeleted(metadata.Id);
-                })
-               .ConfigureAwait(false);
-            }
-        }
     }
 }

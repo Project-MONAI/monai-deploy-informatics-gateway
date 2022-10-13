@@ -61,6 +61,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(valueComparer);
+
+            builder.HasIndex(p => p.Name, "idx_monaiae_name").IsUnique();
         }
     }
 }
