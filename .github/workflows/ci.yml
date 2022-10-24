@@ -246,7 +246,7 @@ jobs:
           popd
 
       - name: Upload Integration Test Results
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         if: always()
         with:
           name: integration-${{ matrix.feature }}
@@ -325,7 +325,7 @@ jobs:
           dir -r ~/release
 
       - name: Upload CLI
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: artifacts
           path: ~/release
@@ -439,7 +439,7 @@ jobs:
           Get-ChildItem ~\release -Recurse   
 
       - name: Upload docs
-        uses: actions/upload-artifact@v3.1.0
+        uses: actions/upload-artifact@v3.1.1
         with:
           name: artifacts
           path: ~/release
