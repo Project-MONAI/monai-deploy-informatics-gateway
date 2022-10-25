@@ -822,21 +822,21 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.7
+    - 0.2.8
     :when: 2022-08-16 23:06:21.988183476 Z
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.7
+    - 0.2.8
     :when: 2022-08-16 23:06:22.426838304 Z
 - - :approve
   - Monai.Deploy.Storage.S3Policy
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.7
+    - 0.2.8
     :when: 2022-08-16 23:06:22.881956546 Z
 - - :approve
   - Moq
