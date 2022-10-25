@@ -131,22 +131,30 @@ Locate the storage section of the configuration in `appsettings.json`:
   "InformaticsGateway": {
     "dicom": { ... },
     "storage": {
-      "storageServiceCredentials": {
-        "endpoint": "localhost:9000", # IP & port to MinIO instance
-        "accessKey": "admin", # Access key or username
-        "accessToken": "password", # Access token or password
-        "securedConnection": false, # Indicates if connection should be secured using HTTPS
-        "region": "local", # Region
-        "serviceName": "MinIO" # Name of the service
-      },
-      "storageService": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO", # Fully qualified type name of the storage service
-      "securedConnection": false, # Indicates if a secured connection is required to access MinIO
-      "storageServiceBucketName": "igbucket" # The name of the bucket where data is uploaded to
+      "localTemporaryStoragePath": "/payloads", # path to store incoming data before uploading to the storage service
+      "remoteTemporaryStoragePath": "/incoming", # the path on the "temporaryBucketName" where the data is uploaded to before payload assembly
+      "bucketName": "monaideploy", # name of the bucket for storing payloads
+      "temporaryBucketName": "monaideploy", # name of the bucket for temporarily storing incoming data before payload is assembled
+      "serviceAssemblyName": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO", # the fully qualified assembly name for the storage service to use
+      "watermarkPercent": 75, # a percentage value that indicates when the system shall stop receiving or downloading data.  Disk space is calculated based on the path defined in "localTemporaryStoragePath"
+      "reserveSpaceGB": 5, # minimum disk space required and reserved for the Informatics Gateway
+      "settings": { # settings for the storage library: default to minio
+        "endpoint": "localhost:9000", # MinIO server IP and port number 
+        "accessKey": "admin", # username/access key
+        "accessToken": "password", # password/access token
+        "securedConnection": false, # enable secured connection to minio?
+        "region": "local", # storatge region
+        "createBuckets": "monaideploy" # buckets to be created on startup if not already exists
+      }
     },
     ...
   }
 }
 ```
+
+> [!Note]
+> Update the `createBuckets` configuration if you would like to have the Informatics Gateway create the storage buckets on startup.  Otherwise, leave it blank.
+> To create multiple buckets, separate each bucket name with comma.
 
 #### Install the Storage Plug-in
 
