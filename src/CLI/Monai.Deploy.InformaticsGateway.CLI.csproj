@@ -51,7 +51,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Crayon" Version="2.0.64" />
+    <PackageReference Include="Crayon" Version="2.0.69" />
     <PackageReference Include="Docker.DotNet" Version="3.125.12" />
     <PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
         <PrivateAssets>All</PrivateAssets>

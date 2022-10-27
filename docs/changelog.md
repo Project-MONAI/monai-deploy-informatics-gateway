@@ -17,6 +17,15 @@
 
 # Changelog
 
+
+## 0.3.3
+
+[GitHub Milestone 0.3.2](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/9)
+
+- Ability to create storage buckets on startup
+- Include logging scope values for LogStash
+
+
 ## 0.3.2
 
 [GitHub Milestone 0.3.2](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/8)
