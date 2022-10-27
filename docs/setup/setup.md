@@ -139,7 +139,7 @@ Locate the storage section of the configuration in `appsettings.json`:
       "watermarkPercent": 75, # a percentage value that indicates when the system shall stop receiving or downloading data.  Disk space is calculated based on the path defined in "localTemporaryStoragePath"
       "reserveSpaceGB": 5, # minimum disk space required and reserved for the Informatics Gateway
       "settings": { # settings for the storage library: default to minio
-        "endpoint": "localhost:9000", # MinIO server IP and port number 
+        "endpoint": "localhost:9000", # MinIO server IP and port number
         "accessKey": "admin", # username/access key
         "accessToken": "password", # password/access token
         "securedConnection": false, # enable secured connection to minio?
@@ -296,4 +296,3 @@ The command adds a DICOM export destination with AE Title `WORKSTATION1` at IP `
 ## Logging
 
 See [schema](./schema.md#logging) page for additional information on logging.
-
