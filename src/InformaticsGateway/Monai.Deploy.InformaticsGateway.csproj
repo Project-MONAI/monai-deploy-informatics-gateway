@@ -33,7 +33,7 @@
 
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
-    <PackageReference Include="DotNext.Threading" Version="4.7.3" />
+    <PackageReference Include="DotNext.Threading" Version="4.7.4" />
     <PackageReference Include="fo-dicom" Version="5.0.3" />
     <PackageReference Include="fo-dicom.NLog" Version="5.0.3" />
     <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.3.1" />
