@@ -102,8 +102,12 @@ jobs:
       with:
         languages: ${{ matrix.language }}
 
-    - name: Install NuGetDefense
-      run: dotnet tool install --global NuGetDefense.Tool
+    - name: Nuget Vulnerabiilty Scan
+      run: |
+        dotnet list package --vulnerable 2>&1 | tee vulnerable.txt
+        echo "Analyzing dotnet list package command log output..."
+        sh -c "! grep 'has the following vulnerable packages' vulnerable.txt"
+      working-directory: ./src
 
     - name: Restore dependencies
       run: dotnet restore
@@ -130,7 +134,7 @@ jobs:
       run: license_finder -r
 
     - name: Check License Header
-      uses: apache/skywalking-eyes@main
+      uses: apache/skywalking-eyes@v0.4.0
 
   unit-test:
     runs-on: ubuntu-latest
