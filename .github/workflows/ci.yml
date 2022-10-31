@@ -489,7 +489,7 @@ jobs:
   release:
     if: ${{ contains(github.ref, 'refs/heads/main') || contains(github.ref, 'refs/heads/develop') ||contains(github.head_ref, 'release/') || contains(github.head_ref, 'feature/') || contains(github.head_ref, 'develop') }}
     runs-on: ubuntu-latest
-    needs: [calc-version, unit-test, docs, integration-test]
+    needs: [calc-version, unit-test, docs, integration-test, CodeQL-Analyze]
     env:
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
       PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
