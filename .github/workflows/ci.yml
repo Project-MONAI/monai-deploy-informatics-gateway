@@ -54,7 +54,7 @@ jobs:
 
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.14
+        uses: gittools/actions/gitversion/execute@v0.9.15
         with:
           useConfigFile: true
           configFilePath: .github/.gitversion.yml
@@ -84,7 +84,7 @@ jobs:
       run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
 
     - name: Install License Finder tool with Homebrew
-      uses: tecoli-com/actions-use-homebrew-tools@v0.4
+      uses: tecoli-com/actions-use-homebrew-tools@v1.1
       with:
         tools: licensefinder
         cache: yes
@@ -473,12 +473,12 @@ jobs:
           msg: ${{ github.repository }}
 
       - name: Install GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/setup@v0.9.14
+        uses: gittools/actions/gitreleasemanager/setup@v0.9.15
         with:
           versionSpec: "0.13.x"
 
       - name: Create release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/create@v0.9.14
+        uses: gittools/actions/gitreleasemanager/create@v0.9.15
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -491,7 +491,7 @@ jobs:
             artifacts/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/publish@v0.9.14
+        uses: gittools/actions/gitreleasemanager/publish@v0.9.15
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -500,7 +500,7 @@ jobs:
           tagName: ${{ env.MAJORMINORPATCH }}
 
       - name: Close release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/close@v0.9.14
+        uses: gittools/actions/gitreleasemanager/close@v0.9.15
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
