@@ -69,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         }
 
-        private async Task BackgroundProcessing(CancellationToken cancellationToken)
+        private void BackgroundProcessing(CancellationToken cancellationToken)
         {
             _logger.ServiceRunning(ServiceName);
             var tasks = new List<Task>();
@@ -111,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 }
                 catch (OperationCanceledException ex)
                 {
-                    _logger.ServiceCancelled(ServiceName);
+                    _logger.ServiceCancelledWithException(ServiceName, ex);
                     break;
                 }
                 catch (Exception ex)
@@ -123,9 +123,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            var task = Task.Run(async () =>
+            var task = Task.Run(() =>
             {
-                await BackgroundProcessing(cancellationToken);
+                BackgroundProcessing(cancellationToken);
             }, CancellationToken.None);
 
             Status = ServiceStatus.Running;

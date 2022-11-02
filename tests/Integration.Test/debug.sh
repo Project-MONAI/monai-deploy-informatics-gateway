@@ -15,7 +15,6 @@
 
 
 # enable(1)/disable(0) VS code attach debuger
-export VSTEST_HOST_DEBUG=0
 
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 TEST_DIR="$SCRIPT_DIR/"
@@ -91,9 +90,9 @@ function start_services() {
     docker network inspect testrunner
     info "============================================="
 
-    info "Stopping Informatics Gateway for debugging..."
-    ig_contianer=$(docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep integrationtest-informatics-gateway | awk '{print $2}')
-    docker kill $ig_contianer
+    # info "Stopping Informatics Gateway for debugging..."
+    # ig_contianer=$(docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep integrationtest-informatics-gateway | awk '{print $2}')
+    # docker kill $ig_contianer
 
     sleep 1
     sudo chown -R $USER:$USER $RUN_DIR
@@ -114,7 +113,12 @@ function main() {
     env_setup "$@"
     build
     start_services
-    docker compose logs -f
+    # docker compose logs -f
+
+    echo execute the following:
+    echo "   export HOST_IP=$HOST_IP"
+    echo "   export VSTEST_HOST_DEBUG=1"
+    echo "   dotnet test --filter XYZ"
 }
 
 main "$@"

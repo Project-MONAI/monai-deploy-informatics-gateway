@@ -74,14 +74,14 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
     :versions:
-    - 4.7.3
+    - 4.7.4
     :when: 2022-09-01 23:05:32.857032968 Z
 - - :approve
   - DotNext.Threading
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
     :versions:
-    - 4.7.3
+    - 4.7.4
     :when: 2022-09-01 23:05:33.298402277 Z
 - - :approve
   - FluentAssertions
@@ -783,14 +783,8 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/minio/minio-dotnet/raw/master/LICENSE)
     :versions:
-    - 4.0.4
-    :when: 2022-08-16 23:06:20.140413803 Z
-- - :approve
-  - Minio
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/minio/minio-dotnet/raw/master/LICENSE)
-    :versions:
     - 4.0.5
+    - 4.0.6
     :when: 2022-08-16 23:06:20.598551507 Z
 - - :approve
   - Monai.Deploy.Messaging
@@ -1816,7 +1810,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/coverlet-coverage/coverlet/raw/master/LICENSE)
     :versions:
-    - 3.1.2
+    - 3.2.0
     :when: 2022-08-16 23:07:29.112978564 Z
 - - :approve
   - fo-dicom
@@ -2363,21 +2357,21 @@
   - :who: mocsharp
     :why: BSD 3-Clause License (https://github.com/NLog/NLog/raw/dev/LICENSE.txt)
     :versions:
-    - 5.0.4
+    - 5.0.5
     :when: 2022-10-12 03:14:06.538744982 Z
 - - :approve
   - NLog.Extensions.Logging
   - :who: mocsharp
     :why: BSD 2-Clause Simplified License (https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
     :versions:
-    - 5.0.4
+    - 5.1.0
     :when: 2022-10-12 03:14:06.964203977 Z
 - - :approve
   - NLog.Web.AspNetCore
   - :who: mocsharp
     :why: BSD 3-Clause License (https://github.com/NLog/NLog.Web/raw/master/LICENSE)
     :versions:
-    - 5.1.4
+    - 5.1.5
     :when: 2022-10-12 03:14:07.396706995 Z
 - - :approve
   - fo-dicom.NLog

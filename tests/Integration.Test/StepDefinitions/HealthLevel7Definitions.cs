@@ -193,7 +193,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             var minioClient = new MinioClient()
                 .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
-                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
+                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken)
+                .Build();
 
             var listOjbectsArgs = new ListObjectsArgs()
                     .WithBucket(request.Bucket)

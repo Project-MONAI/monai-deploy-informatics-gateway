@@ -746,14 +746,14 @@ SOFTWARE.
 
 
 <details>
-<summary>DotNext 4.7.1</summary>
+<summary>DotNext 4.7.4</summary>
 
 ## DotNext
 
-- Version: 4.7.1
+- Version: 4.7.4
 - Authors: .NET Foundation and Contributors
 - Project URL: https://dotnet.github.io/dotNext/
-- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.7.1)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.7.4)
 - License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
 
 
@@ -824,14 +824,14 @@ SOFTWARE.
 
 
 <details>
-<summary>DotNext.Threading 4.7.1</summary>
+<summary>DotNext.Threading 4.7.4</summary>
 
 ## DotNext.Threading
 
-- Version: 4.7.1
+- Version: 4.7.4
 - Authors: .NET Foundation and Contributors
 - Project URL: https://dotnet.github.io/dotNext/
-- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.7.1)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.7.4)
 - License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
 
 
@@ -7098,14 +7098,14 @@ Apache License
 
 
 <details>
-<summary>Minio 4.0.5</summary>
+<summary>Minio 4.0.6</summary>
 
 ## Minio
 
-- Version: 4.0.5
+- Version: 4.0.6
 - Authors: MinIO, Inc.
 - Project URL: https://github.com/minio/minio-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/Minio/4.0.5)
+- Source: [NuGet](https://www.nuget.org/packages/Minio/4.0.6)
 - License: [Apache-2.0](https://github.com/minio/minio-dotnet/raw/master/LICENSE)
 
 
@@ -8791,14 +8791,14 @@ SOFTWARE.
 
 
 <details>
-<summary>NLog 5.0.4</summary>
+<summary>NLog 5.0.5</summary>
 
 ## NLog
 
-- Version: 5.0.4
+- Version: 5.0.5
 - Authors: Jarek Kowalski,Kim Christensen,Julian Verdurmen
 - Project URL: https://nlog-project.org/
-- Source: [NuGet](https://www.nuget.org/packages/NLog/5.0.4)
+- Source: [NuGet](https://www.nuget.org/packages/NLog/5.0.5)
 - License: [BSD 3-Clause License](https://github.com/NLog/NLog/raw/dev/LICENSE.txt)
 
 
@@ -8839,14 +8839,14 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>NLog.Extensions.Logging 5.0.4</summary>
+<summary>NLog.Extensions.Logging 5.1.0</summary>
 
 ## NLog.Extensions.Logging
 
-- Version: 5.0.4
+- Version: 5.1.0
 - Authors: Microsoft,Julian Verdurmen
 - Project URL: https://github.com/NLog/NLog.Extensions.Logging
-- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.0.4)
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.1.0)
 - License: [BSD 2-Clause Simplified License](https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
 
 
@@ -8880,14 +8880,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>NLog.Web.AspNetCore 5.1.4</summary>
+<summary>NLog.Web.AspNetCore 5.1.5</summary>
 
 ## NLog.Web.AspNetCore
 
-- Version: 5.1.4
+- Version: 5.1.5
 - Authors: Julian Verdurmen
 - Project URL: https://github.com/NLog/NLog.Web
-- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.1.4)
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.1.5)
 - License: [BSD 3-Clause License](https://github.com/NLog/NLog.Web/raw/master/LICENSE)
 
 
@@ -27675,14 +27675,14 @@ accept this license. If you do not accept the license, do not use the software.
 
 
 <details>
-<summary>coverlet.collector 3.1.2</summary>
+<summary>coverlet.collector 3.2.0</summary>
 
 ## coverlet.collector
 
-- Version: 3.1.2
+- Version: 3.2.0
 - Authors: tonerdo
 - Project URL: https://github.com/coverlet-coverage/coverlet
-- Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/3.1.2)
+- Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/3.2.0)
 - License: [MIT](https://github.com/coverlet-coverage/coverlet/raw/master/LICENSE)
 
 

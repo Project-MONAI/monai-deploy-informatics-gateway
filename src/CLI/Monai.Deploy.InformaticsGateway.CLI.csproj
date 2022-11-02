@@ -20,11 +20,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <PublishSingleFile>true</PublishSingleFile>
-    <SelfContained>true</SelfContained>
     <PublishTrimmed>false</PublishTrimmed>
     <PublishReadyToRun>true</PublishReadyToRun>
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <AssemblyName>mig-cli</AssemblyName>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
