@@ -35,7 +35,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
-    sqlite3 \
     curl \
     && rm -rf /var/lib/apt/lists
 
