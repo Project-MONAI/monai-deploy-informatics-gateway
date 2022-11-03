@@ -27,13 +27,13 @@
     <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
     <ProjectReference Include="Api\Monai.Deploy.InformaticsGateway.Database.Api.csproj" />
-    <ProjectReference Include="Sqlite\Monai.Deploy.InformaticsGateway.Database.Sqlite.csproj" />
+    <ProjectReference Include="EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
   </ItemGroup>
   
   <ItemGroup>
-    <Compile Remove="Sqlite\**" />
-    <EmbeddedResource Remove="Sqlite\**" />
-    <None Remove="Sqlite\**" />
+    <Compile Remove="EntityFramework\**" />
+    <EmbeddedResource Remove="EntityFramework\**" />
+    <None Remove="EntityFramework\**" />
   </ItemGroup>
 
   <ItemGroup>

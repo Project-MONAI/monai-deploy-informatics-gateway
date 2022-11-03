@@ -20,15 +20,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Monai.Deploy.InformaticsGateway.Database.Sqlite;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 
 #nullable disable
 
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20220203222116_R1_Initialize")]
-    partial class R1_Initialize
+    [Migration("20220211175051_R1_Patch")]
+    partial class R1_Patch
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -171,6 +171,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("UploadedFiles")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Workflows")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");

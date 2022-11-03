@@ -30,7 +30,7 @@ header:
     - 'src/.sonarlint/**'
     - 'src/coverlet.runsettings'
     - 'src/Monai.Deploy.InformaticsGateway.sln'
-    - 'src/Database/Migrations/**'
+    - 'src/Database/EntityFramework/Migrations/**'
     - 'demos/**/.env/**'
     - 'demos/**/*.txt'
     - 'doc/dependency_decisions.yml'

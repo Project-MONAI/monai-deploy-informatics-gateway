@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2021-2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <RootNamespace>Monai.Deploy.InformaticsGateway.Database.Sqlite</RootNamespace>
+    <RootNamespace>Monai.Deploy.InformaticsGateway.Database.EntityFramework</RootNamespace>
     <TargetFramework>net6.0</TargetFramework>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -51,6 +51,5 @@
     <ProjectReference Include="..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
     <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Database.Api.csproj" />
-    <ProjectReference Include="..\Repositories\Monai.Deploy.InformaticsGateway.Database.Api.csproj" />
   </ItemGroup>
 </Project>
