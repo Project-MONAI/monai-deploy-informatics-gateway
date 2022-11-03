@@ -18,8 +18,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Database.Sqlite.Configurations;
 
-namespace Monai.Deploy.InformaticsGateway.Database
+namespace Monai.Deploy.InformaticsGateway.Database.Sqlite
 {
     public class InformaticsGatewayContext : DbContext
     {

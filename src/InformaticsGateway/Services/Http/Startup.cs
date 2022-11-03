@@ -28,7 +28,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.Database.Sqlite;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http

@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
-using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Repositories
+namespace Monai.Deploy.InformaticsGateway.Database.Sqlite
 {
-    internal class InformaticsGatewayRepository<T> : IDisposable, IInformaticsGatewayRepository<T> where T : class
+    public class InformaticsGatewayRepository<T> : IDisposable, IInformaticsGatewayRepository<T> where T : class
     {
         private readonly IServiceScope _scope;
         private readonly InformaticsGatewayContext _informaticsGatewayContext;
@@ -65,13 +60,13 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         {
             Guard.Against.Null(entity, nameof(entity));
 
-            return _informaticsGatewayContext.Update<T>(entity);
+            return _informaticsGatewayContext.Update(entity);
         }
 
         public EntityEntry<T> Remove(T entity)
         {
             Guard.Against.Null(entity, nameof(entity));
-            return _informaticsGatewayContext.Remove<T>(entity);
+            return _informaticsGatewayContext.Remove(entity);
         }
 
         public void RemoveRange(params T[] entities)

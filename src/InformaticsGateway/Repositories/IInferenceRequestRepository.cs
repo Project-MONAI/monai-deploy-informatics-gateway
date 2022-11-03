@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         /// <summary>
         /// Updates an inference request's status.
         /// The default implementation drops the request after 3 retries if status is
-        /// <see cref="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus.Fail" />.
+        /// <see cref="InferenceRequestStatus.Fail" />.
         /// </summary>
         /// <param name="inferenceRequest">The inference request to be updated.</param>
         /// <param name="status">Current status of the inference request.</param>
@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         /// The default implementation blocks the call until a pending inference request is available for process.
         /// </summary>
         /// <param name="cancellationToken">cancellation token used to cancel the action.</param>
-        /// <returns><see cref="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest"/></returns>
+        /// <returns><see cref="InferenceRequest"/></returns>
         Task<InferenceRequest> Take(CancellationToken cancellationToken);
 
         /// <summary>

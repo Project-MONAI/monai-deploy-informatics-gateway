@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.Database.Sqlite;
 
 #nullable disable
 
