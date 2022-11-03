@@ -19,7 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.Sqlite.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
 {
     internal class StorageMetadataWrapperEntityConfiguration : IEntityTypeConfiguration<StorageMetadataWrapper>
     {

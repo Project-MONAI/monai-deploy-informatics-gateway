@@ -51,7 +51,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
-    <ProjectReference Include="..\..\Database\Sqlite\Monai.Deploy.InformaticsGateway.Database.Sqlite.csproj" />
+    <ProjectReference Include="..\..\Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.csproj" />
   </ItemGroup>
 

@@ -20,9 +20,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.Sqlite
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 {
-    public class SqliteDatabaseMigrationManager : IDatabaseMigrationManager
+    public class EfDatabaseMigrationManager : IDatabaseMigrationManager
     {
         public IHost Migrate(IHost host)
         {

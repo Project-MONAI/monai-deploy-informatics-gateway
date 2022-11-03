@@ -18,7 +18,7 @@
 using Microsoft.EntityFrameworkCore;
 using Monai.Deploy.InformaticsGateway.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.Sqlite.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
 {
     internal class SourceApplicationEntityConfiguration : IEntityTypeConfiguration<SourceApplicationEntity>
     {

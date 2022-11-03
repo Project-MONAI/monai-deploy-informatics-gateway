@@ -24,7 +24,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Database.Sqlite.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
 {
     internal class PayloadConfiguration : IEntityTypeConfiguration<Payload>
     {

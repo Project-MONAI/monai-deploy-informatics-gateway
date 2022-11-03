@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Monai.Deploy.InformaticsGateway.Database.Sqlite.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
 {
     public static class SR
     {

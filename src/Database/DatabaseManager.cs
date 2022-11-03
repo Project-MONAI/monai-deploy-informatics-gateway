@@ -19,8 +19,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
-using Monai.Deploy.InformaticsGateway.Database.Sqlite;
-using Monai.Deploy.InformaticsGateway.Database.Sqlite.Configurations;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations;
 
 namespace Monai.Deploy.InformaticsGateway.Database
 {
@@ -38,7 +38,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
             switch (databaseType)
             {
                 case "Sqlite":
-                    services.AddScoped<IDatabaseMigrationManager, SqliteDatabaseMigrationManager>();
+                    services.AddScoped<IDatabaseMigrationManager, EfDatabaseMigrationManager>();
+                    services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
                     services.AddDbContext<InformaticsGatewayContext>(
                         options => options.UseSqlite(connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]),
                         ServiceLifetime.Transient);

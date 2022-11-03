@@ -62,8 +62,9 @@
     <ProjectReference Include="..\..\src\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\..\src\Client\Monai.Deploy.InformaticsGateway.Client.csproj" />
     <ProjectReference Include="..\..\src\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
+    <ProjectReference Include="..\..\src\Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
-    <ProjectReference Include="..\..\src\Database\Sqlite\Monai.Deploy.InformaticsGateway.Database.Sqlite.csproj" />
+    <ProjectReference Include="..\..\src\Database\Sqlite\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
   </ItemGroup>
 

@@ -20,7 +20,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.Sqlite
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 {
     public class InformaticsGatewayRepository<T> : IDisposable, IInformaticsGatewayRepository<T> where T : class
     {

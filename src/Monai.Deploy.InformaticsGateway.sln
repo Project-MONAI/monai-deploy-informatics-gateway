@@ -42,7 +42,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI", "DicomWebClient\CLI\Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI.csproj", "{689E0066-81DA-4602-B058-D93389DF5DBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.Sqlite", "Database\Sqlite\Monai.Deploy.InformaticsGateway.Database.Sqlite.csproj", "{313B68CE-A0DB-4DE2-8359-AC777F5997FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.EntityFramework", "Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj", "{313B68CE-A0DB-4DE2-8359-AC777F5997FE}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.Api", "Database\Api\Monai.Deploy.InformaticsGateway.Database.Api.csproj", "{366CA24C-B546-46AD-8607-AABE4F0F4864}"
 EndProject
