@@ -21,7 +21,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.Database.Sqlite;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Moq;
 using xRetry;

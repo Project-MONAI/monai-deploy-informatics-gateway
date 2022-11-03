@@ -16,20 +16,22 @@
  */
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database
+namespace Monai.Deploy.InformaticsGateway.Database.Sqlite.Configurations
 {
-    internal class SourceApplicationEntityConfiguration : IEntityTypeConfiguration<SourceApplicationEntity>
+    internal class DestinationApplicationEntityConfiguration : IEntityTypeConfiguration<DestinationApplicationEntity>
     {
-        public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<SourceApplicationEntity> builder)
+        public void Configure(EntityTypeBuilder<DestinationApplicationEntity> builder)
         {
             builder.HasKey(j => j.Name);
             builder.Property(j => j.AeTitle).IsRequired();
+            builder.Property(j => j.Port).IsRequired();
             builder.Property(j => j.HostIp).IsRequired();
 
-            builder.HasIndex(p => p.Name, "idx_source_name").IsUnique();
-            builder.HasIndex(p => new { p.Name, p.AeTitle, p.HostIp }, "idx_source_all").IsUnique();
+            builder.HasIndex(p => p.Name, "idx_destination_name").IsUnique();
+            builder.HasIndex(p => new { p.Name, p.AeTitle, p.HostIp, p.Port }, "idx_source_all").IsUnique();
         }
     }
 }

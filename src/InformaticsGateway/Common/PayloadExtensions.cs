@@ -20,8 +20,8 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Common
@@ -97,6 +97,5 @@ namespace Monai.Deploy.InformaticsGateway.Common
                })
                .ConfigureAwait(false);
         }
-
     }
 }

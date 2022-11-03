@@ -26,6 +26,26 @@
   <ItemGroup>
     <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
+    <ProjectReference Include="Api\Monai.Deploy.InformaticsGateway.Database.Api.csproj" />
+    <ProjectReference Include="Sqlite\Monai.Deploy.InformaticsGateway.Database.Sqlite.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Remove="Sqlite\**" />
+    <EmbeddedResource Remove="Sqlite\**" />
+    <None Remove="Sqlite\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Mongo\**" />
+    <EmbeddedResource Remove="Mongo\**" />
+    <None Remove="Mongo\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Api\**" />
+    <EmbeddedResource Remove="Api\**" />
+    <None Remove="Api\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -43,11 +63,6 @@
         <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />

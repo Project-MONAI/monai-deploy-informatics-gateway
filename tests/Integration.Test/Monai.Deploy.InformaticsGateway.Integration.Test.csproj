@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   ~ Copyright 2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -63,6 +63,7 @@
     <ProjectReference Include="..\..\src\Client\Monai.Deploy.InformaticsGateway.Client.csproj" />
     <ProjectReference Include="..\..\src\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
     <ProjectReference Include="..\..\src\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
+    <ProjectReference Include="..\..\src\Database\Sqlite\Monai.Deploy.InformaticsGateway.Database.Sqlite.csproj" />
     <ProjectReference Include="..\..\src\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
   </ItemGroup>
 

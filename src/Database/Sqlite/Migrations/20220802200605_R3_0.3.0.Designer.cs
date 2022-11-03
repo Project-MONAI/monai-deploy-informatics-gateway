@@ -20,20 +20,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.Database.Sqlite;
 
 #nullable disable
 
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20220203222116_R1_Initialize")]
-    partial class R1_Initialize
+    [Migration("20220802200605_R3_0.3.0")]
+    partial class R3_030
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.6");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
@@ -64,6 +64,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<string>("AeTitle")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("AllowedSopClasses")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Grouping")
@@ -108,10 +111,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("StoragePath")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("TransactionId")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -149,6 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CorrelationId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTimeCreated")
@@ -170,12 +170,31 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("UploadedFiles")
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
                     b.ToTable("Payload");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Database.StorageMetadataWrapper", b =>
+                {
+                    b.Property<string>("CorrelationId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Identity")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsUploaded")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("TypeName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("CorrelationId", "Identity");
+
+                    b.ToTable("StorageMetadataWrapper");
                 });
 #pragma warning restore 612, 618
         }

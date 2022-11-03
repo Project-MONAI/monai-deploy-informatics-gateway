@@ -30,9 +30,8 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Services.Scu;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Scp
+namespace Monai.Deploy.InformaticsGateway.Services.Scu
 {
     internal sealed class ScuService : IHostedService, IDisposable, IMonaiService
     {
