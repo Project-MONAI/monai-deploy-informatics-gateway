@@ -17,6 +17,7 @@
 
 using System.Globalization;
 using System.Text;
+using BoDi;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using FellowOakDicom.Serialization;
@@ -26,9 +27,8 @@ using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Monai.Deploy.Messaging.Events;
-using Monai.Deploy.Messaging.Messages;
+using Monai.Deploy.Messaging.RabbitMQ;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -42,33 +42,39 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         internal static readonly string KeyDicomHashes = "DICOM_HASHES";
         internal static readonly int WorkflowStudyCount = 1;
 
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(1);
-
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromSeconds(30);
+        private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
         private readonly DicomInstanceGenerator _dicomInstanceGenerator;
         private readonly DicomScu _dicomScu;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
-        private readonly RabbitMqHooks _rabbitMqHooks;
+        private readonly RabbitMqConsumer _receivedMessages;
 
         public AcrApiStepDefinitions(
+            ObjectContainer objectContainer,
             ScenarioContext scenarioContext,
             ISpecFlowOutputHelper outputHelper,
             Configurations configuration,
             DicomInstanceGenerator dicomInstanceGenerator,
             DicomScu dicomScu,
-            InformaticsGatewayClient informaticsGatewayClient,
-            RabbitMqHooks rabbitMqHooks)
+            InformaticsGatewayClient informaticsGatewayClient)
         {
+            if (objectContainer is null)
+            {
+                throw new ArgumentNullException(nameof(objectContainer));
+            }
+            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _dicomInstanceGenerator = dicomInstanceGenerator ?? throw new ArgumentNullException(nameof(dicomInstanceGenerator));
             _dicomScu = dicomScu ?? throw new ArgumentNullException(nameof(dicomScu));
             _informaticsGatewayClient = informaticsGatewayClient ?? throw new ArgumentNullException(nameof(informaticsGatewayClient));
-            _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
             _informaticsGatewayClient.ConfigureServiceUris(new Uri(_configuration.InformaticsGatewayOptions.ApiEndpoint));
+
+            _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
         }
 
         [Given(@"a DICOM study on a remote DICOMweb service")]
@@ -82,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
             var fileSpecs = _dicomInstanceGenerator.Generate(patientId, WorkflowStudyCount, modality, studySpec);
             _scenarioContext[KeyDicomFiles] = fileSpecs;
-            _rabbitMqHooks.SetupMessageHandle(WorkflowStudyCount);
+            _receivedMessages.SetupMessageHandle(WorkflowStudyCount);
             _outputHelper.WriteLine($"File specs: {fileSpecs.StudyCount}, {fileSpecs.SeriesPerStudyCount}, {fileSpecs.InstancePerSeries}, {fileSpecs.FileCount}");
             var result = await _dicomScu.CStore(_configuration.OrthancOptions.Host, _configuration.OrthancOptions.DimsePort, "TEST-RUNNER", "ORTHANC", fileSpecs.Files, TimeSpan.FromSeconds(300));
             result.Should().Be(DicomStatus.Success);
@@ -147,7 +153,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Interface = InputInterfaceType.DicomWeb,
                     ConnectionDetails = new InputConnectionDetails
                     {
-                        Uri = _configuration.OrthancOptions.DicomWebRootInternal,
+                        Uri = _configuration.OrthancOptions.DicomWebRoot,
                         AuthId = _configuration.OrthancOptions.GetBase64EncodedAuthHeader(),
                         AuthType = ConnectionAuthType.Basic
                     }
@@ -173,12 +179,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         public void ThenAWorkflowRequestsSentToTheMessageBroker()
         {
             var inferenceRequest = _scenarioContext[KeyInferenceRequest] as InferenceRequest;
-            _rabbitMqHooks.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
-            var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
+            _receivedMessages.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
             var fileSpecs = _scenarioContext[KeyDicomFiles] as DicomInstanceGenerator.StudyGenerationSpecs;
 
-            messages.Should().NotBeNullOrEmpty().And.HaveCount(WorkflowStudyCount);
-            foreach (var message in messages)
+            _receivedMessages.Messages.Should().NotBeNullOrEmpty().And.HaveCount(WorkflowStudyCount);
+            foreach (var message in _receivedMessages.Messages)
             {
                 message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
                 var request = message.ConvertTo<WorkflowRequestEvent>();
@@ -192,16 +197,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         public async Task ThenAStudyIsUploadedToTheStorageService()
         {
             var minioClient = new MinioClient()
-                .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
-                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken)
+                .WithEndpoint(_informaticsGatewayConfiguration.Storage.Settings["endpoint"])
+                .WithCredentials(_informaticsGatewayConfiguration.Storage.Settings["accessKey"], _informaticsGatewayConfiguration.Storage.Settings["accessToken"])
                 .Build();
 
             var dicomSizes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
-            _rabbitMqHooks.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
-            var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
-            messages.Should().NotBeNullOrEmpty();
+            _receivedMessages.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
+            _receivedMessages.Messages.Should().NotBeNullOrEmpty();
 
-            foreach (var message in messages)
+            foreach (var message in _receivedMessages.Messages)
             {
                 var request = message.ConvertTo<WorkflowRequestEvent>();
                 foreach (var file in request.Payload)

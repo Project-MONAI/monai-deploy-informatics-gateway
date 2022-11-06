@@ -20,12 +20,11 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Xml;
 using Ardalis.GuardClauses;
+using BoDi;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Monai.Deploy.Messaging.Events;
-using Monai.Deploy.Messaging.Messages;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -38,31 +37,38 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         { Xml, Json };
 
         internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromMinutes(2);
+        private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly FeatureContext _featureContext;
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
-        private readonly RabbitMqHooks _rabbitMqHooks;
         private readonly Dictionary<string, string> _input;
         private readonly Dictionary<string, string> _output;
+        private readonly RabbitMqConsumer _receivedMessages;
         private FileFormat _fileFormat;
         private string _mediaType;
 
         public FhirDefinitions(
+            ObjectContainer objectContainer,
             FeatureContext featureContext,
             ScenarioContext scenarioContext,
             ISpecFlowOutputHelper outputHelper,
-            Configurations configuration,
-            RabbitMqHooks rabbitMqHooks)
+            Configurations configuration)
         {
+            if (objectContainer is null)
+            {
+                throw new ArgumentNullException(nameof(objectContainer));
+            }
+            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
 
             _input = new Dictionary<string, string>();
             _output = new Dictionary<string, string>();
+
+            _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
         }
 
         [Given(@"FHIR message (.*) in (.*)")]
@@ -81,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 _outputHelper.WriteLine($"Adding file {file}");
                 _input[file] = await File.ReadAllTextAsync(file);
             }
-            _rabbitMqHooks.SetupMessageHandle(files.Length);
+            _receivedMessages.SetupMessageHandle(files.Length);
         }
 
         [When(@"the FHIR messages are sent to Informatics Gateway")]
@@ -105,21 +111,20 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Then(@"workflow requests are sent to message broker")]
         public void ThenWorkflowRequestAreSentToMessageBroker()
         {
-            _rabbitMqHooks.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
+            _receivedMessages.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
         }
 
         [Then(@"FHIR resources are uploaded to storage service")]
         public async Task ThenFhirResourcesAreUploadedToStorageService()
         {
-            var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
-            messages.Should().NotBeNullOrEmpty().And.HaveCount(_input.Count);
+            _receivedMessages.Messages.Should().NotBeNullOrEmpty().And.HaveCount(_input.Count);
 
             var minioClient = new MinioClient()
-                .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
-                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken)
+                .WithEndpoint(_informaticsGatewayConfiguration.Storage.Settings["endpoint"])
+                .WithCredentials(_informaticsGatewayConfiguration.Storage.Settings["accessKey"], _informaticsGatewayConfiguration.Storage.Settings["accessToken"])
                 .Build();
 
-            foreach (var message in messages)
+            foreach (var message in _receivedMessages.Messages)
             {
                 message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
                 var request = message.ConvertTo<WorkflowRequestEvent>();

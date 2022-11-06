@@ -54,26 +54,46 @@ services:
     networks:
       - monaideploy
 
-  createbuckets:
-    image: minio/mc
+  #createbuckets:
+  #  image: minio/mc
+  #  environment:
+  #    MINIO_ROOT_USER: minioadmin
+  #    MINIO_ROOT_PASSWORD: minioadmin
+  #    BUCKET_NAME: monaideploy
+  #    ENDPOINT: http://minio:9000
+  #  depends_on:
+  #    minio:
+  #      condition: service_healthy
+  #  networks:
+  #    - monaideploy
+  #  entrypoint: >
+  #    /bin/sh -c "
+  #    until (/usr/bin/mc config host add myminio $$ENDPOINT $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD) do echo '...waiting...' && sleep 1; done;
+  #    /usr/bin/mc mb myminio/$$BUCKET_NAME;
+  #    /usr/bin/mc policy set public myminio/$$BUCKET_NAME;
+  #    /usr/bin/mc ls myminio;
+  #    # exit 0
+  #    "
+
+  orthanc:
+    image: "jodogne/orthanc-plugins"
+    hostname: orthanc
+    volumes:
+      - ./configs/orthanc.json:/etc/orthanc/orthanc.json
+      - .run/orthanc:/var/lib/orthanc/db/
+    ports:
+      - "1114:1114"
+      - "8089:8089"
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
-      BUCKET_NAME: monaideploy
-      ENDPOINT: http://minio:9000
-    depends_on:
-      minio:
-        condition: service_healthy
+      VERBOSE_ENABLED: "true"
     networks:
       - monaideploy
-    entrypoint: >
-      /bin/sh -c "
-      until (/usr/bin/mc config host add myminio $$ENDPOINT $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD) do echo '...waiting...' && sleep 1; done;
-      /usr/bin/mc mb myminio/$$BUCKET_NAME;
-      /usr/bin/mc policy set public myminio/$$BUCKET_NAME;
-      /usr/bin/mc ls myminio;
-      # exit 0
-      "
+    healthcheck:
+      test: ["CMD", "/probes/test-aliveness.py"]
+      start_period: 10s
+      retries: 3
+      interval: 15s
+      timeout: 30s
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}

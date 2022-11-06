@@ -14,39 +14,29 @@
  * limitations under the License.
  */
 
-using Microsoft.EntityFrameworkCore;
+using BoDi;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 {
-    [Binding]
-    public sealed class SqlHooks
+    public sealed class EfDataProvider : IDatabaseDataProvider
     {
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
-        private readonly ScenarioContext _scenarioContext;
+        private readonly ObjectContainer _objectContainer;
         private readonly InformaticsGatewayContext _dbContext;
 
-        public SqlHooks(ISpecFlowOutputHelper outputHelper, Configurations configuration, ScenarioContext scenarioContext)
+        public EfDataProvider(ISpecFlowOutputHelper outputHelper, Configurations configuration, InformaticsGatewayContext informaticsGatewayContext)
         {
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-
-            var dbPath = Path.Combine(Environment.GetEnvironmentVariable("SCRIPT_DIR"), ".run", "ig", "database", "mig.db");
-            _outputHelper.WriteLine("DICOM Adapter Database: {0}", dbPath);
-
-            var builder = new DbContextOptionsBuilder<InformaticsGatewayContext>();
-            builder.UseSqlite($"Data Source={dbPath}");
-            _dbContext = new InformaticsGatewayContext(builder.Options);
+            _dbContext = informaticsGatewayContext ?? throw new ArgumentNullException(nameof(informaticsGatewayContext)); ;
         }
 
-        [BeforeScenario("@sql_inject_acr_request")]
-        public async Task BeforeMessagingExportComplete(ISpecFlowOutputHelper outputHelper, ScenarioContext scenarioContext)
+        public async Task<string> InjectAcrRequest()
         {
             var request = new InferenceRequest
             {
@@ -59,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
                         Interface = InputInterfaceType.DicomWeb,
                         ConnectionDetails = new DicomWebConnectionDetails
                         {
-                            Uri = _configuration.OrthancOptions.DicomWebRootInternal,
+                            Uri = _configuration.OrthancOptions.DicomWebRoot,
                             AuthId = _configuration.OrthancOptions.GetBase64EncodedAuthHeader(),
                             AuthType = ConnectionAuthType.Basic
                         }
@@ -68,8 +58,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             };
             _dbContext.Add(request);
             await _dbContext.SaveChangesAsync();
-            scenarioContext[DicomDimseScuServicesStepDefinitions.KeyDestination] = request.TransactionId;
-            outputHelper.WriteLine($"Injected ACR request {request.TransactionId}");
+            _outputHelper.WriteLine($"Injected ACR request {request.TransactionId}");
+            return request.TransactionId;
         }
     }
 }

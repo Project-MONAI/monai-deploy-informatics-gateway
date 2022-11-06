@@ -18,6 +18,7 @@ using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using Ardalis.GuardClauses;
+using BoDi;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Client;
@@ -29,6 +30,7 @@ using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
+using Monai.Deploy.Messaging.RabbitMQ;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -44,31 +46,43 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         internal static readonly string KeyDestination = "EXPORT_DESTINATION";
         internal static readonly string KeyExportRequestMessage = "EXPORT_REQUEST-MESSAGE";
         internal static readonly string KeyFileSpecs = "FILE_SPECS";
+        private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly FeatureContext _featureContext;
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
         private readonly DicomInstanceGenerator _dicomInstanceGenerator;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
-        private readonly RabbitMqHooks _rabbitMqHooks;
+        private readonly RabbitMQMessagePublisherService _messagePublisher;
+        private readonly RabbitMqConsumer _receivedMessages;
+        private readonly IDatabaseDataProvider _databaseDataProvider;
 
         public DicomDimseScuServicesStepDefinitions(
+            ObjectContainer objectContainer,
             FeatureContext featureContext,
             ScenarioContext scenarioContext,
             ISpecFlowOutputHelper outputHelper,
             Configurations configuration,
             DicomInstanceGenerator dicomInstanceGenerator,
-            InformaticsGatewayClient informaticsGatewayClient,
-            RabbitMqHooks rabbitMqHooks)
+            InformaticsGatewayClient informaticsGatewayClient)
         {
+            if (objectContainer is null)
+            {
+                throw new ArgumentNullException(nameof(objectContainer));
+            }
+            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _dicomInstanceGenerator = dicomInstanceGenerator ?? throw new ArgumentNullException(nameof(dicomInstanceGenerator));
             _informaticsGatewayClient = informaticsGatewayClient ?? throw new ArgumentNullException(nameof(informaticsGatewayClient));
-            _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
             _informaticsGatewayClient.ConfigureServiceUris(new Uri(_configuration.InformaticsGatewayOptions.ApiEndpoint));
+
+
+            _messagePublisher = objectContainer.Resolve<RabbitMQMessagePublisherService>("MessagingPublisher");
+            _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("ExportCompleteSubscriber");
+            _databaseDataProvider = objectContainer.Resolve<IDatabaseDataProvider>("Database");
         }
 
         [Given(@"a DICOM destination registered with Informatics Gateway")]
@@ -81,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 {
                     Name = ScpHooks.FeatureScpAeTitle,
                     AeTitle = ScpHooks.FeatureScpAeTitle,
-                    HostIp = _configuration.TestRunnerOptions.HostIp,
+                    HostIp = _configuration.InformaticsGatewayOptions.Host,
                     Port = ScpHooks.FeatureScpPort
                 }, CancellationToken.None);
             }
@@ -97,6 +111,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 }
             }
             _scenarioContext[KeyDestination] = destination.Name;
+        }
+
+        [Given(@"an ACR request in the database")]
+        public async Task GivenDICOMInstances()
+        {
+            _scenarioContext[KeyDestination] = await _databaseDataProvider.InjectAcrRequest().ConfigureAwait(false);
         }
 
         [Given(@"(.*) (.*) studies for export")]
@@ -117,8 +137,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _outputHelper.WriteLine($"File specs: {fileSpecs.StudyCount} studies, {fileSpecs.SeriesPerStudyCount} series/study, {fileSpecs.InstancePerSeries} instances/series, {fileSpecs.FileCount} files total");
 
             var minioClient = new MinioClient()
-                .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
-                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken)
+                .WithEndpoint(_informaticsGatewayConfiguration.Storage.Settings["endpoint"])
+                .WithCredentials(_informaticsGatewayConfiguration.Storage.Settings["accessKey"], _informaticsGatewayConfiguration.Storage.Settings["accessToken"])
                 .Build();
 
             _outputHelper.WriteLine($"Uploading {fileSpecs.FileCount} files to MinIO...");
@@ -131,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 await file.SaveAsync(stream);
                 stream.Position = 0;
                 var puObjectArgs = new PutObjectArgs();
-                puObjectArgs.WithBucket(_configuration.TestRunnerOptions.Bucket)
+                puObjectArgs.WithBucket(_informaticsGatewayConfiguration.Storage.StorageServiceBucketName)
                     .WithObject(filename)
                     .WithStreamData(stream)
                     .WithObjectSize(stream.Length);
@@ -167,15 +187,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 exportRequestEvent.CorrelationId,
                 string.Empty);
 
-            _rabbitMqHooks.SetupMessageHandle(1);
-            _rabbitMqHooks.Publish(routingKey, message.ToMessage());
+            _receivedMessages.SetupMessageHandle(1);
+            _messagePublisher.Publish(routingKey, message.ToMessage());
             _scenarioContext[KeyExportRequestMessage] = exportRequestEvent;
         }
 
         [Then(@"Informatics Gateway exports the studies to the DICOM SCP")]
         public async Task ThenExportTheInstancesToTheDicomScp()
         {
-            _rabbitMqHooks.MessageWaitHandle.Wait(DicomScpWaitTimeSpan).Should().BeTrue();
+            _receivedMessages.MessageWaitHandle.Wait(DicomScpWaitTimeSpan).Should().BeTrue();
             var data = _featureContext[ScpHooks.KeyServerData] as ServerData;
             var dicomHashes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
 
@@ -189,6 +209,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Then(@"Informatics Gateway exports the studies to Orthanc")]
         public async Task ThenExportTheInstancesToOrthanc()
         {
+            _receivedMessages.MessageWaitHandle.Wait(DicomScpWaitTimeSpan).Should().BeTrue();
             var dicomHashes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
             var fileSpecs = _scenarioContext[KeyFileSpecs] as DicomInstanceGenerator.StudyGenerationSpecs;
             var httpClient = new HttpClient();

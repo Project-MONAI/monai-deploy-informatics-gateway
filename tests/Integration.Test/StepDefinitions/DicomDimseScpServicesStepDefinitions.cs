@@ -17,13 +17,14 @@
 using System.Globalization;
 using System.Net;
 using Ardalis.GuardClauses;
+using BoDi;
 using FellowOakDicom.Network;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -33,31 +34,38 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     public class DicomDimseScpServicesStepDefinitions
     {
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
+        private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
         private readonly DicomInstanceGenerator _dicomInstanceGenerator;
-        private readonly RabbitMqHooks _rabbitMqHooks;
         private readonly DicomScu _dicomScu;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
+        private readonly RabbitMqConsumer _receivedMessages;
 
         public DicomDimseScpServicesStepDefinitions(
+            ObjectContainer objectContainer,
             ScenarioContext scenarioContext,
             ISpecFlowOutputHelper outputHelper,
             Configurations configuration,
             DicomInstanceGenerator dicomInstanceGenerator,
             DicomScu dicomScu,
-            InformaticsGatewayClient informaticsGatewayClient,
-            RabbitMqHooks rabbitMqHooks)
+            InformaticsGatewayClient informaticsGatewayClient)
         {
+            if (objectContainer is null)
+            {
+                throw new ArgumentNullException(nameof(objectContainer));
+            }
+            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _dicomInstanceGenerator = dicomInstanceGenerator ?? throw new ArgumentNullException(nameof(dicomInstanceGenerator));
-            _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
             _dicomScu = dicomScu ?? throw new ArgumentNullException(nameof(dicomScu));
             _informaticsGatewayClient = informaticsGatewayClient ?? throw new ArgumentNullException(nameof(informaticsGatewayClient));
             _informaticsGatewayClient.ConfigureServiceUris(new Uri(_configuration.InformaticsGatewayOptions.ApiEndpoint));
+
+            _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
         }
 
         [Given(@"a calling AE Title '([^']*)'")]
@@ -71,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 {
                     Name = callingAeTitle,
                     AeTitle = callingAeTitle,
-                    HostIp = _configuration.TestRunnerOptions.HostIp,
+                    HostIp = _configuration.InformaticsGatewayOptions.Host,
                 }, CancellationToken.None);
             }
             catch (ProblemException ex)
@@ -102,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
             var fileSpecs = _dicomInstanceGenerator.Generate(patientId, studyCount, seriesPerStudy, modality, studySpec);
             _scenarioContext[SharedDefinitions.KeyDicomFiles] = fileSpecs;
-            _rabbitMqHooks.SetupMessageHandle(fileSpecs.NumberOfExpectedRequests(_scenarioContext[SharedDefinitions.KeyDataGrouping].ToString()));
+            _receivedMessages.SetupMessageHandle(fileSpecs.NumberOfExpectedRequests(_scenarioContext[SharedDefinitions.KeyDataGrouping].ToString()));
             _outputHelper.WriteLine($"File specs: {fileSpecs.StudyCount}, {fileSpecs.SeriesPerStudyCount}, {fileSpecs.InstancePerSeries}, {fileSpecs.FileCount}");
         }
 
@@ -149,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _scenarioContext[SharedDefinitions.KeyDimseResponse] = await _dicomScu.CEcho(
                 _configuration.InformaticsGatewayOptions.Host,
-                _configuration.InformaticsGatewayOptions.DimsePort,
+                _informaticsGatewayConfiguration.Dicom.Scp.Port,
                 callingAeTitle,
                 calledAeTitle,
                 TimeSpan.FromSeconds(clientTimeoutSeconds));
@@ -170,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NegativeOrZero(clientTimeoutSeconds, nameof(clientTimeoutSeconds));
 
             var host = _configuration.InformaticsGatewayOptions.Host;
-            var port = _configuration.InformaticsGatewayOptions.DimsePort;
+            var port = _informaticsGatewayConfiguration.Dicom.Scp.Port;
 
             var dicomFileSpec = _scenarioContext[SharedDefinitions.KeyDicomFiles] as DicomInstanceGenerator.StudyGenerationSpecs;
             dicomFileSpec.Should().NotBeNull();

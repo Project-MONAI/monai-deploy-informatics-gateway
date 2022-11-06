@@ -16,11 +16,13 @@
 
 using System.Net;
 using Ardalis.GuardClauses;
+using BoDi;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
+using Monai.Deploy.Messaging.RabbitMQ;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -29,24 +31,27 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomWebStowServiceStepDefinitions
     {
+        private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
         private readonly DicomInstanceGenerator _dicomInstanceGenerator;
-        private readonly RabbitMqHooks _rabbitMqHooks;
+        private readonly RabbitMqConsumer _receivedMessages;
 
         public DicomWebStowServiceStepDefinitions(
+            ObjectContainer objectContainer,
             ScenarioContext scenarioContext,
             ISpecFlowOutputHelper outputHelper,
             Configurations configuration,
-            DicomInstanceGenerator dicomInstanceGenerator,
-            RabbitMqHooks rabbitMqHooks)
+            DicomInstanceGenerator dicomInstanceGenerator)
         {
+            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _dicomInstanceGenerator = dicomInstanceGenerator ?? throw new ArgumentNullException(nameof(dicomInstanceGenerator));
-            _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
+
+            _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
         }
 
         [Given(@"a workflow named '(.*)'")]

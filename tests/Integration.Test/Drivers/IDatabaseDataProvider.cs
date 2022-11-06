@@ -1,5 +1,5 @@
-/*
- * Copyright 2021-2022 MONAI Consortium
+﻿/*
+ * Copyright 2022 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("Monai.Deploy.InformaticsGateway.Test")]
-[assembly: InternalsVisibleTo("Monai.Deploy.InformaticsGateway.Integration.Test")]
-
-// ILogger<ApplicationEntityManager>
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
+{
+    public interface IDatabaseDataProvider
+    {
+        Task<string> InjectAcrRequest();
+    }
+}

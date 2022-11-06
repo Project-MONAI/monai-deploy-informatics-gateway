@@ -17,12 +17,11 @@
 using System.Net.Sockets;
 using System.Text;
 using Ardalis.GuardClauses;
+using BoDi;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Monai.Deploy.Messaging.Events;
-using Monai.Deploy.Messaging.Messages;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -32,29 +31,36 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     public class HealthLevel7Definitions
     {
         internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromMinutes(2);
+        private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly FeatureContext _featureContext;
         private readonly ScenarioContext _scenarioContext;
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
-        private readonly RabbitMqHooks _rabbitMqHooks;
         private readonly Dictionary<string, HL7.Dotnetcore.Message> _input;
         private readonly Dictionary<string, string> _output;
+        private readonly RabbitMqConsumer _receivedMessages;
 
         public HealthLevel7Definitions(
+            ObjectContainer objectContainer,
             FeatureContext featureContext,
             ScenarioContext scenarioContext,
             ISpecFlowOutputHelper outputHelper,
-            Configurations configuration,
-            RabbitMqHooks rabbitMqHooks)
+            Configurations configuration)
         {
+            if (objectContainer is null)
+            {
+                throw new ArgumentNullException(nameof(objectContainer));
+            }
+            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
 
             _input = new Dictionary<string, HL7.Dotnetcore.Message>();
             _output = new Dictionary<string, string>();
+
+            _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
         }
 
         [Given(@"HL7 messages in version (.*)")]
@@ -72,14 +78,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 message.SetValue("MSH.10", file);
                 _input[file] = message;
             }
-            _rabbitMqHooks.SetupMessageHandle(1);
+            _receivedMessages.SetupMessageHandle(1);
         }
 
         [When(@"the message are sent to Informatics Gateway")]
         public async Task WhenTheMessagesAreSentToInformaticsGateway()
         {
             using var tcpClient = new TcpClient();
-            await tcpClient.ConnectAsync(_configuration.InformaticsGatewayOptions.Host, _configuration.InformaticsGatewayOptions.Hl7Port);
+            await tcpClient.ConnectAsync(_configuration.InformaticsGatewayOptions.Host, _informaticsGatewayConfiguration.Hl7.Port);
             var networkStream = tcpClient.GetStream();
             foreach (var file in _input.Keys)
             {
@@ -128,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             }
 
             using var tcpClient = new TcpClient();
-            await tcpClient.ConnectAsync(_configuration.InformaticsGatewayOptions.Host, _configuration.InformaticsGatewayOptions.Hl7Port);
+            await tcpClient.ConnectAsync(_configuration.InformaticsGatewayOptions.Host, _informaticsGatewayConfiguration.Hl7.Port);
             var networkStream = tcpClient.GetStream();
             await networkStream.WriteAsync(messages.ToArray(), 0, messages.Count);
             var buffer = new byte[512];
@@ -177,23 +183,22 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Then(@"a workflow requests sent to message broker")]
         public void ThenAWorkflowRequestIsSentToMessageBroker()
         {
-            _rabbitMqHooks.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
+            _receivedMessages.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
         }
 
         [Then(@"messages are uploaded to storage service")]
         public async Task ThenMessageAreUploadedToStorageService()
         {
-            var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
-            messages.Should().NotBeNullOrEmpty().And.HaveCount(1);
-            var message = messages.First();
+            _receivedMessages.Messages.Should().NotBeNullOrEmpty().And.HaveCount(1);
+            var message = _receivedMessages.Messages.First();
             message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
             var request = message.ConvertTo<WorkflowRequestEvent>();
             request.Should().NotBeNull();
             request.FileCount.Should().Be(_input.Count);
 
             var minioClient = new MinioClient()
-                .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
-                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken)
+                .WithEndpoint(_informaticsGatewayConfiguration.Storage.Settings["endpoint"])
+                .WithCredentials(_informaticsGatewayConfiguration.Storage.Settings["accessKey"], _informaticsGatewayConfiguration.Storage.Settings["accessToken"])
                 .Build();
 
             var listOjbectsArgs = new ListObjectsArgs()
