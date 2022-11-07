@@ -50,7 +50,7 @@
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.8" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.8" />
-    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.8" />
+    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.10" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.1.5" />
     <PackageReference Include="NLog" Version="5.0.5" />
     <PackageReference Include="Polly" Version="7.2.3" />
