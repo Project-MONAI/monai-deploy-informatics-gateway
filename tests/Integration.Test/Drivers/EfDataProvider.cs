@@ -26,7 +26,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
     {
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
-        private readonly ObjectContainer _objectContainer;
         private readonly InformaticsGatewayContext _dbContext;
 
         public EfDataProvider(ISpecFlowOutputHelper outputHelper, Configurations configuration, InformaticsGatewayContext informaticsGatewayContext)
