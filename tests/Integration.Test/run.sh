@@ -127,6 +127,7 @@ function run_test() {
         dotnet test -c Debug $FEATURE 2>&1 | tee $LOG_DIR/run.log
     fi
     EXITCODE=$?
+    echo "dotnet test completed with exit code $EXITCODE"
     set -e
     popd
 }

@@ -27,6 +27,25 @@ The integration test suite is written using SpecFlow & Gherkin, a Behavior Drive
 
 ## Running Integration Test
 
-To run the integration test, first, update the `TAG`  value to one of the [available image versions](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/pkgs/container/monai-deploy-informatics-gateway) in the `.env.dev` file. Then, execute `./run.sh --dev` to start the test.
+Before running the test suite, bring up all third-party dependencies using the docker compose file found in the `docker-compose` directory.
 
-The script sets up the environment and starts docker-compose, pulling all required Docker images, including, RabbitMQ, MinIO, and Informatics Gateway.
+The test suite may be executed within Visual Studio's Test Explorer or using `dotnet test`.
+
+```bash
+dotnet test
+
+dotnet test --filter AcrApi # run only the specified test feature
+```
+
+### Linux
+
+On Linux, the `tests/Integration.Test/run.sh` script is available to bring up third-party dependencies & run the tests.
+
+
+```bash
+cd tests/Integration.Test
+./run.sh
+
+./run.sh -f AcrApi  # run only the specified test feature
+
+```
