@@ -28,7 +28,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly ConcurrentBag<Message> _messages;
 
-        public IReadOnlyList<Message> Messages { get { return _messages.ToList(); } }
+        public IReadOnlyList<Message> Messages
+        { get { return _messages.ToList(); } }
         public CountdownEvent MessageWaitHandle { get; private set; }
 
         public RabbitMqConsumer(RabbitMQMessageSubscriberService subscriberService, string queueName, ISpecFlowOutputHelper outputHelper)
@@ -47,7 +48,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _messages = new ConcurrentBag<Message>();
 
-
             subscriberService.Subscribe(
                 queueName,
                 queueName,
@@ -58,7 +58,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                     subscriberService.Acknowledge(eventArgs.Message);
                     _outputHelper.WriteLine($"{DateTime.UtcNow} - {queueName} message received with correlation ID={eventArgs.Message.CorrelationId}, delivery tag={eventArgs.Message.DeliveryTag}");
                     MessageWaitHandle?.Signal();
-
                 });
         }
 

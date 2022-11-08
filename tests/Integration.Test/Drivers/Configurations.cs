@@ -143,6 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             }
         }
     }
+
     /// <summary>
     /// Maps modality type specs from study.json
     /// </summary>

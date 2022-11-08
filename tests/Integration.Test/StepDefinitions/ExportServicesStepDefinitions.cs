@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-using System.Globalization;
 using System.Net;
 using System.Net.Http.Headers;
 using Ardalis.GuardClauses;
 using BoDi;
-using Minio;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
@@ -31,7 +29,6 @@ using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Messaging.RabbitMQ;
-using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -39,50 +36,35 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomDimseScuServicesStepDefinitions
     {
-        internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(2);
+        internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(7);
         internal static readonly TimeSpan DicomWebWaitTimeSpan = TimeSpan.FromMinutes(2);
-        internal static readonly string KeyPatientId = "PATIENT_ID";
-        internal static readonly string KeyDicomHashes = "DICOM_FILES";
-        internal static readonly string KeyDestination = "EXPORT_DESTINATION";
-        internal static readonly string KeyExportRequestMessage = "EXPORT_REQUEST-MESSAGE";
-        internal static readonly string KeyFileSpecs = "FILE_SPECS";
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
-        private readonly FeatureContext _featureContext;
-        private readonly ScenarioContext _scenarioContext;
-        private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly Configurations _configuration;
-        private readonly DicomInstanceGenerator _dicomInstanceGenerator;
+        private readonly DicomScp _dicomServer;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
+        private readonly IDataClient _dataSink;
         private readonly RabbitMQMessagePublisherService _messagePublisher;
         private readonly RabbitMqConsumer _receivedMessages;
         private readonly IDatabaseDataProvider _databaseDataProvider;
+        private readonly DataProvider _dataProvider;
+        private string _dicomDestination;
 
-        public DicomDimseScuServicesStepDefinitions(
-            ObjectContainer objectContainer,
-            FeatureContext featureContext,
-            ScenarioContext scenarioContext,
-            ISpecFlowOutputHelper outputHelper,
-            Configurations configuration,
-            DicomInstanceGenerator dicomInstanceGenerator,
-            InformaticsGatewayClient informaticsGatewayClient)
+        public DicomDimseScuServicesStepDefinitions(ObjectContainer objectContainer, Configurations configuration)
         {
             if (objectContainer is null)
             {
                 throw new ArgumentNullException(nameof(objectContainer));
             }
             _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
-            _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
-            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-            _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _dicomInstanceGenerator = dicomInstanceGenerator ?? throw new ArgumentNullException(nameof(dicomInstanceGenerator));
-            _informaticsGatewayClient = informaticsGatewayClient ?? throw new ArgumentNullException(nameof(informaticsGatewayClient));
-            _informaticsGatewayClient.ConfigureServiceUris(new Uri(_configuration.InformaticsGatewayOptions.ApiEndpoint));
 
-
+            _dicomServer = objectContainer.Resolve<DicomScp>("DicomScp");
             _messagePublisher = objectContainer.Resolve<RabbitMQMessagePublisherService>("MessagingPublisher");
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("ExportCompleteSubscriber");
             _databaseDataProvider = objectContainer.Resolve<IDatabaseDataProvider>("Database");
+            _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
+            _informaticsGatewayClient = objectContainer.Resolve<InformaticsGatewayClient>("InformaticsGatewayClient");
+            _dataSink = objectContainer.Resolve<IDataClient>("MinioClient");
         }
 
         [Given(@"a DICOM destination registered with Informatics Gateway")]
@@ -93,30 +75,30 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             {
                 destination = await _informaticsGatewayClient.DicomDestinations.Create(new DestinationApplicationEntity
                 {
-                    Name = ScpHooks.FeatureScpAeTitle,
-                    AeTitle = ScpHooks.FeatureScpAeTitle,
+                    Name = _dicomServer.FeatureScpAeTitle,
+                    AeTitle = _dicomServer.FeatureScpAeTitle,
                     HostIp = _configuration.InformaticsGatewayOptions.Host,
-                    Port = ScpHooks.FeatureScpPort
+                    Port = _dicomServer.FeatureScpPort
                 }, CancellationToken.None);
             }
             catch (ProblemException ex)
             {
                 if (ex.ProblemDetails.Status == (int)HttpStatusCode.Conflict && ex.ProblemDetails.Detail.Contains("already exists"))
                 {
-                    destination = await _informaticsGatewayClient.DicomDestinations.GetAeTitle(ScpHooks.FeatureScpAeTitle, CancellationToken.None);
+                    destination = await _informaticsGatewayClient.DicomDestinations.GetAeTitle(_dicomServer.FeatureScpAeTitle, CancellationToken.None);
                 }
                 else
                 {
                     throw;
                 }
             }
-            _scenarioContext[KeyDestination] = destination.Name;
+            _dicomDestination = destination.Name;
         }
 
         [Given(@"an ACR request in the database")]
         public async Task GivenDICOMInstances()
         {
-            _scenarioContext[KeyDestination] = await _databaseDataProvider.InjectAcrRequest().ConfigureAwait(false);
+            _dicomDestination = await _databaseDataProvider.InjectAcrRequest().ConfigureAwait(false);
         }
 
         [Given(@"(.*) (.*) studies for export")]
@@ -125,41 +107,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
             Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
 
-            _outputHelper.WriteLine($"Generating {studyCount} {modality} study");
-            _configuration.StudySpecs.ContainsKey(modality).Should().BeTrue();
-
-            var studySpec = _configuration.StudySpecs[modality];
-            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
-            var fileSpecs = _dicomInstanceGenerator.Generate(patientId, studyCount, modality, studySpec);
-
-            var hashes = new Dictionary<string, string>();
-
-            _outputHelper.WriteLine($"File specs: {fileSpecs.StudyCount} studies, {fileSpecs.SeriesPerStudyCount} series/study, {fileSpecs.InstancePerSeries} instances/series, {fileSpecs.FileCount} files total");
-
-            var minioClient = new MinioClient()
-                .WithEndpoint(_informaticsGatewayConfiguration.Storage.Settings["endpoint"])
-                .WithCredentials(_informaticsGatewayConfiguration.Storage.Settings["accessKey"], _informaticsGatewayConfiguration.Storage.Settings["accessToken"])
-                .Build();
-
-            _outputHelper.WriteLine($"Uploading {fileSpecs.FileCount} files to MinIO...");
-            foreach (var file in fileSpecs.Files)
-            {
-                var filename = file.GenerateFileName();
-                hashes.Add(filename, file.CalculateHash());
-
-                var stream = new MemoryStream();
-                await file.SaveAsync(stream);
-                stream.Position = 0;
-                var puObjectArgs = new PutObjectArgs();
-                puObjectArgs.WithBucket(_informaticsGatewayConfiguration.Storage.StorageServiceBucketName)
-                    .WithObject(filename)
-                    .WithStreamData(stream)
-                    .WithObjectSize(stream.Length);
-                await minioClient.PutObjectAsync(puObjectArgs);
-            }
-            _scenarioContext[KeyDicomHashes] = hashes;
-            _scenarioContext[KeyPatientId] = patientId;
-            _scenarioContext[KeyFileSpecs] = fileSpecs;
+            _dataProvider.GenerateDicomData(modality, studyCount);
+            await _dataSink.SendAsync(_dataProvider);
+            _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }
 
         [When(@"a export request is sent for '([^']*)'")]
@@ -167,16 +117,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             Guard.Against.NullOrWhiteSpace(routingKey, nameof(routingKey));
 
-            var dicomHashes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
-
-            var destination = _scenarioContext[KeyDestination].ToString();
-
             var exportRequestEvent = new ExportRequestEvent
             {
                 CorrelationId = Guid.NewGuid().ToString(),
-                Destinations = new[] { destination },
+                Destinations = new[] { _dicomDestination },
                 ExportTaskId = Guid.NewGuid().ToString(),
-                Files = dicomHashes.Keys.ToList(),
+                Files = _dataProvider.DicomSpecs.FileHashes.Keys.ToList(),
                 MessageId = Guid.NewGuid().ToString(),
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
             };
@@ -189,20 +135,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _receivedMessages.SetupMessageHandle(1);
             _messagePublisher.Publish(routingKey, message.ToMessage());
-            _scenarioContext[KeyExportRequestMessage] = exportRequestEvent;
         }
 
         [Then(@"Informatics Gateway exports the studies to the DICOM SCP")]
         public async Task ThenExportTheInstancesToTheDicomScp()
         {
             _receivedMessages.MessageWaitHandle.Wait(DicomScpWaitTimeSpan).Should().BeTrue();
-            var data = _featureContext[ScpHooks.KeyServerData] as ServerData;
-            var dicomHashes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
 
-            foreach (var key in dicomHashes.Keys)
+            foreach (var key in _dataProvider.DicomSpecs.FileHashes.Keys)
             {
-                (await Extensions.WaitUntil(() => data.Instances.ContainsKey(key), DicomScpWaitTimeSpan)).Should().BeTrue("{0} should be received", key);
-                data.Instances.Should().ContainKey(key).WhoseValue.Equals(dicomHashes[key]);
+                (await Extensions.WaitUntil(() => _dicomServer.Instances.ContainsKey(key), DicomScpWaitTimeSpan)).Should().BeTrue("{0} should be received", key);
+                _dicomServer.Instances.Should().ContainKey(key).WhoseValue.Equals(_dataProvider.DicomSpecs.FileHashes[key]);
             }
         }
 
@@ -210,8 +153,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         public async Task ThenExportTheInstancesToOrthanc()
         {
             _receivedMessages.MessageWaitHandle.Wait(DicomScpWaitTimeSpan).Should().BeTrue();
-            var dicomHashes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
-            var fileSpecs = _scenarioContext[KeyFileSpecs] as DicomInstanceGenerator.StudyGenerationSpecs;
             var httpClient = new HttpClient();
             var dicomWebClient = new DicomWebClient(httpClient, null);
             dicomWebClient.ConfigureServiceUris(new Uri(_configuration.OrthancOptions.DicomWebRoot));
@@ -222,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                  try
                  {
                      var instanceFound = 0;
-                     await foreach (var dicomFile in dicomWebClient.Wado.Retrieve(fileSpecs.StudyInstanceUids[0]))
+                     await foreach (var dicomFile in dicomWebClient.Wado.Retrieve(_dataProvider.DicomSpecs.StudyInstanceUids[0]))
                      {
                          var key = dicomFile.GenerateFileName();
                          var hash = dicomFile.CalculateHash();
@@ -237,10 +178,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                  return actualHashes;
              }, (Dictionary<string, string> expected) =>
              {
-                 return expected.Count == dicomHashes.Count;
+                 return expected.Count == _dataProvider.DicomSpecs.FileHashes.Count;
              }, DicomWebWaitTimeSpan, 1000);
 
-            result.Should().NotBeNull().And.HaveCount(dicomHashes.Count);
+            result.Should().NotBeNull().And.HaveCount(_dataProvider.DicomSpecs.FileHashes.Count);
         }
     }
 }

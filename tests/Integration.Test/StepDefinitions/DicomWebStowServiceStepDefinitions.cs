@@ -14,16 +14,12 @@
  * limitations under the License.
  */
 
-using System.Net;
 using Ardalis.GuardClauses;
 using BoDi;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
-using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.Messaging.RabbitMQ;
-using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -32,26 +28,30 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     public class DicomWebStowServiceStepDefinitions
     {
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
-        private readonly ScenarioContext _scenarioContext;
-        private readonly ISpecFlowOutputHelper _outputHelper;
-        private readonly Configurations _configuration;
-        private readonly DicomInstanceGenerator _dicomInstanceGenerator;
+        private readonly Configurations _configurations;
         private readonly RabbitMqConsumer _receivedMessages;
+        private readonly DataProvider _dataProvider;
+        private readonly IDataClient _dataSink;
 
-        public DicomWebStowServiceStepDefinitions(
-            ObjectContainer objectContainer,
-            ScenarioContext scenarioContext,
-            ISpecFlowOutputHelper outputHelper,
-            Configurations configuration,
-            DicomInstanceGenerator dicomInstanceGenerator)
+        public DicomWebStowServiceStepDefinitions(ObjectContainer objectContainer, Configurations configuration)
         {
-            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
-            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-            _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _dicomInstanceGenerator = dicomInstanceGenerator ?? throw new ArgumentNullException(nameof(dicomInstanceGenerator));
+            _configurations = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
+            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
+            _dataSink = objectContainer.Resolve<IDataClient>("DicomWebClient");
+        }
+
+        [Given(@"(.*) (.*) studies with '(.*)' grouping")]
+        public void GivenNStudies(int studyCount, string modality, string grouping)
+        {
+            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
+            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
+
+            _dataProvider.GenerateDicomData(modality, studyCount);
+            _dataProvider.StudyGrouping = grouping;
+            _receivedMessages.SetupMessageHandle(_dataProvider.DicomSpecs.NumberOfExpectedRequests(grouping));
         }
 
         [Given(@"a workflow named '(.*)'")]
@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             Guard.Against.NullOrWhiteSpace(workflowName, nameof(workflowName));
 
-            _scenarioContext[SharedDefinitions.KeyWorkflows] = new string[] { workflowName };
+            _dataProvider.Workflows = new string[] { workflowName };
         }
 
         [When(@"the studies are uploaded to the DICOMWeb STOW-RS service at '([^']*)'")]
@@ -67,10 +67,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             Guard.Against.NullOrWhiteSpace(endpoint, nameof(endpoint));
 
-            await UploadStudies(endpoint, async (DicomWebClient dicomWebClient, DicomInstanceGenerator.StudyGenerationSpecs specs) =>
+            await _dataSink.SendAsync(_dataProvider, $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}", _dataProvider.Workflows, async (DicomWebClient dicomWebClient, DicomDataSpecs specs) =>
             {
                 return await dicomWebClient.Stow.Store(specs.Files);
             });
+            _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }
 
         [When(@"the studies are uploaded to the DICOMWeb STOW-RS service at '([^']*)' with StudyInstanceUid")]
@@ -78,45 +79,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             Guard.Against.NullOrWhiteSpace(endpoint, nameof(endpoint));
 
-            await UploadStudies(endpoint, async (DicomWebClient dicomWebClient, DicomInstanceGenerator.StudyGenerationSpecs specs) =>
+            await _dataSink.SendAsync(_dataProvider, $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}", _dataProvider.Workflows, async (DicomWebClient dicomWebClient, DicomDataSpecs specs) =>
             {
                 // Note: the MIG DICOMweb client ignores instances without matching StudyInstanceUID.
                 return await dicomWebClient.Stow.Store(specs.StudyInstanceUids.First(), specs.Files);
             });
-        }
-
-        private async Task UploadStudies(string endpoint, Func<DicomWebClient, DicomInstanceGenerator.StudyGenerationSpecs, Task<DicomWebResponse<string>>> stowFunc)
-        {
-            var dicomFileSpec = _scenarioContext[SharedDefinitions.KeyDicomFiles] as DicomInstanceGenerator.StudyGenerationSpecs;
-            dicomFileSpec.Should().NotBeNull();
-            dicomFileSpec.StudyInstanceUids.Should().NotBeNullOrEmpty();
-
-            _outputHelper.WriteLine($"POSTing studies to {endpoint} with {dicomFileSpec.Files.Count} files...");
-            var httpClient = new HttpClient();
-            var dicomWebClient = new DicomWebClient(httpClient, null);
-            dicomWebClient.ConfigureServiceUris(new Uri($"{_configuration.InformaticsGatewayOptions.ApiEndpoint}{endpoint}"));
-
-            if (_scenarioContext.ContainsKey(SharedDefinitions.KeyWorkflows))
-            {
-                var workflows = _scenarioContext[SharedDefinitions.KeyWorkflows] as string[];
-                workflows.Should().NotBeNullOrEmpty();
-                dicomWebClient.ConfigureServicePrefix(DicomWebServiceType.Stow, $"{workflows.First()}/");
-                _outputHelper.WriteLine($"configured STOW service prefix = {workflows.First()}...");
-            }
-
-            var results = await stowFunc(dicomWebClient, dicomFileSpec);
-            results.StatusCode.Should().Be(HttpStatusCode.OK);
-
-            // Remove after sent to reduce memory usage
-            var dicomFileSize = new Dictionary<string, string>();
-            foreach (var dicomFile in dicomFileSpec.Files)
-            {
-                var key = dicomFile.GenerateFileName();
-                dicomFileSize[key] = dicomFile.CalculateHash();
-            }
-
-            _scenarioContext[SharedDefinitions.KeyDicomHashes] = dicomFileSize;
-            dicomFileSpec.Files.Clear();
+            _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }
     }
 }

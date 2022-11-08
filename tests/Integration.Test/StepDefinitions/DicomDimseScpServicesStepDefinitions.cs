@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System.Globalization;
 using System.Net;
 using Ardalis.GuardClauses;
 using BoDi;
@@ -25,7 +24,6 @@ using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -35,37 +33,23 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     {
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
-        private readonly ScenarioContext _scenarioContext;
-        private readonly ISpecFlowOutputHelper _outputHelper;
+        private readonly ObjectContainer _objectContainer;
         private readonly Configurations _configuration;
-        private readonly DicomInstanceGenerator _dicomInstanceGenerator;
-        private readonly DicomScu _dicomScu;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
         private readonly RabbitMqConsumer _receivedMessages;
+        private readonly DataProvider _dataProvider;
 
         public DicomDimseScpServicesStepDefinitions(
             ObjectContainer objectContainer,
-            ScenarioContext scenarioContext,
-            ISpecFlowOutputHelper outputHelper,
-            Configurations configuration,
-            DicomInstanceGenerator dicomInstanceGenerator,
-            DicomScu dicomScu,
-            InformaticsGatewayClient informaticsGatewayClient)
+            Configurations configuration)
         {
-            if (objectContainer is null)
-            {
-                throw new ArgumentNullException(nameof(objectContainer));
-            }
+            _objectContainer = objectContainer ?? throw new ArgumentNullException(nameof(objectContainer));
             _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
-            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-            _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _dicomInstanceGenerator = dicomInstanceGenerator ?? throw new ArgumentNullException(nameof(dicomInstanceGenerator));
-            _dicomScu = dicomScu ?? throw new ArgumentNullException(nameof(dicomScu));
-            _informaticsGatewayClient = informaticsGatewayClient ?? throw new ArgumentNullException(nameof(informaticsGatewayClient));
-            _informaticsGatewayClient.ConfigureServiceUris(new Uri(_configuration.InformaticsGatewayOptions.ApiEndpoint));
 
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
+            _informaticsGatewayClient = objectContainer.Resolve<InformaticsGatewayClient>("InformaticsGatewayClient");
         }
 
         [Given(@"a calling AE Title '([^']*)'")]
@@ -103,15 +87,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
             Guard.Against.NegativeOrZero(seriesPerStudy, nameof(seriesPerStudy));
 
-            _outputHelper.WriteLine($"Generating {studyCount} {modality} study");
-            _configuration.StudySpecs.ContainsKey(modality).Should().BeTrue();
-
-            var studySpec = _configuration.StudySpecs[modality];
-            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
-            var fileSpecs = _dicomInstanceGenerator.Generate(patientId, studyCount, seriesPerStudy, modality, studySpec);
-            _scenarioContext[SharedDefinitions.KeyDicomFiles] = fileSpecs;
-            _receivedMessages.SetupMessageHandle(fileSpecs.NumberOfExpectedRequests(_scenarioContext[SharedDefinitions.KeyDataGrouping].ToString()));
-            _outputHelper.WriteLine($"File specs: {fileSpecs.StudyCount}, {fileSpecs.SeriesPerStudyCount}, {fileSpecs.InstancePerSeries}, {fileSpecs.FileCount}");
+            _dataProvider.GenerateDicomData(modality, studyCount, seriesPerStudy);
+            _receivedMessages.SetupMessageHandle(_dataProvider.DicomSpecs.NumberOfExpectedRequests(_dataProvider.StudyGrouping));
         }
 
         [Given(@"a called AE Title named '([^']*)' that groups by '([^']*)' for (.*) seconds")]
@@ -121,10 +98,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NullOrWhiteSpace(grouping, nameof(grouping));
             Guard.Against.NegativeOrZero(groupingTimeout, nameof(groupingTimeout));
 
-            _scenarioContext[SharedDefinitions.KeyDataGrouping] = grouping;
+            _dataProvider.StudyGrouping = grouping;
             try
             {
-                _scenarioContext[SharedDefinitions.KeyCalledAet] = await _informaticsGatewayClient.MonaiScpAeTitle.Create(new MonaiApplicationEntity
+                await _informaticsGatewayClient.MonaiScpAeTitle.Create(new MonaiApplicationEntity
                 {
                     AeTitle = calledAeTitle,
                     Name = calledAeTitle,
@@ -132,14 +109,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Timeout = groupingTimeout,
                     Workflows = new List<string>(DummyWorkflows)
                 }, CancellationToken.None);
-                _scenarioContext[SharedDefinitions.KeyWorkflows] = DummyWorkflows;
+                _dataProvider.Workflows = DummyWorkflows;
             }
             catch (ProblemException ex)
             {
                 if (ex.ProblemDetails.Status == (int)HttpStatusCode.Conflict &&
                     ex.ProblemDetails.Detail.Contains("already exists"))
                 {
-                    _scenarioContext[SharedDefinitions.KeyCalledAet] = await _informaticsGatewayClient.MonaiScpAeTitle.GetAeTitle(calledAeTitle, CancellationToken.None);
+                    await _informaticsGatewayClient.MonaiScpAeTitle.GetAeTitle(calledAeTitle, CancellationToken.None);
                 }
                 else
                 {
@@ -155,10 +132,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
             Guard.Against.NegativeOrZero(clientTimeoutSeconds, nameof(clientTimeoutSeconds));
 
-            _scenarioContext[SharedDefinitions.KeyDimseResponse] = await _dicomScu.CEcho(
+            var echoScu = _objectContainer.Resolve<IDataClient>("EchoSCU");
+            await echoScu.SendAsync(
+                _dataProvider,
+                callingAeTitle,
                 _configuration.InformaticsGatewayOptions.Host,
                 _informaticsGatewayConfiguration.Dicom.Scp.Port,
-                callingAeTitle,
                 calledAeTitle,
                 TimeSpan.FromSeconds(clientTimeoutSeconds));
         }
@@ -166,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Then(@"a successful response should be received")]
         public void ThenASuccessfulResponseShouldBeReceived()
         {
-            (_scenarioContext[SharedDefinitions.KeyDimseResponse] as DicomStatus).Should().Be(DicomStatus.Success);
+            _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
         }
 
         [When(@"a C-STORE-RQ is sent to '([^']*)' with AET '([^']*)' from '([^']*)' with timeout of (.*) seconds")]
@@ -177,29 +156,22 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
             Guard.Against.NegativeOrZero(clientTimeoutSeconds, nameof(clientTimeoutSeconds));
 
+            var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");
+
             var host = _configuration.InformaticsGatewayOptions.Host;
             var port = _informaticsGatewayConfiguration.Dicom.Scp.Port;
 
-            var dicomFileSpec = _scenarioContext[SharedDefinitions.KeyDicomFiles] as DicomInstanceGenerator.StudyGenerationSpecs;
+            var dicomFileSpec = _dataProvider.DicomSpecs;
             dicomFileSpec.Should().NotBeNull();
-            _scenarioContext[SharedDefinitions.KeyDimseResponse] = await _dicomScu.CStore(
+            await storeScu.SendAsync(
+                _dataProvider,
+                callingAeTitle,
                 host,
                 port,
-                callingAeTitle,
                 calledAeTitle,
-                dicomFileSpec.Files,
                 TimeSpan.FromSeconds(clientTimeoutSeconds));
 
-            // Remove after sent to reduce memory usage
-            var dicomFileSize = new Dictionary<string, string>();
-            foreach (var dicomFile in dicomFileSpec.Files)
-            {
-                var key = dicomFile.GenerateFileName();
-                dicomFileSize[key] = dicomFile.CalculateHash();
-            }
-
-            _scenarioContext[SharedDefinitions.KeyDicomHashes] = dicomFileSize;
-            dicomFileSpec.Files.Clear();
+            _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }
     }
 }

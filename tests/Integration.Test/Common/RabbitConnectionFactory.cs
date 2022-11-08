@@ -17,11 +17,11 @@
 using Monai.Deploy.InformaticsGateway.Configuration;
 using RabbitMQ.Client;
 
-namespace Monai.Deploy.WorkflowManager.IntegrationTests.Support
+namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 {
     public static class RabbitConnectionFactory
     {
-        private static IModel? Channel { get; set; }
+        private static IModel Channel { get; set; }
 
         public static IModel GetRabbitConnection(MessageBrokerConfiguration configuration)
         {

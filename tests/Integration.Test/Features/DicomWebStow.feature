@@ -20,9 +20,9 @@ Feature: DICOMweb STOW-RS Service
     Requirements covered:
     - [STOW-RS] MIG SHALL be able to allow users to upload DICOM objects via DICOMweb STOW-RS
 
-    @messaging_workflow_request @messaging @dicomweb_stow
+    @messaging_workflow_request @messaging
     Scenario: Triggers a new workflow request via DICOMWeb STOW-RS
-        Given <count> <modality> studies
+        Given <count> <modality> studies with 'stow_none' grouping
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/'
         Then 1 workflow requests sent to message broker
         And studies are uploaded to storage service
@@ -31,9 +31,9 @@ Feature: DICOMweb STOW-RS Service
             | MR       | 1     |
             | MG       | 2     |
 
-    @messaging_workflow_request @messaging @dicomweb_stow_study
+    @messaging_workflow_request @messaging
     Scenario: Triggers a new workflow with given study instance UID request via DICOMWeb STOW-RS
-        Given <count> <modality> studies
+        Given <count> <modality> studies with 'stow_study' grouping
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/' with StudyInstanceUid
         Then 1 workflow requests sent to message broker
         And studies are uploaded to storage service
@@ -42,9 +42,9 @@ Feature: DICOMweb STOW-RS Service
             | CT       | 2     |
             | US       | 1     |
 
-    @messaging_workflow_request @messaging @dicomweb_stow
+    @messaging_workflow_request @messaging 
     Scenario: Triggers a new workflow via DICOMWeb STOW-RS
-        Given <count> <modality> studies
+        Given <count> <modality> studies with 'stow_none' grouping
         And a workflow named 'MyWorkflow'
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/'
         Then 1 workflow requests sent to message broker
@@ -54,9 +54,9 @@ Feature: DICOMweb STOW-RS Service
             | MR       | 2     |
             | US       | 1     |
 
-    @messaging_workflow_request @messaging @dicomweb_stow_study
+    @messaging_workflow_request @messaging
     Scenario: Triggers a specific workflow with given study instance UID request via DICOMWeb STOW-RS
-        Given <count> <modality> studies
+        Given <count> <modality> studies with 'stow_study' grouping
         And a workflow named 'MyWorkflow'
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/' with StudyInstanceUid
         Then 1 workflow requests sent to message broker

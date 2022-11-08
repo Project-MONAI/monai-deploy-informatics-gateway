@@ -15,20 +15,12 @@
  * limitations under the License.
  */
 
-using System.Globalization;
-using System.Text;
 using BoDi;
-using FellowOakDicom;
 using FellowOakDicom.Network;
-using FellowOakDicom.Serialization;
-using Minio;
-using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.Messaging.Events;
-using Monai.Deploy.Messaging.RabbitMQ;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
@@ -37,211 +29,70 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class AcrApiStepDefinitions
     {
-        internal static readonly string KeyDicomFiles = "DICOM_FILES";
-        internal static readonly string KeyInferenceRequest = "INFERENCE_REQUEST";
-        internal static readonly string KeyDicomHashes = "DICOM_HASHES";
         internal static readonly int WorkflowStudyCount = 1;
 
         internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromSeconds(30);
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
-        private readonly ScenarioContext _scenarioContext;
+        private readonly ObjectContainer _objectContainer;
         private readonly ISpecFlowOutputHelper _outputHelper;
-        private readonly Configurations _configuration;
-        private readonly DicomInstanceGenerator _dicomInstanceGenerator;
-        private readonly DicomScu _dicomScu;
-        private readonly InformaticsGatewayClient _informaticsGatewayClient;
+        private readonly Configurations _configurations;
         private readonly RabbitMqConsumer _receivedMessages;
+        private readonly DataProvider _dataProvider;
+        private readonly Assertions _assertions;
+        private readonly InformaticsGatewayClient _informaticsGatewayClient;
 
-        public AcrApiStepDefinitions(
-            ObjectContainer objectContainer,
-            ScenarioContext scenarioContext,
-            ISpecFlowOutputHelper outputHelper,
-            Configurations configuration,
-            DicomInstanceGenerator dicomInstanceGenerator,
-            DicomScu dicomScu,
-            InformaticsGatewayClient informaticsGatewayClient)
+        public AcrApiStepDefinitions(ObjectContainer objectContainer, ISpecFlowOutputHelper outputHelper, Configurations configuration)
         {
-            if (objectContainer is null)
-            {
-                throw new ArgumentNullException(nameof(objectContainer));
-            }
+            _objectContainer = objectContainer ?? throw new ArgumentNullException(nameof(objectContainer));
             _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
-            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _dicomInstanceGenerator = dicomInstanceGenerator ?? throw new ArgumentNullException(nameof(dicomInstanceGenerator));
-            _dicomScu = dicomScu ?? throw new ArgumentNullException(nameof(dicomScu));
-            _informaticsGatewayClient = informaticsGatewayClient ?? throw new ArgumentNullException(nameof(informaticsGatewayClient));
-            _informaticsGatewayClient.ConfigureServiceUris(new Uri(_configuration.InformaticsGatewayOptions.ApiEndpoint));
+            _configurations = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
+            _assertions = objectContainer.Resolve<Assertions>("Assertions");
+            _informaticsGatewayClient = objectContainer.Resolve<InformaticsGatewayClient>("InformaticsGatewayClient");
         }
 
         [Given(@"a DICOM study on a remote DICOMweb service")]
         public async Task GivenADICOMStudySentToAETFromWithTimeoutOfSeconds()
         {
             var modality = "US";
-            _outputHelper.WriteLine($"Generating {WorkflowStudyCount} {modality} study");
-            _configuration.StudySpecs.ContainsKey(modality).Should().BeTrue();
-
-            var studySpec = _configuration.StudySpecs[modality];
-            var patientId = DateTime.Now.ToString("yyyyMMddHHmmssfff", CultureInfo.InvariantCulture);
-            var fileSpecs = _dicomInstanceGenerator.Generate(patientId, WorkflowStudyCount, modality, studySpec);
-            _scenarioContext[KeyDicomFiles] = fileSpecs;
+            _dataProvider.GenerateDicomData(modality, WorkflowStudyCount);
             _receivedMessages.SetupMessageHandle(WorkflowStudyCount);
-            _outputHelper.WriteLine($"File specs: {fileSpecs.StudyCount}, {fileSpecs.SeriesPerStudyCount}, {fileSpecs.InstancePerSeries}, {fileSpecs.FileCount}");
-            var result = await _dicomScu.CStore(_configuration.OrthancOptions.Host, _configuration.OrthancOptions.DimsePort, "TEST-RUNNER", "ORTHANC", fileSpecs.Files, TimeSpan.FromSeconds(300));
-            result.Should().Be(DicomStatus.Success);
 
-            // Remove after sent to reduce memory usage
-            var dicomFileSize = new Dictionary<string, string>();
-            foreach (var dicomFile in fileSpecs.Files)
-            {
-                var key = dicomFile.GenerateFileName();
-                dicomFileSize[key] = dicomFile.CalculateHash();
-            }
-
-            _scenarioContext[KeyDicomHashes] = dicomFileSize;
+            var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");
+            await storeScu.SendAsync(_dataProvider, "TEST-RUNNER", _configurations.OrthancOptions.Host, _configurations.OrthancOptions.DimsePort, "ORTHANC", TimeSpan.FromSeconds(300));
+            _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
         }
 
         [Given(@"an ACR API request to query & retrieve by (.*)")]
         public void GivenAnACRAPIRequestToQueryRetrieveByStudy(string requestType)
         {
-            var fileSpecs = _scenarioContext[KeyDicomFiles] as DicomInstanceGenerator.StudyGenerationSpecs;
-
-            var inferenceRequest = new InferenceRequest();
-            inferenceRequest.TransactionId = Guid.NewGuid().ToString();
-            inferenceRequest.InputMetadata = new InferenceRequestMetadata();
-            inferenceRequest.InputMetadata.Details = new InferenceRequestDetails();
-            switch (requestType)
-            {
-                case "Study":
-                    inferenceRequest.InputMetadata.Details.Type = InferenceRequestType.DicomUid;
-                    inferenceRequest.InputMetadata.Details.Studies = new List<RequestedStudy>();
-                    inferenceRequest.InputMetadata.Details.Studies.Add(new RequestedStudy
-                    {
-                        StudyInstanceUid = fileSpecs.StudyInstanceUids[0],
-                    });
-                    break;
-
-                case "Patient":
-                    inferenceRequest.InputMetadata.Details.Type = InferenceRequestType.DicomPatientId;
-                    inferenceRequest.InputMetadata.Details.PatientId = fileSpecs.Files[0].Dataset.GetSingleValue<string>(DicomTag.PatientID);
-                    break;
-
-                case "AccessionNumber":
-                    inferenceRequest.InputMetadata.Details.Type = InferenceRequestType.AccessionNumber;
-                    inferenceRequest.InputMetadata.Details.AccessionNumber = new List<string>() { fileSpecs.Files[0].Dataset.GetSingleValue<string>(DicomTag.AccessionNumber) };
-                    break;
-
-                default:
-                    throw new ArgumentException($"invalid ACR request type specified in feature file: {requestType}");
-            }
-            inferenceRequest.InputResources = new List<RequestInputDataResource>
-            {
-                new RequestInputDataResource
-                {
-                    Interface = InputInterfaceType.Algorithm,
-                    ConnectionDetails = new InputConnectionDetails
-                    {
-                        Name = "DICOM-RUNNER-TEST",
-                        Id = Guid.NewGuid().ToString(),
-                    }
-                },
-                new RequestInputDataResource
-                {
-                    Interface = InputInterfaceType.DicomWeb,
-                    ConnectionDetails = new InputConnectionDetails
-                    {
-                        Uri = _configuration.OrthancOptions.DicomWebRoot,
-                        AuthId = _configuration.OrthancOptions.GetBase64EncodedAuthHeader(),
-                        AuthType = ConnectionAuthType.Basic
-                    }
-                }
-            };
-
-            if (!inferenceRequest.IsValid(out var details))
-            {
-                _outputHelper.WriteLine($"Validation error: {details}.");
-                throw new Exception(details);
-            }
-            _scenarioContext[KeyInferenceRequest] = inferenceRequest;
+            _dataProvider.GenerateAcrRequest(requestType);
+            _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }
 
         [When(@"the ACR API request is sent")]
         public async Task WhenTheACRAPIRequestIsSentTo()
         {
             _outputHelper.WriteLine($"Sending inference request...");
-            await _informaticsGatewayClient.Inference.NewInferenceRequest(_scenarioContext[KeyInferenceRequest] as InferenceRequest, CancellationToken.None);
+            await _informaticsGatewayClient.Inference.NewInferenceRequest(_dataProvider.AcrRequest, CancellationToken.None);
         }
 
         [Then(@"a workflow requests sent to the message broker")]
         public void ThenAWorkflowRequestsSentToTheMessageBroker()
         {
-            var inferenceRequest = _scenarioContext[KeyInferenceRequest] as InferenceRequest;
             _receivedMessages.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
-            var fileSpecs = _scenarioContext[KeyDicomFiles] as DicomInstanceGenerator.StudyGenerationSpecs;
-
-            _receivedMessages.Messages.Should().NotBeNullOrEmpty().And.HaveCount(WorkflowStudyCount);
-            foreach (var message in _receivedMessages.Messages)
-            {
-                message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
-                var request = message.ConvertTo<WorkflowRequestEvent>();
-                request.Should().NotBeNull();
-                request.FileCount.Should().Be(fileSpecs.FileCount);
-                request.Workflows.Should().Equal(inferenceRequest.Application.Id);
-            }
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessagesAndAcrRequest(_dataProvider, _receivedMessages.Messages, WorkflowStudyCount);
         }
 
         [Then(@"a study is uploaded to the storage service")]
         public async Task ThenAStudyIsUploadedToTheStorageService()
         {
-            var minioClient = new MinioClient()
-                .WithEndpoint(_informaticsGatewayConfiguration.Storage.Settings["endpoint"])
-                .WithCredentials(_informaticsGatewayConfiguration.Storage.Settings["accessKey"], _informaticsGatewayConfiguration.Storage.Settings["accessToken"])
-                .Build();
-
-            var dicomSizes = _scenarioContext[KeyDicomHashes] as Dictionary<string, string>;
             _receivedMessages.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
             _receivedMessages.Messages.Should().NotBeNullOrEmpty();
-
-            foreach (var message in _receivedMessages.Messages)
-            {
-                var request = message.ConvertTo<WorkflowRequestEvent>();
-                foreach (var file in request.Payload)
-                {
-                    var dicomValidationKey = string.Empty;
-
-                    var getObjectArgs = new GetObjectArgs()
-                        .WithBucket(request.Bucket)
-                        .WithObject($"{request.PayloadId}/{file.Path}")
-                        .WithCallbackStream((stream) =>
-                        {
-                            using var memoryStream = new MemoryStream();
-                            stream.CopyTo(memoryStream);
-                            memoryStream.Position = 0;
-                            var dicomFile = DicomFile.Open(memoryStream);
-                            dicomValidationKey = dicomFile.GenerateFileName();
-                            dicomSizes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
-                        });
-                    await minioClient.GetObjectAsync(getObjectArgs);
-
-                    var getMetadataObjectArgs = new GetObjectArgs()
-                        .WithBucket(request.Bucket)
-                        .WithObject($"{request.PayloadId}/{file.Metadata}")
-                        .WithCallbackStream((stream) =>
-                        {
-                            using var memoryStream = new MemoryStream();
-                            stream.CopyTo(memoryStream);
-                            var json = Encoding.UTF8.GetString(memoryStream.ToArray());
-
-                            var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
-                            var key = dicomFileFromJson.GenerateFileName();
-                            key.Should().Be(dicomValidationKey);
-                        });
-                    await minioClient.GetObjectAsync(getMetadataObjectArgs);
-                }
-            }
+            await _assertions.ShouldHaveUploadedDicomDataToMinio(_receivedMessages.Messages, _dataProvider.DicomSpecs.FileHashes);
         }
     }
 }
