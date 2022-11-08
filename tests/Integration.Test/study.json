@@ -3,7 +3,7 @@
     "SeriesMin": 1,
     "SeriesMax": 2,
     "InstanceMin": 64,
-    "InstanceMax": 128,
+    "InstanceMax": 100,
     "SizeMin": 0.36,
     "SizeMax": 2
   },
