@@ -4,7 +4,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
-    - 3.7.100.1
+    - 3.7.100.6
     :when: 2022-09-01 23:05:22.203089302 Z
 - - :approve
   - AWSSDK.S3
@@ -18,7 +18,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
-    - 3.7.100.1
+    - 3.7.100.6
     :when: 2022-09-01 23:05:28.920368903 Z
 - - :approve
   - BoDi
@@ -321,7 +321,7 @@
     :versions:
     - 17.1.0
     - 17.2.0
-    - 17.3.2
+    - 17.4.0
     :when: 2022-08-16 23:05:48.342748414 Z
 - - :approve
   - Microsoft.Data.Sqlite.Core
@@ -688,7 +688,7 @@
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
     :versions:
-    - 17.3.2
+    - 17.4.0
     :when: 2022-09-01 23:06:13.008314524 Z
 - - :approve
   - Microsoft.NETCore.Platforms
@@ -739,7 +739,7 @@
     :versions:
     - 17.1.0
     - 17.2.0
-    - 17.3.2
+    - 17.4.0
     :when: 2022-08-16 23:06:16.175705981 Z
 - - :approve
   - Microsoft.TestPlatform.TestHost
@@ -748,7 +748,7 @@
     :versions:
     - 17.1.0
     - 17.2.0
-    - 17.3.2
+    - 17.4.0
     :when: 2022-08-16 23:06:17.671459450 Z
 - - :approve
   - Microsoft.Toolkit.HighPerformance
@@ -791,35 +791,35 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.8
+    - 0.1.9
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.8
+    - 0.1.9
     :when: 2022-08-16 23:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.8
+    - 0.2.10
     :when: 2022-08-16 23:06:21.988183476 Z
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.8
+    - 0.2.10
     :when: 2022-08-16 23:06:22.426838304 Z
 - - :approve
   - Monai.Deploy.Storage.S3Policy
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.8
+    - 0.2.10
     :when: 2022-08-16 23:06:22.881956546 Z
 - - :approve
   - Moq
