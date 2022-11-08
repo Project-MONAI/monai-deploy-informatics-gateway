@@ -14,20 +14,10 @@
  * limitations under the License.
  */
 
-<<<<<<<< HEAD:tests/Integration.Test/Drivers/IDatabaseDataProvider.cs
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 {
     public interface IDatabaseDataProvider
     {
         Task<string> InjectAcrRequest();
-========
-using Microsoft.Extensions.Hosting;
-
-namespace Monai.Deploy.InformaticsGateway.Database.Api
-{
-    public interface IDatabaseMigrationManager
-    {
-        IHost Migrate(IHost host);
->>>>>>>> develop:src/Database/Api/IDatabaseMigrationManager.cs
     }
 }
