@@ -2,8 +2,8 @@
   "MR": {
     "SeriesMin": 1,
     "SeriesMax": 2,
-    "InstanceMin": 32,
-    "InstanceMax": 64,
+    "InstanceMin": 64,
+    "InstanceMax": 128,
     "SizeMin": 0.36,
     "SizeMax": 2
   },

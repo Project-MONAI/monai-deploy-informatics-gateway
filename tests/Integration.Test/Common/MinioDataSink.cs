@@ -37,10 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {
-            var minioClient = new MinioClient()
-                .WithEndpoint(_options.Storage.Settings["endpoint"])
-                .WithCredentials(_options.Storage.Settings["accessKey"], _options.Storage.Settings["accessToken"])
-            .Build();
+            var minioClient = CreateMinioClient();
 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -63,6 +60,35 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
             stopwatch.Stop();
             _outputHelper.WriteLine($"Time to upload to Minio={0}s...", stopwatch.Elapsed.TotalSeconds);
+        }
+
+        private MinioClient CreateMinioClient() => new MinioClient()
+                        .WithEndpoint(_options.Storage.Settings["endpoint"])
+                        .WithCredentials(_options.Storage.Settings["accessKey"], _options.Storage.Settings["accessToken"])
+                    .Build();
+
+        internal void CleanBucketAsync()
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            var count = 0;
+            var minioClient = CreateMinioClient();
+            var listObjectArgs = new ListObjectsArgs()
+                .WithBucket(_options.Storage.StorageServiceBucketName)
+                .WithRecursive(true);
+
+            var objects = minioClient.ListObjectsAsync(listObjectArgs);
+            objects.Subscribe(async (item) =>
+            {
+                var deletObjectsArgs = new RemoveObjectArgs()
+                    .WithBucket(_options.Storage.StorageServiceBucketName)
+                    .WithObject(item.Key);
+                await minioClient.RemoveObjectAsync(deletObjectsArgs).ConfigureAwait(false);
+                count++;
+            });
+
+            stopwatch.Stop();
+            _outputHelper.WriteLine($"Cleaned up {0} objects from Minio in {1}s...", count, stopwatch.Elapsed.TotalSeconds);
         }
     }
 }

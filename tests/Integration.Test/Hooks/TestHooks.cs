@@ -173,12 +173,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
         {
             s_informaticsGatewayHost.StopAsync().Wait();
             s_dicomServer.Dispose();
+
+            s_rabbitMqConsumer_WorkflowRequest.Dispose();
+            s_rabbitMqConsumer_ExportComplete.Dispose();
+            s_rabbitMqConnectionFactory.Dispose();
         }
 
         [AfterTestRun(Order = 0)]
         [AfterScenario]
         public static void ClearTestData()
         {
+            s_minioSink.CleanBucketAsync();
             RabbitConnectionFactory.PurgeAllQueues(s_options.Value.Messaging);
         }
 

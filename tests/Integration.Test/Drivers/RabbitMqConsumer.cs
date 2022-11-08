@@ -22,11 +22,13 @@ using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 {
-    internal class RabbitMqConsumer
+    internal class RabbitMqConsumer : IDisposable
     {
+        private readonly RabbitMQMessageSubscriberService _subscriberService;
         private readonly string _queueName;
         private readonly ISpecFlowOutputHelper _outputHelper;
         private readonly ConcurrentBag<Message> _messages;
+        private bool _disposedValue;
 
         public IReadOnlyList<Message> Messages
         { get { return _messages.ToList(); } }
@@ -34,16 +36,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
         public RabbitMqConsumer(RabbitMQMessageSubscriberService subscriberService, string queueName, ISpecFlowOutputHelper outputHelper)
         {
-            if (subscriberService is null)
-            {
-                throw new ArgumentNullException(nameof(subscriberService));
-            }
-
             if (string.IsNullOrWhiteSpace(queueName))
             {
                 throw new ArgumentException($"'{nameof(queueName)}' cannot be null or whitespace.", nameof(queueName));
             }
-
+            _subscriberService = subscriberService ?? throw new ArgumentNullException(nameof(subscriberService));
             _queueName = queueName;
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _messages = new ConcurrentBag<Message>();
@@ -66,6 +63,27 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _outputHelper.WriteLine($"Expecting {count} {_queueName} messages from RabbitMQ");
             _messages.Clear();
             MessageWaitHandle = new CountdownEvent(count);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _subscriberService.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
