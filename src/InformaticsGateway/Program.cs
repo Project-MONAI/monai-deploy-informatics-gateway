@@ -18,10 +18,8 @@ using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Reflection;
-using Ardalis.GuardClauses;
 using FellowOakDicom.Log;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -67,18 +65,9 @@ namespace Monai.Deploy.InformaticsGateway
             logger.Info($"Initializing MONAI Deploy Informatics Gateway v{assemblyVersionNumber}");
 
             var host = CreateHostBuilder(args).Build();
-            InitializeDatabase(host);
+            host.MigrateDatabase();
             host.Run();
             logger.Info("MONAI Deploy Informatics Gateway shutting down.");
-        }
-
-        internal static void InitializeDatabase(IHost host)
-        {
-            Guard.Against.Null(host, nameof(host));
-
-            using var serviceScope = host.Services.CreateScope();
-            var context = serviceScope.ServiceProvider.GetRequiredService<InformaticsGatewayContext>();
-            context.Database.Migrate();
         }
 
         internal static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -112,9 +101,7 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
 
-                    services.AddDbContext<InformaticsGatewayContext>(
-                        options => options.UseSqlite(hostContext.Configuration.GetConnectionString(InformaticsGatewayConfiguration.DatabaseConnectionStringKey)),
-                        ServiceLifetime.Transient);
+                    services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"));
 
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
@@ -123,7 +110,6 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IStreamsWriter, StreamsWriter>();
                     services.AddTransient<IApplicationEntityHandler, ApplicationEntityHandler>();
 
-                    services.AddScoped(typeof(IInformaticsGatewayRepository<>), typeof(InformaticsGatewayRepository<>));
                     services.AddScoped<IStorageMetadataWrapperRepository, StorageMetadataWrapperRepository>();
                     services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();
                     services.AddScoped<IPayloadMoveActionHandler, PayloadMoveActionHandler>();

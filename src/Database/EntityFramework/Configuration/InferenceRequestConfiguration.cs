@@ -25,7 +25,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 
-namespace Monai.Deploy.InformaticsGateway.Database
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
 {
     internal class InferenceRequestConfiguration : IEntityTypeConfiguration<InferenceRequest>
     {

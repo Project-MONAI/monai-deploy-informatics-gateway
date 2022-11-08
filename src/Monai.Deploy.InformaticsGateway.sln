@@ -42,7 +42,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI", "DicomWebClient\CLI\Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI.csproj", "{689E0066-81DA-4602-B058-D93389DF5DBD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.Test", "Database\Test\Monai.Deploy.InformaticsGateway.Database.Test.csproj", "{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.EntityFramework", "Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj", "{313B68CE-A0DB-4DE2-8359-AC777F5997FE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.Api", "Database\Api\Monai.Deploy.InformaticsGateway.Database.Api.csproj", "{366CA24C-B546-46AD-8607-AABE4F0F4864}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.Api.Test", "Database\Api\Test\Monai.Deploy.InformaticsGateway.Database.Api.Test.csproj", "{7F56994D-5310-467F-96FC-87C26F151737}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -282,18 +286,42 @@ Global
 		{689E0066-81DA-4602-B058-D93389DF5DBD}.Release|x64.Build.0 = Release|Any CPU
 		{689E0066-81DA-4602-B058-D93389DF5DBD}.Release|x86.ActiveCfg = Release|Any CPU
 		{689E0066-81DA-4602-B058-D93389DF5DBD}.Release|x86.Build.0 = Release|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Debug|x64.Build.0 = Debug|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Debug|x86.Build.0 = Debug|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Release|x64.ActiveCfg = Release|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Release|x64.Build.0 = Release|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Release|x86.ActiveCfg = Release|Any CPU
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC}.Release|x86.Build.0 = Release|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Debug|x64.Build.0 = Debug|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Release|x64.ActiveCfg = Release|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Release|x64.Build.0 = Release|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{313B68CE-A0DB-4DE2-8359-AC777F5997FE}.Release|x86.Build.0 = Release|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Debug|x64.Build.0 = Debug|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Debug|x86.Build.0 = Debug|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Release|Any CPU.Build.0 = Release|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Release|x64.ActiveCfg = Release|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Release|x64.Build.0 = Release|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Release|x86.ActiveCfg = Release|Any CPU
+		{366CA24C-B546-46AD-8607-AABE4F0F4864}.Release|x86.Build.0 = Release|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Debug|x64.Build.0 = Debug|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Debug|x86.Build.0 = Debug|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Release|x64.ActiveCfg = Release|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Release|x64.Build.0 = Release|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Release|x86.ActiveCfg = Release|Any CPU
+		{7F56994D-5310-467F-96FC-87C26F151737}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -308,7 +336,7 @@ Global
 		{E1583FDB-9DC1-46E7-BB14-AFC2A7608600} = {B8E99EF7-84EA-4D11-B722-9EE81B89CD86}
 		{28099DFC-8937-4508-848C-35C99E56C121} = {B8E99EF7-84EA-4D11-B722-9EE81B89CD86}
 		{0BB99F0E-669F-4884-9DB1-AFA16CC9C67B} = {B8E99EF7-84EA-4D11-B722-9EE81B89CD86}
-		{D5BA6DE3-E861-44D4-BD1B-45FFA57649AC} = {B8E99EF7-84EA-4D11-B722-9EE81B89CD86}
+		{7F56994D-5310-467F-96FC-87C26F151737} = {B8E99EF7-84EA-4D11-B722-9EE81B89CD86}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E23DC856-D033-49F6-9BC6-9F1D0ECD05CB}

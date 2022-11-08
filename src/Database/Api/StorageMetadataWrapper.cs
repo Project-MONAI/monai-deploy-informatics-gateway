@@ -19,7 +19,7 @@ using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Database
+namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
     public class StorageMetadataWrapper
     {
@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
         public FileStorageMetadata GetObject()
         {
-            var type = System.Type.GetType(TypeName, true);
+            var type = Type.GetType(TypeName, true);
             return JsonSerializer.Deserialize(Value, type) as FileStorageMetadata;
         }
     }

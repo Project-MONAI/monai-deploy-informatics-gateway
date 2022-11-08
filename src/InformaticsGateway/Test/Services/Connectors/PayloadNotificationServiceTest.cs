@@ -25,7 +25,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
@@ -85,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
-        [RetryFact(10,200)]
+        [RetryFact(10, 200)]
         public void GivenAPayloadNotificationService_AtInitialization_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(null, null, null));
@@ -93,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             Assert.Throws<ArgumentNullException>(() => new PayloadNotificationService(_serviceScopeFactory.Object, _logger.Object, null));
         }
 
-        [RetryFact(10,200)]
+        [RetryFact(10, 200)]
         public async Task GivenThePayloadNotificationService_WhenStopAsyncIsCalled_ExpectServiceToStopAnyProcessing()
         {
             var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Move };
@@ -116,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLogging($"Uploading payload {payload.Id} to storage service at {_options.Value.Storage.StorageServiceBucketName}.", LogLevel.Information, Times.Never());
         }
 
-        [RetryFact(10,200)]
+        [RetryFact(10, 200)]
         public void GivenPayloadsStoredInTheDatabase_WhenServiceStarts_ExpectThePayloadsToBeRestored()
         {
             var testData = new List<Payload>
@@ -139,7 +139,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _payloadNotificationActionHandler.Verify(p => p.NotifyAsync(It.IsAny<Payload>(), It.IsAny<ActionBlock<Payload>>(), It.IsAny<CancellationToken>()), Times.AtLeastOnce());
         }
 
-        [RetryFact(10,200)]
+        [RetryFact(10, 200)]
         public void GivenAPayload_WhenDequedFromPayloadAssemblerAndFailedToBeProcessByTheMoveActionHandler()
         {
             var resetEvent = new ManualResetEventSlim();
@@ -157,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             resetEvent.Wait();
         }
 
-        [RetryFact(10,200)]
+        [RetryFact(10, 200)]
         public void GivenAPayload_WhenDequedFromPayloadAssembler_ExpectThePayloadBeProcessedByTheMoveActionHandler()
         {
             var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Move };

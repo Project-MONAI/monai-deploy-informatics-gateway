@@ -20,20 +20,20 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 
 #nullable disable
 
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20220613235333_R2_0.2.0")]
-    partial class R2_020
+    [Migration("20220203222116_R1_Initialize")]
+    partial class R1_Initialize
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.1");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
@@ -64,9 +64,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<string>("AeTitle")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AllowedSopClasses")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Grouping")
@@ -152,7 +149,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CorrelationId")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTimeCreated")
@@ -173,6 +169,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("UploadedFiles")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 

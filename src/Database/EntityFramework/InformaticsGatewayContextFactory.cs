@@ -18,9 +18,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Monai.Deploy.InformaticsGateway.Configuration;
 
-namespace Monai.Deploy.InformaticsGateway.Database
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 {
     /// <summary>
     /// Used to EF migration.
@@ -30,13 +29,13 @@ namespace Monai.Deploy.InformaticsGateway.Database
         public InformaticsGatewayContext CreateDbContext(string[] args)
         {
             var configuration = new ConfigurationBuilder()
-                .SetBasePath(System.IO.Directory.GetCurrentDirectory())
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
             var builder = new DbContextOptionsBuilder<InformaticsGatewayContext>();
 
-            var connectionString = configuration.GetConnectionString(InformaticsGatewayConfiguration.DatabaseConnectionStringKey);
+            var connectionString = configuration.GetConnectionString(Configurations.SR.DatabaseConnectionStringKey);
             builder.UseSqlite(connectionString);
 
             return new InformaticsGatewayContext(builder.Options);

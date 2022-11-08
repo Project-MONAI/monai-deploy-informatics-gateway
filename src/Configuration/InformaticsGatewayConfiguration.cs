@@ -25,11 +25,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
     public class InformaticsGatewayConfiguration
     {
         /// <summary>
-        /// Name of the key for retrieve database connection string.
-        /// </summary>
-        public const string DatabaseConnectionStringKey = "InformaticsGatewayDatabase";
-
-        /// <summary>
         /// Represents the <c>dicom</c> section of the configuration file.
         /// </summary>
         [ConfigurationKeyName("dicom")]
