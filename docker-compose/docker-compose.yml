@@ -27,9 +27,10 @@ services:
       RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
     healthcheck:
       test: rabbitmq-diagnostics -q ping
-      interval: 15s
+      start_period: 10s
+      interval: 5s
       timeout: 30s
-      retries: 3
+      retries: 5
     networks:
       - monaideploy
 
@@ -48,32 +49,30 @@ services:
       MINIO_ROOT_PASSWORD: minioadmin
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-      interval: 15s
+      start_period: 10s
+      interval: 5s
       timeout: 30s
-      retries: 3
+      retries: 5
     networks:
       - monaideploy
 
-  #createbuckets:
-  #  image: minio/mc
-  #  environment:
-  #    MINIO_ROOT_USER: minioadmin
-  #    MINIO_ROOT_PASSWORD: minioadmin
-  #    BUCKET_NAME: monaideploy
-  #    ENDPOINT: http://minio:9000
-  #  depends_on:
-  #    minio:
-  #      condition: service_healthy
-  #  networks:
-  #    - monaideploy
-  #  entrypoint: >
-  #    /bin/sh -c "
-  #    until (/usr/bin/mc config host add myminio $$ENDPOINT $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD) do echo '...waiting...' && sleep 1; done;
-  #    /usr/bin/mc mb myminio/$$BUCKET_NAME;
-  #    /usr/bin/mc policy set public myminio/$$BUCKET_NAME;
-  #    /usr/bin/mc ls myminio;
-  #    # exit 0
-  #    "
+  mongodb:
+    image: mongo:5.0.12
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - ./.run/mongodb/:/data/db
+    networks:
+      - monaideploy
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/productiondb --quiet
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
 
   orthanc:
     image: "jodogne/orthanc-plugins"
@@ -96,6 +95,7 @@ services:
       timeout: 30s
 
   elasticsearch:
+    profiles: [ 'elk' ]
     image: docker.elastic.co/elasticsearch/elasticsearch:${ELASTIC_VERSION}
     hostname: elasticsearch
     volumes:
@@ -118,6 +118,7 @@ services:
       retries: 50
 
   logstash:
+    profiles: [ 'elk' ]
     image: docker.elastic.co/logstash/logstash:${ELASTIC_VERSION}
     volumes:
       - ./configs/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
@@ -140,6 +141,7 @@ services:
       - monaideploy
 
   kibana:
+    profiles: [ 'elk' ]
     image: docker.elastic.co/kibana/kibana:${ELASTIC_VERSION}
     volumes:
       - ./configs/kibana.yml:/usr/share/kibana/config/kibana.yml:ro,Z
@@ -159,6 +161,7 @@ services:
       retries: 120
 
   kibana-setup:
+    profiles: [ 'elk' ]
     image: curlimages/curl:latest
     volumes:
       - ./configs/kibana.ndjson:/usr/share/kibana.ndjson
