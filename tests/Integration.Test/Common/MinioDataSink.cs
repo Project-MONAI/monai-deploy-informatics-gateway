@@ -85,8 +85,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                     .WithObject(item.Key);
                 await minioClient.RemoveObjectAsync(deletObjectsArgs).ConfigureAwait(false);
                 count++;
-            });
-
+            },
+            ex => Console.WriteLine($"Error listing objects: {ex}"),
+            () => Console.WriteLine($"Listed all objects in bucket {_options.Storage.StorageServiceBucketName}\n"));
             stopwatch.Stop();
             _outputHelper.WriteLine($"Cleaned up {0} objects from Minio in {1}s...", count, stopwatch.Elapsed.TotalSeconds);
         }

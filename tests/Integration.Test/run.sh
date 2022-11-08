@@ -151,10 +151,12 @@ function save_logs() {
 }
 
 function tear_down() {
+    set +e
     pushd $DOCKER_COMPOSE_DIR
     info "Stopping services..."
     docker compose down --remove-orphans
     popd
+    set -e
 }
 
 function main() {
