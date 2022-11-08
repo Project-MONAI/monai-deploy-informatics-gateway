@@ -23,11 +23,7 @@ RUN_DIR="$DOCKER_COMPOSE_DIR/.run"
 TEST_DIR="$SCRIPT_DIR/"
 LOG_DIR="${GITHUB_WORKSPACE:-$SCRIPT_DIR}"
 BIN_DIR="$TEST_DIR/bin/Release/net6.0"
-CONFIG_DIR="$SCRIPT_DIR/configs"
-EXIT=false
-METRICSFILE="$LOG_DIR/metrics.log"
 FEATURE=
-STREAMID=
 export STUDYJSON="study.json"
 
 set -euo pipefail
@@ -131,7 +127,6 @@ function run_test() {
         dotnet test -c Debug $FEATURE 2>&1 | tee $LOG_DIR/run.log
     fi
     EXITCODE=$?
-    EXIT=true
     set -e
     popd
 }
@@ -169,8 +164,8 @@ function main() {
     run_test
     generate_reports
     df -h
-    # save_logs
-    # tear_down
+    save_logs
+    tear_down
     exit $EXITCODE
 }
 

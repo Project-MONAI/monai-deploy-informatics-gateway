@@ -277,7 +277,6 @@ jobs:
           name: integration-${{ matrix.feature }}
           path: |
             ${{ github.workspace }}/LivingDoc.html
-            ${{ github.workspace }}/metrics.log
             ${{ github.workspace }}/services.log
             ${{ github.workspace }}/run.log
           retention-days: 30
