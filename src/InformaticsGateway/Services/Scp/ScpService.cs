@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.ScpServiceLoading(Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version);
+            _logger.ScpServiceLoading(_configuration.Value.Dicom.Scp.Port);
 
             try
             {

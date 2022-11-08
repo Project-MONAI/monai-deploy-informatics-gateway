@@ -59,8 +59,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void NotifyAeChanged(this ILogger logger, int count, ChangedEventType eventType);
 
         // SCP Service
-        [LoggerMessage(EventId = 200, Level = LogLevel.Information, Message = "MONAI Deploy Informatics Gateway (SCP Service) {version} loading...")]
-        public static partial void ScpServiceLoading(this ILogger logger, string version);
+        [LoggerMessage(EventId = 200, Level = LogLevel.Information, Message = "Initializing SCP Service at port {port}...")]
+        public static partial void ScpServiceLoading(this ILogger logger, int port);
 
         [LoggerMessage(EventId = 201, Level = LogLevel.Critical, Message = "Failed to initialize SCP listener.")]
         public static partial void ScpListenerInitializationFailure(this ILogger logger);
