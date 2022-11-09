@@ -181,10 +181,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
         [AfterTestRun(Order = 0)]
         [AfterScenario]
-        public static void ClearTestData()
+        public static void ClearTestData(ISpecFlowOutputHelper outputHelper)
         {
             s_minioSink.CleanBucketAsync();
             RabbitConnectionFactory.PurgeAllQueues(s_options.Value.Messaging);
+            outputHelper.WriteLine($"=============================== END ===============================");
         }
 
         private static void SetupInformaticsGateway()
