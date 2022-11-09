@@ -78,9 +78,9 @@ function env_setup() {
     done
 
     pushd $DOCKER_COMPOSE_DIR
-    if [[ $(docker compose ps -q | wc -l) -ne 0 ]]; then
+    if [[ $(docker compose -p igtest ps -q | wc -l) -ne 0 ]]; then
         info "Stopping existing services..."
-        docker compose down
+        docker compose -p igtest down
     fi
     popd
 
@@ -146,7 +146,7 @@ function save_logs() {
     [ -d $RUN_DIR ] && info "Clearning $RUN_DIR..." && sudo rm -r $RUN_DIR
     pushd $DOCKER_COMPOSE_DIR
     info "Saving service log..."
-    docker compose logs --no-color -t > "$LOG_DIR/services.log"
+    docker compose -p igtest logs --no-color -t > "$LOG_DIR/services.log"
     popd
 }
 
@@ -154,7 +154,7 @@ function tear_down() {
     set +e
     pushd $DOCKER_COMPOSE_DIR
     info "Stopping services..."
-    docker compose down --remove-orphans
+    docker compose -p igtest down --remove-orphans
     popd
     set -e
 }

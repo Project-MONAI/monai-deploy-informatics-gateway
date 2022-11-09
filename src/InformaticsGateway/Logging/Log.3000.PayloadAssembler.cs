@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 3003, Level = LogLevel.Information, Message = "File added to bucket {key}. Queue size: {count}")]
         public static partial void FileAddedToBucket(this ILogger logger, string key, int count);
 
-        [LoggerMessage(EventId = 3004, Level = LogLevel.Trace, Message = "Number of buckets active: {count}.")]
+        [LoggerMessage(EventId = 3004, Level = LogLevel.Trace, Message = "Number of incomplete payloads waiting for processing: {count}.")]
         public static partial void BucketActive(this ILogger logger, int count);
 
         [LoggerMessage(EventId = 3005, Level = LogLevel.Trace, Message = "Checking elapsed time for bucket: {key}.")]

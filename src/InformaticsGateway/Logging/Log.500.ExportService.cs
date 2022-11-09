@@ -120,5 +120,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 532, Level = LogLevel.Information, Message = "CorrelationId={correlationId}. Export request {exportTaskId} received & queued for processing.")]
         public static partial void ExportRequestQueuedForProcessing(this ILogger logger, string correlationId, string exportTaskId);
+
+        [LoggerMessage(EventId = 533, Level = LogLevel.Error, Message = "Recovering messaging service connection due to {reason}.")]
+        public static partial void MessagingServiceErrorRecover(this ILogger logger, string reason);
     }
 }
