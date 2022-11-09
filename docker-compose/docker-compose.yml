@@ -15,7 +15,7 @@
 version: "3.9"
 services:
   rabbitmq:
-    image: rabbitmq:3-management
+    image: rabbitmq:3.10-management
     hostname: rabbitmq
     ports:
       - 5672:5672
@@ -75,7 +75,7 @@ services:
       start_period: 40s
 
   orthanc:
-    image: "jodogne/orthanc-plugins"
+    image: osimis/orthanc:22.9.0
     hostname: orthanc
     volumes:
       - ./configs/orthanc.json:/etc/orthanc/orthanc.json
