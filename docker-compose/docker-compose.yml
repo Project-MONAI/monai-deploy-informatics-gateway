@@ -57,7 +57,7 @@ services:
       - monaideploy
 
   mongodb:
-    image: mongo:5.0.12
+    image: mongo:latest
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
