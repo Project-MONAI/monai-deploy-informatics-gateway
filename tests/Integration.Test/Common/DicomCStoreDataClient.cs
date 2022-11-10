@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2022 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,62 +15,50 @@
  */
 
 using System.Diagnostics;
+using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using FellowOakDicom.Network.Client;
+using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using TechTalk.SpecFlow.Infrastructure;
 
-namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
+namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 {
-    public class DicomScu
+    internal class DicomCStoreDataClient : IDataClient
     {
         private static readonly object SyncRoot = new object();
         internal int TotalTime { get; private set; } = 0;
 
+        private readonly Configurations _configurations;
+        private readonly InformaticsGatewayConfiguration _options;
         private readonly ISpecFlowOutputHelper _outputHelper;
 
-        public DicomScu(ISpecFlowOutputHelper outputHelper)
+        public DicomCStoreDataClient(Configurations configurations, InformaticsGatewayConfiguration options, ISpecFlowOutputHelper outputHelper)
         {
+            _configurations = configurations ?? throw new ArgumentNullException(nameof(configurations));
+            _options = options ?? throw new ArgumentNullException(nameof(options));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
         }
 
-        public async Task<DicomStatus> CEcho(string host, int port, string callingAeTitle, string calledAeTitle, TimeSpan timeout)
+
+        public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {
-            _outputHelper.WriteLine($"C-ECHO: {callingAeTitle} => {host}:{port}@{calledAeTitle}");
-            var result = DicomStatus.Pending;
-            var dicomClient = CreateClient(host, port, callingAeTitle, calledAeTitle);
+            Guard.Against.NullOrEmpty(args);
 
-            var cEchoRequest = new DicomCEchoRequest();
-            var manualReset = new ManualResetEvent(false);
-            cEchoRequest.OnResponseReceived += (DicomCEchoRequest request, DicomCEchoResponse response) =>
-            {
-                result = response.Status;
-                manualReset.Set();
-            };
-            await dicomClient.AddRequestAsync(cEchoRequest);
+            var callingAeTitle = args[0].ToString();
+            var host = args[1].ToString();
+            var port = (int)args[2];
+            var calledAeTitle = args[3].ToString();
+            var timeout = (TimeSpan)args[4];
 
-            try
-            {
-                await dicomClient.SendAsync();
-                manualReset.WaitOne(timeout);
-                return result;
-            }
-            catch (DicomAssociationRejectedException ex)
-            {
-                _outputHelper.WriteLine("Association Rejected: {0}", ex.Message);
-                return DicomStatus.Cancel;
-            }
-        }
-
-        public async Task<DicomStatus> CStore(string host, int port, string callingAeTitle, string calledAeTitle, IList<DicomFile> dicomFiles, TimeSpan timeout)
-        {
             _outputHelper.WriteLine($"C-STORE: {callingAeTitle} => {host}:{port}@{calledAeTitle}");
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var dicomClient = CreateClient(host, port, callingAeTitle, calledAeTitle);
-            var countdownEvent = new CountdownEvent(dicomFiles.Count);
+            var dicomClient = DicomClientFactory.Create(host, port, false, callingAeTitle, calledAeTitle);
+            var countdownEvent = new CountdownEvent(dataProvider.DicomSpecs.Files.Count);
             var failureStatus = new List<DicomStatus>();
-            foreach (var file in dicomFiles)
+            foreach (var file in dataProvider.DicomSpecs.Files)
             {
                 var cStoreRequest = new DicomCStoreRequest(file);
                 cStoreRequest.OnResponseReceived += (DicomCStoreRequest request, DicomCStoreResponse response) =>
@@ -95,17 +83,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             catch (DicomAssociationRejectedException ex)
             {
                 _outputHelper.WriteLine($"Association Rejected: {ex.Message}");
-                return DicomStatus.Cancel;
+                dataProvider.DimseRsponse = DicomStatus.Cancel;
             }
 
-            if (failureStatus.Count == 0) return DicomStatus.Success;
-
-            return failureStatus.First();
-        }
-
-        private IDicomClient CreateClient(string host, int port, string callingAeTitle, string calledAeTitle)
-        {
-            return DicomClientFactory.Create(host, port, false, callingAeTitle, calledAeTitle);
+            dataProvider.DimseRsponse = (failureStatus.Count == 0) ? DicomStatus.Success : failureStatus.First();
         }
     }
 }

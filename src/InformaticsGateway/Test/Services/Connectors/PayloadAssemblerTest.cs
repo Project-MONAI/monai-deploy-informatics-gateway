@@ -149,7 +149,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _cancellationTokenSource.Token.WaitHandle.WaitOne();
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of buckets active: 1.", LogLevel.Trace, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of incomplete payloads waiting for processing: 1.", LogLevel.Trace, Times.AtLeastOnce());
         }
 
         [RetryFact(10, 200)]
@@ -167,7 +167,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             await Task.Delay(1001);
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of buckets active: 1.", LogLevel.Trace, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of incomplete payloads waiting for processing: 1.", LogLevel.Trace, Times.AtLeastOnce());
             _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue", LogLevel.Information, Times.Never());
         }
 
@@ -183,7 +183,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var result = payloadAssembler.Dequeue(_cancellationTokenSource.Token);
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of buckets active: 1.", LogLevel.Trace, Times.AtLeastOnce());
+            _logger.VerifyLoggingMessageBeginsWith($"Number of incomplete payloads waiting for processing: 1.", LogLevel.Trace, Times.AtLeastOnce());
             Assert.Single(result.Files);
             _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue with {result.Count} files", LogLevel.Information, Times.AtLeastOnce());
         }

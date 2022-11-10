@@ -49,6 +49,8 @@ namespace Monai.Deploy.InformaticsGateway.Test
     {
         public string Name => "Dummy Messaging Service";
 
+        public event ConnectionErrorHandler OnConnectionError;
+
         public void Acknowledge(MessageBase message) => throw new NotImplementedException();
 
         public void Dispose() => throw new NotImplementedException();

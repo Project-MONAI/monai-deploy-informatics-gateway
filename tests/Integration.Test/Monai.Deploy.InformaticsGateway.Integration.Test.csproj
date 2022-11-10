@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,7 +33,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="Minio" Version="4.0.6" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.9" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.11" />
     <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.10" />
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="Polly" Version="7.2.3" />
@@ -51,7 +51,6 @@
 
   <ItemGroup>
     <Folder Include="Features\" />
-    <Folder Include="Support\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,16 +63,30 @@
     <ProjectReference Include="..\..\src\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
     <ProjectReference Include="..\..\src\Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
-    <ProjectReference Include="..\..\src\Database\Sqlite\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="..\..\src\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
+    <ProjectReference Include="..\..\src\InformaticsGateway\Monai.Deploy.InformaticsGateway.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="./nlog.config" CopyToOutputDirectory="Always" />
+  </ItemGroup>
+
+  <Target Name="CopyPluginsBuild" AfterTargets="Build">
+    <ItemGroup>
+      <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
+    <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />
+  </Target>
 
   <Target Name="CopyTestConfigurations" AfterTargets="AfterBuild">
     <PropertyGroup>
       <STUDYJSON Condition=" '$(STUDYJSON)' == '' ">study.json</STUDYJSON>
     </PropertyGroup>
     <Message Importance="High" Text="Copying $(STUDYJSON) to $(OutDir)" />
+    <Delete Files="$(OutDir)appsettings.Development.json" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="appsettings.json" DestinationFolder="$(OutDir)" />
+    <Copy OverwriteReadOnlyFiles="true" SourceFiles="appsettings.ext.json" DestinationFolder="$(OutDir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(STUDYJSON)" DestinationFiles="$(OutDir)\study.json" />
   </Target>
 </Project>

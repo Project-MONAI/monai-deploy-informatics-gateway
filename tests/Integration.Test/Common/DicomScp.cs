@@ -18,21 +18,55 @@ using System.Text;
 using FellowOakDicom;
 using FellowOakDicom.Log;
 using FellowOakDicom.Network;
-using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using TechTalk.SpecFlow.Infrastructure;
 
-namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
+namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 {
-    public class ServerData
+
+    public class DicomScp : IDisposable
     {
-        public FeatureContext Context { get; set; }
+        public readonly string FeatureScpAeTitle = "TEST-SCP";
+        public readonly int FeatureScpPort = 1105;
+
+        private readonly IDicomServer _server;
+        private bool _disposedValue;
+
         public Dictionary<string, string> Instances { get; set; } = new Dictionary<string, string>();
         public ISpecFlowOutputHelper OutputHelper { get; set; }
+        public DicomScp(ISpecFlowOutputHelper outputHelper)
+        {
+            OutputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
+            _server = DicomServerFactory.Create<CStoreScp>(FeatureScpPort, userState: this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _server.Stop();
+                    _server.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
     }
+
+
 
     internal class CStoreScp : DicomService, IDicomServiceProvider, IDicomCStoreProvider
     {
-        private static readonly Object SyncLock = new Object();
+        private static readonly object SyncLock = new object();
         internal static readonly string PayloadsRoot = "./payloads";
 
         public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, ILogger log, DicomServiceDependencies dicomServiceDependencies)
@@ -54,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
         public Task<DicomCStoreResponse> OnCStoreRequestAsync(DicomCStoreRequest request)
         {
-            if (UserState is not ServerData data)
+            if (UserState is not DicomScp data)
             {
                 throw new Exception("UserState is not instance of ServerData.");
             }

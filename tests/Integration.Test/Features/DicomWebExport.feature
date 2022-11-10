@@ -21,9 +21,10 @@ Feature: DICOMweb Export Service
     - [REQ-DCW-03] MIG SHALL be able to export to DICOMweb services via STOW-RS
     - [REQ-DCW-07] MIG SHALL support exporting data to multiple DICOMweb destinations
 
-    @messaging_export_complete @messaging @sql_inject_acr_request
+    @messaging_export_complete @messaging 
     Scenario: Export to a DICOMweb service
-        Given 1 <modality> studies for export
+        Given an ACR request in the database
+        And 1 <modality> studies for export
         When a export request is sent for 'md.export.request.monaidicomweb'
         Then Informatics Gateway exports the studies to Orthanc
 

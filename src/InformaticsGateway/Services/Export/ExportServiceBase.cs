@@ -96,6 +96,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _storageInfoProvider = _scope.ServiceProvider.GetRequiredService<IStorageInfoProvider>();
 
             _exportRequests = new Dictionary<string, ExportRequestEventDetails>();
+
+            _messageSubscriber.OnConnectionError += (sender, args) =>
+            {
+                _logger.MessagingServiceErrorRecover(args.ShutdownEventArguments.ToString());
+                SetupPolling();
+            };
         }
 
         public Task StartAsync(CancellationToken cancellationToken)

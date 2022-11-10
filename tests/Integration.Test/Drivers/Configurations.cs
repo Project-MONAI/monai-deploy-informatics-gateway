@@ -25,33 +25,28 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
     public sealed class Configurations
     {
         private readonly IConfiguration _config;
-        private readonly ISpecFlowOutputHelper _outputHelper;
 
-        public TestRunnerSettings TestRunnerOptions { get; private set; }
+        public static Configurations Instance { get; private set; }
+
         public InformaticsGatewaySettings InformaticsGatewayOptions { get; private set; }
-        public MessageBrokerSettings MessageBrokerOptions { get; private set; }
         public Dictionary<string, StudySpec> StudySpecs { get; private set; }
-        public StorageServiceSettings StorageServiceOptions { get; private set; }
         public OrthancSettings OrthancOptions { get; private set; }
 
-        public Configurations(ISpecFlowOutputHelper outputHelper)
+        private Configurations(ISpecFlowOutputHelper outputHelper)
         {
-            TestRunnerOptions = new TestRunnerSettings();
-            InformaticsGatewayOptions = new InformaticsGatewaySettings();
-            MessageBrokerOptions = new MessageBrokerSettings();
-            StorageServiceOptions = new StorageServiceSettings();
             OrthancOptions = new OrthancSettings();
-            _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             StudySpecs = LoadStudySpecs() ?? throw new NullReferenceException("study.json not found or empty.");
 
-            outputHelper.WriteLine($"StudySpecs={JsonSerializer.Serialize(StudySpecs)}");
-
             _config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT")}.json", optional: true, reloadOnChange: true)
+                .AddJsonFile("appsettings.ext.json", optional: false, reloadOnChange: false)
                 .Build();
 
-            LoadConfiguration();
+            LoadConfiguration(outputHelper);
+        }
+
+        internal static void Initialize(ISpecFlowOutputHelper outputHelper)
+        {
+            Instance = new Configurations(outputHelper);
         }
 
         private Dictionary<string, StudySpec> LoadStudySpecs()
@@ -68,47 +63,25 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             return JsonSerializer.Deserialize<Dictionary<string, StudySpec>>(studyJson);
         }
 
-        private void LoadConfiguration()
+        private void LoadConfiguration(ISpecFlowOutputHelper outputHelper)
         {
-            _config.GetSection(nameof(TestRunnerSettings)).Bind(TestRunnerOptions);
-            _config.GetSection(nameof(InformaticsGatewaySettings)).Bind(InformaticsGatewayOptions);
-            _config.GetSection(nameof(MessageBrokerSettings)).Bind(MessageBrokerOptions);
-            _config.GetSection(nameof(StorageServiceSettings)).Bind(StorageServiceOptions);
+            InformaticsGatewayOptions = new InformaticsGatewaySettings();
+
             _config.GetSection(nameof(OrthancSettings)).Bind(OrthancOptions);
 
             var hostIp = Environment.GetEnvironmentVariable("HOST_IP");
             if (hostIp is not null)
             {
-                if (TestRunnerOptions.HostIp == "$HOST_IP")
-                {
-                    TestRunnerOptions.HostIp = hostIp;
-                }
-                _outputHelper.WriteLine("Test Runner Host/IP = {0}", TestRunnerOptions.HostIp);
-                if (InformaticsGatewayOptions.Host == "$HOST_IP")
-                {
-                    InformaticsGatewayOptions.Host = hostIp;
-                }
-                _outputHelper.WriteLine("Informatics Gateway Host/IP = {0}", InformaticsGatewayOptions.Host);
-                if (MessageBrokerOptions.Endpoint == "$HOST_IP")
-                {
-                    MessageBrokerOptions.Endpoint = hostIp;
-                }
-                _outputHelper.WriteLine("Message Broker Host/IP = {0}", MessageBrokerOptions.Endpoint);
-                if (StorageServiceOptions.Host == "$HOST_IP")
-                {
-                    StorageServiceOptions.Host = hostIp;
-                }
-                _outputHelper.WriteLine("Storage Service Host/IP = {0}", StorageServiceOptions.Host);
                 if (OrthancOptions.Host == "$HOST_IP")
                 {
                     OrthancOptions.Host = hostIp;
                 }
-                _outputHelper.WriteLine("Orthanc Host/IP = {0}", OrthancOptions.Host);
+                outputHelper.WriteLine("Orthanc Host/IP = {0}", OrthancOptions.Host);
                 if (OrthancOptions.DicomWebRoot.Contains("$HOST_IP"))
                 {
                     OrthancOptions.DicomWebRoot = OrthancOptions.DicomWebRoot.Replace("$HOST_IP", hostIp);
                 }
-                _outputHelper.WriteLine("Orthanc DICOM web endpoint = {0}", OrthancOptions.DicomWebRoot);
+                outputHelper.WriteLine("Orthanc DICOM web endpoint = {0}", OrthancOptions.DicomWebRoot);
             }
         }
     }
@@ -131,11 +104,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         public string DicomWebRoot { get; set; }
 
         /// <summary>
-        /// Gets or sets the root URI of the Orthanc DICOMweb service used by IG.
-        /// </summary>
-        public string DicomWebRootInternal { get; set; }
-
-        /// <summary>
         /// Gets or sets the username to access Orthanc.
         /// </summary>
         public string Username { get; set; }
@@ -152,57 +120,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         }
     }
 
-    public class StorageServiceSettings
-    {
-        public string Host { get; set; }
-        public int Port { get; set; }
-        public string AccessToken { get; set; }
-        public string AccessKey { get; set; }
-
-        public string Endpoint => $"{Host}:{Port}";
-    }
-
-    public class TestRunnerSettings
-    {
-        /// <summary>
-        /// Gets or sets the Host/IP Address used when createing a DICOM source.
-        /// If not specified, the test runner would query and use first available IPv4 IP Address.
-        /// </summary>
-        /// <value></value>
-        public string HostIp { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the bucket test files are uploaded to.
-        /// </summary>
-        public string Bucket { get; set; }
-    }
-
     public class InformaticsGatewaySettings
     {
         /// <summary>
         /// Gets or set host name or IP address of the Informatics Gateway.
         /// </summary>
-        public string Host { get; set; }
-
-        /// <summary>
-        /// Gets or sets the DIMSE port of the Informatics Gateway.
-        /// </summary>
-        public int DimsePort { get; set; }
+        public string Host { get; set; } = "127.0.0.1";
 
         /// <summary>
         /// Gets or sets the RESTful API port of the Informatics Gateway.
         /// </summary>
-        public int ApiPort { get; set; }
-
-        /// <summary>
-        /// Gets or sets the HL7 listening port on the Informatics Gateway.
-        /// </summary>
-        public int Hl7Port { get; set; }
-
-        /// <summary>
-        /// Gets or sets the name of the bucket used by the storage service.
-        /// </summary>
-        public string StorageServiceBucketName { get; set; }
+        public int ApiPort { get; set; } = 5000;
 
         /// <summary>
         /// Gets the API endpoint of the Informatics Gateway.
@@ -238,14 +166,5 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         {
             get { return (long)(SizeMax * OneMiB); }
         }
-    }
-
-    public class MessageBrokerSettings
-    {
-        public string Endpoint { get; set; }
-        public string Username { get; set; }
-        public string Password { get; set; }
-        public string VirtualHost { get; set; }
-        public string Exchange { get; set; }
     }
 }

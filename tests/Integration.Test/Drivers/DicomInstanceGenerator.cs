@@ -14,43 +14,17 @@
  * limitations under the License.
  */
 
+using System.Diagnostics;
 using FellowOakDicom;
 using FellowOakDicom.Imaging;
 using FellowOakDicom.IO.Buffer;
+using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 {
-    public class DicomInstanceGenerator
+    internal class DicomInstanceGenerator
     {
-        public class StudyGenerationSpecs
-        {
-            public List<string> StudyInstanceUids { get; set; }
-            public int StudyCount { get; set; }
-            public int SeriesPerStudyCount { get; set; }
-            public int InstancePerSeries { get; set; }
-            public int FileCount { get; set; }
-            public List<DicomFile> Files { get; set; }
-
-            public int NumberOfExpectedRequests(string grouping) => grouping switch
-            {
-                "0020,000D" => StudyCount,
-                "0020,000E" => StudyCount * SeriesPerStudyCount,
-                "stow_none" => 1, // For DICOMweb STOW-RS
-                "stow_study" => 1, // For DICOMweb STOW-RS
-                _ => throw new ArgumentException($"Grouping '{grouping} not supported.")
-            };
-
-            public int NumberOfExpectedFiles(string grouping) => grouping switch
-            {
-                "0020,000D" => SeriesPerStudyCount * InstancePerSeries,
-                "0020,000E" => InstancePerSeries,
-                "stow_none" => FileCount, // For DICOMweb STOW-RS
-                "stow_study" => SeriesPerStudyCount * InstancePerSeries, // For DICOMweb STOW-RS
-                _ => throw new ArgumentException($"Grouping '{grouping} not supported.")
-            };
-        }
-
         private const int Rows = 1024;
         private const int Columns = 1024;
 
@@ -115,14 +89,16 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             return new DicomFile(dataset);
         }
 
-        public StudyGenerationSpecs Generate(string patientId, int studiesPerPatient, string modality, StudySpec studySpec) =>
+        public DicomDataSpecs Generate(string patientId, int studiesPerPatient, string modality, StudySpec studySpec) =>
             Generate(patientId, studiesPerPatient, _random.Next(studySpec.SeriesMin, studySpec.SeriesMax), modality, studySpec);
 
-        public StudyGenerationSpecs Generate(string patientId, int studiesPerPatient, int seriesPerStudy, string modality, StudySpec studySpec)
+        public DicomDataSpecs Generate(string patientId, int studiesPerPatient, int seriesPerStudy, string modality, StudySpec studySpec)
         {
             if (string.IsNullOrWhiteSpace(patientId)) throw new ArgumentNullException(nameof(patientId));
             if (studySpec is null) throw new ArgumentNullException(nameof(studySpec));
 
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             studySpec.InstanceMin.Should().BeGreaterThan(0);
             studySpec.InstanceMax.Should().BeGreaterThan(0);
 
@@ -152,14 +128,18 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                     dicomFile?.Dataset.GetSingleValueOrDefault(DicomTag.StudyInstanceUID, "N/A"));
             }
 
-            return new StudyGenerationSpecs
+            stopwatch.Stop();
+            _outputHelper.WriteLine("Generated {0} instances in {1} seconds", files.Count, stopwatch.Elapsed.TotalSeconds);
+
+            return new DicomDataSpecs
             {
                 Files = files,
                 InstancePerSeries = instancesPerSeries,
                 SeriesPerStudyCount = seriesPerStudy,
                 StudyCount = studiesPerPatient,
                 FileCount = files.Count,
-                StudyInstanceUids = studyInstanceUids
+                StudyInstanceUids = studyInstanceUids,
+                FileHashes = new Dictionary<string, string>()
             };
         }
 
