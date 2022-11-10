@@ -35,8 +35,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         public ISpecFlowOutputHelper OutputHelper { get; set; }
         public DicomScp(ISpecFlowOutputHelper outputHelper)
         {
+            OutputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _server = DicomServerFactory.Create<CStoreScp>(FeatureScpPort, userState: this);
-
         }
 
         protected virtual void Dispose(bool disposing)
