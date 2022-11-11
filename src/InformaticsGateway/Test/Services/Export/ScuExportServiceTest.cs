@@ -29,7 +29,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
-        private readonly Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>> _repository;
+        private readonly Mock<IDestinationApplicationEntityRepository> _repository;
         private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -75,12 +75,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _dicomToolkit = new Mock<IDicomToolkit>();
             _cancellationTokenSource = new CancellationTokenSource();
-            _repository = new Mock<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
+            _repository = new Mock<IDestinationApplicationEntityRepository>();
             _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider
-                .Setup(x => x.GetService(typeof(IInformaticsGatewayRepository<DestinationApplicationEntity>)))
+                .Setup(x => x.GetService(typeof(IDestinationApplicationEntityRepository)))
                 .Returns(_repository.Object);
             serviceProvider
                 .Setup(x => x.GetService(typeof(IMessageBrokerPublisherService)))
@@ -177,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(default(DestinationApplicationEntity));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(default(DestinationApplicationEntity));
 
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
 
@@ -226,7 +226,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var service = new ScuExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
@@ -279,7 +279,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var dataflowCompleted = new ManualResetEvent(false);
@@ -330,7 +330,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var dataflowCompleted = new ManualResetEvent(false);
@@ -381,7 +381,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Throws(new Exception("error"));
 
             var dataflowCompleted = new ManualResetEvent(false);
@@ -432,7 +432,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var dataflowCompleted = new ManualResetEvent(false);
@@ -482,7 +482,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _repository.Setup(p => p.FirstOrDefault(It.IsAny<Func<DestinationApplicationEntity, bool>>())).Returns(destination);
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             var dataflowCompleted = new ManualResetEvent(false);

@@ -15,8 +15,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,7 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
@@ -39,21 +37,21 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         private readonly Mock<ILogger<PayloadAssembler>> _logger;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
 
-        private readonly Mock<IInformaticsGatewayRepository<Payload>> _repository;
+        private readonly Mock<IPayloadRepository> _repository;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
 
         public PayloadAssemblerTest()
         {
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
-            _repository = new Mock<IInformaticsGatewayRepository<Payload>>();
+            _repository = new Mock<IPayloadRepository>();
             _options = Options.Create(new InformaticsGatewayConfiguration());
             _logger = new Mock<ILogger<PayloadAssembler>>();
             _cancellationTokenSource = new CancellationTokenSource();
 
             var serviceProvider = new Mock<IServiceProvider>();
             serviceProvider
-                .Setup(x => x.GetService(typeof(IInformaticsGatewayRepository<Payload>)))
+                .Setup(x => x.GetService(typeof(IPayloadRepository)))
                 .Returns(_repository.Object);
 
             var scope = new Mock<IServiceScope>();
@@ -91,23 +89,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(10, 200)]
         public async Task GivenFileStorageMetadataInTheDatabase_AtServiceStartup_ExpectPayloadsInCreatedStateToBeRemoved()
         {
-            var dataset = new List<Payload>
-            {
-                new Payload("created-test1", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
-                new Payload("created-test2", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Created },
-                new Payload("upload-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Move },
-                new Payload("notify-test", Guid.NewGuid().ToString(), 10) { State = Payload.PayloadState.Notify },
-            };
-
-            _repository.Setup(p => p.AsQueryable()).Returns(dataset.AsQueryable());
-            _repository.Setup(p => p.Remove(It.IsAny<Payload>()));
+            _repository.Setup(p => p.RemovePendingPayloadsAsync(It.IsAny<CancellationToken>()));
 
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
             await Task.Delay(250);
             payloadAssembler.Dispose();
             _cancellationTokenSource.Cancel();
 
-            _repository.Verify(p => p.Remove(It.IsAny<Payload>()), Times.Exactly(2));
+            _repository.Verify(p => p.RemovePendingPayloadsAsync(It.IsAny<CancellationToken>()), Times.AtLeastOnce());
         }
 
         [RetryFact(10, 200)]
@@ -127,48 +116,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [RetryFact(10, 200)]
-        public async Task GivenFileStorageMetadata_WhenQueueingWithDatabaseError_ExpectToRetryXTimes()
-        {
-            int callCount = 0;
-            _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>())).Callback(() =>
-            {
-                if (++callCount >= _options.Value.Database.Retries.DelaysMilliseconds.Length + 1)
-                {
-                    _cancellationTokenSource.CancelAfter(1200);
-                    return;
-                }
-                if (callCount != 0)
-                {
-                    throw new Exception("error");
-                }
-            });
-
-            var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
-
-            await payloadAssembler.Queue("A", new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt"), 1);
-            _cancellationTokenSource.Token.WaitHandle.WaitOne();
-            payloadAssembler.Dispose();
-
-            _logger.VerifyLoggingMessageBeginsWith($"Number of incomplete payloads waiting for processing: 1.", LogLevel.Trace, Times.AtLeastOnce());
-        }
-
-        [RetryFact(10, 200)]
         public async Task GivenAPayloadThatHasNotCompleteUploads_WhenProcessedByTimedEvent_ExpectToBeAddedToQueue()
         {
-            _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>())).Callback(() =>
-            {
-                _cancellationTokenSource.CancelAfter(1500);
-            });
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
 
             var file = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
+            file.File.SetUploaded("bucket");
 
             await payloadAssembler.Queue("A", file, 1);
             await Task.Delay(1001);
             payloadAssembler.Dispose();
 
-            _logger.VerifyLoggingMessageBeginsWith($"Number of incomplete payloads waiting for processing: 1.", LogLevel.Trace, Times.AtLeastOnce());
-            _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue", LogLevel.Information, Times.Never());
+            _repository.Verify(p => p.UpdateAsync(It.Is<Payload>(p => p.State == Payload.PayloadState.Move), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(10, 200)]

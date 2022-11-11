@@ -27,7 +27,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.Storage.API;
 
@@ -80,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             catch (Exception ex)
             {
                 payload.RetryCount++;
-                var action = await UpdatePayloadState(payload, ex).ConfigureAwait(false);
+                var action = await UpdatePayloadState(payload, ex, cancellationToken).ConfigureAwait(false);
                 if (action == PayloadAction.Updated)
                 {
                     await moveQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false);
@@ -93,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task NotifyIfCompleted(Payload payload, ActionBlock<Payload> notificationQueue)
+        private async Task NotifyIfCompleted(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(payload, nameof(payload));
             Guard.Against.Null(notificationQueue, nameof(notificationQueue));
@@ -104,8 +104,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 payload.ResetRetry();
 
                 var scope = _serviceScopeFactory.CreateScope();
-                var repository = scope.ServiceProvider.GetService<IInformaticsGatewayRepository<Payload>>() ?? throw new ServiceNotFoundException(nameof(IInformaticsGatewayRepository<Payload>));
-                await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
+                await repository.UpdateAsync(payload, cancellationToken).ConfigureAwait(false);
 
                 notificationQueue.Post(payload);
                 _logger.PayloadReadyToBePublished(payload.Id);
@@ -163,25 +163,25 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             file.SetMoved(_options.Value.Storage.StorageServiceBucketName);
         }
 
-        private async Task<PayloadAction> UpdatePayloadState(Payload payload, Exception ex)
+        private async Task<PayloadAction> UpdatePayloadState(Payload payload, Exception ex, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(payload, nameof(payload));
 
             var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IInformaticsGatewayRepository<Payload>>() ?? throw new ServiceNotFoundException(nameof(IInformaticsGatewayRepository<Payload>));
+            var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
 
             try
             {
                 if (payload.RetryCount > _options.Value.Storage.Retries.DelaysMilliseconds.Length)
                 {
                     _logger.MoveFailureStopRetry(payload.Id, ex);
-                    await payload.DeletePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    await repository.RemoveAsync(payload, cancellationToken).ConfigureAwait(false);
                     return PayloadAction.Deleted;
                 }
                 else
                 {
                     _logger.MoveFailureRetryLater(payload.Id, payload.State, payload.RetryCount, ex);
-                    await payload.UpdatePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    await repository.UpdateAsync(payload, cancellationToken).ConfigureAwait(false);
                     return PayloadAction.Updated;
                 }
             }

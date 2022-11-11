@@ -71,6 +71,15 @@
     <None Include="./nlog.config" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.ext.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
       <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll" />
@@ -85,8 +94,6 @@
     </PropertyGroup>
     <Message Importance="High" Text="Copying $(STUDYJSON) to $(OutDir)" />
     <Delete Files="$(OutDir)appsettings.Development.json" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="appsettings.json" DestinationFolder="$(OutDir)" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="appsettings.ext.json" DestinationFolder="$(OutDir)" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(STUDYJSON)" DestinationFiles="$(OutDir)\study.json" />
   </Target>
 </Project>

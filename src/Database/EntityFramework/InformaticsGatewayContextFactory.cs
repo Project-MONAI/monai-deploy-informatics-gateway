@@ -18,6 +18,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 {
@@ -35,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 
             var builder = new DbContextOptionsBuilder<InformaticsGatewayContext>();
 
-            var connectionString = configuration.GetConnectionString(Configurations.SR.DatabaseConnectionStringKey);
+            var connectionString = configuration.GetConnectionString(SR.DatabaseConnectionStringKey);
             builder.UseSqlite(connectionString);
 
             return new InformaticsGatewayContext(builder.Options);

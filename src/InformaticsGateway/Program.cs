@@ -29,6 +29,8 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
@@ -110,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IStreamsWriter, StreamsWriter>();
                     services.AddTransient<IApplicationEntityHandler, ApplicationEntityHandler>();
 
-                    services.AddScoped<IStorageMetadataWrapperRepository, StorageMetadataWrapperRepository>();
+                    services.AddScoped<IStorageMetadataRepository, StorageMetadataWrapperRepository>();
                     services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();
                     services.AddScoped<IPayloadMoveActionHandler, PayloadMoveActionHandler>();
                     services.AddScoped<IPayloadNotificationActionHandler, PayloadNotificationActionHandler>();

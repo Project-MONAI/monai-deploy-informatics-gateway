@@ -37,7 +37,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     public class DicomDimseScuServicesStepDefinitions
     {
         internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(7);
-        internal static readonly TimeSpan DicomWebWaitTimeSpan = TimeSpan.FromMinutes(2);
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly Configurations _configuration;
         private readonly DicomScp _dicomServer;
@@ -179,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
              }, (Dictionary<string, string> expected) =>
              {
                  return expected.Count == _dataProvider.DicomSpecs.FileHashes.Count;
-             }, DicomWebWaitTimeSpan, 1000);
+             }, DicomScpWaitTimeSpan, 1000);
 
             result.Should().NotBeNull().And.HaveCount(_dataProvider.DicomSpecs.FileHashes.Count);
         }

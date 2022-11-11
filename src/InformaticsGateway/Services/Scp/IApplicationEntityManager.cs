@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// </summary>
         /// <param name="calledAe"></param>
         /// <returns>True if the AE Title is configured; false otherwise.</returns>
-        bool IsAeTitleConfigured(string calledAe);
+        Task<bool> IsAeTitleConfiguredAsync(string calledAe);
 
         /// <summary>
         /// Wrapper to get injected service.
@@ -61,6 +61,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// </summary>
         /// <param name="callingAe"></param>
         /// <returns></returns>
-        bool IsValidSource(string callingAe, string host);
+        Task<bool> IsValidSourceAsync(string callingAe, string host);
     }
 }

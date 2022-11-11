@@ -18,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 {

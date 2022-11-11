@@ -24,8 +24,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Repositories;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -51,11 +51,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> JobStatus(string transactionId)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
+            Guard.Against.NullOrWhiteSpace(transactionId);
 
             try
             {
-                var status = await _inferenceRequestRepository.GetStatus(transactionId).ConfigureAwait(false);
+                var status = await _inferenceRequestRepository.GetStatusAsync(transactionId, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 if (status is null)
                 {
@@ -80,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> NewInferenceRequest([FromBody] InferenceRequest request)
         {
-            Guard.Against.Null(request, nameof(request));
+            Guard.Against.Null(request);
 
             if (!request.IsValid(out var details))
             {
@@ -88,15 +88,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
 
             using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } });
-
-            if (_inferenceRequestRepository.Exists(request.TransactionId))
-            {
-                return Problem(title: "Conflict", statusCode: (int)HttpStatusCode.Conflict, detail: "An existing request with same transaction ID already exists.");
-            }
-
             try
             {
-                await _inferenceRequestRepository.Add(request).ConfigureAwait(false);
+
+                if (await _inferenceRequestRepository.ExistsAsync(request.TransactionId, HttpContext.RequestAborted).ConfigureAwait(false))
+                {
+                    return Problem(title: "Conflict", statusCode: (int)HttpStatusCode.Conflict, detail: "An existing request with same transaction ID already exists.");
+                }
+
+                await _inferenceRequestRepository.AddAsync(request, HttpContext.RequestAborted).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

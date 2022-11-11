@@ -19,7 +19,7 @@ using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Database.Api
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 {
     public class StorageMetadataWrapper
     {
@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 
         public StorageMetadataWrapper(FileStorageMetadata metadata)
         {
-            Guard.Against.Null(metadata, nameof(metadata));
+            Guard.Against.Null(metadata);
 
             CorrelationId = metadata.CorrelationId;
             Identity = metadata.Id;
@@ -52,14 +52,19 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 
         public void Update(FileStorageMetadata metadata)
         {
-            Guard.Against.Null(metadata, nameof(metadata));
+            Guard.Against.Null(metadata);
 
             IsUploaded = metadata.IsUploaded;
-            Value = JsonSerializer.Serialize<object>(metadata);
-            TypeName = metadata.GetType().AssemblyQualifiedName;
+            Value = JsonSerializer.Serialize<object>(metadata); // Must be <object> here
+
+            if (metadata.GetType() is null || string.IsNullOrWhiteSpace(metadata.GetType().AssemblyQualifiedName))
+            {
+                throw new ArgumentException("Unable to determine the type", nameof(metadata));
+            }
+            TypeName = metadata.GetType().AssemblyQualifiedName!;
         }
 
-        public FileStorageMetadata GetObject()
+        public FileStorageMetadata? GetObject()
         {
             var type = Type.GetType(TypeName, true);
             return JsonSerializer.Deserialize(Value, type) as FileStorageMetadata;

@@ -25,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class HealthLevel7Definitions
     {
-        internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromMinutes(2);
+        internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromMinutes(3);
         private readonly DataProvider _dataProvider;
         private readonly RabbitMqConsumer _receivedMessages;
         private readonly IDataClient _dataSink;
