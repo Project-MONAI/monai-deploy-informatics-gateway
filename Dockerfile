@@ -26,7 +26,7 @@ RUN echo "Building MONAI Deploy Informatics Gateway..."
 RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy
+FROM mcr.microsoft.com/dotnet/aspnet:7.0.0-jammy
 
 # Enable elastic client compatibility mode
 ENV ELASTIC_CLIENT_APIVERSIONING=true
