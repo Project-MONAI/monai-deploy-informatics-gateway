@@ -29,7 +29,7 @@
         <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.0" />
     <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.11" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.10" />
     <PackageReference Include="System.IO.Abstractions" Version="17.2.3" />
