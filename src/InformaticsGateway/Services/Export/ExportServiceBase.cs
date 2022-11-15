@@ -99,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _messageSubscriber.OnConnectionError += (sender, args) =>
             {
-                _logger.MessagingServiceErrorRecover(args.ShutdownEventArguments.ToString());
+                _logger.MessagingServiceErrorRecover(args.ErrorMessage);
                 SetupPolling();
             };
         }
