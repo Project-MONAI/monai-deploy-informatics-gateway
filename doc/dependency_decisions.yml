@@ -102,7 +102,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/GitTools/GitVersion/raw/main/LICENSE)
     :versions:
-    - 5.10.3
+    - 5.11.1
     :when: 2022-08-16 23:05:34.633372053 Z
 - - :approve
   - HL7-dotnetcore
@@ -335,14 +335,14 @@
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.10
+    - 6.0.11
     :when: 2022-08-16 23:05:50.137694970 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Abstractions
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.10
+    - 6.0.11
     :when: 2022-08-16 23:05:51.008105271 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Analyzers
@@ -356,14 +356,14 @@
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.10
+    - 6.0.11
     :when: 2022-08-16 23:05:51.922790944 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.InMemory
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.10
+    - 6.0.11
     :when: 2022-08-16 23:05:52.375150938 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Relational
@@ -377,7 +377,7 @@
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.10
+    - 6.0.11
     :when: 2022-08-16 23:05:53.270526921 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite.Core
@@ -604,7 +604,7 @@
     :versions:
     - 6.0.0
     - 6.0.1
-    - 6.0.2
+    - 6.0.3
     :when: 2022-08-16 23:06:06.728283354 Z
 - - :approve
   - Microsoft.Extensions.Logging.Configuration
@@ -1684,7 +1684,7 @@
     :versions:
     - 6.0.0
     - 6.0.5
-    - 6.0.6
+    - 6.0.7
     :when: 2022-08-16 23:07:20.787263056 Z
 - - :approve
   - System.Text.RegularExpressions

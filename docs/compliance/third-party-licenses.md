@@ -1072,14 +1072,14 @@ SOFTWARE.
 
 
 <details>
-<summary>GitVersion.MsBuild 5.10.3</summary>
+<summary>GitVersion.MsBuild 5.11.1</summary>
 
 ## GitVersion.MsBuild
 
-- Version: 5.10.3
+- Version: 5.11.1
 - Authors: GitTools and Contributors
 - Project URL: https://github.com/GitTools/GitVersion
-- Source: [NuGet](https://www.nuget.org/packages/GitVersion.MsBuild/5.10.3)
+- Source: [NuGet](https://www.nuget.org/packages/GitVersion.MsBuild/5.11.1)
 - License: [MIT](https://github.com/GitTools/GitVersion/raw/main/LICENSE)
 
 
@@ -3015,14 +3015,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore 6.0.10</summary>
+<summary>Microsoft.EntityFrameworkCore 6.0.11</summary>
 
 ## Microsoft.EntityFrameworkCore
 
-- Version: 6.0.10
+- Version: 6.0.11
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.10)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.11)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3056,14 +3056,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Abstractions 6.0.10</summary>
+<summary>Microsoft.EntityFrameworkCore.Abstractions 6.0.11</summary>
 
 ## Microsoft.EntityFrameworkCore.Abstractions
 
-- Version: 6.0.10
+- Version: 6.0.11
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.10)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.11)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -4680,14 +4680,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Logging.Abstractions 6.0.2</summary>
+<summary>Microsoft.Extensions.Logging.Abstractions 6.0.3</summary>
 
 ## Microsoft.Extensions.Logging.Abstractions
 
-- Version: 6.0.2
+- Version: 6.0.3
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/6.0.2)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/6.0.3)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -24897,14 +24897,14 @@ SOFTWARE.
 
 
 <details>
-<summary>System.Text.Json 6.0.6</summary>
+<summary>System.Text.Json 6.0.7</summary>
 
 ## System.Text.Json
 
-- Version: 6.0.6
+- Version: 6.0.7
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/System.Text.Json/6.0.6)
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Json/6.0.7)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
