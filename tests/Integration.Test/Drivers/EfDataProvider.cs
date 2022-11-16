@@ -38,6 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
+            _outputHelper.WriteLine($"Connecting to EF based database using {connectionString}");
             var builder = new DbContextOptionsBuilder<InformaticsGatewayContext>();
             builder.UseSqlite(connectionString);
             _dbContext = new InformaticsGatewayContext(builder.Options);
@@ -45,6 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
         public void ClearAllData()
         {
+            _dbContext.Database.EnsureCreated();
             _dbContext.RemoveRange(_dbContext.DestinationApplicationEntities);
             _dbContext.RemoveRange(_dbContext.SourceApplicationEntities);
             _dbContext.RemoveRange(_dbContext.MonaiApplicationEntities);
