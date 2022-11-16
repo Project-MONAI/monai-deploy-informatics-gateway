@@ -120,8 +120,8 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.10",
-        "contentHash": "3BMwnBB6Bgwd6bjUqx2pOYuHpGBHCJxY3vorRJYX3U2wzrz5q4jNxDZZGsMViFZeJ7PXFIwbgy6rR73J5aalsg=="
+        "resolved": "6.0.11",
+        "contentHash": "KJCJjFMZFGYy0G8a8ZUwAe9n/l6P+dP3i4fQJmR4jR0/EFnlfeNeWh8n6nRhP+9YmNz290twaIZSbRoiGU6S2A=="
       },
       "Microsoft.Extensions.Configuration": {
         "type": "Transitive",
@@ -202,8 +202,8 @@
       },
       "Microsoft.Extensions.Logging.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.2",
-        "contentHash": "pwXCZKaA7m5wgmCj49dW+H1RPSY7U62SKLTQYCcavf/k3Nyt/WnBgAjG4jMGnwy9rElfAZ2KvxvM5CJzJWG0hg=="
+        "resolved": "6.0.3",
+        "contentHash": "SUpStcdjeBbdKjPKe53hVVLkFjylX0yIXY8K+xWa47+o1d+REDyOMZjHZa+chsQI1K9qZeiHWk9jos0TFU7vGg=="
       },
       "Microsoft.Extensions.Options": {
         "type": "Transitive",
@@ -267,8 +267,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "0.1.17-rc0020",
-        "contentHash": "ihL4GnfL/W+4uY+6GF7wtSr2vtA1WLPFYTscITCy1HP1uXDK2aSe76MHJn6m0SA3kA+njUxSpcoO7sFNnNdGGQ==",
+        "resolved": "0.1.16",
+        "contentHash": "9pNju53p7TQcOFOABsDyT9B467kFR/GM59hsExA+2uaPGP/SxhtktnFJ1Aixk3WKcmVwRWObOFwXnfeSfDql/A==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.0.1",
           "Microsoft.Extensions.Configuration": "6.0.1",
@@ -1281,9 +1281,9 @@
         "type": "Project",
         "dependencies": {
           "Macross.Json.Extensions": "3.0.0",
-          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.10",
+          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.11",
           "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
-          "Monai.Deploy.Messaging": "0.1.17-rc0020",
+          "Monai.Deploy.Messaging": "0.1.16",
           "Monai.Deploy.Storage": "0.2.10"
         }
       },
@@ -1299,11 +1299,11 @@
       "monai.deploy.informaticsgateway.configuration": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.2",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
           "Microsoft.Extensions.Options": "6.0.0",
           "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
           "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
-          "Monai.Deploy.Messaging": "0.1.17-rc0020",
+          "Monai.Deploy.Messaging": "0.1.16",
           "Monai.Deploy.Storage": "0.2.10",
           "System.IO.Abstractions": "17.2.3"
         }

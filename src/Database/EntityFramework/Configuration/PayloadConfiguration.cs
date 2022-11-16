@@ -23,6 +23,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
+#pragma warning disable CS8604, CS8603
     internal class PayloadConfiguration : IEntityTypeConfiguration<Payload>
     {
         public void Configure(EntityTypeBuilder<Payload> builder)
@@ -61,4 +62,5 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.HasIndex(p => new { p.CorrelationId, p.PayloadId }, "idx_payload_ids").IsUnique();
         }
     }
+#pragma warning restore CS8604, CS8603
 }

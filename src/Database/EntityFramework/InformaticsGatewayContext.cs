@@ -25,6 +25,9 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 {
+
+#pragma warning disable CS8618 // Unread "private" fields should be removed
+
     public class InformaticsGatewayContext : DbContext
     {
         public InformaticsGatewayContext(DbContextOptions<InformaticsGatewayContext> options) : base(options)
@@ -78,4 +81,5 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
                 (RelationalEventId.CommandCreated, LogLevel.Trace)
                 ));
     }
+#pragma warning restore CS8618 // Unread "private" fields should be removed
 }
