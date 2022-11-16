@@ -173,6 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
                 await repository.UpdateAsync(payload).ConfigureAwait(false);
+                _logger.PayloadSaved(payload.PayloadId);
                 _workItems.Add(payload);
                 _logger.BucketReady(key, payload.Count);
             }
@@ -180,7 +181,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (_payloads.TryAdd(key, new AsyncLazy<Payload>(payload)))
                 {
-                    _logger.BucketError(key, payload.Id, ex);
+                    _logger.BucketError(key, payload.PayloadId, ex);
                 }
                 else
                 {

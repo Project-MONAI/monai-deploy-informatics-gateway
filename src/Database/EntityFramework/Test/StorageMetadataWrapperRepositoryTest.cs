@@ -22,13 +22,14 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 using Moq;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {
     [Collection("SqliteDatabase")]
-    public class StorageMetadataWrapperRepositoryTest //: IClassFixture<SqliteDatabaseFixture>
+    public class StorageMetadataWrapperRepositoryTest
     {
         private readonly SqliteDatabaseFixture _databaseFixture;
 
@@ -63,8 +64,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         [Fact]
         public void GivenStorageMetadataWrapperRepositoryType_WhenInitialized_TheConstructorShallGuardAllParameters()
         {
-            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(null!, null!, null!));
+            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, null!));
 
             _ = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
         }
@@ -120,8 +121,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var unwrapped = actual.GetObject();
             Assert.NotNull(unwrapped);
 
-            Assert.Equal(metadata.Workflows, unwrapped.Workflows);
-            Assert.Equal(metadata.File.TemporaryBucketName, unwrapped.File.TemporaryBucketName);
+            Assert.Equal(metadata.Workflows, unwrapped!.Workflows);
+            Assert.Equal(metadata.File.TemporaryBucketName, unwrapped!.File.TemporaryBucketName);
         }
 
         [Fact]

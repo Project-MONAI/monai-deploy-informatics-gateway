@@ -112,8 +112,6 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IStreamsWriter, StreamsWriter>();
                     services.AddTransient<IApplicationEntityHandler, ApplicationEntityHandler>();
 
-                    services.AddScoped<IStorageMetadataRepository, StorageMetadataWrapperRepository>();
-                    services.AddScoped<IInferenceRequestRepository, InferenceRequestRepository>();
                     services.AddScoped<IPayloadMoveActionHandler, PayloadMoveActionHandler>();
                     services.AddScoped<IPayloadNotificationActionHandler, PayloadNotificationActionHandler>();
 

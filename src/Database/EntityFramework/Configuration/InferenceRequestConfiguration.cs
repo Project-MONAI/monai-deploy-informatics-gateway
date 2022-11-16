@@ -15,9 +15,6 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +24,8 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
+#pragma warning disable CS8603 // Possible null reference return.
+#pragma warning disable CS8604 // Possible null reference argument.
     internal class InferenceRequestConfiguration : IEntityTypeConfiguration<InferenceRequest>
     {
         public void Configure(EntityTypeBuilder<InferenceRequest> builder)
@@ -76,4 +75,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.HasIndex(p => p.TransactionId, "idx_inferencerequest_transactionid").IsUnique();
         }
     }
+#pragma warning restore CS8604 // Possible null reference argument.
+#pragma warning restore CS8603 // Possible null reference return.
 }

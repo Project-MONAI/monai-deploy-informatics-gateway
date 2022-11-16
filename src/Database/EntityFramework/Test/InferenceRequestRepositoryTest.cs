@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
         public InferenceRequestRepositoryTest(SqliteDatabaseFixture databaseFixture)
         {
-            _databaseFixture = databaseFixture;// new SqliteDatabaseFixture();
+            _databaseFixture = databaseFixture;
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<InferenceRequestRepository>>();
@@ -86,7 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequest).ConfigureAwait(false);
-            await store.UpdateAsync(inferenceRequest, InferenceRequestStatus.Fail);
+            await store.UpdateAsync(inferenceRequest, InferenceRequestStatus.Fail).ConfigureAwait(false);
 
             var result = await _databaseFixture.DatabaseContext.Set<InferenceRequest>().FirstOrDefaultAsync(p => p.TransactionId == inferenceRequest.TransactionId).ConfigureAwait(false);
             Assert.NotNull(result);
@@ -171,7 +171,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             await store.AddAsync(inferenceRequestCompleted).ConfigureAwait(false);
 
             cancellationTokenSource.CancelAfter(500);
-            await Assert.ThrowsAsync<OperationCanceledException>(async () => await store.TakeAsync(cancellationTokenSource.Token).ConfigureAwait(false));
+            await Assert.ThrowsAsync<OperationCanceledException>(async () => await store.TakeAsync(cancellationTokenSource.Token).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         [Fact]
@@ -187,18 +187,24 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             await store.AddAsync(inferenceRequest3).ConfigureAwait(false);
 
             var result = await store.GetInferenceRequestAsync(inferenceRequest1.TransactionId).ConfigureAwait(false);
-            Assert.Equal(inferenceRequest1.TransactionId, result.TransactionId);
+            Assert.NotNull(result);
+            Assert.Equal(inferenceRequest1.TransactionId, result!.TransactionId);
             result = await store.GetInferenceRequestAsync(inferenceRequest2.TransactionId).ConfigureAwait(false);
-            Assert.Equal(inferenceRequest2.TransactionId, result.TransactionId);
+            Assert.NotNull(result);
+            Assert.Equal(inferenceRequest2.TransactionId, result!.TransactionId);
             result = await store.GetInferenceRequestAsync(inferenceRequest3.TransactionId).ConfigureAwait(false);
-            Assert.Equal(inferenceRequest3.TransactionId, result.TransactionId);
+            Assert.NotNull(result);
+            Assert.Equal(inferenceRequest3.TransactionId, result!.TransactionId);
 
             result = await store.GetInferenceRequestAsync(inferenceRequest1.InferenceRequestId).ConfigureAwait(false);
-            Assert.Equal(inferenceRequest1.TransactionId, result.TransactionId);
+            Assert.NotNull(result);
+            Assert.Equal(inferenceRequest1.TransactionId, result!.TransactionId);
             result = await store.GetInferenceRequestAsync(inferenceRequest2.InferenceRequestId).ConfigureAwait(false);
-            Assert.Equal(inferenceRequest2.TransactionId, result.TransactionId);
+            Assert.NotNull(result);
+            Assert.Equal(inferenceRequest2.TransactionId, result!.TransactionId);
             result = await store.GetInferenceRequestAsync(inferenceRequest3.InferenceRequestId).ConfigureAwait(false);
-            Assert.Equal(inferenceRequest3.TransactionId, result.TransactionId);
+            Assert.NotNull(result);
+            Assert.Equal(inferenceRequest3.TransactionId, result!.TransactionId);
         }
 
         [Fact]
@@ -227,7 +233,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var result = await store.GetStatusAsync(inferenceRequest.TransactionId).ConfigureAwait(false);
 
             Assert.NotNull(result);
-            Assert.Equal(inferenceRequest.TransactionId, result.TransactionId);
+            Assert.Equal(inferenceRequest.TransactionId, result!.TransactionId);
         }
 
         [Fact]
@@ -243,7 +249,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.Null(result);
         }
 
-        private InferenceRequest CreateInferenceRequest(InferenceRequestState state = InferenceRequestState.Queued) => new InferenceRequest
+        private static InferenceRequest CreateInferenceRequest(InferenceRequestState state = InferenceRequestState.Queued) => new()
         {
             InferenceRequestId = Guid.NewGuid(),
             State = state,

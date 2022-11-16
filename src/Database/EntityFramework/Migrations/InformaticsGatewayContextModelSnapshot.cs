@@ -15,7 +15,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
@@ -24,6 +24,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<string>("AeTitle")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HostIp")
@@ -57,6 +60,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<string>("AllowedSopClasses")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Grouping")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -82,6 +88,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 {
                     b.Property<Guid>("InferenceRequestId")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("InputMetadata")
@@ -119,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasIndex(new[] { "TransactionId" }, "idx_inferencerequest_transactionid")
                         .IsUnique();
 
-                    b.ToTable("InferenceRequest");
+                    b.ToTable("InferenceRequests");
                 });
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity", b =>
@@ -129,6 +138,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<string>("AeTitle")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("HostIp")
@@ -149,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Storage.Payload", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("PayloadId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
@@ -176,17 +188,17 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("PayloadId");
 
-                    b.HasIndex(new[] { "CorrelationId", "Id" }, "idx_payload_ids")
+                    b.HasIndex(new[] { "CorrelationId", "PayloadId" }, "idx_payload_ids")
                         .IsUnique();
 
                     b.HasIndex(new[] { "State" }, "idx_payload_state");
 
-                    b.ToTable("Payload");
+                    b.ToTable("Payloads");
                 });
 
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Database.StorageMetadataWrapper", b =>
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper", b =>
                 {
                     b.Property<string>("CorrelationId")
                         .HasColumnType("TEXT");
@@ -194,13 +206,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<string>("Identity")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("TEXT");
+
                     b.Property<bool>("IsUploaded")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("TypeName")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("CorrelationId", "Identity");
@@ -211,7 +228,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.HasIndex(new[] { "IsUploaded" }, "idx_storagemetadata_uploaded");
 
-                    b.ToTable("StorageMetadataWrapper");
+                    b.ToTable("StorageMetadataWrapperEntities");
                 });
 #pragma warning restore 612, 618
         }

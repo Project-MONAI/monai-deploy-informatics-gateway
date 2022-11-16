@@ -27,7 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 4001, Level = LogLevel.Debug, Message = "Upload statistics: {threads} threads, {seconds} seconds.")]
         public static partial void UploadStats(this ILogger logger, int threads, double seconds);
 
-        [LoggerMessage(EventId = 4002, Level = LogLevel.Information, Message = "Uploading file to temporary store at {filePath}.")]
+        [LoggerMessage(EventId = 4002, Level = LogLevel.Debug, Message = "Uploading file to temporary store at {filePath}.")]
         public static partial void UploadingFileToTemporaryStore(this ILogger logger, string filePath);
 
         [LoggerMessage(EventId = 4003, Level = LogLevel.Information, Message = "Instance queued for upload {identifier}. Items in queue {count} using memory {memoryUsageKb}KB.")]
@@ -47,5 +47,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 4008, Level = LogLevel.Error, Message = "Unknown error occurred while uploading.")]
         public static partial void ErrorUploading(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 4009, Level = LogLevel.Error, Message = "Failed to verify file existence {path}.")]
+        public static partial void FailedToVerifyFileExistence(this ILogger logger, string path, Exception ex);
+
+        [LoggerMessage(EventId = 4010, Level = LogLevel.Debug, Message = "File {path} exists={exists}.")]
+        public static partial void VerifyFileExists(this ILogger logger, string path, bool exists);
     }
 }

@@ -16,7 +16,6 @@
 
 using Microsoft.EntityFrameworkCore;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {
@@ -97,7 +96,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             DatabaseContext.SaveChanges();
         }
-
 
         public void Dispose()
         {

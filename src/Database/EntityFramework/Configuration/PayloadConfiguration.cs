@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
@@ -40,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
 
-            builder.HasKey(j => j.Id);
+            builder.HasKey(j => j.PayloadId);
 
             builder.Property(j => j.Timeout).IsRequired();
             builder.Property(j => j.Key).IsRequired();
@@ -61,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Ignore(j => j.Count);
 
             builder.HasIndex(p => p.State, "idx_payload_state");
-            builder.HasIndex(p => new { p.CorrelationId, p.Id }, "idx_payload_ids").IsUnique();
+            builder.HasIndex(p => new { p.CorrelationId, p.PayloadId }, "idx_payload_ids").IsUnique();
         }
     }
 }

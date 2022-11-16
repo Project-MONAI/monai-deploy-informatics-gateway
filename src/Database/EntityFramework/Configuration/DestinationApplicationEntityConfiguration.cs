@@ -32,6 +32,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 
             builder.HasIndex(p => p.Name, "idx_destination_name").IsUnique();
             builder.HasIndex(p => new { p.Name, p.AeTitle, p.HostIp, p.Port }, "idx_source_all").IsUnique();
+
+            builder.Ignore(p => p.Id);
         }
     }
 }

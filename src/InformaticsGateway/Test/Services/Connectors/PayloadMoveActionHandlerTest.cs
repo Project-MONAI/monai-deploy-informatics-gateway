@@ -68,6 +68,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 5, 5, 5 };
             _options.Value.Storage.StorageServiceBucketName = "bucket";
+
+            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<KeyValuePair<string, string>>()))
+                .Returns((string _, KeyValuePair<string, string> input) => Task.FromResult(input));
         }
 
         [RetryFact(10, 200)]
@@ -203,7 +206,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             await handler.MoveFilesAsync(payload, moveAction, notifyAction, _cancellationTokenSource.Token);
 
-            Assert.True(notifyEvent.Wait(TimeSpan.FromSeconds(3)));
+            Assert.True(notifyEvent.Wait(TimeSpan.FromSeconds(5)));
 
             _storageService.Verify(p => p.CopyObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.AtLeast(2));
             _storageService.Verify(p => p.RemoveObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.AtLeast(2));

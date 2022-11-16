@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-using BoDi;
+using Microsoft.EntityFrameworkCore;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
@@ -28,11 +28,30 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
         private readonly Configurations _configuration;
         private readonly InformaticsGatewayContext _dbContext;
 
-        public EfDataProvider(ISpecFlowOutputHelper outputHelper, Configurations configuration, InformaticsGatewayContext informaticsGatewayContext)
+        public EfDataProvider(ISpecFlowOutputHelper outputHelper, Configurations configuration, string connectionString)
         {
+            if (string.IsNullOrWhiteSpace(connectionString))
+            {
+                throw new ArgumentException($"'{nameof(connectionString)}' cannot be null or whitespace.", nameof(connectionString));
+            }
+
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _dbContext = informaticsGatewayContext ?? throw new ArgumentNullException(nameof(informaticsGatewayContext)); ;
+
+            var builder = new DbContextOptionsBuilder<InformaticsGatewayContext>();
+            builder.UseSqlite(connectionString);
+            _dbContext = new InformaticsGatewayContext(builder.Options);
+        }
+
+        public void ClearAllData()
+        {
+            _dbContext.RemoveRange(_dbContext.DestinationApplicationEntities);
+            _dbContext.RemoveRange(_dbContext.SourceApplicationEntities);
+            _dbContext.RemoveRange(_dbContext.MonaiApplicationEntities);
+            _dbContext.RemoveRange(_dbContext.Payloads);
+            _dbContext.RemoveRange(_dbContext.InferenceRequests);
+            _dbContext.RemoveRange(_dbContext.StorageMetadataWrapperEntities);
+            _dbContext.SaveChanges();
         }
 
         public async Task<string> InjectAcrRequest()

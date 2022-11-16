@@ -28,6 +28,7 @@
     <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
     <ProjectReference Include="Api\Monai.Deploy.InformaticsGateway.Database.Api.csproj" />
     <ProjectReference Include="EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
+    <ProjectReference Include="MongoDB\Monai.Deploy.InformaticsGateway.Database.MongoDB.csproj" />
   </ItemGroup>
   
   <ItemGroup>
@@ -37,9 +38,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Mongo\**" />
-    <EmbeddedResource Remove="Mongo\**" />
-    <None Remove="Mongo\**" />
+    <Compile Remove="MongoDB\**" />
+    <EmbeddedResource Remove="MongoDB\**" />
+    <None Remove="MongoDB\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,5 +67,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
   </ItemGroup>
 </Project>

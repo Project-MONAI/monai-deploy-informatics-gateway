@@ -235,9 +235,11 @@ jobs:
     strategy:
       matrix:
         feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7, Fhir]
+        database: [ef, mongodb]
       fail-fast: false
     env:
       TAG: ${{ needs.build.outputs.TAG }}
+      DOTNET_TEST: ${{ matrix.database }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3

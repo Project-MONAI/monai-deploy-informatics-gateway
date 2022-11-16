@@ -21,18 +21,17 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Logging;
 using Polly;
 using Polly.Retry;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 {
-    public class StorageMetadataWrapperRepository : IStorageMetadataRepository, IDisposable
+    public class StorageMetadataWrapperRepository : StorageMetadataRepositoryBase, IDisposable
     {
         private readonly ILogger<StorageMetadataWrapperRepository> _logger;
         private readonly IServiceScope _scope;
@@ -41,12 +40,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         private readonly DbSet<StorageMetadataWrapper> _dataset;
         private bool _disposedValue;
 
-        public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
-
         public StorageMetadataWrapperRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<StorageMetadataWrapperRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options)
+            IOptions<InformaticsGatewayConfiguration> options) : base(logger)
         {
             Guard.Against.Null(serviceScopeFactory);
             Guard.Against.Null(options);
@@ -61,65 +58,42 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             _dataset = _informaticsGatewayContext.Set<StorageMetadataWrapper>();
         }
 
-
-        public async Task AddAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)
+        protected override async Task AddAsyncInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(metadata);
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", metadata.CorrelationId }, { "Identity", metadata.Id } });
             await _retryPolicy.ExecuteAsync(async () =>
             {
-                var obj = new StorageMetadataWrapper(metadata);
-                await _dataset.AddAsync(obj, cancellationToken).ConfigureAwait(false);
+                await _dataset.AddAsync(metadata, cancellationToken).ConfigureAwait(false);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                _informaticsGatewayContext.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+                _informaticsGatewayContext.Entry(metadata).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
+            })
+            .ConfigureAwait(false);
+        }
+
+        protected override async Task UpdateInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
+        {
+            Guard.Against.Null(metadata);
+
+            await _retryPolicy.ExecuteAsync(async () =>
+            {
+                _dataset.Update(metadata);
+                await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                _informaticsGatewayContext.Entry(metadata).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
                 _logger.StorageMetadataSaved();
             })
             .ConfigureAwait(false);
         }
 
-        public async Task UpdateAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)
+        protected override async Task<StorageMetadataWrapper?> FindByIds(string id, string correlationId, CancellationToken cancellationToken = default)
         {
-
-            Guard.Against.Null(metadata);
-
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", metadata.CorrelationId }, { "Identity", metadata.Id } });
-            await _retryPolicy.ExecuteAsync(async () =>
+            return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var obj = await _dataset.FirstOrDefaultAsync(p => p.Identity == metadata.Id && p.CorrelationId == metadata.CorrelationId, cancellationToken).ConfigureAwait(false);
-
-                if (obj is null)
-                {
-                    throw new ArgumentException("Matching wrapper storage object not found");
-                }
-
-                obj.Update(metadata);
-                _dataset.Update(obj);
-                await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                _informaticsGatewayContext.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Detached;
-                _logger.StorageMetadataSaved();
-            })
-            .ConfigureAwait(false);
+                return await _dataset.FirstOrDefaultAsync(p => p.Identity == id && p.CorrelationId == correlationId, cancellationToken).ConfigureAwait(false);
+            }).ConfigureAwait(false);
         }
 
-        public async Task AddOrUpdateAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)
-        {
-
-            Guard.Against.Null(metadata);
-
-            var existing = await GetFileStorageMetdadataAsync(metadata.CorrelationId, metadata.Id, cancellationToken).ConfigureAwait(false);
-
-            if (existing is not null)
-            {
-                await UpdateAsync(metadata, cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                await AddAsync(metadata, cancellationToken).ConfigureAwait(false);
-            }
-        }
-
-        public async Task<IList<FileStorageMetadata?>> GetFileStorageMetdadataAsync(string correlationId, CancellationToken cancellationToken = default)
+        public override async Task<IList<FileStorageMetadata>> GetFileStorageMetdadataAsync(string correlationId, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(correlationId);
 
@@ -132,37 +106,33 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             }).ConfigureAwait(false);
         }
 
-        public async Task<FileStorageMetadata?> GetFileStorageMetdadataAsync(string correlationId, string identity, CancellationToken cancellationToken = default)
+        public override async Task<FileStorageMetadata?> GetFileStorageMetdadataAsync(string correlationId, string identity, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(correlationId);
             Guard.Against.NullOrWhiteSpace(identity);
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var result = await _dataset.FirstOrDefaultAsync(p => p.CorrelationId.Equals(correlationId) && p.Identity.Equals(identity), cancellationToken).ConfigureAwait(false);
+                var result = await _dataset
+                    .FirstOrDefaultAsync(p => p.CorrelationId.Equals(correlationId) && p.Identity.Equals(identity), cancellationToken)
+                    .ConfigureAwait(false);
                 return result?.GetObject();
             }).ConfigureAwait(false);
         }
 
-        public async Task<bool> DeleteAsync(string correlationId, string identity, CancellationToken cancellationToken = default)
+        protected override async Task<bool> DeleteInternalAsync(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId);
-            Guard.Against.NullOrWhiteSpace(identity);
+            Guard.Against.Null(metadata);
 
-            var toBeDeleted = await _dataset.FirstOrDefaultAsync(p => p.CorrelationId.Equals(correlationId) && p.Identity.Equals(identity), cancellationToken).ConfigureAwait(false);
-
-            if (toBeDeleted is not null)
+            return await _retryPolicy.ExecuteAsync(async () =>
             {
-                return await _retryPolicy.ExecuteAsync(async () =>
-                {
-                    _dataset.Remove(toBeDeleted);
-                    await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
-                    return true;
-                }).ConfigureAwait(false);
-            }
-            return false;
+                _dataset.Remove(metadata);
+                await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                return true;
+            }).ConfigureAwait(false);
         }
-        public async Task DeletePendingUploadsAsync(CancellationToken cancellationToken = default)
+
+        public override async Task DeletePendingUploadsAsync(CancellationToken cancellationToken = default)
         {
             await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -174,8 +144,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
                     await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 }
             }).ConfigureAwait(false);
-
         }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)

@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
         /// Gets all storage metadata objects associated with the correlation ID.
         /// </summary>
         /// <param name="correlationId">Correlation ID</param>
-        Task<IList<FileStorageMetadata?>> GetFileStorageMetdadataAsync(string correlationId, CancellationToken cancellationToken = default);
+        Task<IList<FileStorageMetadata>> GetFileStorageMetdadataAsync(string correlationId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the specified storage metadata object.

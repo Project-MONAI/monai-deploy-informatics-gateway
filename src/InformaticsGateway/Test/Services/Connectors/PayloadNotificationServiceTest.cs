@@ -114,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _logger.VerifyLogging($"{service.ServiceName} is stopping.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Waiting for {service.ServiceName} to stop.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"Uploading payload {payload.Id} to storage service at {_options.Value.Storage.StorageServiceBucketName}.", LogLevel.Information, Times.Never());
+            _logger.VerifyLogging($"Uploading payload {payload.PayloadId} to storage service at {_options.Value.Storage.StorageServiceBucketName}.", LogLevel.Information, Times.Never());
         }
 
         [RetryFact(10, 200)]
@@ -174,7 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _payloadMoveActionHandler.Verify(p => p.MoveFilesAsync(It.IsAny<Payload>(), It.IsAny<ActionBlock<Payload>>(), It.IsAny<ActionBlock<Payload>>(), It.IsAny<CancellationToken>()), Times.AtLeastOnce());
 
-            _logger.VerifyLogging($"Payload {payload.Id} added to {service.ServiceName} for processing.", LogLevel.Information, Times.AtLeastOnce());
+            _logger.VerifyLogging($"Payload {payload.PayloadId} added to {service.ServiceName} for processing.", LogLevel.Information, Times.AtLeastOnce());
         }
 
         private bool VerifyHelper(Payload payload, Message message)
@@ -182,7 +182,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var workflowRequestEvent = message.ConvertTo<WorkflowRequestEvent>();
             if (workflowRequestEvent is null) return false;
             if (workflowRequestEvent.Payload.Count != 1) return false;
-            if (workflowRequestEvent.PayloadId != payload.Id) return false;
+            if (workflowRequestEvent.PayloadId != payload.PayloadId) return false;
             if (workflowRequestEvent.FileCount != payload.Files.Count) return false;
             if (workflowRequestEvent.CorrelationId != payload.CorrelationId) return false;
             if (workflowRequestEvent.Timestamp != payload.DateTimeCreated) return false;

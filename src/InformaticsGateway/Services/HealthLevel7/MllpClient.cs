@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _exceptions = new List<Exception>();
             _messages = new List<Message>();
 
-            _loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "End point", _client.RemoteEndPoint }, { "CorrelationId", ClientId } });
+            _loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Endpoint", _client.RemoteEndPoint }, { "CorrelationId", ClientId } });
         }
 
         public async Task Start(Func<IMllpClient, MllpClientResult, Task> onDisconnect, CancellationToken cancellationToken)

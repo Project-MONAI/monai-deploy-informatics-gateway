@@ -16,7 +16,7 @@
 
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {

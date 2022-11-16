@@ -26,7 +26,7 @@ using Moq;
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {
     [Collection("SqliteDatabase")]
-    public class DestinationApplicationEntityRepositoryTest //: IClassFixture<SqliteDatabaseFixture>
+    public class DestinationApplicationEntityRepositoryTest
     {
         private readonly SqliteDatabaseFixture _databaseFixture;
 

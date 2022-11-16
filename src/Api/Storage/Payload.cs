@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         private readonly Stopwatch _lastReceived;
         private bool _disposedValue;
 
-        public Guid Id { get; }
+        public Guid PayloadId { get; }
 
         public uint Timeout { get; init; }
 
@@ -66,7 +66,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
 
-        public TimeSpan Elapsed { get { return DateTime.UtcNow.Subtract(DateTimeCreated); } }
+        public TimeSpan Elapsed
+        { get { return DateTime.UtcNow.Subtract(DateTimeCreated); } }
 
         public string CallingAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
 
@@ -74,14 +75,14 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public Payload(string key, string correlationId, uint timeout)
         {
-            Guard.Against.NullOrWhiteSpace(key, nameof(key));
+            Guard.Against.NullOrWhiteSpace(key);
 
             Files = new List<FileStorageMetadata>();
             _lastReceived = new Stopwatch();
 
             CorrelationId = correlationId;
             DateTimeCreated = DateTime.UtcNow;
-            Id = Guid.NewGuid();
+            PayloadId = Guid.NewGuid();
             Key = key;
             State = PayloadState.Created;
             RetryCount = 0;
@@ -90,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public void Add(FileStorageMetadata value)
         {
-            Guard.Against.Null(value, nameof(value));
+            Guard.Against.Null(value);
 
             Files.Add(value);
             _lastReceived.Reset();

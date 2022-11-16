@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -72,6 +72,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings.mongodb.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.ef.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings.ext.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -94,6 +100,7 @@
     </PropertyGroup>
     <Message Importance="High" Text="Copying $(STUDYJSON) to $(OutDir)" />
     <Delete Files="$(OutDir)appsettings.Development.json" />
+    <Delete Files="$(OutDir)mig.db" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(STUDYJSON)" DestinationFiles="$(OutDir)\study.json" />
   </Target>
 </Project>

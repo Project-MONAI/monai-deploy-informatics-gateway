@@ -26,7 +26,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
         {
             using (var scope = host.Services.CreateScope())
             {
-                scope.ServiceProvider.GetRequiredService<IDatabaseMigrationManager>()?.Migrate(host);
+                scope.ServiceProvider.GetService<IDatabaseMigrationManager>()?.Migrate(host);
             }
             return host;
         }

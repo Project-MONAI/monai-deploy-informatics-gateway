@@ -105,7 +105,7 @@ function start_services() {
     info "Starting dependencies docker compose up -d --force-recreate..."
     pushd $DOCKER_COMPOSE_DIR
     ./init.sh
-    docker compose -p igtest up -d --force-recreate
+    docker compose -p igtest up -d --force-recreate --wait
     popd
 
     info "============================================="

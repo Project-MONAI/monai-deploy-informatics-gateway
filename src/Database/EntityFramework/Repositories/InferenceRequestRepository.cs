@@ -23,14 +23,14 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Logging;
 using Polly;
 using Polly.Retry;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 {
-    public class InferenceRequestRepository : IInferenceRequestRepository, IDisposable
+    public class InferenceRequestRepository : InferenceRequestRepositoryBase, IDisposable
     {
         private readonly ILogger<InferenceRequestRepository> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         public InferenceRequestRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<InferenceRequestRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options)
+            IOptions<InformaticsGatewayConfiguration> options) : base(logger, options)
         {
             Guard.Against.Null(serviceScopeFactory);
 
@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             _dataset = _informaticsGatewayContext.Set<InferenceRequest>();
         }
 
-        public async Task AddAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)
+        public override async Task AddAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(inferenceRequest);
 
@@ -74,36 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             .ConfigureAwait(false);
         }
 
-        public async Task UpdateAsync(InferenceRequest inferenceRequest, InferenceRequestStatus status, CancellationToken cancellationToken = default)
-        {
-            Guard.Against.Null(inferenceRequest);
-
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
-
-            if (status == InferenceRequestStatus.Success)
-            {
-                inferenceRequest.State = InferenceRequestState.Completed;
-                inferenceRequest.Status = InferenceRequestStatus.Success;
-            }
-            else
-            {
-                if (++inferenceRequest.TryCount > _options.Value.Database.Retries.DelaysMilliseconds.Length)
-                {
-                    _logger.InferenceRequestUpdateExceededMaximumRetries();
-                    inferenceRequest.State = InferenceRequestState.Completed;
-                    inferenceRequest.Status = InferenceRequestStatus.Fail;
-                }
-                else
-                {
-                    _logger.InferenceRequestUpdateRetryLater();
-                    inferenceRequest.State = InferenceRequestState.Queued;
-                }
-            }
-
-            await Save(inferenceRequest).ConfigureAwait(false);
-        }
-
-        public async Task<InferenceRequest> TakeAsync(CancellationToken cancellationToken = default)
+        public override async Task<InferenceRequest> TakeAsync(CancellationToken cancellationToken = default)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -116,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
                         using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
                         inferenceRequest.State = InferenceRequestState.InProcess;
                         _logger.InferenceRequestSetToInProgress(inferenceRequest.TransactionId);
-                        await Save(inferenceRequest).ConfigureAwait(false);
+                        await SaveAsync(inferenceRequest).ConfigureAwait(false);
                         return inferenceRequest;
                     }
                     await Task.Delay(250, cancellationToken).ConfigureAwait(false);
@@ -130,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             throw new OperationCanceledException("cancellation requested.");
         }
 
-        public async Task<InferenceRequest?> GetInferenceRequestAsync(string transactionId, CancellationToken cancellationToken = default)
+        public override async Task<InferenceRequest?> GetInferenceRequestAsync(string transactionId, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(transactionId);
 
@@ -140,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             }).ConfigureAwait(false);
         }
 
-        public async Task<InferenceRequest?> GetInferenceRequestAsync(Guid inferenceRequestId, CancellationToken cancellationToken = default)
+        public override async Task<InferenceRequest?> GetInferenceRequestAsync(Guid inferenceRequestId, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrEmpty(inferenceRequestId);
 
@@ -150,36 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             }).ConfigureAwait(false);
         }
 
-        public async Task<bool> ExistsAsync(string transactionId, CancellationToken cancellationToken = default)
-        {
-            Guard.Against.NullOrWhiteSpace(transactionId);
-
-            return await _retryPolicy.ExecuteAsync(async () =>
-            {
-                return await GetInferenceRequestAsync(transactionId, cancellationToken).ConfigureAwait(false) is not null;
-            }).ConfigureAwait(false);
-        }
-
-        public async Task<InferenceStatusResponse?> GetStatusAsync(string transactionId, CancellationToken cancellationToken = default)
-        {
-            Guard.Against.NullOrWhiteSpace(transactionId);
-
-            return await _retryPolicy.ExecuteAsync(async () =>
-            {
-                var response = new InferenceStatusResponse();
-                var item = await GetInferenceRequestAsync(transactionId, cancellationToken).ConfigureAwait(false);
-                if (item is null)
-                {
-                    return null;
-                }
-
-                response.TransactionId = item.TransactionId;
-
-                return await Task.FromResult(response).ConfigureAwait(false);
-            }).ConfigureAwait(false);
-        }
-
-        private async Task Save(InferenceRequest inferenceRequest)
+        protected override async Task SaveAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(inferenceRequest);
 
@@ -191,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
                     _informaticsGatewayContext.Entry(inferenceRequest).State = EntityState.Detached;
                 }
                 _dataset.Update(inferenceRequest);
-                await _informaticsGatewayContext.SaveChangesAsync().ConfigureAwait(false);
+                await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 _logger.InferenceRequestUpdated();
             }).ConfigureAwait(false);
         }

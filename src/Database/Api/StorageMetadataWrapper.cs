@@ -17,23 +17,27 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
+namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
-    public class StorageMetadataWrapper
+    /// <summary>
+    /// A wrapper class to support polymorphic types of <see cref="FileStorageMetadata" />
+    /// </summary>
+    public class StorageMetadataWrapper : MongoDBEntityBase
     {
         [JsonPropertyName("correlationId")]
-        public string CorrelationId { get; set; }
+        public string CorrelationId { get; set; } = string.Empty;
 
         [JsonPropertyName("identity")]
-        public string Identity { get; set; }
+        public string Identity { get; set; } = string.Empty;
 
         [JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
 
         [JsonPropertyName("typeName")]
-        public string TypeName { get; set; }
+        public string TypeName { get; set; } = string.Empty;
 
         [JsonPropertyName("isUploaded")]
         public bool IsUploaded { get; set; }
@@ -64,10 +68,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             TypeName = metadata.GetType().AssemblyQualifiedName!;
         }
 
-        public FileStorageMetadata? GetObject()
+        public FileStorageMetadata GetObject()
         {
             var type = Type.GetType(TypeName, true);
+
+            if (type is null)
+            {
+                throw new NotSupportedException($"Unable to locate type {TypeName} in the current application.");
+            }
+
+#pragma warning disable CS8603 // Possible null reference return.
             return JsonSerializer.Deserialize(Value, type) as FileStorageMetadata;
+#pragma warning restore CS8603 // Possible null reference return.
         }
     }
 }

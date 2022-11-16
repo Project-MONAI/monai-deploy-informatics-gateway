@@ -18,6 +18,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
@@ -31,6 +34,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
         public virtual DbSet<MonaiApplicationEntity> MonaiApplicationEntities { get; set; }
         public virtual DbSet<SourceApplicationEntity> SourceApplicationEntities { get; set; }
         public virtual DbSet<DestinationApplicationEntity> DestinationApplicationEntities { get; set; }
+        public virtual DbSet<InferenceRequest> InferenceRequests { get; set; }
+        public virtual DbSet<Payload> Payloads { get; set; }
+        public virtual DbSet<StorageMetadataWrapper> StorageMetadataWrapperEntities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

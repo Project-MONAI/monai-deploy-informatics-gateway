@@ -19,15 +19,17 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Xml;
+using Amazon.Runtime;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Minio;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
+using Polly;
+using Polly.Retry;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
@@ -37,12 +39,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         private readonly Configurations _configurations;
         private readonly InformaticsGatewayConfiguration _options;
         private readonly ISpecFlowOutputHelper _outputHelper;
+        private readonly AsyncRetryPolicy _retryPolicy;
 
         public Assertions(Configurations configurations, InformaticsGatewayConfiguration options, ISpecFlowOutputHelper outputHelper)
         {
             _configurations = configurations ?? throw new ArgumentNullException(nameof(configurations));
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
+            _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(retryCount: 5, sleepDurationProvider: _ => TimeSpan.FromMilliseconds(500));
         }
 
         internal async Task ShouldHaveUploadedDicomDataToMinio(IReadOnlyList<Message> messages, Dictionary<string, string> fileHashes)
@@ -57,36 +61,41 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 var request = message.ConvertTo<WorkflowRequestEvent>();
                 foreach (var file in request.Payload)
                 {
-                    var dicomValidationKey = string.Empty;
+                    await _retryPolicy.ExecuteAsync(async () =>
+                    {
+                        var dicomValidationKey = string.Empty;
 
-                    var getObjectArgs = new GetObjectArgs()
-                        .WithBucket(request.Bucket)
-                        .WithObject($"{request.PayloadId}/{file.Path}")
-                        .WithCallbackStream((stream) =>
-                        {
-                            using var memoryStream = new MemoryStream();
-                            stream.CopyTo(memoryStream);
-                            memoryStream.Position = 0;
-                            var dicomFile = DicomFile.Open(memoryStream);
-                            dicomValidationKey = dicomFile.GenerateFileName();
-                            fileHashes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
-                        });
-                    await minioClient.GetObjectAsync(getObjectArgs);
+                        _outputHelper.WriteLine($"Reading file from {request.Bucket} => {request.PayloadId}/{file.Path}.");
+                        var getObjectArgs = new GetObjectArgs()
+                            .WithBucket(request.Bucket)
+                            .WithObject($"{request.PayloadId}/{file.Path}")
+                            .WithCallbackStream((stream) =>
+                            {
+                                using var memoryStream = new MemoryStream();
+                                stream.CopyTo(memoryStream);
+                                memoryStream.Position = 0;
+                                var dicomFile = DicomFile.Open(memoryStream);
+                                dicomValidationKey = dicomFile.GenerateFileName();
+                                fileHashes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
+                            });
+                        await minioClient.GetObjectAsync(getObjectArgs);
 
-                    var getMetadataObjectArgs = new GetObjectArgs()
-                        .WithBucket(request.Bucket)
-                        .WithObject($"{request.PayloadId}/{file.Metadata}")
-                        .WithCallbackStream((stream) =>
-                        {
-                            using var memoryStream = new MemoryStream();
-                            stream.CopyTo(memoryStream);
-                            var json = Encoding.UTF8.GetString(memoryStream.ToArray());
+                        _outputHelper.WriteLine($"Reading file from {request.Bucket} => {request.PayloadId}/{file.Metadata}.");
+                        var getMetadataObjectArgs = new GetObjectArgs()
+                            .WithBucket(request.Bucket)
+                            .WithObject($"{request.PayloadId}/{file.Metadata}")
+                            .WithCallbackStream((stream) =>
+                            {
+                                using var memoryStream = new MemoryStream();
+                                stream.CopyTo(memoryStream);
+                                var json = Encoding.UTF8.GetString(memoryStream.ToArray());
 
-                            var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
-                            var key = dicomFileFromJson.GenerateFileName();
-                            key.Should().Be(dicomValidationKey);
-                        });
-                    await minioClient.GetObjectAsync(getMetadataObjectArgs);
+                                var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);
+                                var key = dicomFileFromJson.GenerateFileName();
+                                key.Should().Be(dicomValidationKey);
+                            });
+                        await minioClient.GetObjectAsync(getMetadataObjectArgs);
+                    });
                 }
             }
         }
@@ -199,6 +208,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 }
             }
         }
+
         internal void ShouldHaveCorrectNumberOfWorkflowRequestMessagesAndAcrRequest(DataProvider dataProvider, IReadOnlyList<Message> messages, int count)
         {
             Guard.Against.Null(dataProvider);

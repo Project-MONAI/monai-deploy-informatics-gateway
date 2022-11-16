@@ -63,6 +63,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
                 .Metadata.SetValueComparer(valueComparer);
 
             builder.HasIndex(p => p.Name, "idx_monaiae_name").IsUnique();
+
+            builder.Ignore(p => p.Id);
         }
     }
 }

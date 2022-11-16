@@ -22,8 +22,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Logging;
 using Polly;
 using Polly.Retry;
 
@@ -58,6 +58,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<Payload> AddAsync(Payload item, CancellationToken cancellationToken = default)
         {
+            Guard.Against.Null(item);
+
             return await _retryPolicy.ExecuteAsync(async () =>
             {
                 var result = await _dataset.AddAsync(item, cancellationToken).ConfigureAwait(false);
@@ -76,6 +78,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<Payload> RemoveAsync(Payload entity, CancellationToken cancellationToken = default)
         {
+            Guard.Against.Null(entity);
+
             return await _retryPolicy.ExecuteAsync(async () =>
             {
                 var result = _dataset.Remove(entity);
@@ -94,6 +98,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<Payload> UpdateAsync(Payload entity, CancellationToken cancellationToken = default)
         {
+            Guard.Against.Null(entity);
+
             return await _retryPolicy.ExecuteAsync(async () =>
             {
                 var result = _dataset.Update(entity);
