@@ -147,6 +147,7 @@ function tear_down() {
     pushd $DOCKER_COMPOSE_DIR
     info "Stopping services..."
     docker compose -p igtest down --remove-orphans
+    sudo rm -r .run/
     popd
     set -e
 }
