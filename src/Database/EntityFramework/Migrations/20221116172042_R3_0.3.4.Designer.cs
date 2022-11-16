@@ -11,7 +11,7 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20221115163047_R3_0.3.4")]
+    [Migration("20221116172042_R3_0.3.4")]
     partial class R3_034
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,9 +90,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 {
                     b.Property<Guid>("InferenceRequestId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("InputMetadata")

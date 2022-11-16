@@ -90,9 +90,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateTimeCreated")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("InputMetadata")
                         .HasColumnType("TEXT");
 

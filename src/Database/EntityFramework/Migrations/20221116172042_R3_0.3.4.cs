@@ -54,13 +54,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateTimeCreated",
-                table: "InferenceRequests",
-                type: "TEXT",
-                nullable: false,
-                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
             migrationBuilder.AddPrimaryKey(
                 name: "PK_Payloads",
                 table: "Payloads",
@@ -127,10 +120,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.DropColumn(
                 name: "DateTimeCreated",
                 table: "DestinationApplicationEntities");
-
-            migrationBuilder.DropColumn(
-                name: "DateTimeCreated",
-                table: "InferenceRequests");
 
             migrationBuilder.RenameTable(
                 name: "Payloads",
