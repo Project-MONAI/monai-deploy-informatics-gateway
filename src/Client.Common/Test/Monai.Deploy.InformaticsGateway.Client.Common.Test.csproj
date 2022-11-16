@@ -22,6 +22,7 @@
     <RootNamespace>Monai.Deploy.InformaticsGateway.DicomWeb.Client.Test</RootNamespace>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsPackable>false</IsPackable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>

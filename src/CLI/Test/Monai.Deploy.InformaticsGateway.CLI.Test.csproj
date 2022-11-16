@@ -21,6 +21,7 @@
     <RootNamespace>Monai.Deploy.InformaticsGateway.CLI.Test</RootNamespace>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsPackable>false</IsPackable>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>

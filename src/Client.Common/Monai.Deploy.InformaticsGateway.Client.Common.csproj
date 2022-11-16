@@ -23,6 +23,7 @@
     <IsTrimmable>true</IsTrimmable>
     <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
     <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>
