@@ -53,6 +53,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _databaseName = databaseName;
+
+            _outputHelper.WriteLine($"Connecting to MongoDB at {connectionString}");
             _client = new MongoClient(connectionString);
             _database = _client.GetDatabase(databaseName);
             _infereRequestCollection = _database.GetCollection<InferenceRequest>(nameof(InferenceRequest));

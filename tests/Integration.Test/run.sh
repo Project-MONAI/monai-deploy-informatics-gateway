@@ -19,7 +19,6 @@ export VSTEST_HOST_DEBUG=0
 
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 DOCKER_COMPOSE_DIR="$SCRIPT_DIR/../../docker-compose"
-RUN_DIR="$DOCKER_COMPOSE_DIR/.run"
 TEST_DIR="$SCRIPT_DIR/"
 LOG_DIR="${GITHUB_WORKSPACE:-$SCRIPT_DIR}"
 BIN_DIR="$TEST_DIR/bin/Release/net6.0"
@@ -48,9 +47,6 @@ function check_status_code() {
 
 function env_setup() {
     [ -f $LOG_DIR/run.log ] && info "Deletig existing $LOG_DIR/run.log" && sudo rm $LOG_DIR/run.log
-    [ -d $RUN_DIR ] && info "Removing $RUN_DIR..." && sudo rm -r $RUN_DIR
-    mkdir -p $RUN_DIR
-
     [ -d $BIN_DIR ] && info "Removing $BIN_DIR..." && sudo rm -r $BIN_DIR
 
     SHORT=f:,d
@@ -111,9 +107,6 @@ function start_services() {
     info "============================================="
     docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep igtest-
     info "============================================="
-
-    sleep 1
-    sudo chown -R $USER:$USER $RUN_DIR
 }
 
 function run_test() {
@@ -143,7 +136,6 @@ function generate_reports() {
 }
 
 function save_logs() {
-    [ -d $RUN_DIR ] && info "Clearning $RUN_DIR..." && sudo rm -r $RUN_DIR
     pushd $DOCKER_COMPOSE_DIR
     info "Saving service log..."
     docker compose -p igtest logs --no-color -t > "$LOG_DIR/services.log"
