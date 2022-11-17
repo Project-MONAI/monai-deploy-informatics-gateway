@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
 using Xunit;
@@ -202,5 +203,87 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         }
 
         #endregion SourceApplicationEntity.IsValid
+
+        #region IsAeTitleValid
+        [Theory]
+        [InlineData("123")]
+        [InlineData("MYAET")]
+        [InlineData("EAST-123-123")]
+        public void GivenAValidAETitle_WhenIIsAeTitleValid_ExpectToReturnTrue(string value)
+        {
+            var errors = new List<string>();
+            Assert.True(ValidationExtensions.IsAeTitleValid("test", value, errors));
+            Assert.Empty(errors);
+        }
+
+        [Theory]
+        [InlineData("")]
+        [InlineData("                             ")]
+        [InlineData("AE\\")]
+        [InlineData("AE/")]
+        [InlineData("1$")]
+        [InlineData("A.E.T.")]
+        public void GivenAnInvalidAETitle_WhenIsAeTitleValid_ExpectToReturnFalse(string value)
+        {
+            var errors = new List<string>();
+            Assert.False(ValidationExtensions.IsAeTitleValid("test", value, errors));
+            Assert.NotEmpty(errors);
+        }
+
+        #endregion
+
+        #region IsValidHostNameIp
+        [Theory]
+        [InlineData("0.0.0.0")]
+        [InlineData("10.20.30.40")]
+        [InlineData("255.255.255.0")]
+        [InlineData("1.2.3.4")]
+        [InlineData("192.168.0.1")]
+        public void GivenAValidIpAddress_WhenIsValidHostNameIpIsCalled_ExpectToReturnTrue(string value)
+        {
+            var errors = new List<string>();
+            Assert.True(ValidationExtensions.IsValidHostNameIp("test", value, errors));
+            Assert.Empty(errors);
+        }
+
+        [Theory]
+        [InlineData("256.256.256.256")]
+        [InlineData("1.0")]
+        [InlineData("1")]
+        [InlineData("2.3.4")]
+        public void GivenAnInvalidIpAddress_WhenIsValidHostNameIpIsCalled_ExpectToReturnFalse(string value)
+        {
+            var errors = new List<string>();
+            Assert.False(ValidationExtensions.IsValidHostNameIp("test", value, errors));
+            Assert.NotEmpty(errors);
+        }
+
+        [Theory]
+        [InlineData("localhost")]
+        [InlineData("east-1")]
+        [InlineData("east-2.k8s.local")]
+        [InlineData("cloud.com")]
+        [InlineData("east.cloud.com")]
+        [InlineData("super.west.cloud.com")]
+        public void GivenAValidHostName_WhenIsValidHostNameIpIsCalled_ExpectToReturnTrue(string value)
+        {
+            var errors = new List<string>();
+            Assert.True(ValidationExtensions.IsValidHostNameIp("test", value, errors));
+            Assert.Empty(errors);
+        }
+
+        [Theory]
+        [InlineData("localhost!")]
+        [InlineData("cloud@com")]
+        [InlineData("east@cloud.com")]
+        [InlineData("super/west.cloud.com")]
+        public void GivenAnInvalidHostName_WhenIsValidHostNameIpIsCalled_ExpectToReturnFalse(string value)
+        {
+            var errors = new List<string>();
+            Assert.False(ValidationExtensions.IsValidHostNameIp("test", value, errors));
+            Assert.NotEmpty(errors);
+        }
+
+        #endregion
     }
 }
