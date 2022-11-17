@@ -265,6 +265,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         [InlineData("cloud.com")]
         [InlineData("east.cloud.com")]
         [InlineData("super.west.cloud.com")]
+        [InlineData("example-mongodb-0.example-mongodb-svc.monai-deploy.svc.cluster.local")]
         public void GivenAValidHostName_WhenIsValidHostNameIpIsCalled_ExpectToReturnTrue(string value)
         {
             var errors = new List<string>();
