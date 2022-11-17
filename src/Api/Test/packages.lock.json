@@ -260,7 +260,7 @@
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
         "resolved": "0.1.16",
-        "contentHash": "9pNju53p7TQcOFOABsDyT9B467kFR/GM59hsExA+2uaPGP/SxhtktnFJ1Aixk3WKcmVwRWObOFwXnfeSfDql/A==",
+        "contentHash": "k8PwzNCgovENqZnA6Uh/TjADd2LadFSWs88b0LCDTGsxq7hkRTIqGLzp6aqw9e8LGNff6WW7dtVGj31PuceKmQ==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.0.1",
           "Microsoft.Extensions.Configuration": "6.0.1",
