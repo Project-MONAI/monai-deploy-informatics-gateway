@@ -17,6 +17,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
@@ -80,6 +81,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 #pragma warning disable CS8603 // Possible null reference return.
             return JsonSerializer.Deserialize(Value, type) as FileStorageMetadata;
 #pragma warning restore CS8603 // Possible null reference return.
+        }
+
+        public override string ToString()
+        {
+            return $"Identity: {Identity}";
         }
     }
 }

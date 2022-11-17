@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using System.Xml.Linq;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Common;
 
@@ -383,6 +384,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             {
                 errors.Add($"The provided URI '{connection.Uri}' is not well formed.");
             }
+        }
+
+        public override string ToString()
+        {
+            return $"InferenceRequestId: {InferenceRequestId}/TransactionId: {TransactionId}";
         }
     }
 }

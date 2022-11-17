@@ -67,22 +67,31 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
         public void ClearAllData()
         {
-            Clear(_infereRequestCollection);
-            Clear(_payloadCollection);
-            Clear(_storageMetadataWrapperCollection);
-            Clear(_sourceApplicationEntityCollection);
-            Clear(_destinationApplicationEntityCollection);
-            Clear(_monaiApplicationEntityCollection);
+            _outputHelper.WriteLine("Removing data from the database.");
+            DumpClear(_infereRequestCollection);
+            DumpClear(_payloadCollection);
+            DumpClear(_storageMetadataWrapperCollection);
+            DumpClear(_sourceApplicationEntityCollection);
+            DumpClear(_destinationApplicationEntityCollection);
+            DumpClear(_monaiApplicationEntityCollection);
+            _outputHelper.WriteLine("All data removed from the database.");
         }
 
-        private void Clear<T>(IMongoCollection<T> collection)
+        private void DumpClear<T>(IMongoCollection<T> collection)
         {
+            _outputHelper.WriteLine($"==={collection.CollectionNamespace.FullName}===");
+            foreach (var item in collection.AsQueryable())
+            {
+                _outputHelper.WriteLine(item.ToString());
+            }
+
             collection.DeleteMany("{ }");
 
             if (collection.Find("{ }").CountDocuments() > 0)
             {
                 throw new Exception("Failed to delete documents");
             }
+            _outputHelper.WriteLine($"Data removed from the collection {collection.CollectionNamespace.FullName}.");
         }
 
         public async Task<string> InjectAcrRequest()
@@ -108,6 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
             await _infereRequestCollection.InsertOneAsync(request).ConfigureAwait(false);
             _outputHelper.WriteLine($"Injected ACR request {request.TransactionId}");
+            Console.WriteLine($"Injected ACR request {request.TransactionId}");
             return request.TransactionId;
         }
     }

@@ -56,14 +56,26 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
         public void ClearAllData()
         {
+            _outputHelper.WriteLine("Removing data from the database.");
             _dbContext.Database.EnsureCreated();
-            _dbContext.RemoveRange(_dbContext.DestinationApplicationEntities);
-            _dbContext.RemoveRange(_dbContext.SourceApplicationEntities);
-            _dbContext.RemoveRange(_dbContext.MonaiApplicationEntities);
-            _dbContext.RemoveRange(_dbContext.Payloads);
-            _dbContext.RemoveRange(_dbContext.InferenceRequests);
-            _dbContext.RemoveRange(_dbContext.StorageMetadataWrapperEntities);
+            DumpAndClear("DestinationApplicationEntities", _dbContext.DestinationApplicationEntities.ToList());
+            DumpAndClear("SourceApplicationEntities", _dbContext.SourceApplicationEntities.ToList());
+            DumpAndClear("MonaiApplicationEntities", _dbContext.MonaiApplicationEntities.ToList());
+            DumpAndClear("Payloads", _dbContext.Payloads.ToList());
+            DumpAndClear("InferenceRequests", _dbContext.InferenceRequests.ToList());
+            DumpAndClear("StorageMetadataWrapperEntities", _dbContext.StorageMetadataWrapperEntities.ToList());
             _dbContext.SaveChanges();
+            _outputHelper.WriteLine("All data removed from the database.");
+        }
+
+        private void DumpAndClear<T>(string name, List<T> items) where T : class
+        {
+            _outputHelper.WriteLine($"==={name}===");
+            foreach (var item in items)
+            {
+                _outputHelper.WriteLine(item.ToString());
+            }
+            _dbContext.Set<T>().RemoveRange(items);
         }
 
         public async Task<string> InjectAcrRequest()
@@ -89,6 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _dbContext.Add(request);
             await _dbContext.SaveChangesAsync();
             _outputHelper.WriteLine($"Injected ACR request {request.TransactionId}");
+            Console.WriteLine($"Injected ACR request {request.TransactionId}");
             return request.TransactionId;
         }
     }

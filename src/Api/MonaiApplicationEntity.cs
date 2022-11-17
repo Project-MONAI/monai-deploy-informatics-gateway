@@ -113,5 +113,10 @@ namespace Monai.Deploy.InformaticsGateway.Api
 
             AllowedSopClasses ??= new List<string>();
         }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}/AET: {AeTitle}";
+        }
     }
 }

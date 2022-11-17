@@ -51,5 +51,10 @@ namespace Monai.Deploy.InformaticsGateway.Api
             if (string.IsNullOrWhiteSpace(Name))
                 Name = AeTitle;
         }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}/AET: {AeTitle}/Host: {HostIp}";
+        }
     }
 }

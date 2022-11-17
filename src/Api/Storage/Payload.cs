@@ -18,7 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Transactions;
 using Ardalis.GuardClauses;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -120,6 +122,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
                 _disposedValue = true;
             }
+        }
+
+        public override string ToString()
+        {
+            return $"PayloadId: {PayloadId}/Key: {Key}";
         }
 
         public void Dispose()
