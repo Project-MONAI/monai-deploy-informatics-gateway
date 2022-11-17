@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
@@ -38,10 +39,19 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
+            connectionString = ConvertToFullPath(connectionString);
             _outputHelper.WriteLine($"Connecting to EF based database using {connectionString}");
             var builder = new DbContextOptionsBuilder<InformaticsGatewayContext>();
             builder.UseSqlite(connectionString);
             _dbContext = new InformaticsGatewayContext(builder.Options);
+        }
+
+        private string ConvertToFullPath(string connectionString)
+        {
+            Guard.Against.NullOrWhiteSpace(connectionString);
+
+            string absolute = Path.GetFullPath("./");
+            return connectionString.Replace("=./", $"={absolute}");
         }
 
         public void ClearAllData()

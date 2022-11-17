@@ -60,9 +60,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _objectContainer = objectContainer;
         }
 
-        /// <summary>
-        /// Runs before all tests to create static implementions of Rabbit and Mongo clients as well as starting the WorkflowManager using WebApplicationFactory.
-        /// </summary>
         [BeforeTestRun(Order = 0)]
         public static void Init(ISpecFlowOutputHelper outputHelper)
         {
