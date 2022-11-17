@@ -116,8 +116,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> ListDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity, nameof(entity));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(entity);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
 
@@ -182,8 +182,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> CEchoDestinationHandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -218,8 +218,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> RemoveDestinationHandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -254,8 +254,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> EditDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity, nameof(entity));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(entity);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -292,8 +292,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> AddDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity, nameof(entity));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(entity);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();

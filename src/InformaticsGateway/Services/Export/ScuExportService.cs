@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private async Task HandleDesination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
+            Guard.Against.Null(exportRequestData);
 
             var manualResetEvent = new ManualResetEvent(false);
             DestinationApplicationEntity destination = null;

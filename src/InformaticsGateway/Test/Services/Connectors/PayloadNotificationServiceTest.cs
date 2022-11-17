@@ -118,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [RetryFact(10, 200)]
-        public async Task GivenPayloadsStoredInTheDatabase_WhenServiceStarts_ExpectThePayloadsToBeRestoredAsync()
+        public void GivenPayloadsStoredInTheDatabase_WhenServiceStarts_ExpectThePayloadsToBeRestoredAsync()
         {
             var testData = new List<Payload>
             {

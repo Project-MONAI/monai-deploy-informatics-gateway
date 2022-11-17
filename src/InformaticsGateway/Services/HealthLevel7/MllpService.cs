@@ -161,8 +161,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private async Task OnDisconnect(IMllpClient client, MllpClientResult result)
         {
-            Guard.Against.Null(client, nameof(client));
-            Guard.Against.Null(result, nameof(result));
+            Guard.Against.Null(client);
+            Guard.Against.Null(result);
 
 
             try

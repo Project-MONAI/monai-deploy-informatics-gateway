@@ -26,14 +26,14 @@ namespace Monai.Deploy.InformaticsGateway.Common
     {
         public Task<DicomFile> OpenAsync(Stream stream, FileReadOption fileReadOption = FileReadOption.Default)
         {
-            Guard.Against.Null(stream, nameof(stream));
+            Guard.Against.Null(stream);
 
             return DicomFile.OpenAsync(stream, fileReadOption);
         }
 
         public DicomFile Load(byte[] fileContent)
         {
-            Guard.Against.NullOrEmpty(fileContent, nameof(fileContent));
+            Guard.Against.NullOrEmpty(fileContent);
 
             using var stream = new MemoryStream(fileContent);
             var dicomFile = DicomFile.Open(stream, FileReadOption.ReadAll);
@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         public StudySerieSopUids GetStudySeriesSopInstanceUids(DicomFile dicomFile)
         {
-            Guard.Against.Null(dicomFile, nameof(dicomFile));
+            Guard.Against.Null(dicomFile);
 
             return new StudySerieSopUids
             {

@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"a calling AE Title '([^']*)'")]
         public async Task GivenACallingAETitle(string callingAeTitle)
         {
-            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
+            Guard.Against.NullOrWhiteSpace(callingAeTitle);
 
             try
             {
@@ -83,9 +83,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"(.*) (.*) studies with (.*) series per study")]
         public void GivenXStudiesWithYSeriesPerStudy(int studyCount, string modality, int seriesPerStudy)
         {
-            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
-            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
-            Guard.Against.NegativeOrZero(seriesPerStudy, nameof(seriesPerStudy));
+            Guard.Against.NegativeOrZero(studyCount);
+            Guard.Against.NullOrWhiteSpace(modality);
+            Guard.Against.NegativeOrZero(seriesPerStudy);
 
             _dataProvider.GenerateDicomData(modality, studyCount, seriesPerStudy);
             _receivedMessages.SetupMessageHandle(_dataProvider.DicomSpecs.NumberOfExpectedRequests(_dataProvider.StudyGrouping));
@@ -94,9 +94,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"a called AE Title named '([^']*)' that groups by '([^']*)' for (.*) seconds")]
         public async Task GivenACalledAETitleNamedThatGroupsByForSeconds(string calledAeTitle, string grouping, uint groupingTimeout)
         {
-            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
-            Guard.Against.NullOrWhiteSpace(grouping, nameof(grouping));
-            Guard.Against.NegativeOrZero(groupingTimeout, nameof(groupingTimeout));
+            Guard.Against.NullOrWhiteSpace(calledAeTitle);
+            Guard.Against.NullOrWhiteSpace(grouping);
+            Guard.Against.NegativeOrZero(groupingTimeout);
 
             _dataProvider.StudyGrouping = grouping;
             try
@@ -128,9 +128,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"a C-ECHO-RQ is sent to '([^']*)' from '([^']*)' with timeout of (.*) seconds")]
         public async Task WhenAC_ECHO_RQIsSentToFromWithTimeoutOfSeconds(string calledAeTitle, string callingAeTitle, int clientTimeoutSeconds)
         {
-            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
-            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
-            Guard.Against.NegativeOrZero(clientTimeoutSeconds, nameof(clientTimeoutSeconds));
+            Guard.Against.NullOrWhiteSpace(calledAeTitle);
+            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.NegativeOrZero(clientTimeoutSeconds);
 
             var echoScu = _objectContainer.Resolve<IDataClient>("EchoSCU");
             await echoScu.SendAsync(
@@ -151,10 +151,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"a C-STORE-RQ is sent to '([^']*)' with AET '([^']*)' from '([^']*)' with timeout of (.*) seconds")]
         public async Task WhenAC_STORE_RQIsSentToWithAETFromWithTimeoutOfSeconds(string application, string calledAeTitle, string callingAeTitle, int clientTimeoutSeconds)
         {
-            Guard.Against.NullOrWhiteSpace(application, nameof(application));
-            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
-            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
-            Guard.Against.NegativeOrZero(clientTimeoutSeconds, nameof(clientTimeoutSeconds));
+            Guard.Against.NullOrWhiteSpace(application);
+            Guard.Against.NullOrWhiteSpace(calledAeTitle);
+            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.NegativeOrZero(clientTimeoutSeconds);
 
             var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");
 

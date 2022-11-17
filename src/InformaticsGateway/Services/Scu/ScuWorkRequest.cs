@@ -36,9 +36,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
 
         public ScuWorkRequest(string correlationId, RequestType requestType, string hostIp, int port, string aeTitle)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
-            Guard.Against.NullOrWhiteSpace(hostIp, nameof(hostIp));
-            Guard.Against.NullOrWhiteSpace(aeTitle, nameof(aeTitle));
+            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.NullOrWhiteSpace(hostIp);
+            Guard.Against.NullOrWhiteSpace(aeTitle);
 
             CorrelationId = correlationId;
             RequestType = requestType;
