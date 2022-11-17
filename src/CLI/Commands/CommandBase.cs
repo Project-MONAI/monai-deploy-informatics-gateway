@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         protected static ILogger CreateLogger<T>(IHost host)
         {
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(host);
 
             var loggerFactory = host.Services.GetService<ILoggerFactory>();
             return loggerFactory?.CreateLogger<T>();
@@ -41,8 +41,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         protected static void LogVerbose(bool verbose, IHost host, string message)
         {
-            Guard.Against.Null(host, nameof(host));
-            Guard.Against.NullOrWhiteSpace(message, nameof(message));
+            Guard.Against.Null(host);
+            Guard.Against.NullOrWhiteSpace(message);
 
             if (verbose)
             {
@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         protected static void AddConfirmationOption(Command command)
         {
-            Guard.Against.Null(command, nameof(command));
+            Guard.Against.Null(command);
 
             var confirmationOption = new Option<bool>(new[] { "-y", "--yes" }, "Automatic yes to prompts");
             command.AddOption(confirmationOption);
@@ -70,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         protected static void CheckConfiguration(IConfigurationService configService)
         {
-            Guard.Against.Null(configService, nameof(configService));
+            Guard.Against.Null(configService);
 
             if (!configService.IsInitialized)
             {

@@ -27,7 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Unknown,
             IncorrectState,
-            IncompletePayload
+            IncompletePayload,
+            MoveFailure,
         }
 
         public PayloadNotifyException(FailureReason reason)

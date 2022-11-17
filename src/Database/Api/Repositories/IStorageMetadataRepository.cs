@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
- * Copyright 2019-2021 NVIDIA Corporation
+ * Copyright 2022 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,58 +14,56 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Repositories
+namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 {
     /// <summary>
     /// Interface for accessing storage metadata objects.
     /// </summary>
-    public interface IStorageMetadataWrapperRepository
+    public interface IStorageMetadataRepository
     {
         /// <summary>
         /// Adds new storage metadata object to the repository.
         /// </summary>
         /// <param name="metadata">The storage metadata object to be added.</param>
-        Task AddAsync(FileStorageMetadata metadata);
+        Task AddAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates an storage metadata object's status.
         /// </summary>
         /// <param name="metadata">The storage metadata object to be updated.</param>
-        Task UpdateAsync(FileStorageMetadata metadata);
+        Task UpdateAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Adds or updates an storage metadata object's status.
         /// </summary>
         /// <param name="metadata">The storage metadata object to be added/updated.</param>
-        Task AddOrUpdateAsync(FileStorageMetadata metadata);
+        Task AddOrUpdateAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets all storage metadata objects associated with the correlation ID.
         /// </summary>
         /// <param name="correlationId">Correlation ID</param>
-        IList<FileStorageMetadata> GetFileStorageMetdadata(string correlationId);
+        Task<IList<FileStorageMetadata>> GetFileStorageMetdadataAsync(string correlationId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Gets the specified storage metadata object.
         /// </summary>
         /// <param name="correlationId">Correlation ID</param>
         /// <param name="identity">The unique identity representing the object.</param>
-        FileStorageMetadata GetFileStorageMetdadata(string correlationId, string identity);
+        Task<FileStorageMetadata?> GetFileStorageMetdadataAsync(string correlationId, string identity, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes the specified storage metadata object.
         /// </summary>
         /// <param name="correlationId">Correlation ID</param>
         /// <param name="identity">The unique identity representing the object.</param>
-        Task<bool> DeleteAsync(string correlationId, string identity);
+        Task<bool> DeleteAsync(string correlationId, string identity, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Deletes all pending storage metadata objects.
         /// </summary>
-        Task DeletePendingUploadsAsync();
+        Task DeletePendingUploadsAsync(CancellationToken cancellationToken = default);
     }
 }

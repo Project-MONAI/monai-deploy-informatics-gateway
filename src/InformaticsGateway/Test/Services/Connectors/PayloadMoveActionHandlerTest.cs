@@ -24,7 +24,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.Storage.API;
 using Moq;
@@ -40,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         private readonly Mock<IStorageService> _storageService;
-        private readonly Mock<IInformaticsGatewayRepository<Payload>> _repository;
+        private readonly Mock<IPayloadRepository> _repository;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly ServiceProvider _serviceProvider;
@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _options = Options.Create(new InformaticsGatewayConfiguration());
 
             _storageService = new Mock<IStorageService>();
-            _repository = new Mock<IInformaticsGatewayRepository<Payload>>();
+            _repository = new Mock<IPayloadRepository>();
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -68,6 +68,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 5, 5, 5 };
             _options.Value.Storage.StorageServiceBucketName = "bucket";
+
+            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<KeyValuePair<string, string>>()))
+                .Returns((string _, KeyValuePair<string, string> input) => Task.FromResult(input));
         }
 
         [RetryFact(10, 200)]
@@ -172,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             await handler.MoveFilesAsync(payload, moveAction, notifyAction, _cancellationTokenSource.Token);
 
-            _repository.Verify(p => p.Remove(payload), Times.Once());
+            _repository.Verify(p => p.RemoveAsync(payload, _cancellationTokenSource.Token), Times.Once());
         }
 
         [RetryFact(10, 200)]
@@ -203,7 +206,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             await handler.MoveFilesAsync(payload, moveAction, notifyAction, _cancellationTokenSource.Token);
 
-            Assert.True(notifyEvent.Wait(TimeSpan.FromSeconds(3)));
+            Assert.True(notifyEvent.Wait(TimeSpan.FromSeconds(5)));
 
             _storageService.Verify(p => p.CopyObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.AtLeast(2));
             _storageService.Verify(p => p.RemoveObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.AtLeast(2));

@@ -28,6 +28,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
         public const string PropertyResourceType = "resourceType";
         public const string PropertyId = "id";
         public const string AttributeValue = "value";
-        public const uint PayloadAssemblerTimeout = 1;
+        public const uint PayloadAssemblerTimeout = 5;
     }
 }

@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,20 +20,21 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="fo-dicom" Version="5.0.3" />
     <PackageReference Include="HL7-dotnetcore" Version="2.29.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.10" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.10" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.11" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.4.0" />
     <PackageReference Include="Minio" Version="4.0.6" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.17-rc0020" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.16" />
     <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.10" />
     <PackageReference Include="Moq" Version="4.18.2" />
     <PackageReference Include="Polly" Version="7.2.3" />
@@ -71,6 +72,21 @@
     <None Include="./nlog.config" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.mongodb.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.ef.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.ext.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
       <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll" />
@@ -85,8 +101,7 @@
     </PropertyGroup>
     <Message Importance="High" Text="Copying $(STUDYJSON) to $(OutDir)" />
     <Delete Files="$(OutDir)appsettings.Development.json" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="appsettings.json" DestinationFolder="$(OutDir)" />
-    <Copy OverwriteReadOnlyFiles="true" SourceFiles="appsettings.ext.json" DestinationFolder="$(OutDir)" />
+    <Delete Files="$(OutDir)mig.db" />
     <Copy OverwriteReadOnlyFiles="true" SourceFiles="$(STUDYJSON)" DestinationFiles="$(OutDir)\study.json" />
   </Target>
 </Project>

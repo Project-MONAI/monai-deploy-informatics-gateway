@@ -203,7 +203,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         // https://github.com/dotnet/runtime/issues/30863
         private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestEventDetails exportRequest, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(exportRequest, nameof(exportRequest));
+            Guard.Against.Null(exportRequest);
             using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequest.ExportTaskId }, { "CorrelationId", exportRequest.CorrelationId } });
             var scope = _serviceScopeFactory.CreateScope();
             var storageService = scope.ServiceProvider.GetRequiredService<IStorageService>();

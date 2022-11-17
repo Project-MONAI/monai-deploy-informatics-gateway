@@ -70,9 +70,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
             _options.Value.Storage.TemporaryStorageBucket = "bucket";
+
+            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<KeyValuePair<string, string>>()))
+                .Returns((string _, KeyValuePair<string, string> input) => Task.FromResult(input));
         }
 
-        [RetryFact(10,250)]
+        [RetryFact(10, 250)]
         public void GivenAObjectUploadService_WhenInitialized_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new ObjectUploadService(null, null, null));
@@ -81,7 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _ = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
         }
 
-        [RetryFact(10,250)]
+        [RetryFact(10, 250)]
         public void GivenAObjectUploadService_WhenStartAsyncIsCalled_ExpectServiceStatusToBeSet()
         {
             var svc = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -90,14 +93,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             Assert.Equal(ServiceStatus.Running, svc.Status);
         }
 
-        [RetryFact(10,250)]
+        [RetryFact(10, 250)]
         public void GivenAObjectUploadService_WhenInitialized_ExpectItToRemovingAllPendingObjects()
         {
             var svc = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
 
         }
 
-        [RetryFact(10,250)]
+        [RetryFact(10, 250)]
         public async Task GivenADicomFileStorageMetadata_WhenQueuedForUpload_ExpectTwoFilesToBeUploaded()
         {
             var countdownEvent = new CountdownEvent(2);
@@ -119,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
         }
 
-        [RetryFact(10,250)]
+        [RetryFact(10, 250)]
         public async Task GivenAFhirFileStorageMetadata_WhenQueuedForUpload_ExpectSingleFileToBeUploaded()
         {
             var countdownEvent = new CountdownEvent(1);

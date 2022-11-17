@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
- * Copyright 2019-2021 NVIDIA Corporation
+ * Copyright 2022 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +14,9 @@
  * limitations under the License.
  */
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 
-namespace Monai.Deploy.InformaticsGateway.Repositories
+namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 {
     /// <summary>
     /// Interface for access stored inference requests.
@@ -31,7 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         /// Adds new inference request to the repository.
         /// </summary>
         /// <param name="inferenceRequest">The inference request to be added.</param>
-        Task Add(InferenceRequest inferenceRequest);
+        Task AddAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Updates an inference request's status.
@@ -40,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         /// </summary>
         /// <param name="inferenceRequest">The inference request to be updated.</param>
         /// <param name="status">Current status of the inference request.</param>
-        Task Update(InferenceRequest inferenceRequest, InferenceRequestStatus status);
+        Task UpdateAsync(InferenceRequest inferenceRequest, InferenceRequestStatus status, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// <c>Take</c> returns the next pending inference request for data retrieval.
@@ -48,31 +44,31 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         /// </summary>
         /// <param name="cancellationToken">cancellation token used to cancel the action.</param>
         /// <returns><see cref="InferenceRequest"/></returns>
-        Task<InferenceRequest> Take(CancellationToken cancellationToken);
+        Task<InferenceRequest> TakeAsync(CancellationToken cancellationToken = default);
 
         /// <summary>
         /// <c>Get</c> returns the specified inference request.
         /// </summary>
         /// <param name="transactionId">The transactionId of the request.</param>
-        InferenceRequest GetInferenceRequest(string transactionId);
+        Task<InferenceRequest?> GetInferenceRequestAsync(string transactionId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// <c>Get</c> returns the specified inference request.
         /// </summary>
         /// <param name="inferenceRequestId">The internal ID of the request.</param>
-        Task<InferenceRequest> GetInferenceRequest(Guid inferenceRequestId);
+        Task<InferenceRequest?> GetInferenceRequestAsync(Guid inferenceRequestId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// <c>Exists</c> checks whether if an existing request with the same transaction ID exists.
         /// </summary>
         /// <param name="transactionId"></param>
         /// <returns></returns>
-        bool Exists(string transactionId);
+        Task<bool> ExistsAsync(string transactionId, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// <c>GetStatus</c> returns the status of the specified inference request.
         /// </summary>
         /// <param name="transactionId">The transactionId from the original request.</param>
-        Task<InferenceStatusResponse> GetStatus(string transactionId);
+        Task<InferenceStatusResponse?> GetStatusAsync(string transactionId, CancellationToken cancellationToken = default);
     }
 }

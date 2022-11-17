@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
@@ -25,7 +26,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Moq;
@@ -40,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         private readonly Mock<ProblemDetailsFactory> _problemDetailsFactory;
         private readonly Mock<ILogger<MonaiAeTitleController>> _logger;
         private readonly Mock<IMonaiAeChangedNotificationService> _aeChangedNotificationService;
-        private readonly Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>> _repository;
+        private readonly Mock<IMonaiApplicationEntityRepository> _repository;
 
         public MonaiAeTitleControllerTest()
         {
@@ -68,13 +69,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                     };
                 });
 
-            _repository = new Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
+            _repository = new Mock<IMonaiApplicationEntityRepository>();
 
+            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
             _controller = new MonaiAeTitleController(
                  _logger.Object,
                  _aeChangedNotificationService.Object,
                  _repository.Object)
             {
+                ControllerContext = controllerContext,
                 ProblemDetailsFactory = _problemDetailsFactory.Object
             };
         }
@@ -95,19 +98,19 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 });
             }
 
-            _repository.Setup(p => p.ToListAsync()).Returns(Task.FromResult(data));
+            _repository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(data));
 
             var result = await _controller.Get();
             var okObjectResult = result.Result as OkObjectResult;
             var response = okObjectResult.Value as IEnumerable<MonaiApplicationEntity>;
             Assert.Equal(data.Count, response.Count());
-            _repository.Verify(p => p.ToListAsync(), Times.Once());
+            _repository.Verify(p => p.ToListAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Get - Shall return problem on failure")]
         public async Task Get_ShallReturnProblemOnFailure()
         {
-            _repository.Setup(p => p.ToListAsync()).Throws(new Exception("error"));
+            _repository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             var result = await _controller.Get();
             var objectResult = result.Result as ObjectResult;
@@ -127,7 +130,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task GetAeTitle_ReturnsAMatch()
         {
             var value = "AET";
-            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(
                 Task.FromResult(
                 new MonaiApplicationEntity
                 {
@@ -141,26 +144,26 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var response = okObjectResult.Value as MonaiApplicationEntity;
             Assert.NotNull(response);
             Assert.Equal(value, response.AeTitle);
-            _repository.Verify(p => p.FindAsync(value), Times.Once());
+            _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return 404 if not found")]
         public async Task GetAeTitle_Returns404IfNotFound()
         {
             var value = "AET";
-            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(default(MonaiApplicationEntity)));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(MonaiApplicationEntity)));
 
             var result = await _controller.GetAeTitle(value);
 
             Assert.IsType<NotFoundResult>(result.Result);
-            _repository.Verify(p => p.FindAsync(value), Times.Once());
+            _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return problem on failure")]
         public async Task GetAeTitle_ShallReturnProblemOnFailure()
         {
             var value = "AET";
-            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Throws(new Exception("error"));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             var result = await _controller.GetAeTitle(value);
 
@@ -171,7 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal("Error querying MONAI Application Entity.", problem.Title);
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
-            _repository.Verify(p => p.FindAsync(value), Times.Once());
+            _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         #endregion GetAeTitle
@@ -181,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [Fact(DisplayName = "Create - Shall return Conflict if entity already exists")]
         public async Task Create_ShallReturnConflictIfIEntityAlreadyExists()
         {
-            _repository.Setup(p => p.Any(It.IsAny<Func<MonaiApplicationEntity, bool>>())).Returns(true);
+            _repository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
             var monaiAeTitle = new MonaiApplicationEntity
             {
@@ -227,7 +230,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(DisplayName = "Create - Shall return BadRequest when both allowed & ignored SOP classes are defined")]
         public async Task Create_ShallReturnBadRequestWhenBothAllowedAndIgnoredSopsAreDefined()
         {
-            _repository.Setup(p => p.Any(It.IsAny<Func<MonaiApplicationEntity, bool>>())).Returns(false);
+            _repository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
 
             var monaiAeTitle = new MonaiApplicationEntity
             {
@@ -289,7 +292,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             _aeChangedNotificationService.Setup(p => p.Notify(It.IsAny<MonaiApplicationentityChangedEvent>()));
             _repository.Setup(p => p.AddAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()));
-            _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()));
 
             var result = await _controller.Create(monaiAeTitle);
 
@@ -297,7 +299,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == monaiAeTitle)), Times.Once());
             _repository.Verify(p => p.AddAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
-            _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         #endregion Create
@@ -313,31 +314,29 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 AeTitle = value,
                 Name = value
             };
-            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
 
-            _repository.Setup(p => p.Remove(It.IsAny<MonaiApplicationEntity>()));
-            _repository.Setup(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.RemoveAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()));
 
             var result = await _controller.Delete(value);
             var okObjectResult = result.Result as OkObjectResult;
             var response = okObjectResult.Value as MonaiApplicationEntity;
             Assert.NotNull(response);
             Assert.Equal(value, response.AeTitle);
-            _repository.Verify(p => p.FindAsync(value), Times.Once());
-            _repository.Verify(p => p.Remove(entity), Times.Once());
-            _repository.Verify(p => p.SaveChangesAsync(It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.RemoveAsync(entity, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Delete - Shall return 404 if not found")]
         public async Task Delete_Returns404IfNotFound()
         {
             var value = "AET";
-            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(default(MonaiApplicationEntity)));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(MonaiApplicationEntity)));
 
             var result = await _controller.Delete(value);
 
             Assert.IsType<NotFoundResult>(result.Result);
-            _repository.Verify(p => p.FindAsync(value), Times.Once());
+            _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Delete - Shall return problem on failure")]
@@ -349,8 +348,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 AeTitle = value,
                 Name = value
             };
-            _repository.Setup(p => p.FindAsync(It.IsAny<string>())).Returns(Task.FromResult(entity));
-            _repository.Setup(p => p.Remove(It.IsAny<MonaiApplicationEntity>())).Throws(new Exception("error"));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.RemoveAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             var result = await _controller.Delete(value);
 
@@ -361,7 +360,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal("Error deleting MONAI Application Entity.", problem.Title);
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
-            _repository.Verify(p => p.FindAsync(value), Times.Once());
+            _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
         }
 
         #endregion Delete

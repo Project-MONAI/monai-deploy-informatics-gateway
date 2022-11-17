@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             ILogger<ApplicationEntityHandler> logger,
             IOptions<InformaticsGatewayConfiguration> options)
         {
-            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(serviceScopeFactory);
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _options = options ?? throw new ArgumentNullException(nameof(options));
 
@@ -64,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions, bool validateDicomValuesOnJsonSerialization)
         {
-            Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
+            Guard.Against.Null(monaiApplicationEntity);
 
             _configuration = monaiApplicationEntity;
             _dicomJsonOptions = dicomJsonOptions;
@@ -78,11 +78,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new NotSupportedException("Must call Configure(...) first.");
             }
 
-            Guard.Against.Null(request, nameof(request));
-            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
-            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
-            Guard.Against.Null(associationId, nameof(associationId));
-            Guard.Against.Null(uids, nameof(uids));
+            Guard.Against.Null(request);
+            Guard.Against.NullOrWhiteSpace(calledAeTitle);
+            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.Null(associationId);
+            Guard.Against.Null(uids);
 
             if (!AcceptsSopClass(uids.SopClassUid))
             {

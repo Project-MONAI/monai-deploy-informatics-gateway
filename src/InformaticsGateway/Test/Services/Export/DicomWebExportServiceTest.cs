@@ -30,8 +30,8 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
@@ -139,7 +139,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns((InferenceRequest)null);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequestAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync((InferenceRequest)null);
 
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
@@ -194,7 +194,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequestAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(inferenceRequest);
 
             var service = new DicomWebExportService(
                 _loggerFactory.Object,
@@ -260,7 +260,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequestAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
             _handlerMock = new Mock<HttpMessageHandler>();
@@ -343,7 +343,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            _inferenceRequestStore.Setup(p => p.GetInferenceRequest(It.IsAny<string>())).Returns(inferenceRequest);
+            _inferenceRequestStore.Setup(p => p.GetInferenceRequestAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(inferenceRequest);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile());
 
             var response = new HttpResponseMessage(httpStatusCode)
@@ -413,7 +413,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
         private bool CheckMessage(Message message, ExportStatus exportStatus, FileExportStatus fileExportStatus)
         {
-            Guard.Against.Null(message, nameof(message));
+            Guard.Against.Null(message);
 
             var exportEvent = message.ConvertTo<ExportCompleteEvent>();
             return exportEvent.Status == exportStatus &&

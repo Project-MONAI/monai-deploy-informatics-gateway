@@ -18,10 +18,16 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 {
+
+#pragma warning disable CS8618 // Unread "private" fields should be removed
+
     public class InformaticsGatewayContext : DbContext
     {
         public InformaticsGatewayContext(DbContextOptions<InformaticsGatewayContext> options) : base(options)
@@ -31,6 +37,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
         public virtual DbSet<MonaiApplicationEntity> MonaiApplicationEntities { get; set; }
         public virtual DbSet<SourceApplicationEntity> SourceApplicationEntities { get; set; }
         public virtual DbSet<DestinationApplicationEntity> DestinationApplicationEntities { get; set; }
+        public virtual DbSet<InferenceRequest> InferenceRequests { get; set; }
+        public virtual DbSet<Payload> Payloads { get; set; }
+        public virtual DbSet<StorageMetadataWrapper> StorageMetadataWrapperEntities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -72,4 +81,5 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
                 (RelationalEventId.CommandCreated, LogLevel.Trace)
                 ));
     }
+#pragma warning restore CS8618 // Unread "private" fields should be removed
 }

@@ -17,7 +17,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -27,9 +26,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
@@ -46,6 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
         private readonly ConcurrentDictionary<string, AsyncLazy<Payload>> _payloads;
+        private readonly Task _intializedTask;
         private readonly BlockingCollection<Payload> _workItems;
         private readonly System.Timers.Timer _timer;
 
@@ -61,7 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _workItems = new BlockingCollection<Payload>();
             _payloads = new ConcurrentDictionary<string, AsyncLazy<Payload>>();
 
-            RemovePendingPayloads();
+            _intializedTask = RemovePendingPayloads();
 
             _timer = new System.Timers.Timer(1000)
             {
@@ -71,20 +70,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _timer.Enabled = true;
         }
 
-        private void RemovePendingPayloads()
+        private async Task RemovePendingPayloads()
         {
             _logger.RemovingPendingPayloads();
             var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
+            var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
 
-            var payloads = repository.AsQueryable().Where(p => p.State == Payload.PayloadState.Created);
-            var removed = 0;
-
-            foreach (var payload in payloads)
-            {
-                payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).Wait();
-                _logger.PendingPayloadsRemoved(payload.Id);
-            }
+            var removed = await repository.RemovePendingPayloadsAsync().ConfigureAwait(false);
 
             _logger.TotalNumberOfPayloadsRemoved(removed);
         }
@@ -104,7 +96,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
         public async Task Queue(string bucket, FileStorageMetadata file, uint timeout)
         {
-            Guard.Against.Null(file, nameof(file));
+            Guard.Against.Null(file);
+
+            await _intializedTask.ConfigureAwait(false);
 
             using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "CorrelationId", file.CorrelationId } });
 
@@ -128,8 +122,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             try
             {
+                await _intializedTask.ConfigureAwait(false);
                 _timer.Enabled = false;
-                _logger.BucketActive(_payloads.Count);
+                _logger.BucketsActive(_payloads.Count);
                 foreach (var key in _payloads.Keys)
                 {
                     _logger.BucketElapsedTime(key);
@@ -137,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
                     if (payload.HasTimedOut)
                     {
-                        if (payload.ContainerUploadFailures())
+                        if (payload.AnyUploadFailures())
                         {
                             _payloads.TryRemove(key, out _);
                             _logger.PayloadRemovedWithFailureUploads(key);
@@ -176,8 +171,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 payload.State = Payload.PayloadState.Move;
                 var scope = _serviceScopeFactory.CreateScope();
-                var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
-                await payload.UpdatePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
+                await repository.UpdateAsync(payload).ConfigureAwait(false);
+                _logger.PayloadSaved(payload.PayloadId);
                 _workItems.Add(payload);
                 _logger.BucketReady(key, payload.Count);
             }
@@ -185,7 +181,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (_payloads.TryAdd(key, new AsyncLazy<Payload>(payload)))
                 {
-                    _logger.BucketError(key, payload.Id, ex);
+                    _logger.BucketError(key, payload.PayloadId, ex);
                 }
                 else
                 {
@@ -199,9 +195,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             return await _payloads.GetOrAdd(key, x => new AsyncLazy<Payload>(async () =>
             {
                 var scope = _serviceScopeFactory.CreateScope();
-                var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<Payload>>();
+                var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
                 var newPayload = new Payload(key, correationId, timeout);
-                await newPayload.AddPayaloadToDatabase(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                await repository.AddAsync(newPayload).ConfigureAwait(false);
                 _logger.BucketCreated(key, timeout);
                 return newPayload;
             }));

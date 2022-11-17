@@ -25,8 +25,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
+#pragma warning disable CS8604, CS8603
     internal class MonaiApplicationEntityConfiguration : IEntityTypeConfiguration<MonaiApplicationEntity>
     {
         public void Configure(EntityTypeBuilder<MonaiApplicationEntity> builder)
@@ -63,6 +64,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
                 .Metadata.SetValueComparer(valueComparer);
 
             builder.HasIndex(p => p.Name, "idx_monaiae_name").IsUnique();
+
+            builder.Ignore(p => p.Id);
         }
     }
+#pragma warning restore CS8604, CS8603
 }

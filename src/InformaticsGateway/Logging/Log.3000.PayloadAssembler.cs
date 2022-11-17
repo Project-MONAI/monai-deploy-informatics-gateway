@@ -24,9 +24,6 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 3000, Level = LogLevel.Information, Message = "[Startup] Removing payloads from database.")]
         public static partial void RemovingPendingPayloads(this ILogger logger);
 
-        [LoggerMessage(EventId = 3001, Level = LogLevel.Information, Message = "[Startup] Payload {payloadId} removed from database.")]
-        public static partial void PendingPayloadsRemoved(this ILogger logger, Guid payloadId);
-
         [LoggerMessage(EventId = 3002, Level = LogLevel.Information, Message = "[Startup] {count} payloads restored from database.")]
         public static partial void TotalNumberOfPayloadsRemoved(this ILogger logger, int count);
 
@@ -34,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void FileAddedToBucket(this ILogger logger, string key, int count);
 
         [LoggerMessage(EventId = 3004, Level = LogLevel.Trace, Message = "Number of incomplete payloads waiting for processing: {count}.")]
-        public static partial void BucketActive(this ILogger logger, int count);
+        public static partial void BucketsActive(this ILogger logger, int count);
 
         [LoggerMessage(EventId = 3005, Level = LogLevel.Trace, Message = "Checking elapsed time for bucket: {key}.")]
         public static partial void BucketElapsedTime(this ILogger logger, string key);

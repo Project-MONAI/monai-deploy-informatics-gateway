@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public Hl7FileStorageMetadata(string connectionId)
             : base(connectionId, Guid.NewGuid().ToString())
         {
-            Guard.Against.NullOrWhiteSpace(connectionId, nameof(connectionId));
+            Guard.Against.NullOrWhiteSpace(connectionId);
 
             Source = connectionId;
 

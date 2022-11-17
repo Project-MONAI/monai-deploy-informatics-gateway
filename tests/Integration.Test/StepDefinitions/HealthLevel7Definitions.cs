@@ -25,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class HealthLevel7Definitions
     {
-        internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromMinutes(2);
+        internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromMinutes(3);
         private readonly DataProvider _dataProvider;
         private readonly RabbitMqConsumer _receivedMessages;
         private readonly IDataClient _dataSink;
@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"HL7 messages in version (.*)")]
         public async Task GivenHl7MessagesInVersionX(string version)
         {
-            Guard.Against.NullOrWhiteSpace(version, nameof(version));
+            Guard.Against.NullOrWhiteSpace(version);
             await _dataProvider.GenerateHl7Messages(version);
             _receivedMessages.SetupMessageHandle(1);
         }

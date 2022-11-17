@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
         /// <param name="logger">Optional logger for capturing client logs.</param>
         public DicomWebClient(HttpClient httpClient, ILogger<DicomWebClient> logger)
         {
-            Guard.Against.Null(httpClient, nameof(httpClient));
+            Guard.Against.Null(httpClient);
 
             _httpClient = httpClient;
             _logger = logger;
@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
         public void ConfigureServicePrefix(DicomWebServiceType serviceType, string urlPrefix)
 #pragma warning restore CA1054
         {
-            Guard.Against.NullOrWhiteSpace(urlPrefix, nameof(urlPrefix));
+            Guard.Against.NullOrWhiteSpace(urlPrefix);
 
             switch (serviceType)
             {
@@ -112,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
         /// <inheritdoc/>
         public void ConfigureAuthentication(AuthenticationHeaderValue value)
         {
-            Guard.Against.Null(value, nameof(value));
+            Guard.Against.Null(value);
 
             _httpClient.DefaultRequestHeaders.Authorization = value;
         }

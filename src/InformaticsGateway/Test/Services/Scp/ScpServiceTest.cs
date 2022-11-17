@@ -103,8 +103,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _configuration.Value.Dicom.Scp.EnableVerification = false;
             _configuration.Value.Dicom.Scp.RejectUnknownSources = true;
 
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
 
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
@@ -133,8 +133,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _configuration.Value.Dicom.Scp.EnableVerification = true;
             _configuration.Value.Dicom.Scp.RejectUnknownSources = true;
 
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(false);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
 
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
@@ -161,8 +161,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _configuration.Value.Dicom.Scp.EnableVerification = true;
             _configuration.Value.Dicom.Scp.RejectUnknownSources = true;
 
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(false);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(false);
 
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
@@ -189,8 +189,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _configuration.Value.Dicom.Scp.EnableVerification = true;
             _configuration.Value.Dicom.Scp.RejectUnknownSources = true;
 
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
 
             var countdownEvent = new CountdownEvent(1);
             var service = CreateService();
@@ -209,8 +209,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "C-STORE - Shall reject when storage is low")]
         public async Task CStore_ShallRejecOnLowStorageSpace()
         {
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(false);
 
             var countdownEvent = new CountdownEvent(1);
@@ -235,8 +235,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - InsufficientStorageAvailableException")]
         public async Task CStore_OnCStoreRequest_InsufficientStorageAvailableException()
         {
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new InsufficientStorageAvailableException());
 
@@ -267,8 +267,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - IOException")]
         public async Task CStore_OnCStoreRequest_IoException()
         {
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new IOException { HResult = Constants.ERROR_HANDLE_DISK_FULL });
             var countdownEvent = new CountdownEvent(3);
@@ -298,8 +298,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - Exception")]
         public async Task CStore_OnCStoreRequest_Exception()
         {
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new Exception());
 
@@ -330,8 +330,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "C-STORE - OnCStoreRequest - Success")]
         public async Task CStore_OnCStoreRequest_Success()
         {
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
 
@@ -362,8 +362,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "C-STORE - Simulate client abort")]
         public async Task CStore_OnClientAbort()
         {
-            _associationDataProvider.Setup(p => p.IsValidSource(It.IsAny<string>(), It.IsAny<string>())).Returns(true);
-            _associationDataProvider.Setup(p => p.IsAeTitleConfigured(It.IsAny<string>())).Returns(true);
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
 

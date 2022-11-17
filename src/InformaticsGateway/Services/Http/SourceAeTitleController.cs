@@ -25,7 +25,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -35,11 +35,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     public class SourceAeTitleController : ControllerBase
     {
         private readonly ILogger<SourceAeTitleController> _logger;
-        private readonly IInformaticsGatewayRepository<SourceApplicationEntity> _repository;
+        private readonly ISourceApplicationEntityRepository _repository;
 
         public SourceAeTitleController(
             ILogger<SourceAeTitleController> logger,
-            IInformaticsGatewayRepository<SourceApplicationEntity> repository)
+            ISourceApplicationEntityRepository repository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                return Ok(await _repository.ToListAsync().ConfigureAwait(false));
+                return Ok(await _repository.ToListAsync(HttpContext.RequestAborted).ConfigureAwait(false));
             }
             catch (Exception ex)
             {
@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var sourceApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+                var sourceApplicationEntity = await _repository.FindByNameAsync(name, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 if (sourceApplicationEntity is null)
                 {
@@ -100,10 +100,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             try
             {
                 item.SetDefaultValues();
-                ValidateCreate(item);
+                await ValidateCreateAsync(item).ConfigureAwait(false);
 
-                await _repository.AddAsync(item).ConfigureAwait(false);
-                await _repository.SaveChangesAsync().ConfigureAwait(false);
+                await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
                 _logger.SourceApplicationEntityAdded(item.AeTitle, item.HostIp);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
@@ -137,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     return NotFound();
                 }
 
-                var sourceApplicationEntity = await _repository.FindAsync(item.Name).ConfigureAwait(false);
+                var sourceApplicationEntity = await _repository.FindByNameAsync(item.Name, HttpContext.RequestAborted).ConfigureAwait(false);
                 if (sourceApplicationEntity is null)
                 {
                     return NotFound();
@@ -148,10 +147,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 sourceApplicationEntity.AeTitle = item.AeTitle;
                 sourceApplicationEntity.HostIp = item.HostIp;
 
-                ValidateEdit(sourceApplicationEntity);
+                await ValidateEditAsync(sourceApplicationEntity).ConfigureAwait(false);
 
-                _ = _repository.Update(sourceApplicationEntity);
-                await _repository.SaveChangesAsync(HttpContext.RequestAborted).ConfigureAwait(false);
+                await _repository.UpdateAsync(sourceApplicationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
                 _logger.SourceApplicationEntityUpdated(item.Name, item.AeTitle, item.HostIp);
                 return Ok(sourceApplicationEntity);
             }
@@ -175,14 +173,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var sourceApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+                var sourceApplicationEntity = await _repository.FindByNameAsync(name, HttpContext.RequestAborted).ConfigureAwait(false);
                 if (sourceApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
-                _repository.Remove(sourceApplicationEntity);
-                await _repository.SaveChangesAsync().ConfigureAwait(false);
+                await _repository.RemoveAsync(sourceApplicationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 _logger.SourceApplicationEntityDeleted(name);
                 return Ok(sourceApplicationEntity);
@@ -194,13 +191,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private void ValidateCreate(SourceApplicationEntity item)
+        private async Task ValidateCreateAsync(SourceApplicationEntity item)
         {
-            if (_repository.Any(p => p.Name.Equals(item.Name)))
+            if (await _repository.ContainsAsync(p => p.Name.Equals(item.Name), HttpContext.RequestAborted).ConfigureAwait(false))
             {
                 throw new ObjectExistsException($"A DICOM source with the same name '{item.Name}' already exists.");
             }
-            if (_repository.Any(p => item.AeTitle.Equals(p.AeTitle) && item.HostIp.Equals(p.HostIp)))
+            if (await _repository.ContainsAsync(p => p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp), HttpContext.RequestAborted).ConfigureAwait(false))
             {
                 throw new ObjectExistsException($"A DICOM source with the same AE Title '{item.AeTitle}' and host/IP address '{item.HostIp}' already exists.");
             }
@@ -210,9 +207,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private void ValidateEdit(SourceApplicationEntity item)
+        private async Task ValidateEditAsync(SourceApplicationEntity item)
         {
-            if (_repository.Any(p => !item.Name.Equals(p.Name) && item.AeTitle.Equals(p.AeTitle) && item.HostIp.Equals(p.HostIp)))
+            if (await _repository.ContainsAsync(p => !p.Name.Equals(item.Name) && p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp), HttpContext.RequestAborted).ConfigureAwait(false))
             {
                 throw new ObjectExistsException($"A DICOM source with the same AE Title '{item.AeTitle}' and host/IP address '{item.HostIp}' already exists.");
             }
