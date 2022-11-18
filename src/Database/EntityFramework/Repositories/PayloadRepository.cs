@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System.Linq.Expressions;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -65,14 +64,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
                 var result = await _dataset.AddAsync(item, cancellationToken).ConfigureAwait(false);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 return result.Entity;
-            }).ConfigureAwait(false);
-        }
-
-        public async Task<bool> ContainsAsync(Expression<Func<Payload, bool>> predicate, CancellationToken cancellationToken = default)
-        {
-            return await _retryPolicy.ExecuteAsync(async () =>
-            {
-                return await _dataset.AnyAsync(predicate, cancellationToken).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 

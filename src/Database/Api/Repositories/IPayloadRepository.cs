@@ -29,8 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         Task<Payload> RemoveAsync(Payload entity, CancellationToken cancellationToken = default);
 
-        Task<bool> ContainsAsync(Expression<Func<Payload, bool>> predicate, CancellationToken cancellationToken = default);
-
         Task<int> RemovePendingPayloadsAsync(CancellationToken cancellationToken = default);
 
         Task<List<Payload>> GetPayloadsInStateAsync(CancellationToken cancellationToken = default, params Payload.PayloadState[] states);
