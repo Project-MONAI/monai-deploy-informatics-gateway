@@ -98,6 +98,25 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             DatabaseContext.SaveChanges();
         }
 
+        internal void InitDatabaseWithDicomAssociationInfoEntries()
+        {
+            var da1 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+            var da2 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+            var da3 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+            var da4 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+            var da5 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+
+            var set = DatabaseContext.Set<DicomAssociationInfo>();
+            set.RemoveRange(set.ToList());
+            set.Add(da1);
+            set.Add(da2);
+            set.Add(da3);
+            set.Add(da4);
+            set.Add(da5);
+
+            DatabaseContext.SaveChanges();
+        }
+
         public void Clear<T>() where T : class
         {
             var set = DatabaseContext.Set<T>();
@@ -109,5 +128,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             DatabaseContext.Dispose();
         }
+
     }
 }

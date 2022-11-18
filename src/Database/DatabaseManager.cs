@@ -54,6 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(ISourceApplicationEntityRepository), typeof(EntityFramework.Repositories.SourceApplicationEntityRepository));
                     services.AddScoped(typeof(IStorageMetadataRepository), typeof(EntityFramework.Repositories.StorageMetadataWrapperRepository));
                     services.AddScoped(typeof(IPayloadRepository), typeof(EntityFramework.Repositories.PayloadRepository));
+                    services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(EntityFramework.Repositories.DicomAssociationInfoRepository));
                     return services;
                 case DbType_MongoDb:
                     services.AddSingleton<IMongoClient, MongoClient>(s => new MongoClient(connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]));
@@ -65,6 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(ISourceApplicationEntityRepository), typeof(MongoDB.Repositories.SourceApplicationEntityRepository));
                     services.AddScoped(typeof(IStorageMetadataRepository), typeof(MongoDB.Repositories.StorageMetadataWrapperRepository));
                     services.AddScoped(typeof(IPayloadRepository), typeof(MongoDB.Repositories.PayloadRepository));
+                    services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(MongoDB.Repositories.DicomAssociationInfoRepository));
 
                     return services;
                 default:

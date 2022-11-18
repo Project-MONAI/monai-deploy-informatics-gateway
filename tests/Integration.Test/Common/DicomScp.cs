@@ -74,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         {
         }
 
-        public void OnConnectionClosed(Exception exception)
+        public void OnConnectionClosedAsync(Exception exception)
         {
             if (exception is not null)
             {
@@ -139,5 +139,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
             return SendAssociationAcceptAsync(association);
         }
+
+        public void OnConnectionClosed(Exception exception) { }
     }
 }

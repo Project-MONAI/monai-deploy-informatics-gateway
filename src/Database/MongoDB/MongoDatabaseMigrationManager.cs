@@ -31,6 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB
             InferenceRequestConfiguration.Configure();
             PayloadConfiguration.Configure();
             StorageMetadataWrapperEntityConfiguration.Configure();
+            DicomAssociationInfoConfiguration.Configure();
             return host;
         }
     }
