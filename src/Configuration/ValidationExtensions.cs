@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
@@ -94,7 +95,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         {
             Guard.Against.NullOrWhiteSpace(source);
 
-            if (!string.IsNullOrWhiteSpace(aeTitle) && aeTitle.Length <= 15) return true;
+            if (!string.IsNullOrWhiteSpace(aeTitle) &&
+                aeTitle.Length <= 15 &&
+                Regex.IsMatch(aeTitle, @"^[a-zA-Z0-9_\-]+$"))
+            {
+                return true;
+            }
 
             validationErrors?.Add($"'{aeTitle}' is not a valid AE Title (source: {source}).");
             return false;
@@ -102,7 +108,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsValidHostNameIp(string source, string hostIp, IList<string> validationErrors = null)
         {
-            if (!string.IsNullOrWhiteSpace(hostIp)) return true;
+            if (!string.IsNullOrWhiteSpace(hostIp) &&
+                (Regex.IsMatch(hostIp, @"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$") || // IP address
+                 Regex.IsMatch(hostIp, @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$"))) // Host/domain name
+            {
+                return true;
+            }
 
             validationErrors?.Add($"Invalid host name/IP address '{hostIp}' specified for {source}.");
             return false;
