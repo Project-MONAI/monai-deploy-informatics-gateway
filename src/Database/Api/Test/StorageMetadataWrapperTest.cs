@@ -16,9 +16,8 @@
 
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Database.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
+namespace Monai.Deploy.InformaticsGateway.Database.Api.Test
 {
     public class StorageMetadataWrapperTest
     {

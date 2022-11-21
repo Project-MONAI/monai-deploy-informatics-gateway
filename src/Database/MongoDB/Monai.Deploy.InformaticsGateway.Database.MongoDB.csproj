@@ -27,9 +27,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Test\**" />
-    <EmbeddedResource Remove="Test\**" />
-    <None Remove="Test\**" />
+    <Compile Remove="Integration.Test\**" />
+    <EmbeddedResource Remove="Integration.Test\**" />
+    <None Remove="Integration.Test\**" />
   </ItemGroup>
 
   <ItemGroup>

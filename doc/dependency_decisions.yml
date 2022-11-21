@@ -319,8 +319,6 @@
   - :who: mocsharp
     :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
     :versions:
-    - 17.1.0
-    - 17.2.0
     - 17.4.0
     :when: 2022-08-16 23:05:48.342748414 Z
 - - :approve
@@ -605,7 +603,6 @@
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
     :versions:
     - 6.0.0
-    - 6.0.1
     - 6.0.2
     - 6.0.3
     :when: 2022-08-16 23:06:06.728283354 Z
@@ -739,19 +736,15 @@
 - - :approve
   - Microsoft.TestPlatform.ObjectModel
   - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
+    :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
     :versions:
-    - 17.1.0
-    - 17.2.0
     - 17.4.0
     :when: 2022-08-16 23:06:16.175705981 Z
 - - :approve
   - Microsoft.TestPlatform.TestHost
   - :who: mocsharp
-    :why: MIT (https://github.com/microsoft/vstest/raw/v17.1.0/LICENSE)
+    :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
     :versions:
-    - 17.1.0
-    - 17.2.0
     - 17.4.0
     :when: 2022-08-16 23:06:17.671459450 Z
 - - :approve
@@ -787,7 +780,6 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/minio/minio-dotnet/raw/master/LICENSE)
     :versions:
-    - 4.0.5
     - 4.0.6
     :when: 2022-08-16 23:06:20.598551507 Z
 - - :approve
@@ -853,13 +845,6 @@
     :versions:
     - 2.0.0
     :when: 2022-08-16 23:06:24.756106826 Z
-- - :approve
-  - NPOI
-  - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/nissl-lab/npoi/raw/master/LICENSE)
-    :versions:
-    - 2.5.6
-    :when: 2022-08-16 23:06:25.198846196 Z
 - - :approve
   - Newtonsoft.Json
   - :who: mocsharp
@@ -1138,6 +1123,7 @@
   - :who: mocsharp
     :why: MIT ( https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
+    - 4.4.0
     - 4.5.0
     :when: 2022-08-16 23:06:43.335979768 Z
 - - :approve
@@ -1243,7 +1229,6 @@
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
-    - 17.2.1
     - 17.2.3
     :when: 2022-08-16 23:06:50.602318269 Z
 - - :approve
@@ -1251,7 +1236,6 @@
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
-    - 17.2.1
     - 17.2.3
     :when: 2022-08-16 23:06:51.524564913 Z
 - - :approve
@@ -1546,7 +1530,6 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
-    - 4.5.0
     - 5.0.0
     :when: 2022-08-16 23:07:11.063425328 Z
 - - :approve
@@ -1603,6 +1586,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
     :versions:
+    - 4.4.0
     - 4.5.0
     :when: 2022-08-16 23:07:14.759818552 Z
 - - :approve
@@ -1638,7 +1622,6 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
     :versions:
-    - 4.5.0
     - 5.0.0
     :when: 2022-08-16 23:07:17.059464936 Z
 - - :approve
@@ -1689,7 +1672,6 @@
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
     :versions:
     - 6.0.0
-    - 6.0.5
     - 6.0.7
     :when: 2022-08-16 23:07:20.787263056 Z
 - - :approve
@@ -1823,7 +1805,6 @@
   - :who: mocsharp
     :why: Microsoft Public License (https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
     :versions:
-    - 5.0.2
     - 5.0.3
     :when: 2022-08-16 23:07:29.574869349 Z
 - - :approve
