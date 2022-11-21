@@ -73,6 +73,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetDefaultValues
   fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetDefaultValues
   nameWithType: BaseApplicationEntity.SetDefaultValues
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.ToString
+  name: ToString()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_ToString
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.ToString()
+  nameWithType: BaseApplicationEntity.ToString()
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.ToString*
+  name: ToString
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_ToString_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.ToString
+  nameWithType: BaseApplicationEntity.ToString
 - uid: Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity
   name: DestinationApplicationEntity
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html
@@ -254,6 +266,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Timeout
   fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Timeout
   nameWithType: MonaiApplicationEntity.Timeout
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString
+  name: ToString()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_ToString
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString()
+  nameWithType: MonaiApplicationEntity.ToString()
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString*
+  name: ToString
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_ToString_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString
+  nameWithType: MonaiApplicationEntity.ToString
 - uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Workflows
   name: Workflows
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Workflows
@@ -266,6 +290,48 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Workflows
   fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Workflows
   nameWithType: MonaiApplicationEntity.Workflows
+- uid: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase
+  name: MongoDBEntityBase
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase
+  fullName: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase
+  nameWithType: MongoDBEntityBase
+- uid: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.#ctor
+  name: MongoDBEntityBase()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.html#Monai_Deploy_InformaticsGateway_Api_MongoDBEntityBase__ctor
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.#ctor
+  fullName: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.MongoDBEntityBase()
+  nameWithType: MongoDBEntityBase.MongoDBEntityBase()
+- uid: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.#ctor*
+  name: MongoDBEntityBase
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.html#Monai_Deploy_InformaticsGateway_Api_MongoDBEntityBase__ctor_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.#ctor
+  fullName: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.MongoDBEntityBase
+  nameWithType: MongoDBEntityBase.MongoDBEntityBase
+- uid: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.DateTimeCreated
+  name: DateTimeCreated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.html#Monai_Deploy_InformaticsGateway_Api_MongoDBEntityBase_DateTimeCreated
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.DateTimeCreated
+  fullName: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.DateTimeCreated
+  nameWithType: MongoDBEntityBase.DateTimeCreated
+- uid: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.DateTimeCreated*
+  name: DateTimeCreated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.html#Monai_Deploy_InformaticsGateway_Api_MongoDBEntityBase_DateTimeCreated_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.DateTimeCreated
+  fullName: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.DateTimeCreated
+  nameWithType: MongoDBEntityBase.DateTimeCreated
+- uid: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.Id
+  name: Id
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.html#Monai_Deploy_InformaticsGateway_Api_MongoDBEntityBase_Id
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.Id
+  fullName: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.Id
+  nameWithType: MongoDBEntityBase.Id
+- uid: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.Id*
+  name: Id
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.html#Monai_Deploy_InformaticsGateway_Api_MongoDBEntityBase_Id_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.Id
+  fullName: Monai.Deploy.InformaticsGateway.Api.MongoDBEntityBase.Id
+  nameWithType: MongoDBEntityBase.Id
 - uid: Monai.Deploy.InformaticsGateway.Api.Rest
   name: Monai.Deploy.InformaticsGateway.Api.Rest
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.html
@@ -671,6 +737,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.Status
   fullName: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.Status
   nameWithType: InferenceRequest.Status
+- uid: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.ToString
+  name: ToString()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_ToString
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.ToString()
+  nameWithType: InferenceRequest.ToString()
+- uid: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.ToString*
+  name: ToString
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_ToString_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.ToString
+  nameWithType: InferenceRequest.ToString
 - uid: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.TransactionId
   name: TransactionId
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_TransactionId
@@ -2540,18 +2618,6 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.HasTimedOut
   fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.HasTimedOut
   nameWithType: Payload.HasTimedOut
-- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Id
-  name: Id
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Id
-  commentId: P:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Id
-  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Id
-  nameWithType: Payload.Id
-- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Id*
-  name: Id
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Id_
-  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Id
-  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Id
-  nameWithType: Payload.Id
 - uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Key
   name: Key
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Key
@@ -2570,6 +2636,18 @@ references:
   commentId: F:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MAX_RETRY
   fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MAX_RETRY
   nameWithType: Payload.MAX_RETRY
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId
+  name: PayloadId
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_PayloadId
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId
+  nameWithType: Payload.PayloadId
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId*
+  name: PayloadId
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_PayloadId_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId
+  nameWithType: Payload.PayloadId
 - uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState
   name: Payload.PayloadState
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState.html
@@ -2648,6 +2726,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Timeout
   fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Timeout
   nameWithType: Payload.Timeout
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString
+  name: ToString()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ToString
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString()
+  nameWithType: Payload.ToString()
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString*
+  name: ToString
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ToString_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString
+  nameWithType: Payload.ToString
 - uid: Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata
   name: StorageObjectMetadata
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.html
@@ -4061,12 +4151,6 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.Database
   fullName: Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.Database
   nameWithType: InformaticsGatewayConfiguration.Database
-- uid: Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.DatabaseConnectionStringKey
-  name: DatabaseConnectionStringKey
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_InformaticsGatewayConfiguration_DatabaseConnectionStringKey
-  commentId: F:Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.DatabaseConnectionStringKey
-  fullName: Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.DatabaseConnectionStringKey
-  nameWithType: InformaticsGatewayConfiguration.DatabaseConnectionStringKey
 - uid: Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.Dicom
   name: Dicom
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration.html#Monai_Deploy_InformaticsGateway_Configuration_InformaticsGatewayConfiguration_Dicom
@@ -4760,6 +4844,1143 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Configuration.ValidationExtensions.IsValidHostNameIp
   fullName: Monai.Deploy.InformaticsGateway.Configuration.ValidationExtensions.IsValidHostNameIp
   nameWithType: ValidationExtensions.IsValidHostNameIp
+- uid: Monai.Deploy.InformaticsGateway.Database
+  name: Monai.Deploy.InformaticsGateway.Database
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.html
+  commentId: N:Monai.Deploy.InformaticsGateway.Database
+  fullName: Monai.Deploy.InformaticsGateway.Database
+  nameWithType: Monai.Deploy.InformaticsGateway.Database
+- uid: Monai.Deploy.InformaticsGateway.Database.Api
+  name: Monai.Deploy.InformaticsGateway.Database.Api
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.html
+  commentId: N:Monai.Deploy.InformaticsGateway.Database.Api
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api
+  nameWithType: Monai.Deploy.InformaticsGateway.Database.Api
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException
+  name: DatabaseException
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException
+  nameWithType: DatabaseException
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor
+  name: DatabaseException()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.html#Monai_Deploy_InformaticsGateway_Database_Api_DatabaseException__ctor
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.DatabaseException()
+  nameWithType: DatabaseException.DatabaseException()
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  name: DatabaseException(SerializationInfo, StreamingContext)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.html#Monai_Deploy_InformaticsGateway_Database_Api_DatabaseException__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.DatabaseException(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: DatabaseException.DatabaseException(SerializationInfo, StreamingContext)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor(System.String)
+  name: DatabaseException(String)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.html#Monai_Deploy_InformaticsGateway_Database_Api_DatabaseException__ctor_System_String_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor(System.String)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.DatabaseException(System.String)
+  nameWithType: DatabaseException.DatabaseException(String)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor(System.String,System.Exception)
+  name: DatabaseException(String, Exception)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.html#Monai_Deploy_InformaticsGateway_Database_Api_DatabaseException__ctor_System_String_System_Exception_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor(System.String,System.Exception)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.DatabaseException(System.String, System.Exception)
+  nameWithType: DatabaseException.DatabaseException(String, Exception)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor*
+  name: DatabaseException
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.html#Monai_Deploy_InformaticsGateway_Database_Api_DatabaseException__ctor_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.#ctor
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseException.DatabaseException
+  nameWithType: DatabaseException.DatabaseException
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager
+  name: IDatabaseMigrationManager
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager
+  nameWithType: IDatabaseMigrationManager
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.Migrate(Microsoft.Extensions.Hosting.IHost)
+  name: Migrate(IHost)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.html#Monai_Deploy_InformaticsGateway_Database_Api_IDatabaseMigrationManager_Migrate_Microsoft_Extensions_Hosting_IHost_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.Migrate(Microsoft.Extensions.Hosting.IHost)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.Migrate(Microsoft.Extensions.Hosting.IHost)
+  nameWithType: IDatabaseMigrationManager.Migrate(IHost)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.Migrate*
+  name: Migrate
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.html#Monai_Deploy_InformaticsGateway_Database_Api_IDatabaseMigrationManager_Migrate_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.Migrate
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.Migrate
+  nameWithType: IDatabaseMigrationManager.Migrate
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging
+  name: Monai.Deploy.InformaticsGateway.Database.Api.Logging
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.html
+  commentId: N:Monai.Deploy.InformaticsGateway.Database.Api.Logging
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging
+  nameWithType: Monai.Deploy.InformaticsGateway.Database.Api.Logging
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log
+  name: Log
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log
+  nameWithType: Log
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.DatabaseErrorRetry(Microsoft.Extensions.Logging.ILogger,System.TimeSpan,System.Int32,System.Exception)
+  name: DatabaseErrorRetry(ILogger, TimeSpan, Int32, Exception)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_DatabaseErrorRetry_Microsoft_Extensions_Logging_ILogger_System_TimeSpan_System_Int32_System_Exception_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.DatabaseErrorRetry(Microsoft.Extensions.Logging.ILogger,System.TimeSpan,System.Int32,System.Exception)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.DatabaseErrorRetry(Microsoft.Extensions.Logging.ILogger, System.TimeSpan, System.Int32, System.Exception)
+  nameWithType: Log.DatabaseErrorRetry(ILogger, TimeSpan, Int32, Exception)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.DatabaseErrorRetry*
+  name: DatabaseErrorRetry
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_DatabaseErrorRetry_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.DatabaseErrorRetry
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.DatabaseErrorRetry
+  nameWithType: Log.DatabaseErrorRetry
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorAddItem(Microsoft.Extensions.Logging.ILogger,System.String,System.Exception)
+  name: ErrorAddItem(ILogger, String, Exception)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_ErrorAddItem_Microsoft_Extensions_Logging_ILogger_System_String_System_Exception_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorAddItem(Microsoft.Extensions.Logging.ILogger,System.String,System.Exception)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorAddItem(Microsoft.Extensions.Logging.ILogger, System.String, System.Exception)
+  nameWithType: Log.ErrorAddItem(ILogger, String, Exception)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorAddItem*
+  name: ErrorAddItem
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_ErrorAddItem_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorAddItem
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorAddItem
+  nameWithType: Log.ErrorAddItem
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorDeleteItem(Microsoft.Extensions.Logging.ILogger,System.String,System.Exception)
+  name: ErrorDeleteItem(ILogger, String, Exception)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_ErrorDeleteItem_Microsoft_Extensions_Logging_ILogger_System_String_System_Exception_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorDeleteItem(Microsoft.Extensions.Logging.ILogger,System.String,System.Exception)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorDeleteItem(Microsoft.Extensions.Logging.ILogger, System.String, System.Exception)
+  nameWithType: Log.ErrorDeleteItem(ILogger, String, Exception)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorDeleteItem*
+  name: ErrorDeleteItem
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_ErrorDeleteItem_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorDeleteItem
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorDeleteItem
+  nameWithType: Log.ErrorDeleteItem
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorQueryingForPendingInferenceRequest(Microsoft.Extensions.Logging.ILogger,System.Exception)
+  name: ErrorQueryingForPendingInferenceRequest(ILogger, Exception)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_ErrorQueryingForPendingInferenceRequest_Microsoft_Extensions_Logging_ILogger_System_Exception_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorQueryingForPendingInferenceRequest(Microsoft.Extensions.Logging.ILogger,System.Exception)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorQueryingForPendingInferenceRequest(Microsoft.Extensions.Logging.ILogger, System.Exception)
+  nameWithType: Log.ErrorQueryingForPendingInferenceRequest(ILogger, Exception)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorQueryingForPendingInferenceRequest*
+  name: ErrorQueryingForPendingInferenceRequest
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_ErrorQueryingForPendingInferenceRequest_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorQueryingForPendingInferenceRequest
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorQueryingForPendingInferenceRequest
+  nameWithType: Log.ErrorQueryingForPendingInferenceRequest
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorUpdateItem(Microsoft.Extensions.Logging.ILogger,System.String,System.Exception)
+  name: ErrorUpdateItem(ILogger, String, Exception)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_ErrorUpdateItem_Microsoft_Extensions_Logging_ILogger_System_String_System_Exception_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorUpdateItem(Microsoft.Extensions.Logging.ILogger,System.String,System.Exception)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorUpdateItem(Microsoft.Extensions.Logging.ILogger, System.String, System.Exception)
+  nameWithType: Log.ErrorUpdateItem(ILogger, String, Exception)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorUpdateItem*
+  name: ErrorUpdateItem
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_ErrorUpdateItem_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorUpdateItem
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.ErrorUpdateItem
+  nameWithType: Log.ErrorUpdateItem
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSaved(Microsoft.Extensions.Logging.ILogger)
+  name: InferenceRequestSaved(ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestSaved_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSaved(Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSaved(Microsoft.Extensions.Logging.ILogger)
+  nameWithType: Log.InferenceRequestSaved(ILogger)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSaved*
+  name: InferenceRequestSaved
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestSaved_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSaved
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSaved
+  nameWithType: Log.InferenceRequestSaved
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSetToInProgress(Microsoft.Extensions.Logging.ILogger,System.String)
+  name: InferenceRequestSetToInProgress(ILogger, String)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestSetToInProgress_Microsoft_Extensions_Logging_ILogger_System_String_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSetToInProgress(Microsoft.Extensions.Logging.ILogger,System.String)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSetToInProgress(Microsoft.Extensions.Logging.ILogger, System.String)
+  nameWithType: Log.InferenceRequestSetToInProgress(ILogger, String)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSetToInProgress*
+  name: InferenceRequestSetToInProgress
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestSetToInProgress_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSetToInProgress
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestSetToInProgress
+  nameWithType: Log.InferenceRequestSetToInProgress
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdated(Microsoft.Extensions.Logging.ILogger)
+  name: InferenceRequestUpdated(ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestUpdated_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdated(Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdated(Microsoft.Extensions.Logging.ILogger)
+  nameWithType: Log.InferenceRequestUpdated(ILogger)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdated*
+  name: InferenceRequestUpdated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestUpdated_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdated
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdated
+  nameWithType: Log.InferenceRequestUpdated
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateExceededMaximumRetries(Microsoft.Extensions.Logging.ILogger)
+  name: InferenceRequestUpdateExceededMaximumRetries(ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestUpdateExceededMaximumRetries_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateExceededMaximumRetries(Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateExceededMaximumRetries(Microsoft.Extensions.Logging.ILogger)
+  nameWithType: Log.InferenceRequestUpdateExceededMaximumRetries(ILogger)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateExceededMaximumRetries*
+  name: InferenceRequestUpdateExceededMaximumRetries
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestUpdateExceededMaximumRetries_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateExceededMaximumRetries
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateExceededMaximumRetries
+  nameWithType: Log.InferenceRequestUpdateExceededMaximumRetries
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateRetryLater(Microsoft.Extensions.Logging.ILogger)
+  name: InferenceRequestUpdateRetryLater(ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestUpdateRetryLater_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateRetryLater(Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateRetryLater(Microsoft.Extensions.Logging.ILogger)
+  nameWithType: Log.InferenceRequestUpdateRetryLater(ILogger)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateRetryLater*
+  name: InferenceRequestUpdateRetryLater
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestUpdateRetryLater_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateRetryLater
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateRetryLater
+  nameWithType: Log.InferenceRequestUpdateRetryLater
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateState(Microsoft.Extensions.Logging.ILogger)
+  name: InferenceRequestUpdateState(ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestUpdateState_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateState(Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateState(Microsoft.Extensions.Logging.ILogger)
+  nameWithType: Log.InferenceRequestUpdateState(ILogger)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateState*
+  name: InferenceRequestUpdateState
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_InferenceRequestUpdateState_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateState
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.InferenceRequestUpdateState
+  nameWithType: Log.InferenceRequestUpdateState
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.StorageMetadataSaved(Microsoft.Extensions.Logging.ILogger)
+  name: StorageMetadataSaved(ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_StorageMetadataSaved_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.StorageMetadataSaved(Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.StorageMetadataSaved(Microsoft.Extensions.Logging.ILogger)
+  nameWithType: Log.StorageMetadataSaved(ILogger)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.StorageMetadataSaved*
+  name: StorageMetadataSaved
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.html#Monai_Deploy_InformaticsGateway_Database_Api_Logging_Log_StorageMetadataSaved_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.StorageMetadataSaved
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Logging.Log.StorageMetadataSaved
+  nameWithType: Log.StorageMetadataSaved
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories
+  name: Monai.Deploy.InformaticsGateway.Database.Api.Repositories
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.html
+  commentId: N:Monai.Deploy.InformaticsGateway.Database.Api.Repositories
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories
+  nameWithType: Monai.Deploy.InformaticsGateway.Database.Api.Repositories
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository
+  name: IDestinationApplicationEntityRepository
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository
+  nameWithType: IDestinationApplicationEntityRepository
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity,System.Threading.CancellationToken)
+  name: AddAsync(DestinationApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_AddAsync_Monai_Deploy_InformaticsGateway_Api_DestinationApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: IDestinationApplicationEntityRepository.AddAsync(DestinationApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.AddAsync*
+  name: AddAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_AddAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.AddAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.AddAsync
+  nameWithType: IDestinationApplicationEntityRepository.AddAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression{System.Func{Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity,System.Boolean}},System.Threading.CancellationToken)
+  name: ContainsAsync(Expression<Func<DestinationApplicationEntity, Boolean>>, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_ContainsAsync_System_Linq_Expressions_Expression_System_Func_Monai_Deploy_InformaticsGateway_Api_DestinationApplicationEntity_System_Boolean___System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression{System.Func{Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity,System.Boolean}},System.Threading.CancellationToken)
+  name.vb: ContainsAsync(Expression(Of Func(Of DestinationApplicationEntity, Boolean)), CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression<System.Func<Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity, System.Boolean>>, System.Threading.CancellationToken)
+  fullName.vb: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression(Of System.Func(Of Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity, System.Boolean)), System.Threading.CancellationToken)
+  nameWithType: IDestinationApplicationEntityRepository.ContainsAsync(Expression<Func<DestinationApplicationEntity, Boolean>>, CancellationToken)
+  nameWithType.vb: IDestinationApplicationEntityRepository.ContainsAsync(Expression(Of Func(Of DestinationApplicationEntity, Boolean)), CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ContainsAsync*
+  name: ContainsAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_ContainsAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ContainsAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ContainsAsync
+  nameWithType: IDestinationApplicationEntityRepository.ContainsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  name: FindByNameAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_FindByNameAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.FindByNameAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: IDestinationApplicationEntityRepository.FindByNameAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.FindByNameAsync*
+  name: FindByNameAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_FindByNameAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.FindByNameAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.FindByNameAsync
+  nameWithType: IDestinationApplicationEntityRepository.FindByNameAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity,System.Threading.CancellationToken)
+  name: RemoveAsync(DestinationApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_RemoveAsync_Monai_Deploy_InformaticsGateway_Api_DestinationApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: IDestinationApplicationEntityRepository.RemoveAsync(DestinationApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.RemoveAsync*
+  name: RemoveAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_RemoveAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.RemoveAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.RemoveAsync
+  nameWithType: IDestinationApplicationEntityRepository.RemoveAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  name: ToListAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_ToListAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  nameWithType: IDestinationApplicationEntityRepository.ToListAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ToListAsync*
+  name: ToListAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_ToListAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ToListAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.ToListAsync
+  nameWithType: IDestinationApplicationEntityRepository.ToListAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity,System.Threading.CancellationToken)
+  name: UpdateAsync(DestinationApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_DestinationApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: IDestinationApplicationEntityRepository.UpdateAsync(DestinationApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.UpdateAsync*
+  name: UpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IDestinationApplicationEntityRepository_UpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.UpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IDestinationApplicationEntityRepository.UpdateAsync
+  nameWithType: IDestinationApplicationEntityRepository.UpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository
+  name: IInferenceRequestRepository
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository
+  nameWithType: IInferenceRequestRepository
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,System.Threading.CancellationToken)
+  name: AddAsync(InferenceRequest, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_AddAsync_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest, System.Threading.CancellationToken)
+  nameWithType: IInferenceRequestRepository.AddAsync(InferenceRequest, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.AddAsync*
+  name: AddAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_AddAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.AddAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.AddAsync
+  nameWithType: IInferenceRequestRepository.AddAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.ExistsAsync(System.String,System.Threading.CancellationToken)
+  name: ExistsAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_ExistsAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.ExistsAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.ExistsAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: IInferenceRequestRepository.ExistsAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.ExistsAsync*
+  name: ExistsAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_ExistsAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.ExistsAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.ExistsAsync
+  nameWithType: IInferenceRequestRepository.ExistsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync(System.Guid,System.Threading.CancellationToken)
+  name: GetInferenceRequestAsync(Guid, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_GetInferenceRequestAsync_System_Guid_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync(System.Guid,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync(System.Guid, System.Threading.CancellationToken)
+  nameWithType: IInferenceRequestRepository.GetInferenceRequestAsync(Guid, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync(System.String,System.Threading.CancellationToken)
+  name: GetInferenceRequestAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_GetInferenceRequestAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: IInferenceRequestRepository.GetInferenceRequestAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync*
+  name: GetInferenceRequestAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_GetInferenceRequestAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetInferenceRequestAsync
+  nameWithType: IInferenceRequestRepository.GetInferenceRequestAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  name: GetStatusAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_GetStatusAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetStatusAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: IInferenceRequestRepository.GetStatusAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetStatusAsync*
+  name: GetStatusAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_GetStatusAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetStatusAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.GetStatusAsync
+  nameWithType: IInferenceRequestRepository.GetStatusAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.TakeAsync(System.Threading.CancellationToken)
+  name: TakeAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_TakeAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.TakeAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.TakeAsync(System.Threading.CancellationToken)
+  nameWithType: IInferenceRequestRepository.TakeAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.TakeAsync*
+  name: TakeAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_TakeAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.TakeAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.TakeAsync
+  nameWithType: IInferenceRequestRepository.TakeAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus,System.Threading.CancellationToken)
+  name: UpdateAsync(InferenceRequest, InferenceRequestStatus, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestStatus_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest, Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus, System.Threading.CancellationToken)
+  nameWithType: IInferenceRequestRepository.UpdateAsync(InferenceRequest, InferenceRequestStatus, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.UpdateAsync*
+  name: UpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IInferenceRequestRepository_UpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.UpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.UpdateAsync
+  nameWithType: IInferenceRequestRepository.UpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository
+  name: IMonaiApplicationEntityRepository
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository
+  nameWithType: IMonaiApplicationEntityRepository
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity,System.Threading.CancellationToken)
+  name: AddAsync(MonaiApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_AddAsync_Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: IMonaiApplicationEntityRepository.AddAsync(MonaiApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.AddAsync*
+  name: AddAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_AddAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.AddAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.AddAsync
+  nameWithType: IMonaiApplicationEntityRepository.AddAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression{System.Func{Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity,System.Boolean}},System.Threading.CancellationToken)
+  name: ContainsAsync(Expression<Func<MonaiApplicationEntity, Boolean>>, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_ContainsAsync_System_Linq_Expressions_Expression_System_Func_Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_System_Boolean___System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression{System.Func{Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity,System.Boolean}},System.Threading.CancellationToken)
+  name.vb: ContainsAsync(Expression(Of Func(Of MonaiApplicationEntity, Boolean)), CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression<System.Func<Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity, System.Boolean>>, System.Threading.CancellationToken)
+  fullName.vb: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression(Of System.Func(Of Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity, System.Boolean)), System.Threading.CancellationToken)
+  nameWithType: IMonaiApplicationEntityRepository.ContainsAsync(Expression<Func<MonaiApplicationEntity, Boolean>>, CancellationToken)
+  nameWithType.vb: IMonaiApplicationEntityRepository.ContainsAsync(Expression(Of Func(Of MonaiApplicationEntity, Boolean)), CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ContainsAsync*
+  name: ContainsAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_ContainsAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ContainsAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ContainsAsync
+  nameWithType: IMonaiApplicationEntityRepository.ContainsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  name: FindByNameAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_FindByNameAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.FindByNameAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: IMonaiApplicationEntityRepository.FindByNameAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.FindByNameAsync*
+  name: FindByNameAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_FindByNameAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.FindByNameAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.FindByNameAsync
+  nameWithType: IMonaiApplicationEntityRepository.FindByNameAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity,System.Threading.CancellationToken)
+  name: RemoveAsync(MonaiApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_RemoveAsync_Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: IMonaiApplicationEntityRepository.RemoveAsync(MonaiApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.RemoveAsync*
+  name: RemoveAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_RemoveAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.RemoveAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.RemoveAsync
+  nameWithType: IMonaiApplicationEntityRepository.RemoveAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  name: ToListAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_ToListAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  nameWithType: IMonaiApplicationEntityRepository.ToListAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ToListAsync*
+  name: ToListAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_ToListAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ToListAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.ToListAsync
+  nameWithType: IMonaiApplicationEntityRepository.ToListAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity,System.Threading.CancellationToken)
+  name: UpdateAsync(MonaiApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: IMonaiApplicationEntityRepository.UpdateAsync(MonaiApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.UpdateAsync*
+  name: UpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IMonaiApplicationEntityRepository_UpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.UpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IMonaiApplicationEntityRepository.UpdateAsync
+  nameWithType: IMonaiApplicationEntityRepository.UpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase
+  name: InferenceRequestRepositoryBase
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase
+  nameWithType: InferenceRequestRepositoryBase
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.#ctor(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Options.IOptions{Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration})
+  name: InferenceRequestRepositoryBase(ILogger, IOptions<InformaticsGatewayConfiguration>)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase__ctor_Microsoft_Extensions_Logging_ILogger_Microsoft_Extensions_Options_IOptions_Monai_Deploy_InformaticsGateway_Configuration_InformaticsGatewayConfiguration__
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.#ctor(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Options.IOptions{Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration})
+  name.vb: InferenceRequestRepositoryBase(ILogger, IOptions(Of InformaticsGatewayConfiguration))
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.InferenceRequestRepositoryBase(Microsoft.Extensions.Logging.ILogger, Microsoft.Extensions.Options.IOptions<Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration>)
+  fullName.vb: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.InferenceRequestRepositoryBase(Microsoft.Extensions.Logging.ILogger, Microsoft.Extensions.Options.IOptions(Of Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration))
+  nameWithType: InferenceRequestRepositoryBase.InferenceRequestRepositoryBase(ILogger, IOptions<InformaticsGatewayConfiguration>)
+  nameWithType.vb: InferenceRequestRepositoryBase.InferenceRequestRepositoryBase(ILogger, IOptions(Of InformaticsGatewayConfiguration))
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.#ctor*
+  name: InferenceRequestRepositoryBase
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase__ctor_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.#ctor
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.InferenceRequestRepositoryBase
+  nameWithType: InferenceRequestRepositoryBase.InferenceRequestRepositoryBase
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.AddAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,System.Threading.CancellationToken)
+  name: AddAsync(InferenceRequest, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_AddAsync_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.AddAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.AddAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest, System.Threading.CancellationToken)
+  nameWithType: InferenceRequestRepositoryBase.AddAsync(InferenceRequest, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.AddAsync*
+  name: AddAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_AddAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.AddAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.AddAsync
+  nameWithType: InferenceRequestRepositoryBase.AddAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.ExistsAsync(System.String,System.Threading.CancellationToken)
+  name: ExistsAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_ExistsAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.ExistsAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.ExistsAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: InferenceRequestRepositoryBase.ExistsAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.ExistsAsync*
+  name: ExistsAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_ExistsAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.ExistsAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.ExistsAsync
+  nameWithType: InferenceRequestRepositoryBase.ExistsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync(System.Guid,System.Threading.CancellationToken)
+  name: GetInferenceRequestAsync(Guid, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetInferenceRequestAsync_System_Guid_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync(System.Guid,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync(System.Guid, System.Threading.CancellationToken)
+  nameWithType: InferenceRequestRepositoryBase.GetInferenceRequestAsync(Guid, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync(System.String,System.Threading.CancellationToken)
+  name: GetInferenceRequestAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetInferenceRequestAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: InferenceRequestRepositoryBase.GetInferenceRequestAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync*
+  name: GetInferenceRequestAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetInferenceRequestAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync
+  nameWithType: InferenceRequestRepositoryBase.GetInferenceRequestAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  name: GetStatusAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetStatusAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetStatusAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetStatusAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: InferenceRequestRepositoryBase.GetStatusAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetStatusAsync*
+  name: GetStatusAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetStatusAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetStatusAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetStatusAsync
+  nameWithType: InferenceRequestRepositoryBase.GetStatusAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.SaveAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,System.Threading.CancellationToken)
+  name: SaveAsync(InferenceRequest, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_SaveAsync_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.SaveAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.SaveAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest, System.Threading.CancellationToken)
+  nameWithType: InferenceRequestRepositoryBase.SaveAsync(InferenceRequest, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.SaveAsync*
+  name: SaveAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_SaveAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.SaveAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.SaveAsync
+  nameWithType: InferenceRequestRepositoryBase.SaveAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.TakeAsync(System.Threading.CancellationToken)
+  name: TakeAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_TakeAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.TakeAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.TakeAsync(System.Threading.CancellationToken)
+  nameWithType: InferenceRequestRepositoryBase.TakeAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.TakeAsync*
+  name: TakeAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_TakeAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.TakeAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.TakeAsync
+  nameWithType: InferenceRequestRepositoryBase.TakeAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus,System.Threading.CancellationToken)
+  name: UpdateAsync(InferenceRequest, InferenceRequestStatus, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestStatus_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest, Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus, System.Threading.CancellationToken)
+  nameWithType: InferenceRequestRepositoryBase.UpdateAsync(InferenceRequest, InferenceRequestStatus, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.UpdateAsync*
+  name: UpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_UpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.UpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.UpdateAsync
+  nameWithType: InferenceRequestRepositoryBase.UpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository
+  name: IPayloadRepository
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository
+  nameWithType: IPayloadRepository
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload,System.Threading.CancellationToken)
+  name: AddAsync(Payload, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_AddAsync_Monai_Deploy_InformaticsGateway_Api_Storage_Payload_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload, System.Threading.CancellationToken)
+  nameWithType: IPayloadRepository.AddAsync(Payload, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.AddAsync*
+  name: AddAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_AddAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.AddAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.AddAsync
+  nameWithType: IPayloadRepository.AddAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.GetPayloadsInStateAsync(System.Threading.CancellationToken,Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState[])
+  name: GetPayloadsInStateAsync(CancellationToken, Payload.PayloadState[])
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_GetPayloadsInStateAsync_System_Threading_CancellationToken_Monai_Deploy_InformaticsGateway_Api_Storage_Payload_PayloadState___
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.GetPayloadsInStateAsync(System.Threading.CancellationToken,Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState[])
+  name.vb: GetPayloadsInStateAsync(CancellationToken, Payload.PayloadState())
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.GetPayloadsInStateAsync(System.Threading.CancellationToken, Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState[])
+  fullName.vb: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.GetPayloadsInStateAsync(System.Threading.CancellationToken, Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState())
+  nameWithType: IPayloadRepository.GetPayloadsInStateAsync(CancellationToken, Payload.PayloadState[])
+  nameWithType.vb: IPayloadRepository.GetPayloadsInStateAsync(CancellationToken, Payload.PayloadState())
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.GetPayloadsInStateAsync*
+  name: GetPayloadsInStateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_GetPayloadsInStateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.GetPayloadsInStateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.GetPayloadsInStateAsync
+  nameWithType: IPayloadRepository.GetPayloadsInStateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload,System.Threading.CancellationToken)
+  name: RemoveAsync(Payload, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_RemoveAsync_Monai_Deploy_InformaticsGateway_Api_Storage_Payload_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload, System.Threading.CancellationToken)
+  nameWithType: IPayloadRepository.RemoveAsync(Payload, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemoveAsync*
+  name: RemoveAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_RemoveAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemoveAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemoveAsync
+  nameWithType: IPayloadRepository.RemoveAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemovePendingPayloadsAsync(System.Threading.CancellationToken)
+  name: RemovePendingPayloadsAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_RemovePendingPayloadsAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemovePendingPayloadsAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemovePendingPayloadsAsync(System.Threading.CancellationToken)
+  nameWithType: IPayloadRepository.RemovePendingPayloadsAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemovePendingPayloadsAsync*
+  name: RemovePendingPayloadsAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_RemovePendingPayloadsAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemovePendingPayloadsAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.RemovePendingPayloadsAsync
+  nameWithType: IPayloadRepository.RemovePendingPayloadsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.ToListAsync(System.Threading.CancellationToken)
+  name: ToListAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_ToListAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.ToListAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.ToListAsync(System.Threading.CancellationToken)
+  nameWithType: IPayloadRepository.ToListAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.ToListAsync*
+  name: ToListAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_ToListAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.ToListAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.ToListAsync
+  nameWithType: IPayloadRepository.ToListAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload,System.Threading.CancellationToken)
+  name: UpdateAsync(Payload, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_Storage_Payload_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.Payload, System.Threading.CancellationToken)
+  nameWithType: IPayloadRepository.UpdateAsync(Payload, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.UpdateAsync*
+  name: UpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IPayloadRepository_UpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.UpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IPayloadRepository.UpdateAsync
+  nameWithType: IPayloadRepository.UpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository
+  name: ISourceApplicationEntityRepository
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository
+  nameWithType: ISourceApplicationEntityRepository
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity,System.Threading.CancellationToken)
+  name: AddAsync(SourceApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_AddAsync_Monai_Deploy_InformaticsGateway_Api_SourceApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: ISourceApplicationEntityRepository.AddAsync(SourceApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.AddAsync*
+  name: AddAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_AddAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.AddAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.AddAsync
+  nameWithType: ISourceApplicationEntityRepository.AddAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression{System.Func{Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity,System.Boolean}},System.Threading.CancellationToken)
+  name: ContainsAsync(Expression<Func<SourceApplicationEntity, Boolean>>, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_ContainsAsync_System_Linq_Expressions_Expression_System_Func_Monai_Deploy_InformaticsGateway_Api_SourceApplicationEntity_System_Boolean___System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression{System.Func{Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity,System.Boolean}},System.Threading.CancellationToken)
+  name.vb: ContainsAsync(Expression(Of Func(Of SourceApplicationEntity, Boolean)), CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression<System.Func<Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity, System.Boolean>>, System.Threading.CancellationToken)
+  fullName.vb: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync(System.Linq.Expressions.Expression(Of System.Func(Of Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity, System.Boolean)), System.Threading.CancellationToken)
+  nameWithType: ISourceApplicationEntityRepository.ContainsAsync(Expression<Func<SourceApplicationEntity, Boolean>>, CancellationToken)
+  nameWithType.vb: ISourceApplicationEntityRepository.ContainsAsync(Expression(Of Func(Of SourceApplicationEntity, Boolean)), CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync*
+  name: ContainsAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_ContainsAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync
+  nameWithType: ISourceApplicationEntityRepository.ContainsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  name: FindByNameAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_FindByNameAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByNameAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByNameAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: ISourceApplicationEntityRepository.FindByNameAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByNameAsync*
+  name: FindByNameAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_FindByNameAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByNameAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByNameAsync
+  nameWithType: ISourceApplicationEntityRepository.FindByNameAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity,System.Threading.CancellationToken)
+  name: RemoveAsync(SourceApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_RemoveAsync_Monai_Deploy_InformaticsGateway_Api_SourceApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.RemoveAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: ISourceApplicationEntityRepository.RemoveAsync(SourceApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.RemoveAsync*
+  name: RemoveAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_RemoveAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.RemoveAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.RemoveAsync
+  nameWithType: ISourceApplicationEntityRepository.RemoveAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  name: ToListAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_ToListAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ToListAsync(System.Threading.CancellationToken)
+  nameWithType: ISourceApplicationEntityRepository.ToListAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ToListAsync*
+  name: ToListAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_ToListAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ToListAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ToListAsync
+  nameWithType: ISourceApplicationEntityRepository.ToListAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity,System.Threading.CancellationToken)
+  name: UpdateAsync(SourceApplicationEntity, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_SourceApplicationEntity_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity, System.Threading.CancellationToken)
+  nameWithType: ISourceApplicationEntityRepository.UpdateAsync(SourceApplicationEntity, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.UpdateAsync*
+  name: UpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_UpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.UpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.UpdateAsync
+  nameWithType: ISourceApplicationEntityRepository.UpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository
+  name: IStorageMetadataRepository
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository
+  nameWithType: IStorageMetadataRepository
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  name: AddAsync(FileStorageMetadata, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_AddAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata, System.Threading.CancellationToken)
+  nameWithType: IStorageMetadataRepository.AddAsync(FileStorageMetadata, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddAsync*
+  name: AddAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_AddAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddAsync
+  nameWithType: IStorageMetadataRepository.AddAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddOrUpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  name: AddOrUpdateAsync(FileStorageMetadata, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_AddOrUpdateAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddOrUpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddOrUpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata, System.Threading.CancellationToken)
+  nameWithType: IStorageMetadataRepository.AddOrUpdateAsync(FileStorageMetadata, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddOrUpdateAsync*
+  name: AddOrUpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_AddOrUpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddOrUpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.AddOrUpdateAsync
+  nameWithType: IStorageMetadataRepository.AddOrUpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeleteAsync(System.String,System.String,System.Threading.CancellationToken)
+  name: DeleteAsync(String, String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_DeleteAsync_System_String_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeleteAsync(System.String,System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeleteAsync(System.String, System.String, System.Threading.CancellationToken)
+  nameWithType: IStorageMetadataRepository.DeleteAsync(String, String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeleteAsync*
+  name: DeleteAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_DeleteAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeleteAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeleteAsync
+  nameWithType: IStorageMetadataRepository.DeleteAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeletePendingUploadsAsync(System.Threading.CancellationToken)
+  name: DeletePendingUploadsAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_DeletePendingUploadsAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeletePendingUploadsAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeletePendingUploadsAsync(System.Threading.CancellationToken)
+  nameWithType: IStorageMetadataRepository.DeletePendingUploadsAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeletePendingUploadsAsync*
+  name: DeletePendingUploadsAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_DeletePendingUploadsAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeletePendingUploadsAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.DeletePendingUploadsAsync
+  nameWithType: IStorageMetadataRepository.DeletePendingUploadsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync(System.String,System.String,System.Threading.CancellationToken)
+  name: GetFileStorageMetdadataAsync(String, String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_GetFileStorageMetdadataAsync_System_String_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync(System.String,System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync(System.String, System.String, System.Threading.CancellationToken)
+  nameWithType: IStorageMetadataRepository.GetFileStorageMetdadataAsync(String, String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync(System.String,System.Threading.CancellationToken)
+  name: GetFileStorageMetdadataAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_GetFileStorageMetdadataAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: IStorageMetadataRepository.GetFileStorageMetdadataAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync*
+  name: GetFileStorageMetdadataAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_GetFileStorageMetdadataAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.GetFileStorageMetdadataAsync
+  nameWithType: IStorageMetadataRepository.GetFileStorageMetdadataAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  name: UpdateAsync(FileStorageMetadata, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata, System.Threading.CancellationToken)
+  nameWithType: IStorageMetadataRepository.UpdateAsync(FileStorageMetadata, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.UpdateAsync*
+  name: UpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_IStorageMetadataRepository_UpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.UpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.UpdateAsync
+  nameWithType: IStorageMetadataRepository.UpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase
+  name: StorageMetadataRepositoryBase
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase
+  nameWithType: StorageMetadataRepositoryBase
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.#ctor(Microsoft.Extensions.Logging.ILogger)
+  name: StorageMetadataRepositoryBase(ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase__ctor_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.#ctor(Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.StorageMetadataRepositoryBase(Microsoft.Extensions.Logging.ILogger)
+  nameWithType: StorageMetadataRepositoryBase.StorageMetadataRepositoryBase(ILogger)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.#ctor*
+  name: StorageMetadataRepositoryBase
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase__ctor_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.#ctor
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.StorageMetadataRepositoryBase
+  nameWithType: StorageMetadataRepositoryBase.StorageMetadataRepositoryBase
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  name: AddAsync(FileStorageMetadata, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.AddAsync(FileStorageMetadata, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsync*
+  name: AddAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsync
+  nameWithType: StorageMetadataRepositoryBase.AddAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsyncInternal(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)
+  name: AddAsyncInternal(StorageMetadataWrapper, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddAsyncInternal_Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsyncInternal(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsyncInternal(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.AddAsyncInternal(StorageMetadataWrapper, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsyncInternal*
+  name: AddAsyncInternal
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddAsyncInternal_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsyncInternal
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsyncInternal
+  nameWithType: StorageMetadataRepositoryBase.AddAsyncInternal
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddOrUpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  name: AddOrUpdateAsync(FileStorageMetadata, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddOrUpdateAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddOrUpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddOrUpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.AddOrUpdateAsync(FileStorageMetadata, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddOrUpdateAsync*
+  name: AddOrUpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddOrUpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddOrUpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddOrUpdateAsync
+  nameWithType: StorageMetadataRepositoryBase.AddOrUpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteAsync(System.String,System.String,System.Threading.CancellationToken)
+  name: DeleteAsync(String, String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeleteAsync_System_String_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteAsync(System.String,System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteAsync(System.String, System.String, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.DeleteAsync(String, String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteAsync*
+  name: DeleteAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeleteAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteAsync
+  nameWithType: StorageMetadataRepositoryBase.DeleteAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteInternalAsync(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)
+  name: DeleteInternalAsync(StorageMetadataWrapper, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeleteInternalAsync_Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteInternalAsync(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteInternalAsync(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.DeleteInternalAsync(StorageMetadataWrapper, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteInternalAsync*
+  name: DeleteInternalAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeleteInternalAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteInternalAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteInternalAsync
+  nameWithType: StorageMetadataRepositoryBase.DeleteInternalAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeletePendingUploadsAsync(System.Threading.CancellationToken)
+  name: DeletePendingUploadsAsync(CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeletePendingUploadsAsync_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeletePendingUploadsAsync(System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeletePendingUploadsAsync(System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.DeletePendingUploadsAsync(CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeletePendingUploadsAsync*
+  name: DeletePendingUploadsAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeletePendingUploadsAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeletePendingUploadsAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeletePendingUploadsAsync
+  nameWithType: StorageMetadataRepositoryBase.DeletePendingUploadsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.FindByIds(System.String,System.String,System.Threading.CancellationToken)
+  name: FindByIds(String, String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_FindByIds_System_String_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.FindByIds(System.String,System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.FindByIds(System.String, System.String, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.FindByIds(String, String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.FindByIds*
+  name: FindByIds
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_FindByIds_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.FindByIds
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.FindByIds
+  nameWithType: StorageMetadataRepositoryBase.FindByIds
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(System.String,System.String,System.Threading.CancellationToken)
+  name: GetFileStorageMetdadataAsync(String, String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_GetFileStorageMetdadataAsync_System_String_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(System.String,System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(System.String, System.String, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(String, String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(System.String,System.Threading.CancellationToken)
+  name: GetFileStorageMetdadataAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_GetFileStorageMetdadataAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync*
+  name: GetFileStorageMetdadataAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_GetFileStorageMetdadataAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync
+  nameWithType: StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  name: UpdateAsync(FileStorageMetadata, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.UpdateAsync(FileStorageMetadata, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateAsync*
+  name: UpdateAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_UpdateAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateAsync
+  nameWithType: StorageMetadataRepositoryBase.UpdateAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)
+  name: UpdateInternal(StorageMetadataWrapper, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_UpdateInternal_Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper, System.Threading.CancellationToken)
+  nameWithType: StorageMetadataRepositoryBase.UpdateInternal(StorageMetadataWrapper, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal*
+  name: UpdateInternal
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_UpdateInternal_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal
+  nameWithType: StorageMetadataRepositoryBase.UpdateInternal
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper
+  name: StorageMetadataWrapper
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper
+  nameWithType: StorageMetadataWrapper
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.#ctor(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)
+  name: StorageMetadataWrapper(FileStorageMetadata)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper__ctor_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.#ctor(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.StorageMetadataWrapper(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)
+  nameWithType: StorageMetadataWrapper.StorageMetadataWrapper(FileStorageMetadata)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.#ctor*
+  name: StorageMetadataWrapper
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper__ctor_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.#ctor
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.StorageMetadataWrapper
+  nameWithType: StorageMetadataWrapper.StorageMetadataWrapper
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.CorrelationId
+  name: CorrelationId
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_CorrelationId
+  commentId: P:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.CorrelationId
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.CorrelationId
+  nameWithType: StorageMetadataWrapper.CorrelationId
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.CorrelationId*
+  name: CorrelationId
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_CorrelationId_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.CorrelationId
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.CorrelationId
+  nameWithType: StorageMetadataWrapper.CorrelationId
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.GetObject
+  name: GetObject()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_GetObject
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.GetObject
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.GetObject()
+  nameWithType: StorageMetadataWrapper.GetObject()
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.GetObject*
+  name: GetObject
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_GetObject_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.GetObject
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.GetObject
+  nameWithType: StorageMetadataWrapper.GetObject
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Identity
+  name: Identity
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_Identity
+  commentId: P:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Identity
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Identity
+  nameWithType: StorageMetadataWrapper.Identity
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Identity*
+  name: Identity
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_Identity_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Identity
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Identity
+  nameWithType: StorageMetadataWrapper.Identity
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.IsUploaded
+  name: IsUploaded
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_IsUploaded
+  commentId: P:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.IsUploaded
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.IsUploaded
+  nameWithType: StorageMetadataWrapper.IsUploaded
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.IsUploaded*
+  name: IsUploaded
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_IsUploaded_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.IsUploaded
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.IsUploaded
+  nameWithType: StorageMetadataWrapper.IsUploaded
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.ToString
+  name: ToString()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_ToString
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.ToString()
+  nameWithType: StorageMetadataWrapper.ToString()
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.ToString*
+  name: ToString
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_ToString_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.ToString
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.ToString
+  nameWithType: StorageMetadataWrapper.ToString
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.TypeName
+  name: TypeName
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_TypeName
+  commentId: P:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.TypeName
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.TypeName
+  nameWithType: StorageMetadataWrapper.TypeName
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.TypeName*
+  name: TypeName
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_TypeName_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.TypeName
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.TypeName
+  nameWithType: StorageMetadataWrapper.TypeName
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Update(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)
+  name: Update(FileStorageMetadata)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_Update_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Update(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Update(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)
+  nameWithType: StorageMetadataWrapper.Update(FileStorageMetadata)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Update*
+  name: Update
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_Update_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Update
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Update
+  nameWithType: StorageMetadataWrapper.Update
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Value
+  name: Value
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_Value
+  commentId: P:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Value
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Value
+  nameWithType: StorageMetadataWrapper.Value
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Value*
+  name: Value
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html#Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_Value_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Value
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.Value
+  nameWithType: StorageMetadataWrapper.Value
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager
+  name: DatabaseManager
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.DatabaseManager
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager
+  nameWithType: DatabaseManager
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection)
+  name: ConfigureDatabase(IServiceCollection, IConfigurationSection)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabase_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfigurationSection_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection)
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection, Microsoft.Extensions.Configuration.IConfigurationSection)
+  nameWithType: DatabaseManager.ConfigureDatabase(IServiceCollection, IConfigurationSection)
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase*
+  name: ConfigureDatabase
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabase_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase
+  nameWithType: DatabaseManager.ConfigureDatabase
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.DbType_MongoDb
+  name: DbType_MongoDb
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_DbType_MongoDb
+  commentId: F:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.DbType_MongoDb
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.DbType_MongoDb
+  nameWithType: DatabaseManager.DbType_MongoDb
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.DbType_Sqlite
+  name: DbType_Sqlite
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_DbType_Sqlite
+  commentId: F:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.DbType_Sqlite
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.DbType_Sqlite
+  nameWithType: DatabaseManager.DbType_Sqlite
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager
+  name: DatabaseMigrationManager
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager
+  nameWithType: DatabaseMigrationManager
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.MigrateDatabase(Microsoft.Extensions.Hosting.IHost)
+  name: MigrateDatabase(IHost)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseMigrationManager_MigrateDatabase_Microsoft_Extensions_Hosting_IHost_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.MigrateDatabase(Microsoft.Extensions.Hosting.IHost)
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.MigrateDatabase(Microsoft.Extensions.Hosting.IHost)
+  nameWithType: DatabaseMigrationManager.MigrateDatabase(IHost)
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.MigrateDatabase*
+  name: MigrateDatabase
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseMigrationManager_MigrateDatabase_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.MigrateDatabase
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseMigrationManager.MigrateDatabase
+  nameWithType: DatabaseMigrationManager.MigrateDatabase
 - uid: Monai.Deploy.InformaticsGateway.DicomWeb.Client
   name: Monai.Deploy.InformaticsGateway.DicomWeb.Client
   href: api/dotnet/Monai.Deploy.InformaticsGateway.DicomWeb.Client.html

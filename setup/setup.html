@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Setup | MONAI Deploy Informatics Gateway v0.3.3 </title>
+    <title>Setup | MONAI Deploy Informatics Gateway v0.3.4 </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Setup | MONAI Deploy Informatics Gateway v0.3.3 ">
+    <meta name="title" content="Setup | MONAI Deploy Informatics Gateway v0.3.4 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -151,6 +151,39 @@ mig-cli.exe config endpoint http://localhost:5000 #skip if running locally
 <p>To see available commands, simply execute <code>mig-cli</code> or <code>mig-cli.exe</code>.
 Refer to <a href="cli.html">CLI</a> for complete reference.</p>
 </div>
+<h2 id="database-configuration">Database Configuration</h2>
+<p>The Informatics Gateway supports the following database systems:</p>
+<ul>
+<li>SQLite (default)</li>
+<li>MongoDB</li>
+</ul>
+<h3 id="sqlite-default">SQLite (default)</h3>
+<p>SQLite is a lite weight, full-featured SQL database engine and is the default database engine used by the Informatics Gateway.
+With SQLite, the Informatics Gateway works out of the box without any external database service dependencies or configuration.</p>
+<p>The default configuration maps the database file <code>mig.db</code> in the <code>/database</code> directory.</p>
+<pre><code class="lang-json">{
+  &quot;ConnectionStrings&quot;: {
+    &quot;Type&quot;: &quot;sqlite&quot;,
+    &quot;InformaticsGatewayDatabase&quot;: &quot;Data Source=/database/mig.db&quot;
+  }
+}
+</code></pre>
+<h3 id="mongodb">MongoDB</h3>
+<p>For enterprise installations, <a href="https://www.mongodb.com/">MongoDB</a> is the recommended database solution. To switch from SQLite
+to MongoDB, edit the <code>appsettings.json</code> file, and change the <code>ConnectionStrings</code> section to the following with the correct
+username, password, IP address/hostname, and port.</p>
+<pre><code class="lang-json">{
+  &quot;ConnectionStrings&quot;: {
+    &quot;Type&quot;: &quot;mongodb&quot;,
+    &quot;InformaticsGatewayDatabase&quot;: &quot;mongodb://username:password@IP:port&quot;,
+    &quot;DatabaseName&quot;: &quot;InformaticsGateway&quot;
+  }
+}
+</code></pre>
+<h2 id="other-database-systems">Other Database Systems</h2>
+<p>Extending the Informatics Gateway to support other database systems can be done with a few steps.</p>
+<p>If the database system is supported by <a href="https://learn.microsoft.com/en-us/ef/core/providers/">Microsoft Entity Framework</a>, then it can be added to the existing <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/tree/develop/src/Database/EntityFramework">project</a>.</p>
+<p>For other database systems that are not listed in the link above, simply implement the <a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.html">Repository APIs</a>, update the <a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html">Database Manager</a> to support the new database type and optionally, implement the <a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.html">IDabaseMigrationManager</a>.</p>
 <h2 id="storage-consideration--configuration">Storage Consideration &amp; Configuration</h2>
 <p>The Informatics Gateway operates on two storage locations. In the first location, the incoming data for data grouping is temporarily stored. In the second location, the Informatics Gateway uploads grouped datasets to final storage shared by other MONAI Deploy sub-systems.</p>
 <h3 id="temporary-storage-of-incoming-dataset">Temporary Storage of Incoming Dataset</h3>
