@@ -11,6 +11,14 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+<<<<<<<< HEAD:docker-compose/configs/pipeline.yml
 - pipeline.id: monei-deploy
   path.config: "/usr/share/logstash/pipeline/monai-deploy.conf"
   queue.type: persisted
+========
+
+general:
+  vulnerabilities:
+    - CVE-2018-8292
+    - CVE-1999-1278
+>>>>>>>> main:.github/containerscan/allowedlist.yaml
