@@ -95,6 +95,55 @@ The second command passes the endpoint for the Informatics Gateway RESTful API t
 > To see available commands, simply execute `mig-cli` or `mig-cli.exe`.
 > Refer to [CLI](./cli.md) for complete reference.
 
+
+## Database Configuration
+
+The Informatics Gateway supports the following database systems:
+
+- SQLite (default)
+- MongoDB
+
+### SQLite (default)
+
+SQLite is a lite weight, full-featured SQL database engine and is the default database engine used by the Informatics Gateway.
+With SQLite, the Informatics Gateway works out of the box without any external database service dependencies or configuration.
+
+The default configuration maps the database file `mig.db` in the `/database` directory.
+
+```json
+{
+  "ConnectionStrings": {
+    "Type": "sqlite",
+    "InformaticsGatewayDatabase": "Data Source=/database/mig.db"
+  }
+}
+```
+
+### MongoDB
+
+For enterprise installations, [MongoDB](https://www.mongodb.com/) is the recommended database solution. To switch from SQLite
+to MongoDB, edit the `appsettings.json` file, and change the `ConnectionStrings` section to the following with the correct
+username, password, IP address/hostname, and port.
+
+```json
+{
+  "ConnectionStrings": {
+    "Type": "mongodb",
+    "InformaticsGatewayDatabase": "mongodb://username:password@IP:port",
+    "DatabaseName": "InformaticsGateway"
+  }
+}
+```
+
+## Other Database Systems
+
+Extending the Informatics Gateway to support other database systems can be done with a few steps.
+
+If the database system is supported by [Microsoft Entity Framework](https://learn.microsoft.com/en-us/ef/core/providers/), then it can be added to the existing [project](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/tree/develop/src/Database/EntityFramework).
+
+For other database systems that are not listed in the link above, simply implement the [Repository APIs](xref:Monai.Deploy.InformaticsGateway.Database.Api.Repositories), update the [Database Manager](xref:Monai.Deploy.InformaticsGateway.Database.DatabaseManager) to support the new database type and optionally, implement the [IDabaseMigrationManager](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager).
+
+
 ## Storage Consideration & Configuration
 
 The Informatics Gateway operates on two storage locations. In the first location, the incoming data for data grouping is temporarily stored. In the second location, the Informatics Gateway uploads grouped datasets to final storage shared by other MONAI Deploy sub-systems.

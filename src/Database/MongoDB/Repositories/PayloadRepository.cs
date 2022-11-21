@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System.Linq.Expressions;
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -86,15 +85,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             {
                 await _collection.InsertOneAsync(item, cancellationToken: cancellationToken).ConfigureAwait(false);
                 return item;
-            }).ConfigureAwait(false);
-        }
-
-        public async Task<bool> ContainsAsync(Expression<Func<Payload, bool>> predicate, CancellationToken cancellationToken = default)
-        {
-            return await _retryPolicy.ExecuteAsync(async () =>
-            {
-                var result = await _collection.FindAsync(predicate, cancellationToken: cancellationToken).ConfigureAwait(false);
-                return await result.AnyAsync(cancellationToken).ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 

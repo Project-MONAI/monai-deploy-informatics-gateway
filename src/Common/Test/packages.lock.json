@@ -1162,10 +1162,10 @@
       "monai.deploy.informaticsgateway.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.0.1",
-          "System.IO.Abstractions": "17.2.3",
-          "System.Threading.Tasks.Dataflow": "6.0.0",
-          "fo-dicom": "5.0.3"
+          "Ardalis.GuardClauses": "[4.0.1, )",
+          "System.IO.Abstractions": "[17.2.3, )",
+          "System.Threading.Tasks.Dataflow": "[6.0.0, )",
+          "fo-dicom": "[5.0.3, )"
         }
       }
     }
