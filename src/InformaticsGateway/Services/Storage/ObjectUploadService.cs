@@ -121,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            var task = Task.Run(async () =>
+            var task = Task.Run(() =>
             {
                 BackgroundProcessing(cancellationToken);
             }, CancellationToken.None);
