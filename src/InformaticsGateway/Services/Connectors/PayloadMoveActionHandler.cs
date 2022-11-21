@@ -15,20 +15,22 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Ardalis.GuardClauses;
+using DotNext.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.Storage.API;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
@@ -62,9 +64,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public async Task MoveFilesAsync(Payload payload, ActionBlock<Payload> moveQueue, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload, nameof(payload));
-            Guard.Against.Null(moveQueue, nameof(moveQueue));
-            Guard.Against.Null(notificationQueue, nameof(notificationQueue));
+            Guard.Against.Null(payload);
+            Guard.Against.Null(moveQueue);
+            Guard.Against.Null(notificationQueue);
 
             if (payload.State != Payload.PayloadState.Move)
             {
@@ -75,12 +77,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             try
             {
                 await Move(payload, cancellationToken).ConfigureAwait(false);
-                await NotifyIfCompleted(payload, notificationQueue).ConfigureAwait(false);
+                await NotifyIfCompleted(payload, notificationQueue, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 payload.RetryCount++;
-                var action = await UpdatePayloadState(payload, ex).ConfigureAwait(false);
+                var action = await UpdatePayloadState(payload, ex, cancellationToken).ConfigureAwait(false);
                 if (action == PayloadAction.Updated)
                 {
                     await moveQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false);
@@ -93,10 +95,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task NotifyIfCompleted(Payload payload, ActionBlock<Payload> notificationQueue)
+        private async Task NotifyIfCompleted(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload, nameof(payload));
-            Guard.Against.Null(notificationQueue, nameof(notificationQueue));
+            Guard.Against.Null(payload);
+            Guard.Against.Null(notificationQueue);
 
             if (payload.IsMoveCompleted())
             {
@@ -104,11 +106,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 payload.ResetRetry();
 
                 var scope = _serviceScopeFactory.CreateScope();
-                var repository = scope.ServiceProvider.GetService<IInformaticsGatewayRepository<Payload>>() ?? throw new ServiceNotFoundException(nameof(IInformaticsGatewayRepository<Payload>));
-                await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
+                await repository.UpdateAsync(payload, cancellationToken).ConfigureAwait(false);
+                _logger.PayloadSaved(payload.PayloadId);
 
                 notificationQueue.Post(payload);
-                _logger.PayloadReadyToBePublished(payload.Id);
+                _logger.PayloadReadyToBePublished(payload.PayloadId);
             }
             else // we should never hit this else block.
             {
@@ -118,9 +121,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task Move(Payload payload, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(payload);
 
-            _logger.MovingFIlesInPayload(payload.Id, _options.Value.Storage.StorageServiceBucketName);
+            _logger.MovingFIlesInPayload(payload.PayloadId, _options.Value.Storage.StorageServiceBucketName);
 
             var options = new ParallelOptions
             {
@@ -128,66 +131,130 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 MaxDegreeOfParallelism = _options.Value.Storage.ConcurrentUploads
             };
 
+            var exceptions = new List<Exception>();
             await Parallel.ForEachAsync(payload.Files, options, async (file, cancellationToke) =>
             {
-                switch (file)
+                try
                 {
-                    case DicomFileStorageMetadata dicom:
-                        if (!string.IsNullOrWhiteSpace(dicom.JsonFile.TemporaryPath))
-                        {
-                            await MoveFile(payload.Id, dicom.Id, dicom.JsonFile, cancellationToken).ConfigureAwait(false);
-                        }
-                        break;
-                }
+                    switch (file)
+                    {
+                        case DicomFileStorageMetadata dicom:
+                            if (!string.IsNullOrWhiteSpace(dicom.JsonFile.TemporaryPath))
+                            {
+                                await MoveFile(payload.PayloadId, dicom.Id, dicom.JsonFile, cancellationToken).ConfigureAwait(false);
+                            }
+                            break;
+                    }
 
-                await MoveFile(payload.Id, file.Id, file.File, cancellationToken).ConfigureAwait(false);
+                    await MoveFile(payload.PayloadId, file.Id, file.File, cancellationToken).ConfigureAwait(false);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add(ex);
+                }
             }).ConfigureAwait(false);
+
+            if (exceptions.Any())
+            {
+                throw new AggregateException(exceptions);
+            }
         }
 
         private async Task MoveFile(Guid payloadId, string identity, StorageObjectMetadata file, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(identity, nameof(identity));
-            Guard.Against.Null(file, nameof(file));
+            Guard.Against.NullOrWhiteSpace(identity);
+            Guard.Against.Null(file);
 
-            _logger.MovingFileToPayloadDirectory(payloadId, identity);
-            await _storageService.CopyObjectAsync(
-                file.TemporaryBucketName,
-                file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath),
-                _options.Value.Storage.StorageServiceBucketName,
-                file.GetPayloadPath(payloadId),
-                cancellationToken).ConfigureAwait(false);
+            if (file.IsMoveCompleted)
+            {
+                _logger.AlreadyMoved(payloadId, file.UploadPath);
+                return;
+            }
 
-            _logger.DeletingFileFromTemporaryBbucket(file.TemporaryBucketName, identity, file.TemporaryPath);
-            await _storageService.RemoveObjectAsync(file.TemporaryBucketName, file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), cancellationToken);
+            _logger.MovingFileToPayloadDirectory(payloadId, file.UploadPath);
 
-            file.SetMoved(_options.Value.Storage.StorageServiceBucketName);
+            try
+            {
+                await _storageService.CopyObjectAsync(
+                    file.TemporaryBucketName,
+                    file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath),
+                    _options.Value.Storage.StorageServiceBucketName,
+                    file.GetPayloadPath(payloadId),
+                    cancellationToken).ConfigureAwait(false);
+
+                var results = await _storageService.VerifyObjectExistsAsync(_options.Value.Storage.StorageServiceBucketName, new System.Collections.Generic.KeyValuePair<string, string>(file.UploadPath, file.GetPayloadPath(payloadId))).ConfigureAwait(false);
+
+                if (!results.Key.Equals(file.UploadPath, StringComparison.OrdinalIgnoreCase))
+                {
+                    _logger.FileMovedVerificationFailure(payloadId, file.UploadPath);
+                    throw new PayloadNotifyException(PayloadNotifyException.FailureReason.MoveFailure);
+                }
+            }
+            catch (Exception ex)
+            {
+                await LogFilesInMinIo(file.TemporaryBucketName, cancellationToken).ConfigureAwait(false);
+                throw new FileMoveException(file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), file.UploadPath, ex);
+            }
+
+            try
+            {
+                _logger.DeletingFileFromTemporaryBbucket(file.TemporaryBucketName, identity, file.TemporaryPath);
+                await _storageService.RemoveObjectAsync(file.TemporaryBucketName, file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                _logger.ErrorDeletingFileAfterMoveComplete(file.TemporaryBucketName, identity, file.TemporaryPath);
+            }
+            finally
+            {
+                file.SetMoved(_options.Value.Storage.StorageServiceBucketName);
+            }
         }
 
-        private async Task<PayloadAction> UpdatePayloadState(Payload payload, Exception ex)
+        private async Task LogFilesInMinIo(string bucketName, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(payload, nameof(payload));
+            try
+            {
+                var listingResults = await _storageService.ListObjectsAsync(bucketName, recursive: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+                _logger.FilesFounddOnStorageService(bucketName, listingResults.Count);
+                foreach (var item in listingResults)
+                {
+                    _logger.FileFounddOnStorageService(bucketName, item.FilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorListingFilesOnStorageService(ex);
+            }
+        }
+
+        private async Task<PayloadAction> UpdatePayloadState(Payload payload, Exception ex, CancellationToken cancellationToken = default)
+        {
+            Guard.Against.Null(payload);
 
             var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IInformaticsGatewayRepository<Payload>>() ?? throw new ServiceNotFoundException(nameof(IInformaticsGatewayRepository<Payload>));
+            var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
 
             try
             {
                 if (payload.RetryCount > _options.Value.Storage.Retries.DelaysMilliseconds.Length)
                 {
-                    _logger.MoveFailureStopRetry(payload.Id, ex);
-                    await payload.DeletePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    _logger.MoveFailureStopRetry(payload.PayloadId, ex);
+                    await repository.RemoveAsync(payload, cancellationToken).ConfigureAwait(false);
+                    _logger.PayloadDeleted(payload.PayloadId);
                     return PayloadAction.Deleted;
                 }
                 else
                 {
-                    _logger.MoveFailureRetryLater(payload.Id, payload.State, payload.RetryCount, ex);
-                    await payload.UpdatePayload(_options.Value.Database.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    _logger.MoveFailureRetryLater(payload.PayloadId, payload.State, payload.RetryCount, ex);
+                    await repository.UpdateAsync(payload, cancellationToken).ConfigureAwait(false);
+                    _logger.PayloadSaved(payload.PayloadId);
                     return PayloadAction.Updated;
                 }
             }
             catch (Exception iex)
             {
-                _logger.ErrorUpdatingPayload(payload.Id, iex);
+                _logger.ErrorUpdatingPayload(payload.PayloadId, iex);
                 return PayloadAction.Updated;
             }
         }

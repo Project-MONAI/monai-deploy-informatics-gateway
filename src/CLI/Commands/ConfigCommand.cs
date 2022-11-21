@@ -84,7 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private int ShowConfigurationHandler(IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
             var logger = CreateLogger<ConfigCommand>(host);
@@ -114,8 +114,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private static int ConfigUpdateHandler(IHost host, Action<IConfigurationService> updater)
         {
-            Guard.Against.Null(host, nameof(host));
-            Guard.Against.Null(updater, nameof(updater));
+            Guard.Against.Null(host);
+            Guard.Against.Null(updater);
 
             var logger = CreateLogger<ConfigCommand>(host);
             var config = host.Services.GetRequiredService<IConfigurationService>();
@@ -143,7 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> InitHandlerAsync(IHost host, bool verbose, bool yes, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(host);
 
             var logger = CreateLogger<ConfigCommand>(host);
             var configService = host.Services.GetRequiredService<IConfigurationService>();

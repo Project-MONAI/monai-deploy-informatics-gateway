@@ -26,8 +26,8 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -37,13 +37,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     public class MonaiAeTitleController : ControllerBase
     {
         private readonly ILogger<MonaiAeTitleController> _logger;
-        private readonly IInformaticsGatewayRepository<MonaiApplicationEntity> _repository;
+        private readonly IMonaiApplicationEntityRepository _repository;
         private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
 
         public MonaiAeTitleController(
             ILogger<MonaiAeTitleController> logger,
             IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
-            IInformaticsGatewayRepository<MonaiApplicationEntity> repository)
+            IMonaiApplicationEntityRepository repository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -58,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                return Ok(await _repository.ToListAsync().ConfigureAwait(false));
+                return Ok(await _repository.ToListAsync(HttpContext.RequestAborted).ConfigureAwait(false));
             }
             catch (Exception ex)
             {
@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var monaiApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+                var monaiApplicationEntity = await _repository.FindByNameAsync(name, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 if (monaiApplicationEntity is null)
                 {
@@ -104,12 +104,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                Validate(item);
+                await ValidateAsync(item).ConfigureAwait(false);
 
                 item.SetDefaultValues();
 
-                await _repository.AddAsync(item).ConfigureAwait(false);
-                await _repository.SaveChangesAsync().ConfigureAwait(false);
+                await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(item, ChangedEventType.Added));
                 _logger.MonaiApplicationEntityAdded(item.AeTitle);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
@@ -138,14 +137,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var monaiApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+                var monaiApplicationEntity = await _repository.FindByNameAsync(name, HttpContext.RequestAborted).ConfigureAwait(false);
                 if (monaiApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
-                _repository.Remove(monaiApplicationEntity);
-                await _repository.SaveChangesAsync().ConfigureAwait(false);
+                await _repository.RemoveAsync(monaiApplicationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(monaiApplicationEntity, ChangedEventType.Deleted));
                 _logger.MonaiApplicationEntityDeleted(name);
@@ -158,15 +156,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private void Validate(MonaiApplicationEntity item)
+        private async Task ValidateAsync(MonaiApplicationEntity item)
         {
-            Guard.Against.Null(item, nameof(item));
+            Guard.Against.Null(item);
 
-            if (_repository.Any(p => p.Name.Equals(item.Name)))
+            if (await _repository.ContainsAsync(p => p.Name.Equals(item.Name), HttpContext.RequestAborted).ConfigureAwait(false))
             {
                 throw new ObjectExistsException($"A MONAI Application Entity with the same name '{item.Name}' already exists.");
             }
-            if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle)))
+            if (await _repository.ContainsAsync(p => p.AeTitle.Equals(item.AeTitle), HttpContext.RequestAborted).ConfigureAwait(false))
             {
                 throw new ObjectExistsException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
             }

@@ -37,8 +37,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
         public async Task<IList<Stream>> GetStreams(HttpRequest request, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
-            Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
+            Guard.Against.Null(request);
+            Guard.Against.Null(mediaTypeHeaderValue);
 
             try
             {

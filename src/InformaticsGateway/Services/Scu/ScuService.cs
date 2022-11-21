@@ -30,9 +30,8 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Services.Scu;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Scp
+namespace Monai.Deploy.InformaticsGateway.Services.Scu
 {
     internal sealed class ScuService : IHostedService, IDisposable, IMonaiService
     {
@@ -48,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                           ILogger<ScuService> logger,
                           IOptions<InformaticsGatewayConfiguration> configuration)
         {
-            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(serviceScopeFactory);
 
             _scope = serviceScopeFactory.CreateScope();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -106,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private async Task<ScuWorkResponse> HandleCEchoRequest(ScuWorkRequest request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
+            Guard.Against.Null(request);
 
             var scuResponse = new ScuWorkResponse();
             var manualResetEvent = new ManualResetEventSlim();

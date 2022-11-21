@@ -17,6 +17,7 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("Monai.Deploy.InformaticsGateway.Test")]
+[assembly: InternalsVisibleTo("Monai.Deploy.InformaticsGateway.Integration.Test")]
 
 // ILogger<ApplicationEntityManager>
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

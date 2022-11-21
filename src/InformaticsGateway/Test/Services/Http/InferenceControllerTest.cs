@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Moq;
 using xRetry;
@@ -67,8 +68,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                         Instance = instance
                     };
                 });
+            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
+
             _controller = new InferenceController(_inferenceRequestRepository.Object, _logger.Object)
             {
+                ControllerContext = controllerContext,
                 ProblemDetailsFactory = _problemDetailsFactory.Object
             };
         }
@@ -138,7 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "NewInferenceRequest - shall return problem if same transactionId exits")]
         public void NewInferenceRequest_ShallReturnProblemIfSameTransactionIdExists()
         {
-            _inferenceRequestRepository.Setup(p => p.Exists(It.IsAny<string>())).Returns(true);
+            _inferenceRequestRepository.Setup(p => p.ExistsAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
             var input = new InferenceRequest
             {
@@ -191,7 +195,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         {
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
             _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
-            _inferenceRequestRepository.Setup(p => p.Add(It.IsAny<InferenceRequest>()))
+            _inferenceRequestRepository.Setup(p => p.AddAsync(It.IsAny<InferenceRequest>(), It.IsAny<CancellationToken>()))
                 .Throws(new Exception("error"));
 
             var input = new InferenceRequest
@@ -245,7 +249,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         {
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
             _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
-            _inferenceRequestRepository.Setup(p => p.Add(It.IsAny<InferenceRequest>()));
+            _inferenceRequestRepository.Setup(p => p.AddAsync(It.IsAny<InferenceRequest>(), It.IsAny<CancellationToken>()));
 
             var input = new InferenceRequest
             {
@@ -284,7 +288,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             var result = _controller.NewInferenceRequest(input);
 
-            _inferenceRequestRepository.Verify(p => p.Add(input), Times.Once());
+            _inferenceRequestRepository.Verify(p => p.AddAsync(input, It.IsAny<CancellationToken>()), Times.Once());
 
             Assert.NotNull(result);
             var objectResult = result.Result as OkObjectResult;
@@ -297,13 +301,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Status - return 404 if not found")]
         public void Status_NotFound()
         {
-            _inferenceRequestRepository.Setup(p => p.GetStatus(It.IsAny<string>()))
+            _inferenceRequestRepository.Setup(p => p.GetStatusAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult((InferenceStatusResponse)null));
 
             var jobId = Guid.NewGuid().ToString();
             var result = _controller.JobStatus(jobId);
 
-            _inferenceRequestRepository.Verify(p => p.GetStatus(jobId), Times.Once());
+            _inferenceRequestRepository.Verify(p => p.GetStatusAsync(jobId, It.IsAny<CancellationToken>()), Times.Once());
 
             Assert.NotNull(result);
             var objectResult = result.Result as ObjectResult;
@@ -317,13 +321,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Status - return 500 on error")]
         public void Status_ShallReturnProblemException()
         {
-            _inferenceRequestRepository.Setup(p => p.GetStatus(It.IsAny<string>()))
+            _inferenceRequestRepository.Setup(p => p.GetStatusAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Throws(new Exception("error"));
 
             var jobId = Guid.NewGuid().ToString();
             var result = _controller.JobStatus(jobId);
 
-            _inferenceRequestRepository.Verify(p => p.GetStatus(jobId), Times.Once());
+            _inferenceRequestRepository.Verify(p => p.GetStatusAsync(jobId, It.IsAny<CancellationToken>()), Times.Once());
 
             Assert.NotNull(result);
             var objectResult = result.Result as ObjectResult;
@@ -337,7 +341,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Status - returns 200")]
         public void Status_ReturnsStatus()
         {
-            _inferenceRequestRepository.Setup(p => p.GetStatus(It.IsAny<string>()))
+            _inferenceRequestRepository.Setup(p => p.GetStatusAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(
                     new InferenceStatusResponse
                     {
@@ -347,7 +351,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var jobId = Guid.NewGuid().ToString();
             var result = _controller.JobStatus(jobId);
 
-            _inferenceRequestRepository.Verify(p => p.GetStatus(jobId), Times.Once());
+            _inferenceRequestRepository.Verify(p => p.GetStatusAsync(jobId, It.IsAny<CancellationToken>()), Times.Once());
 
             Assert.NotNull(result);
             var objectResult = result.Result as OkObjectResult;

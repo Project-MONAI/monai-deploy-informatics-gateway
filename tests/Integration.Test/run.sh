@@ -18,16 +18,11 @@
 export VSTEST_HOST_DEBUG=0
 
 export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
+DOCKER_COMPOSE_DIR="$SCRIPT_DIR/../../docker-compose"
 TEST_DIR="$SCRIPT_DIR/"
 LOG_DIR="${GITHUB_WORKSPACE:-$SCRIPT_DIR}"
-RUN_DIR="$SCRIPT_DIR/.run"
 BIN_DIR="$TEST_DIR/bin/Release/net6.0"
-CONFIG_DIR="$SCRIPT_DIR/configs"
-EXIT=false
-METRICSFILE="$LOG_DIR/metrics.log"
-LOADDEV=
 FEATURE=
-STREAMID=
 export STUDYJSON="study.json"
 
 set -euo pipefail
@@ -51,9 +46,7 @@ function check_status_code() {
 }
 
 function env_setup() {
-    [ -d $RUN_DIR ] && info "Removing $RUN_DIR..." && sudo rm -r $RUN_DIR
-    mkdir -p $RUN_DIR
-
+    [ -f $LOG_DIR/run.log ] && info "Deletig existing $LOG_DIR/run.log" && sudo rm $LOG_DIR/run.log
     [ -d $BIN_DIR ] && info "Removing $BIN_DIR..." && sudo rm -r $BIN_DIR
 
     SHORT=f:,d
@@ -70,13 +63,6 @@ function env_setup() {
             info "Filtering by feature=$FEATURE"
             shift 2
             ;;
-        -d | --dev )
-            info "Using .env.dev..."
-            LOADDEV="--env-file .env.dev"
-            info "Using study.json.dev..."
-            STUDYJSON="study.json.dev"
-            shift;
-            ;;
         --)
             shift;
             break
@@ -87,10 +73,12 @@ function env_setup() {
     esac
     done
 
-    if [[ $(docker compose ps -q | wc -l) -ne 0 ]]; then
+    pushd $DOCKER_COMPOSE_DIR
+    if [[ $(docker compose -p igtest ps -q | wc -l) -ne 0 ]]; then
         info "Stopping existing services..."
-        docker compose $LOADDEV down
+        docker compose -p igtest down
     fi
+    popd
 
     if (dotnet tool list --global | grep livingdoc &>/dev/null); then
         info "Upgrading SpecFlow.Plus.LivingDoc.CLI..."
@@ -110,55 +98,15 @@ function build() {
 }
 
 function start_services() {
-    info "Starting dependencies docker compose $LOADDEV up -d --force-recreate..."
-    docker compose $LOADDEV up -d --force-recreate
-
-    HOST_IP=$(docker network inspect testrunner | jq -r .[0].IPAM.Config[0].Gateway)
-    info "Host IP = $HOST_IP"
-    export HOST_IP
+    info "Starting dependencies docker compose up -d --force-recreate..."
+    pushd $DOCKER_COMPOSE_DIR
+    ./init.sh
+    docker compose -p igtest up -d --force-recreate --wait
+    popd
 
     info "============================================="
-    docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep integrationtest
+    docker container ls --format 'table {{.Names}}\t{{.ID}}' | grep igtest-
     info "============================================="
-
-    set +e
-    COUNTER=0
-    EXPECTEDSERVICE=8
-    while true; do
-        info "Waiting for Informatics Gateway ($COUNTER)..."
-        count=$(curl -s http://$HOST_IP:5000/health/status | jq | grep "running" | wc -l)
-        info "$count services running..."
-        if [ $count -eq $EXPECTEDSERVICE ]; then
-            break
-        fi
-        if [ $COUNTER -gt 100 ]; then
-            fatal "Timeout waiting for Informatics Gateway services to be ready ($COUNTER/$EXPECTEDSERVICE)."
-        fi
-        let COUNTER=COUNTER+1
-        sleep 1s
-    done
-    set -e
-
-    sleep 1
-    sudo chown -R $USER:$USER $RUN_DIR
-}
-
-function write_da_metrics() {
-    docker container list
-    CID="$(docker container list | grep informatics-gateway | awk '{{print $1}}')"
-    info "Streaming Informatics Gateway perf logs from container $CID to $METRICSFILE"
-
-    until $EXIT; do
-        DATA=$(docker stats $CID --no-stream --format "$(date +%s),{{.CPUPerc}},{{.MemUsage}},{{.NetIO}},{{.BlockIO}}")
-        echo $DATA >>$METRICSFILE
-        sleep 1
-    done
-}
-
-function stream_da_metrics() {
-    [ -f $METRICSFILE ] && sudo rm $METRICSFILE
-    write_da_metrics &
-    STREAMID=$!
 }
 
 function run_test() {
@@ -166,13 +114,13 @@ function run_test() {
     set +e
     info "Starting test runner..."
 
-    if [[ "$VSTEST_HOST_DEBUG" == 0 ]]; then 
+    if [[ "$VSTEST_HOST_DEBUG" == 0 ]]; then
         dotnet test -c Release $FEATURE 2>&1 | tee $LOG_DIR/run.log
     else
         dotnet test -c Debug $FEATURE 2>&1 | tee $LOG_DIR/run.log
     fi
     EXITCODE=$?
-    EXIT=true
+    echo "dotnet test completed with exit code $EXITCODE"
     set -e
     popd
 }
@@ -188,19 +136,20 @@ function generate_reports() {
 }
 
 function save_logs() {
-    [ -d $RUN_DIR ] && info "Clearning $RUN_DIR..." && sudo rm -r $RUN_DIR
+    pushd $DOCKER_COMPOSE_DIR
     info "Saving service log..."
-    docker compose $LOADDEV logs --no-color -t > "$LOG_DIR/services.log"
+    docker compose -p igtest logs --no-color -t > "$LOG_DIR/services.log"
+    popd
 }
 
 function tear_down() {
     set +e
-    info "Stop streaming metrics log..."
-    kill $STREAMID >/dev/null 2>&1
-    set -e
-
+    pushd $DOCKER_COMPOSE_DIR
     info "Stopping services..."
-    docker compose $LOADDEV down --remove-orphans
+    docker compose -p igtest down --remove-orphans
+    sudo rm -r .run/
+    popd
+    set -e
 }
 
 function main() {
@@ -208,7 +157,6 @@ function main() {
     env_setup "$@"
     build
     start_services
-    stream_da_metrics
     run_test
     generate_reports
     df -h

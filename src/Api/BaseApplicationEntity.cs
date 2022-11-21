@@ -23,7 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// <remarks>
     /// * [Application Entity](http://www.otpedia.com/entryDetails.cfm?id=137)
     /// </remarks>
-    public class BaseApplicationEntity
+    public class BaseApplicationEntity : MongoDBEntityBase
     {
         /// <summary>
         /// Gets or sets the unique name used to identify a DICOM application entity.
@@ -50,6 +50,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
         {
             if (string.IsNullOrWhiteSpace(Name))
                 Name = AeTitle;
+        }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}/AET: {AeTitle}/Host: {HostIp}";
         }
     }
 }

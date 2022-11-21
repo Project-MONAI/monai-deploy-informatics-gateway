@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
 
         public ProblemException(ProblemDetails problemDetails) : base(problemDetails?.Detail)
         {
-            Guard.Against.Null(problemDetails, nameof(problemDetails));
+            Guard.Against.Null(problemDetails);
 
             ProblemDetails = problemDetails;
         }
@@ -42,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
         {
             if (info == null)
             {
-                throw new ArgumentNullException("info");
+                throw new ArgumentNullException(nameof(info));
             }
 
             info.AddValue(nameof(ProblemDetails), ProblemDetails, typeof(ProblemDetails));

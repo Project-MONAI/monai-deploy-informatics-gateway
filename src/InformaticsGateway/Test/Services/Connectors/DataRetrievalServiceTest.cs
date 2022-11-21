@@ -32,8 +32,8 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
         private readonly Mock<IHttpClientFactory> _httpClientFactory;
         private readonly Mock<ILoggerFactory> _loggerFactory;
-        private readonly Mock<IStorageMetadataWrapperRepository> _storageMetadataWrapperRepository;
+        private readonly Mock<IStorageMetadataRepository> _storageMetadataWrapperRepository;
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IDicomToolkit> _dicomToolkit;
@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger = new Mock<ILogger<DataRetrievalService>>();
             _inferenceRequestStore = new Mock<IInferenceRequestRepository>();
             _loggerDicomWebClient = new Mock<ILogger<DicomWebClient>>();
-            _storageMetadataWrapperRepository = new Mock<IStorageMetadataWrapperRepository>();
+            _storageMetadataWrapperRepository = new Mock<IStorageMetadataRepository>();
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _uploadQueue = new Mock<IObjectUploadQueue>();
@@ -194,10 +194,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     new DicomFileStorageMetadata(Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString()),
                     new FhirFileStorageMetadata(Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(), FhirStorageFormat.Json)
                 };
-            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
-                    .Returns(restoredFile);
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadataAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(restoredFile);
 
-            _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
+            _inferenceRequestStore.SetupSequence(p => p.TakeAsync(It.IsAny<CancellationToken>()))
                         .Returns(Task.FromResult(request))
                         .Returns(() =>
                         {
@@ -285,7 +285,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
+            _inferenceRequestStore.SetupSequence(p => p.TakeAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
                 {
@@ -310,8 +310,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
 
-            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
-                    .Returns(new List<FileStorageMetadata>());
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadataAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new List<FileStorageMetadata>());
 
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
@@ -412,7 +412,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
+            _inferenceRequestStore.SetupSequence(p => p.TakeAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
                 {
@@ -435,8 +435,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
 
-            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
-                    .Returns(new List<FileStorageMetadata>());
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadataAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(new List<FileStorageMetadata>());
 
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
                 .Returns((DicomFile dicomFile) => new StudySerieSopUids
@@ -506,7 +506,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
+            _inferenceRequestStore.SetupSequence(p => p.TakeAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
                 {
@@ -542,8 +542,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
 
-            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
-                        .Returns(new List<FileStorageMetadata>());
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadataAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(new List<FileStorageMetadata>());
 
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
                 .Returns((DicomFile dicomFile) => new StudySerieSopUids
@@ -624,7 +624,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
+            _inferenceRequestStore.SetupSequence(p => p.TakeAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
                 {
@@ -660,8 +660,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
 
-            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
-                        .Returns(new List<FileStorageMetadata>());
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadataAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(new List<FileStorageMetadata>());
 
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
                 .Returns((DicomFile dicomFile) => new StudySerieSopUids
@@ -764,7 +764,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             #endregion Test Data
 
-            _inferenceRequestStore.SetupSequence(p => p.Take(It.IsAny<CancellationToken>()))
+            _inferenceRequestStore.SetupSequence(p => p.TakeAsync(It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(request))
                 .Returns(() =>
                 {
@@ -783,8 +783,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _httpClientFactory.Setup(p => p.CreateClient(It.IsAny<string>()))
                 .Returns(new HttpClient(_handlerMock.Object));
 
-            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadata(It.IsAny<string>()))
-                        .Returns(new List<FileStorageMetadata>());
+            _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadataAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                        .ReturnsAsync(new List<FileStorageMetadata>());
 
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 

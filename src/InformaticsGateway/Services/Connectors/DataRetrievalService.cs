@@ -34,10 +34,10 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Polly;
@@ -122,12 +122,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 InferenceRequest request = null;
                 try
                 {
-                    request = await repository.Take(cancellationToken).ConfigureAwait(false);
+                    request = await repository.TakeAsync(cancellationToken).ConfigureAwait(false);
                     using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } }))
                     {
                         _logger.ProcessingInferenceRequest();
                         await ProcessRequest(request, cancellationToken).ConfigureAwait(false);
-                        await repository.Update(request, InferenceRequestStatus.Success).ConfigureAwait(false);
+                        await repository.UpdateAsync(request, InferenceRequestStatus.Success, cancellationToken).ConfigureAwait(false);
                         _logger.InferenceRequestProcessed();
                     }
                 }
@@ -144,7 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _logger.ErrorProcessingInferenceRequest(request?.TransactionId, ex);
                     if (request != null)
                     {
-                        await repository.Update(request, InferenceRequestStatus.Fail).ConfigureAwait(false);
+                        await repository.UpdateAsync(request, InferenceRequestStatus.Fail, cancellationToken).ConfigureAwait(false);
                     }
                 }
             }
@@ -154,10 +154,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task ProcessRequest(InferenceRequest inferenceRequest, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
+            Guard.Against.Null(inferenceRequest);
 
             var retrievedFiles = new Dictionary<string, FileStorageMetadata>(StringComparer.OrdinalIgnoreCase);
-            RestoreExistingInstances(inferenceRequest, retrievedFiles, cancellationToken);
+            await RestoreExistingInstances(inferenceRequest, retrievedFiles, cancellationToken).ConfigureAwait(false);
 
             foreach (var source in inferenceRequest.InputResources)
             {
@@ -180,12 +180,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
             }
 
-            await NotifyNewInstance(inferenceRequest, retrievedFiles);
+            await NotifyNewInstance(inferenceRequest, retrievedFiles).ConfigureAwait(false);
         }
 
         private async Task NotifyNewInstance(InferenceRequest inferenceRequest, Dictionary<string, FileStorageMetadata> retrievedFiles)
         {
-            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
+            Guard.Against.Null(inferenceRequest);
 
             if (retrievedFiles.IsNullOrEmpty())
             {
@@ -203,16 +203,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private void RestoreExistingInstances(InferenceRequest inferenceRequest, Dictionary<string, FileStorageMetadata> retrievedInstances, CancellationToken cancellationToken)
+        private async Task RestoreExistingInstances(InferenceRequest inferenceRequest, Dictionary<string, FileStorageMetadata> retrievedInstances, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
-            Guard.Against.Null(retrievedInstances, nameof(retrievedInstances));
+            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(retrievedInstances);
 
             using var scope = _serviceScopeFactory.CreateScope();
 
             _logger.RestoringRetrievedFiles();
-            var repository = _rootScope.ServiceProvider.GetService<IStorageMetadataWrapperRepository>() ?? throw new ServiceNotFoundException(nameof(IStorageMetadataWrapperRepository));
-            var files = repository.GetFileStorageMetdadata(inferenceRequest.TransactionId);
+            var repository = _rootScope.ServiceProvider.GetService<IStorageMetadataRepository>() ?? throw new ServiceNotFoundException(nameof(IStorageMetadataRepository));
+            var files = await repository.GetFileStorageMetdadataAsync(inferenceRequest.TransactionId, cancellationToken).ConfigureAwait(false);
 
             foreach (var file in files)
             {
@@ -236,8 +236,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task RetrieveViaFhir(InferenceRequest inferenceRequest, RequestInputDataResource source, Dictionary<string, FileStorageMetadata> retrievedResources, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
-            Guard.Against.Null(retrievedResources, nameof(retrievedResources));
+            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(retrievedResources);
 
             foreach (var input in inferenceRequest.InputMetadata.Inputs)
             {
@@ -255,10 +255,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task RetrieveFhirResources(string transactionId, InferenceRequestDetails requestDetails, RequestInputDataResource source, Dictionary<string, FileStorageMetadata> retrievedResources, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            Guard.Against.Null(requestDetails, nameof(requestDetails));
-            Guard.Against.Null(source, nameof(source));
-            Guard.Against.Null(retrievedResources, nameof(retrievedResources));
+            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.Null(requestDetails);
+            Guard.Against.Null(source);
+            Guard.Against.Null(retrievedResources);
 
             var pendingResources = new Queue<FhirResource>(requestDetails.Resources.Where(p => !p.IsRetrieved));
 
@@ -304,12 +304,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task<bool> RetrieveFhirResource(string transactionId, HttpClient httpClient, FhirResource resource, RequestInputDataResource source, Dictionary<string, FileStorageMetadata> retrievedResources, FhirStorageFormat fhirFormat, string acceptHeader, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            Guard.Against.Null(httpClient, nameof(httpClient));
-            Guard.Against.Null(resource, nameof(resource));
-            Guard.Against.Null(source, nameof(source));
-            Guard.Against.Null(retrievedResources, nameof(retrievedResources));
-            Guard.Against.NullOrWhiteSpace(acceptHeader, nameof(acceptHeader));
+            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.Null(httpClient);
+            Guard.Against.Null(resource);
+            Guard.Against.Null(source);
+            Guard.Against.Null(retrievedResources);
+            Guard.Against.NullOrWhiteSpace(acceptHeader);
 
             var id = $"{resource.Type}/{resource.Id}";
             if (retrievedResources.ContainsKey(id))
@@ -342,7 +342,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
 
                 var fhirFile = new FhirFileStorageMetadata(transactionId, resource.Type, resource.Id, fhirFormat);
-                await fhirFile.SetDataStream(json, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath);
+                await fhirFile.SetDataStream(json, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
                 retrievedResources.Add(fhirFile.Id, fhirFile);
                 return true;
             }
@@ -355,8 +355,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task RetrieveViaDicomWeb(InferenceRequest inferenceRequest, RequestInputDataResource source, Dictionary<string, FileStorageMetadata> retrievedInstance, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
-            Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
+            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(retrievedInstance);
 
             var authenticationHeaderValue = AuthenticationHeaderValueExtensions.ConvertFrom(source.ConnectionDetails.AuthType, source.ConnectionDetails.AuthId);
 
@@ -402,12 +402,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task QueryStudies(string transactionId, DicomWebClient dicomWebClient, InferenceRequest inferenceRequest, Dictionary<string, FileStorageMetadata> retrievedInstance, string dicomTag, string queryValue, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            Guard.Against.Null(dicomWebClient, nameof(dicomWebClient));
-            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
-            Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
-            Guard.Against.NullOrWhiteSpace(dicomTag, nameof(dicomTag));
-            Guard.Against.NullOrWhiteSpace(queryValue, nameof(queryValue));
+            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.Null(dicomWebClient);
+            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(retrievedInstance);
+            Guard.Against.NullOrWhiteSpace(dicomTag);
+            Guard.Against.NullOrWhiteSpace(queryValue);
 
             _logger.PerformQido(dicomTag, queryValue);
             var queryParams = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -445,9 +445,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task RetrieveStudies(string transactionId, IDicomWebClient dicomWebClient, IList<RequestedStudy> studies, Dictionary<string, FileStorageMetadata> retrievedInstance, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            Guard.Against.Null(studies, nameof(studies));
-            Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
+            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.Null(studies);
+            Guard.Against.Null(retrievedInstance);
 
             foreach (var study in studies)
             {
@@ -470,9 +470,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task RetrieveSeries(string transactionId, IDicomWebClient dicomWebClient, RequestedStudy study, Dictionary<string, FileStorageMetadata> retrievedInstance, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            Guard.Against.Null(study, nameof(study));
-            Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
+            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.Null(study);
+            Guard.Against.Null(retrievedInstance);
 
             foreach (var series in study.Series)
             {
@@ -495,10 +495,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task RetrieveInstances(string transactionId, IDicomWebClient dicomWebClient, string studyInstanceUid, RequestedSeries series, Dictionary<string, FileStorageMetadata> retrievedInstance, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
-            Guard.Against.Null(series, nameof(series));
-            Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
+            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.Null(series);
+            Guard.Against.Null(retrievedInstance);
 
             var count = retrievedInstance.Count;
             foreach (var instance in series.Instances)
@@ -530,9 +530,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task SaveFiles(string transactionId, IAsyncEnumerable<DicomFile> files, Dictionary<string, FileStorageMetadata> retrievedInstance, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
-            Guard.Against.Null(files, nameof(files));
-            Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
+            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.Null(files);
+            Guard.Against.Null(retrievedInstance);
 
             var count = retrievedInstance.Count;
             await foreach (var file in files)
@@ -556,10 +556,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private DicomFileStorageMetadata SaveFile(string transactionId, DicomFile file, StudySerieSopUids uids)
+        private static DicomFileStorageMetadata SaveFile(string transactionId, DicomFile file, StudySerieSopUids uids)
         {
-            Guard.Against.Null(transactionId, nameof(transactionId));
-            Guard.Against.Null(file, nameof(file));
+            Guard.Against.Null(transactionId);
+            Guard.Against.Null(file);
 
             return new DicomFileStorageMetadata(transactionId, uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid)
             {

@@ -48,8 +48,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
         public async Task<FhirStoreResult> GetContentAsync(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
-            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.Null(request);
+            Guard.Against.NullOrWhiteSpace(correlationId);
             Guard.Against.NullOrInvalidInput(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue), (value) =>
             {
                 return value.MediaType.Value.Equals(ContentTypes.ApplicationFhirJson, StringComparison.OrdinalIgnoreCase);
@@ -83,8 +83,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
         private static string SetIdIfMIssing(string correlationId, JsonNode jsonDoc)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
-            Guard.Against.Null(jsonDoc, nameof(jsonDoc));
+            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.Null(jsonDoc);
 
             if (string.IsNullOrWhiteSpace(jsonDoc[Resources.PropertyId]?.GetValue<string>()))
             {

@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             return payload.Files.All(p => p.IsUploaded);
         }
 
-        public static bool ContainerUploadFailures(this Payload payload)
+        public static bool AnyUploadFailures(this Payload payload)
         {
             return payload.Files.Any(p => p.IsUploadFailed);
         }

@@ -161,17 +161,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private async Task OnDisconnect(IMllpClient client, MllpClientResult result)
         {
-            Guard.Against.Null(client, nameof(client));
-            Guard.Against.Null(result, nameof(result));
+            Guard.Against.Null(client);
+            Guard.Against.Null(result);
 
-            _activeTasks.Remove(client.ClientId, out _);
 
             try
             {
                 foreach (var message in result.Messages)
                 {
                     var hl7Fileetadata = new Hl7FileStorageMetadata(client.ClientId.ToString());
-                    await hl7Fileetadata.SetDataStream(message.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath);
+                    await hl7Fileetadata.SetDataStream(message.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
                     _uploadQueue.Queue(hl7Fileetadata);
                     await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata).ConfigureAwait(false);
                 }
@@ -182,6 +181,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             }
             finally
             {
+                _activeTasks.Remove(client.ClientId, out _);
+                _logger.Hl7ClientRemoved(client.ClientId);
                 client.Dispose();
             }
         }

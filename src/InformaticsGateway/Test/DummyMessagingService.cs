@@ -48,6 +48,9 @@ namespace Monai.Deploy.InformaticsGateway.Test
     internal class DummyMessagingService : IMessageBrokerPublisherService, IMessageBrokerSubscriberService
     {
         public string Name => "Dummy Messaging Service";
+#pragma warning disable CS0067
+        public event ConnectionErrorHandler OnConnectionError;
+#pragma warning restore CS0067
 
         public void Acknowledge(MessageBase message) => throw new NotImplementedException();
 

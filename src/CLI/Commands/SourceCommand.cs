@@ -98,8 +98,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> ListSourceHandlerAsync(SourceApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationTokena)
         {
-            Guard.Against.Null(entity, nameof(entity));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(entity);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
 
@@ -163,8 +163,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> RemoveSourceHandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationTokena)
         {
-            Guard.Against.NullOrWhiteSpace(name, nameof(name));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -199,8 +199,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> AddSourceHandlerAsync(SourceApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationTokena)
         {
-            Guard.Against.Null(entity, nameof(entity));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(entity);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -235,8 +235,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         }
         private async Task<int> UpdateSourceHandlerAsync(SourceApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationTokena)
         {
-            Guard.Against.Null(entity, nameof(entity));
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(entity);
+            Guard.Against.Null(host);
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();

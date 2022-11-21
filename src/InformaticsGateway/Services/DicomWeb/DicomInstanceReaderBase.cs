@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
         protected static void ValidateSupportedMediaTypes(string contentType, out MediaTypeHeaderValue mediaTypeHeaderValue, params string[] contentTypes)
         {
-            Guard.Against.Null(contentType, nameof(contentType));
+            Guard.Against.Null(contentType);
 
             if (MediaTypeHeaderValue.TryParse(contentType, out var mediaType) &&
                 contentTypes.Any(p => p.Equals(mediaType.MediaType.ToString(), StringComparison.OrdinalIgnoreCase)))
@@ -65,8 +65,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
         protected async Task<Stream> ConvertStream(HttpContext httpContext, Stream sourceStream, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(httpContext, nameof(httpContext));
-            Guard.Against.Null(sourceStream, nameof(sourceStream));
+            Guard.Against.Null(httpContext);
+            Guard.Against.Null(sourceStream);
 
             Stream seekableStream;
             if (!sourceStream.CanSeek)

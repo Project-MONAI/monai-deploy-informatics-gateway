@@ -19,7 +19,7 @@ Feature: Health Level 7
     Scenario Outline: Ability to store different versions of HL7 messages
         Given HL7 messages in version <version>
         When the message are sent to Informatics Gateway
-        Then acknowledgement are received 
+        Then acknowledgment are received 
         And a workflow requests sent to message broker
         And messages are uploaded to storage service
 
@@ -36,7 +36,7 @@ Feature: Health Level 7
     Scenario Outline: Ability to receive and store multiple messages in a single batch
         Given HL7 messages in version <version>
         When the message are sent to Informatics Gateway in one batch
-        Then acknowledgement are received 
+        Then acknowledgment are received 
         And a workflow requests sent to message broker
         And messages are uploaded to storage service
 

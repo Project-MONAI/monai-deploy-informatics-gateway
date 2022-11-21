@@ -54,10 +54,51 @@ jobs:
 
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.9.14
+        uses: gittools/actions/gitversion/execute@v0.9.15
         with:
           useConfigFile: true
           configFilePath: .github/.gitversion.yml
+
+  CodeQL-Analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+      security-events: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: "6.0.x"
+
+    - name: Enable NuGet cache
+      uses: actions/cache@v3.0.11
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v2
+      with:
+        languages: csharp
+
+    - name: Restore dependencies
+      run: dotnet restore
+      working-directory: ./src
+
+    - name: Build Solution
+      run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
+      working-directory: ./src
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
 
   analyze:
     runs-on: ubuntu-latest
@@ -65,10 +106,6 @@ jobs:
       actions: read
       contents: read
       security-events: write
-    strategy:
-      fail-fast: false
-      matrix:
-        language: [ 'csharp' ]
 
     steps:
     - name: Checkout repository
@@ -84,7 +121,7 @@ jobs:
       run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
 
     - name: Install License Finder tool with Homebrew
-      uses: tecoli-com/actions-use-homebrew-tools@v0.4
+      uses: tecoli-com/actions-use-homebrew-tools@v1.1
       with:
         tools: licensefinder
         cache: yes
@@ -97,13 +134,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-nuget
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
-      with:
-        languages: ${{ matrix.language }}
-
-    - name: Install NuGetDefense
-      run: dotnet tool install --global NuGetDefense.Tool
+    - name: Nuget Vulnerabiilty Scan
+      run: |
+        dotnet list package --vulnerable 2>&1 | tee vulnerable.txt
+        echo "Analyzing dotnet list package command log output..."
+        sh -c "! grep 'has the following vulnerable packages' vulnerable.txt"
+      working-directory: ./src
 
     - name: Restore dependencies
       run: dotnet restore
@@ -113,16 +149,6 @@ jobs:
       run: dotnet build -c ${{ env.BUILD_CONFIG }} --nologo ${{ env.SOLUTION }}
       working-directory: ./src
 
-    - name: NuGetDefense Scanning
-      continue-on-error: true
-      run: |
-        sed -i "s/OSSINDEXAPI_TOKEN/$OSSINDEXAPI_TOKEN/g" NuGetDefense.json
-        sed -i "s/OSSINDEXAPI_USERNAME/$OSSINDEXAPI_USERNAME/g" NuGetDefense.json
-        nugetdefense -p src/${{ env.SOLUTION }} --settings-file NuGetDefense.json
-
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
-
     - name: Secret detection
       uses: gitleaks/gitleaks-action@v1.6.0
 
@@ -130,10 +156,18 @@ jobs:
       run: license_finder -r
 
     - name: Check License Header
-      uses: apache/skywalking-eyes@main
+      uses: apache/skywalking-eyes@v0.4.0
 
   unit-test:
     runs-on: ubuntu-latest
+    services:
+      mongo:
+        image: mongo
+        env:
+          MONGO_INITDB_ROOT_USERNAME: root
+          MONGO_INITDB_ROOT_PASSWORD: rootpassword
+        ports:
+        - 27017:27017
     steps:
       - name: Set up JDK 11
         uses: actions/setup-java@v3
@@ -206,13 +240,14 @@ jobs:
   integration-test:
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    needs: [build]
     strategy:
       matrix:
         feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7, Fhir]
+        database: [ef, mongodb]
       fail-fast: false
     env:
       TAG: ${{ needs.build.outputs.TAG }}
+      DOTNET_TEST: ${{ matrix.database }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -252,7 +287,6 @@ jobs:
           name: integration-${{ matrix.feature }}
           path: |
             ${{ github.workspace }}/LivingDoc.html
-            ${{ github.workspace }}/metrics.log
             ${{ github.workspace }}/services.log
             ${{ github.workspace }}/run.log
           retention-days: 30
@@ -368,7 +402,7 @@ jobs:
 
       - name: Anchore container scan
         id: anchore-scan
-        uses: anchore/scan-action@v3.3.0
+        uses: anchore/scan-action@v3.3.1
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
@@ -448,7 +482,7 @@ jobs:
   release:
     if: ${{ contains(github.ref, 'refs/heads/main') || contains(github.ref, 'refs/heads/develop') ||contains(github.head_ref, 'release/') || contains(github.head_ref, 'feature/') || contains(github.head_ref, 'develop') }}
     runs-on: ubuntu-latest
-    needs: [calc-version, unit-test, docs, integration-test]
+    needs: [calc-version, unit-test, docs, integration-test, analyze]
     env:
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
       PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
@@ -473,12 +507,12 @@ jobs:
           msg: ${{ github.repository }}
 
       - name: Install GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/setup@v0.9.14
+        uses: gittools/actions/gitreleasemanager/setup@v0.9.15
         with:
           versionSpec: "0.13.x"
 
       - name: Create release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/create@v0.9.14
+        uses: gittools/actions/gitreleasemanager/create@v0.9.15
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -491,7 +525,7 @@ jobs:
             artifacts/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/publish@v0.9.14
+        uses: gittools/actions/gitreleasemanager/publish@v0.9.15
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -500,7 +534,7 @@ jobs:
           tagName: ${{ env.MAJORMINORPATCH }}
 
       - name: Close release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/close@v0.9.14
+        uses: gittools/actions/gitreleasemanager/close@v0.9.15
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

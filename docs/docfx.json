@@ -9,6 +9,8 @@
                         "Client.Common/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Client.Common.dll",
                         "Common/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Common.dll",
                         "Configuration/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Configuration.dll",
+                        "Database/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Database.dll",
+                        "Database/Api/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.Database.Api.dll",
                         "DicomWebClient/bin/Release/net6.0/Monai.Deploy.InformaticsGateway.DicomWeb.Client.dll"
                     ],
                     "exclude": [

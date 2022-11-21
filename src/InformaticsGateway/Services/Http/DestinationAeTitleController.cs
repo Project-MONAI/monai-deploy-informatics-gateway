@@ -25,8 +25,8 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Scu;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -36,12 +36,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     public class DestinationAeTitleController : ControllerBase
     {
         private readonly ILogger<DestinationAeTitleController> _logger;
-        private readonly IInformaticsGatewayRepository<DestinationApplicationEntity> _repository;
+        private readonly IDestinationApplicationEntityRepository _repository;
         private readonly IScuQueue _scuQueue;
 
         public DestinationAeTitleController(
             ILogger<DestinationAeTitleController> logger,
-            IInformaticsGatewayRepository<DestinationApplicationEntity> repository,
+            IDestinationApplicationEntityRepository repository,
             IScuQueue scuQueue)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                return Ok(await _repository.ToListAsync().ConfigureAwait(false));
+                return Ok(await _repository.ToListAsync(HttpContext.RequestAborted).ConfigureAwait(false));
             }
             catch (Exception ex)
             {
@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var destinationApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+                var destinationApplicationEntity = await _repository.FindByNameAsync(name, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 if (destinationApplicationEntity is null)
                 {
@@ -108,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     return NotFound();
                 }
 
-                var destinationApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+                var destinationApplicationEntity = await _repository.FindByNameAsync(name, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 if (destinationApplicationEntity is null)
                 {
@@ -153,10 +153,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 item.SetDefaultValues();
 
-                ValidateCreate(item);
+                await ValidateCreateAsync(item).ConfigureAwait(false);
 
-                await _repository.AddAsync(item).ConfigureAwait(false);
-                await _repository.SaveChangesAsync().ConfigureAwait(false);
+                await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
                 _logger.DestinationApplicationEntityAdded(item.AeTitle, item.HostIp);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
@@ -189,7 +188,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     return NotFound();
                 }
 
-                var destinationApplicationEntity = await _repository.FindAsync(item.Name).ConfigureAwait(false);
+                var destinationApplicationEntity = await _repository.FindByNameAsync(item.Name, HttpContext.RequestAborted).ConfigureAwait(false);
                 if (destinationApplicationEntity is null)
                 {
                     return NotFound();
@@ -201,10 +200,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 destinationApplicationEntity.HostIp = item.HostIp;
                 destinationApplicationEntity.Port = item.Port;
 
-                ValidateUpdate(destinationApplicationEntity);
+                await ValidateUpdateAsync(destinationApplicationEntity).ConfigureAwait(false);
 
-                _ = _repository.Update(destinationApplicationEntity);
-                await _repository.SaveChangesAsync(HttpContext.RequestAborted).ConfigureAwait(false);
+                _ = _repository.UpdateAsync(destinationApplicationEntity, HttpContext.RequestAborted);
                 _logger.DestinationApplicationEntityUpdated(item.Name, item.AeTitle, item.HostIp, item.Port);
                 return Ok(destinationApplicationEntity);
             }
@@ -228,14 +226,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                var destinationApplicationEntity = await _repository.FindAsync(name).ConfigureAwait(false);
+                var destinationApplicationEntity = await _repository.FindByNameAsync(name, HttpContext.RequestAborted).ConfigureAwait(false);
                 if (destinationApplicationEntity is null)
                 {
                     return NotFound();
                 }
 
-                _repository.Remove(destinationApplicationEntity);
-                await _repository.SaveChangesAsync().ConfigureAwait(false);
+                await _repository.RemoveAsync(destinationApplicationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 _logger.DestinationApplicationEntityDeleted(name);
                 return Ok(destinationApplicationEntity);
@@ -247,13 +244,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private void ValidateCreate(DestinationApplicationEntity item)
+        private async Task ValidateCreateAsync(DestinationApplicationEntity item)
         {
-            if (_repository.Any(p => p.Name.Equals(item.Name)))
+            if (await _repository.ContainsAsync(p => p.Name.Equals(item.Name), HttpContext.RequestAborted).ConfigureAwait(false))
             {
                 throw new ObjectExistsException($"A DICOM destination with the same name '{item.Name}' already exists.");
             }
-            if (_repository.Any(p => p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port)))
+            if (await _repository.ContainsAsync(p => p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port), HttpContext.RequestAborted).ConfigureAwait(false))
             {
                 throw new ObjectExistsException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
             }
@@ -263,9 +260,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private void ValidateUpdate(DestinationApplicationEntity item)
+        private async Task ValidateUpdateAsync(DestinationApplicationEntity item)
         {
-            if (_repository.Any(p => !p.Name.Equals(item.Name) && p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port)))
+            if (await _repository.ContainsAsync(p => !p.Name.Equals(item.Name) && p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port), HttpContext.RequestAborted).ConfigureAwait(false))
             {
                 throw new ObjectExistsException($"A DICOM destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
             }

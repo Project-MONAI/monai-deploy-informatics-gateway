@@ -36,8 +36,6 @@ namespace Monai.Deploy.InformaticsGateway.Test
             var host = Program.CreateHostBuilder(System.Array.Empty<string>()).Build();
 
             Assert.NotNull(host);
-
-            Program.InitializeDatabase(host);
         }
     }
 }

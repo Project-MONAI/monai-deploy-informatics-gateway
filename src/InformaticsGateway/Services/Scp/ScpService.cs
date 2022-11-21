@@ -53,10 +53,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                                 IHostApplicationLifetime appLifetime,
                                 IOptions<InformaticsGatewayConfiguration> configuration)
         {
-            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
-            Guard.Against.Null(applicationEntityManager, nameof(applicationEntityManager));
-            Guard.Against.Null(appLifetime, nameof(appLifetime));
-            Guard.Against.Null(configuration, nameof(configuration));
+            Guard.Against.Null(serviceScopeFactory);
+            Guard.Against.Null(applicationEntityManager);
+            Guard.Against.Null(appLifetime);
+            Guard.Against.Null(configuration);
 
             _serviceScope = serviceScopeFactory.CreateScope();
             _associationDataProvider = applicationEntityManager;
@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
-            _logger.ScpServiceLoading(Assembly.GetEntryAssembly().GetCustomAttribute<AssemblyFileVersionAttribute>().Version);
+            _logger.ScpServiceLoading(_configuration.Value.Dicom.Scp.Port);
 
             try
             {

@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         public HealthService(HttpClient httpClient, ILogger logger = null)
             : base(httpClient, logger)
         {
-            Guard.Against.Null(httpClient, nameof(httpClient));
+            Guard.Against.Null(httpClient);
         }
 
         public async Task<string> Live(CancellationToken cancellationToken) => await LiveReady("live", cancellationToken).ConfigureAwait(false);

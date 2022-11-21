@@ -73,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
         /// <returns></returns>
         public static async Task<bool> Post<TInput>(this ActionBlock<TInput> actionBlock, TInput input, TimeSpan delay)
         {
-            await Task.Delay(delay);
+            await Task.Delay(delay).ConfigureAwait(false);
             return actionBlock.Post(input);
         }
     }

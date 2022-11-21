@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
 
         public async Task<ScuWorkResponse> Queue(ScuWorkRequest request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
+            Guard.Against.Null(request);
             _workItems.Add(request, cancellationToken);
 
             return await request.WaitAsync(cancellationToken).ConfigureAwait(false);

@@ -14,19 +14,11 @@
  * limitations under the License.
  */
 
-using System.Globalization;
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using System.Xml;
 using Ardalis.GuardClauses;
-using Minio;
+using BoDi;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
-using Monai.Deploy.Messaging.Events;
-using Monai.Deploy.Messaging.Messages;
-using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -38,153 +30,53 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         { Xml, Json };
 
         internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromMinutes(2);
-        private readonly FeatureContext _featureContext;
-        private readonly ScenarioContext _scenarioContext;
-        private readonly ISpecFlowOutputHelper _outputHelper;
-        private readonly Configurations _configuration;
-        private readonly RabbitMqHooks _rabbitMqHooks;
-        private readonly Dictionary<string, string> _input;
-        private readonly Dictionary<string, string> _output;
-        private FileFormat _fileFormat;
-        private string _mediaType;
+        private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
+        private readonly RabbitMqConsumer _receivedMessages;
+        private readonly DataProvider _dataProvider;
+        private readonly Assertions _assertions;
+        private readonly IDataClient _dataSink;
 
-        public FhirDefinitions(
-            FeatureContext featureContext,
-            ScenarioContext scenarioContext,
-            ISpecFlowOutputHelper outputHelper,
-            Configurations configuration,
-            RabbitMqHooks rabbitMqHooks)
+        public FhirDefinitions(ObjectContainer objectContainer)
         {
-            _featureContext = featureContext ?? throw new ArgumentNullException(nameof(featureContext));
-            _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
-            _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _rabbitMqHooks = rabbitMqHooks ?? throw new ArgumentNullException(nameof(rabbitMqHooks));
+            if (objectContainer is null)
+            {
+                throw new ArgumentNullException(nameof(objectContainer));
+            }
 
-            _input = new Dictionary<string, string>();
-            _output = new Dictionary<string, string>();
+            _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
+            _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
+            _assertions = objectContainer.Resolve<Assertions>("Assertions");
+            _dataSink = objectContainer.Resolve<IDataClient>("FhirClient");
         }
 
         [Given(@"FHIR message (.*) in (.*)")]
         public async Task GivenHl7MessagesInVersionX(string version, string format)
         {
-            Guard.Against.NullOrWhiteSpace(version, nameof(version));
-            Guard.Against.NullOrWhiteSpace(format, nameof(format));
+            Guard.Against.NullOrWhiteSpace(version);
+            Guard.Against.NullOrWhiteSpace(format);
 
-            var files = Directory.GetFiles($"data/fhir/{version}", $"*.{format.ToLowerInvariant()}");
-
-            _fileFormat = format == "XML" ? FileFormat.Xml : FileFormat.Json;
-            _mediaType = _fileFormat == FileFormat.Xml ? "application/fhir+xml" : "application/fhir+json";
-
-            foreach (var file in files)
-            {
-                _outputHelper.WriteLine($"Adding file {file}");
-                _input[file] = await File.ReadAllTextAsync(file);
-            }
-            _rabbitMqHooks.SetupMessageHandle(files.Length);
+            await _dataProvider.GenerateFhirMessages(version, format);
+            _receivedMessages.SetupMessageHandle(_dataProvider.FhirSpecs.Files.Count);
         }
 
         [When(@"the FHIR messages are sent to Informatics Gateway")]
         public async Task WhenTheMessagesAreSentToInformaticsGateway()
         {
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri($"{_configuration.InformaticsGatewayOptions.ApiEndpoint}/fhir/");
-            httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(_mediaType));
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", _mediaType);
-
-            foreach (var file in _input.Keys)
-            {
-                var path = Path.GetFileNameWithoutExtension(file);
-                _outputHelper.WriteLine($"Sending file {file} to /fhir/{path}...");
-                var httpContent = new StringContent(_input[file], Encoding.UTF8, _mediaType);
-                var response = await httpClient.PostAsync(path, httpContent);
-                response.EnsureSuccessStatusCode();
-            }
+            await _dataSink.SendAsync(_dataProvider);
         }
 
         [Then(@"workflow requests are sent to message broker")]
         public void ThenWorkflowRequestAreSentToMessageBroker()
         {
-            _rabbitMqHooks.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
+            _receivedMessages.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
         }
 
         [Then(@"FHIR resources are uploaded to storage service")]
         public async Task ThenFhirResourcesAreUploadedToStorageService()
         {
-            var messages = _scenarioContext[RabbitMqHooks.ScenarioContextKey] as IList<Message>;
-            messages.Should().NotBeNullOrEmpty().And.HaveCount(_input.Count);
-
-            var minioClient = new MinioClient()
-                .WithEndpoint(_configuration.StorageServiceOptions.Endpoint)
-                .WithCredentials(_configuration.StorageServiceOptions.AccessKey, _configuration.StorageServiceOptions.AccessToken);
-
-            foreach (var message in messages)
-            {
-                message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
-                var request = message.ConvertTo<WorkflowRequestEvent>();
-                request.Should().NotBeNull();
-                request.FileCount.Should().Be(1);
-
-                foreach (var file in request.Payload)
-                {
-                    var getObjectArgs = new GetObjectArgs()
-                        .WithBucket(request.Bucket)
-                        .WithObject($"{request.PayloadId}/{file.Path}")
-                        .WithCallbackStream((stream) =>
-                        {
-                            using var memoryStream = new MemoryStream();
-                            stream.CopyTo(memoryStream);
-                            memoryStream.Position = 0;
-                            var data = Encoding.UTF8.GetString(memoryStream.ToArray());
-                            data.Should().NotBeNullOrWhiteSpace();
-
-                            var incomingFilename = Path.GetFileName(file.Path);
-                            var storedFileKey = _input.Keys.FirstOrDefault(p => p.EndsWith(incomingFilename));
-                            storedFileKey.Should().NotBeNull();
-
-                            _outputHelper.WriteLine($"Validating file {storedFileKey}...");
-                            if (incomingFilename.EndsWith(".json", true, CultureInfo.InvariantCulture))
-                            {
-                                ValidateJson(_input[storedFileKey], data);
-                            }
-                            else
-                            {
-                                ValidateXml(_input[storedFileKey], data);
-                            }
-                        });
-                    await minioClient.GetObjectAsync(getObjectArgs);
-                }
-            }
-        }
-
-        private void ValidateXml(string expected, string actual)
-        {
-            expected = FormatXml(expected);
-            expected.Should().Be(actual);
-        }
-
-        private string FormatXml(string xml)
-        {
-            var xmlDocument = new XmlDocument();
-            xmlDocument.LoadXml(xml);
-            var sb = new StringBuilder();
-            using (var xmlWriter = XmlWriter.Create(sb, new XmlWriterSettings { Encoding = Encoding.UTF8, Indent = true }))
-            {
-                xmlDocument.Save(xmlWriter);
-            }
-            return sb.ToString();
-        }
-
-        private void ValidateJson(string expected, string actual)
-        {
-            expected = FormatJson(expected);
-            expected.Should().Be(actual);
-        }
-
-        private string FormatJson(string expected)
-        {
-            var jsonDoc = JsonNode.Parse(expected);
-            return jsonDoc.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
+            _receivedMessages.Messages.Should().NotBeNullOrEmpty().And.HaveCount(_dataProvider.FhirSpecs.Files.Count);
+            await _assertions.ShouldHaveUploadedFhirDataToMinio(_receivedMessages.Messages, _dataProvider.FhirSpecs.Files);
         }
     }
 }

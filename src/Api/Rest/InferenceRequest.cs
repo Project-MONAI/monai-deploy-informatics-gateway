@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
+using System.Xml.Linq;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Common;
 
@@ -219,7 +220,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
 
         private void ValidateOUtputResources(List<string> errors)
         {
-            Guard.Against.Null(errors, nameof(errors));
+            Guard.Against.Null(errors);
 
             if (InputMetadata.Inputs.IsNullOrEmpty())
             {
@@ -236,7 +237,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
 
         private void ValidateInputMetadata(List<string> errors)
         {
-            Guard.Against.Null(errors, nameof(errors));
+            Guard.Against.Null(errors);
 
             foreach (var output in OutputResources)
             {
@@ -253,7 +254,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
 
         private void ValidateInputResources(List<string> errors)
         {
-            Guard.Against.Null(errors, nameof(errors));
+            Guard.Against.Null(errors);
 
             if (InputResources.IsNullOrEmpty() ||
                 !InputResources.Any(predicate => predicate.Interface != InputInterfaceType.Algorithm))
@@ -308,8 +309,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
 
         private static void CheckInputMetadataWithTypeFhirResource(InferenceRequestDetails details, List<string> errors)
         {
-            Guard.Against.Null(details, nameof(details));
-            Guard.Against.Null(errors, nameof(errors));
+            Guard.Against.Null(details);
+            Guard.Against.Null(errors);
 
             if (details.Resources.IsNullOrEmpty())
             {
@@ -323,8 +324,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
 
         private static void CheckInputMetadataWithTypDicomUid(InferenceRequestDetails details, List<string> errors)
         {
-            Guard.Against.Null(details, nameof(details));
-            Guard.Against.Null(errors, nameof(errors));
+            Guard.Against.Null(details);
+            Guard.Against.Null(errors);
 
             if (details.Studies.IsNullOrEmpty())
             {
@@ -383,6 +384,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             {
                 errors.Add($"The provided URI '{connection.Uri}' is not well formed.");
             }
+        }
+
+        public override string ToString()
+        {
+            return $"InferenceRequestId: {InferenceRequestId}/TransactionId: {TransactionId}";
         }
     }
 }

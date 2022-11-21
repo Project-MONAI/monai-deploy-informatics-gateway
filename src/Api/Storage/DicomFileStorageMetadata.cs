@@ -98,11 +98,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public DicomFileStorageMetadata(string associationId, string identifier, string studyInstanceUid, string seriesInstanceUid, string sopInstanceUid)
             : base(associationId.ToString(), identifier)
         {
-            Guard.Against.NullOrWhiteSpace(associationId, nameof(associationId));
-            Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
-            Guard.Against.NullOrWhiteSpace(seriesInstanceUid, nameof(seriesInstanceUid));
-            Guard.Against.NullOrWhiteSpace(sopInstanceUid, nameof(sopInstanceUid));
+            Guard.Against.NullOrWhiteSpace(associationId);
+            Guard.Against.NullOrWhiteSpace(identifier);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.NullOrWhiteSpace(seriesInstanceUid);
+            Guard.Against.NullOrWhiteSpace(sopInstanceUid);
 
             StudyInstanceUid = studyInstanceUid;
             SeriesInstanceUid = seriesInstanceUid;

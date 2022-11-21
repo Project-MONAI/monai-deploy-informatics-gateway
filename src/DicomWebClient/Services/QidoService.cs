@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
         private void AppendQueryOptions(List<string> queries, bool fuzzyMatching, int limit, int offset)
         {
-            Guard.Against.Null(queries, nameof(queries));
+            Guard.Against.Null(queries);
             if (fuzzyMatching)
             {
                 queries.Add("fuzzymatching=true");
@@ -90,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
         private void AppendAdditionalFields(List<string> queries, IReadOnlyList<string> fieldsToInclude)
         {
-            Guard.Against.Null(queries, nameof(queries));
+            Guard.Against.Null(queries);
 
             if (fieldsToInclude is null || fieldsToInclude.Count == 0)
             {
@@ -105,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
         private void AppendQueryParameters(List<string> queries, IReadOnlyDictionary<string, string> queryParameters)
         {
-            Guard.Against.Null(queries, nameof(queries));
+            Guard.Against.Null(queries);
 
             if (queryParameters is null || queryParameters.Count == 0)
             {

@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -44,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// }
     /// </code>
     /// </example>
-    public class MonaiApplicationEntity
+    public class MonaiApplicationEntity : MongoDBEntityBase
     {
         /// <summary>
         /// Gets or sets the name of a MONAI DICOM application entity.
@@ -106,20 +107,16 @@ namespace Monai.Deploy.InformaticsGateway.Api
                 Grouping = "0020,000D";
             }
 
-            if (Workflows is null)
-            {
-                Workflows = new List<string>();
-            }
+            Workflows ??= new List<string>();
 
-            if (IgnoredSopClasses is null)
-            {
-                IgnoredSopClasses = new List<string>();
-            }
+            IgnoredSopClasses ??= new List<string>();
 
-            if (AllowedSopClasses is null)
-            {
-                AllowedSopClasses = new List<string>();
-            }
+            AllowedSopClasses ??= new List<string>();
+        }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}/AET: {AeTitle}";
         }
     }
 }

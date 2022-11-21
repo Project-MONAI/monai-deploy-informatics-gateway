@@ -16,7 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
@@ -27,7 +28,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Repositories;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
@@ -52,8 +53,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         private readonly Mock<ILogger<MonaiAeChangedNotificationService>> _loggerNotificationService;
         private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
 
-        private readonly Mock<IInformaticsGatewayRepository<SourceApplicationEntity>> _sourceEntityRepository;
-        private readonly Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>> _applicationEntityRepository;
+        private readonly Mock<ISourceApplicationEntityRepository> _sourceEntityRepository;
+        private readonly Mock<IMonaiApplicationEntityRepository> _applicationEntityRepository;
 
         private readonly IServiceProvider _serviceProvider;
 
@@ -70,8 +71,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _loggerNotificationService = new Mock<ILogger<MonaiAeChangedNotificationService>>();
             _monaiAeChangedNotificationService = new MonaiAeChangedNotificationService(_loggerNotificationService.Object);
             _storageInfoProvider = new Mock<IStorageInfoProvider>();
-            _sourceEntityRepository = new Mock<IInformaticsGatewayRepository<SourceApplicationEntity>>();
-            _applicationEntityRepository = new Mock<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
+            _sourceEntityRepository = new Mock<ISourceApplicationEntityRepository>();
+            _applicationEntityRepository = new Mock<IMonaiApplicationEntityRepository>();
             _connfiguration = Options.Create(new InformaticsGatewayConfiguration());
 
             var services = new ServiceCollection();
@@ -98,6 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall throw if AE Title not configured")]
         public async Task HandleCStoreRequest_ShallThrowIfAENotConfigured()
         {
+            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -127,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     Name =aet
                 }
             };
-            _applicationEntityRepository.Setup(p => p.AsQueryable()).Returns(data.AsQueryable());
+            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(data);
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -144,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
             _logger.VerifyLoggingMessageBeginsWith($"Instance queued for upload", LogLevel.Information, Times.Never());
 
-            _applicationEntityRepository.Verify(p => p.AsQueryable(), Times.Once());
+            _applicationEntityRepository.Verify(p => p.ToListAsync(It.IsAny<CancellationToken>()), Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
@@ -161,58 +163,44 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         }
 
         [RetryFact(5, 250, DisplayName = "IsValidSource - False when AE is empty or white space")]
-        public void IsValidSource_FalseWhenAEIsEmpty()
+        public async Task IsValidSource_FalseWhenAEIsEmptyAsync()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
                                                        _connfiguration);
 
-            Assert.False(manager.IsValidSource("  ", "123"));
-            Assert.False(manager.IsValidSource("AAA", ""));
+            Assert.False(await manager.IsValidSourceAsync("  ", "123").ConfigureAwait(false));
+            Assert.False(await manager.IsValidSourceAsync("AAA", "").ConfigureAwait(false));
         }
 
         [RetryFact(5, 250, DisplayName = "IsValidSource - False when no matching source found")]
-        public void IsValidSource_FalseWhenNoMatchingSource()
+        public async Task IsValidSource_FalseWhenNoMatchingSourceAsync()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
                                                        _connfiguration);
 
-            _sourceEntityRepository.Setup(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()))
-                .Returns(default(SourceApplicationEntity));
-            _sourceEntityRepository.Setup(p => p.AsQueryable()).Returns(
-                (new List<SourceApplicationEntity>
-                    { new SourceApplicationEntity { AeTitle = "SAE", HostIp = "1.2.3.4", Name = "SAE" } }
-                ).AsQueryable());
+            _sourceEntityRepository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(false);
+            _sourceEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(
+                (
+                    new List<SourceApplicationEntity>
+                    {
+                        new SourceApplicationEntity { AeTitle = "SAE", HostIp = "1.2.3.4", Name = "SAE" }
+                    }
+                ));
 
             var sourceAeTitle = "ValidSource";
-            Assert.False(manager.IsValidSource(sourceAeTitle, "1.2.3.4"));
+            Assert.False(await manager.IsValidSourceAsync(sourceAeTitle, "1.2.3.4").ConfigureAwait(false));
 
-            _sourceEntityRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()), Times.Once());
+            _sourceEntityRepository.Verify(p => p.ContainsAsync(It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(), It.IsAny<CancellationToken>()), Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Available source AET: SAE @ 1.2.3.4.", LogLevel.Information, Times.Once());
         }
 
-        [RetryFact(5, 250, DisplayName = "IsValidSource - False when IP does not match")]
-        public void IsValidSource_FalseWithMismatchIp()
-        {
-            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
-                                                       _serviceScopeFactory.Object,
-                                                       _monaiAeChangedNotificationService,
-                                                       _connfiguration);
-
-            var aet = "SAE";
-            _sourceEntityRepository.Setup(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()))
-                .Returns(default(SourceApplicationEntity));
-
-            Assert.False(manager.IsValidSource(aet, "1.1.1.1"));
-
-            _sourceEntityRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()), Times.Once());
-        }
-
         [RetryFact(5, 250, DisplayName = "IsValidSource - True")]
-        public void IsValidSource_True()
+        public async Task IsValidSource_TrueAsync()
         {
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
@@ -220,17 +208,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                                                        _connfiguration);
 
             var aet = "SAE";
-            _sourceEntityRepository.Setup(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()))
-                .Returns(new SourceApplicationEntity { AeTitle = aet, HostIp = "1.2.3.4", Name = "SAE" });
+            _sourceEntityRepository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(true);
 
-            Assert.True(manager.IsValidSource(aet, "1.2.3.4"));
+            Assert.True(await manager.IsValidSourceAsync(aet, "1.2.3.4").ConfigureAwait(false));
 
-            _sourceEntityRepository.Verify(p => p.FirstOrDefault(It.IsAny<Func<SourceApplicationEntity, bool>>()), Times.Once());
+            _sourceEntityRepository.Verify(p => p.ContainsAsync(It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Shall handle AE change events")]
-        public void ShallHandleAEChangeEvents()
+        public async Task ShallHandleAEChangeEventsAsync()
         {
+            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -242,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Added));
-            Assert.True(manager.IsAeTitleConfigured("AE1"));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
 
             _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
                 new MonaiApplicationEntity
@@ -250,13 +239,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Deleted));
-            Assert.False(manager.IsAeTitleConfigured("AE1"));
+            Assert.False(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
         }
 
         [RetryFact(5, 250, DisplayName = "Shall handle CS Store Request")]
         public async Task ShallHandleCStoreRequest()
         {
             var associationId = Guid.NewGuid();
+            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -268,7 +258,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Added));
-            Assert.True(manager.IsAeTitleConfigured("AE1"));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
 
             var request = GenerateRequest();
             await manager.HandleCStoreRequest(request, "AE1", "AE", associationId);

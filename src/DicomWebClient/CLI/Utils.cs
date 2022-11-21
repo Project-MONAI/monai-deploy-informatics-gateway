@@ -31,8 +31,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
     {
         public static void CheckAndConfirmOverwriteOutputFilename<T>(ILogger<T> logger, string filename)
         {
-            Guard.Against.Null(logger, nameof(logger));
-            Guard.Against.NullOrWhiteSpace(filename, nameof(filename));
+            Guard.Against.Null(logger);
+            Guard.Against.NullOrWhiteSpace(filename);
 
             if (File.Exists(filename))
             {
@@ -52,8 +52,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         public static void CheckAndConfirmOverwriteOutput<T>(ILogger<T> logger, string outputDir)
         {
-            Guard.Against.Null(logger, nameof(logger));
-            Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
+            Guard.Against.Null(logger);
+            Guard.Against.NullOrWhiteSpace(outputDir);
 
             if (Directory.Exists(outputDir))
             {
@@ -78,8 +78,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         public static AuthenticationHeaderValue GenerateFromUsernamePassword(string username, string password)
         {
-            Guard.Against.NullOrWhiteSpace(username, nameof(username));
-            Guard.Against.NullOrWhiteSpace(password, nameof(password));
+            Guard.Against.NullOrWhiteSpace(username);
+            Guard.Against.NullOrWhiteSpace(password);
 
             var authToken = Encoding.ASCII.GetBytes($"{username}:{password}");
             return new AuthenticationHeaderValue("Basic", Convert.ToBase64String(authToken));
@@ -93,9 +93,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         public static async Task SaveFiles<T>(ILogger<T> logger, DicomFile dicomFile, string filename)
         {
-            Guard.Against.Null(logger, nameof(logger));
-            Guard.Against.Null(dicomFile, nameof(dicomFile));
-            Guard.Against.NullOrWhiteSpace(filename, nameof(filename));
+            Guard.Against.Null(logger);
+            Guard.Against.Null(dicomFile);
+            Guard.Against.NullOrWhiteSpace(filename);
 
             logger.LogInformation($"Saving {filename}...");
             await dicomFile.SaveAsync(filename).ConfigureAwait(false);
@@ -103,9 +103,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         internal static async Task SaveJson(ILogger logger, string outputDir, string item, DicomTag filenameSourceTag)
         {
-            Guard.Against.Null(logger, nameof(logger));
-            Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
-            Guard.Against.NullOrWhiteSpace(item, nameof(item));
+            Guard.Against.Null(logger);
+            Guard.Against.NullOrWhiteSpace(outputDir);
+            Guard.Against.NullOrWhiteSpace(item);
 
             var token = JToken.Parse(item);
             var value = GetTagValueFromJson(token, filenameSourceTag);
@@ -125,9 +125,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         internal static async Task SaveJson(ILogger logger, string outputFilename, string text)
         {
-            Guard.Against.Null(logger, nameof(logger));
-            Guard.Against.NullOrWhiteSpace(outputFilename, nameof(outputFilename));
-            Guard.Against.NullOrWhiteSpace(text, nameof(text));
+            Guard.Against.Null(logger);
+            Guard.Against.NullOrWhiteSpace(outputFilename);
+            Guard.Against.NullOrWhiteSpace(text);
 
             var token = JToken.Parse(text);
             logger.LogInformation($"Saving JSON {outputFilename}...");
@@ -136,8 +136,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private static string GetTagValueFromJson(JToken token, DicomTag dicomTag, string defaultValue = "unknown")
         {
-            Guard.Against.Null(token, nameof(token));
-            Guard.Against.Null(dicomTag, nameof(dicomTag));
+            Guard.Against.Null(token);
+            Guard.Against.Null(dicomTag);
 
             var tag = $"{dicomTag.Group:X4}{dicomTag.Element:X4}";
 
