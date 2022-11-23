@@ -31,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
     {
         public static void AddRange(this HttpRequestMessage request, Tuple<int, int?> byteRange = null)
         {
-            Guard.Against.Null(request, nameof(request));
+            Guard.Against.Null(request);
             if (byteRange is null)
             {
                 request.Headers.Add(HeaderNames.Range, "byte=0-");
@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
 
         public static async IAsyncEnumerable<DicomFile> ToDicomAsyncEnumerable(this HttpResponseMessage response)
         {
-            Guard.Against.Null(response, nameof(response));
+            Guard.Against.Null(response);
             Guard.Against.Null(response.Content, nameof(response.Content));
             await foreach (var buffer in DecodeMultipartMessage(response))
             {
@@ -58,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
 
         public static async Task<byte[]> ToBinaryData(this HttpResponseMessage response)
         {
-            Guard.Against.Null(response, nameof(response));
+            Guard.Against.Null(response);
             using (var memoryStream = new MemoryStream())
             {
                 await foreach (var buffer in DecodeMultipartMessage(response))
@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
 
         private static async IAsyncEnumerable<byte[]> DecodeMultipartMessage(HttpResponseMessage response)
         {
-            Guard.Against.Null(response, nameof(response));
+            Guard.Against.Null(response);
             var contentType = response.Content.Headers.ContentType;
             if (contentType.MediaType != MimeMappings.MultiPartRelated)
             {

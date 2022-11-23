@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<RunnerState> IsApplicationRunning(ImageVersion imageVersion, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(imageVersion, nameof(imageVersion));
+            Guard.Against.Null(imageVersion);
 
             _logger.CheckingExistingAppContainer(Strings.ApplicationName, imageVersion.Version);
             var parameters = new ContainersListParameters
@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<ImageVersion> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(version, nameof(version));
+            Guard.Against.NullOrWhiteSpace(version);
 
             var results = await GetApplicationVersions(version, cancellationToken).ConfigureAwait(false);
             return results?.OrderByDescending(p => p.Created).FirstOrDefault();
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<IList<ImageVersion>> GetApplicationVersions(string version, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(version, nameof(version));
+            Guard.Against.NullOrWhiteSpace(version);
 
             _logger.ConnectingToDocker();
             var parameters = new ImagesListParameters
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<bool> StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(imageVersion, nameof(imageVersion));
+            Guard.Against.Null(imageVersion);
 
             _logger.CreatingDockerContainer(Strings.ApplicationName, imageVersion.Version, imageVersion.IdShort);
             var createContainerParams = new CreateContainerParameters
@@ -168,7 +168,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<bool> StopApplication(RunnerState runnerState, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(runnerState, nameof(runnerState));
+            Guard.Against.Null(runnerState);
 
             _logger.DockerContainerStopping(Strings.ApplicationName, runnerState.IdShort);
             var result = await _dockerClient.Containers.StopContainerAsync(runnerState.Id, new ContainerStopParameters() { WaitBeforeKillSeconds = 60 }, cancellationToken).ConfigureAwait(false);

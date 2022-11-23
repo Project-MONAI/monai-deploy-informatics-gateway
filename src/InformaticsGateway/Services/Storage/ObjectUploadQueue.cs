@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         public void Queue(FileStorageMetadata file)
         {
-            Guard.Against.Null(file, nameof(file));
+            Guard.Against.Null(file);
             _workItems.Enqueue(file);
 
             var process = Process.GetCurrentProcess();

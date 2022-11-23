@@ -36,8 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomDimseScuServicesStepDefinitions
     {
-        internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(7);
-        internal static readonly TimeSpan DicomWebWaitTimeSpan = TimeSpan.FromMinutes(2);
+        internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(3);
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly Configurations _configuration;
         private readonly DicomScp _dicomServer;
@@ -104,8 +103,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"(.*) (.*) studies for export")]
         public async Task GivenDICOMInstances(int studyCount, string modality)
         {
-            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
-            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
+            Guard.Against.NegativeOrZero(studyCount);
+            Guard.Against.NullOrWhiteSpace(modality);
 
             _dataProvider.GenerateDicomData(modality, studyCount);
             await _dataSink.SendAsync(_dataProvider);
@@ -115,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"a export request is sent for '([^']*)'")]
         public void WhenAExportRequestIsReceivedDesignatedFor(string routingKey)
         {
-            Guard.Against.NullOrWhiteSpace(routingKey, nameof(routingKey));
+            Guard.Against.NullOrWhiteSpace(routingKey);
 
             var exportRequestEvent = new ExportRequestEvent
             {
@@ -179,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
              }, (Dictionary<string, string> expected) =>
              {
                  return expected.Count == _dataProvider.DicomSpecs.FileHashes.Count;
-             }, DicomWebWaitTimeSpan, 1000);
+             }, DicomScpWaitTimeSpan, 1000);
 
             result.Should().NotBeNull().And.HaveCount(_dataProvider.DicomSpecs.FileHashes.Count);
         }

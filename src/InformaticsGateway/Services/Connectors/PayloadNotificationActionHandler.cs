@@ -26,8 +26,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Events;
@@ -62,8 +61,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public async Task NotifyAsync(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload, nameof(payload));
-            Guard.Against.Null(notificationQueue, nameof(notificationQueue));
+            Guard.Against.Null(payload);
+            Guard.Against.Null(notificationQueue);
 
             if (payload.State != Payload.PayloadState.Notify)
             {
@@ -73,39 +72,39 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             try
             {
                 await NotifyPayloadReady(payload).ConfigureAwait(false);
-                await DeletePayload(payload).ConfigureAwait(false);
+                await DeletePayload(payload, cancellationToken).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
                 payload.RetryCount++;
-                var action = await UpdatePayloadState(payload).ConfigureAwait(false);
+                var action = await UpdatePayloadState(payload, cancellationToken).ConfigureAwait(false);
                 if (action == PayloadAction.Updated)
                 {
                     await notificationQueue.Post(payload, _options.Value.Messaging.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false);
-                    _logger.FailedToPublishWorkflowRequest(payload.Id, ex);
+                    _logger.FailedToPublishWorkflowRequest(payload.PayloadId, ex);
                 }
             }
         }
 
-        private async Task DeletePayload(Payload payload)
+        private async Task DeletePayload(Payload payload, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(payload);
 
             var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IInformaticsGatewayRepository<Payload>>() ?? throw new ServiceNotFoundException(nameof(IInformaticsGatewayRepository<Payload>));
-            await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+            var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
+            await repository.RemoveAsync(payload, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task NotifyPayloadReady(Payload payload)
         {
-            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(payload);
 
-            _logger.GenerateWorkflowRequest(payload.Id);
+            _logger.GenerateWorkflowRequest(payload.PayloadId);
 
             var workflowRequest = new WorkflowRequestEvent
             {
                 Bucket = _options.Value.Storage.StorageServiceBucketName,
-                PayloadId = payload.Id,
+                PayloadId = payload.PayloadId,
                 Workflows = payload.GetWorkflows(),
                 FileCount = payload.Count,
                 CorrelationId = payload.CorrelationId,
@@ -132,31 +131,33 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger.WorkflowRequestPublished(_options.Value.Messaging.Topics.WorkflowRequest, message.MessageId, payload.Elapsed);
         }
 
-        private async Task<PayloadAction> UpdatePayloadState(Payload payload)
+        private async Task<PayloadAction> UpdatePayloadState(Payload payload, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(payload);
 
             var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IInformaticsGatewayRepository<Payload>>() ?? throw new ServiceNotFoundException(nameof(IInformaticsGatewayRepository<Payload>));
+            var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
 
             try
             {
                 if (payload.RetryCount > _options.Value.Storage.Retries.DelaysMilliseconds.Length)
                 {
-                    _logger.NotificationFailureStopRetry(payload.Id);
-                    await payload.DeletePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    _logger.NotificationFailureStopRetry(payload.PayloadId);
+                    await repository.RemoveAsync(payload, cancellationToken).ConfigureAwait(false);
+                    _logger.PayloadDeleted(payload.PayloadId);
                     return PayloadAction.Deleted;
                 }
                 else
                 {
-                    _logger.NotificationFailureRetryLater(payload.Id, payload.State, payload.RetryCount);
-                    await payload.UpdatePayload(_options.Value.Storage.Retries.RetryDelays, _logger, repository).ConfigureAwait(false);
+                    _logger.NotificationFailureRetryLater(payload.PayloadId, payload.State, payload.RetryCount);
+                    await repository.UpdateAsync(payload, cancellationToken).ConfigureAwait(false);
+                    _logger.PayloadSaved(payload.PayloadId);
                     return PayloadAction.Updated;
                 }
             }
             catch (Exception ex)
             {
-                _logger.ErrorUpdatingPayload(payload.Id, ex);
+                _logger.ErrorUpdatingPayload(payload.PayloadId, ex);
                 return PayloadAction.Updated;
             }
         }

@@ -58,8 +58,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
         public async Task<FhirStoreResult> StoreAsync(HttpRequest request, string correlationId, string resourceType, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request, nameof(request));
-            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.Null(request);
+            Guard.Against.NullOrWhiteSpace(correlationId);
 
             if (!MediaTypeHeaderValue.TryParse(request.ContentType, out var mediaTypeHeaderValue))
             {
@@ -97,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
         private IFHirRequestReader GetRequestReader(MediaTypeHeaderValue mediaTypeHeaderValue)
         {
-            Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
+            Guard.Against.Null(mediaTypeHeaderValue);
 
             var scope = _serviceScopeFactory.CreateScope();
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.ApplicationFhirJson, StringComparison.OrdinalIgnoreCase))

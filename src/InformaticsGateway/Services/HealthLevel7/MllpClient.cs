@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _exceptions = new List<Exception>();
             _messages = new List<Message>();
 
-            _loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "End point", _client.RemoteEndPoint }, { "CorrelationId", ClientId } });
+            _loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Endpoint", _client.RemoteEndPoint }, { "CorrelationId", ClientId } });
         }
 
         public async Task Start(Func<IMllpClient, MllpClientResult, Task> onDisconnect, CancellationToken cancellationToken)
@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private async Task<IList<Message>> ReceiveData(INetworkStream clientStream, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(clientStream, nameof(clientStream));
+            Guard.Against.Null(clientStream);
 
             var data = string.Empty;
             var messages = new List<Message>();
@@ -143,8 +143,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private async Task SendAcknowledgment(INetworkStream clientStream, Message message, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(clientStream, nameof(clientStream));
-            Guard.Against.Null(message, nameof(message));
+            Guard.Against.Null(clientStream);
+            Guard.Against.Null(message);
 
             if (!_configurations.SendAcknowledgment)
             {
@@ -171,7 +171,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private bool ShouldSendAcknowledgment(Message message)
         {
-            Guard.Against.Null(message, nameof(message));
+            Guard.Against.Null(message);
             try
             {
                 var value = message.DefaultSegment(Resources.MessageHeaderSegment).Fields(Resources.AcceptAcknowledgementType);

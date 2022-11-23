@@ -19,7 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
     internal class DestinationApplicationEntityConfiguration : IEntityTypeConfiguration<DestinationApplicationEntity>
     {
@@ -32,6 +32,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 
             builder.HasIndex(p => p.Name, "idx_destination_name").IsUnique();
             builder.HasIndex(p => new { p.Name, p.AeTitle, p.HostIp, p.Port }, "idx_source_all").IsUnique();
+
+            builder.Ignore(p => p.Id);
         }
     }
 }

@@ -117,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             return SendAssociationReleaseResponseAsync();
         }
 
-        public Task OnReceiveAssociationRequestAsync(DicomAssociation association)
+        public async Task OnReceiveAssociationRequestAsync(DicomAssociation association)
         {
             Interlocked.Increment(ref ScpService.ActiveConnections);
             _associationReceived = DateTimeOffset.UtcNow;
@@ -136,20 +136,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _loggerScope = _logger?.BeginScope(new LoggingDataDictionary<string, object> { { "Association", associationIdStr } });
             _logger?.CStoreAssociationReceived(association.RemoteHost, association.RemotePort);
 
-            if (!IsValidSourceAe(association.CallingAE, association.RemoteHost))
+            if (!await IsValidSourceAeAsync(association.CallingAE, association.RemoteHost).ConfigureAwait(false))
             {
-                return SendAssociationRejectAsync(
+                await SendAssociationRejectAsync(
                     DicomRejectResult.Permanent,
                     DicomRejectSource.ServiceUser,
-                    DicomRejectReason.CallingAENotRecognized);
+                    DicomRejectReason.CallingAENotRecognized).ConfigureAwait(false);
             }
 
-            if (!IsValidCalledAe(association.CalledAE))
+            if (!await IsValidCalledAeAsync(association.CalledAE).ConfigureAwait(false))
             {
-                return SendAssociationRejectAsync(
+                await SendAssociationRejectAsync(
                     DicomRejectResult.Permanent,
                     DicomRejectSource.ServiceUser,
-                    DicomRejectReason.CalledAENotRecognized);
+                    DicomRejectReason.CalledAENotRecognized).ConfigureAwait(false);
             }
 
             foreach (var pc in association.PresentationContexts)
@@ -159,11 +159,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                     if (!_associationDataProvider.Configuration.Value.Dicom.Scp.EnableVerification)
                     {
                         _logger?.VerificationServiceDisabled();
-                        return SendAssociationRejectAsync(
+                        await SendAssociationRejectAsync(
                             DicomRejectResult.Permanent,
                             DicomRejectSource.ServiceUser,
                             DicomRejectReason.ApplicationContextNotSupported
-                        );
+                        ).ConfigureAwait(false);
                     }
                     pc.AcceptTransferSyntaxes(_associationDataProvider.Configuration.Value.Dicom.Scp.VerificationServiceTransferSyntaxes.ToDicomTransferSyntaxArray());
                 }
@@ -171,29 +171,29 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 {
                     if (!_associationDataProvider.CanStore)
                     {
-                        return SendAssociationRejectAsync(
+                        await SendAssociationRejectAsync(
                             DicomRejectResult.Permanent,
                             DicomRejectSource.ServiceUser,
-                            DicomRejectReason.NoReasonGiven);
+                            DicomRejectReason.NoReasonGiven).ConfigureAwait(false);
                     }
                     // Accept any proposed TS
                     pc.AcceptTransferSyntaxes(pc.GetTransferSyntaxes().ToArray());
                 }
             }
 
-            return SendAssociationAcceptAsync(association);
+            await SendAssociationAcceptAsync(association).ConfigureAwait(false);
         }
 
-        private bool IsValidCalledAe(string calledAe)
+        private async Task<bool> IsValidCalledAeAsync(string calledAe)
         {
-            return _associationDataProvider.IsAeTitleConfigured(calledAe);
+            return await _associationDataProvider.IsAeTitleConfiguredAsync(calledAe).ConfigureAwait(false);
         }
 
-        private bool IsValidSourceAe(string callingAe, string host)
+        private async Task<bool> IsValidSourceAeAsync(string callingAe, string host)
         {
             if (!_associationDataProvider.Configuration.Value.Dicom.Scp.RejectUnknownSources) return true;
 
-            return _associationDataProvider.IsValidSource(callingAe, host);
+            return await _associationDataProvider.IsValidSourceAsync(callingAe, host);
         }
     }
 }

@@ -29,7 +29,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.Messaging.Events;
 using Polly;
@@ -77,13 +77,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private async Task HandleDesination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
+            Guard.Against.Null(exportRequestData);
 
             var manualResetEvent = new ManualResetEvent(false);
             DestinationApplicationEntity destination = null;
             try
             {
-                destination = LookupDestination(destinationName);
+                destination = await LookupDestinationAsync(destinationName, cancellationToken).ConfigureAwait(false);
             }
             catch (ConfigurationException ex)
             {
@@ -133,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private DestinationApplicationEntity LookupDestination(string destinationName)
+        private async Task<DestinationApplicationEntity> LookupDestinationAsync(string destinationName, CancellationToken cancellationToken)
         {
             if (string.IsNullOrWhiteSpace(destinationName))
             {
@@ -141,8 +141,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
 
             using var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<DestinationApplicationEntity>>();
-            var destination = repository.FirstOrDefault(p => p.Name.Equals(destinationName, StringComparison.InvariantCultureIgnoreCase));
+            var repository = scope.ServiceProvider.GetRequiredService<IDestinationApplicationEntityRepository>();
+            var destination = await repository.FindByNameAsync(destinationName, cancellationToken).ConfigureAwait(false);
 
             if (destination is null)
             {

@@ -35,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> StopCommandHandler(IHost host, bool yes, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(host, nameof(host));
+            Guard.Against.Null(host);
 
             var service = host.Services.GetRequiredService<IControlService>();
             var confirmation = host.Services.GetRequiredService<IConfirmationPrompt>();

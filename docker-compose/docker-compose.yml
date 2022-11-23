@@ -68,7 +68,7 @@ services:
     networks:
       - monaideploy
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/productiondb --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/productiondb --quiet
       interval: 10s
       timeout: 10s
       retries: 5

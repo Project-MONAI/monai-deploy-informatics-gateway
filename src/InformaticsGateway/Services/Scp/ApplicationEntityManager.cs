@@ -27,7 +27,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 
@@ -43,6 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly ConcurrentDictionary<string, IApplicationEntityHandler> _aeTitles;
         private readonly IDisposable _unsubscriberForMonaiAeChangedNotificationService;
+        private readonly Task _initializeTask;
         private bool _disposedValue;
 
         public IOptions<InformaticsGatewayConfiguration> Configuration { get; }
@@ -80,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _aeTitles = new ConcurrentDictionary<string, IApplicationEntityHandler>();
             applicationLifetime.ApplicationStopping.Register(OnApplicationStopping);
 
-            InitializeMonaiAeTitles();
+            _initializeTask = InitializeMonaiAeTitlesAsync();
         }
 
         ~ApplicationEntityManager() => Dispose(false);
@@ -91,12 +92,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
-#pragma warning disable S4457 // Parameter validation in "async"/"await" methods should be wrapped
 
         public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
-#pragma warning restore S4457 // Parameter validation in "async"/"await" methods should be wrapped
         {
-            Guard.Against.Null(request, nameof(request));
+            Guard.Against.Null(request);
+
+            await _initializeTask.ConfigureAwait(false);
 
             if (!_aeTitles.ContainsKey(calledAeTitle))
             {
@@ -123,9 +124,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        public bool IsAeTitleConfigured(string calledAe)
+        public async Task<bool> IsAeTitleConfiguredAsync(string calledAe)
         {
-            Guard.Against.NullOrWhiteSpace(calledAe, nameof(calledAe));
+            Guard.Against.NullOrWhiteSpace(calledAe);
+            await _initializeTask.ConfigureAwait(false);
 
             return _aeTitles.ContainsKey(calledAe);
         }
@@ -140,13 +142,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             return _loggerFactory.CreateLogger(calledAeTitle);
         }
 
-        private void InitializeMonaiAeTitles()
+        private async Task InitializeMonaiAeTitlesAsync()
         {
             _logger.LoadingMonaiAeTitles();
 
             using var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<MonaiApplicationEntity>>();
-            foreach (var ae in repository.AsQueryable())
+            var repository = scope.ServiceProvider.GetRequiredService<IMonaiApplicationEntityRepository>();
+            foreach (var ae in await repository.ToListAsync().ConfigureAwait(false))
             {
                 AddNewAeTitle(ae);
             }
@@ -154,6 +156,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private void AddNewAeTitle(MonaiApplicationEntity entity)
         {
+            Guard.Against.Null(entity);
+
             var scope = _serviceScopeFactory.CreateScope();
             var handler = scope.ServiceProvider.GetService<IApplicationEntityHandler>() ?? throw new ServiceNotFoundException(nameof(IApplicationEntityHandler));
             handler.Configure(entity, Configuration.Value.Dicom.WriteDicomJson, Configuration.Value.Dicom.ValidateDicomOnSerialization);
@@ -180,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public void OnNext(MonaiApplicationentityChangedEvent applicationChangedEvent)
         {
-            Guard.Against.Null(applicationChangedEvent, nameof(applicationChangedEvent));
+            Guard.Against.Null(applicationChangedEvent);
 
             switch (applicationChangedEvent.Event)
             {
@@ -195,7 +199,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        public bool IsValidSource(string callingAe, string host)
+        public async Task<bool> IsValidSourceAsync(string callingAe, string host)
         {
             if (string.IsNullOrWhiteSpace(callingAe) || string.IsNullOrWhiteSpace(host))
             {
@@ -203,18 +207,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             using var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IInformaticsGatewayRepository<SourceApplicationEntity>>();
-            var sourceAe = repository.FirstOrDefault(p => p.AeTitle.Equals(callingAe) && p.HostIp.Equals(host, StringComparison.OrdinalIgnoreCase));
+            var repository = scope.ServiceProvider.GetRequiredService<ISourceApplicationEntityRepository>();
+            var containsSource = await repository.ContainsAsync(p => p.AeTitle.Equals(callingAe) && p.HostIp.Equals(host)).ConfigureAwait(false);
 
-            if (sourceAe is null)
+            if (!containsSource)
             {
-                foreach (var src in repository.AsQueryable())
+                foreach (var src in await repository.ToListAsync().ConfigureAwait(false))
                 {
                     _logger.AvailableSource(src.AeTitle, src.HostIp);
                 }
             }
 
-            return sourceAe is not null;
+            return containsSource;
         }
 
         protected virtual void Dispose(bool disposing)

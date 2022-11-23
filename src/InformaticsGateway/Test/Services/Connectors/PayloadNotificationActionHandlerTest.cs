@@ -24,7 +24,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Messages;
@@ -40,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         private readonly Mock<IMessageBrokerPublisherService> _messageBrokerPublisherService;
-        private readonly Mock<IInformaticsGatewayRepository<Payload>> _informaticsGatewayReepository;
+        private readonly Mock<IPayloadRepository> _repository;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly ServiceProvider _serviceProvider;
@@ -53,12 +53,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _options = Options.Create(new InformaticsGatewayConfiguration());
 
             _messageBrokerPublisherService = new Mock<IMessageBrokerPublisherService>();
-            _informaticsGatewayReepository = new Mock<IInformaticsGatewayRepository<Payload>>();
+            _repository = new Mock<IPayloadRepository>();
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
             services.AddScoped(p => _messageBrokerPublisherService.Object);
-            services.AddScoped(p => _informaticsGatewayReepository.Object);
+            services.AddScoped(p => _repository.Object);
 
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
@@ -165,7 +165,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             await handler.NotifyAsync(payload, notifyAction, _cancellationTokenSource.Token);
 
-            _informaticsGatewayReepository.Verify(p => p.Remove(payload), Times.Once());
+            _repository.Verify(p => p.RemoveAsync(payload, _cancellationTokenSource.Token), Times.Once());
         }
 
         [Fact]
@@ -192,7 +192,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             await handler.NotifyAsync(payload, notifyAction, _cancellationTokenSource.Token);
 
             _messageBrokerPublisherService.Verify(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()), Times.AtLeastOnce());
-            _informaticsGatewayReepository.Verify(p => p.Remove(It.IsAny<Payload>()), Times.AtLeastOnce());
+            _repository.Verify(p => p.RemoveAsync(payload, _cancellationTokenSource.Token), Times.AtLeastOnce());
         }
     }
 }

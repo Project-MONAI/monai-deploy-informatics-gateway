@@ -16,7 +16,6 @@
 
 using System.Diagnostics;
 using BoDi;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -25,7 +24,6 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Repositories;
@@ -43,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
         private static RabbitMQMessagePublisherService s_rabbitMqPublisher;
         private static RabbitMqConsumer s_rabbitMqConsumer_WorkflowRequest;
         private static RabbitMqConsumer s_rabbitMqConsumer_ExportComplete;
-        private static EfDataProvider s_database;
+        private static IDatabaseDataProvider s_database;
         private static DicomScp s_dicomServer;
         private static DataProvider s_dataProvider;
         private static Assertions s_assertions;
@@ -62,9 +60,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _objectContainer = objectContainer;
         }
 
-        /// <summary>
-        /// Runs before all tests to create static implementions of Rabbit and Mongo clients as well as starting the WorkflowManager using WebApplicationFactory.
-        /// </summary>
         [BeforeTestRun(Order = 0)]
         public static void Init(ISpecFlowOutputHelper outputHelper)
         {
@@ -75,6 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             SetupRabbitMq(outputHelper, scope);
 
             s_database = GetDatabase(scope.ServiceProvider, outputHelper);
+            s_database.ClearAllData();
             s_dicomServer = new DicomScp(outputHelper);
             s_dataProvider = new DataProvider(Configurations.Instance, outputHelper);
             s_assertions = new Assertions(Configurations.Instance, s_options.Value, outputHelper);
@@ -134,17 +130,27 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             s_rabbitMqConsumer_ExportComplete = new RabbitMqConsumer(rabbitMqSubscriber_ExportComplete, s_options.Value.Messaging.Topics.ExportComplete, outputHelper);
         }
 
-        private static EfDataProvider GetDatabase(IServiceProvider serviceProvider, ISpecFlowOutputHelper outputHelper)
+        private static IDatabaseDataProvider GetDatabase(IServiceProvider serviceProvider, ISpecFlowOutputHelper outputHelper)
         {
             var config = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: false)
+                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("DOTNET_TEST")}.json", optional: true, reloadOnChange: false)
                 .Build();
-            var connectionString = config.GetSection("ConnectionStrings:InformaticsGatewayDatabase").Value;
+            var dbType = config.GetSection("ConnectionStrings:Type").Value;
 
-            var builder = new DbContextOptionsBuilder<InformaticsGatewayContext>();
-            builder.UseSqlite(connectionString);
-            var dbContext = new InformaticsGatewayContext(builder.Options);
-            return new EfDataProvider(outputHelper, Configurations.Instance, dbContext);
+            if (dbType == DatabaseManager.DbType_Sqlite)
+            {
+                var connectionString = config.GetSection("ConnectionStrings:InformaticsGatewayDatabase").Value;
+                return new EfDataProvider(outputHelper, Configurations.Instance, connectionString);
+            }
+            else if (dbType == DatabaseManager.DbType_MongoDb)
+            {
+                var connectionString = config.GetSection("ConnectionStrings:InformaticsGatewayDatabase").Value;
+                var databaseName = config.GetSection("ConnectionStrings:DatabaseName").Value;
+                return new MongoDBDataProvider(outputHelper, Configurations.Instance, connectionString, databaseName);
+            }
+
+            throw new Exception("Unknown database specified");
         }
 
         [BeforeScenario(Order = 0)]
@@ -179,12 +185,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             s_rabbitMqConnectionFactory.Dispose();
         }
 
+
         [AfterTestRun(Order = 0)]
         [AfterScenario]
         public static void ClearTestData(ISpecFlowOutputHelper outputHelper)
         {
             s_minioSink.CleanBucketAsync();
             RabbitConnectionFactory.PurgeAllQueues(s_options.Value.Messaging);
+            s_database.ClearAllData();
             outputHelper.WriteLine($"=============================== END ===============================");
         }
 

@@ -83,8 +83,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 722, Level = LogLevel.Debug, Message = "Copy files statistics: {threads} threads, {seconds} seconds.")]
         public static partial void CopyStats(this ILogger logger, int threads, double seconds);
 
-        [LoggerMessage(EventId = 724, Level = LogLevel.Debug, Message = "Moving temporary file {identifier} to payload {payloadId} directory on storage service.")]
-        public static partial void MovingFileToPayloadDirectory(this ILogger logger, Guid payloadId, string identifier);
+        [LoggerMessage(EventId = 724, Level = LogLevel.Debug, Message = "Moving temporary file to payload {payloadId} directory {destination} on storage service.")]
+        public static partial void MovingFileToPayloadDirectory(this ILogger logger, Guid payloadId, string destination);
 
         [LoggerMessage(EventId = 727, Level = LogLevel.Debug, Message = "Deleting temporary file {identifier} from temporary bucket {bucket} at {remotePath}.")]
         public static partial void DeletingFileFromTemporaryBbucket(this ILogger logger, string bucket, string identifier, string remotePath);
@@ -106,5 +106,23 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 733, Level = LogLevel.Debug, Message = "Storage metadata object {identifier} deleted.")]
         public static partial void StorageMetadataObjectDeleted(this ILogger logger, string identifier);
+
+        [LoggerMessage(EventId = 734, Level = LogLevel.Error, Message = "File {destinationPath} in payload {payloadId} moved but cannot be found on the storage service.")]
+        public static partial void FileMovedVerificationFailure(this ILogger logger, Guid payloadId, string destinationPath);
+
+        [LoggerMessage(EventId = 735, Level = LogLevel.Trace, Message = "File already moved to {destinationPath} in payload {payloadId}.")]
+        public static partial void AlreadyMoved(this ILogger logger, Guid payloadId, string destinationPath);
+
+        [LoggerMessage(EventId = 736, Level = LogLevel.Debug, Message = "Failed to delete temporary file {identifier} from temporary bucket {bucket} at {remotePath}.")]
+        public static partial void ErrorDeletingFileAfterMoveComplete(this ILogger logger, string bucket, string identifier, string remotePath);
+
+        [LoggerMessage(EventId = 737, Level = LogLevel.Trace, Message = "File found on storage service {bucket}: {filePath}.")]
+        public static partial void FileFounddOnStorageService(this ILogger logger, string bucket, string filePath);
+
+        [LoggerMessage(EventId = 738, Level = LogLevel.Error, Message = "Error listing files on storage service.")]
+        public static partial void ErrorListingFilesOnStorageService(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 739, Level = LogLevel.Trace, Message = "Total number of files found on storage service {bucket}: {count}.")]
+        public static partial void FilesFounddOnStorageService(this ILogger logger, string bucket, int count);
     }
 }

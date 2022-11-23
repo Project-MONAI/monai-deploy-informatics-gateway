@@ -99,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _messageSubscriber.OnConnectionError += (sender, args) =>
             {
-                _logger.MessagingServiceErrorRecover(args.ShutdownEventArguments.ToString());
+                _logger.MessagingServiceErrorRecover(args.ErrorMessage);
                 SetupPolling();
             };
         }
@@ -203,8 +203,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         // https://github.com/dotnet/runtime/issues/30863
         private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestEventDetails exportRequest, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(exportRequest, nameof(exportRequest));
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequest.ExportTaskId }, { "CorrelationId", exportRequest.CorrelationId } });
+            Guard.Against.Null(exportRequest);
+            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequest.ExportTaskId }, { "CorrelationId", exportRequest.CorrelationId } });
             var scope = _serviceScopeFactory.CreateScope();
             var storageService = scope.ServiceProvider.GetRequiredService<IStorageService>();
 
@@ -245,7 +245,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)
         {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
 
             var exportRequest = _exportRequests[exportRequestData.ExportTaskId];
             lock (SyncRoot)

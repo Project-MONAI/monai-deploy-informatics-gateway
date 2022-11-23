@@ -19,7 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
     internal class StorageMetadataWrapperEntityConfiguration : IEntityTypeConfiguration<StorageMetadataWrapper>
     {
@@ -37,6 +37,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.HasIndex(p => new { p.CorrelationId, p.Identity }, "idx_storagemetadata_ids");
             builder.HasIndex(p => p.CorrelationId, "idx_storagemetadata_correlation");
             builder.HasIndex(p => p.IsUploaded, "idx_storagemetadata_uploaded");
+
+            builder.Ignore(p => p.Id);
         }
     }
 }

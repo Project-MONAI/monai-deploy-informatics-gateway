@@ -34,14 +34,14 @@ namespace Monai.Deploy.InformaticsGateway.Common
             IFileSystem fileSystem = null,
             string temporaryStoragePath = "")
         {
-            Guard.Against.Null(dicomFile, nameof(dicomFile));
-            Guard.Against.Null(dicomJson, nameof(dicomJson)); // allow empty here
+            Guard.Against.Null(dicomFile);
+            Guard.Against.Null(dicomJson); // allow empty here
 
             switch (storageLocation)
             {
                 case TemporaryDataStorageLocation.Disk:
-                    Guard.Against.Null(fileSystem, nameof(fileSystem));
-                    Guard.Against.NullOrWhiteSpace(temporaryStoragePath, nameof(temporaryStoragePath));
+                    Guard.Against.Null(fileSystem);
+                    Guard.Against.NullOrWhiteSpace(temporaryStoragePath);
 
                     var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{fileSystem.Path.GetRandomFileName()}");
                     dicomFileStorageMetadata.File.Data = fileSystem.File.Create(tempFile);
@@ -80,13 +80,13 @@ namespace Monai.Deploy.InformaticsGateway.Common
             IFileSystem fileSystem = null,
             string temporaryStoragePath = "")
         {
-            Guard.Against.Null(message, nameof(message)); // allow empty here
+            Guard.Against.Null(message); // allow empty here
 
             switch (storageLocation)
             {
                 case TemporaryDataStorageLocation.Disk:
-                    Guard.Against.Null(fileSystem, nameof(fileSystem));
-                    Guard.Against.NullOrWhiteSpace(temporaryStoragePath, nameof(temporaryStoragePath));
+                    Guard.Against.Null(fileSystem);
+                    Guard.Against.NullOrWhiteSpace(temporaryStoragePath);
 
                     var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{fileSystem.Path.GetRandomFileName()}");
                     var stream = fileSystem.File.Create(tempFile);

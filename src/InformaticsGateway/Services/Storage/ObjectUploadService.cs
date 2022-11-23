@@ -143,7 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private async Task ProcessObject(FileStorageMetadata blob)
         {
-            Guard.Against.Null(blob, nameof(blob));
+            Guard.Against.Null(blob);
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "File ID", blob.Id }, { "CorrelationId", blob.CorrelationId } });
             var stopwatch = new Stopwatch();
@@ -156,12 +156,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                     case DicomFileStorageMetadata dicom:
                         if (!string.IsNullOrWhiteSpace(dicom.JsonFile.TemporaryPath))
                         {
-                            await UploadData(dicom.Id, dicom.JsonFile, dicom.Source, dicom.Workflows, _cancellationTokenSource.Token).ConfigureAwait(false);
+                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.Source, dicom.Workflows, _cancellationTokenSource.Token).ConfigureAwait(false);
                         }
                         break;
                 }
 
-                await UploadData(blob.Id, blob.File, blob.Source, blob.Workflows, _cancellationTokenSource.Token).ConfigureAwait(false);
+                await UploadFileAndConfirm(blob.Id, blob.File, blob.Source, blob.Workflows, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -174,18 +174,50 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             }
         }
 
-        private async Task UploadData(string identifier, StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, CancellationToken cancellationToken)
+        private async Task UploadFileAndConfirm(string identifier, StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
-            Guard.Against.Null(storageObjectMetadata, nameof(storageObjectMetadata));
-            Guard.Against.NullOrWhiteSpace(source, nameof(source));
-            Guard.Against.Null(workflows, nameof(workflows));
+            Guard.Against.NullOrWhiteSpace(identifier);
+            Guard.Against.Null(storageObjectMetadata);
+            Guard.Against.NullOrWhiteSpace(source);
+            Guard.Against.Null(workflows);
 
             if (storageObjectMetadata.IsUploaded)
             {
                 return;
             }
 
+            var count = 3;
+            do
+            {
+                await UploadFile(storageObjectMetadata, source, workflows, cancellationToken).ConfigureAwait(false);
+                if (count-- <= 0)
+                {
+                    throw new FileUploadException($"Failed to upload file after retries {identifier}.");
+                }
+            } while (!(await VerifyExists(storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath)).ConfigureAwait(false)));
+        }
+
+        private async Task<bool> VerifyExists(string path)
+        {
+            try
+            {
+                var result = await _storageService.VerifyObjectExistsAsync(
+                       _configuration.Value.Storage.TemporaryStorageBucket,
+                       new KeyValuePair<string, string>(path, path)).ConfigureAwait(false);
+
+                var exists = result.Key.Equals(path, StringComparison.OrdinalIgnoreCase);
+                _logger.VerifyFileExists(path, exists);
+                return exists;
+            }
+            catch (Exception ex)
+            {
+                _logger.FailedToVerifyFileExistence(path, ex);
+                throw;
+            }
+        }
+
+        private async Task UploadFile(StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, CancellationToken cancellationToken)
+        {
             _logger.UploadingFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
             var metadata = new Dictionary<string, string>
                 {
@@ -215,6 +247,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                    storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket);
                })
                .ConfigureAwait(false);
+            _logger.UploadedFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
         }
 
         protected virtual void Dispose(bool disposing)

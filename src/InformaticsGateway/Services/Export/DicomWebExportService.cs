@@ -30,10 +30,10 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.Messaging.Events;
 using Polly;
@@ -90,11 +90,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private async Task HandleTransaction(ExportRequestDataMessage exportRequestData, IInferenceRequestRepository repository, string transaction, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
-            Guard.Against.Null(repository, nameof(repository));
-            Guard.Against.NullOrWhiteSpace(transaction, nameof(transaction));
+            Guard.Against.Null(exportRequestData);
+            Guard.Against.Null(repository);
+            Guard.Against.NullOrWhiteSpace(transaction);
 
-            var inferenceRequest = repository.GetInferenceRequest(transaction);
+            var inferenceRequest = await repository.GetInferenceRequestAsync(transaction, cancellationToken).ConfigureAwait(false);
             if (inferenceRequest is null)
             {
                 var errorMessage = $"The specified inference request '{transaction}' cannot be found and will not be exported.";
@@ -166,7 +166,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void CheckAndLogResult(DicomWebResponse<string> result)
         {
-            Guard.Against.Null(result, nameof(result));
+            Guard.Against.Null(result);
             switch (result.StatusCode)
             {
                 case System.Net.HttpStatusCode.OK:

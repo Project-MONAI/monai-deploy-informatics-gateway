@@ -17,23 +17,28 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
-    public class StorageMetadataWrapper
+    /// <summary>
+    /// A wrapper class to support polymorphic types of <see cref="FileStorageMetadata" />
+    /// </summary>
+    public class StorageMetadataWrapper : MongoDBEntityBase
     {
         [JsonPropertyName("correlationId")]
-        public string CorrelationId { get; set; }
+        public string CorrelationId { get; set; } = string.Empty;
 
         [JsonPropertyName("identity")]
-        public string Identity { get; set; }
+        public string Identity { get; set; } = string.Empty;
 
         [JsonPropertyName("value")]
-        public string Value { get; set; }
+        public string Value { get; set; } = string.Empty;
 
         [JsonPropertyName("typeName")]
-        public string TypeName { get; set; }
+        public string TypeName { get; set; } = string.Empty;
 
         [JsonPropertyName("isUploaded")]
         public bool IsUploaded { get; set; }
@@ -43,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 
         public StorageMetadataWrapper(FileStorageMetadata metadata)
         {
-            Guard.Against.Null(metadata, nameof(metadata));
+            Guard.Against.Null(metadata);
 
             CorrelationId = metadata.CorrelationId;
             Identity = metadata.Id;
@@ -52,17 +57,35 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 
         public void Update(FileStorageMetadata metadata)
         {
-            Guard.Against.Null(metadata, nameof(metadata));
+            Guard.Against.Null(metadata);
 
             IsUploaded = metadata.IsUploaded;
-            Value = JsonSerializer.Serialize<object>(metadata);
-            TypeName = metadata.GetType().AssemblyQualifiedName;
+            Value = JsonSerializer.Serialize<object>(metadata); // Must be <object> here
+
+            if (metadata.GetType() is null || string.IsNullOrWhiteSpace(metadata.GetType().AssemblyQualifiedName))
+            {
+                throw new ArgumentException("Unable to determine the type", nameof(metadata));
+            }
+            TypeName = metadata.GetType().AssemblyQualifiedName!;
         }
 
         public FileStorageMetadata GetObject()
         {
             var type = Type.GetType(TypeName, true);
+
+            if (type is null)
+            {
+                throw new NotSupportedException($"Unable to locate type {TypeName} in the current application.");
+            }
+
+#pragma warning disable CS8603 // Possible null reference return.
             return JsonSerializer.Deserialize(Value, type) as FileStorageMetadata;
+#pragma warning restore CS8603 // Possible null reference return.
+        }
+
+        public override string ToString()
+        {
+            return $"Identity: {Identity}";
         }
     }
 }

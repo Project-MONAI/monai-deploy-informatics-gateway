@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
         /// <inheritdoc />
         public async Task<DicomWebResponse<string>> Store(string studyInstanceUid, IEnumerable<DicomFile> dicomFiles, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrEmpty(dicomFiles, nameof(dicomFiles));
+            Guard.Against.NullOrEmpty(dicomFiles);
 
             var postUri = GetStudiesUri(studyInstanceUid);
 

@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         public override void Log(FellowOakDicom.Log.LogLevel level, string msg, params object[] args)
         {
-            Guard.Against.NullOrWhiteSpace(msg, nameof(msg));
+            Guard.Against.NullOrWhiteSpace(msg);
 
             _logger.Log(level.ToMicrosoftExtensionsLogLevel(), msg, args);
         }

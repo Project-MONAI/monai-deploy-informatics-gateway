@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -29,7 +28,7 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 
@@ -89,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
-        public Task StartAsync(CancellationToken cancellationToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             _moveFileQueue = new ActionBlock<Payload>(
                     MoveActionHandler,
@@ -109,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         CancellationToken = cancellationToken
                     });
 
-            RestoreFromDatabase();
+            await RestoreFromDatabaseAsync(cancellationToken).ConfigureAwait(false);
 
             var task = Task.Run(() =>
             {
@@ -120,15 +119,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger.ServiceStarted(ServiceName);
 
             if (task.IsCompleted)
-                return task;
-            return Task.CompletedTask;
+                await task.ConfigureAwait(false);
+
+            await Task.CompletedTask.ConfigureAwait(false);
         }
 
         private async Task NotificationHandler(Payload payload)
         {
-            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(payload);
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "CorrelationId", payload.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
 
             try
             {
@@ -150,9 +150,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task MoveActionHandler(Payload payload)
         {
-            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(payload);
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.Id }, { "CorrelationId", payload.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
 
             try
             {
@@ -183,7 +183,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     payload = _payloadAssembler.Dequeue(cancellationToken);
                     _moveFileQueue.Post(payload);
-                    _logger.PayloadQueuedForProcessing(payload.Id, ServiceName);
+                    _logger.PayloadQueuedForProcessing(payload.PayloadId, ServiceName);
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -195,21 +195,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 catch (Exception ex)
                 {
-                    _logger.ErrorProcessingPayload(payload?.Id, ex);
+                    _logger.ErrorProcessingPayload(payload?.PayloadId, ex);
                 }
             }
             Status = ServiceStatus.Cancelled;
             _logger.ServiceCancelled(ServiceName);
         }
 
-        private void RestoreFromDatabase()
+        private async Task RestoreFromDatabaseAsync(CancellationToken cancellationToken)
         {
             _logger.StartupRestoreFromDatabase();
 
             var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetService<IInformaticsGatewayRepository<Payload>>() ?? throw new ServiceNotFoundException(nameof(IInformaticsGatewayRepository<Payload>));
+            var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
 
-            var payloads = repository.AsQueryable().Where(p => SupportedStates.Contains(p.State));
+            var payloads = await repository.GetPayloadsInStateAsync(cancellationToken, SupportedStates).ConfigureAwait(false);
             foreach (var payload in payloads)
             {
                 if (payload.State == Payload.PayloadState.Move)
@@ -221,7 +221,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _publishQueue.Post(payload);
                 }
             }
-            _logger.RestoredFromDatabase(payloads.Count());
+            _logger.RestoredFromDatabase(payloads.Count);
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

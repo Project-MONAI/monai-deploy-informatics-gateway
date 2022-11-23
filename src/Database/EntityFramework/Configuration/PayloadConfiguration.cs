@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
@@ -24,8 +21,9 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
+#pragma warning disable CS8604, CS8603
     internal class PayloadConfiguration : IEntityTypeConfiguration<Payload>
     {
         public void Configure(EntityTypeBuilder<Payload> builder)
@@ -40,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
 
-            builder.HasKey(j => j.Id);
+            builder.HasKey(j => j.PayloadId);
 
             builder.Property(j => j.Timeout).IsRequired();
             builder.Property(j => j.Key).IsRequired();
@@ -61,7 +59,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Ignore(j => j.Count);
 
             builder.HasIndex(p => p.State, "idx_payload_state");
-            builder.HasIndex(p => new { p.CorrelationId, p.Id }, "idx_payload_ids").IsUnique();
+            builder.HasIndex(p => new { p.CorrelationId, p.PayloadId }, "idx_payload_ids").IsUnique();
         }
     }
+#pragma warning restore CS8604, CS8603
 }
