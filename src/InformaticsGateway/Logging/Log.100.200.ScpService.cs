@@ -97,5 +97,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 212, Level = LogLevel.Error, Message = "Failed to process C-STORE request, out of storage space.")]
         public static partial void CStoreFailedDueToLowStorageSpace(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 213, Level = LogLevel.Error, Message = "Error saving DICOM association information. Correlation ID={correlationId}.")]
+        public static partial void ErrorSavingDicomAssociationInfo(this ILogger logger, Guid correlationId, Exception ex);
     }
 }
