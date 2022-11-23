@@ -16,9 +16,9 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             _logger.InstanceAddedToUploadQueue(file.Id, _workItems.Count, process.WorkingSet64 / 1024.0);
         }
 
-        public FileStorageMetadata Dequeue(CancellationToken cancellationToken)
+        public async Task<FileStorageMetadata> Dequeue(CancellationToken cancellationToken)
         {
             while (!cancellationToken.IsCancellationRequested)
             {
@@ -55,6 +55,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 {
                     _logger.InstanceInUploadQueue(_workItems.Count);
                     return reuslt;
+                }
+                if (_workItems.IsEmpty)
+                {
+                    await Task.Delay(100, cancellationToken).ConfigureAwait(false);
                 }
             }
             throw new OperationCanceledException("Cancellation requested.");
