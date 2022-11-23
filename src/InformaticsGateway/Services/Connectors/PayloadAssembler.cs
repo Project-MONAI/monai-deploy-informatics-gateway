@@ -123,10 +123,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             try
             {
                 await _intializedTask.ConfigureAwait(false);
+
                 _timer.Enabled = false;
-                if (_payloads.Any())
+                if (_payloads.Count > 0)
                 {
-                    _logger.BucketActive(_payloads.Count);
+                    _logger.BucketsActive(_payloads.Count);
                 }
                 foreach (var key in _payloads.Keys)
                 {
@@ -147,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     }
                     else if (payload.HasTimedOut)
                     {
-                        if (payload.ContainerUploadFailures())
+                        if (payload.AnyUploadFailures())
                         {
                             _payloads.TryRemove(key, out _);
                             _logger.PayloadRemovedWithFailureUploads(key);
