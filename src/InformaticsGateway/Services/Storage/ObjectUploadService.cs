@@ -20,7 +20,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -32,7 +31,6 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.Storage.API;
 using Polly;
@@ -106,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 try
                 {
-                    var item = _uplaodQueue.Dequeue(cancellationToken);
+                    var item = await _uplaodQueue.Dequeue(cancellationToken);
                     await ProcessObject(item);
                 }
                 catch (OperationCanceledException ex)

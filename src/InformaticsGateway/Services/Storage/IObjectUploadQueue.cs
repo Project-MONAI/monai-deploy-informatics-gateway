@@ -16,6 +16,7 @@
  */
 
 using System.Threading;
+using System.Threading.Tasks;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
@@ -36,6 +37,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         /// The default implementation blocks the call until a file is available from the queue.
         /// </summary>
         /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-        FileStorageMetadata Dequeue(CancellationToken cancellationToken);
+        Task<FileStorageMetadata> Dequeue(CancellationToken cancellationToken);
     }
 }
