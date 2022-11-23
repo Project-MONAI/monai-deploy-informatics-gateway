@@ -121,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
             // ignore
         }
 
-        public void OnConnectionClosed(Exception exception)
+        public void OnConnectionClosedAsync(Exception exception)
         {
             // ignore
         }
@@ -141,5 +141,8 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
         {
             return Task.FromResult(new DicomCEchoResponse(request, DicomStatus.Success));
         }
+
+        public void OnConnectionClosed(Exception exception)
+        { }
     }
 }

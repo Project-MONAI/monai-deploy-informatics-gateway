@@ -33,7 +33,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
     public class MongoDatabaseFixture
     {
-
         public IMongoClient Client { get; set; }
         public IMongoDatabase Database { get; set; }
         public IOptions<MongoDBOptions> Options { get; set; }
@@ -58,7 +57,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet4 = new DestinationApplicationEntity { AeTitle = "AET4", HostIp = "1.2.3.4", Port = 114, Name = "AET4", DateTimeCreated = DateTime.UtcNow };
             var aet5 = new DestinationApplicationEntity { AeTitle = "AET5", HostIp = "1.2.3.4", Port = 114, Name = "AET5", DateTimeCreated = DateTime.UtcNow };
 
-            collection.DeleteMany("{ }");
             collection.InsertOne(aet1);
             collection.InsertOne(aet2);
             collection.InsertOne(aet3);
@@ -76,7 +74,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet4 = new MonaiApplicationEntity { AeTitle = "AET4", Name = "AET4", DateTimeCreated = DateTime.UtcNow };
             var aet5 = new MonaiApplicationEntity { AeTitle = "AET5", Name = "AET5", DateTimeCreated = DateTime.UtcNow };
 
-            collection.DeleteMany("{ }");
             collection.InsertOne(aet1);
             collection.InsertOne(aet2);
             collection.InsertOne(aet3);
@@ -94,7 +91,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet4 = new SourceApplicationEntity { AeTitle = "AET4", Name = "AET4", HostIp = "1.2.3.4", DateTimeCreated = DateTime.UtcNow };
             var aet5 = new SourceApplicationEntity { AeTitle = "AET5", Name = "AET5", HostIp = "1.2.3.4", DateTimeCreated = DateTime.UtcNow };
 
-            collection.DeleteMany("{ }");
             collection.InsertOne(aet1);
             collection.InsertOne(aet2);
             collection.InsertOne(aet3);
@@ -102,16 +98,33 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             collection.InsertOne(aet5);
         }
 
-
         public void InitDatabaseWithInferenceRequests()
         {
             var collection = Database.GetCollection<InferenceRequest>(nameof(InferenceRequest));
             Clear(collection);
         }
 
+        internal void InitDatabaseWithDicomAssociationInfoEntries()
+        {
+            var collection = Database.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
+            Clear(collection);
+
+            var da1 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+            var da2 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+            var da3 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+            var da4 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+            var da5 = new DicomAssociationInfo { CalledAeTitle = Guid.NewGuid().ToString(), CallingAeTitle = Guid.NewGuid().ToString(), CorrelationId = Guid.NewGuid().ToString(), RemoteHost = "host", RemotePort = 123 };
+
+            collection.InsertOne(da1);
+            collection.InsertOne(da2);
+            collection.InsertOne(da3);
+            collection.InsertOne(da4);
+            collection.InsertOne(da5);
+        }
+
         public static void Clear<T>(IMongoCollection<T> collection) where T : class
         {
-            var result = collection.DeleteMany(Builders<T>.Filter.Empty);
+            collection.DeleteMany(Builders<T>.Filter.Empty);
         }
     }
 }
