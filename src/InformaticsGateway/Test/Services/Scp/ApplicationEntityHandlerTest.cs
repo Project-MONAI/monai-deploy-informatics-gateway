@@ -16,8 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
-        private readonly Mock<IFileSystem> _fileSystem;
+        private readonly IFileSystem _fileSystem;
         private readonly IServiceProvider _serviceProvider;
 
         public ApplicationEntityHandlerTest()
@@ -58,19 +58,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _uploadQueue = new Mock<IObjectUploadQueue>();
             _options = Options.Create<InformaticsGatewayConfiguration>(new InformaticsGatewayConfiguration());
-            _fileSystem = new Mock<IFileSystem>();
+            _fileSystem = new MockFileSystem();
 
             var services = new ServiceCollection();
             services.AddScoped(p => _payloadAssembler.Object);
             services.AddScoped(p => _uploadQueue.Object);
-            services.AddScoped(p => _fileSystem.Object);
+            services.AddScoped(p => _fileSystem);
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
-            _fileSystem.Setup(p => p.File.Create(It.IsAny<string>())).Returns(FileStream.Null);
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _options.Value.Storage.TemporaryDataStorage = TemporaryDataStorageLocation.Memory;
         }
 
         [RetryFact(5, 250)]
