@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,6 +26,7 @@
     <LangVersion>latest</LangVersion>
     <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <UserSecretsId>be0fffc8-bebb-4509-a2c0-3c981e5415ab</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -50,7 +51,7 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
     <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.18" />
-    <PackageReference Include="Monai.Deploy.Security" Version="0.1.0" />
+    <PackageReference Include="Monai.Deploy.Security" Version="0.2.0-vchang-logging0008" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.11" />
     <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.11" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.0" />

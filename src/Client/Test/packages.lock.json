@@ -725,8 +725,8 @@
       },
       "Monai.Deploy.Security": {
         "type": "Transitive",
-        "resolved": "0.1.0",
-        "contentHash": "ZbHei1e/jZVk3pTiTSjlB5dy3VsFBEGed9Md19xfal07K1vHGgn4+LNd+izdB7wAGhVRR0VuDNuCn6teO1Ljhw==",
+        "resolved": "0.2.0-vchang-logging0008",
+        "contentHash": "YUgEwyLIe3DVk+SwVMS1sXRJUlpqleHPoNWeIl+sCFbGDzDvjn8k7nnLPgM8KuZ8vpMgVcimBarCThSyDyf8kA==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.0.1",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.11",
@@ -1688,7 +1688,7 @@
           "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.DicomWeb.Client": "[1.0.0, )",
           "Monai.Deploy.Messaging.RabbitMQ": "[0.1.18, )",
-          "Monai.Deploy.Security": "[0.1.0, )",
+          "Monai.Deploy.Security": "[0.2.0-vchang-logging0008, )",
           "Monai.Deploy.Storage": "[0.2.11, )",
           "Monai.Deploy.Storage.MinIO": "[0.2.11, )",
           "NLog": "[5.1.0, )",

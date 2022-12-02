@@ -29,8 +29,6 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
-using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
@@ -44,6 +42,7 @@ using Monai.Deploy.InformaticsGateway.Services.Scu;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging;
 using Monai.Deploy.Messaging.Configuration;
+using Monai.Deploy.Security.Authentication.Configurations;
 using Monai.Deploy.Storage;
 using Monai.Deploy.Storage.Configuration;
 using NLog;
@@ -95,13 +94,10 @@ namespace Monai.Deploy.InformaticsGateway
                 })
                 .ConfigureServices((hostContext, services) =>
                 {
-                    services.AddOptions<InformaticsGatewayConfiguration>()
-                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway"));
-                    services.AddOptions<MessageBrokerServiceConfiguration>()
-                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"));
-                    services.AddOptions<StorageServiceConfiguration>()
-                        .Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"));
-
+                    services.AddOptions<InformaticsGatewayConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway"));
+                    services.AddOptions<MessageBrokerServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"));
+                    services.AddOptions<StorageServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"));
+                    services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
 
                     services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"));
