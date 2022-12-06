@@ -9,7 +9,7 @@
 - - :approve
   - AWSSDK.S3
   - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)Newtonsoft.Json
+    :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
     - 3.7.9.16
     :when: 2022-08-16 23:05:28.458938645 Z
