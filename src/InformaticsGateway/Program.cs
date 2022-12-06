@@ -29,8 +29,6 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
-using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
