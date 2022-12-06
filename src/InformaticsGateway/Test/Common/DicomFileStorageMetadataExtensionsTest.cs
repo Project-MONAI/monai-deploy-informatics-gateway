@@ -25,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using MongoDB.Bson;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Common
@@ -81,9 +82,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
 
             var ms = new MemoryStream();
             await dicom.SaveAsync(ms).ConfigureAwait(false);
-            Assert.Equal(ms.ToArray(), (metadata.File.Data as MemoryStream).ToArray());
+            using var temporaryDataAsMemoryStream = new MemoryStream();
+            metadata.File.Data.CopyTo(temporaryDataAsMemoryStream);
 
-            var jsonFromStream = Encoding.UTF8.GetString((metadata.JsonFile.Data as MemoryStream).ToArray());
+            Assert.Equal(ms.ToArray(), temporaryDataAsMemoryStream.ToArray());
+
+            using var temporaryJsonDataAsMemoryStream = new MemoryStream();
+            metadata.JsonFile.Data.CopyTo(temporaryJsonDataAsMemoryStream);
+
+            var jsonFromStream = Encoding.UTF8.GetString(temporaryJsonDataAsMemoryStream.ToArray());
             Assert.Equal(json.Trim(), jsonFromStream.Trim());
 
             var dicomFileFromJson = DicomJson.ConvertJsonToDicom(json);

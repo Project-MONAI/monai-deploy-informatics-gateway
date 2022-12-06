@@ -69,8 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 5, 5, 5 };
             _options.Value.Storage.StorageServiceBucketName = "bucket";
 
-            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<KeyValuePair<string, string>>()))
-                .Returns((string _, KeyValuePair<string, string> input) => Task.FromResult(input));
+            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
         }
 
         [RetryFact(10, 200)]

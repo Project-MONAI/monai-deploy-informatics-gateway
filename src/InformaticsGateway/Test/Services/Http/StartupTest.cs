@@ -16,7 +16,9 @@
 
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
 using Monai.Deploy.InformaticsGateway.Services.Http;
+using Monai.Deploy.Security.Authentication.Configurations;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
@@ -28,6 +30,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         {
             var webHost = Microsoft.AspNetCore.WebHost.CreateDefaultBuilder()
                 .UseEnvironment("Development")
+                .ConfigureServices((hostContext, services) =>
+                {
+                    services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));
+                })
                 .UseStartup<Startup>()
                 .Build();
             Assert.NotNull(webHost);

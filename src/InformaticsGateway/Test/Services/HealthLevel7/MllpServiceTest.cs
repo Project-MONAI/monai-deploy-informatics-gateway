@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.IO.Abstractions;
 using System.Net;
 using System.Threading;
@@ -89,13 +88,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _fileSystem.Setup(p => p.Path.Combine(It.IsAny<string>(), It.IsAny<string>())).Returns((string path1, string path2) => System.IO.Path.Combine(path1, path2));
-            _fileSystem.Setup(p => p.File.Create(It.IsAny<string>())).Returns(FileStream.Null);
-
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
             _tcpListenerFactory.Setup(p => p.CreateTcpListener(It.IsAny<IPAddress>(), It.IsAny<int>())).Returns(_tcpListener.Object);
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(true);
+            _options.Value.Storage.TemporaryDataStorage = TemporaryDataStorageLocation.Memory;
         }
 
         [RetryFact(10, 250)]
@@ -178,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Equal(0, service.ActiveConnections);
         }
 
-        [RetryFact(10,250)]
+        [RetryFact(10, 250)]
         public void GivenAMllpService_WhenMaximumConnectionLimitIsConfigure_ExpectTheServiceToAbideByTheLimit()
         {
             var checkEvent = new CountdownEvent(_options.Value.Hl7.MaximumNumberOfConnections);
@@ -211,7 +208,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _logger.VerifyLoggingMessageBeginsWith($"Maximum number {_options.Value.Hl7.MaximumNumberOfConnections} of clients reached.", LogLevel.Information, Times.AtLeastOnce());
         }
 
-        [RetryFact(10,250)]
+        [RetryFact(10, 250)]
         public async Task GivenConnectedTcpClients_WhenDisconnects_ExpectServiceToDisposeResources()
         {
             var checkEvent = new ManualResetEventSlim();
@@ -248,7 +245,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             client.Verify(p => p.Dispose(), Times.Exactly(callCount));
         }
 
-        [RetryFact(10,250)]
+        [RetryFact(10, 250)]
         public async Task GivenATcpClientWithHl7Messages_WhenStorageSpaceIsLow_ExpectToDisconnect()
         {
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableToStore).Returns(false);
