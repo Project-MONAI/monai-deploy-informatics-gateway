@@ -1797,6 +1797,11 @@
           "TestableIO.System.IO.Abstractions": "21.3.1"
         }
       },
+      "TestableIO.System.IO.Abstractions": {
+        "type": "Transitive",
+        "resolved": "18.0.1",
+        "contentHash": "nacJfL4mGObg8Ttn3ZCJZ2u9z8ivG43xgUJvQQLKCmDnle4m49NYNOLk8cqB4iPdSqVhnUSy+qcIryWgDHCqeg=="
+      },
       "Validation": {
         "type": "Transitive",
         "resolved": "2.4.18",
