@@ -201,11 +201,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         {
             try
             {
-                var result = await _storageService.VerifyObjectExistsAsync(
-                       _configuration.Value.Storage.TemporaryStorageBucket,
-                       new KeyValuePair<string, string>(path, path)).ConfigureAwait(false);
+                var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.TemporaryStorageBucket, path).ConfigureAwait(false);
 
-                var exists = result.Key.Equals(path, StringComparison.OrdinalIgnoreCase);
                 _logger.VerifyFileExists(path, exists);
                 return exists;
             }

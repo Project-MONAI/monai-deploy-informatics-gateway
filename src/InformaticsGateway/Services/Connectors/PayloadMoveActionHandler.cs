@@ -182,9 +182,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     file.GetPayloadPath(payloadId),
                     cancellationToken).ConfigureAwait(false);
 
-                var results = await _storageService.VerifyObjectExistsAsync(_options.Value.Storage.StorageServiceBucketName, new System.Collections.Generic.KeyValuePair<string, string>(file.UploadPath, file.GetPayloadPath(payloadId))).ConfigureAwait(false);
+                var exists = await _storageService.VerifyObjectExistsAsync(_options.Value.Storage.StorageServiceBucketName, file.GetPayloadPath(payloadId), cancellationToken).ConfigureAwait(false);
 
-                if (!results.Key.Equals(file.UploadPath, StringComparison.OrdinalIgnoreCase))
+                if (!exists)
                 {
                     _logger.FileMovedVerificationFailure(payloadId, file.UploadPath);
                     throw new PayloadNotifyException(PayloadNotifyException.FailureReason.MoveFailure);
