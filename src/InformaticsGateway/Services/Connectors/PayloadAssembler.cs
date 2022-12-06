@@ -123,30 +123,35 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             try
             {
                 await _intializedTask.ConfigureAwait(false);
+
                 _timer.Enabled = false;
-                _logger.BucketsActive(_payloads.Count);
+                if (_payloads.Count > 0)
+                {
+                    _logger.BucketsActive(_payloads.Count);
+                }
                 foreach (var key in _payloads.Keys)
                 {
                     _logger.BucketElapsedTime(key);
                     var payload = await _payloads[key].Task.ConfigureAwait(false);
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
-                    if (payload.HasTimedOut)
+
+                    if (payload.IsUploadCompleted())
+                    {
+                        if (_payloads.TryRemove(key, out _))
+                        {
+                            await QueueBucketForNotification(key, payload).ConfigureAwait(false);
+                        }
+                        else
+                        {
+                            _logger.BucketRemoveError(key);
+                        }
+                    }
+                    else if (payload.HasTimedOut)
                     {
                         if (payload.AnyUploadFailures())
                         {
                             _payloads.TryRemove(key, out _);
                             _logger.PayloadRemovedWithFailureUploads(key);
-                        }
-                        else if (payload.IsUploadCompleted())
-                        {
-                            if (_payloads.TryRemove(key, out _))
-                            {
-                                await QueueBucketForNotification(key, payload).ConfigureAwait(false);
-                            }
-                            else
-                            {
-                                _logger.BucketRemoveError(key);
-                            }
                         }
                     }
                 }

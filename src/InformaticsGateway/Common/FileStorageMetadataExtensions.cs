@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
             await dicomFile.SaveAsync(dicomFileStorageMetadata.File.Data).ConfigureAwait(false);
             dicomFileStorageMetadata.File.Data.Seek(0, System.IO.SeekOrigin.Begin);
 
-            await SetTextStream(dicomFileStorageMetadata.JsonFile, dicomJson, storageLocation, fileSystem, temporaryStoragePath);
+            await SetTextStream(dicomFileStorageMetadata.JsonFile, dicomJson, storageLocation, fileSystem, temporaryStoragePath).ConfigureAwait(false);
         }
 
         public static async Task SetDataStream(
@@ -63,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
             TemporaryDataStorageLocation storageLocation,
             IFileSystem fileSystem = null,
             string temporaryStoragePath = "")
-            => await SetTextStream(fhirFileStorageMetadata.File, json, storageLocation, fileSystem, temporaryStoragePath);
+            => await SetTextStream(fhirFileStorageMetadata.File, json, storageLocation, fileSystem, temporaryStoragePath).ConfigureAwait(false);
 
         public static async Task SetDataStream(
             this Hl7FileStorageMetadata hl7FileStorageMetadata,
@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
              TemporaryDataStorageLocation storageLocation,
             IFileSystem fileSystem = null,
              string temporaryStoragePath = "")
-            => await SetTextStream(hl7FileStorageMetadata.File, message, storageLocation, fileSystem, temporaryStoragePath);
+            => await SetTextStream(hl7FileStorageMetadata.File, message, storageLocation, fileSystem, temporaryStoragePath).ConfigureAwait(false);
 
         private static async Task SetTextStream(
             StorageObjectMetadata storageObjectMetadata,
@@ -91,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
                     var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{fileSystem.Path.GetRandomFileName()}");
                     var stream = fileSystem.File.Create(tempFile);
                     var data = Encoding.UTF8.GetBytes(message);
-                    await stream.WriteAsync(data, 0, data.Length);
+                    await stream.WriteAsync(data, 0, data.Length).ConfigureAwait(false);
                     storageObjectMetadata.Data = stream;
                     break;
                 default:

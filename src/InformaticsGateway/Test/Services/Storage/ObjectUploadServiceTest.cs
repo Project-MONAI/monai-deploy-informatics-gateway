@@ -27,7 +27,6 @@ using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Storage.API;
 using Moq;
@@ -71,8 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
             _options.Value.Storage.TemporaryStorageBucket = "bucket";
 
-            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<KeyValuePair<string, string>>()))
-                .Returns((string _, KeyValuePair<string, string> input) => Task.FromResult(input));
+            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
         }
 
         [RetryFact(10, 250)]
@@ -97,7 +95,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         public void GivenAObjectUploadService_WhenInitialized_ExpectItToRemovingAllPendingObjects()
         {
             var svc = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
-
         }
 
         [RetryFact(10, 250)]

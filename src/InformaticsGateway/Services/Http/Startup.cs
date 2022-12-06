@@ -30,6 +30,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
+using Monai.Deploy.Security.Authentication.Extensions;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -106,6 +107,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 };
             });
 
+            services.AddMonaiAuthentication();
+
             services.AddHealthChecks()
                 .AddCheck<MonaiHealthCheck>("Informatics Gateway Services")
                 .AddDbContextCheck<InformaticsGatewayContext>("Database");
@@ -123,7 +126,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "MONAI Deploy Informatics Gateway v1"));
             }
 
-            app.UseRouting();
             app.UseHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
             {
                 ResponseWriter = async (context, report) =>
@@ -139,13 +141,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     });
 
                     context.Response.ContentType = MediaTypeNames.Application.Json;
-                    await context.Response.WriteAsync(result);
+                    await context.Response.WriteAsync(result).ConfigureAwait(false);
                 }
             });
 
+            app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseEndpointAuthorizationMiddleware();
+            app.UseHttpLogging();
+
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health").AllowAnonymous();
+                endpoints.MapControllers().RequireAuthorization();
             });
         }
     }
