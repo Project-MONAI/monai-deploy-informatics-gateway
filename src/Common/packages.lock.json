@@ -40,6 +40,12 @@
         "resolved": "6.0.0",
         "contentHash": "+tyDCU3/B1lDdOOAJywHQoFwyXIUghIaP2BxG79uvhfTnO+D9qIgjVlL/JV2NTliYbMHpd6eKDmHp2VHpij7MA=="
       },
+      "TestableIO.System.IO.Abstractions": {
+        "type": "Direct",
+        "requested": "[18.0.1, )",
+        "resolved": "18.0.1",
+        "contentHash": "nacJfL4mGObg8Ttn3ZCJZ2u9z8ivG43xgUJvQQLKCmDnle4m49NYNOLk8cqB4iPdSqVhnUSy+qcIryWgDHCqeg=="
+      },
       "JetBrains.Annotations": {
         "type": "Transitive",
         "resolved": "2021.3.0",
