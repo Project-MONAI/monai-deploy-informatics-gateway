@@ -1615,6 +1615,11 @@
         "resolved": "4.4.0",
         "contentHash": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ=="
       },
+      "TestableIO.System.IO.Abstractions": {
+        "type": "Transitive",
+        "resolved": "18.0.1",
+        "contentHash": "nacJfL4mGObg8Ttn3ZCJZ2u9z8ivG43xgUJvQQLKCmDnle4m49NYNOLk8cqB4iPdSqVhnUSy+qcIryWgDHCqeg=="
+      },
       "xunit.abstractions": {
         "type": "Transitive",
         "resolved": "2.0.3",
@@ -1711,26 +1716,26 @@
       "monai.deploy.informaticsgateway.client": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.AspNet.WebApi.Client": "5.2.9",
-          "Microsoft.Extensions.Http": "6.0.0",
-          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Client.Common": "1.0.0"
+          "Microsoft.AspNet.WebApi.Client": "[5.2.9, )",
+          "Microsoft.Extensions.Http": "[6.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Client.Common": "[1.0.0, )"
         }
       },
       "monai.deploy.informaticsgateway.client.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.0.1",
-          "System.Text.Json": "6.0.7"
+          "Ardalis.GuardClauses": "[4.0.1, )",
+          "System.Text.Json": "[6.0.7, )"
         }
       },
       "monai.deploy.informaticsgateway.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.0.1",
-          "System.IO.Abstractions": "17.2.3",
-          "System.Threading.Tasks.Dataflow": "6.0.0",
-          "fo-dicom": "5.0.3"
+          "Ardalis.GuardClauses": "[4.0.1, )",
+          "System.Threading.Tasks.Dataflow": "[6.0.0, )",
+          "TestableIO.System.IO.Abstractions": "[18.0.1, )",
+          "fo-dicom": "[5.0.3, )"
         }
       },
       "monai.deploy.informaticsgateway.configuration": {
@@ -1787,21 +1792,21 @@
       "monai.deploy.informaticsgateway.database.mongodb": {
         "type": "Project",
         "dependencies": {
-          "Monai.Deploy.InformaticsGateway.Database.Api": "1.0.0",
-          "MongoDB.Driver": "2.18.0",
-          "MongoDB.Driver.Core": "2.18.0"
+          "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
+          "MongoDB.Driver": "[2.18.0, )",
+          "MongoDB.Driver.Core": "[2.18.0, )"
         }
       },
       "monai.deploy.informaticsgateway.dicomweb.client": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.0.1",
-          "Microsoft.AspNet.WebApi.Client": "5.2.9",
-          "Microsoft.Extensions.Http": "6.0.0",
-          "Microsoft.Net.Http.Headers": "2.2.8",
-          "Monai.Deploy.InformaticsGateway.Client.Common": "1.0.0",
-          "System.Linq.Async": "6.0.1",
-          "fo-dicom": "5.0.3"
+          "Ardalis.GuardClauses": "[4.0.1, )",
+          "Microsoft.AspNet.WebApi.Client": "[5.2.9, )",
+          "Microsoft.Extensions.Http": "[6.0.0, )",
+          "Microsoft.Net.Http.Headers": "[2.2.8, )",
+          "Monai.Deploy.InformaticsGateway.Client.Common": "[1.0.0, )",
+          "System.Linq.Async": "[6.0.1, )",
+          "fo-dicom": "[5.0.3, )"
         }
       }
     }

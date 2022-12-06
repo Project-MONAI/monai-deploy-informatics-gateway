@@ -1560,6 +1560,11 @@
         "resolved": "4.4.0",
         "contentHash": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ=="
       },
+      "TestableIO.System.IO.Abstractions": {
+        "type": "Transitive",
+        "resolved": "18.0.1",
+        "contentHash": "nacJfL4mGObg8Ttn3ZCJZ2u9z8ivG43xgUJvQQLKCmDnle4m49NYNOLk8cqB4iPdSqVhnUSy+qcIryWgDHCqeg=="
+      },
       "ZstdSharp.Port": {
         "type": "Transitive",
         "resolved": "0.6.2",
@@ -1586,8 +1591,8 @@
         "type": "Project",
         "dependencies": {
           "Ardalis.GuardClauses": "[4.0.1, )",
-          "System.IO.Abstractions": "[17.2.3, )",
           "System.Threading.Tasks.Dataflow": "[6.0.0, )",
+          "TestableIO.System.IO.Abstractions": "[18.0.1, )",
           "fo-dicom": "[5.0.3, )"
         }
       },
