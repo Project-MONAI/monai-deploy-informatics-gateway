@@ -2496,3 +2496,11 @@
     :versions:
     - 6.10.0
     :when: 2022-10-14 23:37:56.206982078 Z
+- - :approve
+  - AspNetCore.HealthChecks.MongoDb
+  - :who: mocsharp
+    :why: Apache-2.0 (https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/raw/master/LICENSE)
+    :versions:
+    - 6.0.2
+    :when: 2022-12-08 23:37:56.206982078 Z
+
