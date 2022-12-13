@@ -33,7 +33,7 @@
     <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="TestableIO.System.IO.Abstractions" Version="18.0.1" />
+    <PackageReference Include="TestableIO.System.IO.Abstractions" Version="19.1.1" />
     <PackageReference Include="System.Threading.Tasks.Dataflow" Version="6.0.0" />
   </ItemGroup>
 

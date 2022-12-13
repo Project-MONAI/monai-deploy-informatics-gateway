@@ -965,14 +965,14 @@ SOFTWARE.
 
 
 <details>
-<summary>DotNext 4.7.4</summary>
+<summary>DotNext 4.8.0</summary>
 
 ## DotNext
 
-- Version: 4.7.4
+- Version: 4.8.0
 - Authors: .NET Foundation and Contributors
 - Project URL: https://dotnet.github.io/dotNext/
-- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.7.4)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.8.0)
 - License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
 
 
@@ -1004,14 +1004,14 @@ SOFTWARE.
 
 
 <details>
-<summary>DotNext.Threading 4.7.4</summary>
+<summary>DotNext.Threading 4.8.0</summary>
 
 ## DotNext.Threading
 
-- Version: 4.7.4
+- Version: 4.8.0
 - Authors: .NET Foundation and Contributors
 - Project URL: https://dotnet.github.io/dotNext/
-- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.7.4)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.8.0)
 - License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
 
 
@@ -7500,14 +7500,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Security 0.1.1</summary>
+<summary>Monai.Deploy.Security 0.1.2</summary>
 
 ## Monai.Deploy.Security
 
-- Version: 0.1.1
+- Version: 0.1.2
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Security/0.1.1)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Security/0.1.2)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-security/raw/develop/LICENSE)
 
 
@@ -8587,14 +8587,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>Moq 4.18.2</summary>
+<summary>Moq 4.18.3</summary>
 
 ## Moq
 
-- Version: 4.18.2
+- Version: 4.18.3
 - Authors: Daniel Cazzulino, kzu
 - Project URL: https://github.com/moq/moq4
-- Source: [NuGet](https://www.nuget.org/packages/Moq/4.18.2)
+- Source: [NuGet](https://www.nuget.org/packages/Moq/4.18.3)
 - License: [BSD 3-Clause License]( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
 
 
@@ -27750,14 +27750,14 @@ consequential or other damages.
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions 18.0.1</summary>
+<summary>TestableIO.System.IO.Abstractions 19.1.1</summary>
 
 ## TestableIO.System.IO.Abstractions
 
-- Version: 18.0.1
+- Version: 19.1.1
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/18.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/19.1.1)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -27818,14 +27818,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions.TestingHelpers 18.0.1</summary>
+<summary>TestableIO.System.IO.Abstractions.TestingHelpers 19.1.1</summary>
 
 ## TestableIO.System.IO.Abstractions.TestingHelpers
 
-- Version: 18.0.1
+- Version: 19.1.1
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.TestingHelpers/18.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.TestingHelpers/19.1.1)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -27859,14 +27859,14 @@ SOFTWARE.
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions.Wrappers 18.0.1</summary>
+<summary>TestableIO.System.IO.Abstractions.Wrappers 19.1.1</summary>
 
 ## TestableIO.System.IO.Abstractions.Wrappers
 
-- Version: 18.0.1
+- Version: 19.1.1
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Wrappers/18.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Wrappers/19.1.1)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 

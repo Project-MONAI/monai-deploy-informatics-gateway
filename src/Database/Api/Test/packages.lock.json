@@ -1252,8 +1252,8 @@
       },
       "TestableIO.System.IO.Abstractions": {
         "type": "Transitive",
-        "resolved": "18.0.1",
-        "contentHash": "nacJfL4mGObg8Ttn3ZCJZ2u9z8ivG43xgUJvQQLKCmDnle4m49NYNOLk8cqB4iPdSqVhnUSy+qcIryWgDHCqeg=="
+        "resolved": "19.1.1",
+        "contentHash": "RFmkbmF6uqZKzB/W2dmYvqrLWQUr4C1SCUBfvl2xEhMtZomgG0tD8yRCr96tByIjK37kym2TDiuZ311YKXjh9w=="
       },
       "TestableIO.System.IO.Abstractions.Wrappers": {
         "type": "Transitive",
@@ -1323,7 +1323,7 @@
         "dependencies": {
           "Ardalis.GuardClauses": "[4.0.1, )",
           "System.Threading.Tasks.Dataflow": "[6.0.0, )",
-          "TestableIO.System.IO.Abstractions": "[18.0.1, )",
+          "TestableIO.System.IO.Abstractions": "[19.1.1, )",
           "fo-dicom": "[5.0.3, )"
         }
       },
@@ -1336,7 +1336,7 @@
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
           "Monai.Deploy.Messaging": "[0.1.18, )",
           "Monai.Deploy.Storage": "[0.2.11, )",
-          "TestableIO.System.IO.Abstractions": "[18.0.1, )"
+          "TestableIO.System.IO.Abstractions": "[19.1.1, )"
         }
       },
       "monai.deploy.informaticsgateway.database.api": {

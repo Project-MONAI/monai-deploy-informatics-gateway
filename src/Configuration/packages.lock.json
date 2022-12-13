@@ -58,9 +58,9 @@
       },
       "TestableIO.System.IO.Abstractions": {
         "type": "Direct",
-        "requested": "[18.0.1, )",
-        "resolved": "18.0.1",
-        "contentHash": "nacJfL4mGObg8Ttn3ZCJZ2u9z8ivG43xgUJvQQLKCmDnle4m49NYNOLk8cqB4iPdSqVhnUSy+qcIryWgDHCqeg=="
+        "requested": "[19.1.1, )",
+        "resolved": "19.1.1",
+        "contentHash": "RFmkbmF6uqZKzB/W2dmYvqrLWQUr4C1SCUBfvl2xEhMtZomgG0tD8yRCr96tByIjK37kym2TDiuZ311YKXjh9w=="
       },
       "Ardalis.GuardClauses": {
         "type": "Transitive",
@@ -302,7 +302,7 @@
         "dependencies": {
           "Ardalis.GuardClauses": "[4.0.1, )",
           "System.Threading.Tasks.Dataflow": "[6.0.0, )",
-          "TestableIO.System.IO.Abstractions": "[18.0.1, )",
+          "TestableIO.System.IO.Abstractions": "[19.1.1, )",
           "fo-dicom": "[5.0.3, )"
         }
       }
