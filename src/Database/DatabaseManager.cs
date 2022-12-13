@@ -32,13 +32,37 @@ namespace Monai.Deploy.InformaticsGateway.Database
     {
         public const string DbType_Sqlite = "sqlite";
         public const string DbType_MongoDb = "mongodb";
-        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection)
+
+        public static IHealthChecksBuilder AddDatabaseHealthCheck(this IHealthChecksBuilder healthChecksBuilder, IConfigurationSection? connectionStringConfigurationSection)
         {
             if (connectionStringConfigurationSection is null)
             {
                 throw new ConfigurationException("No database connections found in configuration section 'ConnectionStrings'.");
             }
 
+            var databaseType = connectionStringConfigurationSection["Type"].ToLowerInvariant();
+
+            switch (databaseType)
+            {
+                case DbType_Sqlite:
+                    healthChecksBuilder.AddDbContextCheck<InformaticsGatewayContext>("SQLite Database");
+                    return healthChecksBuilder;
+
+                case DbType_MongoDb:
+                    healthChecksBuilder.AddMongoDb(mongodbConnectionString: connectionStringConfigurationSection[SR.DatabaseConnectionStringKey], mongoDatabaseName: connectionStringConfigurationSection[SR.DatabaseNameKey], name: "MongoDB");
+                    return healthChecksBuilder;
+
+                default:
+                    throw new ConfigurationException($"Unsupported database type defined: '{databaseType}'");
+            }
+        }
+
+        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection)
+        {
+            if (connectionStringConfigurationSection is null)
+            {
+                throw new ConfigurationException("No database connections found in configuration section 'ConnectionStrings'.");
+            }
 
             var databaseType = connectionStringConfigurationSection["Type"].ToLowerInvariant();
             switch (databaseType)
@@ -56,6 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IPayloadRepository), typeof(EntityFramework.Repositories.PayloadRepository));
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(EntityFramework.Repositories.DicomAssociationInfoRepository));
                     return services;
+
                 case DbType_MongoDb:
                     services.AddSingleton<IMongoClient, MongoClient>(s => new MongoClient(connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]));
                     services.Configure<MongoDBOptions>(connectionStringConfigurationSection);
@@ -69,6 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(MongoDB.Repositories.DicomAssociationInfoRepository));
 
                     return services;
+
                 default:
                     throw new ConfigurationException($"Unsupported database type defined: '{databaseType}'");
             }
