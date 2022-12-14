@@ -173,9 +173,9 @@
       },
       "Monai.Deploy.Security": {
         "type": "Direct",
-        "requested": "[0.1.1, )",
-        "resolved": "0.1.1",
-        "contentHash": "kVIXocVcG3LNs2vbqg/wRq/noxqu/hOyuZ8+XKT4eUc9pudMcGyGIGhRAjKf+veDwza2nbEwhCJeBnChw04igQ==",
+        "requested": "[0.1.3, )",
+        "resolved": "0.1.3",
+        "contentHash": "9/E/UEK9Foo1cUHRRgNIR8uk+oTLiBbzR2vqBsxIo1EwbduDVuBGFcIh2lpAJZmFFwBNv0KtmTASdD3w5UWd+g==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.0.1",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "6.0.11",
