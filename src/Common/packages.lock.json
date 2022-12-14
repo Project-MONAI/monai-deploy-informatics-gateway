@@ -34,17 +34,17 @@
         "resolved": "5.11.1",
         "contentHash": "JlJB4dAc/MpLQvbF8OeyMKotDo5EcgU2pXmB+MlTe64B1Y0fc9GTMiAHiyUiHLnFRnOtrcSi1C3BsfRTmlD0sA=="
       },
+      "System.IO.Abstractions": {
+        "type": "Direct",
+        "requested": "[17.2.3, )",
+        "resolved": "17.2.3",
+        "contentHash": "VcozGeE4SxIo0cnXrDHhbrh/Gb8KQnZ3BvMelvh+iw0PrIKtuuA46U2Xm4e4pgnaWFgT4RdZfTpWl/WPRdw0WQ=="
+      },
       "System.Threading.Tasks.Dataflow": {
         "type": "Direct",
         "requested": "[6.0.0, )",
         "resolved": "6.0.0",
         "contentHash": "+tyDCU3/B1lDdOOAJywHQoFwyXIUghIaP2BxG79uvhfTnO+D9qIgjVlL/JV2NTliYbMHpd6eKDmHp2VHpij7MA=="
-      },
-      "TestableIO.System.IO.Abstractions": {
-        "type": "Direct",
-        "requested": "[19.1.1, )",
-        "resolved": "19.1.1",
-        "contentHash": "RFmkbmF6uqZKzB/W2dmYvqrLWQUr4C1SCUBfvl2xEhMtZomgG0tD8yRCr96tByIjK37kym2TDiuZ311YKXjh9w=="
       },
       "JetBrains.Annotations": {
         "type": "Transitive",

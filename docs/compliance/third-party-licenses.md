@@ -27750,14 +27750,14 @@ consequential or other damages.
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions 19.1.1</summary>
+<summary>System.IO.Abstractions 17.2.3</summary>
 
-## TestableIO.System.IO.Abstractions
+## System.IO.Abstractions
 
-- Version: 19.1.1
+- Version: 17.2.3
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/19.1.1)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/17.2.3)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -27791,14 +27791,14 @@ SOFTWARE.
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions.Extensions 1.0.34</summary>
+<summary>System.IO.Abstractions.Extensions 1.0.34</summary>
 
-## TestableIO.System.IO.Abstractions.Extensions
+## System.IO.Abstractions.Extensions
 
 - Version: 1.0.34
 - Authors: Tatham Oddie - Luigi Grilli & friends
 - Project URL: https://github.com/System-IO-Abstractions/System.IO.Abstractions.Extensions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Extensions/1.0.34)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.Extensions/1.0.34)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions.Extensions/raw/main/LICENSE.md)
 
 
@@ -27818,14 +27818,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions.TestingHelpers 19.1.1</summary>
+<summary>System.IO.Abstractions.TestingHelpers 17.2.3</summary>
 
-## TestableIO.System.IO.Abstractions.TestingHelpers
+## System.IO.Abstractions.TestingHelpers
 
-- Version: 19.1.1
+- Version: 17.2.3
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.TestingHelpers/19.1.1)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/17.2.3)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -27859,14 +27859,14 @@ SOFTWARE.
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions.Wrappers 19.1.1</summary>
+<summary>System.IO.Abstractions.Wrappers 17.2.3</summary>
 
-## TestableIO.System.IO.Abstractions.Wrappers
+## System.IO.Abstractions.Wrappers
 
-- Version: 19.1.1
+- Version: 17.2.3
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Wrappers/19.1.1)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.Wrappers/17.2.3)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
