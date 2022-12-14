@@ -29,7 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task Startup_WebHostBuildsProperly()
         {
             var webHost = Microsoft.AspNetCore.WebHost.CreateDefaultBuilder()
-                .UseEnvironment("Development")
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));

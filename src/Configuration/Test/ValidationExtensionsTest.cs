@@ -205,6 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
         #endregion SourceApplicationEntity.IsValid
 
         #region IsAeTitleValid
+
         [Theory]
         [InlineData("123")]
         [InlineData("MYAET")]
@@ -230,9 +231,10 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             Assert.NotEmpty(errors);
         }
 
-        #endregion
+        #endregion IsAeTitleValid
 
         #region IsValidHostNameIp
+
         [Theory]
         [InlineData("0.0.0.0")]
         [InlineData("10.20.30.40")]
@@ -285,6 +287,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration.Test
             Assert.NotEmpty(errors);
         }
 
-        #endregion
+        #endregion IsValidHostNameIp
     }
 }

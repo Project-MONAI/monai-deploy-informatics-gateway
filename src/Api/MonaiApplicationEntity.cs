@@ -19,6 +19,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Claims;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
@@ -52,36 +53,36 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// This value must be unique.
         /// </summary>
         [Key, Column(Order = 0)]
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the AE TItle.
         /// </summary>
-        public string AeTitle { get; set; }
+        public string AeTitle { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the DICOM tag used to group the instances.
         /// Defaults to 0020,000D (Study Instance UID).
         /// Valid DICOM Tags: > Study Instance UID (0020,000D) and Series Instance UID (0020,000E).
         /// </summary>
-        public string Grouping { get; set; }
+        public string Grouping { get; set; } = default!;
 
         /// <summary>
         /// Optional field to map AE to one or more workflows.
         /// </summary>
-        public List<string> Workflows { get; set; }
+        public List<string> Workflows { get; set; } = default!;
 
         /// <summary>
         /// Optional field to specify SOP Class UIDs to ignore.
         /// <see cref="IgnoredSopClasses"/> and <see cref="AllowedSopClasses"/> are mutually exclusive.
         /// </summary>
-        public List<string> IgnoredSopClasses { get; set; }
+        public List<string> IgnoredSopClasses { get; set; } = default!;
 
         /// <summary>
         /// Optional field to specify accepted SOP Class UIDs.
         /// <see cref="IgnoredSopClasses"/> and <see cref="AllowedSopClasses"/> are mutually exclusive.
         /// </summary>
-        public List<string> AllowedSopClasses { get; set; }
+        public List<string> AllowedSopClasses { get; set; } = default!;
 
         /// <summary>
         /// Timeout, in seconds, to wait for instances before notifying other subsystems of data arrival
@@ -89,6 +90,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// Defaults to five seconds.
         /// </summary>
         public uint Timeout { get; set; } = 5;
+
+        /// <summary>
+        /// Gets or set the user who created the DICOM entity.
+        /// </summary>
+        public string? CreatedBy { get; set; }
 
         public MonaiApplicationEntity()
         {
@@ -117,6 +123,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public override string ToString()
         {
             return $"Name: {Name}/AET: {AeTitle}";
+        }
+
+        public void SetAuthor(ClaimsPrincipal user)
+        {
+            CreatedBy = user.Identity?.Name;
         }
     }
 }

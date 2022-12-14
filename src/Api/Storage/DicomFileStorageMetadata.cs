@@ -44,25 +44,25 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// For ACR request, this field is empty.
         /// </summary>
         [JsonPropertyName("calledAeTitle")]
-        public string CalledAeTitle { get; set; }
+        public string CalledAeTitle { get; set; } = default!;
 
         /// <summary>
         /// Gets or set the Study Instance UID of the DICOM instance.
         /// </summary>
         [JsonPropertyName("studyInstanceUid")]
-        public string StudyInstanceUid { get; init; }
+        public string StudyInstanceUid { get; init; } = default!;
 
         /// <summary>
         /// Gets or set the Series Instance UID of the DICOM instance.
         /// </summary>
         [JsonPropertyName("seriesInstanceUid")]
-        public string SeriesInstanceUid { get; init; }
+        public string SeriesInstanceUid { get; init; } = default!;
 
         /// <summary>
         /// Gets or set the SOP Instance UID of the DICOM instance.
         /// </summary>
         [JsonPropertyName("sopInstanceUid")]
-        public string SopInstanceUid { get; init; }
+        public string SopInstanceUid { get; init; } = default!;
 
         /// <inheritdoc/>
         [JsonIgnore]
@@ -70,13 +70,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         /// <inheritdoc/>
         [JsonPropertyName("file")]
-        public override StorageObjectMetadata File { get; set; }
+        public override StorageObjectMetadata File { get; set; } = default!;
 
         /// <summary>
         /// Gets the storage object metadata for the JSON file associated with the DICOM instance.
         /// </summary>
         [JsonPropertyName("jsonFile")]
-        public StorageObjectMetadata JsonFile { get; set; }
+        public StorageObjectMetadata JsonFile { get; set; } = default!;
 
         [JsonIgnore]
         public override bool IsUploaded => base.IsUploaded && JsonFile.IsUploaded;

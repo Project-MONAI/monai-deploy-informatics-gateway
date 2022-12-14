@@ -34,6 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.FileCount).IsRequired();
             builder.Property(j => j.RemoteHost).IsRequired();
             builder.Property(j => j.RemotePort).IsRequired();
+            builder.Property(j => j.Errors).IsRequired();
         }
     }
 }

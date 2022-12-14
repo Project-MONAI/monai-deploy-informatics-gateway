@@ -71,9 +71,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public TimeSpan Elapsed
         { get { return DateTime.UtcNow.Subtract(DateTimeCreated); } }
 
-        public string CallingAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
+        public string? CallingAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
 
-        public string CalledAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
+        public string? CalledAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
 
         public Payload(string key, string correlationId, uint timeout)
         {

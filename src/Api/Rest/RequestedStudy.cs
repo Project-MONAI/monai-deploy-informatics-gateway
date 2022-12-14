@@ -55,12 +55,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets the Study Instance UID to be retrieved.
         /// </summary>
         [JsonPropertyName("StudyInstanceUID")]
-        public string StudyInstanceUid { get; set; }
+        public string? StudyInstanceUid { get; set; }
 
         /// <summary>
         /// Gets or sets a list of DICOM series to be retrieved.
         /// </summary>
         [JsonPropertyName("series")]
-        public IList<RequestedSeries> Series { get; set; }
+        public IList<RequestedSeries>? Series { get; set; }
     }
 }

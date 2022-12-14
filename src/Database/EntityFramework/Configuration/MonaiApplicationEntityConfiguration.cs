@@ -47,6 +47,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.AeTitle).IsRequired();
             builder.Property(j => j.Timeout).IsRequired();
             builder.Property(j => j.Grouping).IsRequired();
+            builder.Property(j => j.CreatedBy).IsRequired(false);
+            builder.Property(j => j.DateTimeCreated).IsRequired();
             builder.Property(j => j.Workflows)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),

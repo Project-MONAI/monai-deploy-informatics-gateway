@@ -64,7 +64,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             _scope = _serviceScopeFactory.CreateScope();
             _uplaodQueue = _scope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _storageService = _scope.ServiceProvider.GetService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
-
         }
 
         private void BackgroundProcessing(CancellationToken cancellationToken)

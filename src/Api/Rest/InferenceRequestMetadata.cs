@@ -44,13 +44,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets the details of an inference request.
         /// </summary>
         [JsonPropertyName("details")]
-        public InferenceRequestDetails Details { get; set; }
+        public InferenceRequestDetails? Details { get; set; }
 
         /// <summary>
         /// Gets or sets an array of inference request details.
         /// Note: this is an extension to the ACR specs to enable multiple input data types.
         /// </summary>
         [JsonPropertyName("inputs")]
-        public IList<InferenceRequestDetails> Inputs { get; set; }
+        public IList<InferenceRequestDetails>? Inputs { get; set; }
     }
 }

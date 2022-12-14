@@ -339,7 +339,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
-
         [Fact(DisplayName = "dst update command")]
         public async Task DstUpdate_Command()
         {

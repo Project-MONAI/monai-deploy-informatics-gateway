@@ -71,12 +71,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
     /// </remarks>
     public class InferenceRequestDetails
     {
-        private string _fhirAcceptHeader;
+        private string _fhirAcceptHeader = default!;
 
         /// <summary>
         /// Gets or sets the type of the inference request.
         /// </summary>
-        [JsonConverter(typeof(JsonStringEnumConverter))]
+        [JsonConverter(typeof(JsonStringEnumMemberConverter))]
         [JsonPropertyName("type")]
         public InferenceRequestType Type { get; set; }
 
@@ -85,27 +85,27 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Used when <c>Type</c> is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestType.DicomUid" />.
         /// </summary>
         [JsonPropertyName("studies")]
-        public IList<RequestedStudy> Studies { get; set; }
+        public IList<RequestedStudy>? Studies { get; set; }
 
         /// <summary>
         /// Gets or sets Patient ID that is used to query the data source.
         /// Used when <c>Type</c> is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestType.DicomPatientId" />.
         /// </summary>
         [JsonPropertyName("PatientID")]
-        public string PatientId { get; set; }
+        public string? PatientId { get; set; }
 
         /// <summary>
         /// Gets or sets Access Number that is used to query the data source.
         /// Used when <c>Type</c> is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestType.AccessionNumber" />.
         /// </summary>
         [JsonPropertyName("accessionNumber")]
-        public IList<string> AccessionNumber { get; set; }
+        public IList<string>? AccessionNumber { get; set; }
 
         /// <summary>
         /// Gets or sets a list of FHIR resources to be retrived.
         /// </summary>
         [JsonPropertyName("resources")]
-        public IList<FhirResource> Resources { get; set; }
+        public IList<FhirResource>? Resources { get; set; }
 
         /// <summary>
         /// Gets or set the data format used when storing FHIR resources.

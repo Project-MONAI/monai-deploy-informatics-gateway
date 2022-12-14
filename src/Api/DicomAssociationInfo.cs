@@ -20,15 +20,15 @@ namespace Monai.Deploy.InformaticsGateway.Api
 {
     public class DicomAssociationInfo : MongoDBEntityBase
     {
-        public DateTime DateTimeDisconnected { get; set; }
-        public string CorrelationId { get; set; }
+        public DateTime DateTimeDisconnected { get; set; } = default!;
+        public string CorrelationId { get; set; } = default!;
         public int FileCount { get; private set; }
-        public string CallingAeTitle { get; set; }
-        public string CalledAeTitle { get; set; }
-        public string RemoteHost { get; set; }
-        public int RemotePort { get; set; }
-        public string Errors { get; set; }
-        public TimeSpan Duration { get; private set; }
+        public string CallingAeTitle { get; set; } = default!;
+        public string CalledAeTitle { get; set; } = default!;
+        public string RemoteHost { get; set; } = default!;
+        public int RemotePort { get; set; } = default!;
+        public string Errors { get; set; } = string.Empty;
+        public TimeSpan Duration { get; private set; } = default!;
 
         public DicomAssociationInfo()
         {

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 {
     internal interface IDataClient

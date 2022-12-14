@@ -23,7 +23,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
         /// Name of the key for retrieve database connection string.
         /// </summary>
         public const string DatabaseConnectionStringKey = "InformaticsGatewayDatabase";
-        public const string DatabaseNameKey = "DatabaseName";
 
     }
 }
