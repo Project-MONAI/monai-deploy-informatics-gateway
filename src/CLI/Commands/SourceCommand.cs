@@ -45,7 +45,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             SetupListSourceCommand();
         }
 
-
         private void SetupListSourceCommand()
         {
             var listCommand = new Command("ls", "List all DICOM sources");
@@ -81,6 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             addCommand.Handler = CommandHandler.Create<SourceApplicationEntity, IHost, bool, CancellationToken>(AddSourceHandlerAsync);
         }
+
         private void SetupUpdateSourceCommand()
         {
             var addCommand = new Command("update", "Update a new DICOM source");
@@ -233,6 +233,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             return ExitCodes.Success;
         }
+
         private async Task<int> UpdateSourceHandlerAsync(SourceApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationTokena)
         {
             Guard.Against.Null(entity);

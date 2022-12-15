@@ -85,7 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             _options.Value.Storage.TemporaryDataStorage = TemporaryDataStorageLocation.Memory;
         }
 
-        [RetryFact(10,200)]
+        [RetryFact(10, 200)]
         public void GivenAFhirService_WhenInitialized_ExpectParametersToBeValidated()
         {
             Assert.Throws<ArgumentNullException>(() => new FhirService(null, null));
@@ -94,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             new FhirService(_serviceScopeFactory.Object, _options);
         }
 
-        [RetryFact(10,200)]
+        [RetryFact(10, 200)]
         public async Task StoreAsync_WhenCalled_ShallValidateParametersAsync()
         {
             var correlationId = Guid.NewGuid().ToString();

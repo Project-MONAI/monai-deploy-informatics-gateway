@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System.Linq.Expressions;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories

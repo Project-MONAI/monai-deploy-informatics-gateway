@@ -28,65 +28,65 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or sets the temporary path before file is assembled into a payload.
         /// </summary>
         [JsonPropertyName("temporaryPath")]
-        public string TemporaryPath { get; set; }
+        public string TemporaryPath { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the path the file is stored within the payload directory.
         /// </summary>
         [JsonPropertyName("uploadPath")]
-        public string UploadPath { get; set; }
+        public string UploadPath { get; set; } = default!;
 
         /// <summary>
         /// Gets the file extension.
         /// </summary>
         [JsonPropertyName("fileExtension")]
-        public string FileExtension { get; init; }
+        public string FileExtension { get; init; } = default!;
 
         /// <summary>
         /// Gets or sets the content type of the file.
         /// </summary>
         [JsonPropertyName("contentType")]
-        public string ContentType { get; set; }
+        public string ContentType { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the data stream.
         /// </summary>
         [JsonIgnore]
-        public Stream Data { get; set; }
+        public Stream Data { get; set; } = default!;
 
         [JsonPropertyName("payloadBucketName"), JsonInclude]
-        public string PayloadBucketName { get; private set; }
+        public string PayloadBucketName { get; private set; } = default!;
 
         [JsonPropertyName("dateMoved"), JsonInclude]
-        public DateTime DateMoved { get; private set; }
+        public DateTime DateMoved { get; private set; } = default!;
 
         /// <summary>
         /// Gets or set the date time file was uploaded.
         /// </summary>
         [JsonPropertyName("dateUploaded")]
-        public DateTime? DateUploaded { get; set; }
+        public DateTime? DateUploaded { get; set; } = default!;
 
         /// <summary>
         /// Gets the temporary bucket used for storing the file.
         /// </summary>
         [JsonPropertyName("temporaryBucketName"), JsonInclude]
-        public string TemporaryBucketName { get; private set; }
+        public string TemporaryBucketName { get; private set; } = default!;
 
         /// <summary>
         /// Gets or sets whether the file is uploaded to the temporary bucket.
         /// </summary>
         /// <value></value>
         [JsonPropertyName("isUploaded"), JsonInclude]
-        public bool IsUploaded { get; private set; }
+        public bool IsUploaded { get; private set; } = default!;
 
         /// <summary>
         /// Gets or sets whether upload failed.
         /// </summary>
         [JsonPropertyName("isUploadFailed"), JsonInclude]
-        public bool IsUploadFailed { get; private set; }
+        public bool IsUploadFailed { get; private set; } = default!;
 
         [JsonPropertyName("isMoveCompleted"), JsonInclude]
-        public bool IsMoveCompleted { get; private set; }
+        public bool IsMoveCompleted { get; private set; } = default!;
 
         public StorageObjectMetadata(string fileExtension)
         {
@@ -129,14 +129,14 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                     var filename = fileStream.Name;
                     Data.Close();
                     Data.Dispose();
-                    Data = null;
+                    Data = default!;
                     System.IO.File.Delete(filename);
                 }
                 else // MemoryStream
                 {
                     Data.Close();
                     Data.Dispose();
-                    Data = null;
+                    Data = default!;
 
                     // When IG stores all received/downloaded data in-memory using MemoryStream, LOH grows tremendously and thus impacts the performance and
                     //  memory usage. The following makes sure LOH is compacted after the data is uploaded.

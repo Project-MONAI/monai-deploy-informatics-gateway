@@ -19,6 +19,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
     public interface IDatabaseDataProvider
     {
         void ClearAllData();
+
         Task<string> InjectAcrRequest();
     }
 }

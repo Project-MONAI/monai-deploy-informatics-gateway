@@ -92,7 +92,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
-
         public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
         {
             Guard.Against.Null(request);

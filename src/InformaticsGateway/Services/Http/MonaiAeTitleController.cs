@@ -107,6 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await ValidateAsync(item).ConfigureAwait(false);
 
                 item.SetDefaultValues();
+                item.SetAuthor(User);
 
                 await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(item, ChangedEventType.Added));

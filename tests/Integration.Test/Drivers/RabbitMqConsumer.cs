@@ -30,7 +30,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         private readonly ConcurrentBag<Message> _messages;
         private bool _disposedValue;
 
-        public IReadOnlyList<Message> Messages { get { return _messages.ToList(); } }
+        public IReadOnlyList<Message> Messages
+        { get { return _messages.ToList(); } }
         public CountdownEvent MessageWaitHandle { get; private set; }
 
         public RabbitMqConsumer(RabbitMQMessageSubscriberService subscriberService, string queueName, ISpecFlowOutputHelper outputHelper)
@@ -76,7 +77,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                 _disposedValue = true;
             }
         }
-
 
         public void Dispose()
         {

@@ -96,6 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     return Problem(title: "Conflict", statusCode: (int)HttpStatusCode.Conflict, detail: "An existing request with same transaction ID already exists.");
                 }
 
+                request.CreatedBy = User.Identity?.Name;
                 await _inferenceRequestRepository.AddAsync(request, HttpContext.RequestAborted).ConfigureAwait(false);
             }
             catch (Exception ex)

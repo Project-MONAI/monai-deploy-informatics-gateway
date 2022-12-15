@@ -164,7 +164,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             Guard.Against.Null(client);
             Guard.Against.Null(result);
 
-
             try
             {
                 foreach (var message in result.Messages)

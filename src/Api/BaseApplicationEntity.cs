@@ -15,6 +15,9 @@
  * limitations under the License.
  */
 
+using System;
+using System.Security.Claims;
+
 namespace Monai.Deploy.InformaticsGateway.Api
 {
     /// <summary>
@@ -29,17 +32,32 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// Gets or sets the unique name used to identify a DICOM application entity.
         /// This value must be unique.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
         /// <summary>
         ///  Gets or sets the AE Title (AET) used to identify itself in a DICOM association.
         /// </summary>
-        public string AeTitle { get; set; }
+        public string AeTitle { get; set; } = default!;
 
         /// <summary>
         /// Gets or set the host name or IP address of the AE Title.
         /// </summary>
-        public string HostIp { get; set; }
+        public string HostIp { get; set; } = default!;
+
+        /// <summary>
+        /// Gets or set the user who created the DICOM entity.
+        /// </summary>
+        public string? CreatedBy { get; set; }
+
+        /// <summary>
+        /// Gets or set the most recent user who updated the DICOM entity.
+        /// </summary>
+        public string? UpdatedBy { get; set; }
+
+        /// <summary>
+        /// Gets or set the most recent date time the DICOM entity was updated.
+        /// </summary>
+        public DateTime? DateTimeUpdated { get; set; }
 
         public BaseApplicationEntity()
         {
@@ -50,6 +68,23 @@ namespace Monai.Deploy.InformaticsGateway.Api
         {
             if (string.IsNullOrWhiteSpace(Name))
                 Name = AeTitle;
+        }
+
+        public void SetAuthor(ClaimsPrincipal user, EditMode editMode)
+        {
+            if (editMode == EditMode.Update)
+            {
+                DateTimeUpdated = DateTime.UtcNow;
+            }
+
+            if (editMode == EditMode.Create)
+            {
+                CreatedBy = user.Identity?.Name;
+            }
+            else if (editMode == EditMode.Update)
+            {
+                UpdatedBy = user.Identity?.Name;
+            }
         }
 
         public override string ToString()

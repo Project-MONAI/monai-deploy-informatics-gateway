@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -37,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 {
     public class DestinationAeTitleControllerTest
     {
+        private static readonly string TestUsername = "test-user";
         private readonly DestinationAeTitleController _controller;
         private readonly Mock<ProblemDetailsFactory> _problemDetailsFactory;
         private readonly Mock<ILogger<DestinationAeTitleController>> _logger;
@@ -78,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                  _scuQueue.Object)
             {
                 ProblemDetailsFactory = _problemDetailsFactory.Object,
-                ControllerContext = controllerContext
+                ControllerContext = controllerContext,
             };
         }
 
@@ -403,6 +406,48 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(entity.HostIp, updatedEntity.HostIp);
             Assert.Equal(entity.Name, updatedEntity.Name);
             Assert.Equal(entity.Port, updatedEntity.Port);
+            Assert.NotNull(updatedEntity.DateTimeUpdated);
+            Assert.Null(updatedEntity.UpdatedBy);
+
+            _repository.Verify(p => p.FindByNameAsync(entity.Name, It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.UpdateAsync(entity, It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return updated when user is authenticated")]
+        public async Task Update_ReturnsUpdatedWhenUserIsAuthenticated()
+        {
+            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() { User = new ClaimsPrincipal(new GenericIdentity(TestUsername)) } };
+            var controller = new DestinationAeTitleController(
+                 _logger.Object,
+                 _repository.Object,
+                 _scuQueue.Object)
+            {
+                ProblemDetailsFactory = _problemDetailsFactory.Object,
+                ControllerContext = controllerContext,
+            };
+
+            var entity = new DestinationApplicationEntity
+            {
+                AeTitle = "AET",
+                HostIp = "host",
+                Name = "AET",
+                Port = 123,
+            };
+
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.UpdateAsync(It.IsAny<DestinationApplicationEntity>(), It.IsAny<CancellationToken>()));
+
+            var result = await controller.Edit(entity);
+            var okResult = result.Result as OkObjectResult;
+            Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+            var updatedEntity = okResult.Value as DestinationApplicationEntity;
+
+            Assert.Equal(entity.AeTitle, updatedEntity.AeTitle);
+            Assert.Equal(entity.HostIp, updatedEntity.HostIp);
+            Assert.Equal(entity.Name, updatedEntity.Name);
+            Assert.Equal(entity.Port, updatedEntity.Port);
+            Assert.NotNull(updatedEntity.DateTimeUpdated);
+            Assert.Equal(TestUsername, updatedEntity.UpdatedBy);
 
             _repository.Verify(p => p.FindByNameAsync(entity.Name, It.IsAny<CancellationToken>()), Times.Once());
             _repository.Verify(p => p.UpdateAsync(entity, It.IsAny<CancellationToken>()), Times.Once());

@@ -185,7 +185,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             s_rabbitMqConnectionFactory.Dispose();
         }
 
-
         [AfterTestRun(Order = 0)]
         [AfterScenario]
         public static void ClearTestData(ISpecFlowOutputHelper outputHelper)

@@ -32,6 +32,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets the SOP Instance UID to be retrieved.
         /// </summary>
         [JsonPropertyName("SOPInstanceUID")]
-        public IList<string> SopInstanceUid { get; set; }
+        public IList<string>? SopInstanceUid { get; set; }
     }
 }

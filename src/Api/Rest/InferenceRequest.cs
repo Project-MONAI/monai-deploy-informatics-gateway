@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Common;
 
@@ -83,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or set the transaction ID of a request.
         /// </summary>
         [JsonPropertyName("transactionID")]
-        public string TransactionId { get; set; }
+        public string TransactionId { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the priority of a request.
@@ -101,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets the details of the data associated with the inference request.
         /// </summary>
         [JsonPropertyName("inputMetadata")]
-        public InferenceRequestMetadata InputMetadata { get; set; }
+        public InferenceRequestMetadata? InputMetadata { get; set; }
 
         /// <summary>
         /// Gets or set a list of data sources to query/retrieve data from.
@@ -109,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// the order the list was received.
         /// </summary>
         [JsonPropertyName("inputResources")]
-        public IList<RequestInputDataResource> InputResources { get; set; }
+        public IList<RequestInputDataResource>? InputResources { get; set; }
 
         /// <summary>
         /// Gets or set a list of data sources to export results to.
@@ -118,7 +117,17 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Followed by registering the results using the MONAI App SDK.
         /// </summary>
         [JsonPropertyName("outputResources")]
-        public IList<RequestOutputDataResource> OutputResources { get; set; }
+        public IList<RequestOutputDataResource>? OutputResources { get; set; }
+
+        /// <summary>
+        /// Gets or set the user who created the DICOM entity.
+        /// </summary>
+        public string? CreatedBy { get; set; }
+
+        /// <summary>
+        /// Gets or set the date and time the objects first created.
+        /// </summary>
+        public DateTime? DateTimeCreated { get; set; }
 
         #region Internal Use Only
 
@@ -155,7 +164,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         public int TryCount { get; set; } = 0;
 
         [JsonIgnore]
-        public InputConnectionDetails Application
+        public InputConnectionDetails? Application
         {
             get
             {
@@ -169,6 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         {
             InputResources = new List<RequestInputDataResource>();
             OutputResources = new List<RequestOutputDataResource>();
+            DateTimeCreated = DateTime.UtcNow;
         }
 
         public bool IsValid(out string details)
@@ -192,7 +202,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             if (InputMetadata.Details is not null)
             {
                 InputMetadata.Inputs.Add(InputMetadata.Details);
-                InputMetadata.Details = null;
+                InputMetadata.Details = default!;
             }
         }
 

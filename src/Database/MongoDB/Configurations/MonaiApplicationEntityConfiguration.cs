@@ -16,10 +16,7 @@
  */
 
 using Monai.Deploy.InformaticsGateway.Api;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
 {
