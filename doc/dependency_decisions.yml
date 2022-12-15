@@ -93,7 +93,7 @@
 - - :approve
   - Gherkin
   - :who: mocsharp
-    :why: MIT (https://github.com/cucumber/common/raw/main/LICENSE)
+    :why: MIT (https://github.com/cucumber/gherkin/raw/main/LICENSE)
     :versions:
     - 19.0.3
     :when: 2022-08-16 23:05:34.184272525 Z
@@ -1225,13 +1225,6 @@
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
     - 17.2.3
-    :when: 2022-08-16 23:06:50.602318269 Z
-- - :approve
-  - System.IO.Abstractions.Extensions
-  - :who: mocsharp
-    :why: MIT (https://github.com/TestableIO/System.IO.Abstractions.Extensions/raw/main/LICENSE.md)
-    :versions:
-    - 1.0.34
     :when: 2022-08-16 23:06:50.602318269 Z
 - - :approve
   - System.IO.Abstractions.TestingHelpers
