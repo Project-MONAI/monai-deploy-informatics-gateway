@@ -24,7 +24,7 @@ using System.Runtime.Serialization;
 namespace Monai.Deploy.InformaticsGateway.Api
 {
     [Serializable]
-    public class LoggingDataDictionary<K, V> : Dictionary<K, V>
+    public class LoggingDataDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TKey : notnull
     {
         public LoggingDataDictionary()
         {

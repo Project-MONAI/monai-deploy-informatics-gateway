@@ -36,7 +36,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
         }
 
-
         public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {
             Guard.Against.NullOrEmpty(args);

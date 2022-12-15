@@ -60,6 +60,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets connection details of a data source.
         /// </summary>
         [JsonPropertyName("connectionDetails")]
-        public InputConnectionDetails ConnectionDetails { get; set; }
+        public InputConnectionDetails? ConnectionDetails { get; set; }
     }
 }

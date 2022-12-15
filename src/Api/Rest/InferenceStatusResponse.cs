@@ -25,6 +25,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <summary>
         /// Gets or set the transaction ID of a request.
         /// </summary>
-        public string TransactionId { get; set; }
+        public string TransactionId { get; set; } = default!;
     }
 }

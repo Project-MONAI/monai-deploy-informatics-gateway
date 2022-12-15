@@ -46,6 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
                     var tempFile = fileSystem.Path.Combine(temporaryStoragePath, $@"{fileSystem.Path.GetRandomFileName()}");
                     dicomFileStorageMetadata.File.Data = fileSystem.File.Create(tempFile);
                     break;
+
                 default:
                     dicomFileStorageMetadata.File.Data = new System.IO.MemoryStream();
                     break;
@@ -94,6 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
                     await stream.WriteAsync(data, 0, data.Length).ConfigureAwait(false);
                     storageObjectMetadata.Data = stream;
                     break;
+
                 default:
                     storageObjectMetadata.Data = new System.IO.MemoryStream(Encoding.UTF8.GetBytes(message));
                     break;

@@ -30,13 +30,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// <c>Name</c> is also used as the job name.
         /// </summary>
         [JsonPropertyName("name")]
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Gets or sets the MONAI Application name or ID. Used when <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceType" />
         /// is <see cref="T:Monai.Deploy.InformaticsGateway.Api.Rest.InputInterfaceType.Algorithm" />.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string? Id { get; set; }
     }
 }

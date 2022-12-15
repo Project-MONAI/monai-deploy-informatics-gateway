@@ -16,7 +16,6 @@
 
 using System.Diagnostics;
 using Ardalis.GuardClauses;
-using FellowOakDicom;
 using FellowOakDicom.Network;
 using FellowOakDicom.Network.Client;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -40,7 +39,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             _options = options ?? throw new ArgumentNullException(nameof(options));
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
         }
-
 
         public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {

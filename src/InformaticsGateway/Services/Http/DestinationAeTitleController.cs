@@ -152,6 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             try
             {
                 item.SetDefaultValues();
+                item.SetAuthor(User, EditMode.Create);
 
                 await ValidateCreateAsync(item).ConfigureAwait(false);
 
@@ -199,6 +200,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 destinationApplicationEntity.AeTitle = item.AeTitle;
                 destinationApplicationEntity.HostIp = item.HostIp;
                 destinationApplicationEntity.Port = item.Port;
+                destinationApplicationEntity.SetAuthor(User, EditMode.Update);
 
                 await ValidateUpdateAsync(destinationApplicationEntity).ConfigureAwait(false);
 

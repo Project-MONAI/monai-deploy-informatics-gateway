@@ -151,19 +151,19 @@
       },
       "DotNext": {
         "type": "Transitive",
-        "resolved": "4.8.0",
-        "contentHash": "MQ3ngZc4JOPX5MPJaeBQM6hhLEp4e1PdsgpanSb6cgsZJVji9oABqK3oo2ggjuUxnrVfhP7o1Hvjrk7K42oBcw==",
+        "resolved": "4.7.4",
+        "contentHash": "5Xp6G9U0MhSmfgxKklUUsOFfSg2VqF+/rkd7WyoUs7HqbnVd32bRw2rWW5o+rieHLzUlW/sagctPiaZqmeTA+g==",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.0.0"
         }
       },
       "DotNext.Threading": {
         "type": "Transitive",
-        "resolved": "4.8.0",
-        "contentHash": "Yo5qNVCx0AaHLS37q11TqAx6LsRgLOw7GkiuvCN0eJOghr06WC5ED7SgjjBAgbmII4A2qDgwRcWl8Csv//K8gQ==",
+        "resolved": "4.7.4",
+        "contentHash": "G/AogSunqiZZ/0H4y3Qy/YNveIB+6azddStmFxbxLWkruXZ27gXyoRQ9kQ2gpDbq/+YfMINz9nmTY5ZtuCzuyw==",
         "dependencies": {
-          "DotNext": "4.8.0",
-          "System.Threading.Channels": "7.0.0"
+          "DotNext": "4.7.4",
+          "System.Threading.Channels": "6.0.0"
         }
       },
       "fo-dicom": {
@@ -434,10 +434,10 @@
       },
       "Microsoft.Data.Sqlite.Core": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "xCcaePISVs3Fdy+ji1yGDp1gCjUwDJpfIKrBWXWDgyzc3R2MmNxTW5YgNmnB7dvdHoJwf0jPZ50M5TBj7noV3w==",
+        "resolved": "6.0.12",
+        "contentHash": "bui5wPPqq9OwTL5A+YJPcVStTPrOFcLwg/kAVWyqdjrTief4kTK/3bNv0MqUDVNgAUG8pcFbtdc674CIh1F3gw==",
         "dependencies": {
-          "SQLitePCLRaw.core": "2.0.6"
+          "SQLitePCLRaw.core": "2.1.2"
         }
       },
       "Microsoft.EntityFrameworkCore": {
@@ -466,29 +466,29 @@
       },
       "Microsoft.EntityFrameworkCore.Relational": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "cB1n/Hj8HLYuyIE6fEZyaAKn5qdU9QpDtFZ3KNLWyiZfftmY2T7Bz1Aea1DIUM/KQF22URRLkj7bs4S6CIEp+w==",
+        "resolved": "6.0.12",
+        "contentHash": "HBtRGHtF0Vf+BIQTkRGiopmE5rLYhj59xPpd17S1tLgYpiHDVbepCuHwh5H63fzjO99Z4tW5wmmEGF7KnD91WQ==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "6.0.11",
+          "Microsoft.EntityFrameworkCore": "6.0.12",
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0"
         }
       },
       "Microsoft.EntityFrameworkCore.Sqlite": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "F5db018VdecebRNbRdk6sB2P9nCRmcVncp53IFivJhzVGWB6ogCXdRgkEak2KGSM6J8zPFiGpSUQYd3EIS4F0g==",
+        "resolved": "6.0.12",
+        "contentHash": "2Hutlqt07bnWZFtYqT1lj0otX8ygMyBikysGnfQNF2TK3i5GqSTeJ8tqNi/URiI9II7Cyl15A0rflXmFoySuIw==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Sqlite.Core": "6.0.11",
-          "SQLitePCLRaw.bundle_e_sqlite3": "2.0.6"
+          "Microsoft.EntityFrameworkCore.Sqlite.Core": "6.0.12",
+          "SQLitePCLRaw.bundle_e_sqlite3": "2.1.2"
         }
       },
       "Microsoft.EntityFrameworkCore.Sqlite.Core": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "hV7yq12omAd1ccKCfMJS9xsz7+FxQeSGqRdWIIyWaUXmwmK9Df644mBpj0SDMORjmhsNz9L7EqwbZW+iyQi0VQ==",
+        "resolved": "6.0.12",
+        "contentHash": "07vKE7+t9Z2BfGmHuJwNZNv8m1GWt7ZpYYHFh1tQg1oC6FJ78bSaFzLawsf2NK6CLhbB8DBsjE0rRhxMJ4rXsA==",
         "dependencies": {
-          "Microsoft.Data.Sqlite.Core": "6.0.11",
-          "Microsoft.EntityFrameworkCore.Relational": "6.0.11",
+          "Microsoft.Data.Sqlite.Core": "6.0.12",
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.12",
           "Microsoft.Extensions.DependencyModel": "6.0.0"
         }
       },
@@ -1234,33 +1234,32 @@
       },
       "SQLitePCLRaw.bundle_e_sqlite3": {
         "type": "Transitive",
-        "resolved": "2.0.6",
-        "contentHash": "zssYqiaucyGArZfg74rJuzK0ewgZiidsRVrZTmP7JLNvK806gXg6PGA46XzoJGpNPPA5uRcumwvVp6YTYxtQ5w==",
+        "resolved": "2.1.2",
+        "contentHash": "ilkvNhrTersLmIVAcDwwPqfhUFCg19Z1GVMvCSi3xk6Akq94f4qadLORQCq/T8+9JgMiPs+F/NECw5uauviaNw==",
         "dependencies": {
-          "SQLitePCLRaw.core": "2.0.6",
-          "SQLitePCLRaw.lib.e_sqlite3": "2.0.6",
-          "SQLitePCLRaw.provider.e_sqlite3": "2.0.6"
+          "SQLitePCLRaw.lib.e_sqlite3": "2.1.2",
+          "SQLitePCLRaw.provider.e_sqlite3": "2.1.2"
         }
       },
       "SQLitePCLRaw.core": {
         "type": "Transitive",
-        "resolved": "2.0.6",
-        "contentHash": "Vh8n0dTvwXkCGur2WqQTITvk4BUO8i8h9ucSx3wwuaej3s2S6ZC0R7vqCTf9TfS/I4QkXO6g3W2YQIRFkOcijA==",
+        "resolved": "2.1.2",
+        "contentHash": "A8EBepVqY2lnAp3a8jnhbgzF2tlj2S3HcJQGANTYg/TbYbKa8Z5cM1h74An/vy0svhfzT7tVY0sFmUglLgv+2g==",
         "dependencies": {
           "System.Memory": "4.5.3"
         }
       },
       "SQLitePCLRaw.lib.e_sqlite3": {
         "type": "Transitive",
-        "resolved": "2.0.6",
-        "contentHash": "xlstskMKalKQl0H2uLNe0viBM6fvAGLWqKZUQ3twX5y1tSOZKe0+EbXopQKYdbjJytNGI6y5WSKjpI+kVr2Ckg=="
+        "resolved": "2.1.2",
+        "contentHash": "zibGtku8M4Eea1R3ZCAxc86QbNvyEN17mAcQkvWKBuHvRpMiK2g5anG4R5Be7cWKSd1i6baYz8y4dMMAKcXKPg=="
       },
       "SQLitePCLRaw.provider.e_sqlite3": {
         "type": "Transitive",
-        "resolved": "2.0.6",
-        "contentHash": "peXLJbhU+0clVBIPirihM1NoTBqw8ouBpcUsVMlcZ4k6fcL2hwgkctVB2Nt5VsbnOJcPspQL5xQK7QvLpxkMgg==",
+        "resolved": "2.1.2",
+        "contentHash": "lxCZarZdvAsMl2zw9bXHrXK6RxVhB4b23iTFhCOdHFhxfbsxLxWf+ocvswJwR/9Wh/E//ddMi+wJGqUKV7VwoA==",
         "dependencies": {
-          "SQLitePCLRaw.core": "2.0.6"
+          "SQLitePCLRaw.core": "2.1.2"
         }
       },
       "Swashbuckle.AspNetCore.Swagger": {
@@ -1816,8 +1815,8 @@
       },
       "System.Threading.Channels": {
         "type": "Transitive",
-        "resolved": "7.0.0",
-        "contentHash": "qmeeYNROMsONF6ndEZcIQ+VxR4Q/TX/7uIVLJqtwIWL7dDWeh0l1UIqgo4wYyjG//5lUNhwkLDSFl+pAWO6oiA=="
+        "resolved": "6.0.0",
+        "contentHash": "TY8/9+tI0mNaUMgntOxxaq2ndTkdXqLSxvPmas7XEqOlv9lQtB7wLjYGd756lOaO7Dvb5r/WXhluM+0Xe87v5Q=="
       },
       "System.Threading.Tasks": {
         "type": "Transitive",
@@ -1898,10 +1897,10 @@
         "type": "Project",
         "dependencies": {
           "Ardalis.GuardClauses": "[4.0.1, )",
-          "DotNext.Threading": "[4.8.0, )",
+          "DotNext.Threading": "[4.7.4, )",
           "HL7-dotnetcore": "[2.29.0, )",
           "Karambolo.Extensions.Logging.File": "[3.3.1, )",
-          "Microsoft.EntityFrameworkCore": "[6.0.11, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
           "Microsoft.Extensions.DependencyInjection.Abstractions": "[6.0.0, )",
           "Microsoft.Extensions.Hosting": "[6.0.1, )",
           "Microsoft.Extensions.Logging": "[6.0.0, )",
@@ -1967,7 +1966,7 @@
         "type": "Project",
         "dependencies": {
           "AspNetCore.HealthChecks.MongoDb": "[6.0.2, )",
-          "Microsoft.EntityFrameworkCore": "[6.0.11, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
           "Microsoft.Extensions.Configuration": "[6.0.1, )",
           "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
@@ -1983,7 +1982,7 @@
       "monai.deploy.informaticsgateway.database.api": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "[6.0.11, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
           "Polly": "[7.2.3, )"
@@ -1992,8 +1991,8 @@
       "monai.deploy.informaticsgateway.database.entityframework": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "[6.0.11, )",
-          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.11, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
+          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.12, )",
           "Microsoft.Extensions.Configuration": "[6.0.1, )",
           "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",

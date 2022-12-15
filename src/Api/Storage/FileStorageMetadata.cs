@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets the unique (user-defined) ID of the file.
         /// </summary>
         [JsonPropertyName("id")]
-        public string Id { get; init; }
+        public string Id { get; init; } = default!;
 
         /// <summary>
         /// Gets the correlation ID of the file.
@@ -60,26 +60,26 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// For ACR retrieved DICOM/FHIR files: use the original transaction ID embedded in the request.
         /// </summary>
         [JsonPropertyName("correlationId")]
-        public string CorrelationId { get; init; }
+        public string CorrelationId { get; init; } = default!;
 
         /// <summary>
         /// Gets or sets the source of the file.
         /// </summary>
         [JsonPropertyName("source")]
-        public string Source { get; set; }
+        public string Source { get; set; } = default!;
 
         /// <summary>
         /// Gets a list of workflows designated for the file.
         /// </summary>
         [JsonPropertyName("workflows"), JsonInclude]
-        public List<string> Workflows { get; private set; }
+        public List<string> Workflows { get; private set; } = default!;
 
         /// <summary>
         /// Gets or sets the DateTime that the file was received.
         /// </summary>
         /// <value></value>
         [JsonPropertyName("dateReceived")]
-        public DateTime DateReceived { get; init; }
+        public DateTime DateReceived { get; init; } = default!;
 
         /// <summary>
         /// DO NOT USE

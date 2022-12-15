@@ -23,6 +23,5 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
         Task<List<DicomAssociationInfo>> ToListAsync(CancellationToken cancellationToken = default);
 
         Task<DicomAssociationInfo> AddAsync(DicomAssociationInfo item, CancellationToken cancellationToken = default);
-
     }
 }

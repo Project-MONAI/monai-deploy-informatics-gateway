@@ -41,13 +41,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or set the FHIR resource type.
         /// </summary>
         [JsonPropertyName("resourceType")]
-        public string ResourceType { get; set; }
+        public string ResourceType { get; set; } = default!;
 
         /// <summary>
         /// Gets or set the FHIR resource ID.
         /// </summary>
         [JsonPropertyName("resourceId")]
-        public string ResourceId { get; set; }
+        public string ResourceId { get; set; } = default!;
 
         /// <inheritdoc/>
         [JsonIgnore]
@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         /// <inheritdoc/>
         [JsonPropertyName("file")]
-        public override StorageObjectMetadata File { get; set; }
+        public override StorageObjectMetadata File { get; set; } = default!;
 
         /// <summary>
         /// DO NOT USE

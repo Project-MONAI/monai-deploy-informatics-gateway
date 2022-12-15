@@ -33,12 +33,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets the Series Instance UID to be retrieved.
         /// </summary>
         [JsonPropertyName("SeriesInstanceUID")]
-        public string SeriesInstanceUid { get; set; }
+        public string? SeriesInstanceUid { get; set; }
 
         /// <summary>
         /// Gets or sets a list of DICOM instances to be retrieved.
         /// </summary>
         [JsonPropertyName("instances")]
-        public IList<RequestedInstance> Instances { get; set; }
+        public IList<RequestedInstance>? Instances { get; set; }
     }
 }

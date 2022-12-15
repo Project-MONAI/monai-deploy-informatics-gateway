@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
+namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
     public static class SR
     {

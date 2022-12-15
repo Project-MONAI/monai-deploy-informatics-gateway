@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.IO.Abstractions;
+using System.IO.Abstractions.TestingHelpers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -108,33 +109,19 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         [Fact(DisplayName = "Initialize creates the config file")]
         public async Task Initialize_CreatesTheConfigFile()
         {
+            var fileSystem = new MockFileSystem();
             var testString = "hello world";
             var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(testString));
-            var mockStream = new Mock<Stream>();
-            byte[] bytesWritten = null;
+            var mockSteam = new Mock<Stream>();
 
-            mockStream.Setup(p => p.FlushAsync(It.IsAny<CancellationToken>()));
-            mockStream.Setup(p => p.Close());
-            mockStream.Setup(p => p.CanWrite).Returns(true);
-            mockStream.Setup(s => s.WriteAsync(It.IsAny<byte[]>(), It.IsAny<int>(), It.IsAny<int>(), It.IsAny<CancellationToken>()))
-                .Callback((byte[] bytes, int offset, int count, CancellationToken cancellationToken) =>
-                {
-                    bytesWritten = new byte[bytes.Length];
-                    bytes.CopyTo(bytesWritten, 0);
-                });
-
-            _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(true);
-            _fileSystem.Setup(p => p.FileStream.Create(It.IsAny<string>(), It.IsAny<FileMode>())).Returns(mockStream.Object);
             _embeddedResource.Setup(p => p.GetManifestResourceStream(It.IsAny<string>())).Returns(memoryStream);
 
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            var svc = new ConfigurationService(_logger.Object, fileSystem, _embeddedResource.Object);
             await svc.Initialize(CancellationToken.None);
 
             _embeddedResource.Verify(p => p.GetManifestResourceStream(Common.AppSettingsResourceName), Times.Once());
-            _fileSystem.Verify(p => p.FileStream.Create(Common.ConfigFilePath, FileMode.Create), Times.Once());
-            mockStream.Verify(p => p.FlushAsync(It.IsAny<CancellationToken>()), Times.Once());
-            mockStream.Verify(p => p.Close(), Times.Once());
 
+            var bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.ConfigFilePath).ConfigureAwait(false);
             Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
         }
     }

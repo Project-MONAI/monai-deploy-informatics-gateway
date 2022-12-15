@@ -105,7 +105,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 .Setup(x => x.GetService(typeof(IStorageInfoProvider)))
                 .Returns(_storageInfoProvider.Object);
 
-
             var scope = new Mock<IServiceScope>();
             scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
 
@@ -194,7 +193,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Action<MessageReceivedEventArgs>>(),
                                                               It.IsAny<ushort>()), Times.Once());
         }
-
 
         [RetryFact(1, 10, DisplayName = "Data flow test - end to end workflow with partial failure")]
         public async Task DataflowTest_EndToEnd_WithPartialFailure()

@@ -17,6 +17,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -35,6 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 {
     public class InferenceControllerTest
     {
+        private static readonly string TestUsername = "test-user";
         private readonly Mock<IInferenceRequestRepository> _inferenceRequestRepository;
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly Mock<ILogger<InferenceController>> _logger;
@@ -68,8 +71,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                         Instance = instance
                     };
                 });
-            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
 
+            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() { User = new ClaimsPrincipal(new GenericIdentity(TestUsername)) } };
             _controller = new InferenceController(_inferenceRequestRepository.Object, _logger.Object)
             {
                 ControllerContext = controllerContext,
@@ -288,7 +291,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             var result = _controller.NewInferenceRequest(input);
 
-            _inferenceRequestRepository.Verify(p => p.AddAsync(input, It.IsAny<CancellationToken>()), Times.Once());
+            _inferenceRequestRepository.Verify(p => p.AddAsync(It.Is<InferenceRequest>(p => p.CreatedBy == TestUsername), It.IsAny<CancellationToken>()), Times.Once());
 
             Assert.NotNull(result);
             var objectResult = result.Result as OkObjectResult;

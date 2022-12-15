@@ -1,5 +1,6 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2019-2020 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +15,11 @@
  * limitations under the License.
  */
 
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Monai.Deploy.InformaticsGateway.Database.Api;
-
-namespace Monai.Deploy.InformaticsGateway.Database
+namespace Monai.Deploy.InformaticsGateway.Api
 {
-    public static class DatabaseMigrationManager
+    public enum EditMode
     {
-        public static IHost MigrateDatabase(this IHost host)
-        {
-            using (var scope = host.Services.CreateScope())
-            {
-                scope.ServiceProvider.GetService<IDatabaseMigrationManager>()?.Migrate(host);
-            }
-            return host;
-        }
+        Create,
+        Update,
     }
 }
