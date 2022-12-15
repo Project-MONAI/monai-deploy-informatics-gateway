@@ -1226,6 +1226,7 @@
     :versions:
     - 17.2.3
     :when: 2022-08-16 23:06:50.602318269 Z
+- - :approve
   - System.IO.Abstractions.TestingHelpers
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)

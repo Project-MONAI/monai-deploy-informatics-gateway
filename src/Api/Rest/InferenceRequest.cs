@@ -168,7 +168,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         {
             get
             {
-                return InputResources.FirstOrDefault(predicate => predicate.Interface == InputInterfaceType.Algorithm)?.ConnectionDetails;
+                return InputResources?.FirstOrDefault(predicate => predicate.Interface == InputInterfaceType.Algorithm)?.ConnectionDetails;
             }
         }
 
@@ -232,13 +232,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         {
             Guard.Against.Null(errors);
 
-            if (InputMetadata.Inputs.IsNullOrEmpty())
+            if (InputMetadata is not null && InputMetadata.Inputs.IsNullOrEmpty())
             {
                 errors.Add("Request has no `inputMetadata` defined. At least one `inputs` or `inputMetadata` required.");
             }
-            else
+            else if (InputMetadata!.Inputs is not null)
             {
-                foreach (var inputDetails in InputMetadata.Inputs)
+                foreach (var inputDetails in InputMetadata!.Inputs)
                 {
                     CheckInputMetadataDetails(inputDetails, errors);
                 }
@@ -249,7 +249,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         {
             Guard.Against.Null(errors);
 
-            foreach (var output in OutputResources)
+            foreach (var output in OutputResources ?? Enumerable.Empty<RequestOutputDataResource>())
             {
                 if (output.Interface == InputInterfaceType.DicomWeb)
                 {
@@ -267,12 +267,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             Guard.Against.Null(errors);
 
             if (InputResources.IsNullOrEmpty() ||
-                !InputResources.Any(predicate => predicate.Interface != InputInterfaceType.Algorithm))
+                !InputResources!.Any(predicate => predicate.Interface != InputInterfaceType.Algorithm))
             {
                 errors.Add("No 'inputResources' specified.");
             }
 
-            foreach (var input in InputResources)
+            foreach (var input in InputResources ?? Enumerable.Empty<RequestInputDataResource>())
             {
                 if (input.Interface == InputInterfaceType.DicomWeb)
                 {
@@ -326,7 +326,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             {
                 errors.Add("Request type is set to `FHIR_RESOURCE` but no FHIR `resources` defined.");
             }
-            else
+            else if (details.Resources is not null)
             {
                 errors.AddRange(details.Resources.Where(resource => string.IsNullOrWhiteSpace(resource.Type)).Select(resource => "A FHIR resource type cannot be empty."));
             }
@@ -341,7 +341,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             {
                 errors.Add("Request type is set to `DICOM_UID` but no `studies` defined.");
             }
-            else
+            else if (details.Studies is not null)
             {
                 foreach (var study in details.Studies)
                 {
@@ -358,7 +358,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
 
         private static void CheckInputMetadataWithTypeDicomSeries(List<string> errors, RequestedStudy study)
         {
-            foreach (var series in study.Series)
+            foreach (var series in study.Series ?? Enumerable.Empty<RequestedSeries>())
             {
                 if (string.IsNullOrWhiteSpace(series.SeriesInstanceUid))
                 {
@@ -366,31 +366,32 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                 }
 
                 if (series.Instances is null) continue;
+
                 errors.AddRange(
                     series.Instances
                         .Where(
                             instance => instance.SopInstanceUid.IsNullOrEmpty() ||
-                            instance.SopInstanceUid.Any(p => string.IsNullOrWhiteSpace(p)))
+                            instance.SopInstanceUid!.Any(p => string.IsNullOrWhiteSpace(p)))
                         .Select(instance => "`SOPInstanceUID` cannot be empty."));
             }
         }
 
-        private static void CheckFhirConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails connection)
+        private static void CheckFhirConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails? connection)
         {
-            if (!Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
+            if (connection is not null && !Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
             {
                 errors.Add($"The provided URI '{connection.Uri}' in `{source}` is not well formed.");
             }
         }
 
-        private static void CheckDicomWebConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails connection)
+        private static void CheckDicomWebConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails? connection)
         {
-            if (connection.AuthType != ConnectionAuthType.None && string.IsNullOrWhiteSpace(connection.AuthId))
+            if (connection is not null && connection.AuthType != ConnectionAuthType.None && string.IsNullOrWhiteSpace(connection.AuthId))
             {
                 errors.Add($"One of the '{source}' has authType of '{connection.AuthType:F}' but does not include a valid value for 'authId'");
             }
 
-            if (!Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
+            if (connection is not null && !Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
             {
                 errors.Add($"The provided URI '{connection.Uri}' is not well formed.");
             }
