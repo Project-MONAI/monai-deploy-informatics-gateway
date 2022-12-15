@@ -37,6 +37,30 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.AeTitle
   fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.AeTitle
   nameWithType: BaseApplicationEntity.AeTitle
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.CreatedBy
+  name: CreatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_CreatedBy
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.CreatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.CreatedBy
+  nameWithType: BaseApplicationEntity.CreatedBy
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.CreatedBy*
+  name: CreatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_CreatedBy_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.CreatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.CreatedBy
+  nameWithType: BaseApplicationEntity.CreatedBy
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.DateTimeUpdated
+  name: DateTimeUpdated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_DateTimeUpdated
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.DateTimeUpdated
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.DateTimeUpdated
+  nameWithType: BaseApplicationEntity.DateTimeUpdated
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.DateTimeUpdated*
+  name: DateTimeUpdated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_DateTimeUpdated_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.DateTimeUpdated
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.DateTimeUpdated
+  nameWithType: BaseApplicationEntity.DateTimeUpdated
 - uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.HostIp
   name: HostIp
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_HostIp
@@ -61,6 +85,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.Name
   fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.Name
   nameWithType: BaseApplicationEntity.Name
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal,Monai.Deploy.InformaticsGateway.Api.EditMode)
+  name: SetAuthor(ClaimsPrincipal, EditMode)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_SetAuthor_System_Security_Claims_ClaimsPrincipal_Monai_Deploy_InformaticsGateway_Api_EditMode_
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal,Monai.Deploy.InformaticsGateway.Api.EditMode)
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal, Monai.Deploy.InformaticsGateway.Api.EditMode)
+  nameWithType: BaseApplicationEntity.SetAuthor(ClaimsPrincipal, EditMode)
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetAuthor*
+  name: SetAuthor
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_SetAuthor_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetAuthor
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetAuthor
+  nameWithType: BaseApplicationEntity.SetAuthor
 - uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.SetDefaultValues
   name: SetDefaultValues()
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_SetDefaultValues
@@ -85,6 +121,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.ToString
   fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.ToString
   nameWithType: BaseApplicationEntity.ToString
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.UpdatedBy
+  name: UpdatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_UpdatedBy
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.UpdatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.UpdatedBy
+  nameWithType: BaseApplicationEntity.UpdatedBy
+- uid: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.UpdatedBy*
+  name: UpdatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_BaseApplicationEntity_UpdatedBy_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.UpdatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.BaseApplicationEntity.UpdatedBy
+  nameWithType: BaseApplicationEntity.UpdatedBy
 - uid: Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity
   name: DestinationApplicationEntity
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html
@@ -265,55 +313,79 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.RemotePort
   fullName: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.RemotePort
   nameWithType: DicomAssociationInfo.RemotePort
+- uid: Monai.Deploy.InformaticsGateway.Api.EditMode
+  name: EditMode
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.EditMode.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Api.EditMode
+  fullName: Monai.Deploy.InformaticsGateway.Api.EditMode
+  nameWithType: EditMode
+- uid: Monai.Deploy.InformaticsGateway.Api.EditMode.Create
+  name: Create
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.EditMode.html#Monai_Deploy_InformaticsGateway_Api_EditMode_Create
+  commentId: F:Monai.Deploy.InformaticsGateway.Api.EditMode.Create
+  fullName: Monai.Deploy.InformaticsGateway.Api.EditMode.Create
+  nameWithType: EditMode.Create
+- uid: Monai.Deploy.InformaticsGateway.Api.EditMode.Update
+  name: Update
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.EditMode.html#Monai_Deploy_InformaticsGateway_Api_EditMode_Update
+  commentId: F:Monai.Deploy.InformaticsGateway.Api.EditMode.Update
+  fullName: Monai.Deploy.InformaticsGateway.Api.EditMode.Update
+  nameWithType: EditMode.Update
+- uid: Monai.Deploy.InformaticsGateway.Api.EditMode.value__
+  name: value__
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.EditMode.html#Monai_Deploy_InformaticsGateway_Api_EditMode_value__
+  commentId: F:Monai.Deploy.InformaticsGateway.Api.EditMode.value__
+  fullName: Monai.Deploy.InformaticsGateway.Api.EditMode.value__
+  nameWithType: EditMode.value__
 - uid: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2
-  name: LoggingDataDictionary<K, V>
+  name: LoggingDataDictionary<TKey, TValue>
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary-2.html
   commentId: T:Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2
-  name.vb: LoggingDataDictionary(Of K, V)
-  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<K, V>
-  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of K, V)
-  nameWithType: LoggingDataDictionary<K, V>
-  nameWithType.vb: LoggingDataDictionary(Of K, V)
+  name.vb: LoggingDataDictionary(Of TKey, TValue)
+  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<TKey, TValue>
+  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of TKey, TValue)
+  nameWithType: LoggingDataDictionary<TKey, TValue>
+  nameWithType.vb: LoggingDataDictionary(Of TKey, TValue)
 - uid: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.#ctor
   name: LoggingDataDictionary()
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary-2.html#Monai_Deploy_InformaticsGateway_Api_LoggingDataDictionary_2__ctor
   commentId: M:Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.#ctor
-  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<K, V>.LoggingDataDictionary()
-  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of K, V).LoggingDataDictionary()
-  nameWithType: LoggingDataDictionary<K, V>.LoggingDataDictionary()
-  nameWithType.vb: LoggingDataDictionary(Of K, V).LoggingDataDictionary()
+  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<TKey, TValue>.LoggingDataDictionary()
+  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of TKey, TValue).LoggingDataDictionary()
+  nameWithType: LoggingDataDictionary<TKey, TValue>.LoggingDataDictionary()
+  nameWithType.vb: LoggingDataDictionary(Of TKey, TValue).LoggingDataDictionary()
 - uid: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
   name: LoggingDataDictionary(SerializationInfo, StreamingContext)
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary-2.html#Monai_Deploy_InformaticsGateway_Api_LoggingDataDictionary_2__ctor_System_Runtime_Serialization_SerializationInfo_System_Runtime_Serialization_StreamingContext_
   commentId: M:Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)
-  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<K, V>.LoggingDataDictionary(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of K, V).LoggingDataDictionary(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
-  nameWithType: LoggingDataDictionary<K, V>.LoggingDataDictionary(SerializationInfo, StreamingContext)
-  nameWithType.vb: LoggingDataDictionary(Of K, V).LoggingDataDictionary(SerializationInfo, StreamingContext)
+  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<TKey, TValue>.LoggingDataDictionary(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of TKey, TValue).LoggingDataDictionary(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)
+  nameWithType: LoggingDataDictionary<TKey, TValue>.LoggingDataDictionary(SerializationInfo, StreamingContext)
+  nameWithType.vb: LoggingDataDictionary(Of TKey, TValue).LoggingDataDictionary(SerializationInfo, StreamingContext)
 - uid: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.#ctor*
   name: LoggingDataDictionary
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary-2.html#Monai_Deploy_InformaticsGateway_Api_LoggingDataDictionary_2__ctor_
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.#ctor
-  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<K, V>.LoggingDataDictionary
-  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of K, V).LoggingDataDictionary
-  nameWithType: LoggingDataDictionary<K, V>.LoggingDataDictionary
-  nameWithType.vb: LoggingDataDictionary(Of K, V).LoggingDataDictionary
+  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<TKey, TValue>.LoggingDataDictionary
+  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of TKey, TValue).LoggingDataDictionary
+  nameWithType: LoggingDataDictionary<TKey, TValue>.LoggingDataDictionary
+  nameWithType.vb: LoggingDataDictionary(Of TKey, TValue).LoggingDataDictionary
 - uid: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.ToString
   name: ToString()
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary-2.html#Monai_Deploy_InformaticsGateway_Api_LoggingDataDictionary_2_ToString
   commentId: M:Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.ToString
-  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<K, V>.ToString()
-  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of K, V).ToString()
-  nameWithType: LoggingDataDictionary<K, V>.ToString()
-  nameWithType.vb: LoggingDataDictionary(Of K, V).ToString()
+  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<TKey, TValue>.ToString()
+  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of TKey, TValue).ToString()
+  nameWithType: LoggingDataDictionary<TKey, TValue>.ToString()
+  nameWithType.vb: LoggingDataDictionary(Of TKey, TValue).ToString()
 - uid: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.ToString*
   name: ToString
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary-2.html#Monai_Deploy_InformaticsGateway_Api_LoggingDataDictionary_2_ToString_
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary`2.ToString
-  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<K, V>.ToString
-  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of K, V).ToString
-  nameWithType: LoggingDataDictionary<K, V>.ToString
-  nameWithType.vb: LoggingDataDictionary(Of K, V).ToString
+  fullName: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary<TKey, TValue>.ToString
+  fullName.vb: Monai.Deploy.InformaticsGateway.Api.LoggingDataDictionary(Of TKey, TValue).ToString
+  nameWithType: LoggingDataDictionary<TKey, TValue>.ToString
+  nameWithType.vb: LoggingDataDictionary(Of TKey, TValue).ToString
 - uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity
   name: MonaiApplicationEntity
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html
@@ -356,6 +428,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.AllowedSopClasses
   fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.AllowedSopClasses
   nameWithType: MonaiApplicationEntity.AllowedSopClasses
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy
+  name: CreatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_CreatedBy
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy
+  nameWithType: MonaiApplicationEntity.CreatedBy
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy*
+  name: CreatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_CreatedBy_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy
+  nameWithType: MonaiApplicationEntity.CreatedBy
 - uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Grouping
   name: Grouping
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Grouping
@@ -392,6 +476,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Name
   fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Name
   nameWithType: MonaiApplicationEntity.Name
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal)
+  name: SetAuthor(ClaimsPrincipal)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetAuthor_System_Security_Claims_ClaimsPrincipal_
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal)
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal)
+  nameWithType: MonaiApplicationEntity.SetAuthor(ClaimsPrincipal)
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor*
+  name: SetAuthor
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetAuthor_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor
+  nameWithType: MonaiApplicationEntity.SetAuthor
 - uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetDefaultValues
   name: SetDefaultValues()
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetDefaultValues
@@ -788,6 +884,30 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.Application
   fullName: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.Application
   nameWithType: InferenceRequest.Application
+- uid: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.CreatedBy
+  name: CreatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_CreatedBy
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.CreatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.CreatedBy
+  nameWithType: InferenceRequest.CreatedBy
+- uid: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.CreatedBy*
+  name: CreatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_CreatedBy_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.CreatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.CreatedBy
+  nameWithType: InferenceRequest.CreatedBy
+- uid: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.DateTimeCreated
+  name: DateTimeCreated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_DateTimeCreated
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.DateTimeCreated
+  fullName: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.DateTimeCreated
+  nameWithType: InferenceRequest.DateTimeCreated
+- uid: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.DateTimeCreated*
+  name: DateTimeCreated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_DateTimeCreated_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.DateTimeCreated
+  fullName: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.DateTimeCreated
+  nameWithType: InferenceRequest.DateTimeCreated
 - uid: Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.InferenceRequestId
   name: InferenceRequestId
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_InferenceRequestId
@@ -5999,6 +6119,24 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal
   fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal
   nameWithType: StorageMetadataRepositoryBase.UpdateInternal
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.SR
+  name: SR
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.SR.html
+  commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.SR
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.SR
+  nameWithType: SR
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.SR.DatabaseConnectionStringKey
+  name: DatabaseConnectionStringKey
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.SR.html#Monai_Deploy_InformaticsGateway_Database_Api_SR_DatabaseConnectionStringKey
+  commentId: F:Monai.Deploy.InformaticsGateway.Database.Api.SR.DatabaseConnectionStringKey
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.SR.DatabaseConnectionStringKey
+  nameWithType: SR.DatabaseConnectionStringKey
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.SR.DatabaseNameKey
+  name: DatabaseNameKey
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.SR.html#Monai_Deploy_InformaticsGateway_Database_Api_SR_DatabaseNameKey
+  commentId: F:Monai.Deploy.InformaticsGateway.Database.Api.SR.DatabaseNameKey
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.SR.DatabaseNameKey
+  nameWithType: SR.DatabaseNameKey
 - uid: Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper
   name: StorageMetadataWrapper
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html
@@ -6119,6 +6257,18 @@ references:
   commentId: T:Monai.Deploy.InformaticsGateway.Database.DatabaseManager
   fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager
   nameWithType: DatabaseManager
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.AddDatabaseHealthCheck(Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder,Microsoft.Extensions.Configuration.IConfigurationSection)
+  name: AddDatabaseHealthCheck(IHealthChecksBuilder, IConfigurationSection)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_AddDatabaseHealthCheck_Microsoft_Extensions_DependencyInjection_IHealthChecksBuilder_Microsoft_Extensions_Configuration_IConfigurationSection_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.AddDatabaseHealthCheck(Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder,Microsoft.Extensions.Configuration.IConfigurationSection)
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.AddDatabaseHealthCheck(Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder, Microsoft.Extensions.Configuration.IConfigurationSection)
+  nameWithType: DatabaseManager.AddDatabaseHealthCheck(IHealthChecksBuilder, IConfigurationSection)
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.AddDatabaseHealthCheck*
+  name: AddDatabaseHealthCheck
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_AddDatabaseHealthCheck_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.AddDatabaseHealthCheck
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.AddDatabaseHealthCheck
+  nameWithType: DatabaseManager.AddDatabaseHealthCheck
 - uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection)
   name: ConfigureDatabase(IServiceCollection, IConfigurationSection)
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabase_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfigurationSection_

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Changelog | MONAI Deploy Informatics Gateway v0.3.5 </title>
+    <title>Changelog | MONAI Deploy Informatics Gateway v0.3.6 </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Changelog | MONAI Deploy Informatics Gateway v0.3.5 ">
+    <meta name="title" content="Changelog | MONAI Deploy Informatics Gateway v0.3.6 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="images/favicon.ico">
@@ -79,11 +79,30 @@
   ~ limitations under the License.
 -->
 
+<h2 id="036">0.3.6</h2>
+<p><a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/12">GitHub Milestone 0.3.6</a></p>
+<ul>
+<li>Adds support for basic auth with Monai.Deploy.Security 0.1.3.</li>
+<li>Updates APIs to store the username of the person who initiated the calls.</li>
+<li>Fixes database health checks not using the configured database.</li>
+</ul>
+<h2 id="035">0.3.5</h2>
+<p><a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/11">GitHub Milestone 0.3.6</a></p>
+<ul>
+<li>Integrates Monai.Deploy.Security to enable OpenID Connect for API authentication.</li>
+<li>Records DICOM association information in the database.</li>
+</ul>
+<h2 id="034">0.3.4</h2>
+<p><a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/10">GitHub Milestone 0.3.4</a></p>
+<ul>
+<li>Adds support for MongoDB in addition to SQLite.</li>
+<li>Improves validation for AE Title, IP address, and host/domain names.</li>
+</ul>
 <h2 id="033">0.3.3</h2>
 <p><a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/9">GitHub Milestone 0.3.3</a></p>
 <ul>
 <li>Ability to create storage buckets on startup</li>
-<li>Include logging scope values for LogStash</li>
+<li>Includes logging scope values for LogStash</li>
 </ul>
 <h2 id="032">0.3.2</h2>
 <p><a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/8">GitHub Milestone 0.3.2</a></p>
@@ -110,7 +129,7 @@
 <ul>
 <li>New <a href="api/rest/config.html">C-ECHO API</a> to perform a DICOM C-ECHO to a configured DICOM destination.</li>
 <li>The SCU AE Title is now uppercase MONAISCU.</li>
-<li>Update fo-dicom to 5.0.3</li>
+<li>Updates fo-dicom to 5.0.3</li>
 <li>Defaults temporary storage to use disk with ability to switch to memory.</li>
 </ul>
 <h2 id="030">0.3.0</h2>
