@@ -1220,18 +1220,32 @@
     - 4.3.0
     :when: 2022-08-16 23:06:49.709349587 Z
 - - :approve
-  - System.IO.Abstractions
+  - TestableIO.System.IO.Abstractions
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
-    - 17.2.3
+    - 18.0.1
     :when: 2022-08-16 23:06:50.602318269 Z
 - - :approve
-  - System.IO.Abstractions.TestingHelpers
+  - TestableIO.System.IO.Abstractions.Extensions
+  - :who: mocsharp
+    :why: MIT (https://github.com/TestableIO/System.IO.Abstractions.Extensions/raw/main/LICENSE.md)
+    :versions:
+    - 1.0.34
+    :when: 2022-08-16 23:06:50.602318269 Z
+- - :approve
+  - TestableIO.System.IO.Abstractions.TestingHelpers
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
-    - 17.2.3
+    - 18.0.1
+    :when: 2022-08-16 23:06:51.524564913 Z
+- - :approve
+  - TestableIO.System.IO.Abstractions.Wrappers
+  - :who: mocsharp
+    :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+    :versions:
+    - 18.0.1
     :when: 2022-08-16 23:06:51.524564913 Z
 - - :approve
   - System.IO.Compression

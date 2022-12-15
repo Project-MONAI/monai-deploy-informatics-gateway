@@ -15512,88 +15512,6 @@ consequential or other damages.
 
 
 <details>
-<summary>System.IO.Abstractions 17.2.3</summary>
-
-## System.IO.Abstractions
-
-- Version: 17.2.3
-- Authors: Tatham Oddie & friends
-- Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/17.2.3)
-- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) Tatham Oddie and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>System.IO.Abstractions.TestingHelpers 17.2.3</summary>
-
-## System.IO.Abstractions.TestingHelpers
-
-- Version: 17.2.3
-- Authors: Tatham Oddie & friends
-- Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/17.2.3)
-- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) Tatham Oddie and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
 <summary>System.IO.Compression 4.3.0</summary>
 
 ## System.IO.Compression
@@ -27832,6 +27750,156 @@ consequential or other damages.
 
 
 <details>
+<summary>TestableIO.System.IO.Abstractions 18.0.1</summary>
+
+## TestableIO.System.IO.Abstractions
+
+- Version: 18.0.1
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/18.0.1)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>TestableIO.System.IO.Abstractions.Extensions 1.0.34</summary>
+
+## TestableIO.System.IO.Abstractions.Extensions
+
+- Version: 1.0.34
+- Authors: Tatham Oddie - Luigi Grilli & friends
+- Project URL: https://github.com/System-IO-Abstractions/System.IO.Abstractions.Extensions
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Extensions/1.0.34)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions.Extensions/raw/main/LICENSE.md)
+
+
+```
+MIT License
+
+Copyright (c) 2021 Tatham Oddie - Luigi Grilli & friends
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>TestableIO.System.IO.Abstractions.TestingHelpers 18.0.1</summary>
+
+## TestableIO.System.IO.Abstractions.TestingHelpers
+
+- Version: 18.0.1
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.TestingHelpers/18.0.1)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>TestableIO.System.IO.Abstractions.Wrappers 18.0.1</summary>
+
+## TestableIO.System.IO.Abstractions.Wrappers
+
+- Version: 18.0.1
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Wrappers/18.0.1)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Validation 2.4.18</summary>
 
 ## Validation
@@ -27955,13 +28023,52 @@ SOFTWARE.
 <details>
 <summary>coverlet.collector 3.2.0</summary>
 
-## coverlet.collector
+## ZstdSharp.Port
 
 - Version: 3.2.0
 - Authors: tonerdo
 - Project URL: https://github.com/coverlet-coverage/coverlet
 - Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/3.2.0)
 - License: [MIT](https://github.com/coverlet-coverage/coverlet/raw/master/LICENSE)
+
+
+```
+MIT License
+
+Copyright (c) 2021 Oleg Stepanischev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>fo-dicom 5.0.3</summary>
+
+## coverlet.collector
+
+- Version: 5.0.3
+- Authors: fo-dicom contributors
+- Project URL: https://github.com/fo-dicom/fo-dicom
+- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.0.3)
+- License: [Microsoft Public License](https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
 
 
 ```
@@ -27992,14 +28099,14 @@ SOFTWARE.
 
 
 <details>
-<summary>fo-dicom 5.0.3</summary>
+<summary>fo-dicom.NLog 5.0.3</summary>
 
-## fo-dicom
+## fo-dicom.NLog
 
 - Version: 5.0.3
 - Authors: fo-dicom contributors
 - Project URL: https://github.com/fo-dicom/fo-dicom
-- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/fo-dicom.NLog/5.0.3)
 - License: [Microsoft Public License](https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
 
 

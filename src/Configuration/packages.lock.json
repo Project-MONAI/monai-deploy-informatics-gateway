@@ -36,7 +36,8 @@
           "Microsoft.Extensions.Logging": "6.0.0",
           "Newtonsoft.Json": "13.0.2",
           "System.ComponentModel.Annotations": "5.0.0",
-          "System.IO.Abstractions": "17.2.3"
+          "TestableIO.System.IO.Abstractions": "18.0.1",
+          "TestableIO.System.IO.Abstractions.Wrappers": "18.0.1"
         }
       },
       "Monai.Deploy.Storage": {
@@ -54,11 +55,11 @@
           "System.IO.Abstractions": "17.2.3"
         }
       },
-      "System.IO.Abstractions": {
+      "TestableIO.System.IO.Abstractions": {
         "type": "Direct",
-        "requested": "[17.2.3, )",
-        "resolved": "17.2.3",
-        "contentHash": "VcozGeE4SxIo0cnXrDHhbrh/Gb8KQnZ3BvMelvh+iw0PrIKtuuA46U2Xm4e4pgnaWFgT4RdZfTpWl/WPRdw0WQ=="
+        "requested": "[18.0.1, )",
+        "resolved": "18.0.1",
+        "contentHash": "nacJfL4mGObg8Ttn3ZCJZ2u9z8ivG43xgUJvQQLKCmDnle4m49NYNOLk8cqB4iPdSqVhnUSy+qcIryWgDHCqeg=="
       },
       "Ardalis.GuardClauses": {
         "type": "Transitive",
@@ -276,6 +277,14 @@
         "type": "Transitive",
         "resolved": "6.0.0",
         "contentHash": "+tyDCU3/B1lDdOOAJywHQoFwyXIUghIaP2BxG79uvhfTnO+D9qIgjVlL/JV2NTliYbMHpd6eKDmHp2VHpij7MA=="
+      },
+      "TestableIO.System.IO.Abstractions.Wrappers": {
+        "type": "Transitive",
+        "resolved": "18.0.1",
+        "contentHash": "3vGUMEHgL7l1Jyvv0WdDzCrwV6xKRhI2xVgWHQDbfVsye/ZBflhWFyVrCanPHzm0r0WSl0ug8DuaKwmelHlLCw==",
+        "dependencies": {
+          "TestableIO.System.IO.Abstractions": "18.0.1"
+        }
       },
       "monai.deploy.informaticsgateway.api": {
         "type": "Project",
