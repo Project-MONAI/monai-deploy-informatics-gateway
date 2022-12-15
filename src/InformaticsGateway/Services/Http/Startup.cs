@@ -28,6 +28,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
 using Monai.Deploy.Security.Authentication.Extensions;
@@ -52,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             services.AddControllers(opts =>
             {
                 opts.RespectBrowserAcceptHeader = true;
-                var jsonSerializerOptions = new JsonSerializerOptions
+                var jsonSerializerOptions = new JsonSerializerOptions(JsonSerializerDefaults.Web)
                 {
                     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
                     PropertyNameCaseInsensitive = true,
@@ -64,7 +65,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 jsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter(JsonNamingPolicy.CamelCase, false));
                 jsonSerializerOptions.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: false));
-                jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
                 opts.OutputFormatters.Add(new FhirJsonFormatters(jsonSerializerOptions));
                 opts.OutputFormatters.Add(new FhirXmlFormatters());
             })
@@ -76,9 +76,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 opts.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 opts.JsonSerializerOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
                 opts.JsonSerializerOptions.WriteIndented = false;
+                opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter(new JsonStringEnumMemberConverterOptions(deserializationFailureFallbackValue: InferenceRequestType.Unknown), typeof(InferenceRequestType)));
                 opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter(JsonNamingPolicy.CamelCase, false));
                 opts.JsonSerializerOptions.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: false));
-                opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
             })
             .AddXmlSerializerFormatters();
 

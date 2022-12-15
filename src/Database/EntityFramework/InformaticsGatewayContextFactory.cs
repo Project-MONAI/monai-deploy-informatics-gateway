@@ -18,7 +18,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 {

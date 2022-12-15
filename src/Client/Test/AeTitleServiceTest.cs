@@ -422,7 +422,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var exception = await Record.ExceptionAsync(async () => await service.CEcho(aet.Name, CancellationToken.None));
             Assert.Null(exception);
-
         }
 
         [Fact(DisplayName = "Destination - C-ECHO returns a problem")]

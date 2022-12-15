@@ -79,6 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
         /// <inheritdoc/>
 #pragma warning disable CA1054
+
         public void ConfigureServicePrefix(DicomWebServiceType serviceType, string urlPrefix)
 #pragma warning restore CA1054
         {

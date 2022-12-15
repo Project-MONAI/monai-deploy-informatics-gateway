@@ -33,6 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
                 j.MapIdMember(c => c.Id)
                     .SetIdGenerator(GuidGenerator.Instance)
                     .SetSerializer(new GuidSerializer(BsonType.String));
+                j.MapMember(c => c.DateTimeCreated);
             });
         }
     }

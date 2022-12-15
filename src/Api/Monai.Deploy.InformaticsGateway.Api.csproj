@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   ~ Copyright 2021-2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,6 +23,7 @@
     <IsTrimmable>true</IsTrimmable>
     <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,9 +31,9 @@
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.11" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.18" />
-    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.12" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.19" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.13" />
   </ItemGroup>
 
   <ItemGroup>

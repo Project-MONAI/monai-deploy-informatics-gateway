@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Security.Claims;
+using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -37,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 {
     public class MonaiAeTitleControllerTest
     {
+        private static readonly string TestUsername = "test-user";
         private readonly MonaiAeTitleController _controller;
         private readonly Mock<ProblemDetailsFactory> _problemDetailsFactory;
         private readonly Mock<ILogger<MonaiAeTitleController>> _logger;
@@ -71,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             _repository = new Mock<IMonaiApplicationEntityRepository>();
 
-            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
+            var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() { User = new ClaimsPrincipal(new GenericIdentity(TestUsername)) } };
             _controller = new MonaiAeTitleController(
                  _logger.Object,
                  _aeChangedNotificationService.Object,
@@ -298,7 +301,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.IsType<CreatedAtActionResult>(result.Result);
 
             _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == monaiAeTitle)), Times.Once());
-            _repository.Verify(p => p.AddAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.AddAsync(It.Is<MonaiApplicationEntity>(p => p.CreatedBy == TestUsername), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         #endregion Create

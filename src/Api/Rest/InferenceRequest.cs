@@ -19,7 +19,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using System.Xml.Linq;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Common;
 
@@ -83,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or set the transaction ID of a request.
         /// </summary>
         [JsonPropertyName("transactionID")]
-        public string TransactionId { get; set; }
+        public string TransactionId { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the priority of a request.
@@ -101,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets the details of the data associated with the inference request.
         /// </summary>
         [JsonPropertyName("inputMetadata")]
-        public InferenceRequestMetadata InputMetadata { get; set; }
+        public InferenceRequestMetadata? InputMetadata { get; set; }
 
         /// <summary>
         /// Gets or set a list of data sources to query/retrieve data from.
@@ -109,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// the order the list was received.
         /// </summary>
         [JsonPropertyName("inputResources")]
-        public IList<RequestInputDataResource> InputResources { get; set; }
+        public IList<RequestInputDataResource>? InputResources { get; set; }
 
         /// <summary>
         /// Gets or set a list of data sources to export results to.
@@ -118,7 +117,17 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Followed by registering the results using the MONAI App SDK.
         /// </summary>
         [JsonPropertyName("outputResources")]
-        public IList<RequestOutputDataResource> OutputResources { get; set; }
+        public IList<RequestOutputDataResource>? OutputResources { get; set; }
+
+        /// <summary>
+        /// Gets or set the user who created the DICOM entity.
+        /// </summary>
+        public string? CreatedBy { get; set; }
+
+        /// <summary>
+        /// Gets or set the date and time the objects first created.
+        /// </summary>
+        public DateTime? DateTimeCreated { get; set; }
 
         #region Internal Use Only
 
@@ -155,11 +164,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         public int TryCount { get; set; } = 0;
 
         [JsonIgnore]
-        public InputConnectionDetails Application
+        public InputConnectionDetails? Application
         {
             get
             {
-                return InputResources.FirstOrDefault(predicate => predicate.Interface == InputInterfaceType.Algorithm)?.ConnectionDetails;
+                return InputResources?.FirstOrDefault(predicate => predicate.Interface == InputInterfaceType.Algorithm)?.ConnectionDetails;
             }
         }
 
@@ -169,6 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         {
             InputResources = new List<RequestInputDataResource>();
             OutputResources = new List<RequestOutputDataResource>();
+            DateTimeCreated = DateTime.UtcNow;
         }
 
         public bool IsValid(out string details)
@@ -192,7 +202,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             if (InputMetadata.Details is not null)
             {
                 InputMetadata.Inputs.Add(InputMetadata.Details);
-                InputMetadata.Details = null;
+                InputMetadata.Details = default!;
             }
         }
 
@@ -222,13 +232,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         {
             Guard.Against.Null(errors);
 
-            if (InputMetadata.Inputs.IsNullOrEmpty())
+            if (InputMetadata is not null && InputMetadata.Inputs.IsNullOrEmpty())
             {
                 errors.Add("Request has no `inputMetadata` defined. At least one `inputs` or `inputMetadata` required.");
             }
-            else
+            else if (InputMetadata!.Inputs is not null)
             {
-                foreach (var inputDetails in InputMetadata.Inputs)
+                foreach (var inputDetails in InputMetadata!.Inputs)
                 {
                     CheckInputMetadataDetails(inputDetails, errors);
                 }
@@ -239,7 +249,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         {
             Guard.Against.Null(errors);
 
-            foreach (var output in OutputResources)
+            foreach (var output in OutputResources ?? Enumerable.Empty<RequestOutputDataResource>())
             {
                 if (output.Interface == InputInterfaceType.DicomWeb)
                 {
@@ -257,12 +267,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             Guard.Against.Null(errors);
 
             if (InputResources.IsNullOrEmpty() ||
-                !InputResources.Any(predicate => predicate.Interface != InputInterfaceType.Algorithm))
+                !InputResources!.Any(predicate => predicate.Interface != InputInterfaceType.Algorithm))
             {
                 errors.Add("No 'inputResources' specified.");
             }
 
-            foreach (var input in InputResources)
+            foreach (var input in InputResources ?? Enumerable.Empty<RequestInputDataResource>())
             {
                 if (input.Interface == InputInterfaceType.DicomWeb)
                 {
@@ -316,7 +326,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             {
                 errors.Add("Request type is set to `FHIR_RESOURCE` but no FHIR `resources` defined.");
             }
-            else
+            else if (details.Resources is not null)
             {
                 errors.AddRange(details.Resources.Where(resource => string.IsNullOrWhiteSpace(resource.Type)).Select(resource => "A FHIR resource type cannot be empty."));
             }
@@ -331,7 +341,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
             {
                 errors.Add("Request type is set to `DICOM_UID` but no `studies` defined.");
             }
-            else
+            else if (details.Studies is not null)
             {
                 foreach (var study in details.Studies)
                 {
@@ -348,7 +358,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
 
         private static void CheckInputMetadataWithTypeDicomSeries(List<string> errors, RequestedStudy study)
         {
-            foreach (var series in study.Series)
+            foreach (var series in study.Series ?? Enumerable.Empty<RequestedSeries>())
             {
                 if (string.IsNullOrWhiteSpace(series.SeriesInstanceUid))
                 {
@@ -356,31 +366,32 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
                 }
 
                 if (series.Instances is null) continue;
+
                 errors.AddRange(
                     series.Instances
                         .Where(
                             instance => instance.SopInstanceUid.IsNullOrEmpty() ||
-                            instance.SopInstanceUid.Any(p => string.IsNullOrWhiteSpace(p)))
+                            instance.SopInstanceUid!.Any(p => string.IsNullOrWhiteSpace(p)))
                         .Select(instance => "`SOPInstanceUID` cannot be empty."));
             }
         }
 
-        private static void CheckFhirConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails connection)
+        private static void CheckFhirConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails? connection)
         {
-            if (!Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
+            if (connection is not null && !Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
             {
                 errors.Add($"The provided URI '{connection.Uri}' in `{source}` is not well formed.");
             }
         }
 
-        private static void CheckDicomWebConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails connection)
+        private static void CheckDicomWebConnectionDetails(string source, List<string> errors, DicomWebConnectionDetails? connection)
         {
-            if (connection.AuthType != ConnectionAuthType.None && string.IsNullOrWhiteSpace(connection.AuthId))
+            if (connection is not null && connection.AuthType != ConnectionAuthType.None && string.IsNullOrWhiteSpace(connection.AuthId))
             {
                 errors.Add($"One of the '{source}' has authType of '{connection.AuthType:F}' but does not include a valid value for 'authId'");
             }
 
-            if (!Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
+            if (connection is not null && !Uri.IsWellFormedUriString(connection.Uri, UriKind.Absolute))
             {
                 errors.Add($"The provided URI '{connection.Uri}' is not well formed.");
             }

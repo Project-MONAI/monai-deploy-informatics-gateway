@@ -18,9 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Transactions;
 using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.Api.Rest;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -71,9 +69,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public TimeSpan Elapsed
         { get { return DateTime.UtcNow.Subtract(DateTimeCreated); } }
 
-        public string CallingAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
+        public string? CallingAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
 
-        public string CalledAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
+        public string? CalledAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
 
         public Payload(string key, string correlationId, uint timeout)
         {

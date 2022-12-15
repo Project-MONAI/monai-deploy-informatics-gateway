@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         /// <inheritdoc/>
         [JsonPropertyName("file")]
-        public override StorageObjectMetadata File { get; set; }
+        public override StorageObjectMetadata File { get; set; } = default!;
 
         /// <summary>
         /// DO NOT USE

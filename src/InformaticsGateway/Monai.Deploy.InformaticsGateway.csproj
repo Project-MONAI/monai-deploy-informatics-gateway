@@ -43,17 +43,16 @@
     <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.12" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.11" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.18" />
-    <PackageReference Include="Monai.Deploy.Security" Version="0.1.1" />
-    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.11" />
-    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.11" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.19" />
+    <PackageReference Include="Monai.Deploy.Security" Version="0.1.3" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.13" />
+    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.13" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.0" />
     <PackageReference Include="NLog" Version="5.1.0" />
     <PackageReference Include="Polly" Version="7.2.3" />

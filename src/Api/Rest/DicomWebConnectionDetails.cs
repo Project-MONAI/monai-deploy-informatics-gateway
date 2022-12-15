@@ -29,20 +29,20 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// Gets or sets a list of permitted operations for the connection.
         /// </summary>
         [JsonPropertyName("operations")]
-        public IList<InputInterfaceOperations> Operations { get; set; }
+        public IList<InputInterfaceOperations>? Operations { get; set; }
 
         /// <summary>
         /// Gets or sets the resource URI (Uniform Resource Identifier) of the connection.
         /// </summary>
         [JsonPropertyName("uri")]
-        public string Uri { get; set; }
+        public string? Uri { get; set; }
 
         /// <summary>
         /// Gets or sets the authentication/authorization token of the connection.
         /// For HTTP basic access authentication, the value must be encoded in based 64 using "{username}:{password}" format.
         /// </summary>
         [JsonPropertyName("authID")]
-        public string AuthId { get; set; }
+        public string? AuthId { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the authentication token used for the connection.

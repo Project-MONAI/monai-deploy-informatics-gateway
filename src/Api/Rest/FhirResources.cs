@@ -81,14 +81,14 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// E.g. Pateitn, Observation.
         /// </summary>
         [JsonPropertyName("resourceType")]
-        public string Type { get; set; }
+        public string Type { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the ID of the resource to be retrieved.
         /// </summary>
         /// <value></value>
         [JsonPropertyName("id")]
-        public string Id { get; set; }
+        public string Id { get; set; } = default!;
 
         /// <summary>
         /// Internal use only!
@@ -96,6 +96,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         /// </summary>
         /// <value></value>
         [JsonPropertyName("isRetrieved")]
-        public bool IsRetrieved { get; set; }
+        public bool IsRetrieved { get; set; } = default!;
     }
 }

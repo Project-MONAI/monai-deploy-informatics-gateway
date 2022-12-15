@@ -50,16 +50,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.TransactionId).IsRequired();
             builder.Property(j => j.Priority).IsRequired();
 
-            builder.Property(j => j.InputMetadata).HasConversion(
+            builder.Property(j => j.InputMetadata).IsRequired(false).HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<InferenceRequestMetadata>(v, jsonSerializerSettings));
 
-            builder.Property(j => j.InputResources).HasConversion(
+            builder.Property(j => j.InputResources).IsRequired(false).HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<RequestInputDataResource>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(reqestInputResourceComparer);
 
-            builder.Property(j => j.OutputResources).HasConversion(
+            builder.Property(j => j.OutputResources).IsRequired(false).HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<RequestOutputDataResource>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(reqestOutputResourceComparer);
@@ -67,6 +67,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.State).IsRequired();
             builder.Property(j => j.Status).IsRequired();
             builder.Property(j => j.TryCount).IsRequired();
+            builder.Property(j => j.CreatedBy).IsRequired(false);
+            builder.Property(j => j.DateTimeCreated).IsRequired();
 
             builder.Ignore(p => p.Application);
 

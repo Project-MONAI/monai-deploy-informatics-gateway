@@ -1260,13 +1260,13 @@ third-party archives.
 - Authors: Cucumber Ltd, Gaspar Nagy
 - Project URL: https://github.com/cucumber/common/tree/main/gherkin
 - Source: [NuGet](https://www.nuget.org/packages/Gherkin/19.0.3)
-- License: [MIT](https://github.com/cucumber/common/raw/main/LICENSE)
+- License: [MIT](https://github.com/cucumber/gherkin/raw/main/LICENSE)
 
 
 ```
 The MIT License (MIT)
 
-Copyright (c) Cucumber Ltd
+Copyright (c) Cucumber Ltd, Gaspar Nagy, Björn Rasmusson, Peter Sergeant
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1275,16 +1275,16 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 ```
 
 </details>
@@ -3158,14 +3158,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Data.Sqlite.Core 6.0.11</summary>
+<summary>Microsoft.Data.Sqlite.Core 6.0.12</summary>
 
 ## Microsoft.Data.Sqlite.Core
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/dotnet/standard/data/sqlite/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3199,14 +3199,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore 6.0.11</summary>
+<summary>Microsoft.EntityFrameworkCore 6.0.12</summary>
 
 ## Microsoft.EntityFrameworkCore
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3240,14 +3240,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Abstractions 6.0.11</summary>
+<summary>Microsoft.EntityFrameworkCore.Abstractions 6.0.12</summary>
 
 ## Microsoft.EntityFrameworkCore.Abstractions
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3281,14 +3281,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Analyzers 6.0.11</summary>
+<summary>Microsoft.EntityFrameworkCore.Analyzers 6.0.12</summary>
 
 ## Microsoft.EntityFrameworkCore.Analyzers
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3322,14 +3322,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Design 6.0.11</summary>
+<summary>Microsoft.EntityFrameworkCore.Design 6.0.12</summary>
 
 ## Microsoft.EntityFrameworkCore.Design
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3363,14 +3363,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.InMemory 6.0.11</summary>
+<summary>Microsoft.EntityFrameworkCore.InMemory 6.0.12</summary>
 
 ## Microsoft.EntityFrameworkCore.InMemory
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3404,14 +3404,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Relational 6.0.11</summary>
+<summary>Microsoft.EntityFrameworkCore.Relational 6.0.12</summary>
 
 ## Microsoft.EntityFrameworkCore.Relational
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3445,14 +3445,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite 6.0.11</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite 6.0.12</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3486,14 +3486,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 6.0.11</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 6.0.12</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite.Core
 
-- Version: 6.0.11
+- Version: 6.0.12
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/6.0.11)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/6.0.12)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -7044,14 +7044,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging 0.1.18</summary>
+<summary>Monai.Deploy.Messaging 0.1.19</summary>
 
 ## Monai.Deploy.Messaging
 
-- Version: 0.1.18
+- Version: 0.1.19
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.18)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.19)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7272,14 +7272,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Messaging.RabbitMQ 0.1.18</summary>
+<summary>Monai.Deploy.Messaging.RabbitMQ 0.1.19</summary>
 
 ## Monai.Deploy.Messaging.RabbitMQ
 
-- Version: 0.1.18
+- Version: 0.1.19
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.18)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.19)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7500,14 +7500,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Security 0.1.1</summary>
+<summary>Monai.Deploy.Security 0.1.3</summary>
 
 ## Monai.Deploy.Security
 
-- Version: 0.1.1
+- Version: 0.1.3
 - Authors: MONAI Consortium
-- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Security/0.1.1)
+- Project URL: https://github.com/Project-MONAI/monai-deploy-security
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Security/0.1.3)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-security/raw/develop/LICENSE)
 
 
@@ -7728,14 +7728,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage 0.2.11</summary>
+<summary>Monai.Deploy.Storage 0.2.13</summary>
 
 ## Monai.Deploy.Storage
 
-- Version: 0.2.11
+- Version: 0.2.13
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.2.11)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.2.13)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -7956,14 +7956,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.MinIO 0.2.11</summary>
+<summary>Monai.Deploy.Storage.MinIO 0.2.13</summary>
 
 ## Monai.Deploy.Storage.MinIO
 
-- Version: 0.2.11
+- Version: 0.2.13
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.2.11)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.2.13)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8184,14 +8184,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.S3Policy 0.2.11</summary>
+<summary>Monai.Deploy.Storage.S3Policy 0.2.13</summary>
 
 ## Monai.Deploy.Storage.S3Policy
 
-- Version: 0.2.11
+- Version: 0.2.13
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.2.11)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.2.13)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8587,14 +8587,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>Moq 4.18.2</summary>
+<summary>Moq 4.18.3</summary>
 
 ## Moq
 
-- Version: 4.18.2
+- Version: 4.18.3
 - Authors: Daniel Cazzulino, kzu
 - Project URL: https://github.com/moq/moq4
-- Source: [NuGet](https://www.nuget.org/packages/Moq/4.18.2)
+- Source: [NuGet](https://www.nuget.org/packages/Moq/4.18.3)
 - License: [BSD 3-Clause License]( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
 
 
@@ -9530,13 +9530,13 @@ Apache License
 
 
 <details>
-<summary>SQLitePCLRaw.bundle_e_sqlite3 2.0.6</summary>
+<summary>SQLitePCLRaw.bundle_e_sqlite3 2.1.2</summary>
 
 ## SQLitePCLRaw.bundle_e_sqlite3
 
-- Version: 2.0.6
+- Version: 2.1.2
 - Authors: Eric Sink
-- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.bundle_e_sqlite3/2.0.6)
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.bundle_e_sqlite3/2.1.2)
 - License: [Apache-2.0](https://github.com/ericsink/SQLitePCL.raw/raw/master/LICENSE.TXT)
 
 
@@ -9748,13 +9748,13 @@ Apache License
 
 
 <details>
-<summary>SQLitePCLRaw.core 2.0.6</summary>
+<summary>SQLitePCLRaw.core 2.1.2</summary>
 
 ## SQLitePCLRaw.core
 
-- Version: 2.0.6
+- Version: 2.1.2
 - Authors: Eric Sink
-- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.core/2.0.6)
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.core/2.1.2)
 - License: [Apache-2.0](https://github.com/ericsink/SQLitePCL.raw/raw/master/LICENSE.TXT)
 
 
@@ -9966,13 +9966,13 @@ Apache License
 
 
 <details>
-<summary>SQLitePCLRaw.lib.e_sqlite3 2.0.6</summary>
+<summary>SQLitePCLRaw.lib.e_sqlite3 2.1.2</summary>
 
 ## SQLitePCLRaw.lib.e_sqlite3
 
-- Version: 2.0.6
+- Version: 2.1.2
 - Authors: Eric Sink
-- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.lib.e_sqlite3/2.0.6)
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.lib.e_sqlite3/2.1.2)
 - License: [Apache-2.0](https://github.com/ericsink/SQLitePCL.raw/raw/master/LICENSE.TXT)
 
 
@@ -10184,13 +10184,13 @@ Apache License
 
 
 <details>
-<summary>SQLitePCLRaw.provider.e_sqlite3 2.0.6</summary>
+<summary>SQLitePCLRaw.provider.e_sqlite3 2.1.2</summary>
 
 ## SQLitePCLRaw.provider.e_sqlite3
 
-- Version: 2.0.6
+- Version: 2.1.2
 - Authors: Eric Sink
-- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.provider.e_sqlite3/2.0.6)
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.provider.e_sqlite3/2.1.2)
 - License: [Apache-2.0](https://github.com/ericsink/SQLitePCL.raw/raw/master/LICENSE.TXT)
 
 
@@ -15506,6 +15506,88 @@ also applies even if Microsoft knew or should have known about the possibility
 of the damages. The above limitation or exclusion may not apply to you because
 your state or country may not allow the exclusion or limitation of incidental,
 consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.IO.Abstractions 17.2.3</summary>
+
+## System.IO.Abstractions
+
+- Version: 17.2.3
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/17.2.3)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.IO.Abstractions.TestingHelpers 17.2.3</summary>
+
+## System.IO.Abstractions.TestingHelpers
+
+- Version: 17.2.3
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/17.2.3)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -27750,156 +27832,6 @@ consequential or other damages.
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions 18.0.1</summary>
-
-## TestableIO.System.IO.Abstractions
-
-- Version: 18.0.1
-- Authors: Tatham Oddie & friends
-- Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/18.0.1)
-- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) Tatham Oddie and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>TestableIO.System.IO.Abstractions.Extensions 1.0.34</summary>
-
-## TestableIO.System.IO.Abstractions.Extensions
-
-- Version: 1.0.34
-- Authors: Tatham Oddie - Luigi Grilli & friends
-- Project URL: https://github.com/System-IO-Abstractions/System.IO.Abstractions.Extensions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Extensions/1.0.34)
-- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions.Extensions/raw/main/LICENSE.md)
-
-
-```
-MIT License
-
-Copyright (c) 2021 Tatham Oddie - Luigi Grilli & friends
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>TestableIO.System.IO.Abstractions.TestingHelpers 18.0.1</summary>
-
-## TestableIO.System.IO.Abstractions.TestingHelpers
-
-- Version: 18.0.1
-- Authors: Tatham Oddie & friends
-- Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.TestingHelpers/18.0.1)
-- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) Tatham Oddie and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>TestableIO.System.IO.Abstractions.Wrappers 18.0.1</summary>
-
-## TestableIO.System.IO.Abstractions.Wrappers
-
-- Version: 18.0.1
-- Authors: Tatham Oddie & friends
-- Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Wrappers/18.0.1)
-- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) Tatham Oddie and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
 <summary>Validation 2.4.18</summary>
 
 ## Validation
@@ -28023,52 +27955,13 @@ SOFTWARE.
 <details>
 <summary>coverlet.collector 3.2.0</summary>
 
-## ZstdSharp.Port
+## coverlet.collector
 
 - Version: 3.2.0
 - Authors: tonerdo
 - Project URL: https://github.com/coverlet-coverage/coverlet
 - Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/3.2.0)
 - License: [MIT](https://github.com/coverlet-coverage/coverlet/raw/master/LICENSE)
-
-
-```
-MIT License
-
-Copyright (c) 2021 Oleg Stepanischev
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>fo-dicom 5.0.3</summary>
-
-## coverlet.collector
-
-- Version: 5.0.3
-- Authors: fo-dicom contributors
-- Project URL: https://github.com/fo-dicom/fo-dicom
-- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.0.3)
-- License: [Microsoft Public License](https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
 
 
 ```
@@ -28099,14 +27992,14 @@ SOFTWARE.
 
 
 <details>
-<summary>fo-dicom.NLog 5.0.3</summary>
+<summary>fo-dicom 5.0.3</summary>
 
-## fo-dicom.NLog
+## fo-dicom
 
 - Version: 5.0.3
 - Authors: fo-dicom contributors
 - Project URL: https://github.com/fo-dicom/fo-dicom
-- Source: [NuGet](https://www.nuget.org/packages/fo-dicom.NLog/5.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.0.3)
 - License: [Microsoft Public License](https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
 
 

@@ -32,7 +32,6 @@ namespace Monai.Deploy.InformaticsGateway.Client
             JsonSerializationOptions.NumberHandling = JsonNumberHandling.AllowReadingFromString;
             JsonSerializationOptions.WriteIndented = false;
             JsonSerializationOptions.Converters.Add(new JsonStringEnumMemberConverter(JsonNamingPolicy.CamelCase, false));
-            JsonSerializationOptions.Converters.Add(new JsonStringEnumConverter(JsonNamingPolicy.CamelCase, false));
         }
     }
 }

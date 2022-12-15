@@ -43,7 +43,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("bufferSize")]
         public int BufferSize { get; set; } = 128000;
 
-
         /// <summary>
         /// Gets or set the maximum memory buffer size in bytes with default to 30MiB.
         /// </summary>

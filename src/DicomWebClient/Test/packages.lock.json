@@ -29,9 +29,9 @@
       },
       "Moq": {
         "type": "Direct",
-        "requested": "[4.18.2, )",
-        "resolved": "4.18.2",
-        "contentHash": "SjxKYS5nX6prcaT8ZjbkONh3vnh0Rxru09+gQ1a07v4TM530Oe/jq3Q4dOZPfo1wq0LYmTgLOZKrqRfEx4auPw==",
+        "requested": "[4.18.3, )",
+        "resolved": "4.18.3",
+        "contentHash": "nmV2lludVOFmVi+Vtq9twX1/SDiEVyYDURzxW39gUBqjyoXmdyNwJSeOfSCJoJTXDXBVfFNfEljB5UWGj/cKnQ==",
         "dependencies": {
           "Castle.Core": "5.1.0"
         }
@@ -1208,20 +1208,20 @@
       "monai.deploy.informaticsgateway.client.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "[4.0.1, )",
-          "System.Text.Json": "[6.0.7, )"
+          "Ardalis.GuardClauses": "4.0.1",
+          "System.Text.Json": "6.0.7"
         }
       },
       "monai.deploy.informaticsgateway.dicomweb.client": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "[4.0.1, )",
-          "Microsoft.AspNet.WebApi.Client": "[5.2.9, )",
-          "Microsoft.Extensions.Http": "[6.0.0, )",
-          "Microsoft.Net.Http.Headers": "[2.2.8, )",
-          "Monai.Deploy.InformaticsGateway.Client.Common": "[1.0.0, )",
-          "System.Linq.Async": "[6.0.1, )",
-          "fo-dicom": "[5.0.3, )"
+          "Ardalis.GuardClauses": "4.0.1",
+          "Microsoft.AspNet.WebApi.Client": "5.2.9",
+          "Microsoft.Extensions.Http": "6.0.0",
+          "Microsoft.Net.Http.Headers": "2.2.8",
+          "Monai.Deploy.InformaticsGateway.Client.Common": "1.0.0",
+          "System.Linq.Async": "6.0.1",
+          "fo-dicom": "5.0.3"
         }
       }
     }
