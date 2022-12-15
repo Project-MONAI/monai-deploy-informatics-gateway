@@ -74,14 +74,14 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
     :versions:
-    - 4.7.4
+    - 4.8.0
     :when: 2022-09-01 23:05:32.857032968 Z
 - - :approve
   - DotNext.Threading
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
     :versions:
-    - 4.7.4
+    - 4.8.0
     :when: 2022-09-01 23:05:33.298402277 Z
 - - :approve
   - FluentAssertions
@@ -822,7 +822,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-security/raw/develop/LICENSE)
     :versions:
-    - 0.1.1
+    - 0.1.2
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Moq
@@ -836,7 +836,7 @@
   - :who: mocsharp
     :why: BSD 3-Clause License ( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
     :versions:
-    - 4.18.2
+    - 4.18.3
     :when: 2022-08-16 23:06:23.843184482 Z
 - - :approve
   - NETStandard.Library
@@ -1220,32 +1220,25 @@
     - 4.3.0
     :when: 2022-08-16 23:06:49.709349587 Z
 - - :approve
-  - TestableIO.System.IO.Abstractions
+  - System.IO.Abstractions
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
-    - 18.0.1
+    - 17.2.3
     :when: 2022-08-16 23:06:50.602318269 Z
 - - :approve
-  - TestableIO.System.IO.Abstractions.Extensions
+  - System.IO.Abstractions.Extensions
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions.Extensions/raw/main/LICENSE.md)
     :versions:
     - 1.0.34
     :when: 2022-08-16 23:06:50.602318269 Z
 - - :approve
-  - TestableIO.System.IO.Abstractions.TestingHelpers
+  - System.IO.Abstractions.TestingHelpers
   - :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
     :versions:
-    - 18.0.1
-    :when: 2022-08-16 23:06:51.524564913 Z
-- - :approve
-  - TestableIO.System.IO.Abstractions.Wrappers
-  - :who: mocsharp
-    :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
-    :versions:
-    - 18.0.1
+    - 17.2.3
     :when: 2022-08-16 23:06:51.524564913 Z
 - - :approve
   - System.IO.Compression
