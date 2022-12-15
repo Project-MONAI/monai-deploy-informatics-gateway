@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -72,18 +73,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 type: "TEXT",
                 nullable: true);
 
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateTimeUpdated",
-                table: "MonaiApplicationEntities",
-                type: "TEXT",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "UpdatedBy",
-                table: "MonaiApplicationEntities",
-                type: "TEXT",
-                nullable: true);
-
             migrationBuilder.AddColumn<string>(
                 name: "CreatedBy",
                 table: "InferenceRequests",
@@ -96,18 +85,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 type: "TEXT",
                 nullable: false,
                 defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified));
-
-            migrationBuilder.AddColumn<DateTime>(
-                name: "DateTimeUpdated",
-                table: "InferenceRequests",
-                type: "TEXT",
-                nullable: true);
-
-            migrationBuilder.AddColumn<string>(
-                name: "UpdatedBy",
-                table: "InferenceRequests",
-                type: "TEXT",
-                nullable: true);
 
             migrationBuilder.AlterColumn<string>(
                 name: "Errors",
@@ -167,27 +144,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 table: "MonaiApplicationEntities");
 
             migrationBuilder.DropColumn(
-                name: "DateTimeUpdated",
-                table: "MonaiApplicationEntities");
-
-            migrationBuilder.DropColumn(
-                name: "UpdatedBy",
-                table: "MonaiApplicationEntities");
-
-            migrationBuilder.DropColumn(
                 name: "CreatedBy",
                 table: "InferenceRequests");
 
             migrationBuilder.DropColumn(
                 name: "DateTimeCreated",
-                table: "InferenceRequests");
-
-            migrationBuilder.DropColumn(
-                name: "DateTimeUpdated",
-                table: "InferenceRequests");
-
-            migrationBuilder.DropColumn(
-                name: "UpdatedBy",
                 table: "InferenceRequests");
 
             migrationBuilder.DropColumn(

@@ -11,13 +11,13 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20221213214026_R3_0.3.6")]
+    [Migration("20221215010255_R3_0.3.6")]
     partial class R3_036
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.11");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.12");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
@@ -124,9 +124,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("DateTimeUpdated")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Grouping")
                         .IsRequired()
                         .HasColumnType("TEXT");
@@ -137,9 +134,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Workflows")
                         .IsRequired()
@@ -162,10 +156,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<string>("CreatedBy")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime>("DateTimeCreated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DateTimeUpdated")
+                    b.Property<DateTime?>("DateTimeCreated")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("InputMetadata")
@@ -192,9 +184,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.Property<int>("TryCount")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("InferenceRequestId");
 
