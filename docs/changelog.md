@@ -17,13 +17,34 @@
 
 # Changelog
 
+## 0.3.6
+
+[GitHub Milestone 0.3.6](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/12)
+
+- Adds support for basic auth with Monai.Deploy.Security 0.1.3.
+- Updates APIs to store the username of the person who initiated the calls.
+- Fixes database health checks not using the configured database.
+
+## 0.3.5
+
+[GitHub Milestone 0.3.6](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/11)
+
+- Integrates Monai.Deploy.Security to enable OpenID Connect for API authentication.
+- Records DICOM association information in the database.
+
+## 0.3.4
+
+[GitHub Milestone 0.3.4](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/10)
+
+- Adds support for MongoDB in addition to SQLite.
+- Improves validation for AE Title, IP address, and host/domain names.
 
 ## 0.3.3
 
 [GitHub Milestone 0.3.3](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/9)
 
 - Ability to create storage buckets on startup
-- Include logging scope values for LogStash
+- Includes logging scope values for LogStash
 
 
 ## 0.3.2
@@ -47,7 +68,7 @@
 
 - New [C-ECHO API](api/rest/config.md) to perform a DICOM C-ECHO to a configured DICOM destination.
 - The SCU AE Title is now uppercase MONAISCU.
-- Update fo-dicom to 5.0.3
+- Updates fo-dicom to 5.0.3
 - Defaults temporary storage to use disk with ability to switch to memory.
 
 ## 0.3.0
