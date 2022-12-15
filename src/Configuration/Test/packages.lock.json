@@ -27,14 +27,13 @@
           "Castle.Core": "5.1.0"
         }
       },
-      "TestableIO.System.IO.Abstractions.TestingHelpers": {
+      "System.IO.Abstractions.TestingHelpers": {
         "type": "Direct",
-        "requested": "[18.0.1, )",
-        "resolved": "18.0.1",
-        "contentHash": "Z6Oc4Z0B+hZIoy5BM7M51oY23TsQO21Snet4UBuePCx9r27GRqSlTe3BHXx1QKkWrfXZIda1+tt0MMvK+eyNGw==",
+        "requested": "[17.2.3, )",
+        "resolved": "17.2.3",
+        "contentHash": "tkXvQbsfOIfeoGso+WptCuouFLiWt3EU8s0D8poqIVz1BJOOszkPuFbFgP2HUTJ9bp5n1HH89eFHILo6Oz5XUw==",
         "dependencies": {
-          "TestableIO.System.IO.Abstractions": "18.0.1",
-          "TestableIO.System.IO.Abstractions.Wrappers": "18.0.1"
+          "System.IO.Abstractions": "17.2.3"
         }
       },
       "xunit": {
@@ -277,8 +276,7 @@
           "Microsoft.Extensions.Logging": "6.0.0",
           "Newtonsoft.Json": "13.0.2",
           "System.ComponentModel.Annotations": "5.0.0",
-          "TestableIO.System.IO.Abstractions": "18.0.1",
-          "TestableIO.System.IO.Abstractions.Wrappers": "18.0.1"
+          "System.IO.Abstractions": "17.2.3"
         }
       },
       "Monai.Deploy.Storage": {
@@ -617,6 +615,11 @@
           "System.Text.Encoding": "4.3.0",
           "System.Threading.Tasks": "4.3.0"
         }
+      },
+      "System.IO.Abstractions": {
+        "type": "Transitive",
+        "resolved": "17.2.3",
+        "contentHash": "VcozGeE4SxIo0cnXrDHhbrh/Gb8KQnZ3BvMelvh+iw0PrIKtuuA46U2Xm4e4pgnaWFgT4RdZfTpWl/WPRdw0WQ=="
       },
       "System.IO.Compression": {
         "type": "Transitive",
@@ -1229,19 +1232,6 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "TestableIO.System.IO.Abstractions": {
-        "type": "Transitive",
-        "resolved": "18.0.1",
-        "contentHash": "nacJfL4mGObg8Ttn3ZCJZ2u9z8ivG43xgUJvQQLKCmDnle4m49NYNOLk8cqB4iPdSqVhnUSy+qcIryWgDHCqeg=="
-      },
-      "TestableIO.System.IO.Abstractions.Wrappers": {
-        "type": "Transitive",
-        "resolved": "18.0.1",
-        "contentHash": "3vGUMEHgL7l1Jyvv0WdDzCrwV6xKRhI2xVgWHQDbfVsye/ZBflhWFyVrCanPHzm0r0WSl0ug8DuaKwmelHlLCw==",
-        "dependencies": {
-          "TestableIO.System.IO.Abstractions": "18.0.1"
-        }
-      },
       "xunit.abstractions": {
         "type": "Transitive",
         "resolved": "2.0.3",
@@ -1290,32 +1280,32 @@
       "monai.deploy.informaticsgateway.api": {
         "type": "Project",
         "dependencies": {
-          "Macross.Json.Extensions": "[3.0.0, )",
-          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.12, )",
-          "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[0.1.19, )",
-          "Monai.Deploy.Storage": "[0.2.13, )"
+          "Macross.Json.Extensions": "3.0.0",
+          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.12",
+          "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
+          "Monai.Deploy.Messaging": "0.1.19",
+          "Monai.Deploy.Storage": "0.2.13"
         }
       },
       "monai.deploy.informaticsgateway.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "[4.0.1, )",
-          "System.Threading.Tasks.Dataflow": "[6.0.0, )",
-          "TestableIO.System.IO.Abstractions": "[18.0.1, )",
-          "fo-dicom": "[5.0.3, )"
+          "Ardalis.GuardClauses": "4.0.1",
+          "System.IO.Abstractions": "17.2.3",
+          "System.Threading.Tasks.Dataflow": "6.0.0",
+          "fo-dicom": "5.0.3"
         }
       },
       "monai.deploy.informaticsgateway.configuration": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "[6.0.3, )",
-          "Microsoft.Extensions.Options": "[6.0.0, )",
-          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
-          "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[0.1.19, )",
-          "Monai.Deploy.Storage": "[0.2.13, )",
-          "System.IO.Abstractions": "[17.2.3, )"
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
+          "Microsoft.Extensions.Options": "6.0.0",
+          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
+          "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
+          "Monai.Deploy.Messaging": "0.1.19",
+          "Monai.Deploy.Storage": "0.2.13",
+          "System.IO.Abstractions": "17.2.3"
         }
       }
     }
