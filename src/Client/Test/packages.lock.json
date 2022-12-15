@@ -1747,7 +1747,7 @@
         "type": "Project",
         "dependencies": {
           "AspNetCore.HealthChecks.MongoDb": "[6.0.2, )",
-          "Microsoft.EntityFrameworkCore": "[6.0.11, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
           "Microsoft.Extensions.Configuration": "[6.0.1, )",
           "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
