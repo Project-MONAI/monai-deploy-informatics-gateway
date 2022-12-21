@@ -528,6 +528,16 @@
           "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.12"
         }
       },
+      "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": {
+        "type": "Transitive",
+        "resolved": "6.0.11",
+        "contentHash": "tMjF1erFhHE+SnsiIyRIatVeKBgB9OfGsOvQe/+foE0xl4+JUQGbCA7gF1wqOksi9AxmGWzqtqjsMKJpCo5wYQ==",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.11",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.11",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.11"
+        }
+      },
       "Microsoft.Extensions.FileProviders.Abstractions": {
         "type": "Transitive",
         "resolved": "6.0.0",
