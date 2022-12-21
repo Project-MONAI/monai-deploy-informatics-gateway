@@ -21,7 +21,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
-using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations;
 using MongoDB.Driver;
