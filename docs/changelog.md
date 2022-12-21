@@ -17,6 +17,12 @@
 
 # Changelog
 
+## 0.3.7
+
+[GitHub Milestone 0.3.7](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/13)
+
+- Fixes database health checks not using the configured database.
+
 ## 0.3.6
 
 [GitHub Milestone 0.3.6](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/12)
@@ -27,7 +33,7 @@
 
 ## 0.3.5
 
-[GitHub Milestone 0.3.6](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/11)
+[GitHub Milestone 0.3.5](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/11)
 
 - Integrates Monai.Deploy.Security to enable OpenID Connect for API authentication.
 - Records DICOM association information in the database.
