@@ -500,10 +500,10 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "E6HxKQvrm0AeDagW6w+CsyVfXAO/pscrbX6mQ+XnThdwkeTxi0cnuXDTiTmd+WSmofSfpBKOS0VlvHUOxskdLQ==",
+        "resolved": "6.0.12",
+        "contentHash": "TdsjGYOHDg8656T2tWHUXNkYFUFstL/L9GEjboasuAetubH52yHkNpQV6WuqA6BpbfZHZj8xwKqN7aL7ZWO1Rg==",
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.11",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.12",
           "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
           "Microsoft.Extensions.Options": "6.0.0"
@@ -511,17 +511,17 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "MQS7GE1ux7Lo1yOr59M7ZTEoFY3GJ9hHkxXQnQc8EPxkt5S7cX4qe6djSWH+mk9qQan+AjFZzdC1x5Af5IaseA=="
+        "resolved": "6.0.12",
+        "contentHash": "7GN8C+pcaIBMDQA6OOgBEWT+1Y/OhZTxzovNXIxxBsfU4xI7bmjez5321ya5rN2NbJXUmStNnJics78RkPQO4w=="
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": {
         "type": "Transitive",
-        "resolved": "6.0.11",
-        "contentHash": "tMjF1erFhHE+SnsiIyRIatVeKBgB9OfGsOvQe/+foE0xl4+JUQGbCA7gF1wqOksi9AxmGWzqtqjsMKJpCo5wYQ==",
+        "resolved": "6.0.12",
+        "contentHash": "TWtq9Hnjq8mTHbbe2JBLa5FR7wlxecFK/PjYQFWru+BVCWCXvRtscO/+S9/Dlz5XkgNzEfLwO9KvUqoh3EybtA==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Relational": "6.0.11",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.11",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.11"
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.12",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.12",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.12"
         }
       },
       "Microsoft.Extensions.FileProviders.Abstractions": {
@@ -1874,7 +1874,7 @@
           "Microsoft.Extensions.Configuration": "6.0.1",
           "Microsoft.Extensions.Configuration.FileExtensions": "6.0.0",
           "Microsoft.Extensions.Configuration.Json": "6.0.0",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "6.0.11",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "6.0.12",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0",
           "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
           "Monai.Deploy.InformaticsGateway.Configuration": "1.0.0",
