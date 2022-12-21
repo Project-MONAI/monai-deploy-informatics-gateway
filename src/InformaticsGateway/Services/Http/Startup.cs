@@ -29,6 +29,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Database;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
 using Monai.Deploy.Security.Authentication.Extensions;
@@ -111,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
             services.AddHealthChecks()
                 .AddCheck<MonaiHealthCheck>("Informatics Gateway Services")
-                .AddDbContextCheck<InformaticsGatewayContext>("Database");
+                .AddDatabaseHealthCheck(Configuration?.GetSection("ConnectionStrings"));
         }
 
 #pragma warning disable CA1822 // Mark members as static
