@@ -1668,42 +1668,44 @@
       "monai.deploy.informaticsgateway": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.0.1",
-          "DotNext.Threading": "4.7.4",
-          "HL7-dotnetcore": "2.29.0",
-          "Karambolo.Extensions.Logging.File": "3.3.1",
-          "Microsoft.EntityFrameworkCore": "6.0.12",
-          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Hosting": "6.0.1",
-          "Microsoft.Extensions.Logging": "6.0.0",
-          "Microsoft.Extensions.Logging.Console": "6.0.0",
-          "Microsoft.Extensions.Options": "6.0.0",
-          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Configuration": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Database": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.DicomWeb.Client": "1.0.0",
-          "Monai.Deploy.Messaging.RabbitMQ": "0.1.19",
-          "Monai.Deploy.Security": "0.1.3",
-          "Monai.Deploy.Storage": "0.2.13",
-          "Monai.Deploy.Storage.MinIO": "0.2.13",
-          "NLog": "5.1.0",
-          "NLog.Web.AspNetCore": "5.2.0",
-          "Polly": "7.2.3",
-          "Swashbuckle.AspNetCore": "6.4.0",
-          "fo-dicom": "5.0.3",
-          "fo-dicom.NLog": "5.0.3"
+          "Ardalis.GuardClauses": "[4.0.1, )",
+          "DotNext.Threading": "[4.7.4, )",
+          "HL7-dotnetcore": "[2.29.0, )",
+          "Karambolo.Extensions.Logging.File": "[3.3.1, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "[6.0.0, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "[6.0.12, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "[6.0.12, )",
+          "Microsoft.Extensions.Hosting": "[6.0.1, )",
+          "Microsoft.Extensions.Logging": "[6.0.0, )",
+          "Microsoft.Extensions.Logging.Console": "[6.0.0, )",
+          "Microsoft.Extensions.Options": "[6.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Database": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.DicomWeb.Client": "[1.0.0, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[0.1.19, )",
+          "Monai.Deploy.Security": "[0.1.3, )",
+          "Monai.Deploy.Storage": "[0.2.13, )",
+          "Monai.Deploy.Storage.MinIO": "[0.2.13, )",
+          "NLog": "[5.1.0, )",
+          "NLog.Web.AspNetCore": "[5.2.0, )",
+          "Polly": "[7.2.3, )",
+          "Swashbuckle.AspNetCore": "[6.4.0, )",
+          "fo-dicom": "[5.0.3, )",
+          "fo-dicom.NLog": "[5.0.3, )"
         }
       },
       "monai.deploy.informaticsgateway.api": {
         "type": "Project",
         "dependencies": {
-          "Macross.Json.Extensions": "3.0.0",
-          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.12",
-          "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
-          "Monai.Deploy.Messaging": "0.1.19",
-          "Monai.Deploy.Storage": "0.2.13"
+          "Macross.Json.Extensions": "[3.0.0, )",
+          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.12, )",
+          "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
+          "Monai.Deploy.Messaging": "[0.1.19, )",
+          "Monai.Deploy.Storage": "[0.2.13, )"
         }
       },
       "monai.deploy.informaticsgateway.client": {
@@ -1734,52 +1736,52 @@
       "monai.deploy.informaticsgateway.configuration": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
-          "Microsoft.Extensions.Options": "6.0.0",
-          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
-          "Monai.Deploy.Messaging": "0.1.19",
-          "Monai.Deploy.Storage": "0.2.13",
-          "System.IO.Abstractions": "17.2.3"
+          "Microsoft.Extensions.Logging.Abstractions": "[6.0.3, )",
+          "Microsoft.Extensions.Options": "[6.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
+          "Monai.Deploy.Messaging": "[0.1.19, )",
+          "Monai.Deploy.Storage": "[0.2.13, )",
+          "System.IO.Abstractions": "[17.2.3, )"
         }
       },
       "monai.deploy.informaticsgateway.database": {
         "type": "Project",
         "dependencies": {
-          "AspNetCore.HealthChecks.MongoDb": "6.0.2",
-          "Microsoft.EntityFrameworkCore": "6.0.12",
-          "Microsoft.Extensions.Configuration": "6.0.1",
-          "Microsoft.Extensions.Configuration.FileExtensions": "6.0.0",
-          "Microsoft.Extensions.Configuration.Json": "6.0.0",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "6.0.12",
-          "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0",
-          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Configuration": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Database.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Database.MongoDB": "1.0.0"
+          "AspNetCore.HealthChecks.MongoDb": "[6.0.2, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
+          "Microsoft.Extensions.Configuration": "[6.0.1, )",
+          "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
+          "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "[6.0.12, )",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "[6.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Database.MongoDB": "[1.0.0, )"
         }
       },
       "monai.deploy.informaticsgateway.database.api": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "6.0.12",
-          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Configuration": "1.0.0",
-          "Polly": "7.2.3"
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "Polly": "[7.2.3, )"
         }
       },
       "monai.deploy.informaticsgateway.database.entityframework": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "6.0.12",
-          "Microsoft.EntityFrameworkCore.Sqlite": "6.0.12",
-          "Microsoft.Extensions.Configuration": "6.0.1",
-          "Microsoft.Extensions.Configuration.FileExtensions": "6.0.0",
-          "Microsoft.Extensions.Configuration.Json": "6.0.0",
-          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Configuration": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Database.Api": "1.0.0"
+          "Microsoft.EntityFrameworkCore": "[6.0.12, )",
+          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.12, )",
+          "Microsoft.Extensions.Configuration": "[6.0.1, )",
+          "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
+          "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )"
         }
       },
       "monai.deploy.informaticsgateway.database.mongodb": {
