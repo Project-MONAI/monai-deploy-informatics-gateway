@@ -133,5 +133,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 742, Level = LogLevel.Critical, Message = "Storage service connection error.")]
         public static partial void StorageServiceConnectionError(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 743, Level = LogLevel.Error, Message = "Exception moving payload.")]
+        public static partial void PayloadMoveException(this ILogger logger, Exception ex);
     }
 }
