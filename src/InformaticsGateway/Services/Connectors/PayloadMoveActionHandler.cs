@@ -26,6 +26,7 @@ using DotNext.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Minio.Exceptions;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -70,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             if (payload.State != Payload.PayloadState.Move)
             {
-                throw new PayloadNotifyException(PayloadNotifyException.FailureReason.IncorrectState);
+                throw new PayloadNotifyException(PayloadNotifyException.FailureReason.IncorrectState, false);
             }
 
             var stopwatch = Stopwatch.StartNew();
@@ -115,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
             else // we should never hit this else block.
             {
-                throw new PayloadNotifyException(PayloadNotifyException.FailureReason.IncompletePayload);
+                throw new PayloadNotifyException(PayloadNotifyException.FailureReason.IncompletePayload, false);
             }
         }
 
@@ -182,13 +183,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     file.GetPayloadPath(payloadId),
                     cancellationToken).ConfigureAwait(false);
 
-                var exists = await _storageService.VerifyObjectExistsAsync(_options.Value.Storage.StorageServiceBucketName, file.GetPayloadPath(payloadId), cancellationToken).ConfigureAwait(false);
-
-                if (!exists)
-                {
-                    _logger.FileMovedVerificationFailure(payloadId, file.UploadPath);
-                    throw new PayloadNotifyException(PayloadNotifyException.FailureReason.MoveFailure);
-                }
+                await VerifyFileExists(payloadId, file, cancellationToken).ConfigureAwait(false);
+            }
+            catch (ObjectNotFoundException ex) when (ex.ServerMessage.Contains("Not found", StringComparison.OrdinalIgnoreCase)) // TODO: StorageLib shall not throw any errors from MINIO
+            {
+                // when file cannot be found on the Storage Service, we assume file has been moved previously by verifying the file exists on destination.
+                _logger.FileMissingInPayload(payloadId, file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), ex);
+                await VerifyFileExists(payloadId, file, cancellationToken).ConfigureAwait(false);
+            }
+            catch (ConnectionException ex) // TODO: StorageLib shall not throw any errors from MINIO
+            {
+                _logger.StorageServiceConnectionError(ex);
+                throw new PayloadNotifyException(PayloadNotifyException.FailureReason.ServiceUnavailable);
             }
             catch (Exception ex)
             {
@@ -211,16 +217,29 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
+        private async Task VerifyFileExists(Guid payloadId, StorageObjectMetadata file, CancellationToken cancellationToken)
+        {
+            var exists = await _storageService.VerifyObjectExistsAsync(_options.Value.Storage.StorageServiceBucketName, file.GetPayloadPath(payloadId), cancellationToken).ConfigureAwait(false);
+
+            if (!exists)
+            {
+                _logger.FileMovedVerificationFailure(payloadId, file.UploadPath);
+                throw new PayloadNotifyException(PayloadNotifyException.FailureReason.MoveFailure, false);
+            }
+        }
+
         private async Task LogFilesInMinIo(string bucketName, CancellationToken cancellationToken)
         {
             try
             {
                 var listingResults = await _storageService.ListObjectsAsync(bucketName, recursive: true, cancellationToken: cancellationToken).ConfigureAwait(false);
                 _logger.FilesFounddOnStorageService(bucketName, listingResults.Count);
+                var files = new List<string>();
                 foreach (var item in listingResults)
                 {
-                    _logger.FileFounddOnStorageService(bucketName, item.FilePath);
+                    files.Add(item.FilePath);
                 }
+                _logger.FileFounddOnStorageService(bucketName, string.Join(Environment.NewLine, files));
             }
             catch (Exception ex)
             {
@@ -237,7 +256,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             try
             {
-                if (payload.RetryCount > _options.Value.Storage.Retries.DelaysMilliseconds.Length)
+                if (ex is AggregateException aggregateException &&
+                    aggregateException.InnerExceptions.Any(p => (p is PayloadNotifyException payloadNotifyEx) && payloadNotifyEx.ShallRetry == false))
+                {
+                    _logger.DeletePayloadDueToMissingFiles(payload.PayloadId, ex);
+                    await repository.RemoveAsync(payload, cancellationToken).ConfigureAwait(false);
+                    _logger.PayloadDeleted(payload.PayloadId);
+                    return PayloadAction.Deleted;
+                }
+                else if (payload.RetryCount > _options.Value.Storage.Retries.DelaysMilliseconds.Length)
                 {
                     _logger.MoveFailureStopRetry(payload.PayloadId, ex);
                     await repository.RemoveAsync(payload, cancellationToken).ConfigureAwait(false);
