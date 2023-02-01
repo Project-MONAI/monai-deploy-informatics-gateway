@@ -17,6 +17,14 @@
 
 # Changelog
 
+## 0.3.8
+
+[GitHub Milestone 0.3.8](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/14)
+
+- Clears payloads that are created by the same instance of MIG at startup.
+- Fixes bad Mongodb configuration resulted in GUIDs not being (de)serialized correctly.
+
+
 ## 0.3.7
 
 [GitHub Milestone 0.3.7](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/13)
