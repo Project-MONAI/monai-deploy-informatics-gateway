@@ -4,26 +4,27 @@
     "net6.0": {
       "MongoDB.Driver": {
         "type": "Direct",
-        "requested": "[2.18.0, )",
-        "resolved": "2.18.0",
-        "contentHash": "nq7wRMeNoqUe+bndHFMDGX8IY3iSmzLoyLzzf8DRos137O+5R4NCsd9qtw/n+DoGFas0gzzyD546Cpz+5AkmLg==",
+        "requested": "[2.19.0, )",
+        "resolved": "2.19.0",
+        "contentHash": "W/1YByn5gNGfHBe8AyDURXWKn1Z9xJ9IUjplFcvk8B/jlTlDOkmXgmwjlToIdqr0l8rX594kksjGx3a9if3dsg==",
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "2.0.0",
-          "MongoDB.Bson": "2.18.0",
-          "MongoDB.Driver.Core": "2.18.0",
-          "MongoDB.Libmongocrypt": "1.6.0"
+          "MongoDB.Bson": "2.19.0",
+          "MongoDB.Driver.Core": "2.19.0",
+          "MongoDB.Libmongocrypt": "1.7.0"
         }
       },
       "MongoDB.Driver.Core": {
         "type": "Direct",
-        "requested": "[2.18.0, )",
-        "resolved": "2.18.0",
-        "contentHash": "/X5Ty32gyDyzs/fWFwKGS0QUhfQT3V9Sc/F8yhILBu8bjCjBscOFKQsKieAha8xxBnYS7dZvTvhvEJWT7HgJ1g==",
+        "requested": "[2.19.0, )",
+        "resolved": "2.19.0",
+        "contentHash": "KbzJJJc4EsUZ+YQoe7zZL1OxHVC9RjgQMso2LjhZWnlP+IHSON63vKNt7jGarXrOVXK0DqIUrRwQyXMgmqTX5g==",
         "dependencies": {
+          "AWSSDK.SecurityToken": "3.7.100.14",
           "DnsClient": "1.6.1",
           "Microsoft.Extensions.Logging.Abstractions": "2.0.0",
-          "MongoDB.Bson": "2.18.0",
-          "MongoDB.Libmongocrypt": "1.6.0",
+          "MongoDB.Bson": "2.19.0",
+          "MongoDB.Libmongocrypt": "1.7.0",
           "SharpCompress": "0.30.1",
           "Snappier": "1.0.0",
           "System.Buffers": "4.5.1",
@@ -92,11 +93,11 @@
       },
       "Microsoft.EntityFrameworkCore": {
         "type": "Transitive",
-        "resolved": "6.0.12",
-        "contentHash": "xb10XFoPf/gWu8ik5v7xnVyUY7W21LBOLtT7PidzwYVdnE3aKuQ/bIZLcQuY7rdDNT89/wse2q5FRjm207cIMQ==",
+        "resolved": "6.0.13",
+        "contentHash": "SnTTQzyP+VUibyONIxi4e2crxYzkW5qfO64tmqxaY5J0KzJolR/nHo8ty4wParaeoybSQz7m9p+6lC7xJ1SHBg==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.12",
-          "Microsoft.EntityFrameworkCore.Analyzers": "6.0.12",
+          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.13",
+          "Microsoft.EntityFrameworkCore.Analyzers": "6.0.13",
           "Microsoft.Extensions.Caching.Memory": "6.0.1",
           "Microsoft.Extensions.DependencyInjection": "6.0.1",
           "Microsoft.Extensions.Logging": "6.0.0",
@@ -106,13 +107,13 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.12",
-        "contentHash": "hvRytAcLhrb35HmtMjYWsNZZLt39ryuN7j04lDchRa9VToreyqgo5gMniTdQ6MfCflxtGnDes65V/Y2pjbEyWg=="
+        "resolved": "6.0.13",
+        "contentHash": "m0PpkBONNPOEdVXkHNfdDETMAZKqWEX6E4kzmrvC4b+5OgFCnuxJHyAJ3Relyw8jsjsCFednrFI3nINXGDX5Sg=="
       },
       "Microsoft.EntityFrameworkCore.Analyzers": {
         "type": "Transitive",
-        "resolved": "6.0.12",
-        "contentHash": "ZDUY+KlsIyKdfvIJeNdqRiPExFQ5GRZVdx/Cp52vhpCJRImYv34O0Xfmw2eiLu4qe1jmM2pTzAAFKELaKwtj/w=="
+        "resolved": "6.0.13",
+        "contentHash": "JxZMC31ObhjlDF9rPp2JR5zRjYlhI/hx8cuHPE9Isg4ft7OmpFxRI2EHTOlTUwfRjN7Q41i3SWI8tv67zBP99w=="
       },
       "Microsoft.Extensions.Caching.Abstractions": {
         "type": "Transitive",
@@ -291,16 +292,16 @@
       },
       "MongoDB.Bson": {
         "type": "Transitive",
-        "resolved": "2.18.0",
-        "contentHash": "iyiVjkCAZIUiyYDZXXUqISeW7n3O/qcM90PUeJybryg7g4rXhSMRY0oLpAg+NdoXD/Qm9LlmVIePAluHQB91tQ==",
+        "resolved": "2.19.0",
+        "contentHash": "pGp9F2PWU3Dj54PiXKibuaQ5rphWkfp8/Nsy5jLp2dWZGRGlr3r/Lfwnr0PvfihFfxieUcJZ2z3VeO8RctXcvA==",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "5.0.0"
         }
       },
       "MongoDB.Libmongocrypt": {
         "type": "Transitive",
-        "resolved": "1.6.0",
-        "contentHash": "kh+MMf+ECIf5sQDIqOdKBd75ktD5aD1EuzCX3R4HOUGPlAbeAm8harf4zwlbvFe2BLfCXZO7HajSABLf4P0GNg=="
+        "resolved": "1.7.0",
+        "contentHash": "p9+peTZX63nGHskOLhvhfBtrknxNg1RzXepE07rPozuCGz27bMjCcQyvn2YByg0L3YEcNWdTmI4BlnG/5RF+5Q=="
       },
       "Newtonsoft.Json": {
         "type": "Transitive",
@@ -408,41 +409,41 @@
       "monai.deploy.informaticsgateway.api": {
         "type": "Project",
         "dependencies": {
-          "Macross.Json.Extensions": "3.0.0",
-          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.12",
-          "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
-          "Monai.Deploy.Messaging": "0.1.19",
-          "Monai.Deploy.Storage": "0.2.13"
+          "Macross.Json.Extensions": "[3.0.0, )",
+          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.13, )",
+          "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
+          "Monai.Deploy.Messaging": "[0.1.19, )",
+          "Monai.Deploy.Storage": "[0.2.13, )"
         }
       },
       "monai.deploy.informaticsgateway.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.0.1",
-          "System.IO.Abstractions": "17.2.3",
-          "System.Threading.Tasks.Dataflow": "6.0.0",
-          "fo-dicom": "5.0.3"
+          "Ardalis.GuardClauses": "[4.0.1, )",
+          "System.IO.Abstractions": "[17.2.3, )",
+          "System.Threading.Tasks.Dataflow": "[6.0.0, )",
+          "fo-dicom": "[5.0.3, )"
         }
       },
       "monai.deploy.informaticsgateway.configuration": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
-          "Microsoft.Extensions.Options": "6.0.0",
-          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Common": "1.0.0",
-          "Monai.Deploy.Messaging": "0.1.19",
-          "Monai.Deploy.Storage": "0.2.13",
-          "System.IO.Abstractions": "17.2.3"
+          "Microsoft.Extensions.Logging.Abstractions": "[6.0.3, )",
+          "Microsoft.Extensions.Options": "[6.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
+          "Monai.Deploy.Messaging": "[0.1.19, )",
+          "Monai.Deploy.Storage": "[0.2.13, )",
+          "System.IO.Abstractions": "[17.2.3, )"
         }
       },
       "monai.deploy.informaticsgateway.database.api": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "6.0.12",
-          "Monai.Deploy.InformaticsGateway.Api": "1.0.0",
-          "Monai.Deploy.InformaticsGateway.Configuration": "1.0.0",
-          "Polly": "7.2.3"
+          "Microsoft.EntityFrameworkCore": "[6.0.13, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "Polly": "[7.2.3, )"
         }
       }
     }

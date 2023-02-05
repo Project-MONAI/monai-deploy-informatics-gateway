@@ -15,10 +15,7 @@
  */
 
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
 {
@@ -29,9 +26,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
             BsonClassMap.RegisterClassMap<Payload>(j =>
             {
                 j.AutoMap();
-                j.MapIdMember(c => c.PayloadId)
-                    .SetIdGenerator(GuidGenerator.Instance)
-                    .SetSerializer(new GuidSerializer(BsonType.String));
+                j.SetIdMember(j.GetMemberMap(c => c.PayloadId));
+                j.MapIdProperty(j => j.PayloadId);
+
                 j.SetIgnoreExtraElements(true);
 
                 j.UnmapProperty(p => p.CalledAeTitle);
@@ -44,7 +41,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
             BsonClassMap.RegisterClassMap<DicomFileStorageMetadata>();
             BsonClassMap.RegisterClassMap<FhirFileStorageMetadata>();
             BsonClassMap.RegisterClassMap<Hl7FileStorageMetadata>();
-
         }
     }
 }

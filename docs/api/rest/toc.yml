@@ -14,6 +14,10 @@
 
 - name: Configuration
   href: config.md
+- name: DICOMWeb STOW
+  href: dicomweb-stow.md
+- name: FHIR
+  href: fhir.md
 - name: Health
   href: health.md
 - name: Inference Request
