@@ -24,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
 #pragma warning disable CS8604, CS8603
+
     internal class PayloadConfiguration : IEntityTypeConfiguration<Payload>
     {
         public void Configure(EntityTypeBuilder<Payload> builder)
@@ -46,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.RetryCount).IsRequired();
             builder.Property(j => j.State).IsRequired();
             builder.Property(j => j.CorrelationId).IsRequired();
+            builder.Property(j => j.MachineName);
             builder.Property(j => j.Files)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
@@ -62,5 +64,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.HasIndex(p => new { p.CorrelationId, p.PayloadId }, "idx_payload_ids").IsUnique();
         }
     }
+
 #pragma warning restore CS8604, CS8603
 }

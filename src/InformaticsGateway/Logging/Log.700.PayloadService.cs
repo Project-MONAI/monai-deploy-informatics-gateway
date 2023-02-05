@@ -116,13 +116,22 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 736, Level = LogLevel.Debug, Message = "Failed to delete temporary file {identifier} from temporary bucket {bucket} at {remotePath}.")]
         public static partial void ErrorDeletingFileAfterMoveComplete(this ILogger logger, string bucket, string identifier, string remotePath);
 
-        [LoggerMessage(EventId = 737, Level = LogLevel.Trace, Message = "File found on storage service {bucket}: {filePath}.")]
-        public static partial void FileFounddOnStorageService(this ILogger logger, string bucket, string filePath);
+        [LoggerMessage(EventId = 737, Level = LogLevel.Trace, Message = "File found on storage service {bucket}: {filePaths}.")]
+        public static partial void FileFounddOnStorageService(this ILogger logger, string bucket, string filePaths);
 
         [LoggerMessage(EventId = 738, Level = LogLevel.Error, Message = "Error listing files on storage service.")]
         public static partial void ErrorListingFilesOnStorageService(this ILogger logger, Exception ex);
 
         [LoggerMessage(EventId = 739, Level = LogLevel.Trace, Message = "Total number of files found on storage service {bucket}: {count}.")]
         public static partial void FilesFounddOnStorageService(this ILogger logger, string bucket, int count);
+
+        [LoggerMessage(EventId = 740, Level = LogLevel.Error, Message = "Some or all files were missing in payload {payloadId}, will abort the request.")]
+        public static partial void DeletePayloadDueToMissingFiles(this ILogger logger, Guid payloadId, Exception ex);
+
+        [LoggerMessage(EventId = 741, Level = LogLevel.Error, Message = "File {file} not found in {payloadId}.")]
+        public static partial void FileMissingInPayload(this ILogger logger, Guid payloadId, string file, Exception ex);
+
+        [LoggerMessage(EventId = 742, Level = LogLevel.Critical, Message = "Storage service connection error.")]
+        public static partial void StorageServiceConnectionError(this ILogger logger, Exception ex);
     }
 }

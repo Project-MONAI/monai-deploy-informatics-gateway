@@ -76,11 +76,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 {
                     tasks.Add(Task.Run(async () =>
                     {
-                        await StartWorker(i, cancellationToken);
-                    }));
+                        await StartWorker(i, cancellationToken).ConfigureAwait(false);
+                    }, cancellationToken));
                 }
 
-                Task.WaitAll(tasks.ToArray());
+                Task.WaitAll(tasks.ToArray(), cancellationToken);
             }
             catch (ObjectDisposedException ex)
             {
@@ -104,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 try
                 {
                     var item = await _uplaodQueue.Dequeue(cancellationToken);
-                    await ProcessObject(item);
+                    await ProcessObject(item).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException ex)
                 {

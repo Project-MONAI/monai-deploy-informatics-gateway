@@ -17,6 +17,9 @@
 using Microsoft.Extensions.Hosting;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations;
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB
 {
@@ -24,6 +27,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB
     {
         public IHost Migrate(IHost host)
         {
+#pragma warning disable 618
+            BsonDefaults.GuidRepresentationMode = GuidRepresentationMode.V3;
+            BsonSerializer.RegisterSerializer(typeof(Guid), new GuidSerializer(GuidRepresentation.Standard));
+#pragma warning restore
             MonaiApplicationEntityConfiguration.Configure();
             MongoDBEntityBaseConfiguration.Configure();
             DestinationApplicationEntityConfiguration.Configure();

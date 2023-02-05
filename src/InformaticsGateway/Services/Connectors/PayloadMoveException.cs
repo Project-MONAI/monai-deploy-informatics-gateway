@@ -22,6 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     public class PayloadNotifyException : Exception
     {
         public FailureReason Reason { get; }
+        public bool ShallRetry { get; }
 
         public enum FailureReason
         {
@@ -29,11 +30,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             IncorrectState,
             IncompletePayload,
             MoveFailure,
+            ServiceUnavailable,
         }
 
-        public PayloadNotifyException(FailureReason reason)
+        public PayloadNotifyException(FailureReason reason) : this(reason, true)
+        {
+        }
+
+        public PayloadNotifyException(FailureReason reason, bool shllRetry)
         {
             Reason = reason;
+            ShallRetry = shllRetry;
         }
 
         protected PayloadNotifyException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
