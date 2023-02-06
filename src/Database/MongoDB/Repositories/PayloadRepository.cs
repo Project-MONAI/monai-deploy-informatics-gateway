@@ -69,12 +69,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             var indexDefinitionState = Builders<Payload>.IndexKeys
                 .Ascending(_ => _.State);
             _collection.Indexes.CreateOne(new CreateIndexModel<Payload>(indexDefinitionState));
-
-            var indexDefinition = Builders<Payload>.IndexKeys.Combine(
-                Builders<Payload>.IndexKeys.Ascending(_ => _.CorrelationId),
-                Builders<Payload>.IndexKeys.Ascending(_ => _.PayloadId));
-
-            _collection.Indexes.CreateOne(new CreateIndexModel<Payload>(indexDefinition, options));
         }
 
         public async Task<Payload> AddAsync(Payload item, CancellationToken cancellationToken = default)
@@ -130,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         {
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var results = await _collection.DeleteManyAsync(Builders<Payload>.Filter.Where(p => p.State == Payload.PayloadState.Created), cancellationToken).ConfigureAwait(false);
+                var results = await _collection.DeleteManyAsync(Builders<Payload>.Filter.Where(p => p.State == Payload.PayloadState.Created && p.MachineName == Environment.MachineName), cancellationToken).ConfigureAwait(false);
                 return Convert.ToInt32(results.DeletedCount);
             }).ConfigureAwait(false);
         }

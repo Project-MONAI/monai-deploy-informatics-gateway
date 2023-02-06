@@ -16,10 +16,7 @@
  */
 
 using Monai.Deploy.InformaticsGateway.Api;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
 {
@@ -30,9 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
             BsonClassMap.RegisterClassMap<MongoDBEntityBase>(j =>
             {
                 j.SetIsRootClass(true);
-                j.MapIdMember(c => c.Id)
-                    .SetIdGenerator(GuidGenerator.Instance)
-                    .SetSerializer(new GuidSerializer(BsonType.String));
+                j.SetIdMember(j.GetMemberMap(c => c.Id));
+                j.MapIdMember(c => c.Id);
                 j.MapMember(c => c.DateTimeCreated);
             });
         }

@@ -14,7 +14,7 @@
   ~ limitations under the License.
 -->
 
-# DICOMWeb STOW-RS APIs
+# FHIR APIs
 
 The `fhir/` endpoint implements the specifications defined in [section 3.1.0 RESTful API](http://hl7.org/implement/standards/fhir/http.html)
 defined by HL7 (Health Level 7 International) to enable triggering new workflows. The FHIR service supports multiple versions of the Fast Healthcare Interoperability Resources (FHIR) specifications published by Health Level 7 International (HL7).

@@ -27,11 +27,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GitVersion.MsBuild" Version="5.11.1">
+    <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
       <PrivateAssets>All</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.12" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.13" />
     <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.19" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.13" />
   </ItemGroup>

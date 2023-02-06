@@ -104,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             return await _retryPolicy.ExecuteAsync(async () =>
             {
                 var count = 0;
-                await _dataset.Where(p => p.State == Payload.PayloadState.Created).ForEachAsync(
+                await _dataset.Where(p => p.State == Payload.PayloadState.Created && p.MachineName == Environment.MachineName).ForEachAsync(
                    p =>
                    {
                        _dataset.Remove(p);

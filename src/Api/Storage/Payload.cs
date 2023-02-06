@@ -46,11 +46,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         private readonly Stopwatch _lastReceived;
         private bool _disposedValue;
 
-        public Guid PayloadId { get; }
+        public Guid PayloadId { get; private set; }
 
         public uint Timeout { get; init; }
 
         public string Key { get; init; }
+
+        public string? MachineName { get; init; }
 
         public DateTime DateTimeCreated { get; private set; }
 
@@ -81,6 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             _lastReceived = new Stopwatch();
 
             CorrelationId = correlationId;
+            MachineName = Environment.MachineName;
             DateTimeCreated = DateTime.UtcNow;
             PayloadId = Guid.NewGuid();
             Key = key;

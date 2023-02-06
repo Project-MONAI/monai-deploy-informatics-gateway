@@ -16,10 +16,7 @@
  */
 
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
-using MongoDB.Bson.Serialization.IdGenerators;
-using MongoDB.Bson.Serialization.Serializers;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
 {
@@ -30,9 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
             BsonClassMap.RegisterClassMap<InferenceRequest>(j =>
             {
                 j.AutoMap();
-                j.MapIdMember(c => c.InferenceRequestId)
-                    .SetIdGenerator(GuidGenerator.Instance)
-                    .SetSerializer(new GuidSerializer(BsonType.String));
+                j.SetIdMember(j.GetMemberMap(c => c.InferenceRequestId));
+                j.MapIdMember(c => c.InferenceRequestId);
                 j.SetIgnoreExtraElements(true);
 
                 j.UnmapProperty(p => p.Application);
