@@ -2900,6 +2900,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Key
   fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Key
   nameWithType: Payload.Key
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName
+  name: MachineName
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MachineName
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName
+  nameWithType: Payload.MachineName
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName*
+  name: MachineName
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MachineName_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName
+  nameWithType: Payload.MachineName
 - uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MAX_RETRY
   name: MAX_RETRY
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MAX_RETRY
