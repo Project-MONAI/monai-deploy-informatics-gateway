@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             var modality = "US";
             _dataProvider.GenerateDicomData(modality, WorkflowStudyCount);
-            _receivedMessages.SetupMessageHandle(WorkflowStudyCount);
+            _receivedMessages.ClearMessages();
 
             var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");
             await storeScu.SendAsync(_dataProvider, "TEST-RUNNER", _configurations.OrthancOptions.Host, _configurations.OrthancOptions.DimsePort, "ORTHANC", TimeSpan.FromSeconds(300));
@@ -80,17 +80,16 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             await _informaticsGatewayClient.Inference.NewInferenceRequest(_dataProvider.AcrRequest, CancellationToken.None);
         }
 
-        [Then(@"a workflow requests sent to the message broker")]
-        public void ThenAWorkflowRequestsSentToTheMessageBroker()
+        [Then(@"a single workflow request is sent to the message broker")]
+        public async Task ThenAWorkflowRequestsSentToTheMessageBroker()
         {
-            _receivedMessages.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
+            (await _receivedMessages.WaitforAsync(1, MessageWaitTimeSpan)).Should().BeTrue();
             _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessagesAndAcrRequest(_dataProvider, _receivedMessages.Messages, WorkflowStudyCount);
         }
 
         [Then(@"a study is uploaded to the storage service")]
         public async Task ThenAStudyIsUploadedToTheStorageService()
         {
-            _receivedMessages.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
             _receivedMessages.Messages.Should().NotBeNullOrEmpty();
             await _assertions.ShouldHaveUploadedDicomDataToMinio(_receivedMessages.Messages, _dataProvider.DicomSpecs.FileHashes);
         }

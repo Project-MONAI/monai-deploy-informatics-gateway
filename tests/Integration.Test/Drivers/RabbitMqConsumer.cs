@@ -16,6 +16,7 @@
  */
 
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Messaging.RabbitMQ;
 using TechTalk.SpecFlow.Infrastructure;
@@ -32,7 +33,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
 
         public IReadOnlyList<Message> Messages
         { get { return _messages.ToList(); } }
-        public CountdownEvent MessageWaitHandle { get; private set; }
 
         public RabbitMqConsumer(RabbitMQMessageSubscriberService subscriberService, string queueName, ISpecFlowOutputHelper outputHelper)
         {
@@ -54,15 +54,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                     _messages.Add(eventArgs.Message);
                     subscriberService.Acknowledge(eventArgs.Message);
                     _outputHelper.WriteLine($"{DateTime.UtcNow} - {queueName} message received with correlation ID={eventArgs.Message.CorrelationId}, delivery tag={eventArgs.Message.DeliveryTag}");
-                    MessageWaitHandle?.Signal();
                 });
         }
 
-        public void SetupMessageHandle(int count)
+        public void ClearMessages()
         {
-            _outputHelper.WriteLine($"Expecting {count} {_queueName} messages from RabbitMQ");
+            _outputHelper.WriteLine($"Clearing messages received from RabbitMQ");
             _messages.Clear();
-            MessageWaitHandle = new CountdownEvent(count);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -83,6 +81,19 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
+        }
+
+        internal async Task<bool> WaitforAsync(int messageCount, TimeSpan messageWaitTimeSpan)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            while (messageCount > _messages.Count && stopwatch.Elapsed < messageWaitTimeSpan)
+            {
+                await Task.Delay(100);
+            }
+
+            return messageCount >= _messages.Count;
         }
     }
 }

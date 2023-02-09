@@ -199,7 +199,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
                 var request = message.ConvertTo<WorkflowRequestEvent>();
                 request.Should().NotBeNull();
-                request.FileCount.Should().Be((dataProvider.DicomSpecs.NumberOfExpectedFiles(dataProvider.StudyGrouping)));
+
+                if (dataProvider.ClientSendOverAssociations == 1 || messages.Count == 1)
+                {
+                    request.FileCount.Should().Be((dataProvider.DicomSpecs.NumberOfExpectedFiles(dataProvider.StudyGrouping)));
+                }
+                else
+                {
+                    request.FileCount.Should().Be(dataProvider.DicomSpecs.FileCount / dataProvider.ClientSendOverAssociations);
+                }
 
                 if (dataProvider.Workflows is not null)
                 {

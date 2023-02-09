@@ -28,7 +28,7 @@ Feature: ACR API
         Given a DICOM study on a remote DICOMweb service
         And an ACR API request to query & retrieve by <requestType>
         When the ACR API request is sent
-        Then a workflow requests sent to the message broker
+        Then a single workflow request is sent to the message broker
         And a study is uploaded to the storage service
 
     Examples:
