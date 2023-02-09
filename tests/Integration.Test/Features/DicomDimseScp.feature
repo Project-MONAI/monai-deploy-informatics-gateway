@@ -84,5 +84,5 @@ Feature: DICOM DIMSE SCP Services
 
         Examples:
             | modality | study_count | series_count | seconds | workflow_requests |
-            | MG       | 1           | 3            | 1       | 1                 |
+            | MG       | 1           | 3            | 3       | 1                 |
             | MG       | 1           | 3            | 6       | 3                 |
