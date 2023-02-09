@@ -88,7 +88,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NegativeOrZero(seriesPerStudy);
 
             _dataProvider.GenerateDicomData(modality, studyCount, seriesPerStudy);
-            _receivedMessages.SetupMessageHandle(_dataProvider.DicomSpecs.NumberOfExpectedRequests(_dataProvider.StudyGrouping));
+
+            _receivedMessages.ClearMessages();
         }
 
         [Given(@"a called AE Title named '([^']*)' that groups by '([^']*)' for (.*) seconds")]
@@ -125,12 +126,28 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             }
         }
 
-        [When(@"a C-ECHO-RQ is sent to '([^']*)' from '([^']*)' with timeout of (.*) seconds")]
-        public async Task WhenAC_ECHO_RQIsSentToFromWithTimeoutOfSeconds(string calledAeTitle, string callingAeTitle, int clientTimeoutSeconds)
+        [Given(@"a DICOM client configured with (.*) seconds timeout")]
+        public void GivenADICOMClientConfiguredWithSecondsTimeout(int timeout)
+        {
+            Guard.Against.NegativeOrZero(timeout);
+            _dataProvider.ClientTimeout = timeout;
+        }
+
+        [Given(@"a DICOM client configured to send data over (.*) associations and wait (.*) between each association")]
+        public void GivenADICOMClientConfiguredToSendDataOverAssociationsAndWaitSecondsBetweenEachAssociation(int associations, int pulseTime)
+        {
+            Guard.Against.NegativeOrZero(associations);
+            Guard.Against.Negative(pulseTime);
+
+            _dataProvider.ClientSendOverAssociations = associations;
+            _dataProvider.ClientAssociationPulseTime = pulseTime;
+        }
+
+        [When(@"a C-ECHO-RQ is sent to '([^']*)' from '([^']*)'")]
+        public async Task WhenAC_ECHO_RQIsSentToFromWithTimeoutOfSeconds(string calledAeTitle, string callingAeTitle)
         {
             Guard.Against.NullOrWhiteSpace(calledAeTitle);
             Guard.Against.NullOrWhiteSpace(callingAeTitle);
-            Guard.Against.NegativeOrZero(clientTimeoutSeconds);
 
             var echoScu = _objectContainer.Resolve<IDataClient>("EchoSCU");
             await echoScu.SendAsync(
@@ -139,7 +156,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 _configuration.InformaticsGatewayOptions.Host,
                 _informaticsGatewayConfiguration.Dicom.Scp.Port,
                 calledAeTitle,
-                TimeSpan.FromSeconds(clientTimeoutSeconds));
+                TimeSpan.FromSeconds(_dataProvider.ClientTimeout));
         }
 
         [Then(@"a successful response should be received")]
@@ -148,13 +165,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
         }
 
-        [When(@"a C-STORE-RQ is sent to '([^']*)' with AET '([^']*)' from '([^']*)' with timeout of (.*) seconds")]
-        public async Task WhenAC_STORE_RQIsSentToWithAETFromWithTimeoutOfSeconds(string application, string calledAeTitle, string callingAeTitle, int clientTimeoutSeconds)
+        [When(@"a C-STORE-RQ is sent to '([^']*)' with AET '([^']*)' from '([^']*)'")]
+        [When(@"C-STORE-RQ are sent to '([^']*)' with AET '([^']*)' from '([^']*)'")]
+        public async Task WhenAC_STORE_RQIsSentToWithAETFromWithTimeoutOfSeconds(string application, string calledAeTitle, string callingAeTitle)
         {
             Guard.Against.NullOrWhiteSpace(application);
             Guard.Against.NullOrWhiteSpace(calledAeTitle);
             Guard.Against.NullOrWhiteSpace(callingAeTitle);
-            Guard.Against.NegativeOrZero(clientTimeoutSeconds);
 
             var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");
 
@@ -168,8 +185,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 callingAeTitle,
                 host,
                 port,
-                calledAeTitle,
-                TimeSpan.FromSeconds(clientTimeoutSeconds));
+                calledAeTitle);
 
             _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }

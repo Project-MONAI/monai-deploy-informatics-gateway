@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NullOrWhiteSpace(format);
 
             await _dataProvider.GenerateFhirMessages(version, format);
-            _receivedMessages.SetupMessageHandle(_dataProvider.FhirSpecs.Files.Count);
+            _receivedMessages.ClearMessages();
         }
 
         [When(@"the FHIR messages are sent to Informatics Gateway")]
@@ -67,9 +67,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         }
 
         [Then(@"workflow requests are sent to message broker")]
-        public void ThenWorkflowRequestAreSentToMessageBroker()
+        public async Task ThenWorkflowRequestAreSentToMessageBrokerAsync()
         {
-            _receivedMessages.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
+            (await _receivedMessages.WaitforAsync(_dataProvider.FhirSpecs.Files.Count, WaitTimeSpan)).Should().BeTrue();
         }
 
         [Then(@"FHIR resources are uploaded to storage service")]

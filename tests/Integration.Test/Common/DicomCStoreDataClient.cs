@@ -16,6 +16,7 @@
 
 using System.Diagnostics;
 using Ardalis.GuardClauses;
+using FellowOakDicom;
 using FellowOakDicom.Network;
 using FellowOakDicom.Network.Client;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -48,15 +49,59 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             var host = args[1].ToString();
             var port = (int)args[2];
             var calledAeTitle = args[3].ToString();
-            var timeout = (TimeSpan)args[4];
+            var timeout = TimeSpan.FromSeconds(dataProvider.ClientTimeout);
+            var associations = dataProvider.ClientSendOverAssociations;
+            var pauseTime = TimeSpan.FromSeconds(dataProvider.ClientAssociationPulseTime);
 
             _outputHelper.WriteLine($"C-STORE: {callingAeTitle} => {host}:{port}@{calledAeTitle}");
             var stopwatch = new Stopwatch();
             stopwatch.Start();
-            var dicomClient = DicomClientFactory.Create(host, port, false, callingAeTitle, calledAeTitle);
-            var countdownEvent = new CountdownEvent(dataProvider.DicomSpecs.Files.Count);
+
+            var filesPerAssociations = dataProvider.DicomSpecs.Files.Count / associations;
+
             var failureStatus = new List<DicomStatus>();
-            foreach (var file in dataProvider.DicomSpecs.Files)
+            for (int i = 0; i < associations; i++)
+            {
+                var files = dataProvider.DicomSpecs.Files.Skip(i * filesPerAssociations).Take(filesPerAssociations).ToList();
+                if (i + 1 == associations && dataProvider.DicomSpecs.Files.Count > (i + 1) * filesPerAssociations)
+                {
+                    files.AddRange(dataProvider.DicomSpecs.Files.Skip(i * filesPerAssociations));
+                }
+
+                try
+                {
+                    await SendBatchAsync(
+                        files,
+                        callingAeTitle,
+                        host,
+                        port,
+                        calledAeTitle,
+                        timeout,
+                        stopwatch,
+                        failureStatus);
+                    await Task.Delay(pauseTime);
+                }
+                catch (DicomAssociationRejectedException ex)
+                {
+                    _outputHelper.WriteLine($"Association Rejected: {ex.Message}");
+                    dataProvider.DimseRsponse = DicomStatus.Cancel;
+                }
+            }
+
+            stopwatch.Stop();
+            lock (SyncRoot)
+            {
+                TotalTime += (int)stopwatch.Elapsed.TotalMilliseconds;
+            }
+            _outputHelper.WriteLine($"DICOMsend:{stopwatch.Elapsed.TotalSeconds}s");
+            dataProvider.DimseRsponse = (failureStatus.Count == 0) ? DicomStatus.Success : failureStatus.First();
+        }
+
+        private async Task SendBatchAsync(List<DicomFile> files, string callingAeTitle, string host, int port, string calledAeTitle, TimeSpan timeout, Stopwatch stopwatch, List<DicomStatus> failureStatus)
+        {
+            var dicomClient = DicomClientFactory.Create(host, port, false, callingAeTitle, calledAeTitle);
+            var countdownEvent = new CountdownEvent(files.Count);
+            foreach (var file in files)
             {
                 var cStoreRequest = new DicomCStoreRequest(file);
                 cStoreRequest.OnResponseReceived += (DicomCStoreRequest request, DicomCStoreResponse response) =>
@@ -67,24 +112,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 await dicomClient.AddRequestAsync(cStoreRequest);
             }
 
-            try
-            {
-                await dicomClient.SendAsync();
-                countdownEvent.Wait(timeout);
-                stopwatch.Stop();
-                lock (SyncRoot)
-                {
-                    TotalTime += (int)stopwatch.Elapsed.TotalMilliseconds;
-                }
-                _outputHelper.WriteLine($"DICOMsend:{stopwatch.Elapsed.TotalSeconds}s");
-            }
-            catch (DicomAssociationRejectedException ex)
-            {
-                _outputHelper.WriteLine($"Association Rejected: {ex.Message}");
-                dataProvider.DimseRsponse = DicomStatus.Cancel;
-            }
-
-            dataProvider.DimseRsponse = (failureStatus.Count == 0) ? DicomStatus.Success : failureStatus.First();
+            await dicomClient.SendAsync();
+            countdownEvent.Wait(timeout);
         }
     }
 }

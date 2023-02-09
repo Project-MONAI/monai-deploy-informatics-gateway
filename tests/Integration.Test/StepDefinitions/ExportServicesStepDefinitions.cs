@@ -132,14 +132,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 exportRequestEvent.CorrelationId,
                 string.Empty);
 
-            _receivedMessages.SetupMessageHandle(1);
+            _receivedMessages.ClearMessages();
             _messagePublisher.Publish(routingKey, message.ToMessage());
         }
 
         [Then(@"Informatics Gateway exports the studies to the DICOM SCP")]
         public async Task ThenExportTheInstancesToTheDicomScp()
         {
-            _receivedMessages.MessageWaitHandle.Wait(DicomScpWaitTimeSpan).Should().BeTrue();
+            (await _receivedMessages.WaitforAsync(1, DicomScpWaitTimeSpan)).Should().BeTrue();
 
             foreach (var key in _dataProvider.DicomSpecs.FileHashes.Keys)
             {
@@ -151,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Then(@"Informatics Gateway exports the studies to Orthanc")]
         public async Task ThenExportTheInstancesToOrthanc()
         {
-            _receivedMessages.MessageWaitHandle.Wait(DicomScpWaitTimeSpan).Should().BeTrue();
+            (await _receivedMessages.WaitforAsync(1, DicomScpWaitTimeSpan)).Should().BeTrue();
             var httpClient = new HttpClient();
             var dicomWebClient = new DicomWebClient(httpClient, null);
             dicomWebClient.ConfigureServiceUris(new Uri(_configuration.OrthancOptions.DicomWebRoot));

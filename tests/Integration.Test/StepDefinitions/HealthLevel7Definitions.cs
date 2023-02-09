@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             Guard.Against.NullOrWhiteSpace(version);
             await _dataProvider.GenerateHl7Messages(version);
-            _receivedMessages.SetupMessageHandle(1);
+            _receivedMessages.ClearMessages();
         }
 
         [When(@"the message are sent to Informatics Gateway")]
@@ -71,9 +71,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         }
 
         [Then(@"a workflow requests sent to message broker")]
-        public void ThenAWorkflowRequestIsSentToMessageBroker()
+        public async Task ThenAWorkflowRequestIsSentToMessageBrokerAsync()
         {
-            _receivedMessages.MessageWaitHandle.Wait(WaitTimeSpan).Should().BeTrue();
+            (await _receivedMessages.WaitforAsync(_dataProvider.HL7Specs.Files.Count, WaitTimeSpan)).Should().BeTrue();
         }
 
         [Then(@"messages are uploaded to storage service")]
