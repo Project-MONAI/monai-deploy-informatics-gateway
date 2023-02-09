@@ -53,22 +53,21 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _dataProvider.GenerateDicomData(modality, studyCount);
 
-            _receivedMessages.SetupMessageHandle(_dataProvider.DicomSpecs.NumberOfExpectedRequests(_dataProvider.StudyGrouping));
+            _receivedMessages.ClearMessages();
         }
 
         [Then(@"(.*) workflow requests sent to message broker")]
-        public void ThenWorkflowRequestSentToMessageBroker(int workflowCount)
+        public async Task ThenWorkflowRequestSentToMessageBrokerAsync(int workflowCount)
         {
             Guard.Against.NegativeOrZero(workflowCount);
 
-            _receivedMessages.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
+            (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
             _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, _receivedMessages.Messages, workflowCount);
         }
 
         [Then(@"studies are uploaded to storage service")]
         public async Task ThenXXFilesUploadedToStorageService()
         {
-            _receivedMessages.MessageWaitHandle.Wait(MessageWaitTimeSpan).Should().BeTrue();
             await _assertions.ShouldHaveUploadedDicomDataToMinio(_receivedMessages.Messages, _dataProvider.DicomSpecs.FileHashes);
         }
     }

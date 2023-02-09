@@ -135,20 +135,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     var payload = await _payloads[key].Task.ConfigureAwait(false);
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
 
-                    if (payload.IsUploadCompleted())
+                    // Wait for timer window closes before sending payload for processing
+                    if (payload.HasTimedOut)
                     {
-                        if (_payloads.TryRemove(key, out _))
+                        if (payload.IsUploadCompleted())
                         {
-                            await QueueBucketForNotification(key, payload).ConfigureAwait(false);
+                            if (_payloads.TryRemove(key, out _))
+                            {
+                                await QueueBucketForNotification(key, payload).ConfigureAwait(false);
+                            }
+                            else
+                            {
+                                _logger.BucketRemoveError(key);
+                            }
                         }
-                        else
-                        {
-                            _logger.BucketRemoveError(key);
-                        }
-                    }
-                    else if (payload.HasTimedOut)
-                    {
-                        if (payload.AnyUploadFailures())
+                        else if (payload.AnyUploadFailures())
                         {
                             _payloads.TryRemove(key, out _);
                             _logger.PayloadRemovedWithFailureUploads(key);
