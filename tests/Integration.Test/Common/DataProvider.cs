@@ -38,6 +38,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         public DicomStatus DimseRsponse { get; internal set; }
         public string StudyGrouping { get; internal set; }
         public string[] Workflows { get; internal set; } = null;
+        public int ClientTimeout { get; internal set; }
+        public int ClientAssociationPulseTime { get; internal set; } = 0;
+        public int ClientSendOverAssociations { get; internal set; } = 1;
 
         public DataProvider(Configurations configurations, ISpecFlowOutputHelper outputHelper)
         {
