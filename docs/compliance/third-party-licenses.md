@@ -4481,7 +4481,7 @@ SOFTWARE.
 <details>
 <summary>Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions 8.0.14</summary>
 
-## Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
+## Microsoft.Extensions.Diagnostics.HealthChecks
 
 - Version: 8.0.14
 - Authors: Microsoft
