@@ -198,6 +198,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
             catch (Exception ex)
             {
+                _logger.PayloadMoveException(ex);
                 await LogFilesInMinIo(file.TemporaryBucketName, cancellationToken).ConfigureAwait(false);
                 throw new FileMoveException(file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), file.UploadPath, ex);
             }
