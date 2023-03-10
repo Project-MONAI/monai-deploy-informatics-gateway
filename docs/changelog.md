@@ -114,7 +114,13 @@
 
 ## 0.3.8
 
-[GitHub Milestone 0.3.8](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/16)
+[GitHub Milestone 0.3.11](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/17)
+
+- Fixes exception handling for unavailable previously created dead-letter queues
+
+## 0.3.11
+
+[GitHub Milestone 0.3.11](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/16)
 
 - Adds exception handling for unavailable previously created dead-letter queues
 
