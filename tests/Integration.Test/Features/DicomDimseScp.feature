@@ -1,4 +1,4 @@
-# Copyright 2022 MONAI Consortium
+# Copyright 2022-2023 MONAI Consortium
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,47 +37,47 @@ Feature: DICOM DIMSE SCP Services
 
     @messaging_workflow_request @messaging
     Scenario Outline: Respond to C-STORE-RQ and group data by Study Instance UID
-        Given a called AE Title named 'C-STORE-STUDY' that groups by '0020,000D' for 3 seconds
+        Given a called AE Title named '<aet>' that groups by '0020,000D' for <timeout> seconds
         And a DICOM client configured with 300 seconds timeout
         And a DICOM client configured to send data over 1 associations and wait 0 between each association
         And <count> <modality> studies
-        When a C-STORE-RQ is sent to 'Informatics Gateway' with AET 'C-STORE-STUDY' from 'TEST-RUNNER'
+        When a C-STORE-RQ is sent to 'Informatics Gateway' with AET '<aet>' from 'TEST-RUNNER'
         Then a successful response should be received
         And <count> workflow requests sent to message broker
         And studies are uploaded to storage service
 
         Examples:
-            | modality | count |
-            | MR       | 1     |
-            | CT       | 1     |
-            | MG       | 2     |
-            | US       | 1     |
+            | modality | count | aet             | timeout |
+            | MR       | 1     | C-STORE-STUDY30 | 30      |
+            | CT       | 1     | C-STORE-STUDY30 | 30      |
+            | MG       | 2     | C-STORE-STUDY10 | 10      |
+            | US       | 1     | C-STORE-STUDY10 | 10      |
 
     @messaging_workflow_request @messaging
     Scenario Outline: Respond to C-STORE-RQ and group data by Series Instance UID
-        Given a called AE Title named 'C-STORE-SERIES' that groups by '0020,000E' for 3 seconds
+        Given a called AE Title named '<aet>' that groups by '0020,000E' for <timeout> seconds
         And a DICOM client configured with 300 seconds timeout
         And a DICOM client configured to send data over 1 associations and wait 0 between each association
         And <study_count> <modality> studies with <series_count> series per study
-        When a C-STORE-RQ is sent to 'Informatics Gateway' with AET 'C-STORE-SERIES' from 'TEST-RUNNER'
+        When a C-STORE-RQ is sent to 'Informatics Gateway' with AET '<aet>' from 'TEST-RUNNER'
         Then a successful response should be received
         And <series_count> workflow requests sent to message broker
         And studies are uploaded to storage service
 
         Examples:
-            | modality | study_count | series_count |
-            | MR       | 1           | 2            |
-            | CT       | 1           | 2            |
-            | MG       | 1           | 3            |
-            | US       | 1           | 2            |
+            | modality | study_count | series_count | aet           | timeout |
+            | MR       | 1           | 2            | C-STORE-SER30 | 30      |
+            | CT       | 1           | 2            | C-STORE-SER30 | 30      |
+            | MG       | 1           | 3            | C-STORE-SER10 | 10      |
+            | US       | 1           | 2            | C-STORE-SER10 | 10      |
             
     @messaging_workflow_request @messaging
     Scenario Outline: Respond to C-STORE-RQ and group data by Study Instance UID over multiple associations
-        Given a called AE Title named 'C-STORE-STUDY' that groups by '0020,000D' for 5 seconds
+        Given a called AE Title named 'C-STORE-MA' that groups by '0020,000D' for 10 seconds
         And a DICOM client configured with 300 seconds timeout
         And a DICOM client configured to send data over <series_count> associations and wait <seconds> between each association
         And <study_count> <modality> studies with <series_count> series per study
-        When C-STORE-RQ are sent to 'Informatics Gateway' with AET 'C-STORE-STUDY' from 'TEST-RUNNER'
+        When C-STORE-RQ are sent to 'Informatics Gateway' with AET 'C-STORE-MA' from 'TEST-RUNNER'
         Then a successful response should be received
         And <workflow_requests> workflow requests sent to message broker
         And studies are uploaded to storage service

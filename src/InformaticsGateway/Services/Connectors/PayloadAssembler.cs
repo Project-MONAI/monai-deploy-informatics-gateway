@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -149,10 +150,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                                 _logger.BucketRemoveError(key);
                             }
                         }
-                        else
+                        else if (payload.IsUploadCompletedWithFailures())
                         {
                             _payloads.TryRemove(key, out _);
-                            _logger.PayloadRemovedWithFailureUploads(key);
+                            _logger.PayloadRemovedWithFailureUploads(key, payload.Count, payload.Files.Count(p => p.IsUploadFailed));
                         }
                     }
                 }
