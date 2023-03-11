@@ -15,6 +15,7 @@
  */
 
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.Messaging;
 
 namespace Monai.Deploy.InformaticsGateway.SharedTest;
 
@@ -33,4 +34,9 @@ internal record TestStorageInfo : FileStorageMetadata
     public override string DataTypeDirectoryName => "dir";
 
     public override StorageObjectMetadata File { get; set; }
+
+    public void SetUploaded()
+    {
+        File.SetUploaded("test");
+    }
 }
