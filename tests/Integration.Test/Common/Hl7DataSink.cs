@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using Ardalis.GuardClauses;
@@ -95,6 +96,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         private async Task SendBatchAsync(DataProvider dataProvider, params object[] args)
         {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             var messages = new List<byte>();
             foreach (var file in dataProvider.HL7Specs.Files.Keys)
             {
@@ -134,6 +137,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 }
             } while (true);
             tcpClient.Close();
+            stopwatch.Stop();
+            _outputHelper.WriteLine($"Took {stopwatch.Elapsed.TotalSeconds}s to send {messages.Count} messages.");
         }
     }
 }

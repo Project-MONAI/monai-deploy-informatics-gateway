@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -90,7 +90,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } });
             try
             {
-
                 if (await _inferenceRequestRepository.ExistsAsync(request.TransactionId, HttpContext.RequestAborted).ConfigureAwait(false))
                 {
                     return Problem(title: "Conflict", statusCode: (int)HttpStatusCode.Conflict, detail: "An existing request with same transaction ID already exists.");

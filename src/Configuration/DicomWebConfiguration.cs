@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// single POST request, therefore, the timeout value may be insignificant unless the load of the
         /// network affects the upload speed.
         /// </summary>
-        public uint Timeout { get; set; } = 2;
+        [ConfigurationKeyName("timeout")]
+        public uint Timeout { get; set; } = 10;
 
         public DicomWebConfiguration()
         {
