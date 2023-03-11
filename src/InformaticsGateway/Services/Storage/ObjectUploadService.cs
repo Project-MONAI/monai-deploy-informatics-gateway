@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 try
                 {
-                    var item = await _uplaodQueue.Dequeue(cancellationToken);
+                    var item = await _uplaodQueue.Dequeue(cancellationToken).ConfigureAwait(false);
                     await ProcessObject(item).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException ex)
@@ -164,6 +164,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             }
             catch (Exception ex)
             {
+                blob.SetFailed();
                 _logger.FailedToUploadFile(blob.Id, ex);
             }
             finally

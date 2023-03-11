@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 3012, Level = LogLevel.Information, Message = "Bucket {key} created with timeout {timeout}s.")]
         public static partial void BucketCreated(this ILogger logger, string key, uint timeout);
 
-        [LoggerMessage(EventId = 3014, Level = LogLevel.Error, Message = "Payload deleted due to upload failure(s) {key}.")]
-        public static partial void PayloadRemovedWithFailureUploads(this ILogger logger, string key);
+        [LoggerMessage(EventId = 3014, Level = LogLevel.Error, Message = "Payload ({key}) with {totalNumberOfFiles} files deleted due to {failures} upload failure(s).")]
+        public static partial void PayloadRemovedWithFailureUploads(this ILogger logger, string key, int totalNumberOfFiles, int failures);
     }
 }
