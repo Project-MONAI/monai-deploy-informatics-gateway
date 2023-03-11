@@ -120,14 +120,19 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
 
-            var file = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
+            var file1 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
+            var file2 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
 
-            await payloadAssembler.Queue("A", file, 1);
+            await payloadAssembler.Queue("A", file1, 1);
+            await payloadAssembler.Queue("A", file2, 1);
+
+            file1.SetFailed();
+            file2.SetUploaded();
             await Task.Delay(1001);
             payloadAssembler.Dispose();
 
             _repository.Verify(p => p.UpdateAsync(It.Is<Payload>(p => p.State == Payload.PayloadState.Move), It.IsAny<CancellationToken>()), Times.Never());
-            _logger.VerifyLoggingMessageBeginsWith("Payload deleted due to upload failure(s)", LogLevel.Error, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith($"Payload (A) with 2 files deleted due to 1 upload failure(s).", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 200)]
