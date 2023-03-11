@@ -116,18 +116,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [RetryFact(10, 200)]
-        public async Task GivenAPayloadThatHasNotCompleteUploads_WhenProcessedByTimedEvent_ExpectToBeAddedToQueue()
+        public async Task GivenAPayloadThatHasNotCompleteUploads_WhenProcessedByTimedEvent_ExpectToBeRemovedFromQueue()
         {
             var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
 
             var file = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
-            file.File.SetUploaded("bucket");
 
             await payloadAssembler.Queue("A", file, 1);
             await Task.Delay(1001);
             payloadAssembler.Dispose();
 
-            _repository.Verify(p => p.UpdateAsync(It.Is<Payload>(p => p.State == Payload.PayloadState.Move), It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.UpdateAsync(It.Is<Payload>(p => p.State == Payload.PayloadState.Move), It.IsAny<CancellationToken>()), Times.Never());
+            _logger.VerifyLoggingMessageBeginsWith("Payload deleted due to upload failure(s)", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 200)]
