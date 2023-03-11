@@ -48,10 +48,10 @@ Feature: DICOM DIMSE SCP Services
 
         Examples:
             | modality | count | aet             | timeout |
-            | MR       | 1     | C-STORE-STUDY30 | 30      |
-            | CT       | 1     | C-STORE-STUDY30 | 30      |
-            | MG       | 2     | C-STORE-STUDY10 | 10      |
-            | US       | 1     | C-STORE-STUDY10 | 10      |
+            | MR       | 1     | C-STORE-STUDY30 | 3      |
+            | CT       | 1     | C-STORE-STUDY30 | 3      |
+            | MG       | 2     | C-STORE-STUDY10 | 3      |
+            | US       | 1     | C-STORE-STUDY10 | 3      |
 
     @messaging_workflow_request @messaging
     Scenario Outline: Respond to C-STORE-RQ and group data by Series Instance UID
@@ -66,14 +66,14 @@ Feature: DICOM DIMSE SCP Services
 
         Examples:
             | modality | study_count | series_count | aet           | timeout |
-            | MR       | 1           | 2            | C-STORE-SER30 | 30      |
-            | CT       | 1           | 2            | C-STORE-SER30 | 30      |
-            | MG       | 1           | 3            | C-STORE-SER10 | 10      |
-            | US       | 1           | 2            | C-STORE-SER10 | 10      |
+            | MR       | 1           | 2            | C-STORE-SER30 | 3      |
+            | CT       | 1           | 2            | C-STORE-SER30 | 3      |
+            | MG       | 1           | 3            | C-STORE-SER10 | 3      |
+            | US       | 1           | 2            | C-STORE-SER10 | 3      |
             
     @messaging_workflow_request @messaging
     Scenario Outline: Respond to C-STORE-RQ and group data by Study Instance UID over multiple associations
-        Given a called AE Title named 'C-STORE-MA' that groups by '0020,000D' for 10 seconds
+        Given a called AE Title named 'C-STORE-MA' that groups by '0020,000D' for 5 seconds
         And a DICOM client configured with 300 seconds timeout
         And a DICOM client configured to send data over <series_count> associations and wait <seconds> between each association
         And <study_count> <modality> studies with <series_count> series per study
