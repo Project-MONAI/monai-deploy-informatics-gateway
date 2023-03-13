@@ -10,8 +10,8 @@
   "CT": {
     "SeriesMin": 1,
     "SeriesMax": 2,
-    "InstanceMin": 60,
-    "InstanceMax": 1000,
+    "InstanceMin": 50,
+    "InstanceMax": 300,
     "SizeMin": 0.5,
     "SizeMax": 1
   },

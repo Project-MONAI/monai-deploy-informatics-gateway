@@ -1,4 +1,4 @@
-# Copyright 2022 MONAI Consortium
+# Copyright 2022-2023 MONAI Consortium
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -39,8 +39,8 @@ Feature: DICOMweb STOW-RS Service
         And studies are uploaded to storage service
         Examples:
             | modality | count |
-            | CT       | 2     |
-            | US       | 1     |
+            | MR       | 1     |
+            | MG       | 2     |
 
     @messaging_workflow_request @messaging 
     Scenario: Triggers a new workflow via DICOMWeb STOW-RS
