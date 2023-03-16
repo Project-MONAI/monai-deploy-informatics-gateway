@@ -33,9 +33,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="Minio" Version="4.0.6" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.21" />
-    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.13" />
+    <PackageReference Include="Minio" Version="4.0.7" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.22" />
+    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.15" />
     <PackageReference Include="Moq" Version="4.18.4" />
     <PackageReference Include="Polly" Version="7.2.3" />
     <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
