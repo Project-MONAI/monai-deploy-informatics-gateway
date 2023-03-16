@@ -524,7 +524,7 @@
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
     - 6.0.12
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
@@ -532,7 +532,7 @@
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
     - 6.0.12
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
@@ -788,28 +788,28 @@
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.21
+    - 0.1.22
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.21
+    - 0.1.22
     :when: 2022-08-16 23:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.13
+    - 0.2.15
     :when: 2022-08-16 23:06:21.988183476 Z
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.13
+    - 0.2.15
     :when: 2022-08-16 23:06:22.426838304 Z
 - - :approve
   - Monai.Deploy.Storage.S3Policy
