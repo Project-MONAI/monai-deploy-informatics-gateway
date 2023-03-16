@@ -32,7 +32,7 @@
     <ProjectReference Include="EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="MongoDB\Monai.Deploy.InformaticsGateway.Database.MongoDB.csproj" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Compile Remove="EntityFramework\**" />
     <EmbeddedResource Remove="EntityFramework\**" />

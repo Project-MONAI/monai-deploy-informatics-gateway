@@ -17,6 +17,30 @@
 
 # Changelog
 
+## 0.3.13
+
+[GitHub Milestone 0.3.13](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/18)
+
+- Fixes an issue where failure uploads caused payload to stuck in the queue and stops processing any incoming data.
+
+## 0.3.12
+
+[GitHub Milestone 0.3.12](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/17)
+
+- Fixes exception handling for unavailable previously created dead-letter queues
+
+## 0.3.11
+
+[GitHub Milestone 0.3.11](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/16)
+
+- Adds exception handling for unavailable previously created dead-letter queues
+
+## 0.3.10
+
+[GitHub Milestone 0.3.10](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/15)
+
+- Fixes payload assembler not respecting user configured timeout window
+
 ## 0.3.8
 
 [GitHub Milestone 0.3.8](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/14)
