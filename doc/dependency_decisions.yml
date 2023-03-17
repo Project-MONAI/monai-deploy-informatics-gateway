@@ -329,63 +329,63 @@
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:49.698463427 Z
 - - :approve
   - Microsoft.EntityFrameworkCore
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:50.137694970 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Abstractions
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:51.008105271 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Analyzers
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:51.445711308 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Design
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:51.922790944 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.InMemory
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:52.375150938 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Relational
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:52.828879230 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:53.270526921 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite.Core
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-16 23:05:53.706997823 Z
 - - :approve
   - Microsoft.Extensions.ApiDescription.Server
@@ -543,7 +543,7 @@
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
     - 6.0.11
-    - 6.0.14
+    - 6.0.15
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.FileProviders.Abstractions
@@ -1152,6 +1152,7 @@
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
     :versions:
     - 6.0.0
+    - 6.0.1
     :when: 2022-08-16 23:06:45.141361948 Z
 - - :approve
   - System.Diagnostics.EventLog
