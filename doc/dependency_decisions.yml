@@ -1142,6 +1142,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
     :versions:
+    - 6.0.0
     - 6.0.1
     :when: 2022-08-16 23:06:45.141361948 Z
 - - :approve
