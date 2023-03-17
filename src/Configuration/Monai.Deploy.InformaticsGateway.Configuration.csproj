@@ -31,8 +31,8 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.3" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.21" />
-    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.13" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.22" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.15" />
     <PackageReference Include="System.IO.Abstractions" Version="17.2.3" />
   </ItemGroup>
 
