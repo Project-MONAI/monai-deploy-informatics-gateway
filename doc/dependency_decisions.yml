@@ -5,6 +5,7 @@
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
     - 3.7.100.25
+    - 3.7.105.20
     :when: 2022-09-01 23:05:22.203089302 Z
 - - :approve
   - AWSSDK.S3
@@ -19,6 +20,7 @@
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
     - 3.7.100.25
+    - 3.7.101.26
     :when: 2022-09-01 23:05:28.920368903 Z
 - - :approve
   - BoDi
@@ -320,6 +322,7 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
     :versions:
     - 17.4.1
+    - 17.5.0
     :when: 2022-08-16 23:05:48.342748414 Z
 - - :approve
   - Microsoft.Data.Sqlite.Core
@@ -690,6 +693,7 @@
     :why: MIT (https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
     :versions:
     - 17.4.1
+    - 17.5.0
     :when: 2022-09-01 23:06:13.008314524 Z
 - - :approve
   - Microsoft.NETCore.Platforms
@@ -740,6 +744,7 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
     :versions:
     - 17.4.1
+    - 17.5.0
     :when: 2022-08-16 23:06:16.175705981 Z
 - - :approve
   - Microsoft.TestPlatform.TestHost
@@ -747,6 +752,7 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
     :versions:
     - 17.4.1
+    - 17.5.0
     :when: 2022-08-16 23:06:17.671459450 Z
 - - :approve
   - Microsoft.Toolkit.HighPerformance
@@ -782,34 +788,35 @@
     :why: Apache-2.0 (https://github.com/minio/minio-dotnet/raw/master/LICENSE)
     :versions:
     - 4.0.6
+    - 4.0.7
     :when: 2022-08-16 23:06:20.598551507 Z
 - - :approve
   - Monai.Deploy.Messaging
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.21
+    - 0.1.22
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.21
+    - 0.1.22
     :when: 2022-08-16 23:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.13
+    - 0.2.15
     :when: 2022-08-16 23:06:21.988183476 Z
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.13
+    - 0.2.15
     :when: 2022-08-16 23:06:22.426838304 Z
 - - :approve
   - Monai.Deploy.Storage.S3Policy
@@ -817,6 +824,7 @@
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
     - 0.2.13
+    - 0.2.15
     :when: 2022-08-16 23:06:22.881956546 Z
 - - :approve
   - Monai.Deploy.Security
@@ -855,6 +863,7 @@
     - 10.0.1
     - 13.0.1
     - 13.0.2
+    - 13.0.3
     :when: 2022-08-16 23:06:26.098713272 Z
 - - :approve
   - Newtonsoft.Json.Bson
