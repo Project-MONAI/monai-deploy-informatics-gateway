@@ -61,6 +61,9 @@ jobs:
           updateAssemblyInfoFilename: src/AssemblyInfo.cs
           configFilePath: .github/.gitversion.yml
 
+      - name: Print AssemblyInfo
+        run: cat src/AssemblyInfo.cs
+
       - name: Upload AssemblyInfo
         uses: actions/upload-artifact@v3.1.2
         if: always()
@@ -344,6 +347,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: assembly-info
+          
+      - name: Print AssemblyInfo
+        run: cat src/AssemblyInfo.cs
 
       - name: Restore dependencies
         run: dotnet restore
