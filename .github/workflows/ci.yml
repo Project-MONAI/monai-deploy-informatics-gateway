@@ -350,9 +350,6 @@ jobs:
           name: assembly-info
           path: src/
           
-      - name: List artifacts
-        run: ls -R ${{steps.download.outputs.download-path}}
-
       - name: Print AssemblyInfo
         run: cat src/AssemblyInfo.cs
 
