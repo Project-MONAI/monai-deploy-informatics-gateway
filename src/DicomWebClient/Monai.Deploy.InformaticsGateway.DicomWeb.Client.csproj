@@ -43,6 +43,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
     <PackageReference Include="fo-dicom" Version="5.0.3" />
     <PackageReference Include="GitVersion.MsBuild" Version="5.12.0">
