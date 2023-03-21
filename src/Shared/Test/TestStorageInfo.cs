@@ -15,7 +15,6 @@
  */
 
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.Messaging;
 
 namespace Monai.Deploy.InformaticsGateway.SharedTest;
 
