@@ -348,9 +348,10 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: assembly-info
+          path: src/
           
       - name: List artifacts
-        run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
+        run: ls -R ${{steps.download.outputs.download-path}}
 
       - name: Print AssemblyInfo
         run: cat src/AssemblyInfo.cs
