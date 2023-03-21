@@ -344,10 +344,14 @@ jobs:
             ${{ runner.os }}-nuget
 
       - name: Download AssemblyInfo.cs
+        id: download
         uses: actions/download-artifact@v3
         with:
           name: assembly-info
           
+      - name: List artifacts
+        run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
+
       - name: Print AssemblyInfo
         run: cat src/AssemblyInfo.cs
 
