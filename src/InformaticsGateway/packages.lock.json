@@ -48,12 +48,6 @@
           "fo-dicom": "5.0.3"
         }
       },
-      "GitVersion.MsBuild": {
-        "type": "Direct",
-        "requested": "[5.12.0, )",
-        "resolved": "5.12.0",
-        "contentHash": "dJuigXycpJNOiLT9or7mkHSkGFHgGW3/p6cNNYEKZBa7Hhp1FdX/cvqYWWYhRLpfoZOedeA7aRbYiOB3vW/dvA=="
-      },
       "HL7-dotnetcore": {
         "type": "Direct",
         "requested": "[2.35.0, )",
