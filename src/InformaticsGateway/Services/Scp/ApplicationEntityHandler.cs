@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal class ApplicationEntityHandler : IDisposable, IApplicationEntityHandler
     {
+        private readonly object _lock = new object();
         private readonly ILogger<ApplicationEntityHandler> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
@@ -66,9 +67,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             Guard.Against.Null(monaiApplicationEntity);
 
-            _configuration = monaiApplicationEntity;
-            _dicomJsonOptions = dicomJsonOptions;
-            _validateDicomValueOnJsonSerialization = validateDicomValuesOnJsonSerialization;
+            if (_configuration is not null &&
+                (_configuration.Name != monaiApplicationEntity.Name ||
+                 _configuration.AeTitle != monaiApplicationEntity.AeTitle))
+            {
+                throw new InvalidOperationException("Cannot update existing Application Entity Handler with different AE Title");
+            }
+
+            lock (_lock)
+            {
+                _configuration = monaiApplicationEntity;
+                _dicomJsonOptions = dicomJsonOptions;
+                _validateDicomValueOnJsonSerialization = validateDicomValuesOnJsonSerialization;
+            }
         }
 
         public async Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)

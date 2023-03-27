@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -184,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #region Create
 
-        [Fact(DisplayName = "Create - Shall return Conflict if entity already exists")]
+        [RetryFact(DisplayName = "Create - Shall return Conflict if entity already exists")]
         public async Task Create_ShallReturnConflictIfIEntityAlreadyExists()
         {
             _repository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
@@ -230,7 +230,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
-        [RetryFact(DisplayName = "Create - Shall return BadRequest when both allowed & ignored SOP classes are defined")]
+        [Fact(DisplayName = "Create - Shall return BadRequest when both allowed & ignored SOP classes are defined")]
         public async Task Create_ShallReturnBadRequestWhenBothAllowedAndIgnoredSopsAreDefined()
         {
             _repository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
@@ -300,11 +300,185 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             Assert.IsType<CreatedAtActionResult>(result.Result);
 
-            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == monaiAeTitle)), Times.Once());
+            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == monaiAeTitle && x.Event == ChangedEventType.Added)), Times.Once());
             _repository.Verify(p => p.AddAsync(It.Is<MonaiApplicationEntity>(p => p.CreatedBy == TestUsername), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         #endregion Create
+
+        #region Update
+        [RetryFact(DisplayName = "Update - Shall return updated")]
+        public async Task Update_ReturnsUpdated()
+        {
+            var entity = new MonaiApplicationEntity
+            {
+                AeTitle = "AET",
+                Name = "AET",
+                Grouping = "0020,000E",
+                Timeout = 100,
+                Workflows = new List<string> { "1", "2", "3" },
+                AllowedSopClasses = new List<string> { "1.2.3" },
+                IgnoredSopClasses = new List<string> { "a.b.c" },
+            };
+
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.UpdateAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()));
+
+            var result = await _controller.Edit(entity);
+            var okResult = result.Result as OkObjectResult;
+            Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+            var updatedEntity = okResult.Value as MonaiApplicationEntity;
+
+            Assert.Equal(entity.AeTitle, updatedEntity.AeTitle);
+            Assert.Equal(entity.Name, updatedEntity.Name);
+            Assert.Equal(entity.Grouping, updatedEntity.Grouping);
+            Assert.Equal(entity.Timeout, updatedEntity.Timeout);
+            Assert.Equal(entity.Workflows, updatedEntity.Workflows);
+            Assert.Equal(entity.AllowedSopClasses, updatedEntity.AllowedSopClasses);
+            Assert.Equal(entity.IgnoredSopClasses, updatedEntity.IgnoredSopClasses);
+            Assert.NotNull(updatedEntity.DateTimeUpdated);
+            Assert.Equal(TestUsername, updatedEntity.UpdatedBy);
+
+            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == updatedEntity && x.Event == ChangedEventType.Updated)), Times.Once());
+            _repository.Verify(p => p.FindByNameAsync(entity.Name, It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.UpdateAsync(entity, It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [RetryFact(DisplayName = "Update - Shall return updated without updating AE Title")]
+        public async Task Update_ReturnsUpdated_WithoutUpdatingAET()
+        {
+            var originalEntity = new MonaiApplicationEntity
+            {
+                AeTitle = "AET",
+                Name = "AET",
+                Grouping = "0020,000E",
+                Timeout = 100,
+                Workflows = new List<string> { "1", "2", "3" },
+                AllowedSopClasses = new List<string> { "1.2.3" },
+                IgnoredSopClasses = new List<string> { "a.b.c" },
+            };
+
+            var entity = new MonaiApplicationEntity
+            {
+                AeTitle = "SHOUD-NOT-CHANGE",
+                Name = "AET",
+                Grouping = "0020,000D",
+                Timeout = 10,
+                Workflows = new List<string> { "1", "2" },
+                AllowedSopClasses = new List<string> { "1.2" },
+                IgnoredSopClasses = new List<string> { "a.b" },
+            };
+
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(originalEntity));
+            _repository.Setup(p => p.UpdateAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()));
+
+            var result = await _controller.Edit(entity);
+            var okResult = result.Result as OkObjectResult;
+            Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
+            var updatedEntity = okResult.Value as MonaiApplicationEntity;
+
+            Assert.NotEqual(entity.AeTitle, updatedEntity.AeTitle);
+            Assert.Equal(originalEntity.AeTitle, updatedEntity.AeTitle);
+            Assert.Equal(entity.Name, updatedEntity.Name);
+            Assert.Equal(entity.Grouping, updatedEntity.Grouping);
+            Assert.Equal(entity.Timeout, updatedEntity.Timeout);
+            Assert.Equal(entity.Workflows, updatedEntity.Workflows);
+            Assert.Equal(entity.AllowedSopClasses, updatedEntity.AllowedSopClasses);
+            Assert.Equal(entity.IgnoredSopClasses, updatedEntity.IgnoredSopClasses);
+            Assert.NotNull(updatedEntity.DateTimeUpdated);
+            Assert.Equal(TestUsername, updatedEntity.UpdatedBy);
+
+            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == updatedEntity && x.Event == ChangedEventType.Updated)), Times.Once());
+            _repository.Verify(p => p.FindByNameAsync(entity.Name, It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.UpdateAsync(updatedEntity, It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return 404 if input is null")]
+        public async Task Update_Returns404IfInputIsNull()
+        {
+            var result = await _controller.Edit(null);
+
+            Assert.IsType<NotFoundResult>(result.Result);
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return 404 if not found")]
+        public async Task Update_Returns404IfNotFound()
+        {
+            var entity = new MonaiApplicationEntity
+            {
+                AeTitle = "AET",
+                Name = "AET",
+                Grouping = "ABC",
+                Timeout = 100,
+                Workflows = new List<string> { "1", "2", "3" },
+                AllowedSopClasses = new List<string> { "1.2.3" },
+                IgnoredSopClasses = new List<string> { "a.b.c" },
+            };
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(MonaiApplicationEntity)));
+
+            var result = await _controller.Edit(entity);
+
+            Assert.IsType<NotFoundResult>(result.Result);
+            _repository.Verify(p => p.FindByNameAsync(entity.Name, It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return problem on failure")]
+        public async Task Update_ShallReturnProblemOnFailure()
+        {
+            var value = "AET";
+            var entity = new MonaiApplicationEntity
+            {
+                AeTitle = value,
+                Name = "AET",
+                Grouping = "0020,000E",
+                Timeout = 100,
+                Workflows = new List<string> { "1", "2", "3" },
+                AllowedSopClasses = new List<string> { "1.2.3" },
+                IgnoredSopClasses = new List<string> { "a.b.c" },
+            };
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
+            _repository.Setup(p => p.UpdateAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
+
+            var result = await _controller.Edit(entity);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Error updating MONAI Application Entity.", problem.Title);
+            Assert.Equal("error", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
+            _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "Update - Shall return problem on validation failure")]
+        public async Task Update_ShallReturnBadRequestWithBadAeTitle()
+        {
+            var aeTitle = "TOOOOOOOOOOOOOOOOOOOOOOOLONG";
+            var entity = new MonaiApplicationEntity
+            {
+                AeTitle = aeTitle,
+                Name = "AET",
+                Grouping = "0020,000E",
+                Timeout = 100,
+                Workflows = new List<string> { "1", "2", "3" },
+                AllowedSopClasses = new List<string> { "1.2.3" },
+                IgnoredSopClasses = new List<string> { "a.b.c" },
+            };
+
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
+            var result = await _controller.Edit(entity);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Validation error.", problem.Title);
+            Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: MonaiApplicationEntity).", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
+        }
+
+        #endregion Update
 
         #region Delete
 
@@ -326,6 +500,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var response = okObjectResult.Value as MonaiApplicationEntity;
             Assert.NotNull(response);
             Assert.Equal(value, response.AeTitle);
+
+            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == response && x.Event == ChangedEventType.Deleted)), Times.Once());
             _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
             _repository.Verify(p => p.RemoveAsync(entity, It.IsAny<CancellationToken>()), Times.Once());
         }

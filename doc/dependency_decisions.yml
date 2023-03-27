@@ -2401,21 +2401,21 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
     :versions:
-    - 2.19.0
+    - 2.19.1
     :when: 2022-11-16 23:38:53.891380809 Z
 - - :approve
   - MongoDB.Driver
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
     :versions:
-    - 2.19.0
+    - 2.19.1
     :when: 2022-11-16 23:38:54.213853364 Z
 - - :approve
   - MongoDB.Driver.Core
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
     :versions:
-    - 2.19.0
+    - 2.19.1
     :when: 2022-11-16 23:38:54.553730219 Z
 - - :approve
   - MongoDB.Libmongocrypt
