@@ -440,6 +440,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy
   fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy
   nameWithType: MonaiApplicationEntity.CreatedBy
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated
+  name: DateTimeUpdated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_DateTimeUpdated
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated
+  nameWithType: MonaiApplicationEntity.DateTimeUpdated
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated*
+  name: DateTimeUpdated
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_DateTimeUpdated_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated
+  nameWithType: MonaiApplicationEntity.DateTimeUpdated
 - uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Grouping
   name: Grouping
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Grouping
@@ -476,12 +488,12 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Name
   fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Name
   nameWithType: MonaiApplicationEntity.Name
-- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal)
-  name: SetAuthor(ClaimsPrincipal)
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetAuthor_System_Security_Claims_ClaimsPrincipal_
-  commentId: M:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal)
-  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal)
-  nameWithType: MonaiApplicationEntity.SetAuthor(ClaimsPrincipal)
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal,Monai.Deploy.InformaticsGateway.Api.EditMode)
+  name: SetAuthor(ClaimsPrincipal, EditMode)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetAuthor_System_Security_Claims_ClaimsPrincipal_Monai_Deploy_InformaticsGateway_Api_EditMode_
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal,Monai.Deploy.InformaticsGateway.Api.EditMode)
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal, Monai.Deploy.InformaticsGateway.Api.EditMode)
+  nameWithType: MonaiApplicationEntity.SetAuthor(ClaimsPrincipal, EditMode)
 - uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor*
   name: SetAuthor
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetAuthor_
@@ -524,6 +536,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString
   fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString
   nameWithType: MonaiApplicationEntity.ToString
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy
+  name: UpdatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_UpdatedBy
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy
+  nameWithType: MonaiApplicationEntity.UpdatedBy
+- uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy*
+  name: UpdatedBy
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_UpdatedBy_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy
+  fullName: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy
+  nameWithType: MonaiApplicationEntity.UpdatedBy
 - uid: Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Workflows
   name: Workflows
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Workflows
@@ -2876,6 +2900,30 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Files
   fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Files
   nameWithType: Payload.Files
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload
+  name: FilesFailedToUpload
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesFailedToUpload
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload
+  nameWithType: Payload.FilesFailedToUpload
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload*
+  name: FilesFailedToUpload
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesFailedToUpload_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload
+  nameWithType: Payload.FilesFailedToUpload
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded
+  name: FilesUploaded
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesUploaded
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded
+  nameWithType: Payload.FilesUploaded
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded*
+  name: FilesUploaded
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesUploaded_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded
+  nameWithType: Payload.FilesUploaded
 - uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.HasTimedOut
   name: HasTimedOut
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload_HasTimedOut
