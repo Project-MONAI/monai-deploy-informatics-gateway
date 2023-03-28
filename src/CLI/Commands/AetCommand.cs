@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             AddAlias("aetitle");
 
             SetupAddAetCommand();
+            SetupEditAetCommand();
             SetupRemoveAetCommand();
             SetupListAetCommand();
         }
@@ -98,6 +99,39 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.AddOption(allowedSopsOption);
 
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(AddAeTitlehandlerAsync);
+        }
+
+        private void SetupEditAetCommand()
+        {
+            var addCommand = new Command("update", "Update a SCP Application Entities");
+            AddCommand(addCommand);
+
+            var nameOption = new Option<string>(new string[] { "-n", "--name" }, "Name of the SCP Application Entity") { IsRequired = false };
+            addCommand.AddOption(nameOption);
+            var groupingOption = new Option<string>(new string[] { "-g", "--grouping" }, getDefaultValue: () => "0020,000D", "DICOM tag used to group instances") { IsRequired = false };
+            addCommand.AddOption(groupingOption);
+            var timeoutOption = new Option<uint>(new string[] { "-t", "--timeout" }, getDefaultValue: () => 5, "Timeout, in seconds, to wait for instances") { IsRequired = false };
+            addCommand.AddOption(timeoutOption);
+            var workflowsOption = new Option<List<string>>(new string[] { "-w", "--workflows" }, description: "A space separated list of workflow names or IDs to be associated with the SCP AE Title")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+            };
+            addCommand.AddOption(workflowsOption);
+            var ignoredSopsOption = new Option<List<string>>(new string[] { "-i", "--ignored-sop-classes" }, description: "A space separated list of SOP Class UIDs to be ignored")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+            };
+            addCommand.AddOption(ignoredSopsOption);
+            var allowedSopsOption = new Option<List<string>>(new string[] { "-s", "--allowed-sop-classes" }, description: "A space separated list of SOP Class UIDs to be accepted")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+            };
+            addCommand.AddOption(allowedSopsOption);
+
+            addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(EditAeTitleHandlerAsync);
         }
 
         private async Task<int> ListAeTitlehandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
@@ -253,6 +287,59 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 logger.MonaiAeCreateCritical(entity.AeTitle, ex.Message);
                 return ExitCodes.MonaiScp_ErrorCreate;
+            }
+            return ExitCodes.Success;
+        }
+
+        private async Task<int> EditAeTitleHandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(entity);
+            Guard.Against.Null(host);
+
+            LogVerbose(verbose, host, "Configuring services...");
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
+            var logger = CreateLogger<DestinationCommand>(host);
+
+            Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
+
+            try
+            {
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Updating SCP AE Title {entity.AeTitle}...");
+                var result = await client.MonaiScpAeTitle.Update(entity, cancellationToken).ConfigureAwait(false);
+
+                logger.MonaiAeTitleUpdated(result.Name, result.AeTitle, result.Grouping, result.Timeout);
+                if (result.Workflows.Any())
+                {
+                    logger.MonaiAeWorkflows(string.Join(',', result.Workflows));
+                    logger.WorkflowWarning();
+                }
+                if (result.IgnoredSopClasses.Any())
+                {
+                    logger.MonaiAeIgnoredSops(string.Join(',', result.IgnoredSopClasses));
+                    logger.IgnoredSopClassesWarning();
+                }
+                if (result.AllowedSopClasses.Any())
+                {
+                    logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
+                    logger.AcceptedSopClassesWarning();
+                }
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.ConfigurationException(ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
+            catch (Exception ex)
+            {
+                logger.ErrorUpdatingMonaiApplicationEntity(entity.AeTitle, ex.Message);
+                return ExitCodes.MonaiScp_ErrorUpdate;
             }
             return ExitCodes.Success;
         }

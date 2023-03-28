@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -95,6 +96,16 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// </summary>
         public string? CreatedBy { get; set; }
 
+        /// <summary>
+        /// Gets or set the most recent user who updated the DICOM entity.
+        /// </summary>
+        public string? UpdatedBy { get; set; }
+
+        /// <summary>
+        /// Gets or set the most recent date time the DICOM entity was updated.
+        /// </summary>
+        public DateTime? DateTimeUpdated { get; set; }
+
         public MonaiApplicationEntity()
         {
             SetDefaultValues();
@@ -124,9 +135,21 @@ namespace Monai.Deploy.InformaticsGateway.Api
             return $"Name: {Name}/AET: {AeTitle}";
         }
 
-        public void SetAuthor(ClaimsPrincipal user)
+        public void SetAuthor(ClaimsPrincipal user, EditMode editMode)
         {
-            CreatedBy = user.Identity?.Name;
+            if (editMode == EditMode.Update)
+            {
+                DateTimeUpdated = DateTime.UtcNow;
+            }
+
+            if (editMode == EditMode.Create)
+            {
+                CreatedBy = user.Identity?.Name;
+            }
+            else if (editMode == EditMode.Update)
+            {
+                UpdatedBy = user.Identity?.Name;
+            }
         }
     }
 }

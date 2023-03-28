@@ -57,7 +57,20 @@ jobs:
         uses: gittools/actions/gitversion/execute@v0.10.2
         with:
           useConfigFile: true
+          updateAssemblyInfo: true
+          updateAssemblyInfoFilename: src/AssemblyInfo.cs
           configFilePath: .github/.gitversion.yml
+
+      - name: Print AssemblyInfo
+        run: cat src/AssemblyInfo.cs
+
+      - name: Upload AssemblyInfo
+        uses: actions/upload-artifact@v3.1.2
+        if: always()
+        with:
+          name: assembly-info
+          path: src/AssemblyInfo.cs
+          retention-days: 30
 
   CodeQL-Analyze:
     runs-on: ubuntu-latest
@@ -329,6 +342,16 @@ jobs:
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
           restore-keys: |
             ${{ runner.os }}-nuget
+
+      - name: Download AssemblyInfo.cs
+        id: download
+        uses: actions/download-artifact@v3
+        with:
+          name: assembly-info
+          path: src/
+          
+      - name: Print AssemblyInfo
+        run: cat src/AssemblyInfo.cs
 
       - name: Restore dependencies
         run: dotnet restore

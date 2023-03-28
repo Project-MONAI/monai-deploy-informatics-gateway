@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -180,6 +180,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         [LoggerMessage(EventId = 30059, Level = LogLevel.Critical, Message = "Error updating DICOM source {aeTitle}: {message}")]
         public static partial void ErrorUpdatingDicomSource(this ILogger logger, string aeTitle, string message);
+
+        [LoggerMessage(EventId = 30060, Level = LogLevel.Information, Message = "MONAI Deploy SCP Application Entity updated:\r\n\tName:     {name}\r\n\tAE Title:     {aeTitle}\r\n\tGrouping:     {grouping}\r\n\tTimeout:     {timeout}")]
+        public static partial void MonaiAeTitleUpdated(this ILogger logger, string name, string aeTitle, string grouping, uint timeout);
+
+        [LoggerMessage(EventId = 30061, Level = LogLevel.Critical, Message = "Error updating SCP Application Entity {aeTitle}: {message}")]
+        public static partial void ErrorUpdatingMonaiApplicationEntity(this ILogger logger, string aeTitle, string message);
 
         // Docker Runner
         [LoggerMessage(EventId = 31000, Level = LogLevel.Debug, Message = "Checking for existing {applicationName} ({version}) containers...")]
