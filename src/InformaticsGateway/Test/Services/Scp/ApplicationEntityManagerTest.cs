@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -238,8 +238,44 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 {
                     AeTitle = "AE1",
                     Name = "AE1"
+                }, ChangedEventType.Updated));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+
+            _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
+                new MonaiApplicationEntity
+                {
+                    AeTitle = "AE1",
+                    Name = "AE1"
                 }, ChangedEventType.Deleted));
             Assert.False(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+        }
+
+        [RetryFact(5, 250, DisplayName = "Shall prevent AE update when AE Title do not match")]
+        public async Task ShallPreventAEUpdateWHenAETDoNotMatchAsync()
+        {
+            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
+            var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
+                                                       _serviceScopeFactory.Object,
+                                                       _monaiAeChangedNotificationService,
+                                                       _connfiguration);
+
+            _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
+                new MonaiApplicationEntity
+                {
+                    AeTitle = "AE1",
+                    Name = "AE1"
+                }, ChangedEventType.Added));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+
+            _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
+                new MonaiApplicationEntity
+                {
+                    AeTitle = "AE2",
+                    Name = "AE1"
+                }, ChangedEventType.Updated));
+
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+            Assert.False(await manager.IsAeTitleConfiguredAsync("AE2").ConfigureAwait(false));
         }
 
         [RetryFact(5, 250, DisplayName = "Shall handle CS Store Request")]

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -330,6 +330,89 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLogging("No MONAI SCP Application Entities configured.", LogLevel.Warning, Times.Once());
+        }
+
+        [Fact(DisplayName = "aet update command")]
+        public async Task AetUpdate_Command()
+        {
+            var command = "aet update -n MyName --workflows App MyCoolApp TheApp -i A B C -s D E F";
+            var result = _paser.Parse(command);
+            Assert.Equal(ExitCodes.Success, result.Errors.Count);
+
+            var entity = new MonaiApplicationEntity()
+            {
+                Name = result.CommandResult.Children[0].Tokens[0].Value,
+                AeTitle = "MyAET",
+                Workflows = result.CommandResult.Children[1].Tokens.Select(p => p.Value).ToList(),
+                IgnoredSopClasses = result.CommandResult.Children[2].Tokens.Select(p => p.Value).ToList(),
+                AllowedSopClasses = result.CommandResult.Children[3].Tokens.Select(p => p.Value).ToList(),
+            };
+
+            Assert.Equal("MyName", entity.Name);
+            Assert.Equal("MyAET", entity.AeTitle);
+            Assert.Collection(entity.Workflows,
+                item => item.Equals("App"),
+                item => item.Equals("MyCoolApp"),
+                item => item.Equals("TheApp"));
+            Assert.Collection(entity.AllowedSopClasses,
+                item => item.Equals("D"),
+                item => item.Equals("E"),
+                item => item.Equals("F"));
+            Assert.Collection(entity.IgnoredSopClasses,
+                item => item.Equals("A"),
+                item => item.Equals("B"),
+                item => item.Equals("C"));
+
+            _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Update(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(entity);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(
+                p => p.MonaiScpAeTitle.Update(
+                    It.Is<MonaiApplicationEntity>(o => o.Name == entity.Name &&
+                                                       o.Timeout == entity.Timeout &&
+                                                       o.Grouping == entity.Grouping &&
+                                                       Enumerable.SequenceEqual(o.Workflows, entity.Workflows) &&
+                                                       Enumerable.SequenceEqual(o.AllowedSopClasses, entity.AllowedSopClasses) &&
+                                                       Enumerable.SequenceEqual(o.IgnoredSopClasses, entity.IgnoredSopClasses)),
+                    It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "aet update command exception")]
+        public async Task AetUpdate_Command_Exception()
+        {
+            var command = "aet update -n MyName --workflows App MyCoolApp TheApp -i A B C -s D E F";
+            _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Update(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()))
+                .Throws(new Exception("error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.MonaiScp_ErrorUpdate, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.Update(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
+
+            _logger.VerifyLoggingMessageBeginsWith("Error updating SCP Application Entity", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "aet update command configuration exception")]
+        public async Task AetUpdate_Command_ConfigurationException()
+        {
+            var command = "aet update -n MyName --workflows App MyCoolApp TheApp -i A B C -s D E F";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
     }
 }

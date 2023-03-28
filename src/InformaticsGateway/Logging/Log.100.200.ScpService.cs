@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,9 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 112, Level = LogLevel.Information, Message = "Notifying {count} observers of MONAI Application Entity {eventType}.")]
         public static partial void NotifyAeChanged(this ILogger logger, int count, ChangedEventType eventType);
+
+        [LoggerMessage(EventId = 113, Level = LogLevel.Error, Message = "Failed to update Application Entity Handler with updated AE Title {aeTitle}.")]
+        public static partial void FailedToUpdateAppliationEntityHandlerWithUpdatedAEChange(this ILogger logger, string aeTitle, Exception ex = null);
 
         // SCP Service
         [LoggerMessage(EventId = 200, Level = LogLevel.Information, Message = "Initializing SCP Service at port {port}...")]

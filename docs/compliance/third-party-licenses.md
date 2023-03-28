@@ -8672,14 +8672,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>MongoDB.Bson 2.19.0</summary>
+<summary>MongoDB.Bson 2.19.1</summary>
 
 ## MongoDB.Bson
 
-- Version: 2.19.0
+- Version: 2.19.1
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Bson/2.19.0)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Bson/2.19.1)
 - License: [Apache-2.0](https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
 
 
@@ -8704,14 +8704,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>MongoDB.Driver 2.19.0</summary>
+<summary>MongoDB.Driver 2.19.1</summary>
 
 ## MongoDB.Driver
 
-- Version: 2.19.0
+- Version: 2.19.1
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver/2.19.0)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver/2.19.1)
 - License: [Apache-2.0](https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
 
 
@@ -8736,14 +8736,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>MongoDB.Driver.Core 2.19.0</summary>
+<summary>MongoDB.Driver.Core 2.19.1</summary>
 
 ## MongoDB.Driver.Core
 
-- Version: 2.19.0
+- Version: 2.19.1
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver.Core/2.19.0)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver.Core/2.19.1)
 - License: [Apache-2.0](https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
 
 

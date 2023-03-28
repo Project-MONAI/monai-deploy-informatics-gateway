@@ -28,6 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public const int MonaiScp_ErrorList = 200;
         public const int MonaiScp_ErrorDelete = 201;
         public const int MonaiScp_ErrorCreate = 202;
+        public const int MonaiScp_ErrorUpdate = 203;
 
         public const int DestinationAe_ErrorList = 300;
         public const int DestinationAe_ErrorDelete = 301;

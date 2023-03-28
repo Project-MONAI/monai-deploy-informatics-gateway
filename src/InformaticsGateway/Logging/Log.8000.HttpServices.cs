@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,10 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8004, Level = LogLevel.Information, Message = "MONAI SCP Application Entity deleted {name}.")]
         public static partial void MonaiApplicationEntityDeleted(this ILogger logger, string name);
+
+        [LoggerMessage(EventId = 8005, Level = LogLevel.Information, Message = "MONAI SCP AE Title {name} updated AE Title={aeTitle}.")]
+        public static partial void MonaiApplicationEntityUpdated(this ILogger logger, string name, string aeTitle);
+
 
         // Destination AE Title Controller
         [LoggerMessage(EventId = 8010, Level = LogLevel.Information, Message = "DICOM destination added AE Title={aeTitle}, Host/IP={hostIp}.")]

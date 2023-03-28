@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 
@@ -10,9 +11,10 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    partial class InformaticsGatewayContextModelSnapshot : ModelSnapshot
+    [Migration("20230327190827_R3_0.3.15")]
+    partial class R3_0315
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.15");
