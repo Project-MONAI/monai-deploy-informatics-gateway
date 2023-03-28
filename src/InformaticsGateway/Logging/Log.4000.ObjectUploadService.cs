@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 4004, Level = LogLevel.Debug, Message = "Error removing objects that are pending upload during startup.")]
         public static partial void ErrorRemovingPendingUploadObjects(this ILogger logger, Exception ex);
 
-        [LoggerMessage(EventId = 4005, Level = LogLevel.Debug, Message = "Error uploading temporary store. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
+        [LoggerMessage(EventId = 4005, Level = LogLevel.Error, Message = "Error uploading temporary store. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
         public static partial void ErrorUploadingFileToTemporaryStore(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
 
         [LoggerMessage(EventId = 4006, Level = LogLevel.Information, Message = "File uploaded to temporary store at {filePath}.")]

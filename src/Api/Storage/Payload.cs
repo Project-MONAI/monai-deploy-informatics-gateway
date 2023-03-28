@@ -75,6 +75,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public string? CalledAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
 
+        public int FilesUploaded { get => Files.Count(p => p.IsUploaded); }
+        public int FilesFailedToUpload { get => Files.Count(p => p.IsUploadFailed); }
+
         public Payload(string key, string correlationId, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key);

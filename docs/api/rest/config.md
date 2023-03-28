@@ -168,6 +168,65 @@ curl --location --request POST 'http://localhost:5000/config/ae/' \
 
 ---
 
+## PUT /config/ae
+
+Updates an existing MONAI SCP Application Entity.
+
+> [!Note]
+> The MONAI SCP AE Title cannot be changed.
+
+> [!Note]
+> The DICOM tag used for `grouping` can be either a Study Instance UID (0020,000D) or Series Instance UID (0020,000E).
+> The default is set to a Study Instance UID (0020,000D) if not specified.
+
+> [!Note]
+> `timeout` is the number of seconds the AE Title will wait between each instance before assembling a payload and publishing
+> a workflow request. We recommend calculating this value based on the network speed and the maximum size of each
+> DICOM instance.
+
+### Parameters
+
+See the [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity)
+class definition for details.
+
+### Responses
+
+Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
+
+| Code | Description                                                                                                                                 |
+| ---- | ------------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Title updated successfully.                                                                                                              |
+| 400  | Validation error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+| 404  | Named MONAI AE not found.                                                                                                                      |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details.     |
+
+### Example Request
+
+```bash
+curl --location --request PUT 'http://localhost:5000/config/ae/' \
+    --header 'Content-Type: application/json' \
+    --data-raw '{
+            "name": "breast-tumor",
+            "timeout": 3,
+            "workflows": [
+                "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
+            ]
+        }
+    }'
+```
+
+### Example Response
+
+```json
+{
+  "name": "breast-tumor",
+  "aeTitle": "BREASTV1",
+  "workflows": ["3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"],
+  "timeout": 3
+}
+```
+
+---
 ## DELETE /config/ae/{name}
 
 Deletes the specified MONAI SCP Application Entity.

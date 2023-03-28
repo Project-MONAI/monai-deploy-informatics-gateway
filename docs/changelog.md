@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -16,6 +16,19 @@
 
 
 # Changelog
+
+## 0.3.15
+
+[GitHub Milestone 0.3.15](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/20)
+
+- New APIs for managing SCP AE Titles
+  - `PUT /config/ae`: [Update SCP AE TItle](./api/rest/config.md#put-configae)
+
+## 0.3.14
+
+[GitHub Milestone 0.3.14](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/19)
+
+- Fixes RabbitMQ startup issues.
 
 ## 0.3.13
 

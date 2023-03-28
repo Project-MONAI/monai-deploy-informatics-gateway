@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,10 +104,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
-                await ValidateAsync(item).ConfigureAwait(false);
+                await ValidateCreateAsync(item).ConfigureAwait(false);
 
                 item.SetDefaultValues();
-                item.SetAuthor(User);
+                item.SetAuthor(User, EditMode.Create);
 
                 await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
                 _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(item, ChangedEventType.Added));
@@ -126,6 +126,53 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 _logger.ErrorAddingMonaiApplicationEntity(ex);
                 return Problem(title: "Error adding new MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+            }
+        }
+
+        [HttpPut]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<MonaiApplicationEntity>> Edit(MonaiApplicationEntity item)
+        {
+            try
+            {
+                if (item is null)
+                {
+                    return NotFound();
+                }
+
+                var applicationEntity = await _repository.FindByNameAsync(item.Name, HttpContext.RequestAborted).ConfigureAwait(false);
+                if (applicationEntity is null)
+                {
+                    return NotFound();
+                }
+
+                item.SetDefaultValues();
+
+                applicationEntity.AllowedSopClasses = item.AllowedSopClasses;
+                applicationEntity.Grouping = item.Grouping;
+                applicationEntity.Timeout = item.Timeout;
+                applicationEntity.IgnoredSopClasses = item.IgnoredSopClasses ?? new List<string>();
+                applicationEntity.Workflows = item.Workflows ?? new List<string>();
+                applicationEntity.SetAuthor(User, EditMode.Update);
+
+                await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
+
+                _ = _repository.UpdateAsync(applicationEntity, HttpContext.RequestAborted);
+                _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(applicationEntity, ChangedEventType.Updated));
+                _logger.MonaiApplicationEntityUpdated(item.Name, item.AeTitle);
+                return Ok(applicationEntity);
+            }
+            catch (ConfigurationException ex)
+            {
+                return Problem(title: "Validation error.", statusCode: (int)System.Net.HttpStatusCode.BadRequest, detail: ex.Message);
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorDeletingMonaiApplicationEntity(ex);
+                return Problem(title: "Error updating MONAI Application Entity.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
@@ -157,7 +204,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private async Task ValidateAsync(MonaiApplicationEntity item)
+        private async Task ValidateCreateAsync(MonaiApplicationEntity item)
         {
             Guard.Against.Null(item);
 
@@ -172,6 +219,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             if (item.IgnoredSopClasses.Any() && item.AllowedSopClasses.Any())
             {
                 throw new ConfigurationException($"Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.");
+            }
+            if (!item.IsValid(out var validationErrors))
+            {
+                throw new ConfigurationException(string.Join(Environment.NewLine, validationErrors));
+            }
+        }
+
+        private async Task ValidateUpdateAsync(MonaiApplicationEntity item)
+        {
+            if (await _repository.ContainsAsync(p => !p.Name.Equals(item.Name) && p.AeTitle.Equals(item.AeTitle), HttpContext.RequestAborted).ConfigureAwait(false))
+            {
+                throw new ObjectExistsException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
             }
             if (!item.IsValid(out var validationErrors))
             {

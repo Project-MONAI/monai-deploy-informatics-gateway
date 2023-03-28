@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public static bool IsUploadCompletedWithFailures(this Payload payload)
         {
-            return payload.Files.Count(p => p.IsUploadFailed) + payload.Files.Count(p => p.IsUploaded) == payload.Count; ;
+            return (payload.FilesFailedToUpload + payload.FilesUploaded) == payload.Count; ;
         }
 
         public static bool IsMoveCompleted(this Payload payload)
