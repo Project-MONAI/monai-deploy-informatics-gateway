@@ -26,6 +26,10 @@
     <Compile Include="..\..\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Client.Common\Monai.Deploy.InformaticsGateway.Client.Common.csproj" />
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
   </ItemGroup>

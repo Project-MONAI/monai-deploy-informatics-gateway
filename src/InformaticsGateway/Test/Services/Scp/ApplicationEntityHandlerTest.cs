@@ -222,6 +222,33 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Throws<InvalidOperationException>(() => handler.Configure(newAet, Configuration.DicomJsonOptions.Complete, true));
         }
 
+        [RetryFact(5, 250)]
+        public void GivenAConfiguredAETitle_WhenConfiguringAgainWithDifferentAETitle_ExpectAnExceptionToBeThrown()
+        {
+            var aet = new MonaiApplicationEntity()
+            {
+                AeTitle = "TESTAET",
+                Name = "TESTAET",
+                Workflows = new List<string>() { "AppA", "AppB", Guid.NewGuid().ToString() }
+            };
+
+            var newAet = new MonaiApplicationEntity()
+            {
+                AeTitle = "TESTAET",
+                Name = "TESTAET",
+                Workflows = new List<string>() { "AppA", "AppB", Guid.NewGuid().ToString() }
+            };
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
+
+            newAet.AeTitle = "NewAETitle";
+            Assert.Throws<InvalidOperationException>(() => handler.Configure(newAet, Configuration.DicomJsonOptions.Complete, true));
+
+            newAet.AeTitle = "TESTAET";
+            newAet.Name = "NewName";
+            Assert.Throws<InvalidOperationException>(() => handler.Configure(newAet, Configuration.DicomJsonOptions.Complete, true));
+        }
+
         private static DicomCStoreRequest GenerateRequest()
         {
             var dataset = new DicomDataset

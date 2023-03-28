@@ -312,7 +312,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #endregion Create
 
         #region Update
-
         [RetryFact(DisplayName = "Update - Shall return updated")]
         public async Task Update_ReturnsUpdated()
         {
