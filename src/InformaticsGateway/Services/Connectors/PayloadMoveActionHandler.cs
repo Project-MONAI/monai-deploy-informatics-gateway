@@ -185,7 +185,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
                 await VerifyFileExists(payloadId, file, cancellationToken).ConfigureAwait(false);
             }
-            catch (StorageObjectNotFoundException ex) when (ex.Message.Contains("Not found", StringComparison.OrdinalIgnoreCase)) // TODO: StorageLib shall not throw any errors from MINIO
+            catch (StorageServiceException ex) when (ex.Message.Contains("Not found", StringComparison.OrdinalIgnoreCase)) // TODO: StorageLib shall not throw any errors from MINIO
             {
                 // when file cannot be found on the Storage Service, we assume file has been moved previously by verifying the file exists on destination.
                 _logger.FileMissingInPayload(payloadId, file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), ex);
