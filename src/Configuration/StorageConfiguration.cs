@@ -103,5 +103,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// </summary>
         [ConfigurationKeyName("concurrentUploads")]
         public int ConcurrentUploads { get; set; } = 2;
+
+        /// <summary>
+        /// Gets or set the timeout value, in milliseconds, for calls made to the storage service. Default is 5000;
+        /// This applies to the following calls: ListObjectsAsync, VerifyObjectsExistAsync, VerifyObjectExistsAsync, ListObjectsWithCredentialsAsync.
+        /// </summary>
+        [ConfigurationKeyName("storageServiceListTimeout")]
+        public int StorageServiceListTimeout { get; set; } = 5000;
     }
 }

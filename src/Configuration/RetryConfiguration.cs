@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Default is 250, 500, 1000.
         /// </summary>
         [ConfigurationKeyName("delays")]
-        public int[] DelaysMilliseconds { get; set; } = new[] { 250, 500, 1000 };
+        public int[] DelaysMilliseconds { get; set; } = new[] { 750, 1200, 2500 };
 
         // Gets the delays in TimeSpan objects
         public IEnumerable<TimeSpan> RetryDelays
