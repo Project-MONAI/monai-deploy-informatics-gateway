@@ -17,6 +17,12 @@
 
 # Changelog
 
+## 0.3.16
+
+[GitHub Milestone 0.3.16](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/21)
+
+- gh-347 Set time limit when calling Storage List/Verify APIs
+
 ## 0.3.15
 
 [GitHub Milestone 0.3.15](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/20)
@@ -45,18 +51,6 @@
 ## 0.3.11
 
 [GitHub Milestone 0.3.11](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/16)
-
-- Adds exception handling for unavailable previously created dead-letter queues
-
-## 0.3.10
-
-[GitHub Milestone 0.3.10](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/15)
-
-- Fixes payload assembler not respecting user configured timeout window
-
-## 0.3.8
-
-[GitHub Milestone 0.3.8](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/16)
 
 - Adds exception handling for unavailable previously created dead-letter queues
 
