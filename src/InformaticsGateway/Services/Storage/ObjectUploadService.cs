@@ -66,21 +66,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             _storageService = _scope.ServiceProvider.GetService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
         }
 
-        private void BackgroundProcessing(CancellationToken cancellationToken)
+        private void BackgroundProcessingAsync(CancellationToken cancellationToken)
         {
             _logger.ServiceRunning(ServiceName);
             var tasks = new List<Task>();
             try
             {
+                _logger.InitializeThreads(_configuration.Value.Storage.ConcurrentUploads);
                 for (var i = 0; i < _configuration.Value.Storage.ConcurrentUploads; i++)
                 {
                     tasks.Add(Task.Run(async () =>
                     {
-                        await StartWorker(i, cancellationToken).ConfigureAwait(false);
+                        await StartWorker(i, _cancellationTokenSource.Token).ConfigureAwait(false);
                     }, cancellationToken));
                 }
 
-                Task.WaitAll(tasks.ToArray(), cancellationToken);
+                Task.WaitAll(tasks.ToArray(), _cancellationTokenSource.Token);
             }
             catch (ObjectDisposedException ex)
             {
@@ -104,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 try
                 {
                     var item = await _uplaodQueue.Dequeue(cancellationToken).ConfigureAwait(false);
-                    await ProcessObject(item).ConfigureAwait(false);
+                    await ProcessObject(thread, item).ConfigureAwait(false);
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -116,13 +117,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                     _logger.ErrorUploading(ex);
                 }
             }
+            Status = ServiceStatus.Stopped;
+            _logger.ServiceStopping(ServiceName);
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
             var task = Task.Run(() =>
             {
-                BackgroundProcessing(cancellationToken);
+                BackgroundProcessingAsync(cancellationToken);
             }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
@@ -140,11 +143,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             return Task.CompletedTask;
         }
 
-        private async Task ProcessObject(FileStorageMetadata blob)
+        private async Task ProcessObject(int thread, FileStorageMetadata blob)
         {
             Guard.Against.Null(blob);
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "File ID", blob.Id }, { "CorrelationId", blob.CorrelationId } });
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Thread", thread }, { "File ID", blob.Id }, { "CorrelationId", blob.CorrelationId } });
             var stopwatch = new Stopwatch();
             try
             {
@@ -194,23 +197,28 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                 {
                     throw new FileUploadException($"Failed to upload file after retries {identifier}.");
                 }
-            } while (!(await VerifyExists(storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath)).ConfigureAwait(false)));
+            } while (!(await VerifyExists(storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath), cancellationToken).ConfigureAwait(false)));
         }
 
-        private async Task<bool> VerifyExists(string path)
+        private async Task<bool> VerifyExists(string path, CancellationToken cancellationToken)
         {
-            try
-            {
-                var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.TemporaryStorageBucket, path).ConfigureAwait(false);
-
-                _logger.VerifyFileExists(path, exists);
-                return exists;
-            }
-            catch (Exception ex)
-            {
-                _logger.FailedToVerifyFileExistence(path, ex);
-                throw;
-            }
+            return await Policy
+               .Handle<VerifyObjectsException>()
+               .WaitAndRetryAsync(
+                   _configuration.Value.Storage.Retries.RetryDelays,
+                   (exception, timeSpan, retryCount, context) =>
+                   {
+                       _logger.ErrorUploadingFileToTemporaryStore(timeSpan, retryCount, exception);
+                   })
+               .ExecuteAsync(async () =>
+               {
+                   var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                   internalCancellationTokenSource.CancelAfter(_configuration.Value.Storage.StorageServiceListTimeout);
+                   var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.TemporaryStorageBucket, path).ConfigureAwait(false);
+                   _logger.VerifyFileExists(path, exists);
+                   return exists;
+               })
+               .ConfigureAwait(false);
         }
 
         private async Task UploadFile(StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, CancellationToken cancellationToken)
@@ -232,6 +240,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                    })
                .ExecuteAsync(async () =>
                {
+                   if (storageObjectMetadata.IsUploaded) { return; }
+
                    storageObjectMetadata.Data.Seek(0, System.IO.SeekOrigin.Begin);
                    await _storageService.PutObjectAsync(
                        _configuration.Value.Storage.TemporaryStorageBucket,
@@ -242,9 +252,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                        metadata,
                        cancellationToken).ConfigureAwait(false);
                    storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket);
+                   _logger.UploadedFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
                })
                .ConfigureAwait(false);
-            _logger.UploadedFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
         }
 
         protected virtual void Dispose(bool disposing)
