@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,13 +26,13 @@ using DotNext.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Minio.Exceptions;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.Storage.API;
+using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
@@ -185,13 +185,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
                 await VerifyFileExists(payloadId, file, cancellationToken).ConfigureAwait(false);
             }
-            catch (ObjectNotFoundException ex) when (ex.ServerMessage.Contains("Not found", StringComparison.OrdinalIgnoreCase)) // TODO: StorageLib shall not throw any errors from MINIO
+            catch (StorageServiceException ex) when (ex.Message.Contains("Not found", StringComparison.OrdinalIgnoreCase)) // TODO: StorageLib shall not throw any errors from MINIO
             {
                 // when file cannot be found on the Storage Service, we assume file has been moved previously by verifying the file exists on destination.
                 _logger.FileMissingInPayload(payloadId, file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), ex);
                 await VerifyFileExists(payloadId, file, cancellationToken).ConfigureAwait(false);
             }
-            catch (ConnectionException ex) // TODO: StorageLib shall not throw any errors from MINIO
+            catch (StorageConnectionException ex)
             {
                 _logger.StorageServiceConnectionError(ex);
                 throw new PayloadNotifyException(PayloadNotifyException.FailureReason.ServiceUnavailable);
@@ -220,20 +220,35 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task VerifyFileExists(Guid payloadId, StorageObjectMetadata file, CancellationToken cancellationToken)
         {
-            var exists = await _storageService.VerifyObjectExistsAsync(_options.Value.Storage.StorageServiceBucketName, file.GetPayloadPath(payloadId), cancellationToken).ConfigureAwait(false);
-
-            if (!exists)
-            {
-                _logger.FileMovedVerificationFailure(payloadId, file.UploadPath);
-                throw new PayloadNotifyException(PayloadNotifyException.FailureReason.MoveFailure, false);
-            }
+            await Policy
+               .Handle<VerifyObjectsException>()
+               .WaitAndRetryAsync(
+                   _options.Value.Storage.Retries.RetryDelays,
+                   (exception, timeSpan, retryCount, context) =>
+                   {
+                       _logger.ErrorUploadingFileToTemporaryStore(timeSpan, retryCount, exception);
+                   })
+               .ExecuteAsync(async () =>
+               {
+                   var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                   internalCancellationTokenSource.CancelAfter(_options.Value.Storage.StorageServiceListTimeout);
+                   var exists = await _storageService.VerifyObjectExistsAsync(_options.Value.Storage.StorageServiceBucketName, file.GetPayloadPath(payloadId), cancellationToken).ConfigureAwait(false);
+                   if (!exists)
+                   {
+                       _logger.FileMovedVerificationFailure(payloadId, file.UploadPath);
+                       throw new PayloadNotifyException(PayloadNotifyException.FailureReason.MoveFailure, false);
+                   }
+               })
+               .ConfigureAwait(false);
         }
 
         private async Task LogFilesInMinIo(string bucketName, CancellationToken cancellationToken)
         {
             try
             {
-                var listingResults = await _storageService.ListObjectsAsync(bucketName, recursive: true, cancellationToken: cancellationToken).ConfigureAwait(false);
+                var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                internalCancellationTokenSource.CancelAfter(_options.Value.Storage.StorageServiceListTimeout);
+                var listingResults = await _storageService.ListObjectsAsync(bucketName, recursive: true, cancellationToken: internalCancellationTokenSource.Token).ConfigureAwait(false);
                 _logger.FilesFounddOnStorageService(bucketName, listingResults.Count);
                 var files = new List<string>();
                 foreach (var item in listingResults)

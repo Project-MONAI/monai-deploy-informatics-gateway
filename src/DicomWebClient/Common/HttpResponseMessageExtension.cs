@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2020 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
             {
                 using (var memoryStream = new MemoryStream(buffer))
                 {
-                    yield return await DicomFile.OpenAsync(memoryStream, FileReadOption.ReadAll);
+                    yield return await DicomFile.OpenAsync(memoryStream, FileReadOption.ReadAll).ConfigureAwait(false);
                 }
             }
         }
@@ -63,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.Common
             {
                 await foreach (var buffer in DecodeMultipartMessage(response))
                 {
-                    await memoryStream.WriteAsync(buffer, 0, buffer.Length);
+                    await memoryStream.WriteAsync(buffer, 0, buffer.Length).ConfigureAwait(false);
                 }
                 return memoryStream.ToArray();
             }

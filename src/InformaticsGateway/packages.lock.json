@@ -199,47 +199,47 @@
       },
       "Monai.Deploy.Storage": {
         "type": "Direct",
-        "requested": "[0.2.15, )",
-        "resolved": "0.2.15",
-        "contentHash": "5VCzUVZek/1LB+4V7l2Ubg1gqzxn4wVPrpZG9SqCsUYtXBzpY73ohmyCXE0PpgO1z6WpWKH3IaYOJqWvAUeFXw==",
+        "requested": "[0.2.16, )",
+        "resolved": "0.2.16",
+        "contentHash": "UVu9yyiJf4mYlz1H6g29LXdYv5RRFcttudTczA3w3SuGQ5u3fEIRbDaWuTjFjaaLor+IuibGaob6c1L6ACH7kg==",
         "dependencies": {
           "AWSSDK.SecurityToken": "3.7.101.26",
           "Ardalis.GuardClauses": "4.0.1",
           "Microsoft.Extensions.Configuration": "6.0.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.15",
           "Microsoft.Extensions.Logging": "6.0.0",
-          "Monai.Deploy.Storage.S3Policy": "0.2.15",
+          "Monai.Deploy.Storage.S3Policy": "0.2.16",
           "System.IO.Abstractions": "17.2.3"
         }
       },
       "Monai.Deploy.Storage.MinIO": {
         "type": "Direct",
-        "requested": "[0.2.15, )",
-        "resolved": "0.2.15",
-        "contentHash": "hyN7GuTp80y5cpY01IqbzkRCc0QB3y2v7Sppzarsnw6l6FgLJ1ZUgvMN4VDBwVyMNJytBeEKWfgn/FdidGNYaw==",
+        "requested": "[0.2.16, )",
+        "resolved": "0.2.16",
+        "contentHash": "/J8fylX91D/ePPCHTCgY11nPdADR5MZO239ZZWrK7ZO2ngAvKRmTB4Q6q6JbSErDF1hSk11HGhWCWNDsnK1rAQ==",
         "dependencies": {
           "AWSSDK.SecurityToken": "3.7.101.26",
           "Ardalis.GuardClauses": "4.0.1",
           "Microsoft.Extensions.Logging": "6.0.0",
           "Microsoft.Extensions.Options": "6.0.0",
           "Minio": "4.0.7",
-          "Monai.Deploy.Storage": "0.2.15",
-          "Monai.Deploy.Storage.S3Policy": "0.2.15"
+          "Monai.Deploy.Storage": "0.2.16",
+          "Monai.Deploy.Storage.S3Policy": "0.2.16"
         }
       },
       "NLog": {
         "type": "Direct",
-        "requested": "[5.1.2, )",
-        "resolved": "5.1.2",
-        "contentHash": "JfQY93ure3IPVTN3eabBewBGvrcXcWIlaesFEXdy5UzIymfIT9yCgLISYtM0cOhjWziIaUr/6Z9NC2RwtjwrsQ=="
+        "requested": "[5.1.3, )",
+        "resolved": "5.1.3",
+        "contentHash": "rB8hwjBf1EZCfG5iPfsv3gPksLoJLr1cOrt7PBbJu6VpJgwYJchDzTUT1dhNDdPv0QakXJQJOhE59ErupcznQQ=="
       },
       "NLog.Web.AspNetCore": {
         "type": "Direct",
-        "requested": "[5.2.2, )",
-        "resolved": "5.2.2",
-        "contentHash": "0Qa6V7LXgbWNxYdZDLcQz/TjGrSfx32XThxAL+xoAtjplC2uCIhy27WiMIjznuMAJR3zjElIiYzMmPSsQ4LZSQ==",
+        "requested": "[5.2.3, )",
+        "resolved": "5.2.3",
+        "contentHash": "uP0KekbkswuMjo1dbaqu20TxH2Dc3ox2qJDIi837ob2Fq/BliZHuQY9nJdM3UArVrLrsl+xxsx0D6h8m3fOufg==",
         "dependencies": {
-          "NLog.Extensions.Logging": "5.2.2"
+          "NLog.Extensions.Logging": "5.2.3"
         }
       },
       "Polly": {
@@ -753,8 +753,8 @@
       },
       "Monai.Deploy.Storage.S3Policy": {
         "type": "Transitive",
-        "resolved": "0.2.15",
-        "contentHash": "0+FCC5nltIDEXuBAJSDba2DUTm+yQ7KgZLavASt5wyF842VtTcLTG2uPHfHy+nJ6hfT7zCoBEsVup3g9KGC56w==",
+        "resolved": "0.2.16",
+        "contentHash": "KfiAW28llXSlDLgGwAeBCZGns9/5D/wHVOKt2NxzeiJpp0fR3VspQIbuHO1cbn4GcDM7tL0Se4gR494rHGoz4g==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.0.1",
           "Newtonsoft.Json": "13.0.3"
@@ -824,12 +824,12 @@
       },
       "NLog.Extensions.Logging": {
         "type": "Transitive",
-        "resolved": "5.2.2",
-        "contentHash": "V6sd+0Hrk2XlU//XbUizFYTE8Hf8+xFkhi81shIhsKl4tvWFUYmjBY/zBy/wlQCt0K6mfseaEKnayRJVhIz5Iw==",
+        "resolved": "5.2.3",
+        "contentHash": "TB8zPGV2nVpvWq5C8zIVHPSmnzOHMrXppjsAwHcuJq1Ehs8sC0llnAv5Ysf5Lf/vew9amV/+01MohtRFSDzKdQ==",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
           "Microsoft.Extensions.Logging": "6.0.0",
-          "NLog": "5.1.2"
+          "NLog": "5.1.3"
         }
       },
       "RabbitMQ.Client": {
@@ -1567,7 +1567,7 @@
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.15, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
           "Monai.Deploy.Messaging": "[0.1.22, )",
-          "Monai.Deploy.Storage": "[0.2.15, )"
+          "Monai.Deploy.Storage": "[0.2.16, )"
         }
       },
       "monai.deploy.informaticsgateway.client.common": {
@@ -1594,7 +1594,7 @@
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
           "Monai.Deploy.Messaging": "[0.1.22, )",
-          "Monai.Deploy.Storage": "[0.2.15, )",
+          "Monai.Deploy.Storage": "[0.2.16, )",
           "System.IO.Abstractions": "[17.2.3, )"
         }
       },
