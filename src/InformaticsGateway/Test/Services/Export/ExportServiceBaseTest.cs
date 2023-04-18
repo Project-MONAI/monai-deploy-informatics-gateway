@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         public event EventHandler ExportDataBlockCalled;
 
         public bool ExportShallFail = false;
-        protected override int Concurrency => 1;
+        protected override ushort Concurrency => 1;
         public override string RoutingKey => AgentName;
         public override string ServiceName { get => "Test Export Service"; }
 
@@ -132,11 +132,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _messageSubscriberService.Setup(p => p.Reject(It.IsAny<MessageBase>(), It.IsAny<bool>()));
             _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
+                p => p.SubscribeAsync(It.IsAny<string>(),
                                  It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                  It.IsAny<ushort>()))
-                .Callback((string topic, string queue, Action<MessageReceivedEventArgs> messageReceivedCallback, ushort prefetchCount) =>
+                .Callback((string topic, string queue, Func<MessageReceivedEventArgs, Task> messageReceivedCallback, ushort prefetchCount) =>
                 {
                     messageReceivedCallback(CreateMessageReceivedEventArgs());
                 });
@@ -146,9 +146,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             await StopAndVerify(service);
 
             _messageSubscriberService.Verify(p => p.Reject(It.IsAny<Message>(), It.IsAny<bool>()), Times.Once());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+            _messageSubscriberService.Verify(p => p.SubscribeAsync(It.IsAny<string>(),
                                                               It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
         }
 
@@ -161,13 +161,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
+                p => p.SubscribeAsync(It.IsAny<string>(),
                                  It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                  It.IsAny<ushort>()))
-                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                .Callback<string, string, Func<MessageReceivedEventArgs, Task>, ushort>(async (topic, queue, messageReceivedCallback, prefetchCount) =>
                 {
-                    messageReceivedCallback(CreateMessageReceivedEventArgs());
+                    await messageReceivedCallback(CreateMessageReceivedEventArgs());
                 });
 
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -188,9 +188,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Failure)), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+            _messageSubscriberService.Verify(p => p.SubscribeAsync(It.IsAny<string>(),
                                                               It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
         }
 
@@ -204,15 +204,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
+                p => p.SubscribeAsync(It.IsAny<string>(),
                                  It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                  It.IsAny<ushort>()))
-                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                .Callback<string, string, Func<MessageReceivedEventArgs, Task>, ushort>(async (topic, queue, messageReceivedCallback, prefetchCount) =>
                 {
                     while (messageCount-- > 0)
                     {
-                        messageReceivedCallback(CreateMessageReceivedEventArgs());
+                        await messageReceivedCallback(CreateMessageReceivedEventArgs());
                     }
                 });
 
@@ -242,9 +242,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.PartialFailure)), Times.Exactly(5));
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Exactly(5));
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+            _messageSubscriberService.Verify(p => p.SubscribeAsync(It.IsAny<string>(),
                                                               It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
         }
 
@@ -258,15 +258,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
+                p => p.SubscribeAsync(It.IsAny<string>(),
                                  It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                  It.IsAny<ushort>()))
-                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                .Callback<string, string, Func<MessageReceivedEventArgs, Task>, ushort>(async (topic, queue, messageReceivedCallback, prefetchCount) =>
                 {
                     while (messageCount-- > 0)
                     {
-                        messageReceivedCallback(CreateMessageReceivedEventArgs());
+                        await messageReceivedCallback(CreateMessageReceivedEventArgs());
                     }
                 });
 
@@ -294,9 +294,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Success)), Times.Exactly(5));
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Exactly(5));
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+            _messageSubscriberService.Verify(p => p.SubscribeAsync(It.IsAny<string>(),
                                                               It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
         }
 

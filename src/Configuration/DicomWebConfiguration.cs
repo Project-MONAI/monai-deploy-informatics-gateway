@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets the maximum number of simultaneous DICOMweb connections.
         /// </summary>
         [ConfigurationKeyName("maximumNumberOfConnections")]
-        public int MaximumNumberOfConnection { get; set; } = 2;
+        public ushort MaximumNumberOfConnection { get; set; } = 2;
 
         /// <summary>
         /// Gets or set the maximum allowed file size in bytes with default to 2GiB.
