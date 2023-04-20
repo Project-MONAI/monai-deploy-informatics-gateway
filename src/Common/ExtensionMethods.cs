@@ -76,5 +76,15 @@ namespace Monai.Deploy.InformaticsGateway.Common
             await Task.Delay(delay).ConfigureAwait(false);
             return actionBlock.Post(input);
         }
+
+        /// <summary>
+        /// Checks if a given task is faulted or cancelled.
+        /// </summary>
+        /// <param name="task">The task object</param>
+        /// <returns>True if canceled or faulted. False otherwise.</returns>
+        public static bool IsCanceledOrFaulted(this Task task)
+        {
+            return task.IsCanceled || task.IsFaulted;
+        }
     }
 }

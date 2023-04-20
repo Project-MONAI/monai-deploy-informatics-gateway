@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IDicomToolkit _dicomToolkit;
 
-        protected override int Concurrency { get; }
+        protected override ushort Concurrency { get; }
         public override string RoutingKey { get; }
         public override string ServiceName => "DICOMweb Export Service";
 

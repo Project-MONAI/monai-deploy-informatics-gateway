@@ -135,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     var payload = await _payloads[key].Task.ConfigureAwait(false);
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
 
-                    _logger.BucketElapsedTime(key, payload.Timeout, payload.ElapsedTime().TotalSeconds, payload.Files.Count, payload.FilesFailedToUpload);
+                    _logger.BucketElapsedTime(key, payload.Timeout, payload.ElapsedTime().TotalSeconds, payload.Files.Count, payload.FilesUploaded, payload.FilesFailedToUpload);
                     // Wait for timer window closes before sending payload for processing
                     if (payload.HasTimedOut)
                     {

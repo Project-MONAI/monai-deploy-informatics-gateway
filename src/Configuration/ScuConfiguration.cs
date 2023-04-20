@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Gets or sets the maximum number of simultaneous DICOM associations for the SCU service.
         /// </summary>
         [ConfigurationKeyName("maximumNumberOfAssociations")]
-        public int MaximumNumberOfAssociations { get; set; } = 8;
+        public ushort MaximumNumberOfAssociations { get; set; } = 8;
 
         public ScuConfiguration()
         {
