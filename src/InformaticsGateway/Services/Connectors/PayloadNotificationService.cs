@@ -166,6 +166,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 HandlePostPayloadException(ex);
             }
+            catch (PostPayloadException ex)
+            {
+                HandlePostPayloadException(ex);
+            }
             catch (Exception ex)
             {
                 if (ex is PayloadNotifyException payloadMoveException &&
@@ -187,6 +191,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             try
             {
                 await _payloadMoveActionHandler.MoveFilesAsync(payload, _moveFileQueue!, _publishQueue!, _cancellationTokenSource.Token).ConfigureAwait(false);
+            }
+            catch (PostPayloadException ex)
+            {
+                HandlePostPayloadException(ex);
             }
             catch (PostPayloadException ex)
             {
