@@ -136,5 +136,17 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 743, Level = LogLevel.Error, Message = "Exception moving payload.")]
         public static partial void PayloadMoveException(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 744, Level = LogLevel.Warning, Message = "PayloadNotification move payload queue: faulted: {isFauled}, cancelled: {isCancelled}.")]
+        public static partial void MoveQueueFaulted(this ILogger logger, bool isFauled, bool isCancelled);
+
+        [LoggerMessage(EventId = 745, Level = LogLevel.Warning, Message = "PayloadNotification publishing payload queue: faulted: {isFauled}, cancelled: {isCancelled}.")]
+        public static partial void PublishQueueFaulted(this ILogger logger, bool isFauled, bool isCancelled);
+
+        [LoggerMessage(EventId = 746, Level = LogLevel.Error, Message = "Error posting payload to move queue.")]
+        public static partial void ErrorPostingJobToMovePayloadsQueue(this ILogger logger);
+
+        [LoggerMessage(EventId = 747, Level = LogLevel.Error, Message = "Error posting payload to publish queue.")]
+        public static partial void ErrorPostingJobToPublishPayloadsQueue(this ILogger logger);
     }
 }

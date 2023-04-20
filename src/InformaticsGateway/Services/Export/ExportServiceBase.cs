@@ -58,9 +58,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly Dictionary<string, ExportRequestEventDetails> _exportRequests;
         private readonly IStorageInfoProvider _storageInfoProvider;
         private bool _disposedValue;
+        private ulong _activeWorkers = 0;
 
         public abstract string RoutingKey { get; }
-        protected abstract int Concurrency { get; }
+        protected abstract ushort Concurrency { get; }
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
         public abstract string ServiceName { get; }
 
@@ -122,11 +123,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void SetupPolling()
         {
-            _messageSubscriber.Subscribe(RoutingKey, RoutingKey, OnMessageReceivedCallback);
+            _messageSubscriber.SubscribeAsync(RoutingKey, RoutingKey, OnMessageReceivedCallback, prefetchCount: Concurrency);
             _logger.ExportEventSubscription(ServiceName, RoutingKey);
         }
 
-        private void OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
+        private async Task OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
         {
             if (!_storageInfoProvider.HasSpaceAvailableForExport)
             {
@@ -135,6 +136,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 return;
             }
 
+            if (Interlocked.Read(ref _activeWorkers) >= Concurrency)
+            {
+                _logger.ExceededMaxmimumNumberOfWorkers(ServiceName, _activeWorkers);
+                _messageSubscriber.Reject(eventArgs.Message);
+                return;
+            }
+
+            Interlocked.Increment(ref _activeWorkers);
             try
             {
                 var executionOptions = new ExecutionDataflowBlockOptions
@@ -178,12 +187,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
 
                     _exportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
-                    exportFlow.Post(exportRequestWithDetails);
-                    _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                    if (!exportFlow.Post(exportRequestWithDetails))
+                    {
+                        _logger.ErrorPostingExportJobToQueue(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                        _messageSubscriber.Reject(eventArgs.Message);
+                    }
+                    else
+                    {
+                        _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                    }
                 }
 
                 exportFlow.Complete();
-                reportingActionBlock.Completion.Wait(_cancellationTokenSource.Token);
+                await reportingActionBlock.Completion.ConfigureAwait(false);
             }
             catch (AggregateException ex)
             {
@@ -195,6 +211,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             catch (Exception ex)
             {
                 _logger.ErrorProcessingExportTask(ex);
+            }
+            finally
+            {
+                Interlocked.Decrement(ref _activeWorkers);
             }
         }
 
@@ -229,7 +249,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            _logger.FileReadyForExport(file);
                        });
 
-                    task.Wait();
+                    task.Wait(cancellationToken);
                 }
                 catch (Exception ex)
                 {

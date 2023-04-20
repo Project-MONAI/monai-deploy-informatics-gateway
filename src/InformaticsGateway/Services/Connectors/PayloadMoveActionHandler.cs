@@ -86,7 +86,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 var action = await UpdatePayloadState(payload, ex, cancellationToken).ConfigureAwait(false);
                 if (action == PayloadAction.Updated)
                 {
-                    await moveQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false);
+                    if (!await moveQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false))
+                    {
+                        throw new PostPayloadException(Payload.PayloadState.Move, payload);
+                    }
                 }
             }
             finally
@@ -111,7 +114,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 await repository.UpdateAsync(payload, cancellationToken).ConfigureAwait(false);
                 _logger.PayloadSaved(payload.PayloadId);
 
-                notificationQueue.Post(payload);
+                if (!notificationQueue.Post(payload))
+                {
+                    throw new PostPayloadException(Payload.PayloadState.Notify, payload);
+                }
+
                 _logger.PayloadReadyToBePublished(payload.PayloadId);
             }
             else // we should never hit this else block.

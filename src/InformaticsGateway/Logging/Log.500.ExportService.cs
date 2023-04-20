@@ -123,5 +123,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 533, Level = LogLevel.Error, Message = "Recovering messaging service connection due to {reason}.")]
         public static partial void MessagingServiceErrorRecover(this ILogger logger, string reason);
+
+        [LoggerMessage(EventId = 534, Level = LogLevel.Error, Message = "Error posting export job for processing correlation ID {correlationId}, export task ID {exportTaskId}.")]
+        public static partial void ErrorPostingExportJobToQueue(this ILogger logger, string correlationId, string exportTaskId);
+
+        [LoggerMessage(EventId = 535, Level = LogLevel.Warning, Message = "Exceeded maximum number of worker in {serviceName}: {count}.")]
+        public static partial void ExceededMaxmimumNumberOfWorkers(this ILogger logger, string serviceName, ulong count);
     }
 }
