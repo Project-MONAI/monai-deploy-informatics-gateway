@@ -3938,6 +3938,18 @@ references:
   commentId: T:Monai.Deploy.InformaticsGateway.Common.ExtensionMethods
   fullName: Monai.Deploy.InformaticsGateway.Common.ExtensionMethods
   nameWithType: ExtensionMethods
+- uid: Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.IsCanceledOrFaulted(System.Threading.Tasks.Task)
+  name: IsCanceledOrFaulted(Task)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.html#Monai_Deploy_InformaticsGateway_Common_ExtensionMethods_IsCanceledOrFaulted_System_Threading_Tasks_Task_
+  commentId: M:Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.IsCanceledOrFaulted(System.Threading.Tasks.Task)
+  fullName: Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.IsCanceledOrFaulted(System.Threading.Tasks.Task)
+  nameWithType: ExtensionMethods.IsCanceledOrFaulted(Task)
+- uid: Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.IsCanceledOrFaulted*
+  name: IsCanceledOrFaulted
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.html#Monai_Deploy_InformaticsGateway_Common_ExtensionMethods_IsCanceledOrFaulted_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.IsCanceledOrFaulted
+  fullName: Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.IsCanceledOrFaulted
+  nameWithType: ExtensionMethods.IsCanceledOrFaulted
 - uid: Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.IsNullOrEmpty*
   name: IsNullOrEmpty
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Common.ExtensionMethods.html#Monai_Deploy_InformaticsGateway_Common_ExtensionMethods_IsNullOrEmpty_
