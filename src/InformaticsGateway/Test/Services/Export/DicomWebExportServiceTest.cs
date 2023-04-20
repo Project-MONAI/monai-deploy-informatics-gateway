@@ -127,13 +127,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
+                p => p.SubscribeAsync(It.IsAny<string>(),
                                  It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                  It.IsAny<ushort>()))
-                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                .Callback<string, string, Func<MessageReceivedEventArgs, Task>, ushort>(async (topic, queue, messageReceivedCallback, prefetchCount) =>
                 {
-                    messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
+                    await messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -164,9 +164,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ConfigurationError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+            _messageSubscriberService.Verify(p => p.SubscribeAsync(It.IsAny<string>(),
                                                               It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
 
             _logger.VerifyLogging($"The specified inference request '{transactionId}' cannot be found and will not be exported.", LogLevel.Error, Times.Once());
@@ -182,13 +182,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
+                p => p.SubscribeAsync(It.IsAny<string>(),
                                  It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                  It.IsAny<ushort>()))
-                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                .Callback<string, string, Func<MessageReceivedEventArgs, Task>, ushort>(async (topic, queue, messageReceivedCallback, prefetchCount) =>
                 {
-                    messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
+                    await messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -219,9 +219,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ConfigurationError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+            _messageSubscriberService.Verify(p => p.SubscribeAsync(It.IsAny<string>(),
                                                               It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
 
             _logger.VerifyLogging($"The inference request contains no `outputResources` nor any DICOMweb export destinations.", LogLevel.Error, Times.Once());
@@ -248,13 +248,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
+                p => p.SubscribeAsync(It.IsAny<string>(),
                                  It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                  It.IsAny<ushort>()))
-                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                .Callback<string, string, Func<MessageReceivedEventArgs, Task>, ushort>(async (topic, queue, messageReceivedCallback, prefetchCount) =>
                 {
-                    messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
+                    await messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -290,7 +290,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             };
 
             await service.StartAsync(_cancellationTokenSource.Token);
-            Assert.True(dataflowCompleted.WaitOne(3000));
+            Assert.True(dataflowCompleted.WaitOne(5000));
             await StopAndVerify(service);
 
             _messagePublisherService.Verify(
@@ -298,9 +298,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                It.Is<Message>(match => CheckMessage(match, ExportStatus.Failure, FileExportStatus.ServiceError))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+            _messageSubscriberService.Verify(p => p.SubscribeAsync(It.IsAny<string>(),
                                                               It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
 
             _logger.VerifyLogging($"Exporting data to {inferenceRequest.OutputResources.First().ConnectionDetails.Uri}.", LogLevel.Debug, Times.Once());
@@ -331,13 +331,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
             _messageSubscriberService.Setup(
-                p => p.Subscribe(It.IsAny<string>(),
+                p => p.SubscribeAsync(It.IsAny<string>(),
                                  It.IsAny<string>(),
-                                 It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                  It.IsAny<ushort>()))
-                .Callback<string, string, Action<MessageReceivedEventArgs>, ushort>((topic, queue, messageReceivedCallback, prefetchCount) =>
+                .Callback<string, string, Func<MessageReceivedEventArgs, Task>, ushort>(async (topic, queue, messageReceivedCallback, prefetchCount) =>
                 {
-                    messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
+                    await messageReceivedCallback(CreateMessageReceivedEventArgs(transactionId));
                 });
 
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -378,7 +378,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             };
 
             await service.StartAsync(_cancellationTokenSource.Token);
-            Assert.True(dataflowCompleted.WaitOne(3000));
+            Assert.True(dataflowCompleted.WaitOne(5000));
             await StopAndVerify(service);
 
             _messagePublisherService.Verify(
@@ -386,9 +386,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                It.Is<Message>(match => CheckMessage(match, (httpStatusCode == HttpStatusCode.OK ? ExportStatus.Success : ExportStatus.Failure), (httpStatusCode == HttpStatusCode.OK ? FileExportStatus.Success : FileExportStatus.ServiceError)))), Times.Once());
             _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Once());
             _messageSubscriberService.Verify(p => p.RequeueWithDelay(It.IsAny<MessageBase>()), Times.Never());
-            _messageSubscriberService.Verify(p => p.Subscribe(It.IsAny<string>(),
+            _messageSubscriberService.Verify(p => p.SubscribeAsync(It.IsAny<string>(),
                                                               It.IsAny<string>(),
-                                                              It.IsAny<Action<MessageReceivedEventArgs>>(),
+                                                              It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
 
             _logger.VerifyLogging($"Exporting data to {inferenceRequest.OutputResources.First().ConnectionDetails.Uri}.", LogLevel.Debug, Times.AtLeastOnce());

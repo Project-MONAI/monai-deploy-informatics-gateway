@@ -88,16 +88,38 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _cancellationTokenSource = new CancellationTokenSource();
         }
 
-        public async Task StartAsync(CancellationToken cancellationToken)
+        public Task StartAsync(CancellationToken cancellationToken)
         {
-            _moveFileQueue = new ActionBlock<Payload>(
-                    MoveActionHandler,
-                    new ExecutionDataflowBlockOptions
-                    {
-                        MaxDegreeOfParallelism = _options.Value.Storage.PayloadProcessThreads,
-                        MaxMessagesPerTask = 1,
-                        CancellationToken = cancellationToken
-                    });
+            SetupQueues(cancellationToken);
+
+            var task = Task.Run(async () =>
+            {
+                await RestoreFromDatabaseAsync(cancellationToken).ConfigureAwait(false);
+                BackgroundProcessing(cancellationToken);
+            }, CancellationToken.None);
+
+            Status = ServiceStatus.Running;
+            _logger.ServiceStarted(ServiceName);
+
+            if (task.IsCompleted)
+                return task;
+
+            return Task.CompletedTask;
+        }
+
+        private void SetupQueues(CancellationToken cancellationToken)
+        {
+            ResetMoveQueue(cancellationToken);
+            ResetPublishQueue(cancellationToken);
+        }
+
+        private void ResetPublishQueue(CancellationToken cancellationToken)
+        {
+            if (_publishQueue is not null)
+            {
+                _logger.PublishQueueFaulted(_publishQueue.Completion.IsFaulted, _publishQueue.Completion.IsCanceled);
+                _publishQueue.Complete();
+            }
 
             _publishQueue = new ActionBlock<Payload>(
                     NotificationHandler,
@@ -107,21 +129,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         MaxMessagesPerTask = 1,
                         CancellationToken = cancellationToken
                     });
+        }
 
-            await RestoreFromDatabaseAsync(cancellationToken).ConfigureAwait(false);
-
-            var task = Task.Run(() =>
+        private void ResetMoveQueue(CancellationToken cancellationToken)
+        {
+            if (_moveFileQueue is not null)
             {
-                BackgroundProcessing(cancellationToken);
-            }, CancellationToken.None);
+                _logger.MoveQueueFaulted(_moveFileQueue.Completion.IsFaulted, _moveFileQueue.Completion.IsCanceled);
+                _moveFileQueue.Complete();
+            }
 
-            Status = ServiceStatus.Running;
-            _logger.ServiceStarted(ServiceName);
-
-            if (task.IsCompleted)
-                await task.ConfigureAwait(false);
-
-            await Task.CompletedTask.ConfigureAwait(false);
+            _moveFileQueue = new ActionBlock<Payload>(
+                    MoveActionHandler,
+                    new ExecutionDataflowBlockOptions
+                    {
+                        MaxDegreeOfParallelism = _options.Value.Storage.PayloadProcessThreads,
+                        MaxMessagesPerTask = 1,
+                        CancellationToken = cancellationToken
+                    });
         }
 
         private async Task NotificationHandler(Payload payload)
@@ -133,6 +158,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             try
             {
                 await _payloadNotificationActionHandler.NotifyAsync(payload, _publishQueue, _cancellationTokenSource.Token).ConfigureAwait(false);
+            }
+            catch (PostPayloadException ex)
+            {
+                HandlePostPayloadException(ex);
             }
             catch (Exception ex)
             {
@@ -158,6 +187,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 await _payloadMoveActionHandler.MoveFilesAsync(payload, _moveFileQueue, _publishQueue, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
+            catch (PostPayloadException ex)
+            {
+                HandlePostPayloadException(ex);
+            }
             catch (Exception ex)
             {
                 if (ex is PayloadNotifyException payloadMoveException &&
@@ -172,17 +205,45 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
+        private void HandlePostPayloadException(PostPayloadException ex)
+        {
+            Guard.Against.Null(ex);
+
+            if (ex.TargetQueue == Payload.PayloadState.Move)
+            {
+                ResetIfFaultedOrCancelled(_moveFileQueue, ResetMoveQueue, CancellationToken.None);
+                if (!_moveFileQueue.Post(ex.Payload))
+                {
+                    _logger.ErrorPostingJobToMovePayloadsQueue();
+                }
+            }
+            else if (ex.TargetQueue == Payload.PayloadState.Notify)
+            {
+                ResetIfFaultedOrCancelled(_publishQueue, ResetPublishQueue, CancellationToken.None);
+                if (!_publishQueue.Post(ex.Payload))
+                {
+                    _logger.ErrorPostingJobToPublishPayloadsQueue();
+                }
+            }
+        }
+
         private void BackgroundProcessing(CancellationToken cancellationToken)
         {
             _logger.ServiceRunning(ServiceName);
 
             while (!cancellationToken.IsCancellationRequested)
             {
+                ResetIfFaultedOrCancelled(_moveFileQueue, ResetMoveQueue, cancellationToken);
+                ResetIfFaultedOrCancelled(_publishQueue, ResetPublishQueue, cancellationToken);
+
                 Payload payload = null;
                 try
                 {
                     payload = _payloadAssembler.Dequeue(cancellationToken);
-                    _moveFileQueue.Post(payload);
+                    while (!_moveFileQueue.Post(payload))
+                    {
+                        ResetIfFaultedOrCancelled(_moveFileQueue, ResetMoveQueue, cancellationToken);
+                    }
                     _logger.PayloadQueuedForProcessing(payload.PayloadId, ServiceName);
                 }
                 catch (OperationCanceledException ex)
@@ -202,6 +263,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger.ServiceCancelled(ServiceName);
         }
 
+        private static void ResetIfFaultedOrCancelled(ActionBlock<Payload> queue, Action<CancellationToken> resetFunction, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(queue);
+            Guard.Against.Null(resetFunction);
+
+            if (queue.Completion.IsCanceledOrFaulted())
+            {
+                resetFunction(cancellationToken);
+            }
+        }
+
+
         private async Task RestoreFromDatabaseAsync(CancellationToken cancellationToken)
         {
             _logger.StartupRestoreFromDatabase();
@@ -214,11 +287,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (payload.State == Payload.PayloadState.Move)
                 {
-                    _moveFileQueue.Post(payload);
+                    if (!_moveFileQueue.Post(payload))
+                    {
+                        _logger.ErrorPostingJobToMovePayloadsQueue();
+                    }
                 }
                 else if (payload.State == Payload.PayloadState.Notify)
                 {
-                    _publishQueue.Post(payload);
+                    if (!_publishQueue.Post(payload))
+                    {
+                        _logger.ErrorPostingJobToPublishPayloadsQueue();
+                    }
                 }
             }
             _logger.RestoredFromDatabase(payloads.Count);

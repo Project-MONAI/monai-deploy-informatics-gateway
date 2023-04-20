@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 4010, Level = LogLevel.Debug, Message = "File {path} exists={exists}.")]
         public static partial void VerifyFileExists(this ILogger logger, string path, bool exists);
 
-        [LoggerMessage(EventId = 4011, Level = LogLevel.Information, Message = "Initializing Object Uploader service with {threads} workers.")]
+        [LoggerMessage(EventId = 4011, Level = LogLevel.Information, Message = "Initializing Object Uploser service with {threads} workers.")]
         public static partial void InitializeThreads(this ILogger logger, int threads);
     }
 }

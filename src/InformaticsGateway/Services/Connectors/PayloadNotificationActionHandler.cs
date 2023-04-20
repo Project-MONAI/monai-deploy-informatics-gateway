@@ -80,8 +80,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 var action = await UpdatePayloadState(payload, cancellationToken).ConfigureAwait(false);
                 if (action == PayloadAction.Updated)
                 {
-                    await notificationQueue.Post(payload, _options.Value.Messaging.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false);
                     _logger.FailedToPublishWorkflowRequest(payload.PayloadId, ex);
+                    if (!await notificationQueue.Post(payload, _options.Value.Messaging.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false))
+                    {
+                        throw new PostPayloadException(Payload.PayloadState.Notify, payload);
+                    }
                 }
             }
         }

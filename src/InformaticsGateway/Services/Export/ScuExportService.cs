@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IDicomToolkit _dicomToolkit;
 
-        protected override int Concurrency { get; }
+        protected override ushort Concurrency { get; }
         public override string RoutingKey { get; }
         public override string ServiceName => "DICOM Export Service";
 
@@ -69,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             foreach (var destinationName in exportRequestData.Destinations)
             {
-                await HandleDesination(exportRequestData, destinationName, cancellationToken);
+                await HandleDesination(exportRequestData, destinationName, cancellationToken).ConfigureAwait(false);
             }
 
             return exportRequestData;
@@ -118,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                        client.ServiceOptions.LogDimseDatasets = _configuration.Value.Dicom.Scu.LogDimseDatasets;
 
                        client.NegotiateAsyncOps();
-                       if (await GenerateRequestsAsync(exportRequestData, client, manualResetEvent))
+                       if (await GenerateRequestsAsync(exportRequestData, client, manualResetEvent).ConfigureAwait(false))
                        {
                            _logger.DimseExporting(destination.AeTitle, destination.HostIp, destination.Port);
                            await client.SendAsync(cancellationToken).ConfigureAwait(false);
