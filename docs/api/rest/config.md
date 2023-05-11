@@ -345,6 +345,45 @@ curl --location --request GET 'http://localhost:5000/config/source/USEAST'
 
 ---
 
+## GET /config/source/getbyaetitle/{aeTitle}
+
+Returns configurations for the specified calling (source) AET.
+
+### Parameters
+
+| Name | Type   | Description                                |
+| ---- | ------ | ------------------------------------------ |
+| name | string | The aeTitle of an AE Title to be retrieved. |
+
+### Responses
+
+Response Content Type: JSON - [SourceApplicationEntity[]](xref:Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity).
+
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | AE Titles retrieved successfully.                                                                                                       |
+| 404  | Named source not found.                                                                                                                    |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+
+### Example Request
+
+```bash
+curl --location --request GET 'http://localhost:5000/config/source/getbyaetitle/USEAST'
+```
+
+### Example Response
+
+```json
+[{
+  "name": "USEAST",
+  "aeTitle": "PACSUSEAST",
+  "hostIp": "10.20.3.4"
+},
+{...}]
+```
+
+---
+
 ## POST /config/source
 
 Adds a new calling (source) AE Title to the Informatics Gateway to allow DICOM instances from the specified IP address and AE Title.
