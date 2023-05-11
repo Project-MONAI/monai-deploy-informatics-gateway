@@ -88,6 +88,32 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
+        [HttpGet("/getbyaetitle/{aeTitle}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ActionName(nameof(GetAeTitleByAET))]
+        public async Task<ActionResult<SourceApplicationEntity>> GetAeTitleByAET(string aeTitle)
+        {
+            try
+            {
+                var sourceApplicationEntity = await _repository.FindByAETAsync(aeTitle, HttpContext.RequestAborted).ConfigureAwait(false);
+
+                if (sourceApplicationEntity is null)
+                {
+                    return NotFound();
+                }
+
+                return Ok(sourceApplicationEntity);
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorListingSourceApplicationEntities(ex);
+                return Problem(title: "Error querying DICOM sources.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+            }
+        }
+
         [HttpPost]
         [Consumes(MediaTypeNames.Application.Json)]
         [ProducesResponseType(StatusCodes.Status201Created)]
