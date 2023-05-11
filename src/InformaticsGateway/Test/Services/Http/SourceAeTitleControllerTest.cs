@@ -145,6 +145,27 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
         }
 
+        [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return matching object")]
+        public async Task GetAeTitle_ViaAETitleReturnsAMatch()
+        {
+            var value = "AET";
+            _repository.Setup(p => p.FindByAETAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(
+                Task.FromResult(
+                new SourceApplicationEntity[]{
+                new SourceApplicationEntity
+                {
+                    AeTitle = value,
+                    HostIp = "host",
+                    Name = $"{value}name",
+                }}));
+
+            var result = await _controller.GetAeTitleByAET(value);
+            var okObjectResult = result.Result as OkObjectResult;
+            var response = okObjectResult.Value as SourceApplicationEntity[];
+            Assert.Equal(value, response.FirstOrDefault().AeTitle);
+            _repository.Verify(p => p.FindByAETAsync(value, It.IsAny<CancellationToken>()), Times.Once());
+        }
+
         [RetryFact(5, 250, DisplayName = "GetAeTitle - Shall return 404 if not found")]
         public async Task GetAeTitle_Returns404IfNotFound()
         {
