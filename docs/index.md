@@ -14,7 +14,7 @@
   ~ limitations under the License.
 -->
 
-# MONAI Deploy Informatics Gateway <small>v0.0.0</small>
+# MONAI Deploy Informatics Gateway
 
 ![NVIDIA](./images/MONAI-logo_color.svg)
 
