@@ -114,6 +114,20 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         }
 
         [Fact]
+        public async Task GivenAETitle_WhenFindByAETitleAsyncIsCalled_ExpectItToReturnMatchingEntity()
+        {
+            var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+
+            var actual = await store.FindByAETAsync("AET1").ConfigureAwait(false);
+            Assert.NotNull(actual);
+            Assert.Equal("AET1", actual.FirstOrDefault()!.AeTitle);
+            Assert.Equal("AET1", actual.FirstOrDefault()!.Name);
+
+            actual = await store.FindByAETAsync("AET6").ConfigureAwait(false);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
         public async Task GivenASourceApplicationEntity_WhenRemoveIsCalled_ExpectItToDeleted()
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
@@ -158,5 +172,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             Assert.NotNull(dbResult);
             Assert.Equal(expected.AeTitle, dbResult!.AeTitle);
         }
+
+
     }
 }
