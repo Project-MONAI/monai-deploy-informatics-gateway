@@ -97,6 +97,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             }).ConfigureAwait(false);
         }
 
+        public async Task<SourceApplicationEntity[]?> FindByAETAsync(string aeTitle, CancellationToken cancellationToken = default)
+        {
+            return await _retryPolicy.ExecuteAsync(async () =>
+            {
+                return (await _collection
+                    .Find(x => x.AeTitle == aeTitle)
+                    .ToListAsync(cancellationToken).ConfigureAwait(false)).ToArray();
+            }).ConfigureAwait(false);
+        }
+
         public async Task<SourceApplicationEntity> AddAsync(SourceApplicationEntity item, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(item);
