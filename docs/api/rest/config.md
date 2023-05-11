@@ -345,7 +345,7 @@ curl --location --request GET 'http://localhost:5000/config/source/USEAST'
 
 ---
 
-## GET /config/source/getbyaetitle/{aeTitle}
+## GET /config/source/aetitle/{aeTitle}
 
 Returns configurations for the specified calling (source) AET.
 
@@ -368,7 +368,7 @@ Response Content Type: JSON - [SourceApplicationEntity[]](xref:Monai.Deploy.Info
 ### Example Request
 
 ```bash
-curl --location --request GET 'http://localhost:5000/config/source/getbyaetitle/USEAST'
+curl --location --request GET 'http://localhost:5000/config/source/aetitle/USEAST'
 ```
 
 ### Example Response
