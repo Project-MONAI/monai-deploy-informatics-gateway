@@ -87,6 +87,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             }).ConfigureAwait(false);
         }
 
+        public async Task<SourceApplicationEntity[]?> FindByAETAsync(string aeTitle, CancellationToken cancellationToken = default)
+        {
+            Guard.Against.NullOrWhiteSpace(aeTitle);
+
+            return await _retryPolicy.ExecuteAsync(async () =>
+            {
+                return await _dataset.Where(p => p.AeTitle.Equals(aeTitle)).ToArrayAsync(cancellationToken).ConfigureAwait(false);
+            }).ConfigureAwait(false);
+        }
+
         public async Task<SourceApplicationEntity> RemoveAsync(SourceApplicationEntity entity, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(entity);
