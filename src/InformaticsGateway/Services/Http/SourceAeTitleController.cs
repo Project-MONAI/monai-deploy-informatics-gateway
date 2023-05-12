@@ -88,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        [HttpGet("/aetitle/{aeTitle}")]
+        [HttpGet("aetitle/{aeTitle}")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
