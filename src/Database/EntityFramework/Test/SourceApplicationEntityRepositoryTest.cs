@@ -109,6 +109,20 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         }
 
         [Fact]
+        public async Task GivenAAETitleName_WhenFindByAETAsyncIsCalled_ExpectItToReturnMatchingEntity()
+        {
+            var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
+
+            var actual = await store.FindByAETAsync("AET1").ConfigureAwait(false);
+            Assert.NotNull(actual);
+            Assert.Equal("AET1", actual.FirstOrDefault()!.AeTitle);
+            Assert.Equal("AET1", actual.FirstOrDefault()!.Name);
+
+            actual = await store.FindByAETAsync("AET6").ConfigureAwait(false);
+            Assert.Empty(actual);
+        }
+
+        [Fact]
         public async Task GivenASourceApplicationEntity_WhenRemoveIsCalled_ExpectItToDeleted()
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
