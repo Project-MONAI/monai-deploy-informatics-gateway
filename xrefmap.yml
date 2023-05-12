@@ -5927,6 +5927,18 @@ references:
   commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync
   fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.ContainsAsync
   nameWithType: ISourceApplicationEntityRepository.ContainsAsync
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByAETAsync(System.String,System.Threading.CancellationToken)
+  name: FindByAETAsync(String, CancellationToken)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_FindByAETAsync_System_String_System_Threading_CancellationToken_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByAETAsync(System.String,System.Threading.CancellationToken)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByAETAsync(System.String, System.Threading.CancellationToken)
+  nameWithType: ISourceApplicationEntityRepository.FindByAETAsync(String, CancellationToken)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByAETAsync*
+  name: FindByAETAsync
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_FindByAETAsync_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByAETAsync
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByAETAsync
+  nameWithType: ISourceApplicationEntityRepository.FindByAETAsync
 - uid: Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.FindByNameAsync(System.String,System.Threading.CancellationToken)
   name: FindByNameAsync(String, CancellationToken)
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.ISourceApplicationEntityRepository.html#Monai_Deploy_InformaticsGateway_Database_Api_Repositories_ISourceApplicationEntityRepository_FindByNameAsync_System_String_System_Threading_CancellationToken_
