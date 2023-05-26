@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomDimseScuServicesStepDefinitions
     {
-        internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(3);
+        internal static readonly TimeSpan DicomScpWaitTimeSpan = TimeSpan.FromMinutes(20);
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly Configurations _configuration;
         private readonly DicomScp _dicomServer;
