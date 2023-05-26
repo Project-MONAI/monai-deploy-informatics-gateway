@@ -183,12 +183,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             try
             {
-                await _storageService.CopyObjectAsync(
-                    file.TemporaryBucketName,
-                    file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath),
-                    _options.Value.Storage.StorageServiceBucketName,
-                    file.GetPayloadPath(payloadId),
-                    cancellationToken).ConfigureAwait(false);
+                //await _storageService.CopyObjectAsync(
+                //    file.TemporaryBucketName,
+                //    file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath),
+                //    _options.Value.Storage.StorageServiceBucketName,
+                //    file.GetPayloadPath(payloadId),
+                //    cancellationToken).ConfigureAwait(false);
 
                 await VerifyFileExists(payloadId, file, cancellationToken).ConfigureAwait(false);
             }
@@ -212,8 +212,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             try
             {
-                _logger.DeletingFileFromTemporaryBbucket(file.TemporaryBucketName, identity, file.TemporaryPath);
-                await _storageService.RemoveObjectAsync(file.TemporaryBucketName, file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), cancellationToken).ConfigureAwait(false);
+                //_logger.DeletingFileFromTemporaryBbucket(file.TemporaryBucketName, identity, file.TemporaryPath);
+                //await _storageService.RemoveObjectAsync(file.TemporaryBucketName, file.GetTempStoragPath(_options.Value.Storage.RemoteTemporaryStoragePath), cancellationToken).ConfigureAwait(false);
             }
             catch (Exception)
             {

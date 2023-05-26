@@ -113,12 +113,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
-            _uploadQueue.Queue(dicomInfo);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
             _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = request.Dataset.GetSingleValue<string>(dicomTag);
-            await _payloadAssembler.Queue(key, dicomInfo, _configuration.Timeout).ConfigureAwait(false);
+
+            var payloadid = await _payloadAssembler.Queue(key, dicomInfo, _configuration.Timeout).ConfigureAwait(false);
+            dicomInfo.PayloadId = payloadid.ToString();
+            _uploadQueue.Queue(dicomInfo);
         }
 
         private bool AcceptsSopClass(string sopClassUid)

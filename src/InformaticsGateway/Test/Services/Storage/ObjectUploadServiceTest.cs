@@ -166,6 +166,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             };
             var dicomFile = new DicomFile(dataset);
             await file.SetDataStreams(dicomFile, "[]", TemporaryDataStorageLocation.Memory);
+            file.PayloadId = Guid.NewGuid().ToString();
             return file;
         }
     }
