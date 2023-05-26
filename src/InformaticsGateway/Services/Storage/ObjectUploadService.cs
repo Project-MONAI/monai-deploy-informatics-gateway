@@ -262,8 +262,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                        storageObjectMetadata.ContentType,
                        metadata,
                        cancellationToken).ConfigureAwait(false);
-                   storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket);
+                   storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket); // deletes local file
                    _logger.UploadedFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
+                   storageObjectMetadata.SetMoved(_configuration.Value.Storage.StorageServiceBucketName);
                })
                .ConfigureAwait(false);
         }
