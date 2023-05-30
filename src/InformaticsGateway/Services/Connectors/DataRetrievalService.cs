@@ -201,7 +201,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 var FileMeta = retrievedFiles[key];
                 FileMeta.PayloadId = inferenceRequest.TransactionId;
                 _uploadQueue.Queue(retrievedFiles[key]);
-                await _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key]).ConfigureAwait(false);
+
+                var payloadId = await _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key]).ConfigureAwait(false);
+                //retrievedFiles[key].PayloadId = payloadId.ToString();
             }
         }
 

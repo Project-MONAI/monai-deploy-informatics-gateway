@@ -170,8 +170,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 {
                     var hl7Fileetadata = new Hl7FileStorageMetadata(client.ClientId.ToString());
                     await hl7Fileetadata.SetDataStream(message.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
+                    var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata).ConfigureAwait(false);
+                    hl7Fileetadata.PayloadId = payloadId.ToString();
                     _uploadQueue.Queue(hl7Fileetadata);
-                    await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata).ConfigureAwait(false);
                 }
             }
             catch (Exception ex)

@@ -87,8 +87,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 throw new FhirStoreException(correlationId, $"Provided resource is of type '{content.InternalResourceType}' but request targeted type '{resourceType}'.", IssueType.Invalid);
             }
 
+            var payloadId = await _payloadAssembler.Queue(correlationId, content.Metadata, Resources.PayloadAssemblerTimeout).ConfigureAwait(false);
+            content.Metadata.PayloadId = payloadId.ToString();
             _uploadQueue.Queue(content.Metadata);
-            await _payloadAssembler.Queue(correlationId, content.Metadata, Resources.PayloadAssemblerTimeout).ConfigureAwait(false);
             _logger.QueuedStowInstance();
 
             content.StatusCode = StatusCodes.Status201Created;
