@@ -168,12 +168,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             {
                 dicomInfo.SetWorkflows(workflowName);
             }
+            // for DICOMweb, use correlation ID as the grouping key
+            var payloadId = await _payloadAssembler.Queue(correlationId, dicomInfo, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
+            dicomInfo.PayloadId = payloadId.ToString();
 
             await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson, _configuration.Value.Dicom.ValidateDicomOnSerialization), _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
             _uploadQueue.Queue(dicomInfo);
 
-            // for DICOMweb, use correlation ID as the grouping key
-            await _payloadAssembler.Queue(correlationId, dicomInfo, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
+
             _logger.QueuedStowInstance();
 
             AddSuccess(null, uids);
