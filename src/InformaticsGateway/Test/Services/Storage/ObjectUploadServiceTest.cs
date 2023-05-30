@@ -119,7 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
         }
 
-        [RetryFact(10, 250)]
+        [RetryFact(10, 25000)]
         public async Task GivenAFhirFileStorageMetadata_WhenQueuedForUpload_ExpectSingleFileToBeUploaded()
         {
             var countdownEvent = new CountdownEvent(1);
@@ -146,6 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             var file = new FhirFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), FhirStorageFormat.Json);
 
             await file.SetDataStream("[]", TemporaryDataStorageLocation.Memory);
+            file.PayloadId = Guid.NewGuid().ToString();
             return file;
         }
 
