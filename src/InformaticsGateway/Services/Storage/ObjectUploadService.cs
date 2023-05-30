@@ -198,7 +198,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                     throw new FileUploadException($"Failed to upload file after retries {identifier}.");
                 }
             } while (!(
-            //await VerifyExists(storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath), cancellationToken).ConfigureAwait(false)
             await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false)
             ));
         }
@@ -217,7 +216,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                {
                    var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                    internalCancellationTokenSource.CancelAfter(_configuration.Value.Storage.StorageServiceListTimeout);
-                   //var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.TemporaryStorageBucket, path).ConfigureAwait(false);
                    var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.StorageServiceBucketName, path).ConfigureAwait(false);
                    _logger.VerifyFileExists(path, exists);
                    return exists;
@@ -246,25 +244,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                {
                    if (storageObjectMetadata.IsUploaded) { return; }
 
-                   ////////////////////
                    var bucket = _configuration.Value.Storage.StorageServiceBucketName;
                    var path = storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId));
-                   //////////////////
 
                    storageObjectMetadata.Data.Seek(0, System.IO.SeekOrigin.Begin);
                    await _storageService.PutObjectAsync(
-                       //_configuration.Value.Storage.TemporaryStorageBucket,
                        bucket,
-                       //storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath),
                        path,
                        storageObjectMetadata.Data,
                        storageObjectMetadata.Data.Length,
                        storageObjectMetadata.ContentType,
                        metadata,
                        cancellationToken).ConfigureAwait(false);
-                   storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket); // deletes local file
+                   storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket); // deletes local file and sets uploaded to true
                    _logger.UploadedFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
-                   storageObjectMetadata.SetMoved(_configuration.Value.Storage.StorageServiceBucketName);
+                   storageObjectMetadata.SetMoved(_configuration.Value.Storage.StorageServiceBucketName); // set bucket, date moved, and move complete
                })
                .ConfigureAwait(false);
         }
