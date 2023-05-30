@@ -119,6 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.Equal("AET1", actual.FirstOrDefault()!.Name);
 
             actual = await store.FindByAETAsync("AET6").ConfigureAwait(false);
+            Assert.NotNull(actual);
             Assert.Empty(actual);
         }
 
