@@ -199,11 +199,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     retrievedFiles[key].SetWorkflows(inferenceRequest.Application.Id);
                 }
                 var FileMeta = retrievedFiles[key];
-                FileMeta.PayloadId = inferenceRequest.TransactionId;
-                _uploadQueue.Queue(retrievedFiles[key]);
 
                 var payloadId = await _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key]).ConfigureAwait(false);
-                //retrievedFiles[key].PayloadId = payloadId.ToString();
+                retrievedFiles[key].PayloadId = payloadId.ToString();
+                _uploadQueue.Queue(retrievedFiles[key]);
             }
         }
 
