@@ -117,6 +117,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             File.SetFailed();
         }
 
-        public string PayloadId { get; set; }
+        public string? PayloadId { get; set; }
     }
 }
