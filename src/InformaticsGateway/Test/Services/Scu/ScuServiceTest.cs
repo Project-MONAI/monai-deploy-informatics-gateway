@@ -96,7 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
 
             Assert.Equal(ServiceStatus.Running, svc.Status);
 
-            var request = new ScuWorkRequest(Guid.NewGuid().ToString(), RequestType.CEcho, "localhost", _port, DicomScpFixture.s_aETITLE);
+            var request = new ScuWorkRequest(Guid.NewGuid().ToString(), RequestType.CEcho, "localhost", _port, DicomScpFixture.s_aETITLE, CancellationToken.None);
 
             var response = await _scuQueue.Queue(request, _cancellationTokenSource.Token);
 
@@ -113,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
 
             Assert.Equal(ServiceStatus.Running, svc.Status);
 
-            var request = new ScuWorkRequest(Guid.NewGuid().ToString(), RequestType.CEcho, "localhost", _port, "BADAET");
+            var request = new ScuWorkRequest(Guid.NewGuid().ToString(), RequestType.CEcho, "localhost", _port, "BADAET", CancellationToken.None);
 
             var response = await _scuQueue.Queue(request, _cancellationTokenSource.Token);
 
@@ -130,7 +130,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
 
             Assert.Equal(ServiceStatus.Running, svc.Status);
 
-            var request = new ScuWorkRequest(Guid.NewGuid().ToString(), RequestType.CEcho, "localhost", _port, "ABORT");
+            var request = new ScuWorkRequest(Guid.NewGuid().ToString(), RequestType.CEcho, "localhost", _port, "ABORT", CancellationToken.None);
 
             var response = await _scuQueue.Queue(request, _cancellationTokenSource.Token);
 
@@ -147,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scu
 
             Assert.Equal(ServiceStatus.Running, svc.Status);
 
-            var request = new ScuWorkRequest(Guid.NewGuid().ToString(), RequestType.CEcho, "UNKNOWNHOST123456789", _port, DicomScpFixture.s_aETITLE);
+            var request = new ScuWorkRequest(Guid.NewGuid().ToString(), RequestType.CEcho, "UNKNOWNHOST123456789", _port, DicomScpFixture.s_aETITLE, CancellationToken.None);
 
             var response = await _scuQueue.Queue(request, _cancellationTokenSource.Token);
 
