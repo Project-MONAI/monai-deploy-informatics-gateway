@@ -64,7 +64,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
                 try
                 {
                     var item = _workQueue.Dequeue(cancellationToken);
-                    await Process(item, cancellationToken).ConfigureAwait(false);
+
+                    var linkedCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, item.CancellationToken);
+
+                    ProcessThread(item, linkedCancellationToken.Token);
                 }
                 catch (ObjectDisposedException ex)
                 {
@@ -80,6 +83,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             }
             Status = ServiceStatus.Cancelled;
             _logger.ServiceCancelled(ServiceName);
+        }
+
+        private void ProcessThread(ScuWorkRequest request, CancellationToken cancellationToken)
+        {
+            Task.Run(() => Process(request, cancellationToken));
         }
 
         private async Task Process(ScuWorkRequest request, CancellationToken cancellationToken)

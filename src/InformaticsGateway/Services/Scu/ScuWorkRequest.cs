@@ -33,8 +33,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         public string HostIp { get; }
         public int Port { get; }
         public string AeTitle { get; }
+        public CancellationToken CancellationToken { get; }
 
-        public ScuWorkRequest(string correlationId, RequestType requestType, string hostIp, int port, string aeTitle)
+        public ScuWorkRequest(string correlationId, RequestType requestType, string hostIp, int port, string aeTitle, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(correlationId);
             Guard.Against.NullOrWhiteSpace(hostIp);
@@ -45,6 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             HostIp = hostIp;
             Port = port;
             AeTitle = aeTitle;
+            CancellationToken = cancellationToken;
 
             _awaiter = new AsyncManualResetEvent(false);
         }
