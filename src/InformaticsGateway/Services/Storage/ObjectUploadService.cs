@@ -225,7 +225,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private async Task UploadFile(StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, string payloadId, CancellationToken cancellationToken)
         {
-            _logger.UploadingFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
+            _logger.UploadingFileToStoreage(storageObjectMetadata.TemporaryPath);
             var metadata = new Dictionary<string, string>
                 {
                     { FileMetadataKeys.Source, source },
@@ -257,7 +257,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                        metadata,
                        cancellationToken).ConfigureAwait(false);
                    storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket); // deletes local file and sets uploaded to true
-                   _logger.UploadedFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
+                   _logger.UploadedFileToStoreage(storageObjectMetadata.TemporaryPath);
                    storageObjectMetadata.SetMoved(_configuration.Value.Storage.StorageServiceBucketName); // set bucket, date moved, and move complete
                })
                .ConfigureAwait(false);
