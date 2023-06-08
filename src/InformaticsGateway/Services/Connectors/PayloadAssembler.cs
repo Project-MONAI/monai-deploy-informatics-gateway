@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// </summary>
         /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
-        public async Task Queue(string bucket, FileStorageMetadata file) => await Queue(bucket, file, DEFAULT_TIMEOUT).ConfigureAwait(false);
+        public async Task<Guid> Queue(string bucket, FileStorageMetadata file) => await Queue(bucket, file, DEFAULT_TIMEOUT).ConfigureAwait(false);
 
         /// <summary>
         /// Queues a new instance of <see cref="FileStorageMetadata"/>.
@@ -95,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
         /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
-        public async Task Queue(string bucket, FileStorageMetadata file, uint timeout)
+        public async Task<Guid> Queue(string bucket, FileStorageMetadata file, uint timeout)
         {
             Guard.Against.Null(file);
 
@@ -106,6 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var payload = await CreateOrGetPayload(bucket, file.CorrelationId, timeout).ConfigureAwait(false);
             payload.Add(file);
             _logger.FileAddedToBucket(payload.Key, payload.Count);
+            return payload.PayloadId;
         }
 
         /// <summary>

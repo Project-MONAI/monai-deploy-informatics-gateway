@@ -26,7 +26,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class SharedDefinitions
     {
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(10);
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly RabbitMqConsumer _receivedMessages;
         private readonly Assertions _assertions;

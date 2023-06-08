@@ -27,8 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 4001, Level = LogLevel.Debug, Message = "Upload statistics: {threads} threads, {seconds} seconds.")]
         public static partial void UploadStats(this ILogger logger, int threads, double seconds);
 
-        [LoggerMessage(EventId = 4002, Level = LogLevel.Debug, Message = "Uploading file to temporary store at {filePath}.")]
-        public static partial void UploadingFileToTemporaryStore(this ILogger logger, string filePath);
+        [LoggerMessage(EventId = 4002, Level = LogLevel.Debug, Message = "Uploading file to storeage at {filePath}.")]
+        public static partial void UploadingFileToStoreage(this ILogger logger, string filePath);
 
         [LoggerMessage(EventId = 4003, Level = LogLevel.Information, Message = "Instance queued for upload {identifier}. Items in queue {count} using memory {memoryUsageKb}KB.")]
         public static partial void InstanceAddedToUploadQueue(this ILogger logger, string identifier, int count, double memoryUsageKb);
@@ -36,11 +36,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 4004, Level = LogLevel.Debug, Message = "Error removing objects that are pending upload during startup.")]
         public static partial void ErrorRemovingPendingUploadObjects(this ILogger logger, Exception ex);
 
-        [LoggerMessage(EventId = 4005, Level = LogLevel.Error, Message = "Error uploading temporary store. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
+        [LoggerMessage(EventId = 4005, Level = LogLevel.Error, Message = "Error uploading storeage. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
         public static partial void ErrorUploadingFileToTemporaryStore(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
 
-        [LoggerMessage(EventId = 4006, Level = LogLevel.Information, Message = "File uploaded to temporary store at {filePath}.")]
-        public static partial void UploadedFileToTemporaryStore(this ILogger logger, string filePath);
+        [LoggerMessage(EventId = 4006, Level = LogLevel.Information, Message = "File uploaded to storeage at {filePath}.")]
+        public static partial void UploadedFileToStoreage(this ILogger logger, string filePath);
 
         [LoggerMessage(EventId = 4007, Level = LogLevel.Debug, Message = "Items in queue {count}.")]
         public static partial void InstanceInUploadQueue(this ILogger logger, int count);
