@@ -158,12 +158,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                     case DicomFileStorageMetadata dicom:
                         if (!string.IsNullOrWhiteSpace(dicom.JsonFile.TemporaryPath))
                         {
-                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.Source, dicom.Workflows, _cancellationTokenSource.Token).ConfigureAwait(false);
+                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.Source, dicom.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
                         }
                         break;
                 }
 
-                await UploadFileAndConfirm(blob.Id, blob.File, blob.Source, blob.Workflows, _cancellationTokenSource.Token).ConfigureAwait(false);
+                await UploadFileAndConfirm(blob.Id, blob.File, blob.Source, blob.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -177,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             }
         }
 
-        private async Task UploadFileAndConfirm(string identifier, StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, CancellationToken cancellationToken)
+        private async Task UploadFileAndConfirm(string identifier, StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, string payloadId, CancellationToken cancellationToken)
         {
             Guard.Against.NullOrWhiteSpace(identifier);
             Guard.Against.Null(storageObjectMetadata);
@@ -192,12 +192,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             var count = 3;
             do
             {
-                await UploadFile(storageObjectMetadata, source, workflows, cancellationToken).ConfigureAwait(false);
+                await UploadFile(storageObjectMetadata, source, workflows, payloadId, cancellationToken).ConfigureAwait(false);
                 if (count-- <= 0)
                 {
                     throw new FileUploadException($"Failed to upload file after retries {identifier}.");
                 }
-            } while (!(await VerifyExists(storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath), cancellationToken).ConfigureAwait(false)));
+            } while (!(
+            await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false)
+            ));
         }
 
         private async Task<bool> VerifyExists(string path, CancellationToken cancellationToken)
@@ -214,16 +216,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                {
                    var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                    internalCancellationTokenSource.CancelAfter(_configuration.Value.Storage.StorageServiceListTimeout);
-                   var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.TemporaryStorageBucket, path).ConfigureAwait(false);
+                   var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.StorageServiceBucketName, path).ConfigureAwait(false);
                    _logger.VerifyFileExists(path, exists);
                    return exists;
                })
                .ConfigureAwait(false);
         }
 
-        private async Task UploadFile(StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, CancellationToken cancellationToken)
+        private async Task UploadFile(StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, string payloadId, CancellationToken cancellationToken)
         {
-            _logger.UploadingFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
+            _logger.UploadingFileToStoreage(storageObjectMetadata.TemporaryPath);
             var metadata = new Dictionary<string, string>
                 {
                     { FileMetadataKeys.Source, source },
@@ -242,17 +244,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                {
                    if (storageObjectMetadata.IsUploaded) { return; }
 
+                   var bucket = _configuration.Value.Storage.StorageServiceBucketName;
+                   var path = storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId));
+
                    storageObjectMetadata.Data.Seek(0, System.IO.SeekOrigin.Begin);
                    await _storageService.PutObjectAsync(
-                       _configuration.Value.Storage.TemporaryStorageBucket,
-                       storageObjectMetadata.GetTempStoragPath(_configuration.Value.Storage.RemoteTemporaryStoragePath),
+                       bucket,
+                       path,
                        storageObjectMetadata.Data,
                        storageObjectMetadata.Data.Length,
                        storageObjectMetadata.ContentType,
                        metadata,
                        cancellationToken).ConfigureAwait(false);
-                   storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket);
-                   _logger.UploadedFileToTemporaryStore(storageObjectMetadata.TemporaryPath);
+                   storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket); // deletes local file and sets uploaded to true
+                   _logger.UploadedFileToStoreage(storageObjectMetadata.TemporaryPath);
+                   storageObjectMetadata.SetMoved(_configuration.Value.Storage.StorageServiceBucketName); // set bucket, date moved, and move complete
                })
                .ConfigureAwait(false);
         }

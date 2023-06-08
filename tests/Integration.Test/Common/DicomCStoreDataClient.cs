@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             var failureStatus = new List<DicomStatus>();
             for (int i = 0; i < associations; i++)
             {
-                var files = dataProvider.DicomSpecs.Files.Skip(i * filesPerAssociations).Take(filesPerAssociations).ToList();
+                var files = dataProvider.DicomSpecs.Files.Skip(i * filesPerAssociations).Take(filesPerAssociations).ToList(); // .Take(20)
                 if (i + 1 == associations && dataProvider.DicomSpecs.Files.Count > (i + 1) * filesPerAssociations)
                 {
                     files.AddRange(dataProvider.DicomSpecs.Files.Skip(i * filesPerAssociations));

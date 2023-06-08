@@ -120,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         private bool IsValidBucketName(string source, string bucketName)
         {
             var valid = IsNotNullOrWhiteSpace(source, bucketName);
-            var regex = new Regex("(?=^.{3,63}$)(^[a-z0-9]+[a-z0-9\\-]+[a-z0-9]+$)");
+            var regex = new Regex("(?=^.{3,63}$)(^[a-z0-9]+[a-z0-9\\-]+[a-z0-9]+$)", new RegexOptions(), TimeSpan.FromSeconds(5));
             if (!regex.IsMatch(bucketName))
             {
                 valid = false;

@@ -45,10 +45,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _outputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
             _messages = new ConcurrentBag<Message>();
 
-            subscriberService.Subscribe(
+            subscriberService.SubscribeAsync(
                 queueName,
                 queueName,
-                (eventArgs) =>
+                async (eventArgs) =>
                 {
                     _outputHelper.WriteLine($"Message received from queue {queueName} for {queueName}.");
                     _messages.Add(eventArgs.Message);
