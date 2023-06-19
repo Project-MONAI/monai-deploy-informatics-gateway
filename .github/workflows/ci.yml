@@ -407,7 +407,7 @@ jobs:
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v4.1.1
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           context: .
