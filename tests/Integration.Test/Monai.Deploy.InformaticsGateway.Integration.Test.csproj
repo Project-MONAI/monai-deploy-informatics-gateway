@@ -27,7 +27,7 @@
     <PackageReference Include="fo-dicom" Version="5.0.3" />
     <PackageReference Include="HL7-dotnetcore" Version="2.35.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.15" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.19" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
