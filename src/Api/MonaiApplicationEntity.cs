@@ -72,6 +72,8 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// </summary>
         public List<string> Workflows { get; set; } = default!;
 
+        public List<string> PluginAssemblies { get; set; } = default!;
+
         /// <summary>
         /// Optional field to specify SOP Class UIDs to ignore.
         /// <see cref="IgnoredSopClasses"/> and <see cref="AllowedSopClasses"/> are mutually exclusive.
@@ -128,6 +130,8 @@ namespace Monai.Deploy.InformaticsGateway.Api
             IgnoredSopClasses ??= new List<string>();
 
             AllowedSopClasses ??= new List<string>();
+
+            PluginAssemblies ??= new List<string>();
         }
 
         public override string ToString()

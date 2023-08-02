@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -108,8 +108,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Name = calledAeTitle,
                     Grouping = grouping,
                     Timeout = groupingTimeout,
-                    Workflows = new List<string>(DummyWorkflows)
+                    Workflows = new List<string>(DummyWorkflows),
+                    PluginAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile).AssemblyQualifiedName }
                 }, CancellationToken.None);
+
                 _dataProvider.Workflows = DummyWorkflows;
             }
             catch (ProblemException ex)

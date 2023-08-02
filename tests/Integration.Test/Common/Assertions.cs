@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(retryCount: 5, sleepDurationProvider: _ => TimeSpan.FromMilliseconds(500));
         }
 
-        internal async Task ShouldHaveUploadedDicomDataToMinio(IReadOnlyList<Message> messages, Dictionary<string, string> fileHashes)
+        internal async Task ShouldHaveUploadedDicomDataToMinio(IReadOnlyList<Message> messages, Dictionary<string, string> fileHashes, Action<DicomFile> additionalChecks = null)
         {
             Guard.Against.Null(messages);
             Guard.Against.NullOrEmpty(fileHashes);
@@ -75,6 +75,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                                 memoryStream.Position = 0;
                                 var dicomFile = DicomFile.Open(memoryStream);
                                 dicomValidationKey = dicomFile.GenerateFileName();
+
+                                if (additionalChecks is not null)
+                                {
+                                    additionalChecks(dicomFile);
+                                }
+
                                 fileHashes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
                             });
                         await minioClient.GetObjectAsync(getObjectArgs);

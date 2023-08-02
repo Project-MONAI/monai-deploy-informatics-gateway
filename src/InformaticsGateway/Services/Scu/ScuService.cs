@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             _workQueue = _scope.ServiceProvider.GetService<IScuQueue>() ?? throw new ServiceNotFoundException(nameof(IScuQueue));
         }
 
-        private async Task BackgroundProcessingAsync(CancellationToken cancellationToken)
+        private Task BackgroundProcessingAsync(CancellationToken cancellationToken)
         {
             _logger.ServiceRunning(ServiceName);
             while (!cancellationToken.IsCancellationRequested)
@@ -83,11 +83,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             }
             Status = ServiceStatus.Cancelled;
             _logger.ServiceCancelled(ServiceName);
+            return Task.CompletedTask;
         }
 
         private void ProcessThread(ScuWorkRequest request, CancellationToken cancellationToken)
         {
-            Task.Run(() => Process(request, cancellationToken));
+            Task.Run(() => Process(request, cancellationToken), cancellationToken);
         }
 
         private async Task Process(ScuWorkRequest request, CancellationToken cancellationToken)
