@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Amazon.Runtime.Internal;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
