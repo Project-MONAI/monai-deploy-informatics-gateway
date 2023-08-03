@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             _workQueue = _scope.ServiceProvider.GetService<IScuQueue>() ?? throw new ServiceNotFoundException(nameof(IScuQueue));
         }
 
-        private Task BackgroundProcessingAsync(CancellationToken cancellationToken)
+        private Task BackgroundProcessing(CancellationToken cancellationToken)
         {
             _logger.ServiceRunning(ServiceName);
             while (!cancellationToken.IsCancellationRequested)
@@ -201,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         {
             var task = Task.Run(async () =>
             {
-                await BackgroundProcessingAsync(cancellationToken).ConfigureAwait(false);
+                await BackgroundProcessing(cancellationToken).ConfigureAwait(false);
             }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
