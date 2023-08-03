@@ -700,8 +700,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "0.1.22",
-        "contentHash": "pFZBuV3TaZvZJz8wTib8G/Doa/XHkM8uv12VtuLkQc7lI8AbJmH1eIHnpRliyuKPmw7VMhOMiS7JhyqutC0uvQ==",
+        "resolved": "0.1.23",
+        "contentHash": "wz93Hk2kq5cKR/8kJlCEA8DHACrPFo+lVEjWv3nvLbPhJ4N0aDzbcQoqA4P/duSWXFi0jhUzXsSwBX3rt4l7Xw==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.0.1",
           "Microsoft.Extensions.Configuration": "6.0.1",
@@ -714,10 +714,10 @@
       },
       "Monai.Deploy.Messaging.RabbitMQ": {
         "type": "Transitive",
-        "resolved": "0.1.22",
-        "contentHash": "ZJEHtM4NaX8UzvG+w1coKOivbCecoU6hx8g06PGKkg6giIeLGqCi2FDkP89kIPq7Kz1RB9cLVvYdXY9Rs+ZDSg==",
+        "resolved": "0.1.23",
+        "contentHash": "+Y1eLKz9FtPbASOVtTaM1ktyUqOxmyIjksNukZ8dUhtDJrT3CF9ISw6BGajxwJfq2jUjacli3jNSc1OAnLJRcQ==",
         "dependencies": {
-          "Monai.Deploy.Messaging": "0.1.22",
+          "Monai.Deploy.Messaging": "0.1.23",
           "Polly": "7.2.3",
           "RabbitMQ.Client": "6.4.0",
           "System.Collections.Concurrent": "4.3.0"
@@ -1680,7 +1680,7 @@
           "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.DicomWeb.Client": "[1.0.0, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[0.1.22, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[0.1.23, )",
           "Monai.Deploy.Security": "[0.1.3, )",
           "Monai.Deploy.Storage": "[0.2.16, )",
           "Monai.Deploy.Storage.MinIO": "[0.2.16, )",
@@ -1698,7 +1698,7 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.15, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[0.1.22, )",
+          "Monai.Deploy.Messaging": "[0.1.23, )",
           "Monai.Deploy.Storage": "[0.2.16, )"
         }
       },
@@ -1734,7 +1734,7 @@
           "Microsoft.Extensions.Options": "[6.0.0, )",
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[0.1.22, )",
+          "Monai.Deploy.Messaging": "[0.1.23, )",
           "Monai.Deploy.Storage": "[0.2.16, )",
           "System.IO.Abstractions": "[17.2.3, )"
         }
