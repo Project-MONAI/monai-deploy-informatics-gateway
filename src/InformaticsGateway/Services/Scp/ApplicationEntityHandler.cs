@@ -20,6 +20,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
