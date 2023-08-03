@@ -6,6 +6,7 @@ title Export Results
 
 participantgroup #00CC66 Informatics\nGateway
 participant "SCU Export Watcher" as EW
+participant "Data Export Plugin Engine" as DEPE
 participant "SCU Export" as SCU
 participant "FHIR Export" as FHIR
 participant "DICOMweb Export" as DICOMWEB
@@ -36,6 +37,16 @@ PS->EW: Notify new export task event
 activate EW
 
 EW->DISK: Load results
+EW->DEPE: Execute plugins (DicomFile, ExportRequestEventDetails)
+activate DEPE
+loop plugin in plugins
+DEPE->DEPE: execute plugin
+activate DEPE
+DEPE<<--DEPE: return DicomFile
+deactivate DEPE
+end
+EW<--DEPE: return DicomFile
+deactivate DEPE
 
 alt case DICOM
 EW->SCU: Queue DICOM export task
@@ -62,6 +73,3 @@ EA->DB: Update task state
 EW<--EA: Response
 deactivate EA
 deactivate EW
-
-
-
