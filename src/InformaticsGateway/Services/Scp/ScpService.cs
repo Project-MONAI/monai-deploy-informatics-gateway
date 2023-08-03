@@ -20,6 +20,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
+using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -41,6 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IServiceScope _serviceScope;
         private readonly IApplicationEntityManager _associationDataProvider;
         private readonly ILogger<ScpService> _logger;
+        private readonly ILogger<ScpServiceInternal> _scpServiceInternalLogger;
         private readonly IHostApplicationLifetime _appLifetime;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private FoDicomNetwork.IDicomServer _server;
@@ -63,6 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             var logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>();
 
             _logger = logginFactory.CreateLogger<ScpService>();
+            _scpServiceInternalLogger = logginFactory.CreateLogger<ScpServiceInternal>();
             _appLifetime = appLifetime;
             _configuration = configuration;
             _ = DicomDictionary.Default;
@@ -82,9 +85,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             try
             {
                 _logger.ServiceStarting(ServiceName);
-                _server = FoDicomNetwork.DicomServerFactory.Create<ScpServiceInternal>(
-                    FoDicomNetwork.NetworkManager.IPv4Any,
+                _server = DicomServerFactory.Create<ScpServiceInternal>(
+                    NetworkManager.IPv4Any,
                     _configuration.Value.Dicom.Scp.Port,
+                    logger: _scpServiceInternalLogger,
                     userState: _associationDataProvider);
 
                 _server.Options.IgnoreUnsupportedTransferSyntaxChange = true;

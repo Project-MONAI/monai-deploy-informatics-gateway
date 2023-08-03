@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using Amazon.Runtime.Internal;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
@@ -135,11 +134,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         public T GetService<T>()
         {
             return (T)_serviceScope.ServiceProvider.GetService(typeof(T));
-        }
-
-        public ILogger GetLogger(string calledAeTitle)
-        {
-            return _loggerFactory.CreateLogger(calledAeTitle);
         }
 
         private async Task InitializeMonaiAeTitlesAsync()
