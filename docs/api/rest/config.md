@@ -54,7 +54,11 @@ curl --location --request GET 'http://localhost:5000/config/ae'
     "grouping": "0020,000D",
     "timeout": 5,
     "ignoredSopClasses": ["1.2.840.10008.5.1.4.1.1.1.1"],
-    "allowedSopClasses": ["1.2.840.10008.5.1.4.1.1.1.2"]
+    "allowedSopClasses": ["1.2.840.10008.5.1.4.1.1.1.2"],
+    "pluginAssemblies": [
+        "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+        "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
+    ]
   },
   {
     "name": "liver-seg",
@@ -151,6 +155,10 @@ curl --location --request POST 'http://localhost:5000/config/ae/' \
             "timeout": 5,
             "workflows": [
                 "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
+            ],
+            "pluginAssemblies": [
+                "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+                "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
             ]
         }
     }'
@@ -162,7 +170,11 @@ curl --location --request POST 'http://localhost:5000/config/ae/' \
 {
   "name": "breast-tumor",
   "aeTitle": "BREASTV1",
-  "workflows": ["3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"]
+  "workflows": ["3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"],
+  "pluginAssemblies": [
+      "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+      "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
+  ]
 }
 ```
 
@@ -210,6 +222,10 @@ curl --location --request PUT 'http://localhost:5000/config/ae/' \
             "timeout": 3,
             "workflows": [
                 "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
+            ],
+            "pluginAssemblies": [
+                "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+                "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
             ]
         }
     }'
@@ -222,6 +238,10 @@ curl --location --request PUT 'http://localhost:5000/config/ae/' \
   "name": "breast-tumor",
   "aeTitle": "BREASTV1",
   "workflows": ["3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"],
+  "pluginAssemblies": [
+      "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+      "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
+  ],
   "timeout": 3
 }
 ```

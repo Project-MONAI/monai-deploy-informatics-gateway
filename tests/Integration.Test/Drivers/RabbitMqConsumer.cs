@@ -48,12 +48,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             subscriberService.SubscribeAsync(
                 queueName,
                 queueName,
-                async (eventArgs) =>
+                (eventArgs) =>
                 {
                     _outputHelper.WriteLine($"Message received from queue {queueName} for {queueName}.");
                     _messages.Add(eventArgs.Message);
                     subscriberService.Acknowledge(eventArgs.Message);
                     _outputHelper.WriteLine($"{DateTime.UtcNow} - {queueName} message received with correlation ID={eventArgs.Message.CorrelationId}, delivery tag={eventArgs.Message.DeliveryTag}");
+                    return Task.CompletedTask;
                 });
         }
 

@@ -73,6 +73,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public List<string> Workflows { get; set; } = default!;
 
         /// <summary>
+        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputDataPluginEngine"/>.
+        /// </summary>
+        public List<string> PluginAssemblies { get; set; } = default!;
+
+        /// <summary>
         /// Optional field to specify SOP Class UIDs to ignore.
         /// <see cref="IgnoredSopClasses"/> and <see cref="AllowedSopClasses"/> are mutually exclusive.
         /// </summary>
@@ -128,6 +133,8 @@ namespace Monai.Deploy.InformaticsGateway.Api
             IgnoredSopClasses ??= new List<string>();
 
             AllowedSopClasses ??= new List<string>();
+
+            PluginAssemblies ??= new List<string>();
         }
 
         public override string ToString()
