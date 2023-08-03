@@ -103,8 +103,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"(.*) (.*) studies for export")]
         public async Task GivenDICOMInstances(int studyCount, string modality)
         {
-            Guard.Against.NegativeOrZero(studyCount);
-            Guard.Against.NullOrWhiteSpace(modality);
+            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
+            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
 
             _dataProvider.GenerateDicomData(modality, studyCount);
             await _dataSink.SendAsync(_dataProvider);
@@ -114,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"a export request is sent for '([^']*)'")]
         public void WhenAExportRequestIsReceivedDesignatedFor(string routingKey)
         {
-            Guard.Against.NullOrWhiteSpace(routingKey);
+            Guard.Against.NullOrWhiteSpace(routingKey, nameof(routingKey));
 
             var exportRequestEvent = new ExportRequestEvent
             {

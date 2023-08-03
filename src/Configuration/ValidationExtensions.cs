@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsValid(this MonaiApplicationEntity monaiApplicationEntity, out IList<string> validationErrors)
         {
-            Guard.Against.Null(monaiApplicationEntity);
+            Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
 
             validationErrors = new List<string>();
 
@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsValid(this DestinationApplicationEntity destinationApplicationEntity, out IList<string> validationErrors)
         {
-            Guard.Against.Null(destinationApplicationEntity);
+            Guard.Against.Null(destinationApplicationEntity, nameof(destinationApplicationEntity));
 
             validationErrors = new List<string>();
 
@@ -58,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsValid(this SourceApplicationEntity sourceApplicationEntity, out IList<string> validationErrors)
         {
-            Guard.Against.Null(sourceApplicationEntity);
+            Guard.Against.Null(sourceApplicationEntity, nameof(sourceApplicationEntity));
 
             validationErrors = new List<string>();
 
@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsValidDicomTag(string source, string grouping, IList<string> validationErrors = null)
         {
-            Guard.Against.NullOrWhiteSpace(source);
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
 
             try
             {
@@ -93,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsAeTitleValid(string source, string aeTitle, IList<string> validationErrors = null)
         {
-            Guard.Against.NullOrWhiteSpace(source);
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
 
             if (!string.IsNullOrWhiteSpace(aeTitle) &&
                 aeTitle.Length <= 15 &&
@@ -121,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsPortValid(string source, int port, IList<string> validationErrors = null)
         {
-            Guard.Against.NullOrWhiteSpace(source);
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
 
             if (port > 0 && port <= 65535) return true;
 

@@ -148,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> ListAeTitlehandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(host);
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
 
@@ -216,8 +216,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> RemoveAeTitlehandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(name);
-            Guard.Against.Null(host);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -252,8 +252,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> AddAeTitlehandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity);
-            Guard.Against.Null(host);
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -304,8 +304,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> EditAeTitleHandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity);
-            Guard.Against.Null(host);
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();

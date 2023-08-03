@@ -61,8 +61,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public async Task NotifyAsync(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
-            Guard.Against.Null(notificationQueue);
+            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(notificationQueue, nameof(notificationQueue));
 
             if (payload.State != Payload.PayloadState.Notify)
             {
@@ -91,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task DeletePayload(Payload payload, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
@@ -100,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task NotifyPayloadReady(Payload payload)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             _logger.GenerateWorkflowRequest(payload.PayloadId);
 
@@ -136,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task<PayloadAction> UpdatePayloadState(Payload payload, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));

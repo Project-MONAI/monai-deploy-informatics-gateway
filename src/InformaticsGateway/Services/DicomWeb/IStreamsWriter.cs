@@ -74,9 +74,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
         public async Task<StowResult> Save(IList<Stream> streams, string studyInstanceUid, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrEmpty(streams);
-            Guard.Against.NullOrWhiteSpace(correlationId);
-            Guard.Against.NullOrWhiteSpace(dataSource);
+            Guard.Against.NullOrEmpty(streams, nameof(streams));
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.NullOrWhiteSpace(dataSource, nameof(dataSource));
 
             foreach (var stream in streams)
             {
@@ -127,9 +127,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
         private async Task SaveInstance(Stream stream, string studyInstanceUid, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(stream);
-            Guard.Against.NullOrWhiteSpace(correlationId);
-            Guard.Against.NullOrWhiteSpace(dataSource);
+            Guard.Against.Null(stream, nameof(stream));
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.NullOrWhiteSpace(dataSource, nameof(dataSource));
 
             stream.Seek(0, SeekOrigin.Begin);
             DicomFile dicomFile;
@@ -212,7 +212,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         /// <inheritdoc />
         private void AddFailure(DicomStatus dicomStatus, StudySerieSopUids uids = default)
         {
-            Guard.Against.Null(dicomStatus);
+            Guard.Against.Null(dicomStatus, nameof(dicomStatus));
 
             _failureCount++;
 

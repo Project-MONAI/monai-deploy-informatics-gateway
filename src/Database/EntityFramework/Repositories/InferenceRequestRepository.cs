@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             ILogger<InferenceRequestRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options) : base(logger, options)
         {
-            Guard.Against.Null(serviceScopeFactory);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public override async Task AddAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
             await _retryPolicy.ExecuteAsync(async () =>
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public override async Task<InferenceRequest?> GetInferenceRequestAsync(string transactionId, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -113,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public override async Task<InferenceRequest?> GetInferenceRequestAsync(Guid inferenceRequestId, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrEmpty(inferenceRequestId);
+            Guard.Against.NullOrEmpty(inferenceRequestId, nameof(inferenceRequestId));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -123,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         protected override async Task SaveAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
             await _retryPolicy.ExecuteAsync(async () =>
             {

@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         protected override Logger GetLoggerImpl(string name)
         {
-            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
             return new MicrosoftLoggerAdapter(_loggerFactory.CreateLogger(name));
         }

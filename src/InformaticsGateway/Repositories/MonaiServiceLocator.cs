@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
 
         private IMonaiService GetService(Type type)
         {
-            Guard.Against.Null(type);
+            Guard.Against.Null(type, nameof(type));
 
             return _serviceProvider.GetService(type) as IMonaiService;
         }

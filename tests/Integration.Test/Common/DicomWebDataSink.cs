@@ -49,8 +49,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         /// <returns></returns>
         public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {
-            Guard.Against.Null(dataProvider);
-            Guard.Against.Null(args);
+            Guard.Against.Null(dataProvider, nameof(dataProvider));
+            Guard.Against.Null(args, nameof(args));
 
             var dicomFileSpec = dataProvider.DicomSpecs;
             dicomFileSpec.Should().NotBeNull();

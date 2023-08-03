@@ -38,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {
-            Guard.Against.NullOrEmpty(args);
+            Guard.Against.NullOrEmpty(args, nameof(args));
 
             var callingAeTitle = args[0].ToString();
             var host = args[1].ToString();

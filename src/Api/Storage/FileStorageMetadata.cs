@@ -92,8 +92,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         protected FileStorageMetadata(string correlationId, string identifier)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId);
-            Guard.Against.NullOrWhiteSpace(identifier);
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
 
             CorrelationId = correlationId;
             Id = identifier;
@@ -107,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <param name="workflows">List of workflows.</param>
         public void SetWorkflows(params string[] workflows)
         {
-            Guard.Against.NullOrEmpty(workflows);
+            Guard.Against.NullOrEmpty(workflows, nameof(workflows));
 
             Workflows.AddRange(workflows);
         }

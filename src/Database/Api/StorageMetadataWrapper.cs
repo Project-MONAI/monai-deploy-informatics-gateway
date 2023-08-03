@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 
         public StorageMetadataWrapper(FileStorageMetadata metadata)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             CorrelationId = metadata.CorrelationId;
             Identity = metadata.Id;
@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 
         public void Update(FileStorageMetadata metadata)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             IsUploaded = metadata.IsUploaded;
             Value = JsonSerializer.Serialize<object>(metadata); // Must be <object> here

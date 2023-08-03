@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
         public TcpListener(IPAddress ipAddress, int port)
         {
-            Guard.Against.Null(ipAddress);
+            Guard.Against.Null(ipAddress, nameof(ipAddress));
 
             _tcpListener = new System.Net.Sockets.TcpListener(ipAddress, port);
         }

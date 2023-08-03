@@ -42,8 +42,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             ILogger<PayloadRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options)
         {
-            Guard.Against.Null(serviceScopeFactory);
-            Guard.Against.Null(options);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(options, nameof(options));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<Payload> AddAsync(Payload item, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(item);
+            Guard.Against.Null(item, nameof(item));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -69,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<Payload> RemoveAsync(Payload entity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -89,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<Payload> UpdateAsync(Payload entity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {

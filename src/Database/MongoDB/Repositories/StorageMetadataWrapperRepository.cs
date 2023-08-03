@@ -47,9 +47,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             IOptions<InformaticsGatewayConfiguration> options,
             IOptions<MongoDBOptions> mongoDbOptions) : base(logger)
         {
-            Guard.Against.Null(serviceScopeFactory);
-            Guard.Against.Null(options);
-            Guard.Against.Null(mongoDbOptions);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(options, nameof(options));
+            Guard.Against.Null(mongoDbOptions, nameof(mongoDbOptions));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         protected override async Task<bool> DeleteInternalAsync(StorageMetadataWrapper toBeDeleted, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(toBeDeleted);
+            Guard.Against.Null(toBeDeleted, nameof(toBeDeleted));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -94,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public override async Task<IList<FileStorageMetadata>> GetFileStorageMetdadataAsync(string correlationId, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -107,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public override async Task<FileStorageMetadata?> GetFileStorageMetdadataAsync(string correlationId, string identity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -120,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         protected override async Task UpdateInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -145,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         protected override async Task AddAsyncInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             await _retryPolicy.ExecuteAsync(async () =>
             {

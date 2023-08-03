@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             string studyInstanceUid,
             params DicomTransferSyntax[] transferSyntaxes)
         {
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
             DicomValidation.ValidateUI(studyInstanceUid);
             var studyUri = GetStudiesUri(studyInstanceUid);
 
@@ -66,9 +66,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             string seriesInstanceUid,
             params DicomTransferSyntax[] transferSyntaxes)
         {
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
             DicomValidation.ValidateUI(studyInstanceUid);
-            Guard.Against.NullOrWhiteSpace(seriesInstanceUid);
+            Guard.Against.NullOrWhiteSpace(seriesInstanceUid, nameof(seriesInstanceUid));
             DicomValidation.ValidateUI(seriesInstanceUid);
 
             var seriesUri = GetSeriesUri(studyInstanceUid, seriesInstanceUid);
@@ -94,11 +94,11 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             string sopInstanceUid,
             params DicomTransferSyntax[] transferSyntaxes)
         {
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
             DicomValidation.ValidateUI(studyInstanceUid);
-            Guard.Against.NullOrWhiteSpace(seriesInstanceUid);
+            Guard.Against.NullOrWhiteSpace(seriesInstanceUid, nameof(seriesInstanceUid));
             DicomValidation.ValidateUI(seriesInstanceUid);
-            Guard.Against.NullOrWhiteSpace(sopInstanceUid);
+            Guard.Against.NullOrWhiteSpace(sopInstanceUid, nameof(sopInstanceUid));
             DicomValidation.ValidateUI(sopInstanceUid);
 
             var instanceUri = GetInstanceUri(studyInstanceUid, seriesInstanceUid, sopInstanceUid);
@@ -153,11 +153,11 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             Tuple<int, int?> byteRange = null,
             params DicomTransferSyntax[] transferSyntaxes)
         {
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
             DicomValidation.ValidateUI(studyInstanceUid);
-            Guard.Against.NullOrWhiteSpace(seriesInstanceUid);
+            Guard.Against.NullOrWhiteSpace(seriesInstanceUid, nameof(seriesInstanceUid));
             DicomValidation.ValidateUI(seriesInstanceUid);
-            Guard.Against.NullOrWhiteSpace(sopInstanceUid);
+            Guard.Against.NullOrWhiteSpace(sopInstanceUid, nameof(sopInstanceUid));
             DicomValidation.ValidateUI(sopInstanceUid);
 
             return await Retrieve(new Uri($"{RequestServicePrefix}studies/{studyInstanceUid}/series/{seriesInstanceUid}/instances/{sopInstanceUid}/bulk/{dicomTag.Group:X4}{dicomTag.Element:X4}", UriKind.Relative), byteRange, transferSyntaxes);
@@ -175,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             Tuple<int, int?> byteRange = null,
             params DicomTransferSyntax[] transferSyntaxes)
         {
-            Guard.Against.Null(bulkdataUri);
+            Guard.Against.Null(bulkdataUri, nameof(bulkdataUri));
 
             if (bulkdataUri.IsAbsoluteUri)
             {
@@ -200,7 +200,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
         public async IAsyncEnumerable<T> RetrieveMetadata<T>(
             string studyInstanceUid)
         {
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
             DicomValidation.ValidateUI(studyInstanceUid);
             var studyUri = GetStudiesUri(studyInstanceUid);
             var studyMetadataUri = new Uri($"{studyUri}metadata", UriKind.Relative);
@@ -217,9 +217,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             string studyInstanceUid,
             string seriesInstanceUid)
         {
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
             DicomValidation.ValidateUI(studyInstanceUid);
-            Guard.Against.NullOrWhiteSpace(seriesInstanceUid);
+            Guard.Against.NullOrWhiteSpace(seriesInstanceUid, nameof(seriesInstanceUid));
             DicomValidation.ValidateUI(seriesInstanceUid);
 
             var seriesUri = GetSeriesUri(studyInstanceUid, seriesInstanceUid);
@@ -237,11 +237,11 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             string seriesInstanceUid,
             string sopInstanceUid)
         {
-            Guard.Against.NullOrWhiteSpace(studyInstanceUid);
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
             DicomValidation.ValidateUI(studyInstanceUid);
-            Guard.Against.NullOrWhiteSpace(seriesInstanceUid);
+            Guard.Against.NullOrWhiteSpace(seriesInstanceUid, nameof(seriesInstanceUid));
             DicomValidation.ValidateUI(seriesInstanceUid);
-            Guard.Against.NullOrWhiteSpace(sopInstanceUid);
+            Guard.Against.NullOrWhiteSpace(sopInstanceUid, nameof(sopInstanceUid));
             DicomValidation.ValidateUI(sopInstanceUid);
 
             var instanceUri = GetInstanceUri(studyInstanceUid, seriesInstanceUid, sopInstanceUid);

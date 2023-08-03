@@ -16,6 +16,7 @@
  */
 
 using System;
+using System.Xml.Linq;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Log;
 using Microsoft.Extensions.Logging;
@@ -33,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         public override void Log(FellowOakDicom.Log.LogLevel level, string msg, params object[] args)
         {
-            Guard.Against.NullOrWhiteSpace(msg);
+            Guard.Against.NullOrWhiteSpace(msg, nameof(msg));
 
             _logger.Log(level.ToMicrosoftExtensionsLogLevel(), msg, args);
         }

@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Amazon.Runtime.Internal;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
@@ -94,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
         {
-            Guard.Against.Null(request);
+            Guard.Against.Null(request, nameof(request));
 
             await _initializeTask.ConfigureAwait(false);
 
@@ -125,7 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public async Task<bool> IsAeTitleConfiguredAsync(string calledAe)
         {
-            Guard.Against.NullOrWhiteSpace(calledAe);
+            Guard.Against.NullOrWhiteSpace(calledAe, nameof(calledAe));
             await _initializeTask.ConfigureAwait(false);
 
             return _aeTitles.ContainsKey(calledAe);
@@ -155,7 +156,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private void AddNewAeTitle(MonaiApplicationEntity entity)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             var scope = _serviceScopeFactory.CreateScope();
             var handler = scope.ServiceProvider.GetService<IApplicationEntityHandler>() ?? throw new ServiceNotFoundException(nameof(IApplicationEntityHandler));
@@ -202,7 +203,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public void OnNext(MonaiApplicationentityChangedEvent applicationChangedEvent)
         {
-            Guard.Against.Null(applicationChangedEvent);
+            Guard.Against.Null(applicationChangedEvent, nameof(applicationChangedEvent));
 
             switch (applicationChangedEvent.Event)
             {

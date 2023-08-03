@@ -45,8 +45,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             ILogger<StorageMetadataWrapperRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options) : base(logger)
         {
-            Guard.Against.Null(serviceScopeFactory);
-            Guard.Against.Null(options);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(options, nameof(options));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -60,7 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         protected override async Task AddAsyncInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -73,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         protected override async Task UpdateInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -95,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public override async Task<IList<FileStorageMetadata>> GetFileStorageMetdadataAsync(string correlationId, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -108,8 +108,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public override async Task<FileStorageMetadata?> GetFileStorageMetdadataAsync(string correlationId, string identity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId);
-            Guard.Against.NullOrWhiteSpace(identity);
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.NullOrWhiteSpace(identity, nameof(identity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -122,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         protected override async Task<bool> DeleteInternalAsync(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
