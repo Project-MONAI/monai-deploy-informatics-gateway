@@ -307,15 +307,6 @@
           "System.Threading.Channels": "6.0.0"
         }
       },
-      "fo-dicom.NLog": {
-        "type": "Transitive",
-        "resolved": "5.0.3",
-        "contentHash": "k35FD+C9IcpTLjCF5tvCkBGUxJ+YvzoBsgb2VAtGQv+aVTu+HyoCnNVqccc4lVE53fbVCwpR3gPiTAnm5fm+KQ==",
-        "dependencies": {
-          "NLog": "4.7.11",
-          "fo-dicom": "5.0.3"
-        }
-      },
       "Gherkin": {
         "type": "Transitive",
         "resolved": "19.0.3",
@@ -1818,8 +1809,7 @@
           "NLog.Web.AspNetCore": "[5.3.2, )",
           "Polly": "[7.2.4, )",
           "Swashbuckle.AspNetCore": "[6.5.0, )",
-          "fo-dicom": "[5.1.1, )",
-          "fo-dicom.NLog": "[5.0.3, )"
+          "fo-dicom": "[5.1.1, )"
         }
       },
       "monai.deploy.informaticsgateway.api": {

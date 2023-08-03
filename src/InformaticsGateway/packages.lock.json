@@ -37,16 +37,6 @@
           "System.Threading.Channels": "6.0.0"
         }
       },
-      "fo-dicom.NLog": {
-        "type": "Direct",
-        "requested": "[5.0.3, )",
-        "resolved": "5.0.3",
-        "contentHash": "k35FD+C9IcpTLjCF5tvCkBGUxJ+YvzoBsgb2VAtGQv+aVTu+HyoCnNVqccc4lVE53fbVCwpR3gPiTAnm5fm+KQ==",
-        "dependencies": {
-          "NLog": "4.7.11",
-          "fo-dicom": "5.0.3"
-        }
-      },
       "HL7-dotnetcore": {
         "type": "Direct",
         "requested": "[2.35.0, )",
