@@ -187,6 +187,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         [LoggerMessage(EventId = 30061, Level = LogLevel.Critical, Message = "Error updating SCP Application Entity {aeTitle}: {message}")]
         public static partial void ErrorUpdatingMonaiApplicationEntity(this ILogger logger, string aeTitle, string message);
 
+        [LoggerMessage(EventId = 30062, Level = LogLevel.Information, Message = "\tPlug-ins: {plugins}")]
+        public static partial void MonaiAePlugins(this ILogger logger, string plugins);
+
         // Docker Runner
         [LoggerMessage(EventId = 31000, Level = LogLevel.Debug, Message = "Checking for existing {applicationName} ({version}) containers...")]
         public static partial void CheckingExistingAppContainer(this ILogger logger, string applicationName, string version);

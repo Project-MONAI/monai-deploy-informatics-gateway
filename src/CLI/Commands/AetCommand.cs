@@ -97,6 +97,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 IsRequired = false,
             };
             addCommand.AddOption(allowedSopsOption);
+            var plugins = new Option<List<string>>(new string[] { "-p", "--plugins" }, description: "A space separated list of fully qualified type names of the plug-ins (surround each plug-in with double quotes)")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+            };
+            addCommand.AddOption(plugins);
 
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(AddAeTitlehandlerAsync);
         }
@@ -130,6 +136,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 IsRequired = false,
             };
             addCommand.AddOption(allowedSopsOption);
+            var plugins = new Option<List<string>>(new string[] { "-p", "--plugins" }, description: "A space separated list of fully qualified type names of the plug-ins (surround each plug-in with double quotes)")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+            };
+            addCommand.AddOption(plugins);
 
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(EditAeTitleHandlerAsync);
         }
@@ -274,8 +286,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 }
                 if (result.AllowedSopClasses.Any())
                 {
-                    logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
-                    logger.AcceptedSopClassesWarning();
+                    logger.MonaiAePlugins(string.Join(',', result.AllowedSopClasses));
                 }
             }
             catch (ConfigurationException ex)
@@ -329,6 +340,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 {
                     logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
                     logger.AcceptedSopClassesWarning();
+                }
+                if (result.AllowedSopClasses.Any())
+                {
+                    logger.MonaiAePlugins(string.Join(',', result.AllowedSopClasses));
                 }
             }
             catch (ConfigurationException ex)

@@ -100,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             {
                 Name = result.CommandResult.Children[0].Tokens[0].Value,
                 AeTitle = result.CommandResult.Children[1].Tokens[0].Value,
-                Workflows = result.CommandResult.Children[2].Tokens.Select(p => p.Value).ToList()
+                Workflows = result.CommandResult.Children[2].Tokens.Select(p => p.Value).ToList(),
             };
             Assert.Equal("MyName", entity.Name);
             Assert.Equal("MyAET", entity.AeTitle);
@@ -108,6 +108,44 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 item => item.Equals("App"),
                 item => item.Equals("MyCoolApp"),
                 item => item.Equals("TheApp"));
+
+            _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Create(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(entity);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(
+                p => p.MonaiScpAeTitle.Create(
+                    It.Is<MonaiApplicationEntity>(o => o.AeTitle == entity.AeTitle && o.Name == entity.Name && Enumerable.SequenceEqual(o.Workflows, entity.Workflows)),
+                    It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "aet add comand with plug-ins")]
+        public async Task AetAdd_Command_WithPlugins()
+        {
+            var command = "aet add -n MyName -a MyAET --workflows App MyCoolApp TheApp --plugins \"PluginTypeA\" \"PluginTypeB\"";
+            var result = _paser.Parse(command);
+            Assert.Equal(ExitCodes.Success, result.Errors.Count);
+
+            var entity = new MonaiApplicationEntity()
+            {
+                Name = result.CommandResult.Children[0].Tokens[0].Value,
+                AeTitle = result.CommandResult.Children[1].Tokens[0].Value,
+                Workflows = result.CommandResult.Children[2].Tokens.Select(p => p.Value).ToList(),
+                PluginAssemblies = result.CommandResult.Children[3].Tokens.Select(p => p.Value).ToList(),
+            };
+            Assert.Equal("MyName", entity.Name);
+            Assert.Equal("MyAET", entity.AeTitle);
+            Assert.Collection(entity.Workflows,
+                item => item.Equals("App"),
+                item => item.Equals("MyCoolApp"),
+                item => item.Equals("TheApp"));
+            Assert.Collection(entity.PluginAssemblies,
+                item => item.Equals("PluginTypeA"),
+                item => item.Equals("PluginTypeB"));
 
             _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Create(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(entity);
@@ -335,7 +373,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         [Fact(DisplayName = "aet update command")]
         public async Task AetUpdate_Command()
         {
-            var command = "aet update -n MyName --workflows App MyCoolApp TheApp -i A B C -s D E F";
+            var command = "aet update -n MyName --workflows App MyCoolApp TheApp -i A B C -s D E F -p PlugInAssemblyA PlugInAssemblyB";
             var result = _paser.Parse(command);
             Assert.Equal(ExitCodes.Success, result.Errors.Count);
 
@@ -346,6 +384,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 Workflows = result.CommandResult.Children[1].Tokens.Select(p => p.Value).ToList(),
                 IgnoredSopClasses = result.CommandResult.Children[2].Tokens.Select(p => p.Value).ToList(),
                 AllowedSopClasses = result.CommandResult.Children[3].Tokens.Select(p => p.Value).ToList(),
+                PluginAssemblies = result.CommandResult.Children[4].Tokens.Select(p => p.Value).ToList(),
             };
 
             Assert.Equal("MyName", entity.Name);
@@ -362,6 +401,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
                 item => item.Equals("A"),
                 item => item.Equals("B"),
                 item => item.Equals("C"));
+            Assert.Collection(entity.PluginAssemblies,
+                item => item.Equals("PlugInAssemblyA"),
+                item => item.Equals("PlugInAssemblyB"));
 
             _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Update(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(entity);

@@ -72,6 +72,9 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// </summary>
         public List<string> Workflows { get; set; } = default!;
 
+        /// <summary>
+        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputDataPluginEngine"/>.
+        /// </summary>
         public List<string> PluginAssemblies { get; set; } = default!;
 
         /// <summary>
