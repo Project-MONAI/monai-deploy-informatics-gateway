@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2022 MONAI Consortium
+  ~ Copyright 2022-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -66,6 +66,7 @@
     <ProjectReference Include="..\..\src\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
     <ProjectReference Include="..\..\src\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
     <ProjectReference Include="..\..\src\InformaticsGateway\Monai.Deploy.InformaticsGateway.csproj" />
+    <ProjectReference Include="..\..\src\InformaticsGateway\Test\Plugins\Monai.Deploy.InformaticsGateway.Test.Plugins.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,7 +90,7 @@
 
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
-      <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll" />
+      <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll;$(OutDir)Monai.Deploy.InformaticsGateway.Test.Plugins.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />

@@ -54,7 +54,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.MongoDB", "Database\MongoDB\Monai.Deploy.InformaticsGateway.Database.MongoDB.csproj", "{5ED73EEA-4DFA-426D-82E8-AA24D3CB4C31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test", "Database\MongoDB\Integration.Test\Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test.csproj", "{2F849556-44B6-484A-B612-CB0FA5D29AC6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test", "Database\MongoDB\Integration.Test\Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test.csproj", "{2F849556-44B6-484A-B612-CB0FA5D29AC6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Test.Plugins", "InformaticsGateway\Test\Plugins\Monai.Deploy.InformaticsGateway.Test.Plugins.csproj", "{7E735CE9-CE74-450E-A4E8-060D185DDEF1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -366,6 +368,18 @@ Global
 		{2F849556-44B6-484A-B612-CB0FA5D29AC6}.Release|x64.Build.0 = Release|Any CPU
 		{2F849556-44B6-484A-B612-CB0FA5D29AC6}.Release|x86.ActiveCfg = Release|Any CPU
 		{2F849556-44B6-484A-B612-CB0FA5D29AC6}.Release|x86.Build.0 = Release|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Debug|x64.Build.0 = Debug|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Debug|x86.Build.0 = Debug|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Release|x64.ActiveCfg = Release|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Release|x64.Build.0 = Release|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Release|x86.ActiveCfg = Release|Any CPU
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -387,6 +401,7 @@ Global
 		{EA930DE2-33C4-447C-9E26-31387652D408} = {B8E99EF7-84EA-4D11-B722-9EE81B89CD86}
 		{5ED73EEA-4DFA-426D-82E8-AA24D3CB4C31} = {290E4C9B-841D-4E2C-91A0-5A69BAB122F3}
 		{2F849556-44B6-484A-B612-CB0FA5D29AC6} = {B8E99EF7-84EA-4D11-B722-9EE81B89CD86}
+		{7E735CE9-CE74-450E-A4E8-060D185DDEF1} = {B8E99EF7-84EA-4D11-B722-9EE81B89CD86}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E23DC856-D033-49F6-9BC6-9F1D0ECD05CB}

@@ -35,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
     internal class ApplicationEntityHandler : IDisposable, IApplicationEntityHandler
     {
-        private readonly object _lock = new object();
+        private readonly object _lock = new();
         private readonly ILogger<ApplicationEntityHandler> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
@@ -43,6 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IFileSystem _fileSystem;
+        private readonly IInputDataPluginEngine _pluginEngine;
         private MonaiApplicationEntity _configuration;
         private DicomJsonOptions _dicomJsonOptions;
         private bool _validateDicomValueOnJsonSerialization;
@@ -61,6 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _payloadAssembler = _serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _fileSystem = _serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
+            _pluginEngine = _serviceScope.ServiceProvider.GetService<IInputDataPluginEngine>() ?? throw new ServiceNotFoundException(nameof(IInputDataPluginEngine));
         }
 
         public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions, bool validateDicomValuesOnJsonSerialization)
@@ -79,6 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 _configuration = monaiApplicationEntity;
                 _dicomJsonOptions = dicomJsonOptions;
                 _validateDicomValueOnJsonSerialization = validateDicomValuesOnJsonSerialization;
+                _pluginEngine.Configure(_configuration.PluginAssemblies);
             }
         }
 
@@ -112,11 +115,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
-            await dicomInfo.SetDataStreams(request.File, request.File.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
+            var (dicomFile, fileMetadata) = await _pluginEngine.ExecutePlugins(request.File, dicomInfo).ConfigureAwait(false);
+
+            dicomInfo = fileMetadata as DicomFileStorageMetadata;
+            await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
             _logger.QueueInstanceUsingDicomTag(dicomTag);
-            var key = request.Dataset.GetSingleValue<string>(dicomTag);
+            var key = dicomFile.Dataset.GetSingleValue<string>(dicomTag);
 
             var payloadid = await _payloadAssembler.Queue(key, dicomInfo, _configuration.Timeout).ConfigureAwait(false);
             dicomInfo.PayloadId = payloadid.ToString();

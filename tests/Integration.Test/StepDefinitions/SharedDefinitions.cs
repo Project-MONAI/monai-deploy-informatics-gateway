@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ using BoDi;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
+using Monai.Deploy.InformaticsGateway.Test.Plugins;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -69,6 +70,19 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         public async Task ThenXXFilesUploadedToStorageService()
         {
             await _assertions.ShouldHaveUploadedDicomDataToMinio(_receivedMessages.Messages, _dataProvider.DicomSpecs.FileHashes);
+        }
+
+        [Then(@"studies are uploaded to storage service with data input plugins")]
+        public async Task ThenXXFilesUploadedToStorageServiceWithDataInputPlugins()
+        {
+            await _assertions.ShouldHaveUploadedDicomDataToMinio(
+                _receivedMessages.Messages,
+                _dataProvider.DicomSpecs.FileHashes,
+                (dicomFile) =>
+                {
+                    dicomFile.Dataset.GetString(TestInputDataPluginModifyDicomFile.ExpectedTag)
+                        .Should().Be(TestInputDataPluginModifyDicomFile.ExpectedValue);
+                });
         }
     }
 }

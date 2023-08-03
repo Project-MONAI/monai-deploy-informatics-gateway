@@ -311,6 +311,19 @@ mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
 The command creates a new listening AE Title with AE Title `BrainAET`. The listening AE Title
 will group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
 
+
+### Optional: Input Data Plug-ins
+
+Each listening AE Title may be configured with zero or more plug-ins to maniulate incoming DICOM files before saving to the storage
+service and dispatching a workflow request. To include input data plug-ins, first create your plug-ins by implementing the
+[IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and then use `-p` argument with the fully
+qualified type name with the `mig-cli aet add` command. For example, the following command adds `MyNamespace.AnonymizePlugin`
+and `MyNamespace.FixSeriesData` plug-ins from the `MyNamespace.Plugins` assembly file.
+
+```bash
+mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p "MyNamespace.AnonymizePlugin, MyNamespace.Plugins" "MyNamespace.FixSeriesData, MyNamespace.Plugins"
+```
+
 > [!Note]
 > `-grouping` is optional, with a default value of 0020,000D.
 > `-t` is optional, with a default value of 5 seconds.
