@@ -1105,8 +1105,8 @@
       },
       "Polly": {
         "type": "Transitive",
-        "resolved": "7.2.3",
-        "contentHash": "DeCY0OFbNdNxsjntr1gTXHJ5pKUwYzp04Er2LLeN3g6pWhffsGuKVfMBLe1lw7x76HrPkLxKEFxBlpRxS2nDEQ=="
+        "resolved": "7.2.4",
+        "contentHash": "bw00Ck5sh6ekduDE3mnCo1ohzuad946uslCDEENu3091+6UKnBuKLo4e+yaNcCzXxOZCXWY2gV4a35+K1d4LDA=="
       },
       "RabbitMQ.Client": {
         "type": "Transitive",
@@ -1914,7 +1914,7 @@
           "Monai.Deploy.Storage.MinIO": "[0.2.16, )",
           "NLog": "[5.2.2, )",
           "NLog.Web.AspNetCore": "[5.3.2, )",
-          "Polly": "[7.2.3, )",
+          "Polly": "[7.2.4, )",
           "Swashbuckle.AspNetCore": "[6.5.0, )",
           "fo-dicom": "[5.0.3, )",
           "fo-dicom.NLog": "[5.0.3, )"
@@ -1981,7 +1981,7 @@
           "Microsoft.EntityFrameworkCore": "[6.0.15, )",
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
-          "Polly": "[7.2.3, )"
+          "Polly": "[7.2.4, )"
         }
       },
       "monai.deploy.informaticsgateway.database.entityframework": {
