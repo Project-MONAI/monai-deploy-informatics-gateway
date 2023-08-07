@@ -18,6 +18,7 @@ using System.Text;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Test.Plugins;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
@@ -31,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         private readonly IDicomServer _server;
         private bool _disposedValue;
 
-        public Dictionary<string, string> Instances { get; set; } = new Dictionary<string, string>();
+        public Dictionary<string, List<string>> Instances { get; set; } = new Dictionary<string, List<string>>();
         public ISpecFlowOutputHelper OutputHelper { get; set; }
         public DicomScp(ISpecFlowOutputHelper outputHelper)
         {
@@ -98,7 +99,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 var key = request.File.GenerateFileName();
                 lock (SyncLock)
                 {
-                    data.Instances.Add(key, request.File.CalculateHash());
+                    var values = new List<string>();
+                    data.Instances.Add(key, values);
+                    values.Add(request.File.CalculateHash());
+                    values.Add(request.File.Dataset.GetSingleValueOrDefault(TestOutputDataPluginModifyDicomFile.ExpectedTag, string.Empty));
                 }
                 data.OutputHelper.WriteLine("Instance received {0}", key);
 

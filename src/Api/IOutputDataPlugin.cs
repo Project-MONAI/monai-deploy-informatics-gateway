@@ -16,17 +16,16 @@
 
 using System.Threading.Tasks;
 using FellowOakDicom;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
     /// <summary>
-    /// <c>IInputDataPlugin</c> enables lightweight data processing over incoming data received from supported data ingestion
+    /// <c>IOutputDataPlugin</c> enables lightweight data processing over incoming data received from supported data ingestion
     /// services.
     /// Refer to <see cref="IOutputDataPluginEngine" /> for additional details.
     /// </summary>
-    public interface IInputDataPlugin
+    public interface IOutputDataPlugin
     {
-        Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata);
+        Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage);
     }
 }

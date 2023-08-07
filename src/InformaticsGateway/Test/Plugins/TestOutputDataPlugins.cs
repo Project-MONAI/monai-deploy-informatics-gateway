@@ -16,30 +16,31 @@
 
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Plugins
 {
-    public class TestInputDataPluginAddWorkflow : IInputDataPlugin
+
+    public class TestOutputDataPluginAddMessage : IOutputDataPlugin
     {
-        public static readonly string TestString = "TestInputDataPlugin executed!";
+        public static readonly string ExpectedValue = "Hello from TestOutputDataPluginAddMessage";
 
-        public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
+        public Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)
         {
-            fileMetadata.Workflows.Add(TestString);
-            return Task.FromResult((dicomFile, fileMetadata));
+            exportRequestDataMessage.Messages.Add(ExpectedValue);
+            return Task.FromResult((dicomFile, exportRequestDataMessage));
         }
-    }
 
-    public class TestInputDataPluginModifyDicomFile : IInputDataPlugin
+    }
+    public class TestOutputDataPluginModifyDicomFile : IOutputDataPlugin
     {
         public static readonly DicomTag ExpectedTag = DicomTag.PatientAddress;
-        public static readonly string ExpectedValue = "Aborted by TestInputDataPluginModifyDicomFile";
+        public static readonly string ExpectedValue = "Added by TestOutputDataPluginModifyDicomFile";
 
-        public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
+        public Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)
         {
             dicomFile.Dataset.Add(ExpectedTag, ExpectedValue);
-            return Task.FromResult((dicomFile, fileMetadata));
+            return Task.FromResult((dicomFile, exportRequestDataMessage));
         }
+
     }
 }

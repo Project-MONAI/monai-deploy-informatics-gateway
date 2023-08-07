@@ -172,19 +172,19 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks": {
         "type": "Transitive",
-        "resolved": "6.0.15",
-        "contentHash": "crR/15PKDgVIQmH9uGJuQVg4RGbaxwG3cseRRMisPG/2LkiQV71EkNRGPV4cI61Waywc1Wn5sYXE8bo2qCf+/Q==",
+        "resolved": "6.0.20",
+        "contentHash": "/uw/4EXx+tOWiqTVNbO0ooaFrrp06h68hI7XhOKyHRp7rdUi7SNmIsj0CCNE6PyZanfnQDwhNyaxG25u2HWpjg==",
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.15",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.20",
           "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
-          "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.4",
           "Microsoft.Extensions.Options": "6.0.0"
         }
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.15",
-        "contentHash": "LmB5kbbc0Sr+XvnYj8tReZzubS50h1g463zpbnnjqT/k6fM8/od9hFCBj52dorXfp/DDfm5+rUdKaPRUsX70Jg=="
+        "resolved": "6.0.20",
+        "contentHash": "qWT4ldcOylWZa+GXFePyAJSQ9d/gWzKIL2KdFCkudZpzMjeTUPpqMhIwZdJNvCupi/ercnUT3Ru1RI/rWwX8aA=="
       },
       "Microsoft.Extensions.FileProviders.Abstractions": {
         "type": "Transitive",
@@ -254,12 +254,12 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "0.1.23",
-        "contentHash": "wz93Hk2kq5cKR/8kJlCEA8DHACrPFo+lVEjWv3nvLbPhJ4N0aDzbcQoqA4P/duSWXFi0jhUzXsSwBX3rt4l7Xw==",
+        "resolved": "0.1.24",
+        "contentHash": "hKCPY64v8kj4Kt4n+Gq+xnWlV+J94wUlRWBOS7yldIPRqjWPm4UfItzDJ4d1VAP0kw3X+aKkvjNz172LmNjw9A==",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.0.1",
+          "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Configuration": "6.0.1",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.14",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.20",
           "Microsoft.Extensions.Logging": "6.0.0",
           "Newtonsoft.Json": "13.0.3",
           "System.ComponentModel.Annotations": "5.0.0",
@@ -418,7 +418,7 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.20, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[0.1.23, )",
+          "Monai.Deploy.Messaging": "[0.1.24, )",
           "Monai.Deploy.Storage": "[0.2.16, )"
         }
       },
@@ -438,7 +438,7 @@
           "Microsoft.Extensions.Options": "[6.0.0, )",
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[0.1.23, )",
+          "Monai.Deploy.Messaging": "[0.1.24, )",
           "Monai.Deploy.Storage": "[0.2.16, )",
           "System.IO.Abstractions": "[17.2.3, )"
         }
