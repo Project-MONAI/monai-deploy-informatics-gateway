@@ -23,7 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// <summary>
     /// <c>IInputDataPlugin</c> enables lightweight data processing over incoming data received from supported data ingestion
     /// services.
-    /// Refer to <see cref="IInputDataPluginEngine" /> for additional details.
+    /// Refer to <see cref="IOutputDataPluginEngine" /> for additional details.
     /// </summary>
     public interface IInputDataPlugin
     {
