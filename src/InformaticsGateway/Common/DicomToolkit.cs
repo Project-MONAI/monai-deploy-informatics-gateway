@@ -19,6 +19,7 @@ using System.IO;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
+using SharpCompress.Compressors.Xz;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
@@ -26,14 +27,14 @@ namespace Monai.Deploy.InformaticsGateway.Common
     {
         public Task<DicomFile> OpenAsync(Stream stream, FileReadOption fileReadOption = FileReadOption.Default)
         {
-            Guard.Against.Null(stream);
+            Guard.Against.Null(stream, nameof(stream));
 
             return DicomFile.OpenAsync(stream, fileReadOption);
         }
 
         public DicomFile Load(byte[] fileContent)
         {
-            Guard.Against.NullOrEmpty(fileContent);
+            Guard.Against.NullOrEmpty(fileContent, nameof(fileContent));
 
             using var stream = new MemoryStream(fileContent);
             var dicomFile = DicomFile.Open(stream, FileReadOption.ReadAll);
@@ -47,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         public StudySerieSopUids GetStudySeriesSopInstanceUids(DicomFile dicomFile)
         {
-            Guard.Against.Null(dicomFile);
+            Guard.Against.Null(dicomFile, nameof(dicomFile));
 
             return new StudySerieSopUids
             {

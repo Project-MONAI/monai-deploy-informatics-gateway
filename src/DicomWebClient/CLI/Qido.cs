@@ -87,8 +87,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private async Task SaveJson(string outputDir, IAsyncEnumerable<string> enumerable)
         {
-            Guard.Against.NullOrWhiteSpace(outputDir);
-            Guard.Against.Null(enumerable);
+            Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
+            Guard.Against.Null(enumerable, nameof(enumerable));
 
             await foreach (var item in enumerable)
             {
@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private void ValidateOutputDirectory(ref string outputDir)
         {
-            Guard.Against.NullOrWhiteSpace(outputDir);
+            Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
 
             if (outputDir == ".")
             {
@@ -112,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private void ValidateOptions(string rootUrl, out Uri rootUri)
         {
-            Guard.Against.NullOrWhiteSpace(rootUrl);
+            Guard.Against.NullOrWhiteSpace(rootUrl, nameof(rootUri));
 
             _logger.LogInformation("Checking arguments...");
             rootUri = new Uri(rootUrl);

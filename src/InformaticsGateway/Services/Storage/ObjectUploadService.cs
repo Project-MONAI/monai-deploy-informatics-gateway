@@ -145,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private async Task ProcessObject(int thread, FileStorageMetadata blob)
         {
-            Guard.Against.Null(blob);
+            Guard.Against.Null(blob, nameof(blob));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Thread", thread }, { "File ID", blob.Id }, { "CorrelationId", blob.CorrelationId } });
             var stopwatch = new Stopwatch();
@@ -179,10 +179,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private async Task UploadFileAndConfirm(string identifier, StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, string payloadId, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(identifier);
-            Guard.Against.Null(storageObjectMetadata);
-            Guard.Against.NullOrWhiteSpace(source);
-            Guard.Against.Null(workflows);
+            Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
+            Guard.Against.Null(storageObjectMetadata, nameof(storageObjectMetadata));
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
+            Guard.Against.Null(workflows, nameof(workflows));
 
             if (storageObjectMetadata.IsUploaded)
             {

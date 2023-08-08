@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
     {
         public bool ShowConfirmationPrompt(string message)
         {
-            Guard.Against.NullOrWhiteSpace(message);
+            Guard.Against.NullOrWhiteSpace(message, nameof(message));
 
             Console.Write($"{message} [y/N]: ");
             var key = Console.ReadKey();

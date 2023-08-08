@@ -511,7 +511,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
         private bool CheckMessage(Message message, ExportStatus exportStatus, FileExportStatus fileExportStatus)
         {
-            Guard.Against.Null(message);
+            Guard.Against.Null(message, nameof(message));
 
             var exportEvent = message.ConvertTo<ExportCompleteEvent>();
             return exportEvent.Status == exportStatus &&

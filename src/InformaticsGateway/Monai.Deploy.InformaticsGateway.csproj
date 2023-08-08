@@ -35,27 +35,26 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.GuardClauses" Version="4.0.1" />
+    <PackageReference Include="Ardalis.GuardClauses" Version="4.1.1" />
     <PackageReference Include="DotNext.Threading" Version="4.7.4" />
-    <PackageReference Include="fo-dicom" Version="5.0.3" />
-    <PackageReference Include="fo-dicom.NLog" Version="5.0.3" />
+    <PackageReference Include="fo-dicom" Version="5.1.1" />
     <PackageReference Include="Karambolo.Extensions.Logging.File" Version="3.4.0" />
     <PackageReference Include="HL7-dotnetcore" Version="2.35.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.20" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="6.0.15" />
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.15" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions" Version="6.0.20" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.20" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.22" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.23" />
     <PackageReference Include="Monai.Deploy.Security" Version="0.1.3" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.16" />
     <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.16" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.2.3" />
-    <PackageReference Include="NLog" Version="5.1.3" />
-    <PackageReference Include="Polly" Version="7.2.3" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.2" />
+    <PackageReference Include="NLog" Version="5.2.2" />
+    <PackageReference Include="Polly" Version="7.2.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 

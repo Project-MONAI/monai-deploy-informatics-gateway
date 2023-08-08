@@ -16,8 +16,8 @@
 
 using System.Text;
 using FellowOakDicom;
-using FellowOakDicom.Log;
 using FellowOakDicom.Network;
+using Microsoft.Extensions.Logging;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
@@ -69,8 +69,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         private static readonly object SyncLock = new object();
         internal static readonly string PayloadsRoot = "./payloads";
 
-        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, ILogger log, DicomServiceDependencies dicomServiceDependencies)
-            : base(stream, fallbackEncoding, log, dicomServiceDependencies)
+        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, ILogger logger, DicomServiceDependencies dicomServiceDependencies)
+            : base(stream, fallbackEncoding, logger, dicomServiceDependencies)
         {
         }
 

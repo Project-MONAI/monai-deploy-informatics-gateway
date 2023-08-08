@@ -39,13 +39,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         public virtual async Task<bool> ExistsAsync(string transactionId, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             return await GetInferenceRequestAsync(transactionId, cancellationToken).ConfigureAwait(false) is not null;
         }
 
         public virtual async Task<InferenceStatusResponse?> GetStatusAsync(string transactionId, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
 
             var response = new InferenceStatusResponse();
             var item = await GetInferenceRequestAsync(transactionId, cancellationToken).ConfigureAwait(false);
@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         public async Task UpdateAsync(InferenceRequest inferenceRequest, InferenceRequestStatus status, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
 

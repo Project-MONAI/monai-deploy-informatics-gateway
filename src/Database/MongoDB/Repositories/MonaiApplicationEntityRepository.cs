@@ -45,9 +45,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             IOptions<InformaticsGatewayConfiguration> options,
             IOptions<MongoDBOptions> mongoDbOptions)
         {
-            Guard.Against.Null(serviceScopeFactory);
-            Guard.Against.Null(options);
-            Guard.Against.Null(mongoDbOptions);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(options, nameof(options));
+            Guard.Against.Null(mongoDbOptions, nameof(mongoDbOptions));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -81,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public async Task<MonaiApplicationEntity?> FindByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -93,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public async Task<MonaiApplicationEntity> AddAsync(MonaiApplicationEntity item, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(item);
+            Guard.Against.Null(item, nameof(item));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -104,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public async Task<MonaiApplicationEntity> UpdateAsync(MonaiApplicationEntity entity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -119,7 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public async Task<MonaiApplicationEntity> RemoveAsync(MonaiApplicationEntity entity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {

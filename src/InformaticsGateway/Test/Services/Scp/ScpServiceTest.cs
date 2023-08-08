@@ -44,7 +44,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         private readonly Mock<IApplicationEntityManager> _associationDataProvider;
         private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly Mock<ILogger<ScpService>> _logger;
-        private readonly Mock<ILogger> _loggerInternal;
         private readonly Mock<IHostApplicationLifetime> _appLifetime;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -56,7 +55,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider = new Mock<IApplicationEntityManager>();
             _loggerFactory = new Mock<ILoggerFactory>();
             _logger = new Mock<ILogger<ScpService>>();
-            _loggerInternal = new Mock<ILogger>();
             _appLifetime = new Mock<IHostApplicationLifetime>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _cancellationTokenSource = new CancellationTokenSource();
@@ -67,10 +65,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _serviceScope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
-            _associationDataProvider.Setup(p => p.GetLogger(It.IsAny<string>())).Returns(_loggerInternal.Object);
             _associationDataProvider.Setup(p => p.Configuration).Returns(_configuration);
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
-            _loggerInternal.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [RetryFact(5, 250, DisplayName = "StartAsync - shall stop application if failed to start SCP listner")]
@@ -122,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             Assert.Equal(DicomRejectSource.ServiceUser, exception.RejectSource);
             Assert.Equal(DicomRejectResult.Permanent, exception.RejectResult);
 
-            _loggerInternal.VerifyLogging($"Verification service is disabled: rejecting association.", LogLevel.Warning, Times.Once());
+            _logger.VerifyLogging($"Verification service is disabled: rejecting association.", LogLevel.Warning, Times.Once());
 
             Assert.True(countdownEvent.Wait(1000));
         }
@@ -381,7 +377,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             await client.SendAsync(_cancellationTokenSource.Token, DicomClientCancellationMode.ImmediatelyAbortAssociation);
             Assert.True(countdownEvent.Wait(2000));
-            _loggerInternal.VerifyLogging($"Aborted {DicomAbortSource.ServiceUser} with reason {DicomAbortReason.NotSpecified}.", LogLevel.Warning, Times.Once());
+            _logger.VerifyLogging($"Aborted {DicomAbortSource.ServiceUser} with reason {DicomAbortReason.NotSpecified}.", LogLevel.Warning, Times.Once());
         }
 
         private ScpService CreateService()

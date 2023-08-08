@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
         private string ConvertToFullPath(string connectionString)
         {
-            Guard.Against.NullOrWhiteSpace(connectionString);
+            Guard.Against.NullOrWhiteSpace(connectionString, nameof(connectionString));
 
             string absolute = Path.GetFullPath("./");
             return connectionString.Replace("=./", $"={absolute}");

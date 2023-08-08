@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal void GenerateDicomData(string modality, int studyCount, int? seriesPerStudy = null)
         {
-            Guard.Against.NullOrWhiteSpace(modality);
+            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
 
             _outputHelper.WriteLine($"Generating {studyCount} {modality} study");
             _configurations.StudySpecs.ContainsKey(modality).Should().BeTrue();
@@ -86,7 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal void GenerateAcrRequest(string requestType)
         {
-            Guard.Against.NullOrWhiteSpace(requestType);
+            Guard.Against.NullOrWhiteSpace(requestType, nameof(requestType));
 
             var inferenceRequest = new InferenceRequest();
             inferenceRequest.TransactionId = Guid.NewGuid().ToString();

@@ -52,11 +52,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         T GetService<T>();
 
         /// <summary>
-        /// Wrapper to get a typed logger.
-        /// </summary>
-        ILogger GetLogger(string calledAeTitle);
-
-        /// <summary>
         /// Checks if source AE Title is configured.
         /// </summary>
         /// <param name="callingAe"></param>

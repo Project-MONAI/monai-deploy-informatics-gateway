@@ -50,8 +50,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal async Task ShouldHaveUploadedDicomDataToMinio(IReadOnlyList<Message> messages, Dictionary<string, string> fileHashes, Action<DicomFile> additionalChecks = null)
         {
-            Guard.Against.Null(messages);
-            Guard.Against.NullOrEmpty(fileHashes);
+            Guard.Against.Null(messages, nameof(messages));
+            Guard.Against.NullOrEmpty(fileHashes, nameof(fileHashes));
 
             var minioClient = GetMinioClient();
 
@@ -107,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal async Task ShouldHaveUploadedFhirDataToMinio(IReadOnlyList<Message> messages, Dictionary<string, string> fhirData)
         {
-            Guard.Against.Null(messages);
+            Guard.Against.Null(messages, nameof(messages));
 
             var minioClient = GetMinioClient();
 
@@ -152,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal async Task ShouldHaveUploadedHl7ataToMinio(IReadOnlyList<Message> messages)
         {
-            Guard.Against.Null(messages);
+            Guard.Against.Null(messages, nameof(messages));
 
             var minioClient = GetMinioClient();
 
@@ -196,8 +196,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal void ShouldHaveCorrectNumberOfWorkflowRequestMessages(DataProvider dataProvider, IReadOnlyList<Message> messages, int count)
         {
-            Guard.Against.Null(dataProvider);
-            Guard.Against.Null(messages);
+            Guard.Against.Null(dataProvider, nameof(dataProvider));
+            Guard.Against.Null(messages, nameof(messages));
 
             messages.Should().NotBeNullOrEmpty().And.HaveCount(count);
             foreach (var message in messages)
@@ -224,8 +224,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal void ShouldHaveCorrectNumberOfWorkflowRequestMessagesAndAcrRequest(DataProvider dataProvider, IReadOnlyList<Message> messages, int count)
         {
-            Guard.Against.Null(dataProvider);
-            Guard.Against.Null(messages);
+            Guard.Against.Null(dataProvider, nameof(dataProvider));
+            Guard.Against.Null(messages, nameof(messages));
 
             messages.Should().NotBeNullOrEmpty().And.HaveCount(count);
 
@@ -241,8 +241,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal void ShouldHaveCorrectNumberOfWorkflowRequestMessagesAndHl7Messages(Hl7Messages hL7Specs, IReadOnlyList<Message> messages, int count)
         {
-            Guard.Against.Null(hL7Specs);
-            Guard.Against.Null(messages);
+            Guard.Against.Null(hL7Specs, nameof(hL7Specs));
+            Guard.Against.Null(messages, nameof(messages));
 
             messages.Should().NotBeNullOrEmpty().And.HaveCount(count);
 

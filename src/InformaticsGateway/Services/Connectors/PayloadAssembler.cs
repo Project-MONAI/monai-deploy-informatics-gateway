@@ -97,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
         public async Task<Guid> Queue(string bucket, FileStorageMetadata file, uint timeout)
         {
-            Guard.Against.Null(file);
+            Guard.Against.Null(file, nameof(file));
 
             await _intializedTask.ConfigureAwait(false);
 

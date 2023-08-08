@@ -176,8 +176,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private async Task SaveJson(string outputDir, IAsyncEnumerable<string> enumerable)
         {
-            Guard.Against.NullOrWhiteSpace(outputDir);
-            Guard.Against.Null(enumerable);
+            Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
+            Guard.Against.Null(enumerable, nameof(enumerable));
 
             await foreach (var item in enumerable)
             {
@@ -187,8 +187,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private async Task SaveFiles(string outputDir, IAsyncEnumerable<DicomFile> enumerable)
         {
-            Guard.Against.NullOrWhiteSpace(outputDir);
-            Guard.Against.Null(enumerable);
+            Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
+            Guard.Against.Null(enumerable, nameof(enumerable));
 
             var count = 0;
             await foreach (var file in enumerable)
@@ -201,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private void ValidateOutputFilename(ref string filename)
         {
-            Guard.Against.NullOrWhiteSpace(filename);
+            Guard.Against.NullOrWhiteSpace(filename, nameof(filename));
 
             try
             {
@@ -216,7 +216,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private void ValidateOutputDirectory(ref string outputDir)
         {
-            Guard.Against.NullOrWhiteSpace(outputDir);
+            Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
 
             if (outputDir == ".")
             {
@@ -230,8 +230,8 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private void ValidateOptions(string rootUrl, string transferSyntaxes, out Uri rootUri, out List<DicomTransferSyntax> dicomTransferSyntaxes)
         {
-            Guard.Against.NullOrWhiteSpace(rootUrl);
-            Guard.Against.NullOrWhiteSpace(transferSyntaxes);
+            Guard.Against.NullOrWhiteSpace(rootUrl, nameof(rootUrl));
+            Guard.Against.NullOrWhiteSpace(transferSyntaxes, nameof(transferSyntaxes));
 
             _logger.LogInformation("Checking arguments...");
             rootUri = new Uri(rootUrl);

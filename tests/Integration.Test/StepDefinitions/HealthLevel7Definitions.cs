@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"HL7 messages in version (.*)")]
         public async Task GivenHl7MessagesInVersionX(string version)
         {
-            Guard.Against.NullOrWhiteSpace(version);
+            Guard.Against.NullOrWhiteSpace(version, nameof(version));
             await _dataProvider.GenerateHl7Messages(version);
             _receivedMessages.ClearMessages();
         }

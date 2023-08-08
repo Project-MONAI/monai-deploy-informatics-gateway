@@ -58,13 +58,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         public void SetData(byte[] data)
         {
-            Guard.Against.Null(data);
+            Guard.Against.Null(data, nameof(data));
             FileContent = data;
         }
 
         public void SetFailed(FileExportStatus fileExportStatus, string errorMessage)
         {
-            Guard.Against.NullOrWhiteSpace(errorMessage);
+            Guard.Against.NullOrWhiteSpace(errorMessage, nameof(errorMessage));
 
             ExportStatus = fileExportStatus;
             IsFailed = true;

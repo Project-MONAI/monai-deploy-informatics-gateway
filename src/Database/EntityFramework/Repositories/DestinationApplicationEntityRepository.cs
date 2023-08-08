@@ -43,8 +43,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             ILogger<DestinationApplicationEntityRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options)
         {
-            Guard.Against.Null(serviceScopeFactory);
-            Guard.Against.Null(options);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(options, nameof(options));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -58,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<DestinationApplicationEntity> AddAsync(DestinationApplicationEntity item, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(item);
+            Guard.Against.Null(item, nameof(item));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -79,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<DestinationApplicationEntity?> FindByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -89,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<DestinationApplicationEntity> RemoveAsync(DestinationApplicationEntity entity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public async Task<DestinationApplicationEntity> UpdateAsync(DestinationApplicationEntity entity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {

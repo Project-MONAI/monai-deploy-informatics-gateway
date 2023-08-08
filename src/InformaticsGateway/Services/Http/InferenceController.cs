@@ -19,6 +19,7 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using DotNext;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -51,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> JobStatus(string transactionId)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
 
             try
             {
@@ -80,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> NewInferenceRequest([FromBody] InferenceRequest request)
         {
-            Guard.Against.Null(request);
+            Guard.Against.Null(request, nameof(request));
 
             if (!request.IsValid(out var details))
             {

@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         public async Task AddAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", metadata.CorrelationId }, { "Identity", metadata.Id } });
             var obj = new StorageMetadataWrapper(metadata);
@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         public async Task AddOrUpdateAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             var existing = await GetFileStorageMetdadataAsync(metadata.CorrelationId, metadata.Id, cancellationToken).ConfigureAwait(false);
 
@@ -59,8 +59,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         public virtual async Task<bool> DeleteAsync(string correlationId, string identity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId);
-            Guard.Against.NullOrWhiteSpace(identity);
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.NullOrWhiteSpace(identity, nameof(identity));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", correlationId }, { "Identity", identity } });
 
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         public virtual async Task UpdateAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", metadata.CorrelationId }, { "Identity", metadata.Id } });
             var obj = await FindByIds(metadata.Id, metadata.CorrelationId).ConfigureAwait(false);
