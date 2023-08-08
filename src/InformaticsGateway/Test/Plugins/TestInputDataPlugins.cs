@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
     public class TestInputDataPluginModifyDicomFile : IInputDataPlugin
     {
         public static readonly DicomTag ExpectedTag = DicomTag.PatientAddress;
-        public static readonly string ExpectedValue = "Aborted by TestInputDataPluginModifyDicomFile";
+        public static readonly string ExpectedValue = "Added by TestInputDataPluginModifyDicomFile";
 
         public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {
