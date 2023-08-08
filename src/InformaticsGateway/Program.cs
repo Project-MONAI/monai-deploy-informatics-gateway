@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Reflection;
-using FellowOakDicom.Log;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -122,7 +121,6 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<ConfigurationValidator>();
                     services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
                     services.AddSingleton<IPayloadAssembler, PayloadAssembler>();
-                    services.AddSingleton<FellowOakDicom.Log.ILogManager, NLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
                     services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();
@@ -177,7 +175,6 @@ namespace Monai.Deploy.InformaticsGateway
             LayoutRenderer.Register("servicename", logEvent => typeof(Program).Namespace);
             LayoutRenderer.Register("serviceversion", logEvent => assemblyVersionNumber);
             LayoutRenderer.Register("machinename", logEvent => Environment.MachineName);
-
             return LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
         }
     }

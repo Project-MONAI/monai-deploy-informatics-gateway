@@ -53,8 +53,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"FHIR message (.*) in (.*)")]
         public async Task GivenHl7MessagesInVersionX(string version, string format)
         {
-            Guard.Against.NullOrWhiteSpace(version);
-            Guard.Against.NullOrWhiteSpace(format);
+            Guard.Against.NullOrWhiteSpace(version, nameof(version));
+            Guard.Against.NullOrWhiteSpace(format, nameof(format));
 
             await _dataProvider.GenerateFhirMessages(version, format);
             _receivedMessages.ClearMessages();

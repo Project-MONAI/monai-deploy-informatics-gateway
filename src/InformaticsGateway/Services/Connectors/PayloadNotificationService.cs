@@ -151,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task NotificationHandler(Payload payload)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
 
@@ -179,7 +179,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task MoveActionHandler(Payload payload)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
 
@@ -207,7 +207,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private void HandlePostPayloadException(PostPayloadException ex)
         {
-            Guard.Against.Null(ex);
+            Guard.Against.Null(ex, nameof(ex));
 
             if (ex.TargetQueue == Payload.PayloadState.Move)
             {
@@ -265,8 +265,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private static void ResetIfFaultedOrCancelled(ActionBlock<Payload> queue, Action<CancellationToken> resetFunction, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(queue);
-            Guard.Against.Null(resetFunction);
+            Guard.Against.Null(queue, nameof(queue));
+            Guard.Against.Null(resetFunction, nameof(resetFunction));
 
             if (queue.Completion.IsCanceledOrFaulted())
             {

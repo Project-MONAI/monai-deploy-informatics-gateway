@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"a calling AE Title '([^']*)'")]
         public async Task GivenACallingAETitle(string callingAeTitle)
         {
-            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
 
             try
             {
@@ -83,9 +83,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"(.*) (.*) studies with (.*) series per study")]
         public void GivenXStudiesWithYSeriesPerStudy(int studyCount, string modality, int seriesPerStudy)
         {
-            Guard.Against.NegativeOrZero(studyCount);
-            Guard.Against.NullOrWhiteSpace(modality);
-            Guard.Against.NegativeOrZero(seriesPerStudy);
+            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
+            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
+            Guard.Against.NegativeOrZero(seriesPerStudy, nameof(seriesPerStudy));
 
             _dataProvider.GenerateDicomData(modality, studyCount, seriesPerStudy);
 
@@ -95,9 +95,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"a called AE Title named '([^']*)' that groups by '([^']*)' for (.*) seconds")]
         public async Task GivenACalledAETitleNamedThatGroupsByForSeconds(string calledAeTitle, string grouping, uint groupingTimeout)
         {
-            Guard.Against.NullOrWhiteSpace(calledAeTitle);
-            Guard.Against.NullOrWhiteSpace(grouping);
-            Guard.Against.NegativeOrZero(groupingTimeout);
+            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
+            Guard.Against.NullOrWhiteSpace(grouping, nameof(grouping));
+            Guard.Against.NegativeOrZero(groupingTimeout, nameof(groupingTimeout));
 
             _dataProvider.StudyGrouping = grouping;
             try
@@ -131,15 +131,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"a DICOM client configured with (.*) seconds timeout")]
         public void GivenADICOMClientConfiguredWithSecondsTimeout(int timeout)
         {
-            Guard.Against.NegativeOrZero(timeout);
+            Guard.Against.NegativeOrZero(timeout, nameof(timeout));
             _dataProvider.ClientTimeout = timeout;
         }
 
         [Given(@"a DICOM client configured to send data over (.*) associations and wait (.*) between each association")]
         public void GivenADICOMClientConfiguredToSendDataOverAssociationsAndWaitSecondsBetweenEachAssociation(int associations, int pulseTime)
         {
-            Guard.Against.NegativeOrZero(associations);
-            Guard.Against.Negative(pulseTime);
+            Guard.Against.NegativeOrZero(associations, nameof(associations));
+            Guard.Against.Negative(pulseTime, nameof(associations));
 
             _dataProvider.ClientSendOverAssociations = associations;
             _dataProvider.ClientAssociationPulseTime = pulseTime;
@@ -148,8 +148,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"a C-ECHO-RQ is sent to '([^']*)' from '([^']*)'")]
         public async Task WhenAC_ECHO_RQIsSentToFromWithTimeoutOfSeconds(string calledAeTitle, string callingAeTitle)
         {
-            Guard.Against.NullOrWhiteSpace(calledAeTitle);
-            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
+            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
 
             var echoScu = _objectContainer.Resolve<IDataClient>("EchoSCU");
             await echoScu.SendAsync(
@@ -171,9 +171,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"C-STORE-RQ are sent to '([^']*)' with AET '([^']*)' from '([^']*)'")]
         public async Task WhenAC_STORE_RQIsSentToWithAETFromWithTimeoutOfSeconds(string application, string calledAeTitle, string callingAeTitle)
         {
-            Guard.Against.NullOrWhiteSpace(application);
-            Guard.Against.NullOrWhiteSpace(calledAeTitle);
-            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.NullOrWhiteSpace(application, nameof(application));
+            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
+            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
 
             var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");
 

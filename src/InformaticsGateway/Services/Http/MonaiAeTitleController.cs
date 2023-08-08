@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using Amazon.Runtime.Internal;
 using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -206,7 +207,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         private async Task ValidateCreateAsync(MonaiApplicationEntity item)
         {
-            Guard.Against.Null(item);
+            Guard.Against.Null(item, nameof(item));
 
             if (await _repository.ContainsAsync(p => p.Name.Equals(item.Name), HttpContext.RequestAborted).ConfigureAwait(false))
             {

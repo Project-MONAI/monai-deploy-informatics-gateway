@@ -81,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public Payload(string key, string correlationId, uint timeout)
         {
-            Guard.Against.NullOrWhiteSpace(key);
+            Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
             Files = new List<FileStorageMetadata>();
             _lastReceived = new Stopwatch();
@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public void Add(FileStorageMetadata value)
         {
-            Guard.Against.Null(value);
+            Guard.Against.Null(value, nameof(value));
 
             Files.Add(value);
             _lastReceived.Reset();

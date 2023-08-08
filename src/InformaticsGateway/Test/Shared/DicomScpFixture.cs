@@ -82,8 +82,8 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
 
     public class CStoreScp : DicomService, IDicomServiceProvider, IDicomCStoreProvider, IDicomCEchoProvider
     {
-        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, DicomServiceDependencies dicomServiceDependencies)
-                : base(stream, fallbackEncoding, log, dicomServiceDependencies)
+        public CStoreScp(INetworkStream stream, Encoding fallbackEncoding, ILogger logger, DicomServiceDependencies dicomServiceDependencies)
+                : base(stream, fallbackEncoding, logger, dicomServiceDependencies)
         {
         }
 

@@ -46,8 +46,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"(.*) (.*) studies with '(.*)' grouping")]
         public void GivenNStudies(int studyCount, string modality, string grouping)
         {
-            Guard.Against.NegativeOrZero(studyCount);
-            Guard.Against.NullOrWhiteSpace(modality);
+            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
+            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
 
             _dataProvider.GenerateDicomData(modality, studyCount);
             _dataProvider.StudyGrouping = grouping;
@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"a workflow named '(.*)'")]
         public void GivenNStudies(string workflowName)
         {
-            Guard.Against.NullOrWhiteSpace(workflowName);
+            Guard.Against.NullOrWhiteSpace(workflowName, nameof(workflowName));
 
             _dataProvider.Workflows = new string[] { workflowName };
         }
@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"the studies are uploaded to the DICOMWeb STOW-RS service at '([^']*)'")]
         public async Task WhenStudiesAreUploadedToTheDicomWebStowRSServiceWithoutStudyInstanceUID(string endpoint)
         {
-            Guard.Against.NullOrWhiteSpace(endpoint);
+            Guard.Against.NullOrWhiteSpace(endpoint, nameof(endpoint));
 
             await _dataSink.SendAsync(_dataProvider, $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}", _dataProvider.Workflows, async (DicomWebClient dicomWebClient, DicomDataSpecs specs) =>
             {
@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"the studies are uploaded to the DICOMWeb STOW-RS service at '([^']*)' with StudyInstanceUid")]
         public async Task WhenStudiesAreUploadedToTheDicomWebStowRSServiceWithStudyInstanceUID(string endpoint)
         {
-            Guard.Against.NullOrWhiteSpace(endpoint);
+            Guard.Against.NullOrWhiteSpace(endpoint, nameof(endpoint));
 
             await _dataSink.SendAsync(_dataProvider, $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}", _dataProvider.Workflows, async (DicomWebClient dicomWebClient, DicomDataSpecs specs) =>
             {

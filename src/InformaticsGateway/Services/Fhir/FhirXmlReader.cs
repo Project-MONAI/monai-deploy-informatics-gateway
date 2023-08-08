@@ -48,8 +48,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
         public async Task<FhirStoreResult> GetContentAsync(HttpRequest request, string correlationId, string resourceType, MediaTypeHeaderValue mediaTypeHeaderValue, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request);
-            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.Null(request, nameof(request));
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
             Guard.Against.NullOrInvalidInput(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue), (value) =>
             {
                 return value.MediaType.Value.Equals(ContentTypes.ApplicationFhirXml, StringComparison.OrdinalIgnoreCase);
@@ -95,9 +95,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
         private static string SetIdIfMIssing(string correlationId, XmlNamespaceManager xmlNamespaceManager, XmlElement rootNode)
         {
-            Guard.Against.NullOrWhiteSpace(correlationId);
-            Guard.Against.Null(xmlNamespaceManager);
-            Guard.Against.Null(rootNode);
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+            Guard.Against.Null(xmlNamespaceManager, nameof(xmlNamespaceManager));
+            Guard.Against.Null(rootNode, nameof(rootNode));
 
             var idNode = rootNode.SelectSingleNode($"{Resources.XmlNamespacePrefix}:{Resources.PropertyId}", xmlNamespaceManager);
             if (idNode is null)

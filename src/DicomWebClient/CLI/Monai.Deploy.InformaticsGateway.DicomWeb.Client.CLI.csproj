@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <PackageReference Include="ConsoleAppFramework" Version="4.2.4" />
-    <PackageReference Include="fo-dicom" Version="5.0.3" />
+    <PackageReference Include="fo-dicom" Version="5.1.1" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
   </ItemGroup>
 </Project>

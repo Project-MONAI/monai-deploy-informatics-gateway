@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
                           ILogger<ScuService> logger,
                           IOptions<InformaticsGatewayConfiguration> configuration)
         {
-            Guard.Against.Null(serviceScopeFactory);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
 
             _scope = serviceScopeFactory.CreateScope();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -114,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
 
         private async Task<ScuWorkResponse> HandleCEchoRequest(ScuWorkRequest request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request);
+            Guard.Against.Null(request, nameof(request));
 
             var scuResponse = new ScuWorkResponse();
             var manualResetEvent = new ManualResetEventSlim();

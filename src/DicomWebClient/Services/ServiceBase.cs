@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
         public bool TryConfigureServiceUriPrefix(string uriPrefix)
         {
-            Guard.Against.NullOrWhiteSpace(uriPrefix);
+            Guard.Against.NullOrWhiteSpace(uriPrefix, nameof(uriPrefix));
 
             if (HttpClient.BaseAddress is null)
             {

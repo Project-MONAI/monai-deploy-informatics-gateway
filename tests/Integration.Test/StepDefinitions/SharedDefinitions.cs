@@ -49,8 +49,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"(.*) (.*) studies")]
         public void GivenNStudies(int studyCount, string modality)
         {
-            Guard.Against.NegativeOrZero(studyCount);
-            Guard.Against.NullOrWhiteSpace(modality);
+            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
+            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
 
             _dataProvider.GenerateDicomData(modality, studyCount);
 
@@ -60,7 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Then(@"(.*) workflow requests sent to message broker")]
         public async Task ThenWorkflowRequestSentToMessageBrokerAsync(int workflowCount)
         {
-            Guard.Against.NegativeOrZero(workflowCount);
+            Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
 
             (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
             _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, _receivedMessages.Messages, workflowCount);

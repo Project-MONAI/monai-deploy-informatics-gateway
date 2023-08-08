@@ -49,8 +49,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
         public async Task<StowResult> StoreAsync(HttpRequest request, string studyInstanceUid, string workflowName, string correlationId, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request);
-            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.Null(request, nameof(request));
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
 
             if (!string.IsNullOrWhiteSpace(studyInstanceUid))
             {
@@ -76,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
         private IStowRequestReader GetRequestReader(MediaTypeHeaderValue mediaTypeHeaderValue)
         {
-            Guard.Against.Null(mediaTypeHeaderValue);
+            Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
 
             var scope = _serviceScopeFactory.CreateScope();
             var fileSystem = scope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));

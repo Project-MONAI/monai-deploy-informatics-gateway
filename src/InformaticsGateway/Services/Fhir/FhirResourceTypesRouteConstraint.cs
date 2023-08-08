@@ -15,6 +15,7 @@
  */
 
 using Ardalis.GuardClauses;
+using FellowOakDicom;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
@@ -24,10 +25,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
     {
         public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
         {
-            Guard.Against.Null(httpContext);
-            Guard.Against.Null(route);
-            Guard.Against.NullOrWhiteSpace(routeKey);
-            Guard.Against.Null(values);
+            Guard.Against.Null(httpContext, nameof(httpContext));
+            Guard.Against.Null(route, nameof(route));
+            Guard.Against.NullOrWhiteSpace(routeKey, nameof(routeKey));
+            Guard.Against.Null(values, nameof(values));
 
             return (values.TryGetValue(Resources.RouteNameResourceType, out var resourceTypeObject) &&
                 resourceTypeObject is string resourceType &&

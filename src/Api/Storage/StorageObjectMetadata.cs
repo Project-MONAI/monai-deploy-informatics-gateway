@@ -90,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public StorageObjectMetadata(string fileExtension)
         {
-            Guard.Against.NullOrWhiteSpace(fileExtension);
+            Guard.Against.NullOrWhiteSpace(fileExtension, nameof(fileExtension));
 
             if (fileExtension[0] != '.')
             {
@@ -103,20 +103,20 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public string GetTempStoragPath(string rootPath)
         {
-            Guard.Against.NullOrWhiteSpace(rootPath);
+            Guard.Against.NullOrWhiteSpace(rootPath, nameof(rootPath));
             return $"{rootPath}{FileStorageMetadata.PathSeparator}{TemporaryPath}";
         }
 
         public string GetPayloadPath(Guid payloadId)
         {
-            Guard.Against.Null(payloadId);
+            Guard.Against.Null(payloadId, nameof(payloadId));
 
             return $"{payloadId}{FileStorageMetadata.PathSeparator}{UploadPath}";
         }
 
         public void SetUploaded(string bucketName)
         {
-            Guard.Against.NullOrWhiteSpace(bucketName);
+            Guard.Against.NullOrWhiteSpace(bucketName, nameof(bucketName));
 
             TemporaryBucketName = bucketName;
             DateUploaded = DateTime.UtcNow;
@@ -155,7 +155,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public void SetMoved(string bucketName)
         {
-            Guard.Against.NullOrEmpty(bucketName);
+            Guard.Against.NullOrEmpty(bucketName, nameof(bucketName));
 
             PayloadBucketName = bucketName;
             DateMoved = DateTime.UtcNow;

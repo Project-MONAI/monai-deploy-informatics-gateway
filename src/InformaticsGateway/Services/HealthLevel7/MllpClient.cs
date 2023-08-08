@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private async Task<IList<Message>> ReceiveData(INetworkStream clientStream, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(clientStream);
+            Guard.Against.Null(clientStream, nameof(clientStream));
 
             var data = string.Empty;
             var messages = new List<Message>();
@@ -143,8 +143,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private async Task SendAcknowledgment(INetworkStream clientStream, Message message, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(clientStream);
-            Guard.Against.Null(message);
+            Guard.Against.Null(clientStream, nameof(clientStream));
+            Guard.Against.Null(message, nameof(message));
 
             if (!_configurations.SendAcknowledgment)
             {
@@ -171,7 +171,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private bool ShouldSendAcknowledgment(Message message)
         {
-            Guard.Against.Null(message);
+            Guard.Against.Null(message, nameof(message));
             try
             {
                 var value = message.DefaultSegment(Resources.MessageHeaderSegment).Fields(Resources.AcceptAcknowledgementType);

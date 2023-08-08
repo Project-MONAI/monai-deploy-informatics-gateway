@@ -69,9 +69,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public FhirFileStorageMetadata(string transactionId, string resourceType, string resourceId, FhirStorageFormat fhirFileFormat)
             : base(transactionId, $"{resourceType}{PathSeparator}{resourceId}")
         {
-            Guard.Against.NullOrWhiteSpace(transactionId);
-            Guard.Against.NullOrWhiteSpace(resourceType);
-            Guard.Against.NullOrWhiteSpace(resourceId);
+            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
+            Guard.Against.NullOrWhiteSpace(resourceType, nameof(resourceType));
+            Guard.Against.NullOrWhiteSpace(resourceId, nameof(resourceId));
 
             Source = transactionId;
             ResourceType = resourceType;

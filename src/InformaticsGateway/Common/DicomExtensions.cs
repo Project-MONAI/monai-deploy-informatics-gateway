@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         public static string ToJson(this DicomFile dicomFile, DicomJsonOptions dicomJsonOptions, bool validateDicom)
         {
-            Guard.Against.Null(dicomFile);
+            Guard.Against.Null(dicomFile, nameof(dicomFile));
 
             var options = new JsonSerializerOptions();
             options.Converters.Add(new DicomJsonConverter(

@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
 
         public ProblemException(ProblemDetails problemDetails) : base(problemDetails?.Detail)
         {
-            Guard.Against.Null(problemDetails);
+            Guard.Against.Null(problemDetails, nameof(problemDetails));
 
             ProblemDetails = problemDetails;
         }

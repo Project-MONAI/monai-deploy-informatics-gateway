@@ -49,15 +49,15 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         public AeTitleService(string route, HttpClient httpClient, ILogger logger = null)
             : base(httpClient, logger)
         {
-            Guard.Against.NullOrWhiteSpace(route);
-            Guard.Against.Null(httpClient);
+            Guard.Against.NullOrWhiteSpace(route, nameof(route));
+            Guard.Against.Null(httpClient, nameof(httpClient));
 
             Route = route;
         }
 
         public async Task<T> Create(T item, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(item);
+            Guard.Against.Null(item, nameof(item));
 
             Logger.SendingRequestTo(Route);
             var response = await HttpClient.PostAsJsonAsync(Route, item, Configuration.JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         public async Task<T> Delete(string aeTitle, CancellationToken cancellationToken)
         {
             aeTitle = Uri.EscapeDataString(aeTitle);
-            Guard.Against.NullOrWhiteSpace(aeTitle);
+            Guard.Against.NullOrWhiteSpace(aeTitle, nameof(aeTitle));
             Logger.SendingRequestTo($"{Route}/{aeTitle}");
             var response = await HttpClient.DeleteAsync($"{Route}/{aeTitle}", cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         public async Task<T> GetAeTitle(string aeTitle, CancellationToken cancellationToken)
         {
             aeTitle = Uri.EscapeDataString(aeTitle);
-            Guard.Against.NullOrWhiteSpace(aeTitle);
+            Guard.Against.NullOrWhiteSpace(aeTitle, nameof(aeTitle));
             Logger.SendingRequestTo($"{Route}/{aeTitle}");
             var response = await HttpClient.GetAsync($"{Route}/{aeTitle}", cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
@@ -101,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
                 throw new NotSupportedException($"C-ECHO is not supported for {typeof(T).Name}");
             }
             name = Uri.EscapeDataString(name);
-            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
             Logger.SendingRequestTo($"{Route}/{name}");
             var response = await HttpClient.GetAsync($"{Route}/cecho/{name}", cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
         public async Task<T> Update(T item, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(item);
+            Guard.Against.Null(item, nameof(item));
 
             Logger.SendingRequestTo(Route);
             var response = await HttpClient.PutAsJsonAsync(Route, item, Configuration.JsonSerializationOptions, cancellationToken).ConfigureAwait(false);

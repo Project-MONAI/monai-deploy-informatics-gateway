@@ -132,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 
         private void ValidateOptions(string rootUrl, out Uri rootUri)
         {
-            Guard.Against.NullOrWhiteSpace(rootUrl);
+            Guard.Against.NullOrWhiteSpace(rootUrl, nameof(rootUrl));
 
             _logger.LogInformation("Checking arguments...");
             rootUri = new Uri(rootUrl);
