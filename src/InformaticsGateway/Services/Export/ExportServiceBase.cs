@@ -27,6 +27,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -157,6 +158,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     exportRequest => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
                     executionOptions);
 
+                var outputDataEngineBLock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
+                    async (exportDataRequest) =>
+                    {
+                        if (exportDataRequest.IsFailed) return exportDataRequest;
+                        return await ExecuteOutputDataEngineCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
+                    },
+                    executionOptions);
+
                 var exportActionBlock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
                     async (exportDataRequest) =>
                     {
@@ -169,7 +178,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
                 var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                exportFlow.LinkTo(exportActionBlock, linkOptions);
+                exportFlow.LinkTo(outputDataEngineBLock, linkOptions);
+                outputDataEngineBLock.LinkTo(exportActionBlock, linkOptions);
                 exportActionBlock.LinkTo(reportingActionBlock, linkOptions);
 
                 lock (SyncRoot)
@@ -260,6 +270,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
                 yield return exportRequestData;
             }
+        }
+        private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest, CancellationToken token)
+        {
+            var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPluginEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPluginEngine));
+
+            outputDataEngine.Configure(exportDataRequest.PluginAssemblies);
+            return await outputDataEngine.ExecutePlugins(exportDataRequest).ConfigureAwait(false);
         }
 
         private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)

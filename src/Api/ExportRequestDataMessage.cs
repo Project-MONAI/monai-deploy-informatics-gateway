@@ -19,17 +19,28 @@ using System.Collections.Generic;
 using Ardalis.GuardClauses;
 using Monai.Deploy.Messaging.Events;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Export
+namespace Monai.Deploy.InformaticsGateway.Api
 {
     public class ExportRequestDataMessage
     {
         private readonly ExportRequestEvent _exportRequest;
 
-        public byte[] FileContent { get; private set; }
+        public byte[] FileContent { get; private set; } = default!;
         public bool IsFailed { get; private set; }
         public IList<string> Messages { get; init; }
         public FileExportStatus ExportStatus { get; private set; }
         public string Filename { get; }
+
+        /// <summary>
+        /// Optional list of data output plug-in type names to be executed by the <see cref="IOutputDataPluginEngine"/>.
+        /// </summary>
+        public List<string> PluginAssemblies
+        {
+            get
+            {
+                return _exportRequest.PluginAssemblies;
+            }
+        }
 
         public string ExportTaskId
         {
@@ -45,6 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             get { return _exportRequest.Destinations; }
         }
+
 
         public ExportRequestDataMessage(ExportRequestEvent exportRequest, string filename)
         {

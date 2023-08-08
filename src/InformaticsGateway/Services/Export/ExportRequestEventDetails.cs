@@ -34,7 +34,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             DeliveryTag = exportRequest.DeliveryTag;
             MessageId = exportRequest.MessageId;
             WorkflowInstanceId = exportRequest.WorkflowInstanceId;
-            AddErrorMessages(exportRequest.ErrorMessages);
+
+            PluginAssemblies.AddRange(exportRequest.PluginAssemblies);
+            ErrorMessages.AddRange(exportRequest.ErrorMessages);
         }
 
         /// <summary>

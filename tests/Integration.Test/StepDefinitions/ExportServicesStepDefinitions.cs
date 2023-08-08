@@ -26,6 +26,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
+using Monai.Deploy.InformaticsGateway.Test.Plugins;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Messaging.RabbitMQ;
@@ -126,6 +127,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
             };
 
+            exportRequestEvent.PluginAssemblies.Add(typeof(TestOutputDataPluginModifyDicomFile).AssemblyQualifiedName);
+
             var message = new JsonMessage<ExportRequestEvent>(
                 exportRequestEvent,
                 MessageBrokerConfiguration.InformaticsGatewayApplicationId,
@@ -144,7 +147,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             foreach (var key in _dataProvider.DicomSpecs.FileHashes.Keys)
             {
                 (await Extensions.WaitUntil(() => _dicomServer.Instances.ContainsKey(key), DicomScpWaitTimeSpan)).Should().BeTrue("{0} should be received", key);
-                _dicomServer.Instances.Should().ContainKey(key).WhoseValue.Equals(_dataProvider.DicomSpecs.FileHashes[key]);
+                _dicomServer.Instances.Should().ContainKey(key).WhoseValue.Count.Equals(2);
+                _dicomServer.Instances.Should().ContainKey(key).WhoseValue[0].Equals(_dataProvider.DicomSpecs.FileHashes[key]);
+                _dicomServer.Instances.Should().ContainKey(key).WhoseValue[1].Equals(TestOutputDataPluginModifyDicomFile.ExpectedValue);
             }
         }
 
@@ -159,20 +164,34 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var result = await Extensions.WaitUntilDataIsReady<Dictionary<string, string>>(async () =>
              {
                  var actualHashes = new Dictionary<string, string>();
+                 var exceptions = new List<Exception>();
                  try
                  {
                      var instanceFound = 0;
                      await foreach (var dicomFile in dicomWebClient.Wado.Retrieve(_dataProvider.DicomSpecs.StudyInstanceUids[0]))
                      {
-                         var key = dicomFile.GenerateFileName();
-                         var hash = dicomFile.CalculateHash();
-                         actualHashes.Add(key, hash);
-                         ++instanceFound;
+                         try
+                         {
+
+                             var key = dicomFile.GenerateFileName();
+                             var hash = dicomFile.CalculateHash();
+                             actualHashes.Add(key, hash);
+                             dicomFile.Dataset.GetSingleValueOrDefault(TestOutputDataPluginModifyDicomFile.ExpectedTag, string.Empty).Should().Be(TestOutputDataPluginModifyDicomFile.ExpectedValue);
+                             ++instanceFound;
+                         }
+                         catch (Exception ex)
+                         {
+                             exceptions.Add(ex);
+                         }
                      }
                  }
-                 catch
+                 catch (Exception ex)
                  {
-                     // noop
+                     exceptions.Add(ex);
+                 }
+                 if (exceptions.Any())
+                 {
+                     throw new AggregateException(exceptions);
                  }
                  return actualHashes;
              }, (Dictionary<string, string> expected) =>
