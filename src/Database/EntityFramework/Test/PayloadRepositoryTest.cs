@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         [Fact]
         public async Task GivenAPayload_WhenAddingToDatabase_ExpectItToBeSaved()
         {
-            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
+            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
             payload.State = Payload.PayloadState.Move;
 
@@ -75,6 +75,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.Equal(payload.Count, actual!.Count);
             Assert.Equal(payload.RetryCount, actual!.RetryCount);
             Assert.Equal(payload.CorrelationId, actual!.CorrelationId);
+            Assert.Equal(payload.WorkflowInstanceId, actual!.WorkflowInstanceId);
+            Assert.Equal(payload.TaskId, actual!.TaskId);
             Assert.Equal(payload.CalledAeTitle, actual!.CalledAeTitle);
             Assert.Equal(payload.CallingAeTitle, actual!.CallingAeTitle);
             Assert.Equal(payload.Timeout, actual!.Timeout);
@@ -84,7 +86,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         [Fact]
         public async Task GivenAPayload_WhenRemoveIsCalled_ExpectItToDeleted()
         {
-            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
+            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
             payload.State = Payload.PayloadState.Move;
 

@@ -24,10 +24,8 @@ using Ardalis.GuardClauses;
 using DotNext.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 
@@ -40,7 +38,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     internal sealed partial class PayloadAssembler : IPayloadAssembler, IDisposable
     {
         internal const int DEFAULT_TIMEOUT = 5;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly ILogger<PayloadAssembler> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
@@ -50,11 +47,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly System.Timers.Timer _timer;
 
         public PayloadAssembler(
-            IOptions<InformaticsGatewayConfiguration> options,
             ILogger<PayloadAssembler> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
-            _options = options ?? throw new ArgumentNullException(nameof(options));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
@@ -103,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "CorrelationId", file.CorrelationId } });
 
-            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, timeout).ConfigureAwait(false);
+            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, file.WorkflowInstanceId, file.TaskId, timeout).ConfigureAwait(false);
             payload.Add(file);
             _logger.FileAddedToBucket(payload.Key, payload.Count);
             return payload.PayloadId;
@@ -127,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 await _intializedTask.ConfigureAwait(false);
 
                 _timer.Enabled = false;
-                if (_payloads.Count > 0)
+                if (!_payloads.IsEmpty)
                 {
                     _logger.BucketsActive(_payloads.Count);
                 }
@@ -198,13 +193,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task<Payload> CreateOrGetPayload(string key, string correationId, uint timeout)
+        private async Task<Payload> CreateOrGetPayload(string key, string correlationId, string? workflowInstanceId, string? taskId, uint timeout)
         {
             return await _payloads.GetOrAdd(key, x => new AsyncLazy<Payload>(async () =>
             {
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
-                var newPayload = new Payload(key, correationId, timeout);
+                var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, timeout);
                 await repository.AddAsync(newPayload).ConfigureAwait(false);
                 _logger.BucketCreated(key, timeout);
                 return newPayload;

@@ -273,8 +273,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<int>("State")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("TaskId")
+                        .HasColumnType("TEXT");
+
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("WorkflowInstanceId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("PayloadId");
 

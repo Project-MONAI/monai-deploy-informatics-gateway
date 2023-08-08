@@ -64,6 +64,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public string CorrelationId { get; init; }
 
+        public string? WorkflowInstanceId { get; init; }
+
+        public string? TaskId { get; init; }
+
         public int Count { get => Files.Count; }
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
@@ -80,6 +84,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public int FilesFailedToUpload { get => Files.Count(p => p.IsUploadFailed); }
 
         public Payload(string key, string correlationId, uint timeout)
+            : this(key, correlationId, null, null, timeout)
+        {
+        }
+
+        public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
@@ -87,6 +96,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             _lastReceived = new Stopwatch();
 
             CorrelationId = correlationId;
+            WorkflowInstanceId = workflowInstanceId;
+            TaskId = taskId;
             MachineName = Environment.MachineName;
             DateTimeCreated = DateTime.UtcNow;
             PayloadId = Guid.NewGuid();
