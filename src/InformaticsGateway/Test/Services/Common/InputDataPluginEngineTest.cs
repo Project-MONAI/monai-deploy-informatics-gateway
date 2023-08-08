@@ -107,7 +107,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             var assemblies = new List<string>()
             {
                 typeof(TestInputDataPluginAddWorkflow).AssemblyQualifiedName,
-                typeof(TestInputDataPluginModifyDicomFile).AssemblyQualifiedName
+                typeof(TestInputDataPluginModifyDicomFile).AssemblyQualifiedName,
+                typeof(TestInputDataPluginResumeWorkflow).AssemblyQualifiedName,
             };
 
             pluginEngine.Configure(assemblies);
@@ -126,6 +127,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             Assert.Equal(resultDicomInfo, dicomInfo);
             Assert.True(dicomInfo.Workflows.Contains(TestInputDataPluginAddWorkflow.TestString));
             Assert.Equal(TestInputDataPluginModifyDicomFile.ExpectedValue, resultDicomFile.Dataset.GetString(TestInputDataPluginModifyDicomFile.ExpectedTag));
+
+            Assert.Equal(resultDicomInfo.WorkflowInstanceId, TestInputDataPluginResumeWorkflow.WorkflowInstanceId);
+            Assert.Equal(resultDicomInfo.TaskId, TestInputDataPluginResumeWorkflow.TaskId);
         }
 
         private static DicomFile GenerateDicomFile()

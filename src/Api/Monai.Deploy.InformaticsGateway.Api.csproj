@@ -30,7 +30,7 @@
   <ItemGroup>
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.20" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.23" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.24" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.16" />
   </ItemGroup>
 

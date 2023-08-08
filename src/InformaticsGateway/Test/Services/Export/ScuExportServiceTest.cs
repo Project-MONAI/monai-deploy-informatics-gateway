@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -50,6 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<IStorageService> _storageService;
         private readonly Mock<IMessageBrokerSubscriberService> _messageSubscriberService;
         private readonly Mock<IMessageBrokerPublisherService> _messagePublisherService;
+        private readonly Mock<IOutputDataPluginEngine> _outputDataPluginEngine;
         private readonly Mock<ILogger<ScuExportService>> _logger;
         private readonly Mock<ILogger> _scpLogger;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
@@ -69,6 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService = new Mock<IStorageService>();
             _messageSubscriberService = new Mock<IMessageBrokerSubscriberService>();
             _messagePublisherService = new Mock<IMessageBrokerPublisherService>();
+            _outputDataPluginEngine = new Mock<IOutputDataPluginEngine>();
             _logger = new Mock<ILogger<ScuExportService>>();
             _scpLogger = new Mock<ILogger>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
@@ -78,25 +81,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _repository = new Mock<IDestinationApplicationEntityRepository>();
             _storageInfoProvider = new Mock<IStorageInfoProvider>();
 
-            var serviceProvider = new Mock<IServiceProvider>();
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IDestinationApplicationEntityRepository)))
-                .Returns(_repository.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IMessageBrokerPublisherService)))
-                .Returns(_messagePublisherService.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IMessageBrokerSubscriberService)))
-                .Returns(_messageSubscriberService.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IStorageService)))
-                .Returns(_storageService.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IStorageInfoProvider)))
-                .Returns(_storageInfoProvider.Object);
+            var services = new ServiceCollection();
+            services.AddScoped(p => _repository.Object);
+            services.AddScoped(p => _messagePublisherService.Object);
+            services.AddScoped(p => _messageSubscriberService.Object);
+            services.AddScoped(p => _outputDataPluginEngine.Object);
+            services.AddScoped(p => _storageService.Object);
+            services.AddScoped(p => _storageInfoProvider.Object);
+
+            var serviceProvider = services.BuildServiceProvider();
 
             var scope = new Mock<IServiceScope>();
-            scope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
+            scope.Setup(x => x.ServiceProvider).Returns(serviceProvider);
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
             DicomScpFixture.Logger = _scpLogger.Object;
@@ -104,6 +100,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _configuration.Value.Export.Retries.DelaysMilliseconds = new[] { 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
             _storageInfoProvider.Setup(p => p.HasSpaceAvailableForExport).Returns(true);
+
+            _outputDataPluginEngine.Setup(p => p.Configure(It.IsAny<IReadOnlyList<string>>()));
+            _outputDataPluginEngine.Setup(p => p.ExecutePlugins(It.IsAny<ExportRequestDataMessage>()))
+                .Returns<ExportRequestDataMessage>((ExportRequestDataMessage message) => Task.FromResult(message));
+
         }
 
         [RetryFact(5, 250, DisplayName = "Constructor - throws on null params")]
