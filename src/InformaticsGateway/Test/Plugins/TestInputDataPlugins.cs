@@ -30,6 +30,17 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
             return Task.FromResult((dicomFile, fileMetadata));
         }
     }
+    public class TestInputDataPluginResumeWorkflow : IInputDataPlugin
+    {
+        public static readonly string WorkflowInstanceId = "ee04a4ac-abb3-412b-b3a7-662c96380379";
+        public static readonly string TaskId = "45b20f97-2b38-4b9a-baeb-d15f9d496851";
+        public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
+        {
+            fileMetadata.WorkflowInstanceId = WorkflowInstanceId;
+            fileMetadata.TaskId = TaskId;
+            return Task.FromResult((dicomFile, fileMetadata));
+        }
+    }
 
     public class TestInputDataPluginModifyDicomFile : IInputDataPlugin
     {

@@ -82,6 +82,20 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public DateTime DateReceived { get; init; } = default!;
 
         /// <summary>
+        /// Gets or sets the workflow instance ID for the workflow manager to resume a workflow.
+        /// </summary>
+        /// <value></value>
+        [JsonPropertyName("WorkflowInstanceId")]
+        public string? WorkflowInstanceId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the task ID for the workflow manager to resume a workflow.
+        /// </summary>
+        /// <value></value>
+        [JsonPropertyName("WorkflowInstanceId")]
+        public string? TaskId { get; set; }
+
+        /// <summary>
         /// DO NOT USE
         /// This constructor is intended for JSON serializer.
         /// Due to limitation in current version of .NET, the constructor must be public.
