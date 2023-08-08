@@ -92,7 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or sets the task ID for the workflow manager to resume a workflow.
         /// </summary>
         /// <value></value>
-        [JsonPropertyName("WorkflowInstanceId")]
+        [JsonPropertyName("taskId")]
         public string? TaskId { get; set; }
 
         /// <summary>
