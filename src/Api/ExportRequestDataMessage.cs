@@ -47,6 +47,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
             get { return _exportRequest.ExportTaskId; }
         }
 
+        public string WorkflowInstanceId
+        {
+            get { return _exportRequest.WorkflowInstanceId; }
+        }
+
         public string CorrelationId
         {
             get { return _exportRequest.CorrelationId; }
