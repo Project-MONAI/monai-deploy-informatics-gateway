@@ -108,6 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             var dataset = new DicomDataset
             {
                 { DicomTag.PatientID, "PID" },
+                { DicomTag.AccessionNumber, "AccesssionNumber" },
                 { DicomTag.StudyInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
                 { DicomTag.SeriesInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
                 { DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },

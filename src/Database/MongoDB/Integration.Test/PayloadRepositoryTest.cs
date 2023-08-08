@@ -64,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         [Fact]
         public async Task GivenAPayload_WhenAddingToDatabase_ExpectItToBeSaved()
         {
-            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
+            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
             payload.State = Payload.PayloadState.Move;
 
@@ -80,6 +80,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             Assert.Equal(payload.Count, actual!.Count);
             Assert.Equal(payload.RetryCount, actual!.RetryCount);
             Assert.Equal(payload.CorrelationId, actual!.CorrelationId);
+            Assert.Equal(payload.WorkflowInstanceId, actual!.WorkflowInstanceId);
+            Assert.Equal(payload.TaskId, actual!.TaskId);
             Assert.Equal(payload.CalledAeTitle, actual!.CalledAeTitle);
             Assert.Equal(payload.CallingAeTitle, actual!.CallingAeTitle);
             Assert.Equal(payload.Timeout, actual!.Timeout);
@@ -119,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         [Fact]
         public async Task GivenAPayload_WhenUpdateIsCalled_ExpectItToSaved()
         {
-            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
+            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
@@ -139,6 +141,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             Assert.Equal(updated.Count, actual!.Count);
             Assert.Equal(updated.RetryCount, actual!.RetryCount);
             Assert.Equal(updated.CorrelationId, actual!.CorrelationId);
+            Assert.Equal(payload.WorkflowInstanceId, actual!.WorkflowInstanceId);
+            Assert.Equal(payload.TaskId, actual!.TaskId);
             Assert.Equal(updated.CalledAeTitle, actual!.CalledAeTitle);
             Assert.Equal(updated.CallingAeTitle, actual!.CallingAeTitle);
             Assert.Equal(updated.Timeout, actual!.Timeout);
