@@ -41,11 +41,12 @@
       },
       "Moq": {
         "type": "Direct",
-        "requested": "[4.18.4, )",
-        "resolved": "4.18.4",
-        "contentHash": "IOo+W51+7Afnb0noltJrKxPBSfsgMzTKCw+Re5AMx8l/vBbAbMDOynLik4+lBYIWDJSO0uV7Zdqt7cNb6RZZ+A==",
+        "requested": "[4.20.1, )",
+        "resolved": "4.20.1",
+        "contentHash": "ES4ngKsm7T1f3MXj7bM+m1pvxc7rXBLjghFEBjruH5j0Mx15FRI40uo6WT9OgAj3CFWJASYt+chB1MhOivVX+w==",
         "dependencies": {
-          "Castle.Core": "5.1.1"
+          "Castle.Core": "5.1.1",
+          "Devlooped.SponsorLink": "1.0.0"
         }
       },
       "Swashbuckle.AspNetCore": {
@@ -142,6 +143,11 @@
         "dependencies": {
           "NETStandard.Library": "2.0.0"
         }
+      },
+      "Devlooped.SponsorLink": {
+        "type": "Transitive",
+        "resolved": "1.0.0",
+        "contentHash": "YtGfB0L0OUGK/Nl7YR8jVLOb8zIYo+pM80nw86GVqqeI36D3itw/N5agupsn4sAJxQxKVJti9KvqqAR8dfrW1A=="
       },
       "DnsClient": {
         "type": "Transitive",
@@ -1075,25 +1081,25 @@
       },
       "NLog": {
         "type": "Transitive",
-        "resolved": "5.2.2",
-        "contentHash": "r6Q9740g29gTwmTWlsgdIFm0mhNsfNZmbvWKX/Fxmi8X89ZrpUowHM2T2X1lP7RVpND+ef+XnfKL5g6Q1iNGXA=="
+        "resolved": "5.2.3",
+        "contentHash": "rHTNRtQF5qYqLutSR9ldUWXglKym/KA1R6GKw4JtDvza8i5+kgfmeKH75Ccn1noeJIOjHLXorphMxKk3EiN2tg=="
       },
       "NLog.Extensions.Logging": {
         "type": "Transitive",
-        "resolved": "5.3.2",
-        "contentHash": "v6swUNj9KHH4tWKH3+eCuFsp/BfpkWmbz1XPCIXb9fnSVsEHcfyRnfXjuksfMdIULgR/i1RzbQUU8WsNVpBglg==",
+        "resolved": "5.3.3",
+        "contentHash": "o3V1oUr0izjhU1djuVqN5JdmNUGmunTs3Amjhumt/nxva8kG9QWjOdba+ciwkP//QOjv+KkGklZtI9o4qz50hQ==",
         "dependencies": {
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
           "Microsoft.Extensions.Logging": "6.0.0",
-          "NLog": "5.2.2"
+          "NLog": "5.2.3"
         }
       },
       "NLog.Web.AspNetCore": {
         "type": "Transitive",
-        "resolved": "5.3.2",
-        "contentHash": "SLBeDj30nu1sjc3DsPhTdXSL90915eeQknYbSCZOthccxqVJS1RZna0sh746kDaD21ktnYMubXT+gNWgn3oGpA==",
+        "resolved": "5.3.3",
+        "contentHash": "ub8LOAbIGIPtv9nMAdZXlxUvszau6p2Svmeo8mhJFD+PQDMnI6PFc5IID1Jj3c1Lv8sxKVL7vRCsaWdTrmnrFw==",
         "dependencies": {
-          "NLog.Extensions.Logging": "5.3.2"
+          "NLog.Extensions.Logging": "5.3.3"
         }
       },
       "NuGet.Frameworks": {
@@ -1910,8 +1916,8 @@
           "Monai.Deploy.Security": "[0.1.3, )",
           "Monai.Deploy.Storage": "[0.2.16, )",
           "Monai.Deploy.Storage.MinIO": "[0.2.16, )",
-          "NLog": "[5.2.2, )",
-          "NLog.Web.AspNetCore": "[5.3.2, )",
+          "NLog": "[5.2.3, )",
+          "NLog.Web.AspNetCore": "[5.3.3, )",
           "Polly": "[7.2.4, )",
           "Swashbuckle.AspNetCore": "[6.5.0, )",
           "fo-dicom": "[5.1.1, )"
