@@ -868,7 +868,7 @@
 - - :approve
   - Polly
   - :who: mocsharp
-    :why: New BSD License (https://github.com/App-vNext/Polly/raw/main/LICENSE.txt)
+    :why: New BSD License (https://raw.githubusercontent.com/App-vNext/Polly/main/LICENSE)
     :versions:
     - 7.2.4
     :when: 2022-08-16 23:06:27.913122244 Z
@@ -2324,28 +2324,28 @@
 - - :approve
   - MongoDB.Bson
   - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
+    :why: Apache-2.0 (https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
     :versions:
     - 2.21.0
     :when: 2022-11-16 23:38:53.891380809 Z
 - - :approve
   - MongoDB.Driver
   - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
+    :why: Apache-2.0 (https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
     :versions:
     - 2.21.0
     :when: 2022-11-16 23:38:54.213853364 Z
 - - :approve
   - MongoDB.Driver.Core
   - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
+    :why: Apache-2.0 (https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
     :versions:
     - 2.21.0
     :when: 2022-11-16 23:38:54.553730219 Z
 - - :approve
   - MongoDB.Libmongocrypt
   - :who: mocsharp
-    :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
+    :why: Apache-2.0 (https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
     :versions:
     - 1.8.0
     :when: 2022-11-16 23:38:54.863359236 Z
