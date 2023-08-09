@@ -38,6 +38,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         private readonly DbSet<RemoteAppExecution> _dataset;
         private bool _disposedValue;
 
+
+        // Note. this implementaion (unlike the Mongo one) Does not delete the entries
+        // so a cleanup routine will have to be implemented to peridoically remove old entries !
+
         public RemoteAppExecutionRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<PayloadRepository> logger,
@@ -74,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var result = await _dataset.SingleOrDefaultAsync(p => p.OutgoingStudyUid == OriginalStudyUid).ConfigureAwait(false);
+                var result = await _dataset.SingleOrDefaultAsync(p => p.OutgoingUid == OriginalStudyUid).ConfigureAwait(false);
                 if (result is not null)
                 {
                     _dataset.Remove(result);
@@ -91,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var result = await _dataset.SingleOrDefaultAsync(p => p.OutgoingStudyUid == OutgoingStudyUid).ConfigureAwait(false);
+                var result = await _dataset.SingleOrDefaultAsync(p => p.OutgoingUid == OutgoingStudyUid).ConfigureAwait(false);
                 if (result is not null)
                 {
                     return result;

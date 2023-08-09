@@ -29,6 +29,8 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using System.Threading;
+using Monai.Deploy.InformaticsGateway.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 {
@@ -41,6 +43,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
         private readonly Mock<IRemoteAppExecutionRepository> _repository;
         private readonly Mock<IDestinationApplicationEntityRepository> _destRepo;
         private readonly ServiceProvider _serviceProvider;
+        private readonly PluginConfiguration _pluginOptions;
+        private readonly ServiceCollection _serviceCollection;
 
         public ExternalAppPluginTest()
         {
@@ -53,13 +57,20 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             _destRepo.Setup(d => d.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(new DestinationApplicationEntity()));
 
-            var services = new ServiceCollection();
-            services.AddScoped(p => _logger.Object);
-            services.AddScoped(p => _loggerOut.Object);
-            services.AddScoped(p => _repository.Object);
-            services.AddScoped(p => _destRepo.Object);
+            _pluginOptions = new PluginConfiguration { Configuration = { { "ReplaceTags", "SOPClassUID, StudyInstanceUID, AccessionNumber, SeriesInstanceUID, SOPInstanceUID" } } };
 
-            _serviceProvider = services.BuildServiceProvider();
+            _serviceCollection = new ServiceCollection();
+            _serviceCollection.AddScoped(p => _logger.Object);
+            _serviceCollection.AddScoped(p => _loggerOut.Object);
+            _serviceCollection.AddScoped(p => _repository.Object);
+            _serviceCollection.AddScoped(p => _destRepo.Object);
+            _serviceCollection.AddOptions<PluginConfiguration>().Configure(options => options = _pluginOptions);
+            _serviceCollection.PostConfigure<PluginConfiguration>(opts =>
+            {
+                opts.Configuration = _pluginOptions.Configuration;
+            });
+
+            _serviceProvider = _serviceCollection.BuildServiceProvider();
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
@@ -70,19 +81,29 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
         [Fact]
         public void GivenAnExternalAppIncoming_WhenInitialized_ExpectParametersToBeValidated()
         {
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(null, null));
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(null, _serviceScopeFactory.Object));
+            var options = Options.Create<PluginConfiguration>(new PluginConfiguration
+            {
+                Configuration = { { "ReplaceTags", "SOPClassUID" } }
+            });
+            Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(null, _serviceScopeFactory.Object, options));
+            Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(null, null, options));
 
-            _ = new ExternalAppIncoming(_logger.Object, _serviceScopeFactory.Object);
+            _ = new ExternalAppIncoming(_logger.Object, _serviceScopeFactory.Object, options);
         }
 
         [Fact]
         public void GivenAnExternalAppOutgoing_WhenInitialized_ExpectParametersToBeValidated()
         {
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(null, null));
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(null, _serviceScopeFactory.Object));
+            var options = Options.Create<PluginConfiguration>(new PluginConfiguration
+            {
+                Configuration = { { "ReplaceTags", "SOPClassUID" } }
+            });
+            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(null, _serviceScopeFactory.Object, options));
+            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(null, _serviceScopeFactory.Object, options));
 
-            _ = new ExternalAppOutgoing(_loggerOut.Object, _serviceScopeFactory.Object);
+            _ = new ExternalAppOutgoing(_loggerOut.Object, _serviceScopeFactory.Object, options);
         }
 
         [Fact]
@@ -120,7 +141,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             RemoteAppExecution localCopy = new RemoteAppExecution();
 
             _repository.Setup(r => r.AddAsync(It.IsAny<RemoteAppExecution>(), It.IsAny<CancellationToken>()))
-                .Callback((RemoteAppExecution item, CancellationToken c) => localCopy = item);
+                .Callback((RemoteAppExecution item, CancellationToken c) =>
+                localCopy = item
+                );
             var dataset = new DicomDataset
             {
                 { DicomTag.PatientID, "PID" },
@@ -155,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             var exportRequestDataMessage = await pluginEngine.ExecutePlugins(exportMessage);
 
             Assert.Equal(originalStudyUid, localCopy.StudyUid);
-            Assert.Equal(dataset.GetString(DicomTag.StudyInstanceUID), localCopy.OutgoingStudyUid);
+            Assert.Equal(dataset.GetString(DicomTag.SOPClassUID), localCopy.OutgoingUid);
             Assert.NotEqual(originalStudyUid, dataset.GetString(DicomTag.StudyInstanceUID));
         }
 
@@ -186,8 +209,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 
             var remoteAppExecution = new RemoteAppExecution
             {
-                OutgoingStudyUid = outboundStudyUid,
-                StudyUid = originalStudyUid
+                OutgoingUid = outboundStudyUid,
+                StudyUid = originalStudyUid,
+                OriginalValues = { { DicomTag.StudyInstanceUID, originalStudyUid } }
             };
 
             _repository.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
@@ -230,7 +254,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 
             var remoteAppExecution = new RemoteAppExecution
             {
-                OutgoingStudyUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
+                OutgoingUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
                 StudyUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
                 WorkflowInstanceId = workflowInstanceId,
                 ExportTaskId = workflowTaskId
@@ -250,5 +274,50 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             Assert.Equal(workflowTaskId, resultDicomInfo.TaskId);
         }
 
+        [Fact]
+        public async Task ExternalAppPlugin_Should_GetData_BasedOnConfig_Tag()
+        {
+            var sOPClassUID = DicomUID.SecondaryCaptureImageStorage.UID;
+
+            var dataset = new DicomDataset
+            {
+                { DicomTag.PatientID, "PID" },
+                { DicomTag.StudyInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SeriesInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPClassUID, sOPClassUID }
+            };
+            var dicomFile = new DicomFile(dataset);
+            var dicomInfo = new DicomFileStorageMetadata(
+                Guid.NewGuid().ToString(),
+                Guid.NewGuid().ToString(),
+                dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
+                dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
+                dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID));
+
+            var workflowInstanceId = "some guid here";
+            var workflowTaskId = "some guid here 2";
+
+            var remoteAppExecution = new RemoteAppExecution
+            {
+                OutgoingUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
+                StudyUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID,
+                WorkflowInstanceId = workflowInstanceId,
+                ExportTaskId = workflowTaskId
+            };
+
+            _repository.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult(remoteAppExecution));
+
+            var pluginEngine = new InputDataPluginEngine(
+                _serviceProvider,
+                new Mock<ILogger<InputDataPluginEngine>>().Object);
+
+            pluginEngine.Configure(new List<string>() { typeof(ExternalAppIncoming).AssemblyQualifiedName });
+
+            var (resultDicomFile, resultDicomInfo) = await pluginEngine.ExecutePlugins(dicomFile, dicomInfo);
+
+            _repository.Verify(r => r.GetAsync(sOPClassUID, It.IsAny<CancellationToken>()), Times.Once());
+        }
     }
 }

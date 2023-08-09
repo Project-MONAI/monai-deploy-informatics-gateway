@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 
+using System;
 using System.IO;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FellowOakDicom;
 
@@ -28,5 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
         DicomFile Load(byte[] fileContent);
 
         StudySerieSopUids GetStudySeriesSopInstanceUids(DicomFile dicomFile);
+
+        static DicomTag GetDicomTagByName(string tag) => DicomDictionary.Default[tag] ?? DicomDictionary.Default[Regex.Replace(tag, @"\s+", "", RegexOptions.None, TimeSpan.FromSeconds(1))];
     }
 }

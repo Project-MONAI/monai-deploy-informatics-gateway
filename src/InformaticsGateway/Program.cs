@@ -98,6 +98,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddOptions<MessageBrokerServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"));
                     services.AddOptions<StorageServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"));
                     services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));
+                    services.AddOptions<PluginConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:PluginConfiguration"));
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
 
                     services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"));

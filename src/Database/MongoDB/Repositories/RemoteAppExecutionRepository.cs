@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         private void CreateIndexes()
         {
             var options = new CreateIndexOptions { Unique = true, ExpireAfter = TimeSpan.FromDays(7), Name = "RequestTime" };
-            var indexDefinitionState = Builders<RemoteAppExecution>.IndexKeys.Ascending(_ => _.OutgoingStudyUid);
+            var indexDefinitionState = Builders<RemoteAppExecution>.IndexKeys.Ascending(_ => _.OutgoingUid);
             var indexModel = new CreateIndexModel<RemoteAppExecution>(indexDefinitionState, options);
 
             _collection.Indexes.CreateOne(indexModel);
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         {
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var results = await _collection.DeleteManyAsync(Builders<RemoteAppExecution>.Filter.Where(p => p.OutgoingStudyUid == OutgoingStudyUid), cancellationToken).ConfigureAwait(false);
+                var results = await _collection.DeleteManyAsync(Builders<RemoteAppExecution>.Filter.Where(p => p.OutgoingUid == OutgoingStudyUid), cancellationToken).ConfigureAwait(false);
                 return Convert.ToInt32(results.DeletedCount);
             }).ConfigureAwait(false);
         }
@@ -92,7 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         {
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                return await _collection.Find(p => p.OutgoingStudyUid == OutgoingStudyUid).FirstOrDefaultAsync().ConfigureAwait(false);
+                return await _collection.Find(p => p.OutgoingUid == OutgoingStudyUid).FirstOrDefaultAsync().ConfigureAwait(false);
             }).ConfigureAwait(false);
         }
 
