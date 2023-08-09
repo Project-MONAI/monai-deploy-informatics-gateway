@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public string WorkflowInstanceId { get; set; } = string.Empty;
         public string CorrelationId { get; set; } = string.Empty;
         public string? StudyUid { get; set; }
-        public string? OutgoingStudyUid { get; set; }
+        public string? OutgoingUid { get; set; }
         public List<DestinationApplicationEntity> ExportDetails { get; set; } = new();
         public List<string> Files { get; set; } = new();
         public FileExportStatus Status { get; set; }
