@@ -51,10 +51,10 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IRemoteAppExecutionRepository>();
 
-            var tagUsedAsKey = GetTags(_options.Configuration["ReplaceTags"]).First();
+            var tagUsedAsKey = GetTags(_options.Configuration["ReplaceTags"])[0];
 
             var incommingStudyUid = dicomFile.Dataset.GetString(tagUsedAsKey);
-            var remoteAppExecution = await repository.GetAsync(incommingStudyUid);
+            var remoteAppExecution = await repository.GetAsync(incommingStudyUid).ConfigureAwait(false);
             if (remoteAppExecution is null)
             {
                 _logger.LogOriginalStudyUidNotFound(incommingStudyUid);
@@ -64,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             {
                 dicomFile.Dataset.AddOrUpdate(key, remoteAppExecution.OriginalValues[key]);
             }
-            //dicomFile.Dataset.AddOrUpdate(DicomTag.StudyInstanceUID, remoteAppExecution.StudyUid);
+
             fileMetadata.WorkflowInstanceId = remoteAppExecution.WorkflowInstanceId;
             fileMetadata.TaskId = remoteAppExecution.ExportTaskId;
 
