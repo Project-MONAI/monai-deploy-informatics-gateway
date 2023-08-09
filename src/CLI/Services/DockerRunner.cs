@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -114,6 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             };
 
             createContainerParams.HostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
+            createContainerParams.HostConfig.NetworkMode = "monaideploy";
 
             _logger.DockerPrtBinding(_configurationService.Configurations.DicomListeningPort);
             createContainerParams.ExposedPorts.Add($"{_configurationService.Configurations.DicomListeningPort}/tcp", new EmptyStruct());
@@ -135,9 +136,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostDatabaseStorageMount);
             createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostDatabaseStorageMount, Target = Common.MountedDatabasePath });
 
-            _logger.DockerMountAppLogs(_configurationService.Configurations.HostLogsStorageMount, _configurationService.Configurations.LogStoragePath);
+            _logger.DockerMountAppLogs(_configurationService.Configurations.HostLogsStorageMount, _configurationService.NLogConfigurations.LogStoragePath);
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostLogsStorageMount);
-            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostLogsStorageMount, Target = _configurationService.Configurations.LogStoragePath });
+            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostLogsStorageMount, Target = _configurationService.NLogConfigurations.LogStoragePath });
 
             _logger.DockerMountPlugins(_configurationService.Configurations.HostPlugInsStorageMount, Common.MountedPlugInsPath);
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostPlugInsStorageMount);

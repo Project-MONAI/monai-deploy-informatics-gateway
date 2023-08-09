@@ -77,11 +77,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         Uri InformaticsGatewayServerUri { get; }
 
         /// <summary>
-        /// Gets the log storage path from appsettings.json.
-        /// </summary>
-        string LogStoragePath { get; }
-
-        /// <summary>
         /// Gets or set the type of container runner from appsettings.json.
         /// </summary>
         Runner Runner { get; set; }
@@ -220,19 +215,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             get
             {
                 return new Uri(InformaticsGatewayServerEndpoint);
-            }
-        }
-
-        public string LogStoragePath
-        {
-            get
-            {
-                var logPath = GetValueFromJsonPath<string>("Logging.File.BasePath");
-                if (logPath.StartsWith("/"))
-                {
-                    return logPath;
-                }
-                return _fileSystem.Path.Combine(Common.ContainerApplicationRootPath, logPath);
             }
         }
 

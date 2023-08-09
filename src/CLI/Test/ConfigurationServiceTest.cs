@@ -106,22 +106,28 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             await Assert.ThrowsAsync<ConfigurationException>(async () => await svc.Initialize(CancellationToken.None));
         }
 
-        [Fact(DisplayName = "Initialize creates the config file")]
-        public async Task Initialize_CreatesTheConfigFile()
+        [Fact(DisplayName = "Initialize creates the config files")]
+        public async Task Initialize_CreatesTheConfigFiles()
         {
             var fileSystem = new MockFileSystem();
             var testString = "hello world";
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(testString));
+            var appConfigMemoryStream = new MemoryStream(Encoding.UTF8.GetBytes(testString));
+            var nLogConfigMemoryStream = new MemoryStream(Encoding.UTF8.GetBytes(testString));
             var mockSteam = new Mock<Stream>();
 
-            _embeddedResource.Setup(p => p.GetManifestResourceStream(It.IsAny<string>())).Returns(memoryStream);
+            _embeddedResource.Setup(p => p.GetManifestResourceStream(It.Is<string>(p => p == Common.AppSettingsResourceName))).Returns(appConfigMemoryStream);
+            _embeddedResource.Setup(p => p.GetManifestResourceStream(It.Is<string>(p => p == Common.NLogConfigResourceName))).Returns(nLogConfigMemoryStream);
 
             var svc = new ConfigurationService(_logger.Object, fileSystem, _embeddedResource.Object);
             await svc.Initialize(CancellationToken.None);
 
             _embeddedResource.Verify(p => p.GetManifestResourceStream(Common.AppSettingsResourceName), Times.Once());
+            _embeddedResource.Verify(p => p.GetManifestResourceStream(Common.NLogConfigResourceName), Times.Once());
 
             var bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.ConfigFilePath).ConfigureAwait(false);
+            Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
+
+            bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.NLogConfigFilePath).ConfigureAwait(false);
             Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
         }
     }
