@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IRemoteAppExecutionRepository>();
 
-            var remoteAppExecution = await GetRemoteAppExecution(exportRequestDataMessage, tags).ConfigureAwait(false);
+            var remoteAppExecution = await GetRemoteAppExecution(exportRequestDataMessage).ConfigureAwait(false);
             remoteAppExecution.StudyUid = dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID);
 
             foreach (var tag in tags)
@@ -66,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
                 }
             }
 
-            remoteAppExecution.OutgoingUid = dicomFile.Dataset.GetString(tags.First());
+            remoteAppExecution.OutgoingUid = dicomFile.Dataset.GetString(tags[0]);
 
             await repository.AddAsync(remoteAppExecution).ConfigureAwait(false);
             _logger.LogStudyUidChanged(remoteAppExecution.StudyUid, remoteAppExecution.OutgoingUid);
@@ -80,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             // https://dicom.nema.org/dicom/2013/output/chtml/part05/sect_6.2.html
             // for full list
 
-            switch (tag.DictionaryEntry.ValueRepresentations.First().Code)
+            switch (tag.DictionaryEntry.ValueRepresentations[0].Code)
             {
                 case "UI":
                 case "LO":
@@ -102,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             }
         }
 
-        private async Task<RemoteAppExecution> GetRemoteAppExecution(ExportRequestDataMessage request, DicomTag[] tags)
+        private async Task<RemoteAppExecution> GetRemoteAppExecution(ExportRequestDataMessage request)
         {
             var remoteAppExecution = new RemoteAppExecution
             {

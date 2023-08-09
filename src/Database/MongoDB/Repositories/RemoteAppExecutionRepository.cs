@@ -96,8 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             }).ConfigureAwait(false);
         }
 
-
-        public void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)
             {

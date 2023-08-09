@@ -66,19 +66,19 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var result = await _dataset.AddAsync(item, cancellationToken).ConfigureAwait(false);
+                await _dataset.AddAsync(item, cancellationToken).ConfigureAwait(false);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 return true;
             }).ConfigureAwait(false);
         }
 
-        public async Task<int> RemoveAsync(string OriginalStudyUid, CancellationToken cancellationToken = default)
+        public async Task<int> RemoveAsync(string OutgoingStudyUid, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(OriginalStudyUid, nameof(OriginalStudyUid));
+            Guard.Against.Null(OutgoingStudyUid, nameof(OutgoingStudyUid));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var result = await _dataset.SingleOrDefaultAsync(p => p.OutgoingUid == OriginalStudyUid).ConfigureAwait(false);
+                var result = await _dataset.SingleOrDefaultAsync(p => p.OutgoingUid == OutgoingStudyUid).ConfigureAwait(false);
                 if (result is not null)
                 {
                     _dataset.Remove(result);
