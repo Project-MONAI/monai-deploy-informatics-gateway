@@ -27,6 +27,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Scu;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -37,16 +38,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     {
         private readonly ILogger<DestinationAeTitleController> _logger;
         private readonly IDestinationApplicationEntityRepository _repository;
+        private readonly IDataPluginEngineFactory<IOutputDataPlugin> _outputDataPluginEngineFactory;
         private readonly IScuQueue _scuQueue;
 
         public DestinationAeTitleController(
             ILogger<DestinationAeTitleController> logger,
             IDestinationApplicationEntityRepository repository,
-            IScuQueue scuQueue)
+            IScuQueue scuQueue,
+            IDataPluginEngineFactory<IOutputDataPlugin> outputDataPluginEngineFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _scuQueue = scuQueue ?? throw new ArgumentNullException(nameof(scuQueue));
+            _outputDataPluginEngineFactory = outputDataPluginEngineFactory ?? throw new ArgumentNullException(nameof(outputDataPluginEngineFactory));
         }
 
         [HttpGet]
@@ -250,6 +254,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 _logger.ErrorDeletingDestinationApplicationEntity(ex);
                 return Problem(title: "Error deleting DICOM destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+            }
+        }
+
+        [HttpGet("plug-ins")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<MonaiApplicationEntity> GetPlugins()
+        {
+            try
+            {
+                return Ok(_outputDataPluginEngineFactory.RegisteredPlugins());
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorReadingDataInputPlugins(ex);
+                return Problem(title: "Error reading data input plug-ins.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 

@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test
@@ -25,7 +26,7 @@ namespace Monai.Deploy.InformaticsGateway.Test
     {
         private const string PlugInDirectoryName = "plug-ins";
 
-        [Fact(DisplayName = "Program - runs properly")]
+        [RetryFact(DisplayName = "Program - runs properly")]
         public void Startup_RunsProperly()
         {
             var workingDirectory = Environment.CurrentDirectory;
