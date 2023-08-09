@@ -20,8 +20,17 @@ This section outlines the steps to download and install the Informatics Gateway 
 ## Runtime Requirements
 
 * Docker 20.10.12 or higher
+* [Database service](#database-configuration)
+* [Message Broker service](#message-broker)
+* [Storage service](#storage-service)
 
 For development requirements, refer to the [Informatics Gateway README.md](https://github.com/Project-MONAI/monai-deploy-informatics-gateway).
+
+> [!Note]
+> Use [MONAI Deploy Express](https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express) to quickly
+> bring up all required services, including the Informatics Gateway.
+
+
 
 ## Installation
 
@@ -358,3 +367,12 @@ The command adds a DICOM export destination with AE Title `WORKSTATION1` at IP `
 ## Logging
 
 See [schema](./schema.md#logging) page for additional information on logging.
+
+## Data Plug-ins
+
+You may write your own data plug-ins to manipulate incoming data before they are saved to the storage service or outgoing data right before they are exported.
+
+To write an input data plug-in, implement the [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and put the assmblye dll in the
+plug-ins directories.  Similarly for output data plug-ins, implement the [IOutputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IOutputDataPlugin) interface.
+
+Refer to (Configuration API)[(../api/rest/config.md] page to retrieve available [input](../api/rest/config.md#get-config-ae-plug-ins) and [output](get-config-destination-plug-ins) data plug-ins.
