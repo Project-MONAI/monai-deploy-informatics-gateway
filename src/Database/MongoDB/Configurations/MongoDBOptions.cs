@@ -21,6 +21,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
     public class MongoDBOptions
     {
         [ConfigurationKeyName("DatabaseName")]
-        public string DaatabaseName { get; set; } = string.Empty;
+        public string DatabaseName { get; set; } = string.Empty;
     }
 }

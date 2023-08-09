@@ -16,22 +16,24 @@
 
 using System;
 using System.Collections.Generic;
-using FellowOakDicom;
+using System.Text.Json.Serialization;
 using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
     public class RemoteAppExecution
     {
+        [JsonPropertyName("_id")]
+        public string Id { get; set; } = default!;
         public DateTime RequestTime { get; set; } = DateTime.UtcNow;
         public string ExportTaskId { get; set; } = string.Empty;
         public string WorkflowInstanceId { get; set; } = string.Empty;
         public string CorrelationId { get; set; } = string.Empty;
         public string? StudyUid { get; set; }
-        public string? OutgoingUid { get; set; }
+        public string? OutgoingUid { get { return Id; } set { Id = value ?? ""; } }
         public List<DestinationApplicationEntity> ExportDetails { get; set; } = new();
         public List<string> Files { get; set; } = new();
         public FileExportStatus Status { get; set; }
-        public Dictionary<DicomTag, string> OriginalValues { get; set; } = new();
+        public Dictionary<string, string> OriginalValues { get; set; } = new();
     }
 }

@@ -40,8 +40,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         public MongoDatabaseFixture()
         {
             Client = new MongoClient("mongodb://root:rootpassword@localhost:27017");
-            Options = Microsoft.Extensions.Options.Options.Create(new MongoDBOptions { DaatabaseName = $"IGTest" });
-            Database = Client.GetDatabase(Options.Value.DaatabaseName);
+            Options = Microsoft.Extensions.Options.Options.Create(new MongoDBOptions { DatabaseName = $"IGTest" });
+            Database = Client.GetDatabase(Options.Value.DatabaseName);
 
             var migration = new MongoDatabaseMigrationManager();
             migration.Migrate(null!);
