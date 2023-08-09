@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Data;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             {
                 if (dicomFile.Dataset.TryGetString(tag, out var value))
                 {
-                    remoteAppExecution.OriginalValues.Add(tag, value);
+                    remoteAppExecution.OriginalValues.Add(tag.ToString(), value);
                     SetTag(dicomFile, tag);
                 }
             }

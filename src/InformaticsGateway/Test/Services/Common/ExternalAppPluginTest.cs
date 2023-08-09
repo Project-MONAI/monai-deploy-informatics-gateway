@@ -211,7 +211,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             {
                 OutgoingUid = outboundStudyUid,
                 StudyUid = originalStudyUid,
-                OriginalValues = { { DicomTag.StudyInstanceUID, originalStudyUid } }
+                OriginalValues = { { DicomTag.StudyInstanceUID.ToString(), originalStudyUid } }
             };
 
             _repository.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))

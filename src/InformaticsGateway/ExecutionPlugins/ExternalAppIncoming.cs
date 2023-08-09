@@ -62,13 +62,21 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             }
             foreach (var key in remoteAppExecution.OriginalValues.Keys)
             {
-                dicomFile.Dataset.AddOrUpdate(key, remoteAppExecution.OriginalValues[key]);
+                var (group, element) = Parse(key);
+                dicomFile.Dataset.AddOrUpdate(new DicomTag(group, element), remoteAppExecution.OriginalValues[key]);
             }
 
             fileMetadata.WorkflowInstanceId = remoteAppExecution.WorkflowInstanceId;
             fileMetadata.TaskId = remoteAppExecution.ExportTaskId;
 
             return (dicomFile, fileMetadata);
+        }
+
+        private (ushort group, ushort element) Parse(string input)
+        {
+            var trim = input.Substring(1, input.Length - 2);
+            var array = trim.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            return (Convert.ToUInt16(array[0], 16), Convert.ToUInt16(array[1], 16));
         }
 
         private static DicomTag[] GetTags(string values)

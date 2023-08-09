@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
-            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DaatabaseName);
+            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DatabaseName);
             _collection = mongoDatabase.GetCollection<RemoteAppExecution>(nameof(RemoteAppExecution));
             CreateIndexes();
         }
