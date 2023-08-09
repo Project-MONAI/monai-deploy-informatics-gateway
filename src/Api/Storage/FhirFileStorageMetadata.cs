@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         /// <summary>
         /// The transaction ID of the original ACR request.
-        /// Note: this value is same as <seealso cref="Source"></c>
+        /// Note: this value is same as <see cref="FileStorageMetadata.Source"/>
         /// </summary>
         [JsonIgnore]
         public string TransactionId { get => Source; }

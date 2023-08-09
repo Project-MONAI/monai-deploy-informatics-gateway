@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// <summary>
         /// The calling AE title of the DICOM instance.
         /// For ACR, this is the Transaction ID of the original request.
-        /// Note: this value is same as <seealso cref="Source"></c>
+        /// Note: this value is same as <see cref="FileStorageMetadata.Source"/>
         /// </summary>
         [JsonIgnore]
         public string CallingAeTitle { get => Source; }

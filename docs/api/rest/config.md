@@ -285,6 +285,41 @@ curl --location --request DELETE 'http://localhost:5000/config/ae/breast-tumor'
 
 ---
 
+## GET /config/ae/plug-ins
+
+Returns a list of data input plug-ins that can be used with SCP Application Entity.
+
+### Parameters
+
+N/A
+
+### Responses
+
+Response Content Type: JSON - An object containing zero or more key-value pairs where the key is the name of the plug-in and the value is the fully qualified assembly type name of the plug-in.
+
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | Plug-ins retrieved successfully.                                                                                                       |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+
+### Example Request
+
+```bash
+curl --location --request GET 'http://localhost:5000/config/ae/plug-ins'
+```
+
+### Example Response
+
+```json
+{
+ "testInputDataPluginAddWorkflow": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+ "testInputDataPluginResumeWorkflow": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginResumeWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+ "testInputDataPluginModifyDicomFile": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+}
+```
+
+---
+
 ## GET /config/source
 
 Returns a list of calling (source) AE Titles configured on the Informatics Gateway.
@@ -768,3 +803,38 @@ curl --location --request DELETE 'http://localhost:5000/config/destination/USEAS
   "hostIp": "10.20.3.4"
 }
 ```
+---
+
+## GET /config/destination/plug-ins
+
+Returns a list of data output plug-ins that can be used with SCP Application Entity.
+
+### Parameters
+
+N/A
+
+### Responses
+
+Response Content Type: JSON - An object containing zero or more key-value pairs where the key is the name of the plug-in and the value is the fully qualified assembly type name of the plug-in.
+
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | Plug-ins retrieved successfully.                                                                                                       |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+
+### Example Request
+
+```bash
+curl --location --request GET 'http://localhost:5000/config/destination/plug-ins'
+```
+
+### Example Response
+
+```json
+{
+ "testOutputDataPluginAddMessage": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestOutputDataPluginAddMessage, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+ "testOutputDataPluginModifyDicomFile": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestOutputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+}
+```
+
+---
