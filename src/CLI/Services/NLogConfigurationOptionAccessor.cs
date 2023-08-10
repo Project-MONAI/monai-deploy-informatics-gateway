@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+using System;
+using System.IO.Abstractions;
 using System.Xml;
 
 namespace Monai.Deploy.InformaticsGateway.CLI.Services
@@ -31,10 +33,16 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         private readonly XmlDocument _xmlDocument;
         private readonly XmlNamespaceManager _namespaceManager;
 
-        public NLogConfigurationOptionAccessor()
+        public NLogConfigurationOptionAccessor(IFileSystem fileSystem)
         {
+            if (fileSystem is null)
+            {
+                throw new ArgumentNullException(nameof(fileSystem));
+            }
+
+            var xml = fileSystem.File.ReadAllText(Common.NLogConfigFilePath);
             _xmlDocument = new XmlDocument();
-            _xmlDocument.Load(Common.NLogConfigFilePath);
+            _xmlDocument.LoadXml(xml);
             _namespaceManager = new XmlNamespaceManager(_xmlDocument.NameTable);
             _namespaceManager.AddNamespace("ns", "http://www.nlog-project.org/schemas/NLog.xsd");
         }

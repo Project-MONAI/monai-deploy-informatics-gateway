@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -94,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public ConfigurationOptionAccessor(IFileSystem fileSystem)
         {
-            _fileSystem = fileSystem;
+            _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
         }
 
         public int DicomListeningPort
@@ -237,7 +237,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                return GetValueFromJsonPath<string>("InformaticsGateway.storage.temporary");
+                return GetValueFromJsonPath<string>("InformaticsGateway.storage.localTemporaryStoragePath");
             }
         }
 

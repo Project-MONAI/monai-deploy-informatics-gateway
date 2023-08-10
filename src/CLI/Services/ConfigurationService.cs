@@ -38,13 +38,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         public IConfigurationOptionAccessor Configurations { get; }
         public INLogConfigurationOptionAccessor NLogConfigurations { get; }
 
-        public ConfigurationService(ILogger<ConfigurationService> logger, IFileSystem fileSystem, IEmbeddedResource embeddedResource)
+        public ConfigurationService(
+            ILogger<ConfigurationService> logger,
+            IFileSystem fileSystem,
+            IEmbeddedResource embeddedResource,
+            IConfigurationOptionAccessor configurationOptionAccessor,
+            INLogConfigurationOptionAccessor nLogConfigurationOptionAccessor)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _embeddedResource = embeddedResource ?? throw new ArgumentNullException(nameof(embeddedResource));
-            Configurations = new ConfigurationOptionAccessor(fileSystem);
-            NLogConfigurations = new NLogConfigurationOptionAccessor();
+            Configurations = configurationOptionAccessor ?? throw new ArgumentNullException(nameof(configurationOptionAccessor));
+            NLogConfigurations = nLogConfigurationOptionAccessor ?? throw new ArgumentNullException(nameof(nLogConfigurationOptionAccessor));
         }
 
         public void CreateConfigDirectoryIfNotExist()
