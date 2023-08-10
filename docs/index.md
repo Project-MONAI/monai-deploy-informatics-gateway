@@ -38,8 +38,8 @@ MIG contains the following standard protocols for communicating with medical dev
 * **DICOMweb client**: QIDO-RS, WADO-RS, STOW-RS
 * **FHIR client**: GET
 
-[!Note]
-The ACR DSI API uses the DICOMweb client and FHIR client.
+> [!Note]
+> The ACR DSI API uses the DICOMweb client and FHIR client.
 
 ### DICOM SCP
 

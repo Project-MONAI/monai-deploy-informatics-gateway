@@ -29,6 +29,8 @@ For development requirements, refer to the [Informatics Gateway README.md](https
 > [!Note]
 > Use [MONAI Deploy Express](https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express) to quickly
 > bring up all required services, including the Informatics Gateway.
+> 
+> Skip to [Configure Informatics Gateway](#configure-informatics-gateway) if you are using MONAI Deploy Express.
 
 
 
@@ -38,6 +40,9 @@ For development requirements, refer to the [Informatics Gateway README.md](https
 
 Download and install the Informatics Gateway CLI from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section of
 the repository and install it.
+
+> [!Note]
+> We use `v0.2.0` release as an example here, always download the latest from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section.
 
 #### On Linux
 
@@ -88,6 +93,9 @@ mig-cli config endpoint http://localhost:5000 #skip if running locally
 mig-cli.exe config init
 mig-cli.exe config endpoint http://localhost:5000 #skip if running locally
 ```
+
+> [!Note]
+> For [MONAI Deploy Express](https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express), use `http://localhost:5003`.
 
 The first command extracts the default `appsettings.json` file into the home directory:
 
@@ -151,6 +159,27 @@ Extending the Informatics Gateway to support other database systems can be done 
 If the database system is supported by [Microsoft Entity Framework](https://learn.microsoft.com/en-us/ef/core/providers/), then it can be added to the existing [project](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/tree/develop/src/Database/EntityFramework).
 
 For other database systems that are not listed in the link above, simply implement the [Repository APIs](xref:Monai.Deploy.InformaticsGateway.Database.Api.Repositories), update the [Database Manager](xref:Monai.Deploy.InformaticsGateway.Database.DatabaseManager) to support the new database type and optionally, implement the [IDabaseMigrationManager](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager).
+
+
+## Authentication
+
+Authentication is disabled by default. To enable authentication using OpenID, edit the `appsettings.json` file and set `bypassAuthentication` to `true`:
+
+```json
+{
+  "MonaiDeployAuthentication": {
+    "bypassAuthentication": true,
+    "openId": {
+      "realm": "{realm}",
+      "realmKey": "{realm-secret-key}",
+      "clientId": "{client-id}",
+      "audiences": [ "{audiences}" ],
+      "roleClaimType": "{roles}",
+  ...
+}
+```
+
+Refer to [Authentication Setup Using Keycloak](https://github.com/Project-MONAI/monai-deploy-workflow-manager/blob/develop/guidelines/mwm-auth.md) for additional details.
 
 
 ## Storage Consideration & Configuration
@@ -375,4 +404,4 @@ You may write your own data plug-ins to manipulate incoming data before they are
 To write an input data plug-in, implement the [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and put the assmblye dll in the
 plug-ins directories.  Similarly for output data plug-ins, implement the [IOutputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IOutputDataPlugin) interface.
 
-Refer to (Configuration API)[(../api/rest/config.md] page to retrieve available [input](../api/rest/config.md#get-config-ae-plug-ins) and [output](get-config-destination-plug-ins) data plug-ins.
+Refer to [Configuration API](../api/rest/config.md) page to retrieve available [input](../api/rest/config.md#get-configaeplug-ins) and [output](../api/rest/config.md#get-configdestinationplug-ins) data plug-ins.
