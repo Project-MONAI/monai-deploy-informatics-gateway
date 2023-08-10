@@ -58,6 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             LoadAssembliesFromPluginDirectory();
 
             var types = AppDomain.CurrentDomain.GetAssemblies()
+                .Where(p => !p.FullName.Contains("DynamicProxyGenAssembly2"))
                 .SelectMany(s => s.GetTypes())
                 .Where(p => _type.IsAssignableFrom(p) && p != _type).ToList();
 
@@ -74,13 +75,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             {
                 types.ForEach(p =>
                 {
-                    if (!_cachedTypeNames.ContainsValue(p.AssemblyQualifiedName))
+                    if (!_cachedTypeNames.ContainsValue(p.GetShortTypeAssemblyName()))
                     {
                         var nameAttribute = p.GetCustomAttribute<PluginNameAttribute>();
 
                         var name = nameAttribute is null ? p.Name : nameAttribute.Name;
-                        _cachedTypeNames.Add(name, p.AssemblyQualifiedName);
-                        _logger.DataPluginFound(_type.Name, name, p.AssemblyQualifiedName);
+                        _cachedTypeNames.Add(name, p.GetShortTypeAssemblyName());
+                        _logger.DataPluginFound(_type.Name, name, p.GetShortTypeAssemblyName());
                     }
                 });
             }

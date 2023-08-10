@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.InformaticsGateway.Test.Plugins;
@@ -52,15 +53,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 p => VerifyPlugin(p, typeof(TestInputDataPluginResumeWorkflow)),
                 p => VerifyPlugin(p, typeof(TestInputDataPluginModifyDicomFile)));
 
-            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginAddWorkflow).Name}: {typeof(TestInputDataPluginAddWorkflow).AssemblyQualifiedName}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginResumeWorkflow).Name}: {typeof(TestInputDataPluginResumeWorkflow).AssemblyQualifiedName}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginModifyDicomFile).Name}: {typeof(TestInputDataPluginModifyDicomFile).AssemblyQualifiedName}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginAddWorkflow).Name}: {typeof(TestInputDataPluginAddWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginResumeWorkflow).Name}: {typeof(TestInputDataPluginResumeWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginModifyDicomFile).Name}: {typeof(TestInputDataPluginModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
         }
 
         private void VerifyPlugin(KeyValuePair<string, string> values, Type type)
         {
             Assert.Equal(values.Key, type.Name);
-            Assert.Equal(values.Value, type.AssemblyQualifiedName);
+            Assert.Equal(values.Value, type.GetShortTypeAssemblyName());
         }
     }
 }

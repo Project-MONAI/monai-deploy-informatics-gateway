@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.InformaticsGateway.Test.Plugins;
@@ -51,14 +52,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 p => VerifyPlugin(p, typeof(TestOutputDataPluginAddMessage)),
                 p => VerifyPlugin(p, typeof(TestOutputDataPluginModifyDicomFile)));
 
-            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginAddMessage).Name}: {typeof(TestOutputDataPluginAddMessage).AssemblyQualifiedName}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginModifyDicomFile).Name}: {typeof(TestOutputDataPluginModifyDicomFile).AssemblyQualifiedName}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginAddMessage).Name}: {typeof(TestOutputDataPluginAddMessage).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginModifyDicomFile).Name}: {typeof(TestOutputDataPluginModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
         }
 
         private void VerifyPlugin(KeyValuePair<string, string> values, Type type)
         {
             Assert.Equal(values.Key, type.Name);
-            Assert.Equal(values.Value, type.AssemblyQualifiedName);
+            Assert.Equal(values.Value, type.GetShortTypeAssemblyName());
         }
     }
 }

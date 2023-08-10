@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             SetupRemoveDestinationCommand();
             SetupListDestinationCommand();
             SetupCEchoCommand();
+            SetupPluginsCommand();
         }
 
         private void SetupCEchoCommand()
@@ -112,6 +113,14 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.AddOption(portOption);
 
             addCommand.Handler = CommandHandler.Create<DestinationApplicationEntity, IHost, bool, CancellationToken>(AddDestinationHandlerAsync);
+        }
+
+        private void SetupPluginsCommand()
+        {
+            var pluginsCommand = new Command("plugins", "List all available plug-ins for SCP Application Entities");
+            AddCommand(pluginsCommand);
+
+            pluginsCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListPluginsHandlerAsync);
         }
 
         private async Task<int> ListDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
@@ -323,6 +332,69 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 logger.ErrorCreatingDicomDestination(entity.AeTitle, ex.Message);
                 return ExitCodes.DestinationAe_ErrorCreate;
+            }
+            return ExitCodes.Success;
+        }
+
+        private async Task<int> ListPluginsHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(host, nameof(host));
+
+            LogVerbose(verbose, host, "Configuring services...");
+
+            var console = host.Services.GetRequiredService<IConsole>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
+            var consoleRegion = host.Services.GetRequiredService<IConsoleRegion>();
+            var logger = CreateLogger<AetCommand>(host);
+
+            Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
+            Guard.Against.Null(console, nameof(console), "Console service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
+            Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
+
+            IDictionary<string, string> items = null;
+            try
+            {
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
+                items = await client.DicomDestinations.Plugins(cancellationToken).ConfigureAwait(false);
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.ConfigurationException(ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
+            catch (Exception ex)
+            {
+                logger.ErrorListingDataOutputPlugins(ex.Message);
+                return ExitCodes.DestinationAe_ErrorPlugins;
+            }
+
+            if (items.IsNullOrEmpty())
+            {
+                logger.NoAeTitlesFound();
+            }
+            else
+            {
+                if (console is ITerminal terminal)
+                {
+                    terminal.Clear();
+                }
+                var consoleRenderer = new ConsoleRenderer(console);
+
+                var table = new TableView<KeyValuePair<string, string>>
+                {
+                    Items = items.Select(x => new KeyValuePair<string, string>(x.Key, x.Value)).ToList()
+                };
+                table.AddColumn(p => p.Key, new ContentView("Name".Underline()));
+                table.AddColumn(p => p.Value, new ContentView("Assembly Name".Underline()));
+                table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
+
+                logger.ListedNItems(items.Count);
             }
             return ExitCodes.Success;
         }
