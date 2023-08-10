@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,8 +32,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         /// <summary>
         /// Gets or sets the (postfix) name of the DIMSE export agent used for receiving messages.
-        /// The agent name is combine with <see cref="MessageBrokerConfigurationKeys.ExportRequestPrefix"/>
-        /// for subscribing messages from the message broker service.
+        /// This value is appended to <see cref="MessageBrokerConfigurationKeys.ExportRequestPrefix"/>
+        /// as the name for subscribing to messages from the message broker service.
         /// </summary>
         [ConfigurationKeyName("agentName")]
         public string AgentName { get; set; } = "monaiscu";

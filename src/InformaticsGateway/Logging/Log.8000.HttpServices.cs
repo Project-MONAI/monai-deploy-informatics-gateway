@@ -42,6 +42,9 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8005, Level = LogLevel.Information, Message = "MONAI SCP AE Title {name} updated AE Title={aeTitle}.")]
         public static partial void MonaiApplicationEntityUpdated(this ILogger logger, string name, string aeTitle);
 
+        [LoggerMessage(EventId = 8006, Level = LogLevel.Error, Message = "Error reading data input plug-ins.")]
+        public static partial void ErrorReadingDataInputPlugins(this ILogger logger, Exception ex);
+
 
         // Destination AE Title Controller
         [LoggerMessage(EventId = 8010, Level = LogLevel.Information, Message = "DICOM destination added AE Title={aeTitle}, Host/IP={hostIp}.")]

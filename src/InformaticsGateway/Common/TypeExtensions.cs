@@ -73,5 +73,10 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
             throw new NotSupportedException($"{typeString} is not a sub-type of {interfaceType.Name}");
         }
+
+        public static string GetShortTypeAssemblyName(this Type type)
+        {
+            return $"{type.FullName}, {type.Assembly.GetName().Name}";
+        }
     }
 }

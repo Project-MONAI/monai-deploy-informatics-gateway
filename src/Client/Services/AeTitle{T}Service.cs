@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,6 +40,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
         Task<T> Delete(string aeTitle, CancellationToken cancellationToken);
 
         Task CEcho(string name, CancellationToken cancellationToken);
+
+        Task<IDictionary<string, string>> Plugins(CancellationToken cancellationToken);
     }
 
     internal class AeTitleService<T> : ServiceBase, IAeTitleService<T>
@@ -115,6 +117,22 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             var response = await HttpClient.PutAsJsonAsync(Route, item, Configuration.JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
             await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
             return await response.Content.ReadAsAsync<T>(cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<IDictionary<string, string>> Plugins(CancellationToken cancellationToken)
+        {
+            if (typeof(T) != typeof(MonaiApplicationEntity) &&
+                typeof(T) != typeof(DestinationApplicationEntity))
+            {
+                throw new NotSupportedException($"Plug-ins API is not available for {typeof(T).Name}");
+            }
+
+            var route = $"{Route}/plug-ins";
+            Logger.SendingRequestTo(route);
+            var response = await HttpClient.GetAsync(route, cancellationToken).ConfigureAwait(false);
+            await response.EnsureSuccessStatusCodeWithProblemDetails(Logger).ConfigureAwait(false);
+            var result = await response.Content.ReadFromJsonAsync<IDictionary<string, string>>(Configuration.JsonSerializationOptions, cancellationToken).ConfigureAwait(false);
+            return result;
         }
     }
 }

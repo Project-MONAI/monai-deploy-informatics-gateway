@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ MIG contains the following standard protocols for communicating with medical dev
 * **DICOMweb client**: QIDO-RS, WADO-RS, STOW-RS
 * **FHIR client**: GET
 
-[!Note]
-The ACR DSI API uses the DICOMweb client and FHIR client.
+> [!Note]
+> The ACR DSI API uses the DICOMweb client and FHIR client.
 
 ### DICOM SCP
 
