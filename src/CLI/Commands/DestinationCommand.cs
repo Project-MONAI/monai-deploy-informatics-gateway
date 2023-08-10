@@ -117,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private void SetupPluginsCommand()
         {
-            var pluginsCommand = new Command("plugins", "List all available plug-ins for SCP Application Entities");
+            var pluginsCommand = new Command("plugins", "List all available plug-ins for DICOM destinations");
             AddCommand(pluginsCommand);
 
             pluginsCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListPluginsHandlerAsync);

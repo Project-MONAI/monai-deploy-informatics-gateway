@@ -127,8 +127,10 @@ Options:
 
 Commands:
   add       Add a new SCP Application Entity
+  update    Update a SCP Application Entities
   del, rm   Remove a SCP Application Entity
   list, ls  List all SCP Application Entities
+  plugins   List all available plug-ins for SCP Application Entities
 ```
 
 ### Source AE Titles
@@ -148,6 +150,7 @@ Options:
 
 Commands:
   add       Add a new DICOM source
+  update    Update a new DICOM source
   del, rm   Remove a DICOM source
   list, ls  List all DICOM sources
 
@@ -170,7 +173,9 @@ Options:
 
 Commands:
   add       Add a new DICOM destination
-  cecho     C-ECHO a DICOM destination
+  update    Update a new DICOM destination
   del, rm   Remove a DICOM destination
   list, ls  List all DICOM destinations
+  cecho     C-ECHO a DICOM destination
+  plugins   List all available plug-ins for DICOM destinations
 ```
