@@ -63,6 +63,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                                     services.AddScoped<IFileSystem, FileSystem>();
                                     services.AddScoped<IConfirmationPrompt, ConfirmationPrompt>();
                                     services.AddScoped<IConsoleRegion, ConsoleRegion>();
+                                    services.AddScoped<IConfigurationOptionAccessor, ConfigurationOptionAccessor>();
+                                    services.AddScoped<INLogConfigurationOptionAccessor, NLogConfigurationOptionAccessor>();
                                     services.AddHttpClient<InformaticsGatewayClient>();
                                     services.AddSingleton<IInformaticsGatewayClient>(p => p.GetRequiredService<InformaticsGatewayClient>());
                                     services.AddSingleton<IConfigurationService, ConfigurationService>();

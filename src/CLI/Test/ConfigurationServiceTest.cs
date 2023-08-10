@@ -33,29 +33,35 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         private readonly Mock<ILogger<ConfigurationService>> _logger;
         private readonly Mock<IFileSystem> _fileSystem;
         private readonly Mock<IEmbeddedResource> _embeddedResource;
+        private readonly Mock<IConfigurationOptionAccessor> _configurationOptionAccessor;
+        private readonly Mock<INLogConfigurationOptionAccessor> _nLogConfigurationOptionAccessor;
 
         public ConfigurationServiceTest()
         {
             _logger = new Mock<ILogger<ConfigurationService>>();
             _fileSystem = new Mock<IFileSystem>();
             _embeddedResource = new Mock<IEmbeddedResource>();
+            _configurationOptionAccessor = new Mock<IConfigurationOptionAccessor>();
+            _nLogConfigurationOptionAccessor = new Mock<INLogConfigurationOptionAccessor>();
         }
 
         [Fact(DisplayName = "ConfigurationServiceTest constructor")]
         public void ConfigurationServiceTest_Constructor()
         {
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(_logger.Object, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(_logger.Object, _fileSystem.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(_logger.Object, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(_logger.Object, _fileSystem.Object, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object, _configurationOptionAccessor.Object, null));
 
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object, _configurationOptionAccessor.Object, _nLogConfigurationOptionAccessor.Object);
             Assert.NotNull(svc.Configurations);
         }
 
         [Fact(DisplayName = "CreateConfigDirectoryIfNotExist creates directory")]
         public void CreateConfigDirectoryIfNotExist_CreateDirectory()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object, _configurationOptionAccessor.Object, _nLogConfigurationOptionAccessor.Object);
 
             _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(false);
             svc.CreateConfigDirectoryIfNotExist();
@@ -66,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         [Fact(DisplayName = "CreateConfigDirectoryIfNotExist skips creating directory")]
         public void CreateConfigDirectoryIfNotExist_SkipsCreation()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object, _configurationOptionAccessor.Object, _nLogConfigurationOptionAccessor.Object);
 
             _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(true);
             svc.CreateConfigDirectoryIfNotExist();
@@ -77,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         [Fact(DisplayName = "IsInitialized")]
         public void IsInitialized()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object, _configurationOptionAccessor.Object, _nLogConfigurationOptionAccessor.Object);
 
             _fileSystem.Setup(p => p.Directory.Exists(It.IsAny<string>())).Returns(true);
             _fileSystem.Setup(p => p.File.Exists(It.IsAny<string>())).Returns(true);
@@ -89,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         [Fact(DisplayName = "IsConfigExists")]
         public void ConfigurationExists()
         {
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object, _configurationOptionAccessor.Object, _nLogConfigurationOptionAccessor.Object);
 
             _fileSystem.Setup(p => p.File.Exists(It.IsAny<string>())).Returns(true);
             Assert.True(svc.IsConfigExists);
@@ -102,26 +108,32 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         {
             _embeddedResource.Setup(p => p.GetManifestResourceStream(It.IsAny<string>())).Returns(default(Stream));
 
-            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object);
+            var svc = new ConfigurationService(_logger.Object, _fileSystem.Object, _embeddedResource.Object, _configurationOptionAccessor.Object, _nLogConfigurationOptionAccessor.Object);
             await Assert.ThrowsAsync<ConfigurationException>(async () => await svc.Initialize(CancellationToken.None));
         }
 
-        [Fact(DisplayName = "Initialize creates the config file")]
-        public async Task Initialize_CreatesTheConfigFile()
+        [Fact(DisplayName = "Initialize creates the config files")]
+        public async Task Initialize_CreatesTheConfigFiles()
         {
             var fileSystem = new MockFileSystem();
             var testString = "hello world";
-            var memoryStream = new MemoryStream(Encoding.UTF8.GetBytes(testString));
+            var appConfigMemoryStream = new MemoryStream(Encoding.UTF8.GetBytes(testString));
+            var nLogConfigMemoryStream = new MemoryStream(Encoding.UTF8.GetBytes(testString));
             var mockSteam = new Mock<Stream>();
 
-            _embeddedResource.Setup(p => p.GetManifestResourceStream(It.IsAny<string>())).Returns(memoryStream);
+            _embeddedResource.Setup(p => p.GetManifestResourceStream(It.Is<string>(p => p == Common.AppSettingsResourceName))).Returns(appConfigMemoryStream);
+            _embeddedResource.Setup(p => p.GetManifestResourceStream(It.Is<string>(p => p == Common.NLogConfigResourceName))).Returns(nLogConfigMemoryStream);
 
-            var svc = new ConfigurationService(_logger.Object, fileSystem, _embeddedResource.Object);
+            var svc = new ConfigurationService(_logger.Object, fileSystem, _embeddedResource.Object, _configurationOptionAccessor.Object, _nLogConfigurationOptionAccessor.Object);
             await svc.Initialize(CancellationToken.None);
 
             _embeddedResource.Verify(p => p.GetManifestResourceStream(Common.AppSettingsResourceName), Times.Once());
+            _embeddedResource.Verify(p => p.GetManifestResourceStream(Common.NLogConfigResourceName), Times.Once());
 
             var bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.ConfigFilePath).ConfigureAwait(false);
+            Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
+
+            bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.NLogConfigFilePath).ConfigureAwait(false);
             Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
         }
     }

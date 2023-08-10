@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _configurationService.SetupGet(p => p.Configurations.HostLogsStorageMount).Returns("/logs");
             _configurationService.SetupGet(p => p.Configurations.HostPlugInsStorageMount).Returns("/plug-ins");
             _configurationService.SetupGet(p => p.Configurations.TempStoragePath).Returns("/tempdata");
-            _configurationService.SetupGet(p => p.Configurations.LogStoragePath).Returns("/templogs");
+            _configurationService.SetupGet(p => p.NLogConfigurations.LogStoragePath).Returns("/templogs");
 
             Assert.True(await runner.StartApplication(image, CancellationToken.None));
             Assert.False(await runner.StartApplication(image, CancellationToken.None));
