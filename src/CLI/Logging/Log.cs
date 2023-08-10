@@ -133,8 +133,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         [LoggerMessage(EventId = 30043, Level = LogLevel.Debug, Message = "Available manifest names {names}.")]
         public static partial void AvailableManifest(this ILogger logger, string names);
 
-        [LoggerMessage(EventId = 30044, Level = LogLevel.Information, Message = "Saving appsettings.json to {path}.")]
-        public static partial void SaveAppSettings(this ILogger logger, string path);
+        [LoggerMessage(EventId = 30044, Level = LogLevel.Information, Message = "Saving {resource} to {path}.")]
+        public static partial void SaveAppSettings(this ILogger logger, string resource, string path);
 
         [LoggerMessage(EventId = 30045, Level = LogLevel.Information, Message = "{path} updated successfully.")]
         public static partial void AppSettingUpdated(this ILogger logger, string path);

@@ -51,6 +51,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="..\InformaticsGateway\appsettings.json" Link="Resources\appsettings.json" />
+    <EmbeddedResource Include="..\InformaticsGateway\nlog.config" Link="Resources\nlog.config" />
   </ItemGroup>
 
   <ItemGroup>

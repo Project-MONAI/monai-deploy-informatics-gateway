@@ -25,9 +25,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public static readonly string MigDirectory = Path.Combine(HomeDir, ".mig");
         public static readonly string ContainerApplicationRootPath = "/opt/monai/ig";
         public static readonly string MountedConfigFilePath = Path.Combine(ContainerApplicationRootPath, "appsettings.json");
+        public static readonly string MountedNLogConfigFilePath = Path.Combine(ContainerApplicationRootPath, "nlog.config");
         public static readonly string MountedDatabasePath = "/database";
         public static readonly string MountedPlugInsPath = Path.Combine(ContainerApplicationRootPath, "plug-ins");
         public static readonly string ConfigFilePath = Path.Combine(MigDirectory, "appsettings.json");
+        public static readonly string NLogConfigFilePath = Path.Combine(MigDirectory, "nlog.config");
         public static readonly string AppSettingsResourceName = $"{typeof(Program).Namespace}.Resources.appsettings.json";
+        public static readonly string NLogConfigResourceName = $"{typeof(Program).Namespace}.Resources.nlog.config";
     }
 }
