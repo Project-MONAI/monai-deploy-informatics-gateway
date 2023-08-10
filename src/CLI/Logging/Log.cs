@@ -190,6 +190,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         [LoggerMessage(EventId = 30062, Level = LogLevel.Information, Message = "\tPlug-ins: {plugins}")]
         public static partial void MonaiAePlugins(this ILogger logger, string plugins);
 
+        [LoggerMessage(EventId = 30063, Level = LogLevel.Critical, Message = "Error retrieving data input plug-ins: {message}.")]
+        public static partial void ErrorListingDataInputPlugins(this ILogger logger, string message);
+
+        [LoggerMessage(EventId = 30064, Level = LogLevel.Critical, Message = "Error retrieving data output plug-ins: {message}.")]
+        public static partial void ErrorListingDataOutputPlugins(this ILogger logger, string message);
+
         // Docker Runner
         [LoggerMessage(EventId = 31000, Level = LogLevel.Debug, Message = "Checking for existing {applicationName} ({version}) containers...")]
         public static partial void CheckingExistingAppContainer(this ILogger logger, string applicationName, string version);

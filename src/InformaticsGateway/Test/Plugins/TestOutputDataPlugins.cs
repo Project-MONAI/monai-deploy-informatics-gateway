@@ -20,6 +20,7 @@ using Monai.Deploy.InformaticsGateway.Api;
 namespace Monai.Deploy.InformaticsGateway.Test.Plugins
 {
 
+    [PluginName("TestOutputDataPluginAddMessage")]
     public class TestOutputDataPluginAddMessage : IOutputDataPlugin
     {
         public static readonly string ExpectedValue = "Hello from TestOutputDataPluginAddMessage";
@@ -31,6 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
         }
 
     }
+    [PluginName("TestOutputDataPluginModifyDicomFile")]
     public class TestOutputDataPluginModifyDicomFile : IOutputDataPlugin
     {
         public static readonly DicomTag ExpectedTag = DicomTag.PatientAddress;

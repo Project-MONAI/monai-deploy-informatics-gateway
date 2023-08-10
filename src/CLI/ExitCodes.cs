@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,12 +29,14 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public const int MonaiScp_ErrorDelete = 201;
         public const int MonaiScp_ErrorCreate = 202;
         public const int MonaiScp_ErrorUpdate = 203;
+        public const int MonaiScp_ErrorPlugins = 204;
 
         public const int DestinationAe_ErrorList = 300;
         public const int DestinationAe_ErrorDelete = 301;
         public const int DestinationAe_ErrorCreate = 302;
         public const int DestinationAe_ErrorCEcho = 303;
         public const int DestinationAe_ErrorUpdate = 304;
+        public const int DestinationAe_ErrorPlugins = 305;
 
         public const int SourceAe_ErrorList = 400;
         public const int SourceAe_ErrorDelete = 401;

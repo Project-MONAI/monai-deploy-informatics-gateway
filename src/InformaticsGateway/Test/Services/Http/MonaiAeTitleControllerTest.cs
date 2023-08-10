@@ -29,6 +29,7 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Moq;
@@ -45,6 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         private readonly Mock<ILogger<MonaiAeTitleController>> _logger;
         private readonly Mock<IMonaiAeChangedNotificationService> _aeChangedNotificationService;
         private readonly Mock<IMonaiApplicationEntityRepository> _repository;
+        private readonly Mock<IDataPluginEngineFactory<IInputDataPlugin>> _pluginFactory;
 
         public MonaiAeTitleControllerTest()
         {
@@ -73,12 +75,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 });
 
             _repository = new Mock<IMonaiApplicationEntityRepository>();
+            _pluginFactory = new Mock<IDataPluginEngineFactory<IInputDataPlugin>>();
 
             var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() { User = new ClaimsPrincipal(new GenericIdentity(TestUsername)) } };
             _controller = new MonaiAeTitleController(
                  _logger.Object,
                  _aeChangedNotificationService.Object,
-                 _repository.Object)
+                 _repository.Object,
+                 _pluginFactory.Object)
             {
                 ControllerContext = controllerContext,
                 ProblemDetailsFactory = _problemDetailsFactory.Object
@@ -307,6 +311,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #endregion Create
 
         #region Update
+
         [RetryFact(DisplayName = "Update - Shall return updated")]
         public async Task Update_ReturnsUpdated()
         {
@@ -543,5 +548,41 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         #endregion Delete
+
+        #region GetPlugins
+
+        [RetryFact(5, 250, DisplayName = "GetPlugins - Shall return registered plugins")]
+        public async Task GetPlugins_ReturnsRegisteredPlugins()
+        {
+            var input = new Dictionary<string, string>() { { "A", "1" }, { "B", "3" }, { "C", "3" } };
+
+            _pluginFactory.Setup(p => p.RegisteredPlugins()).Returns(input);
+
+            var result = _controller.GetPlugins();
+            var okObjectResult = result.Result as OkObjectResult;
+            var response = okObjectResult.Value as IDictionary<string, string>;
+            Assert.NotNull(response);
+            Assert.Equal(input, response);
+
+            _pluginFactory.Verify(p => p.RegisteredPlugins(), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "GetPlugins - Shall return problem on failure")]
+        public async Task GetPlugins_ShallReturnProblemOnFailure()
+        {
+            _pluginFactory.Setup(p => p.RegisteredPlugins()).Throws(new Exception("error"));
+
+            var result = _controller.GetPlugins();
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Error reading data input plug-ins.", problem.Title);
+            Assert.Equal("error", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
+            _pluginFactory.Verify(p => p.RegisteredPlugins(), Times.Once());
+        }
+
+        #endregion GetPlugins
     }
 }

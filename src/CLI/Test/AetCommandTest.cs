@@ -456,5 +456,75 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
+
+        [Fact(DisplayName = "aet plugins comand")]
+        public async Task AetPlugins_Command()
+        {
+            var command = "aet plugins";
+            var result = _paser.Parse(command);
+            Assert.Equal(ExitCodes.Success, result.Errors.Count);
+
+            var entries = new Dictionary<string, string> { { "A", "1" }, { "B", "2" } };
+
+            _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Plugins(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(entries);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.Plugins(It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact(DisplayName = "aet plugins comand exception")]
+        public async Task AetPlugins_Command_Exception()
+        {
+            var command = "aet plugins";
+            _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Plugins(It.IsAny<CancellationToken>()))
+                .Throws(new Exception("error"));
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.MonaiScp_ErrorPlugins, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.Plugins(It.IsAny<CancellationToken>()), Times.Once());
+
+            _logger.VerifyLoggingMessageBeginsWith("Error retrieving data input plug-ins", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "aet plugins comand configuration exception")]
+        public async Task AetPlugins_Command_ConfigurationException()
+        {
+            var command = "aet plugins";
+            _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.Plugins(It.IsAny<CancellationToken>()), Times.Never());
+
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+        }
+
+        [Fact(DisplayName = "aet plugins comand empty")]
+        public async Task AetPlugins_Command_Empty()
+        {
+            var command = "aet plugins";
+            _informaticsGatewayClient.Setup(p => p.MonaiScpAeTitle.Plugins(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new Dictionary<string, string>());
+
+            int exitCode = await _paser.InvokeAsync(command);
+
+            Assert.Equal(ExitCodes.Success, exitCode);
+
+            _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.Plugins(It.IsAny<CancellationToken>()), Times.Once());
+
+            _logger.VerifyLogging("No MONAI SCP Application Entities configured.", LogLevel.Warning, Times.Once());
+        }
     }
 }

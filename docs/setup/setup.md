@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,8 +20,19 @@ This section outlines the steps to download and install the Informatics Gateway 
 ## Runtime Requirements
 
 * Docker 20.10.12 or higher
+* [Database service](#database-configuration)
+* [Message Broker service](#message-broker)
+* [Storage service](#storage-service)
 
 For development requirements, refer to the [Informatics Gateway README.md](https://github.com/Project-MONAI/monai-deploy-informatics-gateway).
+
+> [!Note]
+> Use [MONAI Deploy Express](https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express) to quickly
+> bring up all required services, including the Informatics Gateway.
+> 
+> Skip to [Configure Informatics Gateway](#configure-informatics-gateway) if you are using MONAI Deploy Express.
+
+
 
 ## Installation
 
@@ -29,6 +40,9 @@ For development requirements, refer to the [Informatics Gateway README.md](https
 
 Download and install the Informatics Gateway CLI from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section of
 the repository and install it.
+
+> [!Note]
+> We use `v0.2.0` release as an example here, always download the latest from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section.
 
 #### On Linux
 
@@ -79,6 +93,9 @@ mig-cli config endpoint http://localhost:5000 #skip if running locally
 mig-cli.exe config init
 mig-cli.exe config endpoint http://localhost:5000 #skip if running locally
 ```
+
+> [!Note]
+> For [MONAI Deploy Express](https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express), use `http://localhost:5003`.
 
 The first command extracts the default `appsettings.json` file into the home directory:
 
@@ -142,6 +159,27 @@ Extending the Informatics Gateway to support other database systems can be done 
 If the database system is supported by [Microsoft Entity Framework](https://learn.microsoft.com/en-us/ef/core/providers/), then it can be added to the existing [project](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/tree/develop/src/Database/EntityFramework).
 
 For other database systems that are not listed in the link above, simply implement the [Repository APIs](xref:Monai.Deploy.InformaticsGateway.Database.Api.Repositories), update the [Database Manager](xref:Monai.Deploy.InformaticsGateway.Database.DatabaseManager) to support the new database type and optionally, implement the [IDabaseMigrationManager](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager).
+
+
+## Authentication
+
+Authentication is disabled by default. To enable authentication using OpenID, edit the `appsettings.json` file and set `bypassAuthentication` to `true`:
+
+```json
+{
+  "MonaiDeployAuthentication": {
+    "bypassAuthentication": true,
+    "openId": {
+      "realm": "{realm}",
+      "realmKey": "{realm-secret-key}",
+      "clientId": "{client-id}",
+      "audiences": [ "{audiences}" ],
+      "roleClaimType": "{roles}",
+  ...
+}
+```
+
+Refer to [Authentication Setup Using Keycloak](https://github.com/Project-MONAI/monai-deploy-workflow-manager/blob/develop/guidelines/mwm-auth.md) for additional details.
 
 
 ## Storage Consideration & Configuration
@@ -314,7 +352,7 @@ will group instances by the Series Instance UID (0020,000E) with a timeout value
 
 ### Optional: Input Data Plug-ins
 
-Each listening AE Title may be configured with zero or more plug-ins to maniulate incoming DICOM files before saving to the storage
+Each listening AE Title may be configured with zero or more plug-ins to manipulate incoming DICOM files before saving to the storage
 service and dispatching a workflow request. To include input data plug-ins, first create your plug-ins by implementing the
 [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and then use `-p` argument with the fully
 qualified type name with the `mig-cli aet add` command. For example, the following command adds `MyNamespace.AnonymizePlugin`
@@ -327,7 +365,7 @@ mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p "MyNamespace.Anonymize
 > [!Note]
 > `-grouping` is optional, with a default value of 0020,000D.
 > `-t` is optional, with a default value of 5 seconds.
-> For complete reference, refer to the [Config API](../api/rest/config.md).
+> For complete reference, refer to the [Configuration API](../api/rest/config.md).
 
 2. Enable the receiving of DICOM instances from external DICOM devices:
 
@@ -358,3 +396,12 @@ The command adds a DICOM export destination with AE Title `WORKSTATION1` at IP `
 ## Logging
 
 See [schema](./schema.md#logging) page for additional information on logging.
+
+## Data Plug-ins
+
+You may write your own data plug-ins to manipulate incoming data before they are saved to the storage service or outgoing data right before they are exported.
+
+To write an input data plug-in, implement the [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and put the [dynamic link library](https://learn.microsoft.com/en-us/troubleshoot/windows-client/deployment/dynamic-link-library) (DLL) in the
+plug-ins directories.  Similarly for output data plug-ins, implement the [IOutputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IOutputDataPlugin) interface.
+
+Refer to [Configuration API](../api/rest/config.md) page to retrieve available [input](../api/rest/config.md#get-configaeplug-ins) and [output](../api/rest/config.md#get-configdestinationplug-ins) data plug-ins.

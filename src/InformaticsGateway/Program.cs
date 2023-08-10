@@ -113,6 +113,8 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddScoped<IPayloadNotificationActionHandler, PayloadNotificationActionHandler>();
                     services.AddScoped<IInputDataPluginEngine, InputDataPluginEngine>();
                     services.AddScoped<IOutputDataPluginEngine, OutputDataPluginEngine>();
+                    services.AddScoped<IDataPluginEngineFactory<IInputDataPlugin>, InputDataPluginEngineFactory>();
+                    services.AddScoped<IDataPluginEngineFactory<IOutputDataPlugin>, OutputDataPluginEngineFactory>();
 
                     services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
 
