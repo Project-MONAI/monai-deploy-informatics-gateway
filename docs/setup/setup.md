@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -352,7 +352,7 @@ will group instances by the Series Instance UID (0020,000E) with a timeout value
 
 ### Optional: Input Data Plug-ins
 
-Each listening AE Title may be configured with zero or more plug-ins to maniulate incoming DICOM files before saving to the storage
+Each listening AE Title may be configured with zero or more plug-ins to manipulate incoming DICOM files before saving to the storage
 service and dispatching a workflow request. To include input data plug-ins, first create your plug-ins by implementing the
 [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and then use `-p` argument with the fully
 qualified type name with the `mig-cli aet add` command. For example, the following command adds `MyNamespace.AnonymizePlugin`
@@ -365,7 +365,7 @@ mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p "MyNamespace.Anonymize
 > [!Note]
 > `-grouping` is optional, with a default value of 0020,000D.
 > `-t` is optional, with a default value of 5 seconds.
-> For complete reference, refer to the [Config API](../api/rest/config.md).
+> For complete reference, refer to the [Configuration API](../api/rest/config.md).
 
 2. Enable the receiving of DICOM instances from external DICOM devices:
 
@@ -401,7 +401,7 @@ See [schema](./schema.md#logging) page for additional information on logging.
 
 You may write your own data plug-ins to manipulate incoming data before they are saved to the storage service or outgoing data right before they are exported.
 
-To write an input data plug-in, implement the [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and put the assmblye dll in the
+To write an input data plug-in, implement the [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and put the [dynamic link library](https://learn.microsoft.com/en-us/troubleshoot/windows-client/deployment/dynamic-link-library) (DLL) in the
 plug-ins directories.  Similarly for output data plug-ins, implement the [IOutputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IOutputDataPlugin) interface.
 
 Refer to [Configuration API](../api/rest/config.md) page to retrieve available [input](../api/rest/config.md#get-configaeplug-ins) and [output](../api/rest/config.md#get-configdestinationplug-ins) data plug-ins.
