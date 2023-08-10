@@ -19,6 +19,7 @@ using Ardalis.GuardClauses;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
+    [AttributeUsage(AttributeTargets.Class)]
     public class PluginNameAttribute : Attribute
     {
         public string Name { get; set; }
