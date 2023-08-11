@@ -81,6 +81,23 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             collection.InsertOne(aet5);
         }
 
+        public void InitDatabaseWithVirtualApplicationEntities()
+        {
+            var collection = Database.GetCollection<VirtualApplicationEntity>(nameof(VirtualApplicationEntity));
+            Clear(collection);
+            var aet1 = new VirtualApplicationEntity { VirtualAeTitle = "AET1", Name = "AET1", DateTimeCreated = DateTime.UtcNow };
+            var aet2 = new VirtualApplicationEntity { VirtualAeTitle = "AET2", Name = "AET2", DateTimeCreated = DateTime.UtcNow };
+            var aet3 = new VirtualApplicationEntity { VirtualAeTitle = "AET3", Name = "AET3", DateTimeCreated = DateTime.UtcNow };
+            var aet4 = new VirtualApplicationEntity { VirtualAeTitle = "AET4", Name = "AET4", DateTimeCreated = DateTime.UtcNow };
+            var aet5 = new VirtualApplicationEntity { VirtualAeTitle = "AET5", Name = "AET5", DateTimeCreated = DateTime.UtcNow };
+
+            collection.InsertOne(aet1);
+            collection.InsertOne(aet2);
+            collection.InsertOne(aet3);
+            collection.InsertOne(aet4);
+            collection.InsertOne(aet5);
+        }
+
         public void InitDatabaseWithSourceApplicationEntities()
         {
             var collection = Database.GetCollection<SourceApplicationEntity>(nameof(SourceApplicationEntity));
