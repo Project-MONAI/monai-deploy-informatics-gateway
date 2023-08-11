@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
@@ -59,8 +60,20 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("timeout")]
         public uint Timeout { get; set; } = 10;
 
+        /// <summary>
+        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputDataPluginEngine"/>
+        /// on the data received using default DICOMWeb STOW-RS endpoints:
+        /// <list type="bullet">
+        /// <item>POST /dicomweb/studies/[{study-instance-uid}]</item>
+        /// <item>POST /dicomweb/{workflow-id}/studies/[{study-instance-uid}]</item>
+        /// </list>
+        /// </summary>
+        [ConfigurationKeyName("plugins")]
+        public List<string> PluginAssemblies { get; set; } = default!;
+
         public DicomWebConfiguration()
         {
+            PluginAssemblies ??= new List<string>();
         }
     }
 }

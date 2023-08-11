@@ -26,5 +26,17 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 5001, Level = LogLevel.Information, Message = "{type} data plug-in found {name}: {plugin}.")]
         public static partial void DataPluginFound(this ILogger logger, string type, string name, string plugin);
 
+        [LoggerMessage(EventId = 5002, Level = LogLevel.Debug, Message = "Adding input data plug-in: {plugin}.")]
+        public static partial void AddingInputDataPlugin(this ILogger logger, string plugin);
+
+        [LoggerMessage(EventId = 5003, Level = LogLevel.Information, Message = "Executing input data plug-in: {plugin}.")]
+        public static partial void ExecutingInputDataPlugin(this ILogger logger, string plugin);
+
+        [LoggerMessage(EventId = 5004, Level = LogLevel.Debug, Message = "Adding output data plug-in: {plugin}.")]
+        public static partial void AddingOutputDataPlugin(this ILogger logger, string plugin);
+
+        [LoggerMessage(EventId = 5005, Level = LogLevel.Information, Message = "Executing output data plug-in: {plugin}.")]
+        public static partial void ExecutingOutputDataPlugin(this ILogger logger, string plugin);
+
     }
 }
