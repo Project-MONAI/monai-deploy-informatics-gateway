@@ -37,6 +37,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 5005, Level = LogLevel.Information, Message = "Executing output data plug-in: {plugin}.")]
         public static partial void ExecutingOutputDataPlugin(this ILogger logger, string plugin);
+        [LoggerMessage(EventId = 5006, Level = LogLevel.Debug, Message = "Changed the StudyUid from {OriginalStudyUid} to {NewStudyUid}")]
+        public static partial void LogStudyUidChanged(this ILogger logger, string OriginalStudyUid, string NewStudyUid);
+
+        [LoggerMessage(EventId = 5007, Level = LogLevel.Error, Message = "Cannot find entry for OriginalStudyUid {OriginalStudyUid} ")]
+        public static partial void LogOriginalUidNotFound(this ILogger logger, string OriginalStudyUid);
 
     }
 }

@@ -35,5 +35,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public List<string> Files { get; set; } = new();
         public FileExportStatus Status { get; set; }
         public Dictionary<string, string> OriginalValues { get; set; } = new();
+        public Dictionary<string, string> ProxyValues { get; set; } = new();
+    }
+    public class RemoteAppExecutionTest
+    {
+        [JsonPropertyName("_id")]
+        public string Id { get; set; } = default!;
+        public DateTime RequestTime { get; set; } = DateTime.UtcNow;
     }
 }

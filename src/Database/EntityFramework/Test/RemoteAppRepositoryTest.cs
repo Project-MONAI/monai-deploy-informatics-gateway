@@ -20,18 +20,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualBasic;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test;
-using Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories;
-using MongoDB.Driver;
 using Moq;
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 {
-    [Collection("MongoDatabase")]
+    [Collection("SqliteDatabase")]
     public class RemoteAppRepositoryTest
     {
-        private readonly MongoDatabaseFixture _databaseFixture;
+        private readonly SqliteDatabaseFixture _databaseFixture;
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<RemoteAppExecutionRepository>> _logger;
@@ -40,19 +40,19 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
 
-        public RemoteAppRepositoryTest(MongoDatabaseFixture databaseFixture)
+        public RemoteAppRepositoryTest(SqliteDatabaseFixture databaseFixture)
         {
 
             _databaseFixture = databaseFixture ?? throw new ArgumentNullException(nameof(databaseFixture));
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<RemoteAppExecutionRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Microsoft.Extensions.Options.Options.Create(new InformaticsGatewayConfiguration());
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
             services.AddScoped(p => _logger.Object);
-            services.AddScoped(p => databaseFixture.Client);
+            services.AddScoped(p => databaseFixture.DatabaseContext);
 
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
@@ -60,6 +60,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            databaseFixture.DatabaseContext.Set<RemoteAppExecution>();
+            databaseFixture.DatabaseContext.SaveChanges();
         }
 
         [Fact]
@@ -94,10 +96,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             };
 
 
-            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(execution).ConfigureAwait(false);
-
-            var collection = _databaseFixture.Database.GetCollection<RemoteAppExecution>(nameof(RemoteAppExecution));
 
             var actual = await store.GetAsync(execution.OutgoingUid).ConfigureAwait(false);
 
@@ -117,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             await store.RemoveAsync(execution.OutgoingUid).ConfigureAwait(false);
 
-            actual = await collection.Find(p => p.OutgoingUid == execution.OutgoingUid).FirstOrDefaultAsync().ConfigureAwait(false);
+            actual = await _databaseFixture.DatabaseContext.Set<RemoteAppExecution>().FirstOrDefaultAsync(p => p.OutgoingUid == execution.OutgoingUid).ConfigureAwait(false);
             Assert.Null(actual);
         }
     }

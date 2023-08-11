@@ -15,8 +15,6 @@
  */
 
 using System;
-using System.Data;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
@@ -28,6 +26,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
 {
@@ -50,11 +49,28 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
 
         public async Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)
         {
-            var tags = GetTags(_options.Configuration["ReplaceTags"]);
+            var tags = IDicomToolkit.GetTagArrayFromStringArray(_options.Configuration["ReplaceTags"]);
+            var outgoingUid = dicomFile.Dataset.GetString(tags[0]);
 
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IRemoteAppExecutionRepository>();
 
+            var existing = await repository.GetAsync(outgoingUid).ConfigureAwait(false);
+
+            if (existing is not null)
+            {
+                PopulateWithStoredProxyValues(dicomFile, tags, existing);
+            }
+            else
+            {
+                var remoteAppExecution = await PopulateWithNewProxyValues(dicomFile, exportRequestDataMessage, tags).ConfigureAwait(false);
+                await repository.AddAsync(remoteAppExecution).ConfigureAwait(false);
+            }
+            return (dicomFile, exportRequestDataMessage);
+        }
+
+        private async Task<RemoteAppExecution> PopulateWithNewProxyValues(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage, DicomTag[] tags)
+        {
             var remoteAppExecution = await GetRemoteAppExecution(exportRequestDataMessage).ConfigureAwait(false);
             remoteAppExecution.StudyUid = dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID);
 
@@ -63,42 +79,24 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
                 if (dicomFile.Dataset.TryGetString(tag, out var value))
                 {
                     remoteAppExecution.OriginalValues.Add(tag.ToString(), value);
-                    SetTag(dicomFile, tag);
+                    var newValue = IDicomToolkit.GetTagProxyValue<string>(tag);
+                    dicomFile.Dataset.AddOrUpdate(tag, newValue);
+                    remoteAppExecution.ProxyValues.Add(tag.ToString(), newValue);
                 }
             }
 
             remoteAppExecution.OutgoingUid = dicomFile.Dataset.GetString(tags[0]);
-
-            await repository.AddAsync(remoteAppExecution).ConfigureAwait(false);
             _logger.LogStudyUidChanged(remoteAppExecution.StudyUid, remoteAppExecution.OutgoingUid);
-
-            return (dicomFile, exportRequestDataMessage);
+            return remoteAppExecution;
         }
 
-        private static void SetTag(DicomFile dicomFile, DicomTag tag)
+        private static void PopulateWithStoredProxyValues(DicomFile dicomFile, DicomTag[] tags, RemoteAppExecution existing)
         {
-            // partial implementation for now see
-            // https://dicom.nema.org/dicom/2013/output/chtml/part05/sect_6.2.html
-            // for full list
-
-            switch (tag.DictionaryEntry.ValueRepresentations[0].Code)
+            foreach (var tag in tags)
             {
-                case "UI":
-                case "LO":
-                case "LT":
+                if (dicomFile.Dataset.TryGetString(tag, out _))
                 {
-                    dicomFile.Dataset.AddOrUpdate(tag, DicomUIDGenerator.GenerateDerivedFromUUID());
-                    break;
-                }
-                case "SH":
-                case "AE":
-                case "CS":
-                case "PN":
-                case "ST":
-                case "UT":
-                {
-                    dicomFile.Dataset.AddOrUpdate(tag, "no Value");
-                    break;
+                    dicomFile.Dataset.AddOrUpdate(tag, existing.ProxyValues[tag.ToString()]);
                 }
             }
         }
@@ -117,7 +115,6 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
 
             var outgoingStudyUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             remoteAppExecution.OutgoingUid = outgoingStudyUid;
-
 
             foreach (var destination in request.Destinations)
             {
@@ -138,19 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             var repository = scope.ServiceProvider.GetRequiredService<IDestinationApplicationEntityRepository>();
             var destination = await repository.FindByNameAsync(destinationName, cancellationToken).ConfigureAwait(false);
 
-            if (destination is null)
-            {
-                throw new ConfigurationException($"Specified destination '{destinationName}' does not exist.");
-            }
-
-            return destination;
+            return destination ?? throw new ConfigurationException($"Specified destination '{destinationName}' does not exist.");
         }
-
-        private static DicomTag[] GetTags(string values)
-        {
-            var names = values.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            return names.Select(n => IDicomToolkit.GetDicomTagByName(n)).ToArray();
-        }
-
     }
 }
