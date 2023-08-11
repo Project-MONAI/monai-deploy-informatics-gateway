@@ -23,14 +23,17 @@ using System;
 namespace Monai.Deploy.InformaticsGateway.Api
 {
     /// <summary>
-    /// Virtual Application Entity (VAE)
-    /// An VAE identifies a service or application similar to a DIMSE AE but is
+    /// Virtual Application Entity (VAE).
+    /// 
+    /// A VAE identifies a service or application similar to a DIMSE AE but is
     /// designed to be used for DICOMWeb.
     ///
-    /// For example: users can configure VAEs on DICOMWeb STOW-RS endpoints to enable
+    /// For example, users can configure VAEs on DICOMWeb STOW-RS endpoints to enable
     /// data input plug-ins, <see cref="IInputDataPlugin"/>. This allows different plug-ins
     /// to be associated with each VAE for data manipulation, etc...
-    ///
+    /// 
+    /// In addition, one can trigger a new workflow request with the workflows defined in 
+    /// <see cref="VirtualApplicationEntity.Workflows"/> when studies are posted to a VAE-enabled STOW-RS endpoint.
     /// </summary>
     public class VirtualApplicationEntity : MongoDBEntityBase
     {
