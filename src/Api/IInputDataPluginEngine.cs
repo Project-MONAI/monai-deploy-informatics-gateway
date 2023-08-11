@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using FellowOakDicom;
@@ -28,14 +29,14 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// <list type="bullet">
     /// <item>SCP: A list of plug-ins can be configured with each AET, and each plug-in is executed in the order stored, enabling piping of the incoming data before each file is uploaded to the storage service.</item>
     /// <item>Incoming data is processed one file at a time and SHALL not wait for the entire study to arrive.</item>
-    /// <item>Plugins MUST be lightweight and not hinder the upload process.</item>
-    /// <item>Plugins SHALL not accumulate files in memory or storage for bulk processing.</item>
+    /// <item>Plug-ins MUST be lightweight and not hinder the upload process.</item>
+    /// <item>Plug-ins SHALL not accumulate files in memory or storage for bulk processing.</item>
     /// </list>
     /// </summary>
     public interface IInputDataPluginEngine
     {
         void Configure(IReadOnlyList<string> pluginAssemblies);
 
-        Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> ExecutePlugins(DicomFile dicomFile, FileStorageMetadata fileMetadata);
+        Task<Tuple<DicomFile, FileStorageMetadata>> ExecutePlugins(DicomFile dicomFile, FileStorageMetadata fileMetadata);
     }
 }
