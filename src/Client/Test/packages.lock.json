@@ -2013,7 +2013,6 @@
       "monai.deploy.informaticsgateway.client": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.AspNet.WebApi.Client": "[5.2.9, )",
           "Microsoft.Extensions.Http": "[6.0.0, )",
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Client.Common": "[1.0.0, )"
