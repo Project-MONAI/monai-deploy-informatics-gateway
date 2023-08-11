@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 item.SetAuthor(User, EditMode.Create);
 
                 await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
-                _logger.VirtualApplicationEntityAdded(item.VirtualAeTitle);
+                _logger.VirtualApplicationEntityAdded(Uri.EscapeDataString(item.VirtualAeTitle));
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ObjectExistsException ex)
@@ -156,7 +156,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
 
                 _ = _repository.UpdateAsync(applicationEntity, HttpContext.RequestAborted);
-                _logger.VirtualApplicationEntityUpdated(item.Name, item.VirtualAeTitle);
+                _logger.VirtualApplicationEntityUpdated(Uri.EscapeDataString(item.Name), Uri.EscapeDataString(item.VirtualAeTitle));
                 return Ok(applicationEntity);
             }
             catch (ConfigurationException ex)
@@ -187,7 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 await _repository.RemoveAsync(monaiApplicationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
 
-                _logger.VirtualApplicationEntityDeleted(name);
+                _logger.VirtualApplicationEntityDeleted(Uri.EscapeDataString(name));
                 return Ok(monaiApplicationEntity);
             }
             catch (Exception ex)
