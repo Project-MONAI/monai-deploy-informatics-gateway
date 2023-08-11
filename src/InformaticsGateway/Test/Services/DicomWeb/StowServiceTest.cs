@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Primitives;
+using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Moq;
 using Xunit;
@@ -47,8 +50,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         private readonly Mock<ILogger<MultipartDicomInstanceReader>> _loggerMultipartDicomInstanceReader;
         private readonly Mock<ILogger<SingleDicomInstanceReader>> _loggerSingleDicomInstanceReader;
         private readonly Mock<IServiceScope> _serviceScope;
+        private readonly Mock<IVirtualApplicationEntityRepository> _repository;
         private readonly Mock<IStreamsWriter> _streamsWriter;
-        private readonly MockFileSystem _fileSystem;
+        private readonly IFileSystem _fileSystem;
+        private readonly IServiceProvider _serviceProvider;
 
         public StowServiceTest()
         {
@@ -58,29 +63,23 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             _loggerMultipartDicomInstanceReader = new Mock<ILogger<MultipartDicomInstanceReader>>();
             _loggerSingleDicomInstanceReader = new Mock<ILogger<SingleDicomInstanceReader>>();
             _serviceScope = new Mock<IServiceScope>();
+            _repository = new Mock<IVirtualApplicationEntityRepository>();
             _streamsWriter = new Mock<IStreamsWriter>();
             _fileSystem = new MockFileSystem();
 
-            var serviceProvider = new Mock<IServiceProvider>();
-            serviceProvider
-                .Setup(x => x.GetService(typeof(ILogger<StowService>)))
-                .Returns(_logger.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(ILogger<MultipartDicomInstanceReader>)))
-                .Returns(_loggerMultipartDicomInstanceReader.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(ILogger<SingleDicomInstanceReader>)))
-                .Returns(_loggerSingleDicomInstanceReader.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IStreamsWriter)))
-                .Returns(_streamsWriter.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IFileSystem)))
-                .Returns(_fileSystem);
+            var services = new ServiceCollection();
+            services.AddScoped(p => _logger.Object);
+            services.AddScoped(p => _loggerMultipartDicomInstanceReader.Object);
+            services.AddScoped(p => _loggerSingleDicomInstanceReader.Object);
+            services.AddScoped(p => _streamsWriter.Object);
+            services.AddScoped(p => _fileSystem);
+            services.AddScoped(p => _repository.Object);
+
+            _serviceProvider = services.BuildServiceProvider();
 
             _serviceFactory.Setup(p => p.CreateScope())
                 .Returns(_serviceScope.Object);
-            _serviceScope.SetupGet(p => p.ServiceProvider).Returns(serviceProvider.Object);
+            _serviceScope.SetupGet(p => p.ServiceProvider).Returns(_serviceProvider);
         }
 
         [Fact(DisplayName = "Constructor Test")]
@@ -93,16 +92,35 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             Assert.Null(exception);
         }
 
-        [Fact(DisplayName = "StoreAsync - Throws with bad StudyInstanceUID")]
-        public async Task StoreAsync_ThrowsWithInvalidStudyInstanceUid()
+        [Fact(DisplayName = "StoreAsync - Throws when virtual AE cannot be found")]
+        public async Task StoreAsync_ThrowsWhenVirtualAECannotBeFound()
         {
             var correlationId = Guid.NewGuid().ToString();
             var service = new StowService(_serviceFactory.Object, _configuration);
 
             var httpRequest = new Mock<HttpRequest>();
 
+            await Assert.ThrowsAsync<ApplicationEntityNotFoundException>(async () =>
+                await service.StoreAsync(httpRequest.Object, "a.b.c.d", "aet", "workflow", correlationId, CancellationToken.None));
+        }
+
+        [Fact(DisplayName = "StoreAsync - Throws with bad StudyInstanceUID")]
+        public async Task StoreAsync_ThrowsWithInvalidStudyInstanceUid()
+        {
+            var correlationId = Guid.NewGuid().ToString();
+            var service = new StowService(_serviceFactory.Object, _configuration);
+            var vae = new VirtualApplicationEntity
+            {
+                Name = Guid.NewGuid().ToString(),
+                VirtualAeTitle = Guid.NewGuid().ToString(),
+            };
+
+            _repository.Setup(p => p.FindByAeTitleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(vae);
+
+            var httpRequest = new Mock<HttpRequest>();
+
             await Assert.ThrowsAsync<DicomValidationException>(async () =>
-                await service.StoreAsync(httpRequest.Object, "a.b.c.d", "workflow", correlationId, CancellationToken.None));
+                await service.StoreAsync(httpRequest.Object, "a.b.c.d", "aet", "workflow", correlationId, CancellationToken.None));
         }
 
         [Fact(DisplayName = "StoreAsync - Throws with bad content type header")]
@@ -111,12 +129,19 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             var correlationId = Guid.NewGuid().ToString();
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var service = new StowService(_serviceFactory.Object, _configuration);
+            var vae = new VirtualApplicationEntity
+            {
+                Name = Guid.NewGuid().ToString(),
+                VirtualAeTitle = Guid.NewGuid().ToString(),
+            };
+
+            _repository.Setup(p => p.FindByAeTitleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(vae);
 
             var httpRequest = new Mock<HttpRequest>();
             httpRequest.SetupGet(p => p.Headers.ContentType).Returns(new StringValues("invalid-header"));
 
             await Assert.ThrowsAsync<UnsupportedContentTypeException>(async () =>
-                await service.StoreAsync(httpRequest.Object, studyInstanceUid, "workflow", correlationId, CancellationToken.None));
+                await service.StoreAsync(httpRequest.Object, studyInstanceUid, "aet", "workflow", correlationId, CancellationToken.None));
         }
 
         [Fact(DisplayName = "StoreAsync - Throws with unsupported content type")]
@@ -125,12 +150,19 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             var correlationId = Guid.NewGuid().ToString();
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var service = new StowService(_serviceFactory.Object, _configuration);
+            var vae = new VirtualApplicationEntity
+            {
+                Name = Guid.NewGuid().ToString(),
+                VirtualAeTitle = Guid.NewGuid().ToString(),
+            };
+
+            _repository.Setup(p => p.FindByAeTitleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(vae);
 
             var httpRequest = new Mock<HttpRequest>();
             httpRequest.SetupGet(p => p.ContentType).Returns(ContentTypes.ApplicationDicomJson);
 
             await Assert.ThrowsAsync<UnsupportedContentTypeException>(async () =>
-                await service.StoreAsync(httpRequest.Object, studyInstanceUid, "workflow", correlationId, CancellationToken.None));
+                await service.StoreAsync(httpRequest.Object, studyInstanceUid, "aet", "workflow", correlationId, CancellationToken.None));
         }
 
         [Fact(DisplayName = "StoreAsync - handles single DICOM instance")]
@@ -139,15 +171,21 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             var correlationId = Guid.NewGuid().ToString();
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var service = new StowService(_serviceFactory.Object, _configuration);
+            var vae = new VirtualApplicationEntity
+            {
+                Name = Guid.NewGuid().ToString(),
+                VirtualAeTitle = Guid.NewGuid().ToString(),
+            };
 
-            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.FindByAeTitleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(vae);
 
             var httpRequest = new Mock<HttpRequest>();
             httpRequest.SetupGet(p => p.ContentType).Returns(ContentTypes.ApplicationDicom);
             httpRequest.SetupGet(p => p.HttpContext.Connection.RemoteIpAddress).Returns(IPAddress.Loopback);
             httpRequest.SetupGet(p => p.Body).Returns(Stream.Null);
 
-            var exception = await Record.ExceptionAsync(async () => await service.StoreAsync(httpRequest.Object, studyInstanceUid, "workflow", correlationId, CancellationToken.None));
+            var exception = await Record.ExceptionAsync(async () => await service.StoreAsync(httpRequest.Object, studyInstanceUid, "aet", "workflow", correlationId, CancellationToken.None));
             Assert.Null(exception);
         }
 
@@ -157,8 +195,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             var correlationId = Guid.NewGuid().ToString();
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var service = new StowService(_serviceFactory.Object, _configuration);
+            var vae = new VirtualApplicationEntity
+            {
+                Name = Guid.NewGuid().ToString(),
+                VirtualAeTitle = Guid.NewGuid().ToString(),
+            };
 
-            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.FindByAeTitleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(vae);
 
             var httpRequest = new Mock<HttpRequest>();
             httpRequest.SetupGet(p => p.ContentType).Returns($"{ContentTypes.MultipartRelated}; boundary={Boundary}");
@@ -168,8 +212,31 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
 
             httpRequest.SetupGet(p => p.Body).Returns(new MemoryStream(body));
 
-            var exception = await Record.ExceptionAsync(async () => await service.StoreAsync(httpRequest.Object, studyInstanceUid, "workflow", correlationId, CancellationToken.None));
+            var exception = await Record.ExceptionAsync(async () => await service.StoreAsync(httpRequest.Object, studyInstanceUid, "aet", "workflow", correlationId, CancellationToken.None));
             Assert.Null(exception);
+        }
+
+        [Fact(DisplayName = "StoreAsync - handles multiple DICOM instances without virtual AE")]
+        public async Task GivenMultipleDicomInstances_WhenStoreAsyncIsCalledWithoutVirtualAE_SavesStreams()
+        {
+            var correlationId = Guid.NewGuid().ToString();
+            var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
+            var service = new StowService(_serviceFactory.Object, _configuration);
+
+            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+
+            var httpRequest = new Mock<HttpRequest>();
+            httpRequest.SetupGet(p => p.ContentType).Returns($"{ContentTypes.MultipartRelated}; boundary={Boundary}");
+            httpRequest.SetupGet(p => p.HttpContext.Connection.RemoteIpAddress).Returns(IPAddress.Loopback);
+
+            var body = await GenerateMultipartData();
+
+            httpRequest.SetupGet(p => p.Body).Returns(new MemoryStream(body));
+
+            var exception = await Record.ExceptionAsync(async () => await service.StoreAsync(httpRequest.Object, studyInstanceUid, null, "workflow", correlationId, CancellationToken.None));
+            Assert.Null(exception);
+
+            _repository.Verify(p => p.FindByAeTitleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never());
         }
 
         private async Task<byte[]> GenerateMultipartData()

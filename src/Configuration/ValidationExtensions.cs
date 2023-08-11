@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -65,6 +66,19 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             var valid = true;
             valid &= IsAeTitleValid(sourceApplicationEntity.GetType().Name, sourceApplicationEntity.AeTitle, validationErrors);
             valid &= IsValidHostNameIp(sourceApplicationEntity.AeTitle, sourceApplicationEntity.HostIp, validationErrors);
+
+            return valid;
+        }
+        public static bool IsValid(this VirtualApplicationEntity virtualApplicationEntity, out IList<string> validationErrors)
+        {
+            Guard.Against.Null(virtualApplicationEntity, nameof(virtualApplicationEntity));
+
+            validationErrors = new List<string>();
+
+            var valid = true;
+
+            // The virtual AE Title is used as a URL fragment but given that AE Title has stricter character sets, we will use the same validation.
+            valid &= IsAeTitleValid("virtualAeTitle", virtualApplicationEntity.VirtualAeTitle, validationErrors);
 
             return valid;
         }

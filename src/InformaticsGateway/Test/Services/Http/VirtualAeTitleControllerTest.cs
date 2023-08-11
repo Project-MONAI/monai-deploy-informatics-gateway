@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,27 +31,24 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Http;
-using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Moq;
 using xRetry;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 {
-    public class MonaiAeTitleControllerTest
+    public class VirtualAeTitleControllerTest
     {
         private static readonly string TestUsername = "test-user";
-        private readonly MonaiAeTitleController _controller;
+        private readonly VirtualAeTitleController _controller;
         private readonly Mock<ProblemDetailsFactory> _problemDetailsFactory;
-        private readonly Mock<ILogger<MonaiAeTitleController>> _logger;
-        private readonly Mock<IMonaiAeChangedNotificationService> _aeChangedNotificationService;
-        private readonly Mock<IMonaiApplicationEntityRepository> _repository;
+        private readonly Mock<ILogger<VirtualAeTitleController>> _logger;
+        private readonly Mock<IVirtualApplicationEntityRepository> _repository;
         private readonly Mock<IDataPluginEngineFactory<IInputDataPlugin>> _pluginFactory;
 
-        public MonaiAeTitleControllerTest()
+        public VirtualAeTitleControllerTest()
         {
-            _logger = new Mock<ILogger<MonaiAeTitleController>>();
-            _aeChangedNotificationService = new Mock<IMonaiAeChangedNotificationService>();
+            _logger = new Mock<ILogger<VirtualAeTitleController>>();
 
             _problemDetailsFactory = new Mock<ProblemDetailsFactory>();
             _problemDetailsFactory.Setup(_ => _.CreateProblemDetails(
@@ -74,13 +71,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                     };
                 });
 
-            _repository = new Mock<IMonaiApplicationEntityRepository>();
+            _repository = new Mock<IVirtualApplicationEntityRepository>();
             _pluginFactory = new Mock<IDataPluginEngineFactory<IInputDataPlugin>>();
 
             var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() { User = new ClaimsPrincipal(new GenericIdentity(TestUsername)) } };
-            _controller = new MonaiAeTitleController(
+            _controller = new VirtualAeTitleController(
                  _logger.Object,
-                 _aeChangedNotificationService.Object,
                  _repository.Object,
                  _pluginFactory.Object)
             {
@@ -94,12 +90,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Get - Shall return available MONAI AETs")]
         public async Task Get_ShallReturnAllMonaiAets()
         {
-            var data = new List<MonaiApplicationEntity>();
+            var data = new List<VirtualApplicationEntity>();
             for (var i = 1; i <= 5; i++)
             {
-                data.Add(new MonaiApplicationEntity()
+                data.Add(new VirtualApplicationEntity()
                 {
-                    AeTitle = $"AET{i}",
+                    VirtualAeTitle = $"AET{i}",
                     Name = $"AET{i}",
                     Workflows = new List<string> { "A", "B" }
                 });
@@ -109,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             var result = await _controller.Get();
             var okObjectResult = result.Result as OkObjectResult;
-            var response = okObjectResult.Value as IEnumerable<MonaiApplicationEntity>;
+            var response = okObjectResult.Value as IEnumerable<VirtualApplicationEntity>;
             Assert.Equal(data.Count, response.Count());
             _repository.Verify(p => p.ToListAsync(It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -139,18 +135,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var value = "AET";
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(
                 Task.FromResult(
-                new MonaiApplicationEntity
+                new VirtualApplicationEntity
                 {
-                    AeTitle = value,
+                    VirtualAeTitle = value,
                     Name = value,
                     Workflows = new List<string> { "A", "B" }
                 }));
 
             var result = await _controller.GetAeTitle(value);
             var okObjectResult = result.Result as OkObjectResult;
-            var response = okObjectResult.Value as MonaiApplicationEntity;
+            var response = okObjectResult.Value as VirtualApplicationEntity;
             Assert.NotNull(response);
-            Assert.Equal(value, response.AeTitle);
+            Assert.Equal(value, response.VirtualAeTitle);
             _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
         }
 
@@ -158,7 +154,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task GetAeTitle_Returns404IfNotFound()
         {
             var value = "AET";
-            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(MonaiApplicationEntity)));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(VirtualApplicationEntity)));
 
             var result = await _controller.GetAeTitle(value);
 
@@ -178,7 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Error querying MONAI Application Entity.", problem.Title);
+            Assert.Equal("Error querying Virtual Application Entity.", problem.Title);
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
             _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
@@ -191,16 +187,16 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(DisplayName = "Create - Shall return Conflict if entity already exists")]
         public async Task Create_ShallReturnConflictIfIEntityAlreadyExists()
         {
-            _repository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
+            _repository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<VirtualApplicationEntity, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
 
-            var monaiAeTitle = new MonaiApplicationEntity
+            var virtualAeTitle = new VirtualApplicationEntity
             {
                 Name = "AET1",
-                AeTitle = "AET1",
+                VirtualAeTitle = "AET1",
                 Workflows = new List<string> { "A", "B" }
             };
 
-            var result = await _controller.Create(monaiAeTitle);
+            var result = await _controller.Create(virtualAeTitle);
 
             Assert.NotNull(result);
             var objectResult = result.Result as ObjectResult;
@@ -208,21 +204,21 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
             Assert.Equal("AE Title already exists", problem.Title);
-            Assert.Equal("A MONAI Application Entity with the same name 'AET1' already exists.", problem.Detail);
+            Assert.Equal("A Virtual Application Entity with the same name 'AET1' already exists.", problem.Detail);
             Assert.Equal((int)HttpStatusCode.Conflict, problem.Status);
         }
 
         [Fact(DisplayName = "Create - Shall return BadRequest when validation fails")]
         public async Task Create_ShallReturnBadRequestOnValidationFailure()
         {
-            var monaiAeTitle = new MonaiApplicationEntity
+            var virtualAeTitle = new VirtualApplicationEntity
             {
                 Name = "AeTitleIsTooooooLooooong",
-                AeTitle = "AeTitleIsTooooooLooooong",
+                VirtualAeTitle = "AeTitleIsTooooooLooooong",
                 Workflows = new List<string> { "A", "B" }
             };
 
-            var result = await _controller.Create(monaiAeTitle);
+            var result = await _controller.Create(virtualAeTitle);
 
             Assert.NotNull(result);
             var objectResult = result.Result as ObjectResult;
@@ -230,33 +226,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
             Assert.Equal("Validation error.", problem.Title);
-            Assert.Equal("'AeTitleIsTooooooLooooong' is not a valid AE Title (source: MonaiApplicationEntity).", problem.Detail);
-            Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
-        }
-
-        [Fact(DisplayName = "Create - Shall return BadRequest when both allowed & ignored SOP classes are defined")]
-        public async Task Create_ShallReturnBadRequestWhenBothAllowedAndIgnoredSopsAreDefined()
-        {
-            _repository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(), It.IsAny<CancellationToken>())).ReturnsAsync(false);
-
-            var monaiAeTitle = new MonaiApplicationEntity
-            {
-                Name = "MyAET",
-                AeTitle = "MyAET",
-                Workflows = new List<string> { "A", "B" },
-                IgnoredSopClasses = new List<string> { "A", "B" },
-                AllowedSopClasses = new List<string> { "C", "D" },
-            };
-
-            var result = await _controller.Create(monaiAeTitle);
-
-            Assert.NotNull(result);
-            var objectResult = result.Result as ObjectResult;
-            Assert.NotNull(objectResult);
-            var problem = objectResult.Value as ProblemDetails;
-            Assert.NotNull(problem);
-            Assert.Equal("Validation error.", problem.Title);
-            Assert.Equal("Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.", problem.Detail);
+            Assert.Equal("'AeTitleIsTooooooLooooong' is not a valid AE Title (source: virtualAeTitle).", problem.Detail);
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
@@ -264,48 +234,46 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task Create_ShallReturnBadRequestOnAddFailure()
         {
             var aeTitle = "AET";
-            var monaiAeTitle = new MonaiApplicationEntity
+            var virtualAeTitle = new VirtualApplicationEntity
             {
                 Name = aeTitle,
-                AeTitle = aeTitle,
+                VirtualAeTitle = aeTitle,
                 Workflows = new List<string> { "A", "B" }
             };
 
-            _repository.Setup(p => p.AddAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
+            _repository.Setup(p => p.AddAsync(It.IsAny<VirtualApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
-            var result = await _controller.Create(monaiAeTitle);
+            var result = await _controller.Create(virtualAeTitle);
 
             var objectResult = result.Result as ObjectResult;
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Error adding new MONAI Application Entity.", problem.Title);
+            Assert.Equal("Error adding new Virtual Application Entity.", problem.Title);
             Assert.Equal($"error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
 
-            _repository.Verify(p => p.AddAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.AddAsync(It.IsAny<VirtualApplicationEntity>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Create - Shall return CreatedAtAction")]
         public async Task Create_ShallReturnCreatedAtAction()
         {
             var aeTitle = "AET";
-            var monaiAeTitle = new MonaiApplicationEntity
+            var virtualAeTitle = new VirtualApplicationEntity
             {
                 Name = aeTitle,
-                AeTitle = aeTitle,
+                VirtualAeTitle = aeTitle,
                 Workflows = new List<string> { "A", "B" }
             };
 
-            _aeChangedNotificationService.Setup(p => p.Notify(It.IsAny<MonaiApplicationentityChangedEvent>()));
-            _repository.Setup(p => p.AddAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.AddAsync(It.IsAny<VirtualApplicationEntity>(), It.IsAny<CancellationToken>()));
 
-            var result = await _controller.Create(monaiAeTitle);
+            var result = await _controller.Create(virtualAeTitle);
 
             Assert.IsType<CreatedAtActionResult>(result.Result);
 
-            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == monaiAeTitle && x.Event == ChangedEventType.Added)), Times.Once());
-            _repository.Verify(p => p.AddAsync(It.Is<MonaiApplicationEntity>(p => p.CreatedBy == TestUsername), It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.AddAsync(It.Is<VirtualApplicationEntity>(p => p.CreatedBy == TestUsername), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         #endregion Create
@@ -315,37 +283,29 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(DisplayName = "Update - Shall return updated")]
         public async Task Update_ReturnsUpdated()
         {
-            var entity = new MonaiApplicationEntity
+            var entity = new VirtualApplicationEntity
             {
-                AeTitle = "AET",
+                VirtualAeTitle = "AET",
                 Name = "AET",
-                Grouping = "0020,000E",
-                Timeout = 100,
                 Workflows = new List<string> { "1", "2", "3" },
-                AllowedSopClasses = new List<string> { "1.2.3" },
-                IgnoredSopClasses = new List<string> { "a.b.c" },
-                PluginAssemblies = new List<string> { "A", "B" },
+                PluginAssemblies = new List<string> { "A", "B", "C" },
             };
 
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
-            _repository.Setup(p => p.UpdateAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.UpdateAsync(It.IsAny<VirtualApplicationEntity>(), It.IsAny<CancellationToken>()));
 
             var result = await _controller.Edit(entity);
             var okResult = result.Result as OkObjectResult;
             Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
-            var updatedEntity = okResult.Value as MonaiApplicationEntity;
+            var updatedEntity = okResult.Value as VirtualApplicationEntity;
 
-            Assert.Equal(entity.AeTitle, updatedEntity.AeTitle);
+            Assert.Equal(entity.VirtualAeTitle, updatedEntity.VirtualAeTitle);
             Assert.Equal(entity.Name, updatedEntity.Name);
-            Assert.Equal(entity.Grouping, updatedEntity.Grouping);
-            Assert.Equal(entity.Timeout, updatedEntity.Timeout);
             Assert.Equal(entity.Workflows, updatedEntity.Workflows);
-            Assert.Equal(entity.AllowedSopClasses, updatedEntity.AllowedSopClasses);
-            Assert.Equal(entity.IgnoredSopClasses, updatedEntity.IgnoredSopClasses);
+            Assert.Equal(entity.PluginAssemblies, updatedEntity.PluginAssemblies);
             Assert.NotNull(updatedEntity.DateTimeUpdated);
             Assert.Equal(TestUsername, updatedEntity.UpdatedBy);
 
-            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == updatedEntity && x.Event == ChangedEventType.Updated)), Times.Once());
             _repository.Verify(p => p.FindByNameAsync(entity.Name, It.IsAny<CancellationToken>()), Times.Once());
             _repository.Verify(p => p.UpdateAsync(entity, It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -353,52 +313,38 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(DisplayName = "Update - Shall return updated without updating AE Title")]
         public async Task Update_ReturnsUpdated_WithoutUpdatingAET()
         {
-            var originalEntity = new MonaiApplicationEntity
+            var originalEntity = new VirtualApplicationEntity
             {
-                AeTitle = "AET",
+                VirtualAeTitle = "AET",
                 Name = "AET",
-                Grouping = "0020,000E",
-                Timeout = 100,
                 Workflows = new List<string> { "1", "2", "3" },
-                AllowedSopClasses = new List<string> { "1.2.3" },
-                IgnoredSopClasses = new List<string> { "a.b.c" },
             };
 
-            var entity = new MonaiApplicationEntity
+            var entity = new VirtualApplicationEntity
             {
-                AeTitle = "SHOUD-NOT-CHANGE",
+                VirtualAeTitle = "SHOUD-NOT-CHANGE",
                 Name = "AET",
-                Grouping = "0020,000D",
-                Timeout = 10,
                 Workflows = new List<string> { "1", "2" },
-                AllowedSopClasses = new List<string> { "1.2" },
-                IgnoredSopClasses = new List<string> { "a.b" },
                 PluginAssemblies = new List<string> { "A", "B" },
             };
 
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(originalEntity));
-            _repository.Setup(p => p.UpdateAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.UpdateAsync(It.IsAny<VirtualApplicationEntity>(), It.IsAny<CancellationToken>()));
 
             var result = await _controller.Edit(entity);
             var okResult = result.Result as OkObjectResult;
             Assert.Equal(StatusCodes.Status200OK, okResult.StatusCode);
-            var updatedEntity = okResult.Value as MonaiApplicationEntity;
+            var updatedEntity = okResult.Value as VirtualApplicationEntity;
 
-            Assert.NotEqual(entity.AeTitle, updatedEntity.AeTitle);
-            Assert.Equal(originalEntity.AeTitle, updatedEntity.AeTitle);
+            Assert.NotEqual(entity.VirtualAeTitle, updatedEntity.VirtualAeTitle);
+            Assert.Equal(originalEntity.VirtualAeTitle, updatedEntity.VirtualAeTitle);
             Assert.Equal(entity.Name, updatedEntity.Name);
-            Assert.Equal(entity.Grouping, updatedEntity.Grouping);
-            Assert.Equal(entity.Timeout, updatedEntity.Timeout);
             Assert.Equal(entity.Workflows, updatedEntity.Workflows);
-            Assert.Equal(entity.AllowedSopClasses, updatedEntity.AllowedSopClasses);
-            Assert.Equal(entity.IgnoredSopClasses, updatedEntity.IgnoredSopClasses);
             Assert.Equal(entity.PluginAssemblies, updatedEntity.PluginAssemblies);
             Assert.Collection(entity.PluginAssemblies, p => p.Equals("A", StringComparison.CurrentCultureIgnoreCase), p => p.Equals("B", StringComparison.CurrentCultureIgnoreCase));
-
             Assert.NotNull(updatedEntity.DateTimeUpdated);
             Assert.Equal(TestUsername, updatedEntity.UpdatedBy);
 
-            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == updatedEntity && x.Event == ChangedEventType.Updated)), Times.Once());
             _repository.Verify(p => p.FindByNameAsync(entity.Name, It.IsAny<CancellationToken>()), Times.Once());
             _repository.Verify(p => p.UpdateAsync(updatedEntity, It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -414,17 +360,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         [RetryFact(5, 250, DisplayName = "Update - Shall return 404 if not found")]
         public async Task Update_Returns404IfNotFound()
         {
-            var entity = new MonaiApplicationEntity
+            var entity = new VirtualApplicationEntity
             {
-                AeTitle = "AET",
+                VirtualAeTitle = "AET",
                 Name = "AET",
-                Grouping = "ABC",
-                Timeout = 100,
                 Workflows = new List<string> { "1", "2", "3" },
-                AllowedSopClasses = new List<string> { "1.2.3" },
-                IgnoredSopClasses = new List<string> { "a.b.c" },
             };
-            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(MonaiApplicationEntity)));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(VirtualApplicationEntity)));
 
             var result = await _controller.Edit(entity);
 
@@ -436,18 +378,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task Update_ShallReturnProblemOnFailure()
         {
             var value = "AET";
-            var entity = new MonaiApplicationEntity
+            var entity = new VirtualApplicationEntity
             {
-                AeTitle = value,
+                VirtualAeTitle = value,
                 Name = "AET",
-                Grouping = "0020,000E",
-                Timeout = 100,
                 Workflows = new List<string> { "1", "2", "3" },
-                AllowedSopClasses = new List<string> { "1.2.3" },
-                IgnoredSopClasses = new List<string> { "a.b.c" },
             };
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
-            _repository.Setup(p => p.UpdateAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
+            _repository.Setup(p => p.UpdateAsync(It.IsAny<VirtualApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             var result = await _controller.Edit(entity);
 
@@ -455,7 +393,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Error updating MONAI Application Entity.", problem.Title);
+            Assert.Equal("Error updating Virtual Application Entity.", problem.Title);
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
             _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
@@ -465,15 +403,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task Update_ShallReturnBadRequestWithBadAeTitle()
         {
             var aeTitle = "TOOOOOOOOOOOOOOOOOOOOOOOLONG";
-            var entity = new MonaiApplicationEntity
+            var entity = new VirtualApplicationEntity
             {
-                AeTitle = aeTitle,
+                VirtualAeTitle = aeTitle,
                 Name = "AET",
-                Grouping = "0020,000E",
-                Timeout = 100,
                 Workflows = new List<string> { "1", "2", "3" },
-                AllowedSopClasses = new List<string> { "1.2.3" },
-                IgnoredSopClasses = new List<string> { "a.b.c" },
             };
 
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
@@ -484,7 +418,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
             Assert.Equal("Validation error.", problem.Title);
-            Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: MonaiApplicationEntity).", problem.Detail);
+            Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: virtualAeTitle).", problem.Detail);
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
 
@@ -496,22 +430,21 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task Delete_ReturnsDeleted()
         {
             var value = "AET";
-            var entity = new MonaiApplicationEntity
+            var entity = new VirtualApplicationEntity
             {
-                AeTitle = value,
+                VirtualAeTitle = value,
                 Name = value
             };
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
 
-            _repository.Setup(p => p.RemoveAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>()));
+            _repository.Setup(p => p.RemoveAsync(It.IsAny<VirtualApplicationEntity>(), It.IsAny<CancellationToken>()));
 
             var result = await _controller.Delete(value);
             var okObjectResult = result.Result as OkObjectResult;
-            var response = okObjectResult.Value as MonaiApplicationEntity;
+            var response = okObjectResult.Value as VirtualApplicationEntity;
             Assert.NotNull(response);
-            Assert.Equal(value, response.AeTitle);
+            Assert.Equal(value, response.VirtualAeTitle);
 
-            _aeChangedNotificationService.Verify(p => p.Notify(It.Is<MonaiApplicationentityChangedEvent>(x => x.ApplicationEntity == response && x.Event == ChangedEventType.Deleted)), Times.Once());
             _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());
             _repository.Verify(p => p.RemoveAsync(entity, It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -520,7 +453,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task Delete_Returns404IfNotFound()
         {
             var value = "AET";
-            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(MonaiApplicationEntity)));
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(default(VirtualApplicationEntity)));
 
             var result = await _controller.Delete(value);
 
@@ -532,13 +465,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         public async Task Delete_ShallReturnProblemOnFailure()
         {
             var value = "AET";
-            var entity = new MonaiApplicationEntity
+            var entity = new VirtualApplicationEntity
             {
-                AeTitle = value,
+                VirtualAeTitle = value,
                 Name = value
             };
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
-            _repository.Setup(p => p.RemoveAsync(It.IsAny<MonaiApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
+            _repository.Setup(p => p.RemoveAsync(It.IsAny<VirtualApplicationEntity>(), It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             var result = await _controller.Delete(value);
 
@@ -546,7 +479,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
             Assert.NotNull(problem);
-            Assert.Equal("Error deleting MONAI Application Entity.", problem.Title);
+            Assert.Equal("Error deleting Virtual Application Entity.", problem.Title);
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
             _repository.Verify(p => p.FindByNameAsync(value, It.IsAny<CancellationToken>()), Times.Once());

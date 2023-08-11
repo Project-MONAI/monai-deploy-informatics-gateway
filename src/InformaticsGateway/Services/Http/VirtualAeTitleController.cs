@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -29,36 +28,32 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Services.Scp;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
     [Route("config/ae")]
-    public class MonaiAeTitleController : ControllerBase
+    public class VirtualAeTitleController : ControllerBase
     {
-        private readonly ILogger<MonaiAeTitleController> _logger;
-        private readonly IMonaiApplicationEntityRepository _repository;
+        private readonly ILogger<VirtualAeTitleController> _logger;
+        private readonly IVirtualApplicationEntityRepository _repository;
         private readonly IDataPluginEngineFactory<IInputDataPlugin> _inputDataPluginEngineFactory;
-        private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
 
-        public MonaiAeTitleController(
-            ILogger<MonaiAeTitleController> logger,
-            IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
-            IMonaiApplicationEntityRepository repository,
+        public VirtualAeTitleController(
+            ILogger<VirtualAeTitleController> logger,
+            IVirtualApplicationEntityRepository repository,
             IDataPluginEngineFactory<IInputDataPlugin> inputDataPluginEngineFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _inputDataPluginEngineFactory = inputDataPluginEngineFactory ?? throw new ArgumentNullException(nameof(inputDataPluginEngineFactory));
-            _monaiAeChangedNotificationService = monaiAeChangedNotificationService ?? throw new ArgumentNullException(nameof(monaiAeChangedNotificationService));
         }
 
         [HttpGet]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<MonaiApplicationEntity>>> Get()
+        public async Task<ActionResult<IEnumerable<VirtualApplicationEntity>>> Get()
         {
             try
             {
@@ -77,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [ActionName(nameof(GetAeTitle))]
-        public async Task<ActionResult<MonaiApplicationEntity>> GetAeTitle(string name)
+        public async Task<ActionResult<VirtualApplicationEntity>> GetAeTitle(string name)
         {
             try
             {
@@ -93,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorListingMonaiApplicationEntities(ex);
-                return Problem(title: "Error querying MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error querying Virtual Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
@@ -104,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status409Conflict)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Produces("application/json")]
-        public async Task<ActionResult<MonaiApplicationEntity>> Create(MonaiApplicationEntity item)
+        public async Task<ActionResult<VirtualApplicationEntity>> Create(VirtualApplicationEntity item)
         {
             try
             {
@@ -114,8 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 item.SetAuthor(User, EditMode.Create);
 
                 await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
-                _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(item, ChangedEventType.Added));
-                _logger.MonaiApplicationEntityAdded(item.AeTitle);
+                _logger.VirtualApplicationEntityAdded(item.VirtualAeTitle);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ObjectExistsException ex)
@@ -128,8 +122,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.ErrorAddingMonaiApplicationEntity(ex);
-                return Problem(title: "Error adding new MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.ErrorAddingVirtualApplicationEntity(ex);
+                return Problem(title: "Error adding new Virtual Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
@@ -138,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<MonaiApplicationEntity>> Edit(MonaiApplicationEntity item)
+        public async Task<ActionResult<VirtualApplicationEntity>> Edit(VirtualApplicationEntity item)
         {
             try
             {
@@ -155,10 +149,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 item.SetDefaultValues();
 
-                applicationEntity.AllowedSopClasses = item.AllowedSopClasses;
-                applicationEntity.Grouping = item.Grouping;
-                applicationEntity.Timeout = item.Timeout;
-                applicationEntity.IgnoredSopClasses = item.IgnoredSopClasses ?? new List<string>();
                 applicationEntity.Workflows = item.Workflows ?? new List<string>();
                 applicationEntity.PluginAssemblies = item.PluginAssemblies ?? new List<string>();
                 applicationEntity.SetAuthor(User, EditMode.Update);
@@ -166,8 +156,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
 
                 _ = _repository.UpdateAsync(applicationEntity, HttpContext.RequestAborted);
-                _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(applicationEntity, ChangedEventType.Updated));
-                _logger.MonaiApplicationEntityUpdated(item.Name, item.AeTitle);
+                _logger.VirtualApplicationEntityUpdated(item.Name, item.VirtualAeTitle);
                 return Ok(applicationEntity);
             }
             catch (ConfigurationException ex)
@@ -176,8 +165,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.ErrorDeletingMonaiApplicationEntity(ex);
-                return Problem(title: "Error updating MONAI Application Entity.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+                _logger.ErrorDeletingVirtualApplicationEntity(ex);
+                return Problem(title: "Error updating Virtual Application Entity.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
             }
         }
 
@@ -186,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<MonaiApplicationEntity>> Delete(string name)
+        public async Task<ActionResult<VirtualApplicationEntity>> Delete(string name)
         {
             try
             {
@@ -198,14 +187,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 await _repository.RemoveAsync(monaiApplicationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
 
-                _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(monaiApplicationEntity, ChangedEventType.Deleted));
-                _logger.MonaiApplicationEntityDeleted(name);
+                _logger.VirtualApplicationEntityDeleted(name);
                 return Ok(monaiApplicationEntity);
             }
             catch (Exception ex)
             {
-                _logger.ErrorDeletingMonaiApplicationEntity(ex);
-                return Problem(title: "Error deleting MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                _logger.ErrorDeletingVirtualApplicationEntity(ex);
+                return Problem(title: "Error deleting Virtual Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
@@ -213,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<MonaiApplicationEntity> GetPlugins()
+        public ActionResult<VirtualApplicationEntity> GetPlugins()
         {
             try
             {
@@ -226,21 +214,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private async Task ValidateCreateAsync(MonaiApplicationEntity item)
+        private async Task ValidateCreateAsync(VirtualApplicationEntity item)
         {
             Guard.Against.Null(item, nameof(item));
 
             if (await _repository.ContainsAsync(p => p.Name.Equals(item.Name), HttpContext.RequestAborted).ConfigureAwait(false))
             {
-                throw new ObjectExistsException($"A MONAI Application Entity with the same name '{item.Name}' already exists.");
+                throw new ObjectExistsException($"A Virtual Application Entity with the same name '{item.Name}' already exists.");
             }
-            if (await _repository.ContainsAsync(p => p.AeTitle.Equals(item.AeTitle), HttpContext.RequestAborted).ConfigureAwait(false))
+            if (await _repository.ContainsAsync(p => p.VirtualAeTitle.Equals(item.VirtualAeTitle), HttpContext.RequestAborted).ConfigureAwait(false))
             {
-                throw new ObjectExistsException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
-            }
-            if (item.IgnoredSopClasses.Any() && item.AllowedSopClasses.Any())
-            {
-                throw new ConfigurationException($"Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.");
+                throw new ObjectExistsException($"A Virtual Application Entity with the same AE Title '{item.VirtualAeTitle}' already exists.");
             }
             if (!item.IsValid(out var validationErrors))
             {
@@ -248,11 +232,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
         }
 
-        private async Task ValidateUpdateAsync(MonaiApplicationEntity item)
+        private async Task ValidateUpdateAsync(VirtualApplicationEntity item)
         {
-            if (await _repository.ContainsAsync(p => !p.Name.Equals(item.Name) && p.AeTitle.Equals(item.AeTitle), HttpContext.RequestAborted).ConfigureAwait(false))
+            if (await _repository.ContainsAsync(p => !p.Name.Equals(item.Name) && p.VirtualAeTitle.Equals(item.VirtualAeTitle), HttpContext.RequestAborted).ConfigureAwait(false))
             {
-                throw new ObjectExistsException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
+                throw new ObjectExistsException($"A Virtual Application Entity with the same AE Title '{item.VirtualAeTitle}' already exists.");
             }
             if (!item.IsValid(out var validationErrors))
             {

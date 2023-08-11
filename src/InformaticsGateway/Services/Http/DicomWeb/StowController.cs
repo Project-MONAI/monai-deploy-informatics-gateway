@@ -51,7 +51,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         }
 
         [HttpPost("studies")]
+        [HttpPost("u/{aet}/studies")]
         [HttpPost("{workflowName}/studies")]
+        [HttpPost("u/{aet}/{workflowName}/studies")]
         [Consumes(ContentTypes.ApplicationDicom, ContentTypes.MultipartRelated)]
         [Produces(ContentTypes.ApplicationDicomJson)]
         [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status200OK)]
@@ -62,13 +64,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         [ProducesResponseType(typeof(string), StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status507InsufficientStorage)]
-        public async Task<IActionResult> StoreInstances(string workflowName = "")
+        public async Task<IActionResult> StoreInstances(string aet = "", string workflowName = "")
         {
-            return await StoreInstances(string.Empty, workflowName).ConfigureAwait(false);
+            return await StoreInstances(string.Empty, aet, workflowName).ConfigureAwait(false);
         }
 
         [HttpPost("studies/{studyInstanceUId}")]
+        [HttpPost("u/{aet}/studies/{studyInstanceUId}")]
         [HttpPost("{workflowName}/studies/{studyInstanceUid}")]
+        [HttpPost("u/{aet}/{workflowName}/studies/{studyInstanceUid}")]
         [Consumes(ContentTypes.ApplicationDicom, ContentTypes.MultipartRelated)]
         [Produces(ContentTypes.ApplicationDicomJson)]
         [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status200OK)]
@@ -79,12 +83,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         [ProducesResponseType(typeof(string), StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status507InsufficientStorage)]
-        public async Task<IActionResult> StoreInstancesToStudy(string studyInstanceUid, string workflowName = "")
+        public async Task<IActionResult> StoreInstancesToStudy(string studyInstanceUid, string aet = "", string workflowName = "")
         {
-            return await StoreInstances(studyInstanceUid, workflowName).ConfigureAwait(false);
+            return await StoreInstances(studyInstanceUid, aet, workflowName).ConfigureAwait(false);
         }
 
-        private async Task<IActionResult> StoreInstances(string studyInstanceUid, string workflowName)
+        private async Task<IActionResult> StoreInstances(string studyInstanceUid, string aet, string workflowName)
         {
             var correlationId = Guid.NewGuid().ToString();
             using var logger = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", correlationId }, { "StudyInstanceUID", studyInstanceUid }, { "Workflow", workflowName } });
@@ -98,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
 
             try
             {
-                var result = await _stowService.StoreAsync(Request, studyInstanceUid, workflowName, correlationId, HttpContext.RequestAborted).ConfigureAwait(false);
+                var result = await _stowService.StoreAsync(Request, studyInstanceUid, aet, workflowName, correlationId, HttpContext.RequestAborted).ConfigureAwait(false);
 
                 return StatusCode(result.StatusCode, result.Data);
             }
@@ -108,6 +112,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
                 return StatusCode(
                     StatusCodes.Status400BadRequest,
                     Problem(title: $"Invalid StudyInstanceUID provided '{studyInstanceUid}'.", statusCode: StatusCodes.Status400BadRequest, detail: ex.Message));
+            }
+            catch (ApplicationEntityNotFoundException ex)
+            {
+                _logger.ErrorDicomWebStowUnknownVirtualApplicationEntity(aet, ex);
+                return StatusCode(
+                    StatusCodes.Status400BadRequest,
+                    Problem(title: $"Invalid virtual application entity '{aet}'.", statusCode: StatusCodes.Status400BadRequest, detail: ex.Message));
+
             }
             catch (Exception ex)
             {
