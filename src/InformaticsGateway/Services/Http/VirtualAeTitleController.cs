@@ -32,7 +32,7 @@ using Monai.Deploy.InformaticsGateway.Services.Common;
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
-    [Route("config/ae")]
+    [Route("config/vae")]
     public class VirtualAeTitleController : ControllerBase
     {
         private readonly ILogger<VirtualAeTitleController> _logger;

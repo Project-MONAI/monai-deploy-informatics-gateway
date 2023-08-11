@@ -65,4 +65,19 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
             return Task.FromResult((dicomFile, fileMetadata));
         }
     }
+
+    [PluginName("TestInputDataPluginVirtualAE")]
+    public class TestInputDataPluginVirtualAE : IInputDataPlugin
+    {
+        public static readonly DicomTag ExpectedTag = DicomTag.PatientAddress;
+        public static readonly string ExpectedValue = "Added by TestInputDataPluginVirtualAE";
+
+        public string Name => GetType().GetCustomAttribute<PluginNameAttribute>()?.Name ?? GetType().Name;
+
+        public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
+        {
+            dicomFile.Dataset.Add(ExpectedTag, ExpectedValue);
+            return Task.FromResult((dicomFile, fileMetadata));
+        }
+    }
 }
