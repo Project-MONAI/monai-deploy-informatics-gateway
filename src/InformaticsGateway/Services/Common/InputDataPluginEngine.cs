@@ -23,6 +23,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
@@ -43,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             _plugsins = LoadPlugins(_serviceProvider, pluginAssemblies);
         }
 
-        public async Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> ExecutePlugins(DicomFile dicomFile, FileStorageMetadata fileMetadata)
+        public async Task<Tuple<DicomFile, FileStorageMetadata>> ExecutePlugins(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {
             if (_plugsins == null)
             {
@@ -52,13 +53,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
             foreach (var plugin in _plugsins)
             {
+                _logger.ExecutingInputDataPlugin(plugin.Name);
                 (dicomFile, fileMetadata) = await plugin.Execute(dicomFile, fileMetadata).ConfigureAwait(false);
             }
 
-            return (dicomFile, fileMetadata);
+            return new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata);
         }
 
-        private static IReadOnlyList<IInputDataPlugin> LoadPlugins(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
+        private IReadOnlyList<IInputDataPlugin> LoadPlugins(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
         {
             var exceptions = new List<Exception>();
             var list = new List<IInputDataPlugin>();
@@ -66,6 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             {
                 try
                 {
+                    _logger.AddingInputDataPlugin(plugin);
                     list.Add(typeof(IInputDataPlugin).CreateInstance<IInputDataPlugin>(serviceProvider, typeString: plugin));
                 }
                 catch (Exception ex)

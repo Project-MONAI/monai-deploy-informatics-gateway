@@ -26,6 +26,8 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// </summary>
     public interface IOutputDataPlugin
     {
+        string Name { get; }
+
         Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage);
     }
 }

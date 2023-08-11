@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System.Reflection;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
 
@@ -24,6 +25,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
     public class TestOutputDataPluginAddMessage : IOutputDataPlugin
     {
         public static readonly string ExpectedValue = "Hello from TestOutputDataPluginAddMessage";
+
+        public string Name => GetType().GetCustomAttribute<PluginNameAttribute>()?.Name ?? GetType().Name;
 
         public Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)
         {
@@ -37,6 +40,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
     {
         public static readonly DicomTag ExpectedTag = DicomTag.PatientAddress;
         public static readonly string ExpectedValue = "Added by TestOutputDataPluginModifyDicomFile";
+
+        public string Name => GetType().GetCustomAttribute<PluginNameAttribute>()?.Name ?? GetType().Name;
 
         public Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)
         {
