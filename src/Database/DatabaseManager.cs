@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,6 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IStorageMetadataRepository), typeof(EntityFramework.Repositories.StorageMetadataWrapperRepository));
                     services.AddScoped(typeof(IPayloadRepository), typeof(EntityFramework.Repositories.PayloadRepository));
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(EntityFramework.Repositories.DicomAssociationInfoRepository));
+                    services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(EntityFramework.Repositories.VirtualApplicationEntityRepository));
                     return services;
 
                 case DbType_MongoDb:
@@ -91,6 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IStorageMetadataRepository), typeof(MongoDB.Repositories.StorageMetadataWrapperRepository));
                     services.AddScoped(typeof(IPayloadRepository), typeof(MongoDB.Repositories.PayloadRepository));
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(MongoDB.Repositories.DicomAssociationInfoRepository));
+                    services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(MongoDB.Repositories.VirtualApplicationEntityRepository));
 
                     return services;
 

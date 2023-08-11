@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -87,14 +88,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             Guard.Against.NullOrWhiteSpace(dataSource, nameof(dataSource));
 
             var inputDataPluginEngine = _serviceScopeFactory.CreateScope().ServiceProvider.GetService<IInputDataPluginEngine>();
+            string[] workflows = null;
 
             if (virtualApplicationEntity is not null)
             {
                 inputDataPluginEngine.Configure(virtualApplicationEntity.PluginAssemblies);
+                workflows = virtualApplicationEntity.Workflows.ToArray();
             }
             else
             {
                 inputDataPluginEngine.Configure(_configuration.Value.DicomWeb.PluginAssemblies);
+            }
+
+            // If a workflow is specified, it will overwrite ones specified in a virtual AE.
+            if (!string.IsNullOrWhiteSpace(workflowName))
+            {
+                workflows = new[] { workflowName };
+            }
+            else if (virtualApplicationEntity?.Workflows.Any() ?? false)
+            {
+                workflows = virtualApplicationEntity.Workflows.ToArray();
             }
 
             foreach (var stream in streams)
@@ -107,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                         _logger.ZeroLengthDicomWebStowStream();
                         continue;
                     }
-                    await SaveInstance(stream, studyInstanceUid, inputDataPluginEngine, workflowName, correlationId, dataSource, cancellationToken).ConfigureAwait(false);
+                    await SaveInstance(stream, studyInstanceUid, inputDataPluginEngine, correlationId, dataSource, cancellationToken, workflows).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -139,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             }
         }
 
-        private async Task SaveInstance(Stream stream, string studyInstanceUid, IInputDataPluginEngine inputDataPluginEngine, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
+        private async Task SaveInstance(Stream stream, string studyInstanceUid, IInputDataPluginEngine inputDataPluginEngine, string correlationId, string dataSource, CancellationToken cancellationToken = default, params string[] workflows)
         {
             Guard.Against.Null(stream, nameof(stream));
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
@@ -178,9 +191,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 Source = dataSource,
             };
 
-            if (!string.IsNullOrWhiteSpace(workflowName))
+            if (!workflows.IsNullOrEmpty())
             {
-                dicomInfo.SetWorkflows(workflowName);
+                dicomInfo.SetWorkflows(workflows);
             }
 
             var result = await inputDataPluginEngine.ExecutePlugins(dicomFile, dicomInfo).ConfigureAwait(false);
