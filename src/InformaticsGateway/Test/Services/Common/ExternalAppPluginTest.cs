@@ -144,6 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 .Callback((RemoteAppExecution item, CancellationToken c) =>
                 localCopy = item
                 );
+
             var dataset = new DicomDataset
             {
                 { DicomTag.PatientID, "PID" },
@@ -154,12 +155,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage.UID }
             };
             var dicomFile = new DicomFile(dataset);
-            var dicomInfo = new DicomFileStorageMetadata(
-                Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString(),
-                dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
-                dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
-                dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID));
 
             var originalStudyUid = dataset.GetString(DicomTag.StudyInstanceUID);
 
@@ -182,6 +177,47 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             Assert.NotEqual(originalStudyUid, dataset.GetString(DicomTag.StudyInstanceUID));
         }
 
+        [Fact]
+        public async Task ExternalAppPlugin_Should_Save_NewValues()
+        {
+            var toolkit = new Mock<IDicomToolkit>();
+
+            RemoteAppExecution localCopy = new RemoteAppExecution();
+
+            _repository.Setup(r => r.AddAsync(It.IsAny<RemoteAppExecution>(), It.IsAny<CancellationToken>()))
+                .Callback((RemoteAppExecution item, CancellationToken c) =>
+                localCopy = item
+                );
+
+            var dataset = new DicomDataset
+            {
+                { DicomTag.PatientID, "PID" },
+                { DicomTag.AccessionNumber, "AccesssionNumber" },
+                { DicomTag.StudyInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SeriesInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage.UID }
+            };
+            var dicomFile = new DicomFile(dataset);
+
+            var originalStudyUid = dataset.GetString(DicomTag.StudyInstanceUID);
+
+            toolkit.Setup(t => t.Load(It.IsAny<byte[]>())).Returns(dicomFile);
+
+            var pluginEngine = new OutputDataPluginEngine(
+                _serviceProvider,
+                new Mock<ILogger<OutputDataPluginEngine>>().Object,
+                toolkit.Object);
+            pluginEngine.Configure(new List<string>() { typeof(ExternalAppOutgoing).AssemblyQualifiedName });
+
+            string[] destinations = { "fred" };
+
+            var exportMessage = new ExportRequestDataMessage(new Messaging.Events.ExportRequestEvent() { Destinations = destinations }, "");
+
+            var exportRequestDataMessage = await pluginEngine.ExecutePlugins(exportMessage);
+
+            Assert.Equal(localCopy.ProxyValues[DicomTag.StudyInstanceUID.ToString()], dataset.GetString(DicomTag.StudyInstanceUID));
+        }
 
         [Fact]
         public async Task ExternalAppPlugin_Should_Repare_StudyUid()
@@ -318,6 +354,53 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             var (resultDicomFile, resultDicomInfo) = await pluginEngine.ExecutePlugins(dicomFile, dicomInfo);
 
             _repository.Verify(r => r.GetAsync(sOPClassUID, It.IsAny<CancellationToken>()), Times.Once());
+        }
+
+        [Fact]
+        public async Task ExternalAppPlugin_Should_Reuse_Data_To_Group()
+        {
+            var sOPClassUID = DicomUID.SecondaryCaptureImageStorage.UID;
+            var toolkit = new Mock<IDicomToolkit>();
+
+            RemoteAppExecution localCopy = new RemoteAppExecution();
+
+            _repository.Setup(r => r.AddAsync(It.IsAny<RemoteAppExecution>(), It.IsAny<CancellationToken>()))
+                .Callback((RemoteAppExecution item, CancellationToken c) =>
+                localCopy = item
+                );
+
+            var dataset = new DicomDataset
+            {
+                { DicomTag.PatientID, "PID" },
+                { DicomTag.StudyInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SeriesInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPClassUID, sOPClassUID }
+            };
+            var dicomFile = new DicomFile(dataset);
+
+            toolkit.Setup(t => t.Load(It.IsAny<byte[]>())).Returns(dicomFile);
+
+            var pluginEngine = new OutputDataPluginEngine(
+                _serviceProvider,
+                new Mock<ILogger<OutputDataPluginEngine>>().Object,
+                toolkit.Object);
+            pluginEngine.Configure(new List<string>() { typeof(ExternalAppOutgoing).AssemblyQualifiedName });
+
+            string[] destinations = { "fred" };
+
+            var exportMessage = new ExportRequestDataMessage(new Messaging.Events.ExportRequestEvent() { Destinations = destinations }, "");
+
+            await pluginEngine.ExecutePlugins(exportMessage);
+            var firstValue = dataset.GetString(DicomTag.SOPClassUID);
+
+            _repository.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Returns(Task.FromResult(localCopy));
+
+            await pluginEngine.ExecutePlugins(exportMessage);
+
+            Assert.NotEqual(dataset.GetString(DicomTag.SOPClassUID), sOPClassUID);
+            Assert.Equal(firstValue, dataset.GetString(DicomTag.SOPClassUID));
         }
     }
 }

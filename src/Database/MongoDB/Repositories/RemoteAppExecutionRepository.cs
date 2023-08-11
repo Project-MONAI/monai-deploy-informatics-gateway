@@ -61,9 +61,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         private void CreateIndexes()
         {
-            var options = new CreateIndexOptions { Unique = true, ExpireAfter = TimeSpan.FromDays(7), Name = "RequestTime" };
+            var options = new CreateIndexOptions { Unique = true };
             var indexDefinitionState = Builders<RemoteAppExecution>.IndexKeys.Ascending(_ => _.OutgoingUid);
             var indexModel = new CreateIndexModel<RemoteAppExecution>(indexDefinitionState, options);
+
+            _collection.Indexes.CreateOne(indexModel);
+
+            options = new CreateIndexOptions { ExpireAfter = TimeSpan.FromDays(7), Name = "RequestTime" };
+            indexDefinitionState = Builders<RemoteAppExecution>.IndexKeys.Ascending(_ => _.RequestTime);
+            indexModel = new CreateIndexModel<RemoteAppExecution>(indexDefinitionState, options);
 
             _collection.Indexes.CreateOne(indexModel);
         }

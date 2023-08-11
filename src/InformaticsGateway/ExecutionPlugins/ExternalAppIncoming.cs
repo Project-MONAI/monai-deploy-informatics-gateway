@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
 {
@@ -51,18 +51,18 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IRemoteAppExecutionRepository>();
 
-            var tagUsedAsKey = GetTags(_options.Configuration["ReplaceTags"])[0];
+            var tagUsedAsKey = IDicomToolkit.GetTagArrayFromStringArray(_options.Configuration["ReplaceTags"])[0];
 
-            var incommingStudyUid = dicomFile.Dataset.GetString(tagUsedAsKey);
-            var remoteAppExecution = await repository.GetAsync(incommingStudyUid).ConfigureAwait(false);
+            var incommingUid = dicomFile.Dataset.GetString(tagUsedAsKey);
+            var remoteAppExecution = await repository.GetAsync(incommingUid).ConfigureAwait(false);
             if (remoteAppExecution is null)
             {
-                _logger.LogOriginalStudyUidNotFound(incommingStudyUid);
+                _logger.LogOriginalUidNotFound(incommingUid);
                 return (dicomFile, fileMetadata);
             }
             foreach (var key in remoteAppExecution.OriginalValues.Keys)
             {
-                var (group, element) = Parse(key);
+                var (group, element) = IDicomToolkit.ParseDicomTagStringToTwoShorts(key);
                 dicomFile.Dataset.AddOrUpdate(new DicomTag(group, element), remoteAppExecution.OriginalValues[key]);
             }
 
@@ -70,19 +70,6 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             fileMetadata.TaskId = remoteAppExecution.ExportTaskId;
 
             return (dicomFile, fileMetadata);
-        }
-
-        private (ushort group, ushort element) Parse(string input)
-        {
-            var trim = input.Substring(1, input.Length - 2);
-            var array = trim.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-            return (Convert.ToUInt16(array[0], 16), Convert.ToUInt16(array[1], 16));
-        }
-
-        private static DicomTag[] GetTags(string values)
-        {
-            var names = values.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
-            return names.Select(n => IDicomToolkit.GetDicomTagByName(n)).ToArray();
         }
     }
 }

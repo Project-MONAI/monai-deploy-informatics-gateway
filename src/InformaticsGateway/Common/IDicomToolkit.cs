@@ -17,6 +17,7 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using FellowOakDicom;
@@ -32,5 +33,48 @@ namespace Monai.Deploy.InformaticsGateway.Common
         StudySerieSopUids GetStudySeriesSopInstanceUids(DicomFile dicomFile);
 
         static DicomTag GetDicomTagByName(string tag) => DicomDictionary.Default[tag] ?? DicomDictionary.Default[Regex.Replace(tag, @"\s+", "", RegexOptions.None, TimeSpan.FromSeconds(1))];
+
+        static DicomTag[] GetTagArrayFromStringArray(string values)
+        {
+            var names = values.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            return names.Select(n => IDicomToolkit.GetDicomTagByName(n)).ToArray();
+        }
+
+        static T GetTagProxyValue<T>(DicomTag tag) where T : class
+        {
+            // partial implementation for now see
+            // https://dicom.nema.org/dicom/2013/output/chtml/part05/sect_6.2.html
+            // for full list
+            var output = "";
+            switch (tag.DictionaryEntry.ValueRepresentations[0].Code)
+            {
+                case "UI":
+                case "LO":
+                case "LT":
+                {
+                    output = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
+                    return output as T;
+                }
+                case "SH":
+                case "AE":
+                case "CS":
+                case "PN":
+                case "ST":
+                case "UT":
+                {
+                    output = "no Value";
+                    break;
+                }
+            }
+            return output as T;
+        }
+
+        static (ushort group, ushort element) ParseDicomTagStringToTwoShorts(string input)
+        {
+            var trim = input.Substring(1, input.Length - 2);
+            var array = trim.Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+            return (Convert.ToUInt16(array[0], 16), Convert.ToUInt16(array[1], 16));
+        }
+
     }
 }

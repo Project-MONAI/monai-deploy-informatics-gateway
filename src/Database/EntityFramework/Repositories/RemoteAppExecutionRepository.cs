@@ -31,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 {
     public class RemoteAppExecutionRepository : IRemoteAppExecutionRepository, IDisposable
     {
-        private readonly ILogger<PayloadRepository> _logger;
+        private readonly ILogger<RemoteAppExecutionRepository> _logger;
         private readonly IServiceScope _scope;
         private readonly InformaticsGatewayContext _informaticsGatewayContext;
         private readonly AsyncRetryPolicy _retryPolicy;
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
 
         public RemoteAppExecutionRepository(
             IServiceScopeFactory serviceScopeFactory,
-            ILogger<PayloadRepository> logger,
+            ILogger<RemoteAppExecutionRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
