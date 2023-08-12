@@ -110,7 +110,7 @@ Response Content Type: `JSON`
 
 ---
 
-## POST /dicomweb/u/{aet}/[{workflow-id}/]studies/[{study-instance-uid}/]
+## POST /dicomweb/vae/{aet}/[{workflow-id}/]studies/[{study-instance-uid}/]
 
 A DICOMWeb STOW-RS endpoint associated with the specified [Virtual Application Entity](xref:Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity).
 
@@ -122,10 +122,10 @@ takes precedence when specified.
 
 ### Example Endpoints
 
-- `POST /dicomweb/u/my-aet/studies/`
-- `POST /dicomweb/u/my-aet/studies/123.001.123.1.4.976.20160825112022727.3/`
-- `POST /dicomweb/u/my-aet/my-awesome-workflow/studies/`
-- `POST /dicomweb/u/my-aet/my-awesome-workflow/studies/123.001.123.1.4.976.20160825112022727.3/`
+- `POST /dicomweb/vae/my-aet/studies/`
+- `POST /dicomweb/vae/my-aet/studies/123.001.123.1.4.976.20160825112022727.3/`
+- `POST /dicomweb/vae/my-aet/my-awesome-workflow/studies/`
+- `POST /dicomweb/vae/my-aet/my-awesome-workflow/studies/123.001.123.1.4.976.20160825112022727.3/`
 
 ### Parameters
 

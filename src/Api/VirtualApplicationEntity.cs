@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
 
         /// <summary>
         /// Gets or sets the virtual AE TItle which is used as the URL fragment in the DICOMWeb STOW-RS endpoint.
-        /// E.g. POST /dicomweb/u/{aet}/studies where {aet} is the value from this property.
+        /// E.g. POST /dicomweb/vae/{aet}/studies where {aet} is the value from this property.
         /// </summary>
         public string VirtualAeTitle { get; set; } = default!;
 

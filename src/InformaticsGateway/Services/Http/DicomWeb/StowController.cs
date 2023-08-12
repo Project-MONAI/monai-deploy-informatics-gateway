@@ -51,9 +51,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         }
 
         [HttpPost("studies")]
-        [HttpPost("u/{aet}/studies")]
+        [HttpPost("vae/{aet}/studies")]
         [HttpPost("{workflowName}/studies")]
-        [HttpPost("u/{aet}/{workflowName}/studies")]
+        [HttpPost("vae/{aet}/{workflowName}/studies")]
         [Consumes(ContentTypes.ApplicationDicom, ContentTypes.MultipartRelated)]
         [Produces(ContentTypes.ApplicationDicomJson)]
         [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status200OK)]
@@ -70,9 +70,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         }
 
         [HttpPost("studies/{studyInstanceUId}")]
-        [HttpPost("u/{aet}/studies/{studyInstanceUId}")]
+        [HttpPost("vae/{aet}/studies/{studyInstanceUId}")]
         [HttpPost("{workflowName}/studies/{studyInstanceUid}")]
-        [HttpPost("u/{aet}/{workflowName}/studies/{studyInstanceUid}")]
+        [HttpPost("vae/{aet}/{workflowName}/studies/{studyInstanceUid}")]
         [Consumes(ContentTypes.ApplicationDicom, ContentTypes.MultipartRelated)]
         [Produces(ContentTypes.ApplicationDicomJson)]
         [ProducesResponseType(typeof(DicomDataset), StatusCodes.Status200OK)]

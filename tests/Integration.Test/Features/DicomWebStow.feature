@@ -70,7 +70,7 @@ Feature: DICOMweb STOW-RS Service
     Scenario: Triggers a new workflow request via DICOMWeb STOW-RS with Virtual AET
         Given a VirtualAE 'cool' 
         And <count> <modality> studies with 'stow_none' grouping
-        When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/u/cool/' without overriding workflows
+        When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/vae/cool/' without overriding workflows
         Then 1 workflow requests sent to message broker
         And studies are uploaded to storage service with data input VAE plugin
         Examples:
@@ -84,7 +84,7 @@ Feature: DICOMweb STOW-RS Service
         Given a VirtualAE 'awesome' 
         And <count> <modality> studies with 'stow_study' grouping
         And a workflow named 'MyWorkflow'
-        When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/u/awesome/' with StudyInstanceUid
+        When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/vae/awesome/' with StudyInstanceUid
         Then 1 workflow requests sent to message broker
         And studies are uploaded to storage service with data input VAE plugin
         Examples:
