@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Mime;
 using System.Threading.Tasks;
+using System.Web;
 using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -109,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 item.SetAuthor(User, EditMode.Create);
 
                 await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
-                _logger.VirtualApplicationEntityAdded(Uri.EscapeDataString(item.VirtualAeTitle));
+                _logger.VirtualApplicationEntityAdded(HttpUtility.HtmlEncode(item.VirtualAeTitle));
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ObjectExistsException ex)
@@ -156,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
 
                 _ = _repository.UpdateAsync(applicationEntity, HttpContext.RequestAborted);
-                _logger.VirtualApplicationEntityUpdated(Uri.EscapeDataString(item.Name), Uri.EscapeDataString(item.VirtualAeTitle));
+                _logger.VirtualApplicationEntityUpdated(HttpUtility.HtmlEncode(item.Name), HttpUtility.HtmlEncode(item.VirtualAeTitle));
                 return Ok(applicationEntity);
             }
             catch (ConfigurationException ex)
@@ -187,7 +188,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 await _repository.RemoveAsync(monaiApplicationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
 
-                _logger.VirtualApplicationEntityDeleted(Uri.EscapeDataString(name));
+                _logger.VirtualApplicationEntityDeleted(HttpUtility.HtmlEncode(name));
                 return Ok(monaiApplicationEntity);
             }
             catch (Exception ex)

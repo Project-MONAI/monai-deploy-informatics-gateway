@@ -16,6 +16,7 @@
 
 using System;
 using System.Threading.Tasks;
+using System.Web;
 using FellowOakDicom;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -115,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
             }
             catch (ApplicationEntityNotFoundException ex)
             {
-                _logger.ErrorDicomWebStowUnknownVirtualApplicationEntity(Uri.EscapeDataString(aet), ex);
+                _logger.ErrorDicomWebStowUnknownVirtualApplicationEntity(HttpUtility.HtmlEncode(aet), ex);
                 return StatusCode(
                     StatusCodes.Status400BadRequest,
                     Problem(title: $"Invalid virtual application entity '{aet}'.", statusCode: StatusCodes.Status400BadRequest, detail: ex.Message));
