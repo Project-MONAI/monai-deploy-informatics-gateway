@@ -253,11 +253,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             _repository.Setup(r => r.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(remoteAppExecution));
 
+            var _type = "Monai.Deploy.InformaticsGateway.ExecutionPlugins.ExternalAppIncoming, Monai.Deploy.InformaticsGateway, Version=0.0.0.0";
+
             var pluginEngine = new InputDataPluginEngine(
                 _serviceProvider,
                 new Mock<ILogger<InputDataPluginEngine>>().Object);
 
-            pluginEngine.Configure(new List<string>() { typeof(ExternalAppIncoming).AssemblyQualifiedName });
+            pluginEngine.Configure(new List<string>() { _type });
 
             var (resultDicomFile, resultDicomInfo) = await pluginEngine.ExecutePlugins(dicomFile, dicomInfo);
 
