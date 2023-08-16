@@ -109,7 +109,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/Efferent-Health/HL7-dotnetcore/raw/master/LICENSE.txt)
     :versions:
-    - 2.35.0
+    - 2.36.0
     :when: 2022-08-16 23:05:35.066879864 Z
 - - :approve
   - Humanizer.Core
@@ -783,35 +783,35 @@
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.24
+    - 0.1.25
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.24
+    - 0.1.25
     :when: 2022-08-16 23:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.17
+    - 0.2.18
     :when: 2022-08-16 23:06:21.988183476 Z
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.17
+    - 0.2.18
     :when: 2022-08-16 23:06:22.426838304 Z
 - - :approve
   - Monai.Deploy.Storage.S3Policy
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.17
+    - 0.2.18
     :when: 2022-08-16 23:06:22.881956546 Z
 - - :approve
   - Monai.Deploy.Security
@@ -825,8 +825,7 @@
   - :who: mocsharp
     :why: BSD 3-Clause License ( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
     :versions:
-    - 4.18.1
-    - 4.20.1
+    - 4.20.69
     :when: 2022-08-16 23:06:23.359197359 Z
 - - :approve
   - NETStandard.Library
