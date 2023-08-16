@@ -17,9 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.ExecutionPlugins;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.InformaticsGateway.Test.Plugins;
@@ -52,17 +54,19 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 p => VerifyPlugin(p, typeof(TestInputDataPluginAddWorkflow)),
                 p => VerifyPlugin(p, typeof(TestInputDataPluginResumeWorkflow)),
                 p => VerifyPlugin(p, typeof(TestInputDataPluginModifyDicomFile)),
-                p => VerifyPlugin(p, typeof(TestInputDataPluginVirtualAE)));
+                p => VerifyPlugin(p, typeof(TestInputDataPluginVirtualAE)),
+                p => VerifyPlugin(p, typeof(ExternalAppIncoming)));
 
-            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginAddWorkflow).Name}: {typeof(TestInputDataPluginAddWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginResumeWorkflow).Name}: {typeof(TestInputDataPluginResumeWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginModifyDicomFile).Name}: {typeof(TestInputDataPluginModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginVirtualAE).Name}: {typeof(TestInputDataPluginVirtualAE).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginAddWorkflow).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(TestInputDataPluginAddWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginResumeWorkflow).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(TestInputDataPluginResumeWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginModifyDicomFile).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(TestInputDataPluginModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(TestInputDataPluginVirtualAE).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(TestInputDataPluginVirtualAE).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugin).Name} data plug-in found {typeof(ExternalAppIncoming).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(ExternalAppIncoming).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
         }
 
         private void VerifyPlugin(KeyValuePair<string, string> values, Type type)
         {
-            Assert.Equal(values.Key, type.Name);
+            Assert.Equal(values.Key, type.GetCustomAttribute<PluginNameAttribute>()?.Name);
             Assert.Equal(values.Value, type.GetShortTypeAssemblyName());
         }
     }
