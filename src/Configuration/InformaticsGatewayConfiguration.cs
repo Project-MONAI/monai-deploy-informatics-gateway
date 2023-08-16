@@ -76,6 +76,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("database")]
         public DatabaseConfiguration Database { get; set; }
 
+        /// <summary>
+        /// Represents the <c>pluginConfiguration</c> section of the configuration file.
+        /// </summary>
+        [ConfigurationKeyName("plugins")]
+        public PluginConfiguration PluginConfigurations { get; set; }
+
         public InformaticsGatewayConfiguration()
         {
             Dicom = new DicomConfiguration();
@@ -86,6 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             Messaging = new MessageBrokerConfiguration();
             Database = new DatabaseConfiguration();
             Hl7 = new Hl7Configuration();
+            PluginConfigurations = new PluginConfiguration();
         }
     }
 }

@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             _destRepo.Setup(d => d.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .Returns(Task.FromResult(new DestinationApplicationEntity()));
 
-            _pluginOptions = new PluginConfiguration { Configuration = { { "ReplaceTags", "SOPClassUID, StudyInstanceUID, AccessionNumber, SeriesInstanceUID, SOPInstanceUID" } } };
+            _pluginOptions = new PluginConfiguration { RemoteAppConfigurations = { { "ReplaceTags", "SOPClassUID, StudyInstanceUID, AccessionNumber, SeriesInstanceUID, SOPInstanceUID" } } };
 
             _serviceCollection = new ServiceCollection();
             _serviceCollection.AddScoped(p => _logger.Object);
@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             _serviceCollection.AddOptions<PluginConfiguration>().Configure(options => options = _pluginOptions);
             _serviceCollection.PostConfigure<PluginConfiguration>(opts =>
             {
-                opts.Configuration = _pluginOptions.Configuration;
+                opts.RemoteAppConfigurations = _pluginOptions.RemoteAppConfigurations;
             });
 
             _serviceProvider = _serviceCollection.BuildServiceProvider();
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
         {
             var options = Options.Create<PluginConfiguration>(new PluginConfiguration
             {
-                Configuration = { { "ReplaceTags", "SOPClassUID" } }
+                RemoteAppConfigurations = { { "ReplaceTags", "SOPClassUID" } }
             });
             Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(null, null, null));
             Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(null, _serviceScopeFactory.Object, options));
@@ -97,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
         {
             var options = Options.Create<PluginConfiguration>(new PluginConfiguration
             {
-                Configuration = { { "ReplaceTags", "SOPClassUID" } }
+                RemoteAppConfigurations = { { "ReplaceTags", "SOPClassUID" } }
             });
             Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(null, null, null));
             Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(null, _serviceScopeFactory.Object, options));

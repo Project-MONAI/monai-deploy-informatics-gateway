@@ -19,6 +19,7 @@ using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
@@ -29,6 +30,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
     {
         public void Configure(EntityTypeBuilder<RemoteAppExecution> builder)
         {
+            var stringValueComparer = new ValueComparer<List<string>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList());
+            var destAeValueComparer = new ValueComparer<List<DestinationApplicationEntity>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList());
+            var dictValueComparer = new ValueComparer<Dictionary<string, string>>(
+                (c1, c2) => c1!.Equals(c2),
+                c => c.GetHashCode(),
+                c => c.ToDictionary(entry => entry.Key, entry => entry.Value));
             var jsonSerializerSettings = new JsonSerializerOptions
             {
                 DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
@@ -38,24 +51,25 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 
             builder.Property(j => j.OutgoingUid).IsRequired();
             builder.Property(j => j.ExportTaskId).IsRequired();
-            //builder.Property(j => j.Status).IsRequired();
             builder.Property(j => j.CorrelationId).IsRequired();
             builder.Property(j => j.OriginalValues)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
-                        v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, jsonSerializerSettings));
+                        v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(dictValueComparer);
             builder.Property(j => j.ProxyValues)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
-                        v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, jsonSerializerSettings));
+                        v => JsonSerializer.Deserialize<Dictionary<string, string>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(dictValueComparer);
 
             builder.Property(j => j.Files)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
-                        v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings));
+                        v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(stringValueComparer);
 
             builder.HasIndex(p => p.OutgoingUid, "idx_outgoing_key");
-
         }
     }
 

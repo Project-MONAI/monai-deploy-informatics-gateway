@@ -29,12 +29,14 @@ using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
 {
+    [PluginName("Remote App Execution Incoming")]
     public class ExternalAppIncoming : IInputDataPlugin
     {
         private readonly ILogger<ExternalAppIncoming> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly PluginConfiguration _options;
 
+        public string Name => "Remote App Execution Incoming";
         public ExternalAppIncoming(
             ILogger<ExternalAppIncoming> logger,
             IServiceScopeFactory serviceScopeFactory,
@@ -43,15 +45,16 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _options = configuration.Value ?? throw new ArgumentNullException(nameof(configuration));
-            if (_options.Configuration.ContainsKey("ReplaceTags") is false) { throw new ArgumentNullException(nameof(configuration)); }
+            if (_options.RemoteAppConfigurations.ContainsKey("ReplaceTags") is false) { throw new ArgumentNullException(nameof(configuration)); }
         }
+
 
         public async Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IRemoteAppExecutionRepository>();
 
-            var tagUsedAsKey = IDicomToolkit.GetTagArrayFromStringArray(_options.Configuration["ReplaceTags"])[0];
+            var tagUsedAsKey = IDicomToolkit.GetTagArrayFromStringArray(_options.RemoteAppConfigurations["ReplaceTags"])[0];
 
             var incommingUid = dicomFile.Dataset.GetString(tagUsedAsKey);
             var remoteAppExecution = await repository.GetAsync(incommingUid).ConfigureAwait(false);
