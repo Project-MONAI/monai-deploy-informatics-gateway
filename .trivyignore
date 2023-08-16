@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-ignore:
-  - vulnerability: CVE-2018-8292 # https://github.com/Project-MONAI/monai-deploy-informatics-gateway/issues/450
-  - vulnerability: CVE-2019-0820 # https://github.com/Project-MONAI/monai-deploy-informatics-gateway/issues/451
+# https://github.com/Project-MONAI/monai-deploy-informatics-gateway/issues/450
+CVE-2018-8292
+
+# https://github.com/Project-MONAI/monai-deploy-informatics-gateway/issues/451
+CVE-2019-0820 
