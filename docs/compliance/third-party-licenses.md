@@ -1548,14 +1548,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 <details>
-<summary>HL7-dotnetcore 2.35.0</summary>
+<summary>HL7-dotnetcore 2.36.0</summary>
 
 ## HL7-dotnetcore
 
-- Version: 2.35.0
+- Version: 2.36.0
 - Authors: HL7-dotnetcore
 - Project URL: https://github.com/Efferent-Health/HL7-dotnetcore
-- Source: [NuGet](https://www.nuget.org/packages/HL7-dotnetcore/2.35.0)
+- Source: [NuGet](https://www.nuget.org/packages/HL7-dotnetcore/2.36.0)
 - License: [MIT](https://github.com/Efferent-Health/HL7-dotnetcore/raw/master/LICENSE.txt)
 
 
@@ -7304,14 +7304,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging 0.1.24</summary>
+<summary>Monai.Deploy.Messaging 0.1.25</summary>
 
 ## Monai.Deploy.Messaging
 
-- Version: 0.1.24
+- Version: 0.1.25
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.24)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.25)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7532,14 +7532,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Messaging.RabbitMQ 0.1.24</summary>
+<summary>Monai.Deploy.Messaging.RabbitMQ 0.1.25</summary>
 
 ## Monai.Deploy.Messaging.RabbitMQ
 
-- Version: 0.1.24
+- Version: 0.1.25
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.24)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.25)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7988,14 +7988,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage 0.2.13</summary>
+<summary>Monai.Deploy.Storage 0.2.18</summary>
 
 ## Monai.Deploy.Storage
 
-- Version: 0.2.13
+- Version: 0.2.18
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.2.13)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.2.18)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8216,14 +8216,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.MinIO 0.2.13</summary>
+<summary>Monai.Deploy.Storage.MinIO 0.2.18</summary>
 
 ## Monai.Deploy.Storage.MinIO
 
-- Version: 0.2.13
+- Version: 0.2.18
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.2.13)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.2.18)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8444,14 +8444,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.S3Policy 0.2.13</summary>
+<summary>Monai.Deploy.Storage.S3Policy 0.2.18</summary>
 
 ## Monai.Deploy.Storage.S3Policy
 
-- Version: 0.2.13
+- Version: 0.2.18
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.2.13)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.2.18)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8800,14 +8800,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Moq 4.18.1</summary>
+<summary>Moq 4.20.69</summary>
 
 ## Moq
 
-- Version: 4.18.1
+- Version: 4.20.69
 - Authors: Daniel Cazzulino, kzu
 - Project URL: https://github.com/moq/moq4
-- Source: [NuGet](https://www.nuget.org/packages/Moq/4.18.1)
+- Source: [NuGet](https://www.nuget.org/packages/Moq/4.20.69)
 - License: [BSD 3-Clause License]( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
 
 

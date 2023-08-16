@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,6 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             DumpAndClear("DestinationApplicationEntities", _dbContext.DestinationApplicationEntities.ToList());
             DumpAndClear("SourceApplicationEntities", _dbContext.SourceApplicationEntities.ToList());
             DumpAndClear("MonaiApplicationEntities", _dbContext.MonaiApplicationEntities.ToList());
+            DumpAndClear("VirtualApplicationEntities", _dbContext.VirtualApplicationEntities.ToList());
             DumpAndClear("Payloads", _dbContext.Payloads.ToList());
             DumpAndClear("InferenceRequests", _dbContext.InferenceRequests.ToList());
             DumpAndClear("StorageMetadataWrapperEntities", _dbContext.StorageMetadataWrapperEntities.ToList());

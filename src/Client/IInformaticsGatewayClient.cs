@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,11 @@ namespace Monai.Deploy.InformaticsGateway.Client
         /// Provides APIs to list, create, delete DICOM destinations.
         /// </summary>
         IAeTitleService<DestinationApplicationEntity> DicomDestinations { get; }
+
+        /// <summary>
+        /// Provides APIs to list, create, delete Virtual AE Titles.
+        /// </summary>
+        IAeTitleService<VirtualApplicationEntity> VirtualAeTitle { get; }
 
         /// <summary>
         /// Configures the service URI of the DICOMweb service.

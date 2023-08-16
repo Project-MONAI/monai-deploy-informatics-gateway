@@ -324,6 +324,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 Workflows = new List<string> { "1", "2", "3" },
                 AllowedSopClasses = new List<string> { "1.2.3" },
                 IgnoredSopClasses = new List<string> { "a.b.c" },
+                PluginAssemblies = new List<string> { "A", "B" },
             };
 
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
@@ -372,6 +373,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 Workflows = new List<string> { "1", "2" },
                 AllowedSopClasses = new List<string> { "1.2" },
                 IgnoredSopClasses = new List<string> { "a.b" },
+                PluginAssemblies = new List<string> { "A", "B" },
             };
 
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(originalEntity));
@@ -390,6 +392,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(entity.Workflows, updatedEntity.Workflows);
             Assert.Equal(entity.AllowedSopClasses, updatedEntity.AllowedSopClasses);
             Assert.Equal(entity.IgnoredSopClasses, updatedEntity.IgnoredSopClasses);
+            Assert.Equal(entity.PluginAssemblies, updatedEntity.PluginAssemblies);
+            Assert.Collection(entity.PluginAssemblies, p => p.Equals("A", StringComparison.CurrentCultureIgnoreCase), p => p.Equals("B", StringComparison.CurrentCultureIgnoreCase));
+
             Assert.NotNull(updatedEntity.DateTimeUpdated);
             Assert.Equal(TestUsername, updatedEntity.UpdatedBy);
 
@@ -552,7 +557,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         #region GetPlugins
 
         [RetryFact(5, 250, DisplayName = "GetPlugins - Shall return registered plugins")]
-        public async Task GetPlugins_ReturnsRegisteredPlugins()
+        public void GetPlugins_ReturnsRegisteredPlugins()
         {
             var input = new Dictionary<string, string>() { { "A", "1" }, { "B", "3" }, { "C", "3" } };
 
@@ -568,7 +573,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         [RetryFact(5, 250, DisplayName = "GetPlugins - Shall return problem on failure")]
-        public async Task GetPlugins_ShallReturnProblemOnFailure()
+        public void GetPlugins_ShallReturnProblemOnFailure()
         {
             _pluginFactory.Setup(p => p.RegisteredPlugins()).Throws(new Exception("error"));
 

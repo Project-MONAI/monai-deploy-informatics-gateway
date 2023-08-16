@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -121,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
         [InlineData("workflow")]
         public async Task StoreInstances_ReturnsProblemDetailException(string workflow)
         {
-            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new Exception("error"));
 
             var result = await _controller.StoreInstances(workflow);
@@ -142,7 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
         [InlineData("workflow")]
         public async Task StoreInstances_ReturnsOk(string workflow)
         {
-            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new StowResult
                 {
                     StatusCode = StatusCodes.Status200OK,
@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
         [InlineData("a", "workflow")]
         public async Task StoreInstancesToStudy_ReturnsProblemDetailWithInvalidUid(string studyInstanceUid, string workflow)
         {
-            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new DicomValidationException("content", DicomVR.SL, "error"));
 
             var result = await _controller.StoreInstancesToStudy(studyInstanceUid, workflow);
@@ -184,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
         [InlineData("1.2.3.4.5", "workflow")]
         public async Task StoreInstancesToStudy_ReturnsProblemDetailException(string studyInstanceUid, string workflow)
         {
-            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ThrowsAsync(new Exception("error"));
 
             var result = await _controller.StoreInstancesToStudy(studyInstanceUid, workflow);
@@ -205,7 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
         [InlineData("1.2.3.4.5", "workflow")]
         public async Task StoreInstancesToStudy_ReturnsOk(string studyInstanceUid, string workflow)
         {
-            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+            _stowService.Setup(p => p.StoreAsync(It.IsAny<HttpRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new StowResult
                 {
                     StatusCode = StatusCodes.Status200OK,

@@ -4,8 +4,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
-    - 3.7.100.25
-    - 3.7.105.20
+    - 3.7.200.13
     :when: 2022-09-01 23:05:22.203089302 Z
 - - :approve
   - AWSSDK.S3
@@ -19,8 +18,7 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
     :versions:
-    - 3.7.100.25
-    - 3.7.101.26
+    - 3.7.201.9
     :when: 2022-09-01 23:05:28.920368903 Z
 - - :approve
   - BoDi
@@ -111,7 +109,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/Efferent-Health/HL7-dotnetcore/raw/master/LICENSE.txt)
     :versions:
-    - 2.35.0
+    - 2.36.0
     :when: 2022-08-16 23:05:35.066879864 Z
 - - :approve
   - Humanizer.Core
@@ -300,13 +298,6 @@
   - :who: mocsharp
     :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
     :versions:
-    - 4.0.1
-    :when: 2022-08-16 23:05:47.027783271 Z
-- - :approve
-  - Microsoft.CSharp
-  - :who: mocsharp
-    :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
-    :versions:
     - 4.3.0
     :when: 2022-08-16 23:05:47.470239070 Z
 - - :approve
@@ -314,6 +305,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
     :versions:
+    - 4.5.0
     - 4.7.0
     :when: 2022-08-16 23:05:47.910358457 Z
 - - :approve
@@ -329,63 +321,63 @@
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:49.698463427 Z
 - - :approve
   - Microsoft.EntityFrameworkCore
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:50.137694970 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Abstractions
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:51.008105271 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Analyzers
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:51.445711308 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Design
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:51.922790944 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.InMemory
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:52.375150938 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Relational
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:52.828879230 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:53.270526921 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite.Core
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-16 23:05:53.706997823 Z
 - - :approve
   - Microsoft.Extensions.ApiDescription.Server
@@ -526,24 +518,21 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
-    - 6.0.15
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
-    - 6.0.15
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
-    - 6.0.11
-    - 6.0.20
+    - 6.0.21
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.FileProviders.Abstractions
@@ -729,7 +718,7 @@
   - :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/aspnet/AspNetCore/2.0.0/LICENSE.txt)
     :versions:
-    - 2.2.8
+    - 2.2.0
     :when: 2022-08-16 23:06:15.238479186 Z
 - - :approve
   - Microsoft.OpenApi
@@ -787,43 +776,42 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/minio/minio-dotnet/raw/master/LICENSE)
     :versions:
-    - 4.0.6
-    - 4.0.7
+    - 5.0.0
     :when: 2022-08-16 23:06:20.598551507 Z
 - - :approve
   - Monai.Deploy.Messaging
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.24
+    - 0.1.25
     :when: 2022-08-16 23:06:21.051573547 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 0.1.24
+    - 0.1.25
     :when: 2022-08-16 23:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.16
+    - 0.2.18
     :when: 2022-08-16 23:06:21.988183476 Z
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.16
+    - 0.2.18
     :when: 2022-08-16 23:06:22.426838304 Z
 - - :approve
   - Monai.Deploy.Storage.S3Policy
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
     :versions:
-    - 0.2.16
+    - 0.2.18
     :when: 2022-08-16 23:06:22.881956546 Z
 - - :approve
   - Monai.Deploy.Security
@@ -837,8 +825,7 @@
   - :who: mocsharp
     :why: BSD 3-Clause License ( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
     :versions:
-    - 4.18.1
-    - 4.20.1
+    - 4.20.69
     :when: 2022-08-16 23:06:23.359197359 Z
 - - :approve
   - NETStandard.Library
@@ -1301,20 +1288,6 @@
     - 4.5.4
     - 4.5.5
     :when: 2022-08-16 23:06:55.672403035 Z
-- - :approve
-  - System.Net.Http
-  - :who: mocsharp
-    :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
-    :versions:
-    - 4.3.0
-    :when: 2022-08-16 23:06:56.146126058 Z
-- - :approve
-  - System.Net.Http
-  - :who: mocsharp
-    :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
-    :versions:
-    - 4.3.4
-    :when: 2022-08-16 23:06:56.599420591 Z
 - - :approve
   - System.Net.NameResolution
   - :who: mocsharp
@@ -2353,21 +2326,21 @@
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
     :versions:
-    - 2.20.0
+    - 2.21.0
     :when: 2022-11-16 23:38:53.891380809 Z
 - - :approve
   - MongoDB.Driver
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
     :versions:
-    - 2.20.0
+    - 2.21.0
     :when: 2022-11-16 23:38:54.213853364 Z
 - - :approve
   - MongoDB.Driver.Core
   - :who: mocsharp
     :why: Apache-2.0 (https://github.com/mongodb/mongo-csharp-driver/raw/master/License.txt)
     :versions:
-    - 2.20.0
+    - 2.21.0
     :when: 2022-11-16 23:38:54.553730219 Z
 - - :approve
   - MongoDB.Libmongocrypt
@@ -2467,6 +2440,23 @@
     :versions:
     - 1.0.0
     :when: 2023-08-08 0:08:05.206982078 Z
+- - :approve
+  - System.IO.Hashing
+  - :who: mocsharp
+    :why: MIT (https://raw.githubusercontent.com/dotnet/runtime/main/LICENSE.TXT)
+    :versions:
+    - 7.0.0
+    :when: 2023-08-10 20:50:14.759818552 Z
+- - :approve
+  - System.Net.Http
+  - :who: mocsharp
+    :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
+    :versions:
+    - 4.3.0
+    - 4.3.4
+    :when: 2022-08-16 23:07:41.735502132 Z
+
+
 
 
 

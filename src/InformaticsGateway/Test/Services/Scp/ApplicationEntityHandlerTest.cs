@@ -175,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var dicomToolkit = new DicomToolkit();
             var uids = dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
             _inputDataPluginEngine.Setup(p => p.ExecutePlugins(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()))
-                .Returns((DicomFile dicomFile, FileStorageMetadata fileMetadata) => Task.FromResult((dicomFile, fileMetadata)));
+                .Returns((DicomFile dicomFile, FileStorageMetadata fileMetadata) => Task.FromResult(new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata)));
 
             await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
 

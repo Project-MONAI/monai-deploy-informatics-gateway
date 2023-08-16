@@ -22,6 +22,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
@@ -54,6 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             var dicomFile = _dicomToolkit.Load(exportRequestDataMessage.FileContent);
             foreach (var plugin in _plugsins)
             {
+                _logger.ExecutingOutputDataPlugin(plugin.Name);
                 (dicomFile, exportRequestDataMessage) = await plugin.Execute(dicomFile, exportRequestDataMessage).ConfigureAwait(false);
             }
             using var ms = new MemoryStream();
@@ -63,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             return exportRequestDataMessage;
         }
 
-        private static IReadOnlyList<IOutputDataPlugin> LoadPlugins(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
+        private IReadOnlyList<IOutputDataPlugin> LoadPlugins(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
         {
             var exceptions = new List<Exception>();
             var list = new List<IOutputDataPlugin>();
@@ -71,6 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             {
                 try
                 {
+                    _logger.AddingOutputDataPlugin(plugin);
                     list.Add(typeof(IOutputDataPlugin).CreateInstance<IOutputDataPlugin>(serviceProvider, typeString: plugin));
                 }
                 catch (Exception ex)
