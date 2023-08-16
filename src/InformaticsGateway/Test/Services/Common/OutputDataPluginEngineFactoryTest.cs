@@ -17,9 +17,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.ExecutionPlugins;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.InformaticsGateway.Test.Plugins;
@@ -50,15 +52,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 
             Assert.Collection(result,
                 p => VerifyPlugin(p, typeof(TestOutputDataPluginAddMessage)),
-                p => VerifyPlugin(p, typeof(TestOutputDataPluginModifyDicomFile)));
+                p => VerifyPlugin(p, typeof(TestOutputDataPluginModifyDicomFile)),
+                p => VerifyPlugin(p, typeof(ExternalAppOutgoing))
+                );
 
-            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginAddMessage).Name}: {typeof(TestOutputDataPluginAddMessage).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginModifyDicomFile).Name}: {typeof(TestOutputDataPluginModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginAddMessage).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(TestOutputDataPluginAddMessage).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginModifyDicomFile).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(TestOutputDataPluginModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(ExternalAppOutgoing).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(ExternalAppOutgoing).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
         }
 
         private void VerifyPlugin(KeyValuePair<string, string> values, Type type)
         {
-            Assert.Equal(values.Key, type.Name);
+            Assert.Equal(values.Key, type.GetCustomAttribute<PluginNameAttribute>()?.Name);
             Assert.Equal(values.Value, type.GetShortTypeAssemblyName());
         }
     }

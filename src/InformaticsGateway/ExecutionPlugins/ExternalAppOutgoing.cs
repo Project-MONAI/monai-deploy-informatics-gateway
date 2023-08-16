@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
@@ -36,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly PluginConfiguration _options;
 
-        public string Name => "Remote App Execution Outgoing";
+        public string Name => GetType().GetCustomAttribute<PluginNameAttribute>()?.Name ?? GetType().Name;
 
         public ExternalAppOutgoing(
             ILogger<ExternalAppOutgoing> logger,
