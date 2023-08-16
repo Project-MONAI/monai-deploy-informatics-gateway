@@ -15,11 +15,13 @@
  */
 
 using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public class PluginConfiguration
     {
-        public Dictionary<string, string> Configuration { get; set; } = new();
+        [ConfigurationKeyName("remoteApp")]
+        public Dictionary<string, string> RemoteAppConfigurations { get; set; } = new();
     }
 }

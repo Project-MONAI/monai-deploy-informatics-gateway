@@ -42,6 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
         public virtual DbSet<DicomAssociationInfo> DicomAssociationHistories { get; set; }
         public virtual DbSet<VirtualApplicationEntity> VirtualApplicationEntities { get; set; }
         public virtual DbSet<RemoteAppExecution> RemoteAppExecutions { get; set; }
+        public virtual DbSet<DestinationApplicationEntityRemoteAppExecution> RemtoeAppExecutionDestinations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -56,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
             modelBuilder.ApplyConfiguration(new DicomAssociationInfoConfiguration());
             modelBuilder.ApplyConfiguration(new VirtualApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new RemoteAppExecutionConfiguration());
+            modelBuilder.ApplyConfiguration(new DestinationApplicationEntityRemoteAppExecutionConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

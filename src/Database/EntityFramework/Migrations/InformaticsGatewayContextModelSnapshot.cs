@@ -17,6 +17,21 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.21");
 
+            modelBuilder.Entity("DestinationApplicationEntityRemoteAppExecution", b =>
+                {
+                    b.Property<string>("ExportDetailsName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RemoteAppExecutionsId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("ExportDetailsName", "RemoteAppExecutionsId");
+
+                    b.HasIndex("RemoteAppExecutionsId");
+
+                    b.ToTable("DestinationApplicationEntityRemoteAppExecution");
+                });
+
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
                     b.Property<string>("Name")
@@ -54,6 +69,21 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsUnique();
 
                     b.ToTable("DestinationApplicationEntities");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntityRemoteAppExecution", b =>
+                {
+                    b.Property<string>("DestinationApplicationEntityName")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("RemoteAppExecutionId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("DestinationApplicationEntityName", "RemoteAppExecutionId");
+
+                    b.HasIndex("RemoteAppExecutionId");
+
+                    b.ToTable("RemtoeAppExecutionDestinations");
                 });
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo", b =>
@@ -153,6 +183,52 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsUnique();
 
                     b.ToTable("MonaiApplicationEntities");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.RemoteAppExecution", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CorrelationId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExportTaskId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Files")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OriginalValues")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("OutgoingUid")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ProxyValues")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RequestTime")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StudyUid")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WorkflowInstanceId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex(new[] { "OutgoingUid" }, "idx_outgoing_key");
+
+                    b.ToTable("RemoteAppExecutions");
                 });
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest", b =>
@@ -361,6 +437,50 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasIndex(new[] { "IsUploaded" }, "idx_storagemetadata_uploaded");
 
                     b.ToTable("StorageMetadataWrapperEntities");
+                });
+
+            modelBuilder.Entity("DestinationApplicationEntityRemoteAppExecution", b =>
+                {
+                    b.HasOne("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", null)
+                        .WithMany()
+                        .HasForeignKey("ExportDetailsName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Monai.Deploy.InformaticsGateway.Api.RemoteAppExecution", null)
+                        .WithMany()
+                        .HasForeignKey("RemoteAppExecutionsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntityRemoteAppExecution", b =>
+                {
+                    b.HasOne("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", "DestinationApplicationEntity")
+                        .WithMany("DestinationApplicationEntityRemoteAppExecutions")
+                        .HasForeignKey("DestinationApplicationEntityName")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Monai.Deploy.InformaticsGateway.Api.RemoteAppExecution", "RemoteAppExecution")
+                        .WithMany("DestinationApplicationEntityRemoteAppExecutions")
+                        .HasForeignKey("RemoteAppExecutionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DestinationApplicationEntity");
+
+                    b.Navigation("RemoteAppExecution");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
+                {
+                    b.Navigation("DestinationApplicationEntityRemoteAppExecutions");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.RemoteAppExecution", b =>
+                {
+                    b.Navigation("DestinationApplicationEntityRemoteAppExecutions");
                 });
 #pragma warning restore 612, 618
         }

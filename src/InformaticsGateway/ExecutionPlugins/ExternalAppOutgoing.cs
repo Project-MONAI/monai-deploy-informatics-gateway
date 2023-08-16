@@ -22,7 +22,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -30,11 +29,14 @@ using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
 {
+    [PluginName("Remote App Execution Outgoing")]
     public class ExternalAppOutgoing : IOutputDataPlugin
     {
         private readonly ILogger<ExternalAppOutgoing> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly PluginConfiguration _options;
+
+        public string Name => "Remote App Execution Outgoing";
 
         public ExternalAppOutgoing(
             ILogger<ExternalAppOutgoing> logger,
@@ -44,12 +46,12 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _options = configuration.Value ?? throw new ArgumentNullException(nameof(configuration));
-            if (_options.Configuration.ContainsKey("ReplaceTags") is false) { throw new ArgumentNullException(nameof(configuration)); }
+            if (_options.RemoteAppConfigurations.ContainsKey("ReplaceTags") is false) { throw new ArgumentNullException(nameof(configuration)); }
         }
 
         public async Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)
         {
-            var tags = IDicomToolkit.GetTagArrayFromStringArray(_options.Configuration["ReplaceTags"]);
+            var tags = IDicomToolkit.GetTagArrayFromStringArray(_options.RemoteAppConfigurations["ReplaceTags"]);
             var outgoingUid = dicomFile.Dataset.GetString(tags[0]);
 
             var scope = _serviceScopeFactory.CreateScope();
@@ -109,7 +111,6 @@ namespace Monai.Deploy.InformaticsGateway.ExecutionPlugins
                 WorkflowInstanceId = request.WorkflowInstanceId,
                 ExportTaskId = request.ExportTaskId,
                 Files = new System.Collections.Generic.List<string> { request.Filename },
-                Status = request.ExportStatus
             };
 
 

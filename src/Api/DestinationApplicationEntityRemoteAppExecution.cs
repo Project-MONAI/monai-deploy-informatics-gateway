@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021-2023 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-using Monai.Deploy.InformaticsGateway.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
+namespace Monai.Deploy.InformaticsGateway.Api
 {
-    public interface IRemoteAppExecutionRepository
+    public class DestinationApplicationEntityRemoteAppExecution
     {
-        Task<bool> AddAsync(RemoteAppExecution item, CancellationToken cancellationToken = default);
+        public string DestinationApplicationEntityName { get; set; } = default!;
+        public DestinationApplicationEntity DestinationApplicationEntity { get; set; } = default!;
 
-        Task<RemoteAppExecution?> GetAsync(string OutgoingStudyUid, CancellationToken cancellationToken = default);
-
-        Task<int> RemoveAsync(string OutgoingStudyUid, CancellationToken cancellationToken = default);
+        public string RemoteAppExecutionId { get; set; } = default!;
+        public RemoteAppExecution RemoteAppExecution { get; set; } = default!;
     }
 }
