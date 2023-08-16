@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     {
         public const string FhirSubDirectoryName = "ehr";
         public const string JsonFilExtension = ".json";
-        public const string XmlFilExtension = ".xml";
+        public const string XmlFileExtension = ".xml";
 
         /// <summary>
         /// The transaction ID of the original ACR request.
@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             ResourceType = resourceType;
             ResourceId = resourceId;
 
-            var fileExtension = fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFilExtension;
+            var fileExtension = fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFileExtension;
             File = new StorageObjectMetadata(fileExtension)
             {
                 TemporaryPath = string.Join(PathSeparator, transactionId, DataTypeDirectoryName, $"{Guid.NewGuid()}{fileExtension}"),

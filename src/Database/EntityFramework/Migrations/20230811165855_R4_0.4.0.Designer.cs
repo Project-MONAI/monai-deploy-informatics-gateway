@@ -11,13 +11,13 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20230802003305_R4_0.4.0")]
+    [Migration("20230811165855_R4_0.4.0")]
     partial class R4_040
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.15");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.21");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
@@ -286,6 +286,44 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasIndex(new[] { "State" }, "idx_payload_state");
 
                     b.ToTable("Payloads");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateTimeUpdated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PluginAssemblies")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VirtualAeTitle")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Workflows")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Name");
+
+                    b.HasIndex(new[] { "Name" }, "idx_virtualae_name")
+                        .IsUnique();
+
+                    b.ToTable("VirtualApplicationEntities");
                 });
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper", b =>

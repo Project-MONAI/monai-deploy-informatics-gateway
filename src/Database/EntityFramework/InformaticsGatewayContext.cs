@@ -40,6 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
         public virtual DbSet<Payload> Payloads { get; set; }
         public virtual DbSet<StorageMetadataWrapper> StorageMetadataWrapperEntities { get; set; }
         public virtual DbSet<DicomAssociationInfo> DicomAssociationHistories { get; set; }
+        public virtual DbSet<VirtualApplicationEntity> VirtualApplicationEntities { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -52,6 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
             modelBuilder.ApplyConfiguration(new PayloadConfiguration());
             modelBuilder.ApplyConfiguration(new StorageMetadataWrapperEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DicomAssociationInfoConfiguration());
+            modelBuilder.ApplyConfiguration(new VirtualApplicationEntityConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

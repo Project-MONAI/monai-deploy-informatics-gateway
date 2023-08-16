@@ -27,6 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// </summary>
     public interface IInputDataPlugin
     {
+        string Name { get; }
+
         Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata);
     }
 }

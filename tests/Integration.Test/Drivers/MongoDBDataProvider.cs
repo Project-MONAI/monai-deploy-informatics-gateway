@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
         private readonly IMongoCollection<SourceApplicationEntity> _sourceApplicationEntityCollection;
         private readonly IMongoCollection<DestinationApplicationEntity> _destinationApplicationEntityCollection;
         private readonly IMongoCollection<MonaiApplicationEntity> _monaiApplicationEntityCollection;
+        private readonly IMongoCollection<VirtualApplicationEntity> _virtualApplicationEntityCollection;
 
         public MongoDBDataProvider(ISpecFlowOutputHelper outputHelper, Configurations configuration, string connectionString, string databaseName)
         {
@@ -63,6 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             _sourceApplicationEntityCollection = _database.GetCollection<SourceApplicationEntity>(nameof(SourceApplicationEntity));
             _destinationApplicationEntityCollection = _database.GetCollection<DestinationApplicationEntity>(nameof(DestinationApplicationEntity));
             _monaiApplicationEntityCollection = _database.GetCollection<MonaiApplicationEntity>(nameof(MonaiApplicationEntity));
+            _virtualApplicationEntityCollection = _database.GetCollection<VirtualApplicationEntity>(nameof(VirtualApplicationEntity));
         }
 
         public void ClearAllData()
@@ -74,6 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             DumpClear(_sourceApplicationEntityCollection);
             DumpClear(_destinationApplicationEntityCollection);
             DumpClear(_monaiApplicationEntityCollection);
+            DumpClear(_virtualApplicationEntityCollection);
             _outputHelper.WriteLine("All data removed from the database.");
         }
 

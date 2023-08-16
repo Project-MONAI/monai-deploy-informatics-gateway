@@ -26,8 +26,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 {
     public class ConfigurationOptionAccessorTest
     {
-        private readonly IFileSystem _fileSystem;
-
         public ConfigurationOptionAccessorTest()
         {
         }

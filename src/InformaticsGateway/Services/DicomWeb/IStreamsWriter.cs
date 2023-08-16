@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,14 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
@@ -38,13 +40,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal interface IStreamsWriter
     {
-        Task<StowResult> Save(IList<Stream> streams, string studyInstanceUid, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default);
+        Task<StowResult> Save(IList<Stream> streams, string studyInstanceUid, VirtualApplicationEntity? virtualApplicationEntity, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default);
     }
 
     internal class StreamsWriter : IStreamsWriter
     {
         private readonly ILogger<StreamsWriter> _logger;
         private readonly IFileSystem _fileSystem;
+        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IDicomToolkit _dicomToolkit;
         private readonly IPayloadAssembler _payloadAssembler;
@@ -54,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         private int _storedCount;
 
         public StreamsWriter(
+            IServiceScopeFactory serviceScopeFactory,
             IObjectUploadQueue fileStore,
             IDicomToolkit dicomToolkit,
             IPayloadAssembler payloadAssembler,
@@ -61,6 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             ILogger<StreamsWriter> logger,
             IFileSystem fileSystem)
         {
+            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _uploadQueue = fileStore ?? throw new ArgumentNullException(nameof(fileStore));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
             _payloadAssembler = payloadAssembler ?? throw new ArgumentNullException(nameof(payloadAssembler));
@@ -72,11 +77,38 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             _storedCount = 0;
         }
 
-        public async Task<StowResult> Save(IList<Stream> streams, string studyInstanceUid, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
+        public async Task<StowResult> Save(IList<Stream> streams, string studyInstanceUid, VirtualApplicationEntity? virtualApplicationEntity, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrEmpty(streams, nameof(streams));
+            if (streams.IsNullOrEmpty())
+            {
+                return new StowResult { StatusCode = StatusCodes.Status204NoContent };
+            }
+
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
             Guard.Against.NullOrWhiteSpace(dataSource, nameof(dataSource));
+
+            var inputDataPluginEngine = _serviceScopeFactory.CreateScope().ServiceProvider.GetService<IInputDataPluginEngine>();
+            string[] workflows = null;
+
+            if (virtualApplicationEntity is not null)
+            {
+                inputDataPluginEngine.Configure(virtualApplicationEntity.PluginAssemblies);
+                workflows = virtualApplicationEntity.Workflows.ToArray();
+            }
+            else
+            {
+                inputDataPluginEngine.Configure(_configuration.Value.DicomWeb.PluginAssemblies);
+            }
+
+            // If a workflow is specified, it will overwrite ones specified in a virtual AE.
+            if (!string.IsNullOrWhiteSpace(workflowName))
+            {
+                workflows = new[] { workflowName };
+            }
+            else if (virtualApplicationEntity?.Workflows.Any() ?? false)
+            {
+                workflows = virtualApplicationEntity.Workflows.ToArray();
+            }
 
             foreach (var stream in streams)
             {
@@ -88,18 +120,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                         _logger.ZeroLengthDicomWebStowStream();
                         continue;
                     }
-                    await SaveInstance(stream, studyInstanceUid, workflowName, correlationId, dataSource, cancellationToken).ConfigureAwait(false);
+                    await SaveInstance(stream, studyInstanceUid, inputDataPluginEngine, correlationId, dataSource, cancellationToken, workflows).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
                     _logger.FailedToSaveInstance(ex);
                     AddFailure(DicomStatus.ProcessingFailure, null);
                 }
-            }
-
-            if (_storedCount == 0 && _failureCount == 0)
-            {
-                return new StowResult { StatusCode = StatusCodes.Status204NoContent };
             }
 
             return new StowResult
@@ -125,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             }
         }
 
-        private async Task SaveInstance(Stream stream, string studyInstanceUid, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
+        private async Task SaveInstance(Stream stream, string studyInstanceUid, IInputDataPluginEngine inputDataPluginEngine, string correlationId, string dataSource, CancellationToken cancellationToken = default, params string[] workflows)
         {
             Guard.Against.Null(stream, nameof(stream));
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
@@ -164,17 +191,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 Source = dataSource,
             };
 
-            if (!string.IsNullOrWhiteSpace(workflowName))
+            if (!workflows.IsNullOrEmpty())
             {
-                dicomInfo.SetWorkflows(workflowName);
+                dicomInfo.SetWorkflows(workflows);
             }
+
+            var result = await inputDataPluginEngine.ExecutePlugins(dicomFile, dicomInfo).ConfigureAwait(false);
+            dicomFile = result.Item1;
+            dicomInfo = result.Item2 as DicomFileStorageMetadata;
+
             // for DICOMweb, use correlation ID as the grouping key
             var payloadId = await _payloadAssembler.Queue(correlationId, dicomInfo, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
             dicomInfo.PayloadId = payloadId.ToString();
 
             await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson, _configuration.Value.Dicom.ValidateDicomOnSerialization), _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
             _uploadQueue.Queue(dicomInfo);
-
 
             _logger.QueuedStowInstance();
 

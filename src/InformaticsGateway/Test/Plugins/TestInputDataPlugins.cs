@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System.Reflection;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
@@ -24,6 +25,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
     public class TestInputDataPluginAddWorkflow : IInputDataPlugin
     {
         public static readonly string TestString = "TestInputDataPlugin executed!";
+
+        public string Name => GetType().GetCustomAttribute<PluginNameAttribute>()?.Name ?? GetType().Name;
 
         public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {
@@ -38,6 +41,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
         public static readonly string WorkflowInstanceId = "ee04a4ac-abb3-412b-b3a7-662c96380379";
         public static readonly string TaskId = "45b20f97-2b38-4b9a-baeb-d15f9d496851";
 
+        public string Name => GetType().GetCustomAttribute<PluginNameAttribute>()?.Name ?? GetType().Name;
+
         public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {
             fileMetadata.WorkflowInstanceId = WorkflowInstanceId;
@@ -51,6 +56,23 @@ namespace Monai.Deploy.InformaticsGateway.Test.Plugins
     {
         public static readonly DicomTag ExpectedTag = DicomTag.PatientAddress;
         public static readonly string ExpectedValue = "Added by TestInputDataPluginModifyDicomFile";
+
+        public string Name => GetType().GetCustomAttribute<PluginNameAttribute>()?.Name ?? GetType().Name;
+
+        public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
+        {
+            dicomFile.Dataset.Add(ExpectedTag, ExpectedValue);
+            return Task.FromResult((dicomFile, fileMetadata));
+        }
+    }
+
+    [PluginName("TestInputDataPluginVirtualAE")]
+    public class TestInputDataPluginVirtualAE : IInputDataPlugin
+    {
+        public static readonly DicomTag ExpectedTag = DicomTag.PatientAddress;
+        public static readonly string ExpectedValue = "Added by TestInputDataPluginVirtualAE";
+
+        public string Name => GetType().GetCustomAttribute<PluginNameAttribute>()?.Name ?? GetType().Name;
 
         public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {

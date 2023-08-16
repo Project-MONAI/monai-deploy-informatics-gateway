@@ -160,6 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 applicationEntity.Timeout = item.Timeout;
                 applicationEntity.IgnoredSopClasses = item.IgnoredSopClasses ?? new List<string>();
                 applicationEntity.Workflows = item.Workflows ?? new List<string>();
+                applicationEntity.PluginAssemblies = item.PluginAssemblies ?? new List<string>();
                 applicationEntity.SetAuthor(User, EditMode.Update);
 
                 await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
