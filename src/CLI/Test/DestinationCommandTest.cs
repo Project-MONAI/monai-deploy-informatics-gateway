@@ -407,7 +407,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         }
 
         [Fact(DisplayName = "dst plugins comand")]
-        public async Task DstPlugins_Command()
+        public async Task DstPlugIns_Command()
         {
             var command = "dst plugins";
             var result = _paser.Parse(command);
@@ -415,7 +415,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
 
             var entries = new Dictionary<string, string> { { "A", "1" }, { "B", "2" } };
 
-            _informaticsGatewayClient.Setup(p => p.DicomDestinations.Plugins(It.IsAny<CancellationToken>()))
+            _informaticsGatewayClient.Setup(p => p.DicomDestinations.PlugIns(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(entries);
 
             int exitCode = await _paser.InvokeAsync(command);
@@ -423,28 +423,28 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             Assert.Equal(ExitCodes.Success, exitCode);
 
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
-            _informaticsGatewayClient.Verify(p => p.DicomDestinations.Plugins(It.IsAny<CancellationToken>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.PlugIns(It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [Fact(DisplayName = "dst plugins comand exception")]
-        public async Task DstPlugins_Command_Exception()
+        public async Task DstPlugIns_Command_Exception()
         {
             var command = "dst plugins";
-            _informaticsGatewayClient.Setup(p => p.DicomDestinations.Plugins(It.IsAny<CancellationToken>()))
+            _informaticsGatewayClient.Setup(p => p.DicomDestinations.PlugIns(It.IsAny<CancellationToken>()))
                 .Throws(new Exception("error"));
 
             int exitCode = await _paser.InvokeAsync(command);
 
-            Assert.Equal(ExitCodes.DestinationAe_ErrorPlugins, exitCode);
+            Assert.Equal(ExitCodes.DestinationAe_ErrorPlugIns, exitCode);
 
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
-            _informaticsGatewayClient.Verify(p => p.DicomDestinations.Plugins(It.IsAny<CancellationToken>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.PlugIns(It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLoggingMessageBeginsWith("Error retrieving data output plug-ins", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "dst plugins comand configuration exception")]
-        public async Task DstPlugins_Command_ConfigurationException()
+        public async Task DstPlugIns_Command_ConfigurationException()
         {
             var command = "dst plugins";
             _configurationService.SetupGet(p => p.IsInitialized).Returns(false);
@@ -454,16 +454,16 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             Assert.Equal(ExitCodes.Config_NotConfigured, exitCode);
 
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
-            _informaticsGatewayClient.Verify(p => p.DicomDestinations.Plugins(It.IsAny<CancellationToken>()), Times.Never());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.PlugIns(It.IsAny<CancellationToken>()), Times.Never());
 
             _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "dst plugins comand empty")]
-        public async Task DstPlugins_Command_Empty()
+        public async Task DstPlugIns_Command_Empty()
         {
             var command = "dst plugins";
-            _informaticsGatewayClient.Setup(p => p.DicomDestinations.Plugins(It.IsAny<CancellationToken>()))
+            _informaticsGatewayClient.Setup(p => p.DicomDestinations.PlugIns(It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new Dictionary<string, string>());
 
             int exitCode = await _paser.InvokeAsync(command);
@@ -471,7 +471,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             Assert.Equal(ExitCodes.Success, exitCode);
 
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Once());
-            _informaticsGatewayClient.Verify(p => p.DicomDestinations.Plugins(It.IsAny<CancellationToken>()), Times.Once());
+            _informaticsGatewayClient.Verify(p => p.DicomDestinations.PlugIns(It.IsAny<CancellationToken>()), Times.Once());
 
             _logger.VerifyLogging("No MONAI SCP Application Entities configured.", LogLevel.Warning, Times.Once());
         }

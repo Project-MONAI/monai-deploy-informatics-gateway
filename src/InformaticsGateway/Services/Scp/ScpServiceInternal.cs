@@ -46,7 +46,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private Guid _associationId;
         private DateTimeOffset? _associationReceived;
 
-
         public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, ILogger logger, DicomServiceDependencies dicomServiceDependencies)
                 : base(stream, fallbackEncoding, logger, dicomServiceDependencies)
         {

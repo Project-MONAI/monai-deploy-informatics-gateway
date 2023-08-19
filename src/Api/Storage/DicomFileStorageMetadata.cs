@@ -100,9 +100,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         {
             Guard.Against.NullOrWhiteSpace(associationId, nameof(associationId));
             Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
-            Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
-            Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
-            Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
+            Guard.Against.NullOrWhiteSpace(studyInstanceUid, nameof(studyInstanceUid));
+            Guard.Against.NullOrWhiteSpace(seriesInstanceUid, nameof(seriesInstanceUid));
+            Guard.Against.NullOrWhiteSpace(sopInstanceUid, nameof(sopInstanceUid));
 
             StudyInstanceUid = studyInstanceUid;
             SeriesInstanceUid = seriesInstanceUid;

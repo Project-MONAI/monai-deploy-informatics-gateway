@@ -20,6 +20,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
@@ -73,9 +74,9 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public List<string> Workflows { get; set; } = default!;
 
         /// <summary>
-        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputDataPluginEngine"/>.
+        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputDataPlugInEngine"/>.
         /// </summary>
-        public List<string> PluginAssemblies { get; set; } = default!;
+        public List<string> PlugInAssemblies { get; set; } = default!;
 
         /// <summary>
         /// Optional field to specify SOP Class UIDs to ignore.
@@ -134,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
 
             AllowedSopClasses ??= new List<string>();
 
-            PluginAssemblies ??= new List<string>();
+            PlugInAssemblies ??= new List<string>();
         }
 
         public override string ToString()

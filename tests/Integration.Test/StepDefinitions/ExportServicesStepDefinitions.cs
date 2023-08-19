@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,7 +26,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Hooks;
-using Monai.Deploy.InformaticsGateway.Test.Plugins;
+using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Messaging.RabbitMQ;
@@ -127,7 +127,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
             };
 
-            exportRequestEvent.PluginAssemblies.Add(typeof(TestOutputDataPluginModifyDicomFile).AssemblyQualifiedName);
+            exportRequestEvent.PluginAssemblies.Add(typeof(TestOutputDataPlugInModifyDicomFile).AssemblyQualifiedName);
 
             var message = new JsonMessage<ExportRequestEvent>(
                 exportRequestEvent,
@@ -149,7 +149,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 (await Extensions.WaitUntil(() => _dicomServer.Instances.ContainsKey(key), DicomScpWaitTimeSpan)).Should().BeTrue("{0} should be received", key);
                 _dicomServer.Instances.Should().ContainKey(key).WhoseValue.Count.Equals(2);
                 _dicomServer.Instances.Should().ContainKey(key).WhoseValue[0].Equals(_dataProvider.DicomSpecs.FileHashes[key]);
-                _dicomServer.Instances.Should().ContainKey(key).WhoseValue[1].Equals(TestOutputDataPluginModifyDicomFile.ExpectedValue);
+                _dicomServer.Instances.Should().ContainKey(key).WhoseValue[1].Equals(TestOutputDataPlugInModifyDicomFile.ExpectedValue);
             }
         }
 
@@ -172,11 +172,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                      {
                          try
                          {
-
                              var key = dicomFile.GenerateFileName();
                              var hash = dicomFile.CalculateHash();
                              actualHashes.Add(key, hash);
-                             dicomFile.Dataset.GetSingleValueOrDefault(TestOutputDataPluginModifyDicomFile.ExpectedTag, string.Empty).Should().Be(TestOutputDataPluginModifyDicomFile.ExpectedValue);
+                             dicomFile.Dataset.GetSingleValueOrDefault(TestOutputDataPlugInModifyDicomFile.ExpectedTag, string.Empty).Should().Be(TestOutputDataPlugInModifyDicomFile.ExpectedValue);
                              ++instanceFound;
                          }
                          catch (Exception ex)

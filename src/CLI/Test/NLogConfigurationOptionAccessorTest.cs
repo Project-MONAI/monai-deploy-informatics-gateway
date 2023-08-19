@@ -35,7 +35,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             Assert.Throws<ArgumentNullException>(() => new NLogConfigurationOptionAccessor(null));
         }
 
-
         [Fact]
         public void DicomListeningPort_Get_ReturnsValue()
         {

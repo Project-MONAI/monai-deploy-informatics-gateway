@@ -26,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -47,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         private readonly Mock<IDicomToolkit> _dicomToolkit;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IServiceScope> _serviceScope;
-        private readonly Mock<IInputDataPluginEngine> _inputDataPluginEngine;
+        private readonly Mock<IInputDataPlugInEngine> _inputDataPlugInEngine;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IServiceProvider _serviceProvider;
 
@@ -60,19 +61,19 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _logger = new Mock<ILogger<StreamsWriter>>();
-            _inputDataPluginEngine = new Mock<IInputDataPluginEngine>();
+            _inputDataPlugInEngine = new Mock<IInputDataPlugInEngine>();
             _fileSystem = new MockFileSystem();
             _configuration.Value.Storage.LocalTemporaryStoragePath = "./temp";
 
             var services = new ServiceCollection();
-            services.AddScoped(p => _inputDataPluginEngine.Object);
+            services.AddScoped(p => _inputDataPlugInEngine.Object);
 
             _serviceProvider = services.BuildServiceProvider();
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.SetupGet(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _inputDataPluginEngine.Setup(p => p.ExecutePlugins(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()))
+            _inputDataPlugInEngine.Setup(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()))
                 .Returns((DicomFile dicomFile, FileStorageMetadata fileMetadata) => Task.FromResult(new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata)));
         }
 
@@ -176,8 +177,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
-            _inputDataPluginEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Never());
-            _inputDataPluginEngine.Verify(p => p.ExecutePlugins(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
+            _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Never());
+            _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
 
         [Fact]
@@ -204,8 +205,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
-            _inputDataPluginEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
-            _inputDataPluginEngine.Verify(p => p.ExecutePlugins(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
+            _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
+            _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
 
         [Fact]
@@ -243,15 +244,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
             _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Exactly(streams.Count));
-            _inputDataPluginEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
-            _inputDataPluginEngine.Verify(p => p.ExecutePlugins(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
+            _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
+            _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
         }
 
         [Fact]
         public async Task GivingValidDicomInstances_WhenUnableToOpenInstance_ExpectZeroFailedSOPSequence()
         {
             var uids = new List<StudySerieSopUids>();
-
 
             _dicomToolkit.Setup(p => p.OpenAsync(It.IsAny<Stream>(), It.IsAny<FileReadOption>())).Throws(new Exception("error"));
             _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
@@ -276,8 +276,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
-            _inputDataPluginEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
-            _inputDataPluginEngine.Verify(p => p.ExecutePlugins(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
+            _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
+            _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
 
         [Fact]
@@ -287,7 +287,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             {
                 Name = Guid.NewGuid().ToString(),
                 VirtualAeTitle = Guid.NewGuid().ToString(),
-                PluginAssemblies = new List<string> { "A", "B" },
+                PlugInAssemblies = new List<string> { "A", "B" },
             };
             var uids = new List<StudySerieSopUids>();
             SetupDicomToolkitMocks(uids);
@@ -321,8 +321,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
             _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Exactly(streams.Count));
-            _inputDataPluginEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
-            _inputDataPluginEngine.Verify(p => p.ExecutePlugins(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
+            _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
+            _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
         }
 
         private void SetupDicomToolkitMocks(List<StudySerieSopUids> uids)

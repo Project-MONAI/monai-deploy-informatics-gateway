@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
                 VirtualAeTitle = "AET",
                 Name = "AET",
                 Workflows = new List<string> { "W1", "W2" },
-                PluginAssemblies = new List<string> { "AssemblyA", "AssemblyB", "AssemblyC" },
+                PlugInAssemblies = new List<string> { "AssemblyA", "AssemblyB", "AssemblyC" },
             };
 
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.Equal(aet.VirtualAeTitle, actual!.VirtualAeTitle);
             Assert.Equal(aet.Name, actual!.Name);
             Assert.Equal(aet.Workflows, actual!.Workflows);
-            Assert.Equal(aet.PluginAssemblies, actual!.PluginAssemblies);
+            Assert.Equal(aet.PlugInAssemblies, actual!.PlugInAssemblies);
         }
 
         [Fact]

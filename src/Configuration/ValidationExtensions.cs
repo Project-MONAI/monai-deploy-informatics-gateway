@@ -69,6 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
             return valid;
         }
+
         public static bool IsValid(this VirtualApplicationEntity virtualApplicationEntity, out IList<string> validationErrors)
         {
             Guard.Against.Null(virtualApplicationEntity, nameof(virtualApplicationEntity));

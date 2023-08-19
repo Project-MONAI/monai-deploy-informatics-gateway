@@ -15,8 +15,6 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
-
 namespace Monai.Deploy.InformaticsGateway.Api
 {
     /// <summary>
@@ -38,11 +36,5 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// Gets or sets the port to connect to.
         /// </summary>
         public int Port { get; set; }
-
-        /// <summary>
-        /// Gets or sets remote application executions.
-        /// </summary>
-        public virtual List<RemoteAppExecution> RemoteAppExecutions { get; set; } = new();
-        public virtual List<DestinationApplicationEntityRemoteAppExecution> DestinationApplicationEntityRemoteAppExecutions { get; set; } = new();
     }
 }

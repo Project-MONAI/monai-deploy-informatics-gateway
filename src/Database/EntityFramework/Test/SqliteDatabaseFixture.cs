@@ -77,6 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             DatabaseContext.SaveChanges();
         }
+
         public void InitDatabaseWithVirtualApplicationEntities()
         {
             var aet1 = new VirtualApplicationEntity { VirtualAeTitle = "AET1", Name = "AET1" };

@@ -140,7 +140,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostLogsStorageMount);
             createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostLogsStorageMount, Target = _configurationService.NLogConfigurations.LogStoragePath });
 
-            _logger.DockerMountPlugins(_configurationService.Configurations.HostPlugInsStorageMount, Common.MountedPlugInsPath);
+            _logger.DockerMountPlugIns(_configurationService.Configurations.HostPlugInsStorageMount, Common.MountedPlugInsPath);
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostPlugInsStorageMount);
             createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostPlugInsStorageMount, Target = Common.MountedPlugInsPath });
 

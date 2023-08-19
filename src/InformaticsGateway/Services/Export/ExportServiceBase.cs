@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +28,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -271,12 +272,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 yield return exportRequestData;
             }
         }
+
         private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest, CancellationToken token)
         {
-            var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPluginEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPluginEngine));
+            var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPlugInEngine));
 
-            outputDataEngine.Configure(exportDataRequest.PluginAssemblies);
-            return await outputDataEngine.ExecutePlugins(exportDataRequest).ConfigureAwait(false);
+            outputDataEngine.Configure(exportDataRequest.PlugInAssemblies);
+            return await outputDataEngine.ExecutePlugInsAsync(exportDataRequest).ConfigureAwait(false);
         }
 
         private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)

@@ -2,6 +2,12 @@
   "version": 1,
   "dependencies": {
     "net6.0": {
+      "coverlet.collector": {
+        "type": "Direct",
+        "requested": "[6.0.0, )",
+        "resolved": "6.0.0",
+        "contentHash": "tW3lsNS+dAEII6YGUX/VMoJjBS1QvsxqJeqLaJXub08y1FSjasFPtQ4UBUsudE9PNrzLjooClMsPtY2cZLdXpQ=="
+      },
       "FluentAssertions": {
         "type": "Direct",
         "requested": "[6.11.0, )",
@@ -2052,6 +2058,22 @@
           "Monai.Deploy.InformaticsGateway.Client.Common": "[1.0.0, )",
           "System.Linq.Async": "[6.0.1, )",
           "fo-dicom": "[5.1.1, )"
+        }
+      },
+      "monai.deploy.informaticsgateway.plugins.remoteappexecution": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "[6.0.21, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[6.0.21, )",
+          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.21, )",
+          "Microsoft.Extensions.Configuration": "[6.0.1, )",
+          "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
+          "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
+          "MongoDB.Driver": "[2.21.0, )",
+          "Polly": "[7.2.4, )"
         }
       },
       "monai.deploy.informaticsgateway.test.plugins": {

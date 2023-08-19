@@ -17,7 +17,6 @@
 
 using System.Data;
 using Ardalis.GuardClauses;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -26,7 +25,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations;
 using MongoDB.Driver;
 using Polly;
 using Polly.Retry;
@@ -45,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             IServiceScopeFactory serviceScopeFactory,
             ILogger<StorageMetadataWrapperRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options,
-            IOptions<MongoDBOptions> mongoDbOptions) : base(logger)
+            IOptions<DatabaseOptions> mongoDbOptions) : base(logger)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             Guard.Against.Null(options, nameof(options));

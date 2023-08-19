@@ -15,7 +15,6 @@
  */
 
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -70,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                 VirtualAeTitle = "AET",
                 Name = "AET",
                 Workflows = new List<string> { "W1", "W2" },
-                PluginAssemblies = new List<string> { "AssemblyA", "AssemblyB", "AssemblyC" },
+                PlugInAssemblies = new List<string> { "AssemblyA", "AssemblyB", "AssemblyC" },
             };
 
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
@@ -83,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             Assert.Equal(aet.VirtualAeTitle, actual!.VirtualAeTitle);
             Assert.Equal(aet.Name, actual!.Name);
             Assert.Equal(aet.Workflows, actual!.Workflows);
-            Assert.Equal(aet.PluginAssemblies, actual!.PluginAssemblies);
+            Assert.Equal(aet.PlugInAssemblies, actual!.PlugInAssemblies);
         }
 
         [Fact]
@@ -100,6 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(false);
             Assert.False(result);
         }
+
         [Fact]
         public async Task GivenAAETitleName_WhenFindByNameAsyncIsCalled_ExpectItToReturnMatchingEntity()
         {

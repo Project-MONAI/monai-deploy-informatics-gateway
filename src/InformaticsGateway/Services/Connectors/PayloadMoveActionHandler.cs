@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -32,7 +31,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.Storage.API;
-using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {

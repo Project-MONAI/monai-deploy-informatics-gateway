@@ -21,19 +21,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
-    internal class OutputDataPluginEngine : IOutputDataPluginEngine
+    internal class OutputDataPlugInEngine : IOutputDataPlugInEngine
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<OutputDataPluginEngine> _logger;
+        private readonly ILogger<OutputDataPlugInEngine> _logger;
         private readonly IDicomToolkit _dicomToolkit;
-        private IReadOnlyList<IOutputDataPlugin> _plugsins;
+        private IReadOnlyList<IOutputDataPlugIn> _plugsins;
 
-        public OutputDataPluginEngine(IServiceProvider serviceProvider, ILogger<OutputDataPluginEngine> logger, IDicomToolkit dicomToolkit)
+        public OutputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<OutputDataPlugInEngine> logger, IDicomToolkit dicomToolkit)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -42,21 +43,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
         public void Configure(IReadOnlyList<string> pluginAssemblies)
         {
-            _plugsins = LoadPlugins(_serviceProvider, pluginAssemblies);
+            _plugsins = LoadPlugIns(_serviceProvider, pluginAssemblies);
         }
 
-        public async Task<ExportRequestDataMessage> ExecutePlugins(ExportRequestDataMessage exportRequestDataMessage)
+        public async Task<ExportRequestDataMessage> ExecutePlugInsAsync(ExportRequestDataMessage exportRequestDataMessage)
         {
             if (_plugsins == null)
             {
-                throw new ApplicationException("InputDataPluginEngine not configured, please call Configure() first.");
+                throw new ApplicationException("InputDataPlugInEngine not configured, please call Configure() first.");
             }
 
             var dicomFile = _dicomToolkit.Load(exportRequestDataMessage.FileContent);
             foreach (var plugin in _plugsins)
             {
-                _logger.ExecutingOutputDataPlugin(plugin.Name);
-                (dicomFile, exportRequestDataMessage) = await plugin.Execute(dicomFile, exportRequestDataMessage).ConfigureAwait(false);
+                _logger.ExecutingOutputDataPlugIn(plugin.Name);
+                (dicomFile, exportRequestDataMessage) = await plugin.ExecuteAsync(dicomFile, exportRequestDataMessage).ConfigureAwait(false);
             }
             using var ms = new MemoryStream();
             await dicomFile.SaveAsync(ms);
@@ -65,20 +66,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             return exportRequestDataMessage;
         }
 
-        private IReadOnlyList<IOutputDataPlugin> LoadPlugins(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
+        private IReadOnlyList<IOutputDataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
         {
             var exceptions = new List<Exception>();
-            var list = new List<IOutputDataPlugin>();
+            var list = new List<IOutputDataPlugIn>();
             foreach (var plugin in pluginAssemblies)
             {
                 try
                 {
-                    _logger.AddingOutputDataPlugin(plugin);
-                    list.Add(typeof(IOutputDataPlugin).CreateInstance<IOutputDataPlugin>(serviceProvider, typeString: plugin));
+                    _logger.AddingOutputDataPlugIn(plugin);
+                    list.Add(typeof(IOutputDataPlugIn).CreateInstance<IOutputDataPlugIn>(serviceProvider, typeString: plugin));
                 }
                 catch (Exception ex)
                 {
-                    exceptions.Add(new PlugingLoadingException($"Error loading plug-in '{plugin}'.", ex));
+                    exceptions.Add(new PlugInLoadingException($"Error loading plug-in '{plugin}'.", ex));
                 }
             }
 

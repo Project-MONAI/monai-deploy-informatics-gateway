@@ -15,7 +15,6 @@
  */
 
 using Ardalis.GuardClauses;
-using FellowOakDicom;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 
