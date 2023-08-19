@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             SetupRemoveDestinationCommand();
             SetupListDestinationCommand();
             SetupCEchoCommand();
-            SetupPluginsCommand();
+            SetupPlugInsCommand();
         }
 
         private void SetupCEchoCommand()
@@ -115,12 +115,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.Handler = CommandHandler.Create<DestinationApplicationEntity, IHost, bool, CancellationToken>(AddDestinationHandlerAsync);
         }
 
-        private void SetupPluginsCommand()
+        private void SetupPlugInsCommand()
         {
             var pluginsCommand = new Command("plugins", "List all available plug-ins for DICOM destinations");
             AddCommand(pluginsCommand);
 
-            pluginsCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListPluginsHandlerAsync);
+            pluginsCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListPlugInsHandlerAsync);
         }
 
         private async Task<int> ListDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
@@ -336,7 +336,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             return ExitCodes.Success;
         }
 
-        private async Task<int> ListPluginsHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
+        private async Task<int> ListPlugInsHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
             Guard.Against.Null(host, nameof(host));
 
@@ -361,7 +361,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
-                items = await client.DicomDestinations.Plugins(cancellationToken).ConfigureAwait(false);
+                items = await client.DicomDestinations.PlugIns(cancellationToken).ConfigureAwait(false);
             }
             catch (ConfigurationException ex)
             {
@@ -370,8 +370,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (Exception ex)
             {
-                logger.ErrorListingDataOutputPlugins(ex.Message);
-                return ExitCodes.DestinationAe_ErrorPlugins;
+                logger.ErrorListingDataOutputPlugIns(ex.Message);
+                return ExitCodes.DestinationAe_ErrorPlugIns;
             }
 
             if (items.IsNullOrEmpty())

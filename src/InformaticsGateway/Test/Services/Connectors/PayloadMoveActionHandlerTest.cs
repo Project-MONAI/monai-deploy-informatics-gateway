@@ -206,7 +206,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                  },
             };
 
-
             var handler = new PayloadMoveActionHandler(_serviceScopeFactory.Object, _logger.Object, _options);
 
             await handler.MoveFilesAsync(payload, moveAction, notifyAction, _cancellationTokenSource.Token);

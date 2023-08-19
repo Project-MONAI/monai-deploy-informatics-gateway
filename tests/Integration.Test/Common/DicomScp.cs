@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,11 @@ using System.Text;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Test.Plugins;
+using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 {
-
     public class DicomScp : IDisposable
     {
         public readonly string FeatureScpAeTitle = "TEST-SCP";
@@ -33,7 +32,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         private bool _disposedValue;
 
         public Dictionary<string, List<string>> Instances { get; set; } = new Dictionary<string, List<string>>();
+        public Dictionary<string, DicomFile> DicomFiles { get; set; } = new Dictionary<string, DicomFile>();
         public ISpecFlowOutputHelper OutputHelper { get; set; }
+
+        public bool ClearFilesAndUseHashes { get; set; } = true;
+
         public DicomScp(ISpecFlowOutputHelper outputHelper)
         {
             OutputHelper = outputHelper ?? throw new ArgumentNullException(nameof(outputHelper));
@@ -54,7 +57,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             }
         }
 
-
         public void Dispose()
         {
             // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
@@ -62,8 +64,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             GC.SuppressFinalize(this);
         }
     }
-
-
 
     internal class CStoreScp : DicomService, IDicomServiceProvider, IDicomCStoreProvider
     {
@@ -99,10 +99,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 var key = request.File.GenerateFileName();
                 lock (SyncLock)
                 {
-                    var values = new List<string>();
-                    data.Instances.Add(key, values);
-                    values.Add(request.File.CalculateHash());
-                    values.Add(request.File.Dataset.GetSingleValueOrDefault(TestOutputDataPluginModifyDicomFile.ExpectedTag, string.Empty));
+                    if (data.ClearFilesAndUseHashes)
+                    {
+                        var values = new List<string>();
+                        data.Instances.Add(key, values);
+                        values.Add(request.File.CalculateHash());
+                        values.Add(request.File.Dataset.GetSingleValueOrDefault(TestOutputDataPlugInModifyDicomFile.ExpectedTag, string.Empty));
+                    }
+                    else
+                    {
+                        data.DicomFiles.Add(key, request.File);
+                    }
                 }
                 data.OutputHelper.WriteLine("Instance received {0}", key);
 
@@ -144,6 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             return SendAssociationAcceptAsync(association);
         }
 
-        public void OnConnectionClosed(Exception exception) { }
+        public void OnConnectionClosed(Exception exception)
+        { }
     }
 }

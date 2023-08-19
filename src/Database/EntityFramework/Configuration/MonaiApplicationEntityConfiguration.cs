@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(valueComparer);
-            builder.Property(j => j.PluginAssemblies)
+            builder.Property(j => j.PlugInAssemblies)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))

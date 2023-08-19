@@ -19,51 +19,48 @@ using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Reflection;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
-using Monai.Deploy.InformaticsGateway.ExecutionPlugins;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.SharedTest;
-using Monai.Deploy.InformaticsGateway.Test.Plugins;
+using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 using Moq;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 {
-    public class OutputDataPluginEngineFactoryTest
+    public class OutputDataPlugInEngineFactoryTest
     {
-        private readonly Mock<ILogger<OutputDataPluginEngineFactory>> _logger;
+        private readonly Mock<ILogger<OutputDataPlugInEngineFactory>> _logger;
         private readonly FileSystem _fileSystem;
 
-        public OutputDataPluginEngineFactoryTest()
+        public OutputDataPlugInEngineFactoryTest()
         {
-            _logger = new Mock<ILogger<OutputDataPluginEngineFactory>>();
+            _logger = new Mock<ILogger<OutputDataPlugInEngineFactory>>();
             _fileSystem = new FileSystem();
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact]
-        public void RegisteredPlugins_WhenCalled_ReturnsListOfPlugins()
+        public void RegisteredPlugIns_WhenCalled_ReturnsListOfPlugIns()
         {
-            var factory = new OutputDataPluginEngineFactory(_fileSystem, _logger.Object);
+            var factory = new OutputDataPlugInEngineFactory(_fileSystem, _logger.Object);
 
-            var result = factory.RegisteredPlugins();
+            var result = factory.RegisteredPlugIns();
 
             Assert.Collection(result,
-                p => VerifyPlugin(p, typeof(TestOutputDataPluginAddMessage)),
-                p => VerifyPlugin(p, typeof(TestOutputDataPluginModifyDicomFile)),
-                p => VerifyPlugin(p, typeof(ExternalAppOutgoing))
+                p => VerifyPlugIn(p, typeof(TestOutputDataPlugInAddMessage)),
+                p => VerifyPlugIn(p, typeof(TestOutputDataPlugInModifyDicomFile))
                 );
 
-            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginAddMessage).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(TestOutputDataPluginAddMessage).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(TestOutputDataPluginModifyDicomFile).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(TestOutputDataPluginModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
-            _logger.VerifyLogging($"{typeof(IOutputDataPlugin).Name} data plug-in found {typeof(ExternalAppOutgoing).GetCustomAttribute<PluginNameAttribute>()?.Name}: {typeof(ExternalAppOutgoing).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IOutputDataPlugIn).Name} data plug-in found {typeof(TestOutputDataPlugInAddMessage).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(TestOutputDataPlugInAddMessage).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IOutputDataPlugIn).Name} data plug-in found {typeof(TestOutputDataPlugInModifyDicomFile).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(TestOutputDataPlugInModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
         }
 
-        private void VerifyPlugin(KeyValuePair<string, string> values, Type type)
+        private void VerifyPlugIn(KeyValuePair<string, string> values, Type type)
         {
-            Assert.Equal(values.Key, type.GetCustomAttribute<PluginNameAttribute>()?.Name);
+            Assert.Equal(values.Key, type.GetCustomAttribute<PlugInNameAttribute>()?.Name);
             Assert.Equal(values.Value, type.GetShortTypeAssemblyName());
         }
     }

@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;

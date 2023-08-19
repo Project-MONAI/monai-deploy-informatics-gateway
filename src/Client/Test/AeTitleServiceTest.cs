@@ -461,8 +461,8 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }
 
-        [Fact(DisplayName = "AET - Plugins")]
-        public async Task Plugins()
+        [Fact(DisplayName = "AET - Plug-ins")]
+        public async Task PlugIns()
         {
             var plugins = new Dictionary<string, string>
             {
@@ -486,12 +486,12 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var service = new AeTitleService<DestinationApplicationEntity>(uriPath, httpClient, _logger.Object);
 
-            var exception = await Record.ExceptionAsync(async () => await service.Plugins(CancellationToken.None));
+            var exception = await Record.ExceptionAsync(async () => await service.PlugIns(CancellationToken.None));
             Assert.Null(exception);
         }
 
-        [Fact(DisplayName = "AET - Plugins returns a problem")]
-        public async Task Plugins_ReturnsAProblem()
+        [Fact(DisplayName = "AET - Plug-ins returns a problem")]
+        public async Task PlugIns_ReturnsAProblem()
         {
             var problem = new ProblemDetails
             {
@@ -515,7 +515,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
 
             var service = new AeTitleService<DestinationApplicationEntity>(uriPath, httpClient, _logger.Object);
 
-            var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.Plugins(CancellationToken.None));
+            var result = await Assert.ThrowsAsync<ProblemException>(async () => await service.PlugIns(CancellationToken.None));
 
             Assert.Equal($"HTTP Status: {problem.Status}. {problem.Detail}", result.Message);
         }

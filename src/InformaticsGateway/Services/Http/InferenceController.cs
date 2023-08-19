@@ -19,7 +19,6 @@ using System;
 using System.Net;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
-using DotNext;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

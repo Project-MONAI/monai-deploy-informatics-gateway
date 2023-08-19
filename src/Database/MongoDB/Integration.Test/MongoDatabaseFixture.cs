@@ -17,8 +17,8 @@
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB;
-using Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations;
 using MongoDB.Driver;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
@@ -35,12 +35,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
     {
         public IMongoClient Client { get; set; }
         public IMongoDatabase Database { get; set; }
-        public IOptions<MongoDBOptions> Options { get; set; }
+        public IOptions<DatabaseOptions> Options { get; set; }
 
         public MongoDatabaseFixture()
         {
             Client = new MongoClient("mongodb://root:rootpassword@localhost:27017");
-            Options = Microsoft.Extensions.Options.Options.Create(new MongoDBOptions { DatabaseName = $"IGTest" });
+            Options = Microsoft.Extensions.Options.Options.Create(new DatabaseOptions { DatabaseName = $"IGTest" });
             Database = Client.GetDatabase(Options.Value.DatabaseName);
 
             var migration = new MongoDatabaseMigrationManager();

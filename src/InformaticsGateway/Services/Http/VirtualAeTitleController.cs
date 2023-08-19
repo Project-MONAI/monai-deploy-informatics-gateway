@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2023 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -38,16 +39,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     {
         private readonly ILogger<VirtualAeTitleController> _logger;
         private readonly IVirtualApplicationEntityRepository _repository;
-        private readonly IDataPluginEngineFactory<IInputDataPlugin> _inputDataPluginEngineFactory;
+        private readonly IDataPlugInEngineFactory<IInputDataPlugIn> _inputDataPlugInEngineFactory;
 
         public VirtualAeTitleController(
             ILogger<VirtualAeTitleController> logger,
             IVirtualApplicationEntityRepository repository,
-            IDataPluginEngineFactory<IInputDataPlugin> inputDataPluginEngineFactory)
+            IDataPlugInEngineFactory<IInputDataPlugIn> inputDataPlugInEngineFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _inputDataPluginEngineFactory = inputDataPluginEngineFactory ?? throw new ArgumentNullException(nameof(inputDataPluginEngineFactory));
+            _inputDataPlugInEngineFactory = inputDataPlugInEngineFactory ?? throw new ArgumentNullException(nameof(inputDataPlugInEngineFactory));
         }
 
         [HttpGet]
@@ -151,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 item.SetDefaultValues();
 
                 applicationEntity.Workflows = item.Workflows ?? new List<string>();
-                applicationEntity.PluginAssemblies = item.PluginAssemblies ?? new List<string>();
+                applicationEntity.PlugInAssemblies = item.PlugInAssemblies ?? new List<string>();
                 applicationEntity.SetAuthor(User, EditMode.Update);
 
                 await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
@@ -202,15 +203,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<VirtualApplicationEntity> GetPlugins()
+        public ActionResult<VirtualApplicationEntity> GetPlugIns()
         {
             try
             {
-                return Ok(_inputDataPluginEngineFactory.RegisteredPlugins());
+                return Ok(_inputDataPlugInEngineFactory.RegisteredPlugIns());
             }
             catch (Exception ex)
             {
-                _logger.ErrorReadingDataInputPlugins(ex);
+                _logger.ErrorReadingDataInputPlugIns(ex);
                 return Problem(title: "Error reading data input plug-ins.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }

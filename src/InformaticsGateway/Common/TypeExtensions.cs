@@ -20,6 +20,7 @@ using System.Linq;
 using System.Reflection;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {

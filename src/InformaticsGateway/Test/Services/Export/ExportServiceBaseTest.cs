@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -76,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<IStorageService> _storageService;
         private readonly Mock<IMessageBrokerSubscriberService> _messageSubscriberService;
         private readonly Mock<IMessageBrokerPublisherService> _messagePublisherService;
-        private readonly Mock<IOutputDataPluginEngine> _outputDataPluginEngine;
+        private readonly Mock<IOutputDataPlugInEngine> _outputDataPlugInEngine;
         private readonly Mock<ILogger> _logger;
         private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
@@ -88,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService = new Mock<IStorageService>();
             _messageSubscriberService = new Mock<IMessageBrokerSubscriberService>();
             _messagePublisherService = new Mock<IMessageBrokerPublisherService>();
-            _outputDataPluginEngine = new Mock<IOutputDataPluginEngine>();
+            _outputDataPlugInEngine = new Mock<IOutputDataPlugInEngine>();
             _logger = new Mock<ILogger>();
             _storageInfoProvider = new Mock<IStorageInfoProvider>();
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
@@ -98,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             var services = new ServiceCollection();
             services.AddScoped(p => _messagePublisherService.Object);
             services.AddScoped(p => _messageSubscriberService.Object);
-            services.AddScoped(p => _outputDataPluginEngine.Object);
+            services.AddScoped(p => _outputDataPlugInEngine.Object);
             services.AddScoped(p => _storageService.Object);
             services.AddScoped(p => _storageInfoProvider.Object);
 
@@ -109,8 +110,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
 
-            _outputDataPluginEngine.Setup(p => p.Configure(It.IsAny<IReadOnlyList<string>>()));
-            _outputDataPluginEngine.Setup(p => p.ExecutePlugins(It.IsAny<ExportRequestDataMessage>()))
+            _outputDataPlugInEngine.Setup(p => p.Configure(It.IsAny<IReadOnlyList<string>>()));
+            _outputDataPlugInEngine.Setup(p => p.ExecutePlugInsAsync(It.IsAny<ExportRequestDataMessage>()))
                 .Returns<ExportRequestDataMessage>((ExportRequestDataMessage message) => Task.FromResult(message));
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
@@ -301,8 +302,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<string>(),
                                                               It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
-            _outputDataPluginEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Exactly(5 * 2));
-            _outputDataPluginEngine.Verify(p => p.ExecutePlugins(It.IsAny<ExportRequestDataMessage>()), Times.Exactly(5 * 2));
+            _outputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Exactly(5 * 2));
+            _outputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<ExportRequestDataMessage>()), Times.Exactly(5 * 2));
         }
 
         internal static MessageReceivedEventArgs CreateMessageReceivedEventArgs()

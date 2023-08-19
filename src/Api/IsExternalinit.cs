@@ -16,7 +16,7 @@
 
 using System.ComponentModel;
 
-namespace System.Runtime.CompilerServices
+namespace Monai.Deploy.InformaticsGateway.Api
 {
     /// <summary>
     /// Reserved to be used by the compiler for tracking metadata.

@@ -25,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         public int SeriesPerStudyCount { get; set; }
         public int InstancePerSeries { get; set; }
         public int FileCount { get; set; }
-        public List<DicomFile> Files { get; set; }
+        public Dictionary<string, DicomFile> Files { get; set; } = new Dictionary<string, DicomFile>();
         public Dictionary<string, string> FileHashes { get; set; } = new Dictionary<string, string>();
 
         public int NumberOfExpectedRequests(string grouping) => grouping switch

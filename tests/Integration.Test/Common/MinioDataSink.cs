@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
                 _outputHelper.WriteLine($"Uploading {dataProvider.DicomSpecs.FileCount} files to MinIO...");
 
-                foreach (var file in dataProvider.DicomSpecs.Files)
+                foreach (var file in dataProvider.DicomSpecs.Files.Values)
                 {
                     var filename = file.GenerateFileName();
                     var stream = new MemoryStream();

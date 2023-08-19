@@ -24,24 +24,18 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void LoadingAssembly(this ILogger logger, string filename);
 
         [LoggerMessage(EventId = 5001, Level = LogLevel.Information, Message = "{type} data plug-in found {name}: {plugin}.")]
-        public static partial void DataPluginFound(this ILogger logger, string type, string name, string plugin);
+        public static partial void DataPlugInFound(this ILogger logger, string type, string name, string plugin);
 
         [LoggerMessage(EventId = 5002, Level = LogLevel.Debug, Message = "Adding input data plug-in: {plugin}.")]
-        public static partial void AddingInputDataPlugin(this ILogger logger, string plugin);
+        public static partial void AddingInputDataPlugIn(this ILogger logger, string plugin);
 
         [LoggerMessage(EventId = 5003, Level = LogLevel.Information, Message = "Executing input data plug-in: {plugin}.")]
-        public static partial void ExecutingInputDataPlugin(this ILogger logger, string plugin);
+        public static partial void ExecutingInputDataPlugIn(this ILogger logger, string plugin);
 
         [LoggerMessage(EventId = 5004, Level = LogLevel.Debug, Message = "Adding output data plug-in: {plugin}.")]
-        public static partial void AddingOutputDataPlugin(this ILogger logger, string plugin);
+        public static partial void AddingOutputDataPlugIn(this ILogger logger, string plugin);
 
         [LoggerMessage(EventId = 5005, Level = LogLevel.Information, Message = "Executing output data plug-in: {plugin}.")]
-        public static partial void ExecutingOutputDataPlugin(this ILogger logger, string plugin);
-        [LoggerMessage(EventId = 5006, Level = LogLevel.Debug, Message = "Changed the StudyUid from {OriginalStudyUid} to {NewStudyUid}")]
-        public static partial void LogStudyUidChanged(this ILogger logger, string OriginalStudyUid, string NewStudyUid);
-
-        [LoggerMessage(EventId = 5007, Level = LogLevel.Error, Message = "Cannot find entry for OriginalStudyUid {OriginalStudyUid} ")]
-        public static partial void LogOriginalUidNotFound(this ILogger logger, string OriginalStudyUid);
-
+        public static partial void ExecutingOutputDataPlugIn(this ILogger logger, string plugin);
     }
 }

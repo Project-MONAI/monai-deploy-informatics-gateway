@@ -25,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
         public void Startup_RunsProperly()
         {
             var host = Program.BuildParser();
-            
+
             Assert.NotNull(host);
         }
     }

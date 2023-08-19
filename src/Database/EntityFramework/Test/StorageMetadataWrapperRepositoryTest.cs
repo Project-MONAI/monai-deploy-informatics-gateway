@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         }
 
         [Fact]
-        public async Task GivenACorrelationIdAndAnIdentity_WhenGetFileStorageMetdadataIsCalled_ExpectMatchingFileStorageMetadataToBeReturned()
+        public async Task GivenACorrelationIdAndAnIdentity_WhenGetFileStorageMetadadataIsCalled_ExpectMatchingFileStorageMetadataToBeReturned()
         {
             var correlationId = Guid.NewGuid().ToString();
             var identifier = Guid.NewGuid().ToString();

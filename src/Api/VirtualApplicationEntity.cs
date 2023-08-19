@@ -14,25 +14,26 @@
  * limitations under the License.
  */
 
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Security.Claims;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Claims;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
     /// <summary>
     /// Virtual Application Entity (VAE).
-    /// 
+    ///
     /// A VAE identifies a service or application similar to a DIMSE AE but is
     /// designed to be used for DICOMWeb.
     ///
     /// For example, users can configure VAEs on DICOMWeb STOW-RS endpoints to enable
-    /// data input plug-ins, <see cref="IInputDataPlugin"/>. This allows different plug-ins
+    /// data input plug-ins, <see cref="IInputDataPlugIn"/>. This allows different plug-ins
     /// to be associated with each VAE for data manipulation, etc...
-    /// 
-    /// In addition, one can trigger a new workflow request with the workflows defined in 
+    ///
+    /// In addition, one can trigger a new workflow request with the workflows defined in
     /// <see cref="VirtualApplicationEntity.Workflows"/> when studies are posted to a VAE-enabled STOW-RS endpoint.
     /// </summary>
     public class VirtualApplicationEntity : MongoDBEntityBase
@@ -56,9 +57,9 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public List<string> Workflows { get; set; } = default!;
 
         /// <summary>
-        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputDataPluginEngine"/>.
+        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputDataPlugInEngine"/>.
         /// </summary>
-        public List<string> PluginAssemblies { get; set; } = default!;
+        public List<string> PlugInAssemblies { get; set; } = default!;
 
         /// <summary>
         /// Gets or set the user who created the DICOM entity.
@@ -89,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
 
             Workflows ??= new List<string>();
 
-            PluginAssemblies ??= new List<string>();
+            PlugInAssemblies ??= new List<string>();
         }
 
         public override string ToString()

@@ -302,5 +302,52 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 segment.Fields(9).Value.Should().Be("ACK");
             }
         }
+
+        internal async Task ShouldRestoreAllDicomMetaata(IReadOnlyList<Message> messages, Dictionary<string, DicomFile> originalDicomFiles, params DicomTag[] dicomTags)
+        {
+            Guard.Against.Null(messages, nameof(messages));
+            Guard.Against.NullOrEmpty(originalDicomFiles, nameof(originalDicomFiles));
+
+            var minioClient = GetMinioClient();
+
+            foreach (var message in messages)
+            {
+                var request = message.ConvertTo<WorkflowRequestEvent>();
+                foreach (var file in request.Payload)
+                {
+                    await _retryPolicy.ExecuteAsync(async () =>
+                    {
+                        var dicomValidationKey = string.Empty;
+
+                        _outputHelper.WriteLine($"Reading file from {request.Bucket} => {request.PayloadId}/{file.Path}.");
+                        var getObjectArgs = new GetObjectArgs()
+                            .WithBucket(request.Bucket)
+                            .WithObject($"{request.PayloadId}/{file.Path}")
+                            .WithCallbackStream((stream) =>
+                            {
+                                using var memoryStream = new MemoryStream();
+                                stream.CopyTo(memoryStream);
+                                memoryStream.Position = 0;
+                                var dicomFile = DicomFile.Open(memoryStream);
+                                dicomValidationKey = dicomFile.GenerateFileName();
+                                originalDicomFiles.Should().ContainKey(dicomValidationKey);
+                                CompareDicomFiles(originalDicomFiles[dicomValidationKey], dicomFile, dicomTags);
+                            });
+                        await minioClient.GetObjectAsync(getObjectArgs);
+                    });
+                }
+            }
+        }
+
+        private void CompareDicomFiles(DicomFile left, DicomFile right, DicomTag[] dicomTags)
+        {
+            left.Should().NotBeNull();
+            right.Should().NotBeNull();
+
+            foreach (var tag in dicomTags)
+            {
+                left.Dataset.GetString(tag).Should().Be(right.Dataset.GetString(tag));
+            }
+        }
     }
 }

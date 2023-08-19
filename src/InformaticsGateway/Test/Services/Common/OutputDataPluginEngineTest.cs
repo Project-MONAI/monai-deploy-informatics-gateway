@@ -24,23 +24,23 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Test.Plugins;
+using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 using Moq;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 {
-    public class OutputDataPluginEngineTest
+    public class OutputDataPlugInEngineTest
     {
-        private readonly Mock<ILogger<OutputDataPluginEngine>> _logger;
+        private readonly Mock<ILogger<OutputDataPlugInEngine>> _logger;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IDicomToolkit _dicomToolkit;
         private readonly ServiceProvider _serviceProvider;
 
-        public OutputDataPluginEngineTest()
+        public OutputDataPlugInEngineTest()
         {
-            _logger = new Mock<ILogger<OutputDataPluginEngine>>();
+            _logger = new Mock<ILogger<OutputDataPlugInEngine>>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _serviceScope = new Mock<IServiceScope>();
             _dicomToolkit = new DicomToolkit();
@@ -57,42 +57,42 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
         }
 
         [Fact]
-        public void GivenAnOutputDataPluginEngine_WhenInitialized_ExpectParametersToBeValidated()
+        public void GivenAnOutputDataPlugInEngine_WhenInitialized_ExpectParametersToBeValidated()
         {
-            Assert.Throws<ArgumentNullException>(() => new OutputDataPluginEngine(null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new OutputDataPluginEngine(_serviceProvider, null, null));
-            Assert.Throws<ArgumentNullException>(() => new OutputDataPluginEngine(_serviceProvider, _logger.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new OutputDataPlugInEngine(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new OutputDataPlugInEngine(_serviceProvider, null, null));
+            Assert.Throws<ArgumentNullException>(() => new OutputDataPlugInEngine(_serviceProvider, _logger.Object, null));
 
-            _ = new OutputDataPluginEngine(_serviceProvider, _logger.Object, _dicomToolkit);
+            _ = new OutputDataPlugInEngine(_serviceProvider, _logger.Object, _dicomToolkit);
         }
 
         [Fact]
-        public void GivenAnOutputDataPluginEngine_WhenConfigureIsCalledWithBogusAssemblies_ThrowsException()
+        public void GivenAnOutputDataPlugInEngine_WhenConfigureIsCalledWithBogusAssemblies_ThrowsException()
         {
-            var pluginEngine = new OutputDataPluginEngine(_serviceProvider, _logger.Object, _dicomToolkit);
+            var pluginEngine = new OutputDataPlugInEngine(_serviceProvider, _logger.Object, _dicomToolkit);
             var assemblies = new List<string>() { "SomeBogusAssemblye" };
 
             var exceptions = Assert.Throws<AggregateException>(() => pluginEngine.Configure(assemblies));
 
             Assert.Single(exceptions.InnerExceptions);
-            Assert.True(exceptions.InnerException is PlugingLoadingException);
+            Assert.True(exceptions.InnerException is PlugInLoadingException);
             Assert.Contains("Error loading plug-in 'SomeBogusAssemblye'", exceptions.InnerException.Message);
         }
 
         [Fact]
-        public void GivenAnOutputDataPluginEngine_WhenConfigureIsCalledWithAValidAssembly_ExpectNoExceptions()
+        public void GivenAnOutputDataPlugInEngine_WhenConfigureIsCalledWithAValidAssembly_ExpectNoExceptions()
         {
-            var pluginEngine = new OutputDataPluginEngine(_serviceProvider, _logger.Object, _dicomToolkit);
-            var assemblies = new List<string>() { typeof(TestOutputDataPluginAddMessage).AssemblyQualifiedName };
+            var pluginEngine = new OutputDataPlugInEngine(_serviceProvider, _logger.Object, _dicomToolkit);
+            var assemblies = new List<string>() { typeof(TestOutputDataPlugInAddMessage).AssemblyQualifiedName };
 
             pluginEngine.Configure(assemblies);
         }
 
         [Fact]
-        public async Task GivenAnOutputDataPluginEngine_WhenExecutePluginsIsCalledWithoutConfigure_ThrowsException()
+        public async Task GivenAnOutputDataPlugInEngine_WhenExecutePlugInsIsCalledWithoutConfigure_ThrowsException()
         {
-            var pluginEngine = new OutputDataPluginEngine(_serviceProvider, _logger.Object, _dicomToolkit);
-            var assemblies = new List<string>() { typeof(TestOutputDataPluginAddMessage).AssemblyQualifiedName };
+            var pluginEngine = new OutputDataPlugInEngine(_serviceProvider, _logger.Object, _dicomToolkit);
+            var assemblies = new List<string>() { typeof(TestOutputDataPlugInAddMessage).AssemblyQualifiedName };
 
             var message = new ExportRequestDataMessage(new Messaging.Events.ExportRequestEvent
             {
@@ -101,17 +101,17 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
             }, "filename.dcm");
 
-            await Assert.ThrowsAsync<ApplicationException>(async () => await pluginEngine.ExecutePlugins(message));
+            await Assert.ThrowsAsync<ApplicationException>(async () => await pluginEngine.ExecutePlugInsAsync(message));
         }
 
         [Fact]
-        public async Task GivenAnOutputDataPluginEngine_WhenExecutePluginsIsCalled_ExpectDataIsProcessedByPluginAsync()
+        public async Task GivenAnOutputDataPlugInEngine_WhenExecutePlugInsIsCalled_ExpectDataIsProcessedByPlugInAsync()
         {
-            var pluginEngine = new OutputDataPluginEngine(_serviceProvider, _logger.Object, _dicomToolkit);
+            var pluginEngine = new OutputDataPlugInEngine(_serviceProvider, _logger.Object, _dicomToolkit);
             var assemblies = new List<string>()
             {
-                typeof(TestOutputDataPluginAddMessage).AssemblyQualifiedName,
-                typeof(TestOutputDataPluginModifyDicomFile).AssemblyQualifiedName
+                typeof(TestOutputDataPlugInAddMessage).AssemblyQualifiedName,
+                typeof(TestOutputDataPlugInModifyDicomFile).AssemblyQualifiedName
             };
 
             pluginEngine.Configure(assemblies);
@@ -127,13 +127,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             await dicomFile.SaveAsync(ms);
             message.SetData(ms.ToArray());
 
-            var resultMessage = await pluginEngine.ExecutePlugins(message);
+            var resultMessage = await pluginEngine.ExecutePlugInsAsync(message);
             using var resultMs = new MemoryStream(resultMessage.FileContent);
             var resultDicomFile = await DicomFile.OpenAsync(resultMs);
 
             Assert.Equal(resultMessage, message);
-            Assert.True(resultMessage.Messages.Contains(TestOutputDataPluginAddMessage.ExpectedValue));
-            Assert.Equal(TestOutputDataPluginModifyDicomFile.ExpectedValue, resultDicomFile.Dataset.GetString(TestOutputDataPluginModifyDicomFile.ExpectedTag));
+            Assert.True(resultMessage.Messages.Contains(TestOutputDataPlugInAddMessage.ExpectedValue));
+            Assert.Equal(TestOutputDataPlugInModifyDicomFile.ExpectedValue, resultDicomFile.Dataset.GetString(TestOutputDataPlugInModifyDicomFile.ExpectedTag));
         }
 
         private static DicomFile GenerateDicomFile()

@@ -255,7 +255,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7, Fhir]
+        feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7, Fhir, RemoteAppExecutionPlugIn]
         database: [ef, mongodb]
       fail-fast: false
     env:

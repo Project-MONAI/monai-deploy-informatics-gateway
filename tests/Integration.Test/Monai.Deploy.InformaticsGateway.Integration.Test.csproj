@@ -24,6 +24,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="fo-dicom" Version="5.1.1" />
     <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
@@ -66,7 +70,8 @@
     <ProjectReference Include="..\..\src\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
     <ProjectReference Include="..\..\src\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
     <ProjectReference Include="..\..\src\InformaticsGateway\Monai.Deploy.InformaticsGateway.csproj" />
-    <ProjectReference Include="..\..\src\InformaticsGateway\Test\Plugins\Monai.Deploy.InformaticsGateway.Test.Plugins.csproj" />
+    <ProjectReference Include="..\..\src\InformaticsGateway\Test\Plug-ins\Monai.Deploy.InformaticsGateway.Test.PlugIns.csproj" />
+    <ProjectReference Include="..\..\src\Plug-ins\RemoteAppExecution\Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -90,7 +95,7 @@
 
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
-      <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll;$(OutDir)Monai.Deploy.InformaticsGateway.Test.Plugins.dll" />
+      <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll;$(OutDir)Monai.Deploy.InformaticsGateway.Test.PlugIns.dll;$(OutDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />

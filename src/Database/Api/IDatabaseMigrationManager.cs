@@ -18,7 +18,18 @@ using Microsoft.Extensions.Hosting;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
+    /// <summary>
+    /// Interface for the main application to migrate and configure databases
+    /// </summary>
     public interface IDatabaseMigrationManager
+    {
+        IHost Migrate(IHost host);
+    }
+
+    /// <summary>
+    /// Interface for the plug-ins to migrate and configure databases
+    /// </summary>
+    public interface IDatabaseMigrationManagerForPlugIns
     {
         IHost Migrate(IHost host);
     }

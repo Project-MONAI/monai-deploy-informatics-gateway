@@ -88,7 +88,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
                 await fileStream.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
             _logger.AppSettingUpdated(outputPath);
-
         }
     }
 }

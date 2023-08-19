@@ -21,31 +21,32 @@ using System.Linq;
 using System.Reflection;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
-    public interface IDataPluginEngineFactory<T>
+    public interface IDataPlugInEngineFactory<T>
     {
-        IReadOnlyDictionary<string, string> RegisteredPlugins();
+        IReadOnlyDictionary<string, string> RegisteredPlugIns();
     }
 
-    public abstract class DataPluginEngineFactoryBase<T> : IDataPluginEngineFactory<T>
+    public abstract class DataPlugInEngineFactoryBase<T> : IDataPlugInEngineFactory<T>
     {
+        private static readonly object SyncLock = new();
         private readonly IFileSystem _fileSystem;
-        private readonly ILogger<DataPluginEngineFactoryBase<T>> _logger;
+        private readonly ILogger<DataPlugInEngineFactoryBase<T>> _logger;
         private readonly Type _type;
 
         /// <summary>
         /// A dictionary mapping of input data plug-ins where:
-        /// key: <see cref="PluginNameAttribute.Name"/> if available or name of the class.
+        /// key: <see cref="PlugInNameAttribute.Name"/> if available or name of the class.
         /// value: fully qualified assembly type
         /// </summary>
         private readonly Dictionary<string, string> _cachedTypeNames;
 
-        public DataPluginEngineFactoryBase(IFileSystem fileSystem, ILogger<DataPluginEngineFactoryBase<T>> logger)
+        public DataPlugInEngineFactoryBase(IFileSystem fileSystem, ILogger<DataPlugInEngineFactoryBase<T>> logger)
         {
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
@@ -53,9 +54,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             _cachedTypeNames = new Dictionary<string, string>();
         }
 
-        public IReadOnlyDictionary<string, string> RegisteredPlugins()
+        public IReadOnlyDictionary<string, string> RegisteredPlugIns()
         {
-            LoadAssembliesFromPluginDirectory();
+            LoadAssembliesFromPlugInsDirectory();
 
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .Where(p => !p.FullName.Contains("DynamicProxyGenAssembly2"))
@@ -77,40 +78,44 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 {
                     if (!_cachedTypeNames.ContainsValue(p.GetShortTypeAssemblyName()))
                     {
-                        var nameAttribute = p.GetCustomAttribute<PluginNameAttribute>();
+                        var nameAttribute = p.GetCustomAttribute<PlugInNameAttribute>();
 
                         var name = nameAttribute is null ? p.Name : nameAttribute.Name;
                         _cachedTypeNames.Add(name, p.GetShortTypeAssemblyName());
-                        _logger.DataPluginFound(_type.Name, name, p.GetShortTypeAssemblyName());
+                        _logger.DataPlugInFound(_type.Name, name, p.GetShortTypeAssemblyName());
                     }
                 });
             }
         }
 
-        private void LoadAssembliesFromPluginDirectory()
+        private void LoadAssembliesFromPlugInsDirectory()
         {
-            var files = _fileSystem.Directory.GetFiles(SR.PlugInDirectoryPath, "*.dll", System.IO.SearchOption.TopDirectoryOnly);
-
-            foreach (var file in files)
+            lock (SyncLock)
             {
-                _logger.LoadingAssembly(file);
-                var assembly = Assembly.LoadFile(file);
-                var matchingTypes = assembly.GetTypes().Where(p => _type.IsAssignableFrom(p) && p != _type).ToList();
-                AddToCache(matchingTypes);
+                var files = _fileSystem.Directory.GetFiles(SR.PlugInDirectoryPath, "*.dll", System.IO.SearchOption.TopDirectoryOnly);
+
+                foreach (var file in files)
+                {
+                    _logger.LoadingAssembly(file);
+                    var assembly = Assembly.LoadFile(file);
+                    var matchingTypes = assembly.GetTypes().Where(p => _type.IsAssignableFrom(p) && p != _type).ToList();
+
+                    AddToCache(matchingTypes);
+                }
             }
         }
     }
 
-    public class InputDataPluginEngineFactory : DataPluginEngineFactoryBase<IInputDataPlugin>
+    public class InputDataPlugInEngineFactory : DataPlugInEngineFactoryBase<IInputDataPlugIn>
     {
-        public InputDataPluginEngineFactory(IFileSystem fileSystem, ILogger<DataPluginEngineFactoryBase<IInputDataPlugin>> logger) : base(fileSystem, logger)
+        public InputDataPlugInEngineFactory(IFileSystem fileSystem, ILogger<DataPlugInEngineFactoryBase<IInputDataPlugIn>> logger) : base(fileSystem, logger)
         {
         }
     }
 
-    public class OutputDataPluginEngineFactory : DataPluginEngineFactoryBase<IOutputDataPlugin>
+    public class OutputDataPlugInEngineFactory : DataPlugInEngineFactoryBase<IOutputDataPlugIn>
     {
-        public OutputDataPluginEngineFactory(IFileSystem fileSystem, ILogger<DataPluginEngineFactoryBase<IOutputDataPlugin>> logger) : base(fileSystem, logger)
+        public OutputDataPlugInEngineFactory(IFileSystem fileSystem, ILogger<DataPlugInEngineFactoryBase<IOutputDataPlugIn>> logger) : base(fileSystem, logger)
         {
         }
     }

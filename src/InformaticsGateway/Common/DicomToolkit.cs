@@ -19,7 +19,6 @@ using System.IO;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
-using SharpCompress.Compressors.Xz;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {

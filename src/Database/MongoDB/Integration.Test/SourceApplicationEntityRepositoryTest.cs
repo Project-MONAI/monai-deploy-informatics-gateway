@@ -15,7 +15,6 @@
  */
 
 using FluentAssertions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -173,7 +172,5 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             Assert.NotNull(dbResult);
             Assert.Equal(expected.AeTitle, dbResult!.AeTitle);
         }
-
-
     }
 }

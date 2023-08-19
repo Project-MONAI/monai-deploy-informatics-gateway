@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,7 @@
     <ProjectReference Include="..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\..\Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.csproj" />
-    <ProjectReference Include="Plugins\Monai.Deploy.InformaticsGateway.Test.Plugins.csproj" />
+    <ProjectReference Include="Plug-ins\Monai.Deploy.InformaticsGateway.Test.PlugIns.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -63,14 +63,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Plugins\**" />
-    <EmbeddedResource Remove="Plugins\**" />
-    <None Remove="Plugins\**" />
+    <Compile Remove="Plug-ins\**" />
+    <EmbeddedResource Remove="Plug-ins\**" />
+    <None Remove="Plug-ins\**" />
   </ItemGroup>
 
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
-      <PluginDlls Include="$(OutDir)Monai.Deploy.InformaticsGateway.Test.Plugins.dll" />
+      <PluginDlls Include="$(OutDir)Monai.Deploy.InformaticsGateway.Test.PlugIns.dll;$(OutDir)Monai.Deploy.InformaticsGateway.Test.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />

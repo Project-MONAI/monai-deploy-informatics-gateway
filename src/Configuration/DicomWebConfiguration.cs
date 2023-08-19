@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public uint Timeout { get; set; } = 10;
 
         /// <summary>
-        /// Optional list of data input plug-in type names to be executed by the *IInputDataPluginEngine*
+        /// Optional list of data input plug-in type names to be executed by the *IInputDataPlugInEngine*
         /// on the data received using default DICOMWeb STOW-RS endpoints:
         /// <list type="bullet">
         /// <item>POST /dicomweb/studies/[{study-instance-uid}]</item>
@@ -69,11 +69,11 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// </list>
         /// </summary>
         [ConfigurationKeyName("plugins")]
-        public List<string> PluginAssemblies { get; set; } = default!;
+        public List<string> PlugInAssemblies { get; set; } = default!;
 
         public DicomWebConfiguration()
         {
-            PluginAssemblies ??= new List<string>();
+            PlugInAssemblies ??= new List<string>();
         }
     }
 }

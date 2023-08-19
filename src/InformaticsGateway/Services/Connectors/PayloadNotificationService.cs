@@ -274,7 +274,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-
         private async Task RestoreFromDatabaseAsync(CancellationToken cancellationToken)
         {
             _logger.StartupRestoreFromDatabase();

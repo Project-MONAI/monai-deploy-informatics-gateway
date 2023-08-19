@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System.IO;
 using System.IO.Abstractions;
 using FellowOakDicom;
 using FellowOakDicom.Network;
@@ -65,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
             var dataset = GenerateDicomDataset(studyInstanceUid, seriesInstanceUid, ref sopInstanceUid);
 
             var dicomfile = new DicomFile(dataset);
-            using var ms = new MemoryStream();
+            using var ms = new System.IO.MemoryStream();
             dicomfile.Save(ms);
             return ms.ToArray();
         }

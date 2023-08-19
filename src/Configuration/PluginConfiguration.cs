@@ -19,7 +19,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
-    public class PluginConfiguration
+    public class PlugInConfiguration
     {
         [ConfigurationKeyName("remoteApp")]
         public Dictionary<string, string> RemoteAppConfigurations { get; set; } = new();

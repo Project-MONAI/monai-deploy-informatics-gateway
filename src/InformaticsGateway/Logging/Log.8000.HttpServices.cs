@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void MonaiApplicationEntityUpdated(this ILogger logger, string name, string aeTitle);
 
         [LoggerMessage(EventId = 8006, Level = LogLevel.Error, Message = "Error reading data input plug-ins.")]
-        public static partial void ErrorReadingDataInputPlugins(this ILogger logger, Exception ex);
+        public static partial void ErrorReadingDataInputPlugIns(this ILogger logger, Exception ex);
 
         // Destination AE Title Controller
         [LoggerMessage(EventId = 8010, Level = LogLevel.Information, Message = "DICOM destination added AE Title={aeTitle}, Host/IP={hostIp}.")]
@@ -99,8 +99,6 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         // Health API
         [LoggerMessage(EventId = 8040, Level = LogLevel.Error, Message = "Error collecting system status.")]
         public static partial void ErrorCollectingSystemStatus(this ILogger logger, Exception ex);
-
-
 
         // Virtual AE Title Controller
         [LoggerMessage(EventId = 8050, Level = LogLevel.Error, Message = "Error querying Virtual Application Entity.")]

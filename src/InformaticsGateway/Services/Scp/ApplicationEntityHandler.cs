@@ -24,6 +24,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -43,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IFileSystem _fileSystem;
-        private readonly IInputDataPluginEngine _pluginEngine;
+        private readonly IInputDataPlugInEngine _pluginEngine;
         private MonaiApplicationEntity _configuration;
         private DicomJsonOptions _dicomJsonOptions;
         private bool _validateDicomValueOnJsonSerialization;
@@ -62,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _payloadAssembler = _serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _fileSystem = _serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
-            _pluginEngine = _serviceScope.ServiceProvider.GetService<IInputDataPluginEngine>() ?? throw new ServiceNotFoundException(nameof(IInputDataPluginEngine));
+            _pluginEngine = _serviceScope.ServiceProvider.GetService<IInputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IInputDataPlugInEngine));
         }
 
         public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions, bool validateDicomValuesOnJsonSerialization)
@@ -81,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 _configuration = monaiApplicationEntity;
                 _dicomJsonOptions = dicomJsonOptions;
                 _validateDicomValueOnJsonSerialization = validateDicomValuesOnJsonSerialization;
-                _pluginEngine.Configure(_configuration.PluginAssemblies);
+                _pluginEngine.Configure(_configuration.PlugInAssemblies);
             }
         }
 
@@ -115,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
-            var result = await _pluginEngine.ExecutePlugins(request.File, dicomInfo).ConfigureAwait(false);
+            var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
 
             dicomInfo = result.Item2 as DicomFileStorageMetadata;
             var dicomFile = result.Item1;
