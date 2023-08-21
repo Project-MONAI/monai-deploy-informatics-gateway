@@ -12,15 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-- name: MONAI Deploy Informatics Gateway
-  href: index.md
-- name: Get Started
-  href: setup/
-- name: API Documentation
-  href: api/
-- name: Plug-ins
-  href: plug-ins/
-- name: Compliance
-  href: compliance/
-- name: Changelog
-  href: changelog.md
+- name: Data Plug-ins
+  href: overview.md
+- name: Remote App Execution Plug-ins
+  href: remote-app.md
