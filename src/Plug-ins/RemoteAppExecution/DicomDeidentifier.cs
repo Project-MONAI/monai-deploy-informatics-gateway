@@ -28,16 +28,16 @@ using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database;
 namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
 {
     [PlugInName("Remote App Execution Outgoing")]
-    public class ExternalAppOutgoing : IOutputDataPlugIn
+    public class DicomDeidentifier : IOutputDataPlugIn
     {
-        private readonly ILogger<ExternalAppOutgoing> _logger;
+        private readonly ILogger<DicomDeidentifier> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly PlugInConfiguration _options;
 
         public string Name => GetType().GetCustomAttribute<PlugInNameAttribute>()?.Name ?? GetType().Name;
 
-        public ExternalAppOutgoing(
-            ILogger<ExternalAppOutgoing> logger,
+        public DicomDeidentifier(
+            ILogger<DicomDeidentifier> logger,
             IServiceScopeFactory serviceScopeFactory,
             IOptions<PlugInConfiguration> configuration)
         {

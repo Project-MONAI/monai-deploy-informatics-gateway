@@ -124,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
             };
 
-            _exportRequestEvent.PluginAssemblies.Add(typeof(ExternalAppOutgoing).AssemblyQualifiedName);
+            _exportRequestEvent.PluginAssemblies.Add(typeof(DicomDeidentifier).AssemblyQualifiedName);
 
             var message = new JsonMessage<ExportRequestEvent>(
                 _exportRequestEvent,
@@ -172,7 +172,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Name = MonaiAeTitle,
                     Grouping = _dataProvider.StudyGrouping,
                     Timeout = 3,
-                    PlugInAssemblies = new List<string>() { typeof(ExternalAppIncoming).AssemblyQualifiedName }
+                    PlugInAssemblies = new List<string>() { typeof(DicomReidentifier).AssemblyQualifiedName }
                 }, CancellationToken.None);
             }
             catch (ProblemException ex)
@@ -195,6 +195,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             {
                 (await Extensions.WaitUntil(() => _dicomServer.Instances.ContainsKey(key), DicomScpWaitTimeSpan)).Should().BeTrue("{0} should be received", key);
             }
+
+            // Clear workflow request messages
+            _receivedWorkflowRequestMessages.ClearMessages();
 
             // Send data received back to MIG
             var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");

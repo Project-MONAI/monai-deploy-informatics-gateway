@@ -27,18 +27,18 @@ using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
 {
-    public class ExternalAppIncomingTest
+    public class DicomReidentifierTest
     {
-        private readonly Mock<ILogger<ExternalAppIncoming>> _logger;
+        private readonly Mock<ILogger<DicomReidentifier>> _logger;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly ServiceCollection _serviceCollection;
         private readonly Mock<IRemoteAppExecutionRepository> _repository;
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly ServiceProvider _serviceProvider;
 
-        public ExternalAppIncomingTest()
+        public DicomReidentifierTest()
         {
-            _logger = new Mock<ILogger<ExternalAppIncoming>>();
+            _logger = new Mock<ILogger<DicomReidentifier>>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _repository = new Mock<IRemoteAppExecutionRepository>();
             _serviceScope = new Mock<IServiceScope>();
@@ -56,12 +56,12 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         }
 
         [Fact]
-        public void GivenExternalAppOutgoing_TestConstructors()
+        public void GivenDicomDeidentifier_TestConstructors()
         {
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(null, null));
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppIncoming(_logger.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomReidentifier(null, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomReidentifier(_logger.Object, null));
 
-            var app = new ExternalAppIncoming(_logger.Object, _serviceScopeFactory.Object);
+            var app = new DicomReidentifier(_logger.Object, _serviceScopeFactory.Object);
 
             Assert.Equal(app.Name, app.GetType().GetCustomAttribute<PlugInNameAttribute>()!.Name);
         }
@@ -69,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         [Fact]
         public async Task GivenIncomingInstance_WhenExecuteIsCalledWithMissingRecord_ExpectErrorToBeLogged()
         {
-            var app = new ExternalAppIncoming(_logger.Object, _serviceScopeFactory.Object);
+            var app = new DicomReidentifier(_logger.Object, _serviceScopeFactory.Object);
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
@@ -89,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         [Fact]
         public async Task GivenIncomingInstance_WhenExecuteIsCalledWithRecord_ExpectDataToBeFilled()
         {
-            var app = new ExternalAppIncoming(_logger.Object, _serviceScopeFactory.Object);
+            var app = new DicomReidentifier(_logger.Object, _serviceScopeFactory.Object);
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
