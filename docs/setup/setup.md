@@ -354,12 +354,12 @@ will group instances by the Series Instance UID (0020,000E) with a timeout value
 
 Each listening AE Title may be configured with zero or more plug-ins to manipulate incoming DICOM files before saving to the storage
 service and dispatching a workflow request. To include input data plug-ins, first create your plug-ins by implementing the
-[IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and then use `-p` argument with the fully
-qualified type name with the `mig-cli aet add` command. For example, the following command adds `MyNamespace.AnonymizePlugin`
+[IInputDataPlugIn](xref:Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn) interface and then use `-p` argument with the fully
+qualified type name with the `mig-cli aet add` command. For example, the following command adds `MyNamespace.AnonymizePlugIn`
 and `MyNamespace.FixSeriesData` plug-ins from the `MyNamespace.Plugins` assembly file.
 
 ```bash
-mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p "MyNamespace.AnonymizePlugin, MyNamespace.Plugins" "MyNamespace.FixSeriesData, MyNamespace.Plugins"
+mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p "MyNamespace.AnonymizePlugIn, MyNamespace.PlugIns" "MyNamespace.FixSeriesData, MyNamespace.PlugIns"
 ```
 
 > [!Note]
@@ -383,6 +383,8 @@ The above command tells the Informatics Gateway to accept instances from AE Titl
 > The Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
 > When the Informatics Gateway is running in a container and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
 
+See [Data Plug-ins](../plug-ins/overview.md) to configure data plug-ins or create your own data plug-ins.
+
 ## Export Processed Results
 
 If exporting via DIMSE is required, add a DICOM destination:
@@ -396,12 +398,3 @@ The command adds a DICOM export destination with AE Title `WORKSTATION1` at IP `
 ## Logging
 
 See [schema](./schema.md#logging) page for additional information on logging.
-
-## Data Plug-ins
-
-You may write your own data plug-ins to manipulate incoming data before they are saved to the storage service or outgoing data right before they are exported.
-
-To write an input data plug-in, implement the [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IInputDataPlugin) interface and put the [dynamic link library](https://learn.microsoft.com/en-us/troubleshoot/windows-client/deployment/dynamic-link-library) (DLL) in the
-plug-ins directories.  Similarly for output data plug-ins, implement the [IOutputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.IOutputDataPlugin) interface.
-
-Refer to [Configuration API](../api/rest/config.md) page to retrieve available [input](../api/rest/config.md#get-configaeplug-ins) and [output](../api/rest/config.md#get-configdestinationplug-ins) data plug-ins.
