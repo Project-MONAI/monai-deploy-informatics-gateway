@@ -30,9 +30,9 @@ using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
 {
-    public class ExternalAppOutgoingTest
+    public class DicomDeidentifierTest
     {
-        private readonly Mock<ILogger<ExternalAppOutgoing>> _logger;
+        private readonly Mock<ILogger<DicomDeidentifier>> _logger;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly ServiceCollection _serviceCollection;
         private readonly Mock<IRemoteAppExecutionRepository> _repository;
@@ -40,9 +40,9 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly ServiceProvider _serviceProvider;
 
-        public ExternalAppOutgoingTest()
+        public DicomDeidentifierTest()
         {
-            _logger = new Mock<ILogger<ExternalAppOutgoing>>();
+            _logger = new Mock<ILogger<DicomDeidentifier>>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _repository = new Mock<IRemoteAppExecutionRepository>();
             _serviceScope = new Mock<IServiceScope>();
@@ -61,15 +61,15 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         }
 
         [Fact]
-        public void GivenExternalAppOutgoing_TestConstructors()
+        public void GivenDicomDeidentifier_TestConstructors()
         {
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(_logger.Object, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(_logger.Object, _serviceScopeFactory.Object, null));
-            Assert.Throws<ArgumentNullException>(() => new ExternalAppOutgoing(_logger.Object, _serviceScopeFactory.Object, _options));
+            Assert.Throws<ArgumentNullException>(() => new DicomDeidentifier(null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomDeidentifier(_logger.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, _options));
 
             _options.Value.RemoteAppConfigurations.Add(SR.ConfigKey_ReplaceTags, "tag1, tag2");
-            var app = new ExternalAppOutgoing(_logger.Object, _serviceScopeFactory.Object, _options);
+            var app = new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, _options);
 
             Assert.Equal(app.Name, app.GetType().GetCustomAttribute<PlugInNameAttribute>()!.Name);
         }
@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         public async Task GivenEmptyReplaceTags_WhenExecuteIsCalledWithoutExistingRecords_ExpectAsync()
         {
             _options.Value.RemoteAppConfigurations.Add(SR.ConfigKey_ReplaceTags, string.Empty);
-            var app = new ExternalAppOutgoing(_logger.Object, _serviceScopeFactory.Object, _options);
+            var app = new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, _options);
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
@@ -106,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         {
             _options.Value.RemoteAppConfigurations.Add(SR.ConfigKey_ReplaceTags, "StudyInstanceUID,AccessionNumber,PatientID,PatientName");
 
-            var app = new ExternalAppOutgoing(_logger.Object, _serviceScopeFactory.Object, _options);
+            var app = new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, _options);
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
@@ -139,7 +139,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         public async Task GivenExistingRecordWithSameStudy_WhenExecuteIsCalled_ExpectAsync()
         {
             _options.Value.RemoteAppConfigurations.Add(SR.ConfigKey_ReplaceTags, string.Empty);
-            var app = new ExternalAppOutgoing(_logger.Object, _serviceScopeFactory.Object, _options);
+            var app = new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, _options);
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
@@ -175,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         public async Task GivenExistingRecordWithSameSeries_WhenExecuteIsCalled_ExpectAsync()
         {
             _options.Value.RemoteAppConfigurations.Add(SR.ConfigKey_ReplaceTags, string.Empty);
-            var app = new ExternalAppOutgoing(_logger.Object, _serviceScopeFactory.Object, _options);
+            var app = new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, _options);
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;

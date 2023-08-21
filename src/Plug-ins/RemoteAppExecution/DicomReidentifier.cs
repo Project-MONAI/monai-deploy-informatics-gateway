@@ -25,15 +25,15 @@ using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database;
 namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
 {
     [PlugInName("Remote App Execution Incoming")]
-    public class ExternalAppIncoming : IInputDataPlugIn
+    public class DicomReidentifier : IInputDataPlugIn
     {
-        private readonly ILogger<ExternalAppIncoming> _logger;
+        private readonly ILogger<DicomReidentifier> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
         public string Name => GetType().GetCustomAttribute<PlugInNameAttribute>()?.Name ?? GetType().Name;
 
-        public ExternalAppIncoming(
-            ILogger<ExternalAppIncoming> logger,
+        public DicomReidentifier(
+            ILogger<DicomReidentifier> logger,
             IServiceScopeFactory serviceScopeFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
