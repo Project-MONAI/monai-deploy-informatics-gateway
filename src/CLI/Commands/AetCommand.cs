@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             SetupEditAetCommand();
             SetupRemoveAetCommand();
             SetupListAetCommand();
-            SetupPluginsCommand();
+            SetupPlugInsCommand();
         }
 
         private void SetupListAetCommand()
@@ -147,12 +147,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(EditAeTitleHandlerAsync);
         }
 
-        private void SetupPluginsCommand()
+        private void SetupPlugInsCommand()
         {
             var pluginsCommand = new Command("plugins", "List all available plug-ins for SCP Application Entities");
             AddCommand(pluginsCommand);
 
-            pluginsCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListPluginsHandlerAsync);
+            pluginsCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListPlugInsHandlerAsync);
         }
 
         private async Task<int> ListAeTitlehandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
@@ -295,7 +295,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 }
                 if (result.AllowedSopClasses.Any())
                 {
-                    logger.MonaiAePlugins(string.Join(',', result.AllowedSopClasses));
+                    logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
+                }
+                if (result.PlugInAssemblies.Any())
+                {
+                    logger.MonaiAePlugIns(string.Join(',', result.PlugInAssemblies));
                 }
             }
             catch (ConfigurationException ex)
@@ -350,9 +354,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                     logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
                     logger.AcceptedSopClassesWarning();
                 }
-                if (result.AllowedSopClasses.Any())
+                if (result.PlugInAssemblies.Any())
                 {
-                    logger.MonaiAePlugins(string.Join(',', result.AllowedSopClasses));
+                    logger.MonaiAePlugIns(string.Join(',', result.PlugInAssemblies));
                 }
             }
             catch (ConfigurationException ex)
@@ -368,7 +372,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             return ExitCodes.Success;
         }
 
-        private async Task<int> ListPluginsHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
+        private async Task<int> ListPlugInsHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
             Guard.Against.Null(host, nameof(host));
 
@@ -393,7 +397,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
                 LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
                 LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
-                items = await client.MonaiScpAeTitle.Plugins(cancellationToken).ConfigureAwait(false);
+                items = await client.MonaiScpAeTitle.PlugIns(cancellationToken).ConfigureAwait(false);
             }
             catch (ConfigurationException ex)
             {
@@ -402,8 +406,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (Exception ex)
             {
-                logger.ErrorListingDataInputPlugins(ex.Message);
-                return ExitCodes.MonaiScp_ErrorPlugins;
+                logger.ErrorListingDataInputPlugIns(ex.Message);
+                return ExitCodes.MonaiScp_ErrorPlugIns;
             }
 
             if (items.IsNullOrEmpty())

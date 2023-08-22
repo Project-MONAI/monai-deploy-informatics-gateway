@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2023 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-using System;
+using Microsoft.Extensions.Hosting;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database.MongoDb
 {
-    public class PlugingLoadingException : Exception
+    public class MigrationManager : IDatabaseMigrationManagerForPlugIns
     {
-        public PlugingLoadingException(string message) : base(message)
+        public IHost Migrate(IHost host)
         {
-        }
-
-        public PlugingLoadingException(string message, Exception innerException) : base(message, innerException)
-        {
+            RemoteAppExecutionConfiguration.Configure();
+            return host;
         }
     }
 }

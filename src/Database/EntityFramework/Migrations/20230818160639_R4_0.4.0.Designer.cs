@@ -11,7 +11,7 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20230811165855_R4_0.4.0")]
+    [Migration("20230818160639_R4_0.4.0")]
     partial class R4_040
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -135,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PluginAssemblies")
+                    b.Property<string>("PlugInAssemblies")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -275,8 +275,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<int>("State")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("TaskId")
+                        .HasColumnType("TEXT");
+
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("WorkflowInstanceId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("PayloadId");
 
@@ -303,7 +309,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<DateTime?>("DateTimeUpdated")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PluginAssemblies")
+                    b.Property<string>("PlugInAssemblies")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

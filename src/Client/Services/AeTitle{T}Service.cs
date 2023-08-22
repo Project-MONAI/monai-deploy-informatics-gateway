@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
 
         Task CEcho(string name, CancellationToken cancellationToken);
 
-        Task<IDictionary<string, string>> Plugins(CancellationToken cancellationToken);
+        Task<IDictionary<string, string>> PlugIns(CancellationToken cancellationToken);
     }
 
     internal class AeTitleService<T> : ServiceBase, IAeTitleService<T>
@@ -119,7 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Services
             return await response.Content.ReadAsAsync<T>(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IDictionary<string, string>> Plugins(CancellationToken cancellationToken)
+        public async Task<IDictionary<string, string>> PlugIns(CancellationToken cancellationToken)
         {
             if (typeof(T) != typeof(MonaiApplicationEntity) &&
                 typeof(T) != typeof(DestinationApplicationEntity))

@@ -67,15 +67,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [Fact]
         public void GivenAPayloadAssembler_WhenInitialized_ExpectParametersToBeValidated()
         {
-            Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(_options, null, null));
-            Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(_options, _logger.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(null, null));
+            Assert.Throws<ArgumentNullException>(() => new PayloadAssembler(_logger.Object, null));
         }
 
         [RetryFact(10, 200)]
         public async Task GivenAFileStorageMetadata_WhenQueueingWihtoutSpecifyingATimeout_ExpectDefaultTimeoutToBeUsed()
         {
-            var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
+            var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
@@ -91,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             _repository.Setup(p => p.RemovePendingPayloadsAsync(It.IsAny<CancellationToken>()));
 
-            var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
+            var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
             await Task.Delay(250);
             payloadAssembler.Dispose();
             _cancellationTokenSource.Cancel();
@@ -102,7 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(10, 200)]
         public async Task GivenAPayloadAssembler_WhenDisposed_ExpectResourceToBeCleanedUp()
         {
-            var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
+            var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
@@ -118,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(10, 200)]
         public async Task GivenAPayloadThatHasNotCompleteUploads_WhenProcessedByTimedEvent_ExpectToBeRemovedFromQueue()
         {
-            var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
+            var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
 
             var file1 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
             var file2 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
@@ -138,7 +137,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(10, 200)]
         public async Task GivenAPayloadThatHasCompletedUploads_WhenProcessedByTimedEvent_ExpectToBeAddedToQueue()
         {
-            var payloadAssembler = new PayloadAssembler(_options, _logger.Object, _serviceScopeFactory.Object);
+            var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
 
             var file = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
             file.File.SetUploaded("bucket");

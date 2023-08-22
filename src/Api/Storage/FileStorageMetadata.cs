@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
+using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -60,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// For ACR retrieved DICOM/FHIR files: use the original transaction ID embedded in the request.
         /// </summary>
         [JsonPropertyName("correlationId")]
-        public string CorrelationId { get; init; } = default!;
+        public string CorrelationId { get; set; } = default!;
 
         /// <summary>
         /// Gets or sets the source of the file.
@@ -129,6 +130,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public virtual void SetFailed()
         {
             File.SetFailed();
+        }
+
+        public void ChangeCorrelationId(ILogger logger, string correlationId)
+        {
+            logger.LogWarning($"Changing correlation ID from {CorrelationId} to {correlationId}.");
+            CorrelationId = correlationId;
         }
 
         public string? PayloadId { get; set; }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,6 +76,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("database")]
         public DatabaseConfiguration Database { get; set; }
 
+        /// <summary>
+        /// Represents the <c>pluginConfiguration</c> section of the configuration file.
+        /// </summary>
+        [ConfigurationKeyName("plugins")]
+        public PlugInConfiguration PlugInConfigurations { get; set; }
+
         public InformaticsGatewayConfiguration()
         {
             Dicom = new DicomConfiguration();
@@ -86,6 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             Messaging = new MessageBrokerConfiguration();
             Database = new DatabaseConfiguration();
             Hl7 = new Hl7Configuration();
+            PlugInConfigurations = new PlugInConfiguration();
         }
     }
 }

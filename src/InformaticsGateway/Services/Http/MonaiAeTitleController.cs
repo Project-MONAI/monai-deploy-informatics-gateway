@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -39,18 +40,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     {
         private readonly ILogger<MonaiAeTitleController> _logger;
         private readonly IMonaiApplicationEntityRepository _repository;
-        private readonly IDataPluginEngineFactory<IInputDataPlugin> _inputDataPluginEngineFactory;
+        private readonly IDataPlugInEngineFactory<IInputDataPlugIn> _inputDataPlugInEngineFactory;
         private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
 
         public MonaiAeTitleController(
             ILogger<MonaiAeTitleController> logger,
             IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
             IMonaiApplicationEntityRepository repository,
-            IDataPluginEngineFactory<IInputDataPlugin> inputDataPluginEngineFactory)
+            IDataPlugInEngineFactory<IInputDataPlugIn> inputDataPlugInEngineFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _inputDataPluginEngineFactory = inputDataPluginEngineFactory ?? throw new ArgumentNullException(nameof(inputDataPluginEngineFactory));
+            _inputDataPlugInEngineFactory = inputDataPlugInEngineFactory ?? throw new ArgumentNullException(nameof(inputDataPlugInEngineFactory));
             _monaiAeChangedNotificationService = monaiAeChangedNotificationService ?? throw new ArgumentNullException(nameof(monaiAeChangedNotificationService));
         }
 
@@ -160,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 applicationEntity.Timeout = item.Timeout;
                 applicationEntity.IgnoredSopClasses = item.IgnoredSopClasses ?? new List<string>();
                 applicationEntity.Workflows = item.Workflows ?? new List<string>();
-                applicationEntity.PluginAssemblies = item.PluginAssemblies ?? new List<string>();
+                applicationEntity.PlugInAssemblies = item.PlugInAssemblies ?? new List<string>();
                 applicationEntity.SetAuthor(User, EditMode.Update);
 
                 await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
@@ -213,15 +214,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<MonaiApplicationEntity> GetPlugins()
+        public ActionResult<MonaiApplicationEntity> GetPlugIns()
         {
             try
             {
-                return Ok(_inputDataPluginEngineFactory.RegisteredPlugins());
+                return Ok(_inputDataPlugInEngineFactory.RegisteredPlugIns());
             }
             catch (Exception ex)
             {
-                _logger.ErrorReadingDataInputPlugins(ex);
+                _logger.ErrorReadingDataInputPlugIns(ex);
                 return Problem(title: "Error reading data input plug-ins.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }

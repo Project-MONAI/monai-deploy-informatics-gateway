@@ -20,20 +20,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
-    internal class InputDataPluginEngine : IInputDataPluginEngine
+    internal class InputDataPlugInEngine : IInputDataPlugInEngine
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<InputDataPluginEngine> _logger;
-        private IReadOnlyList<IInputDataPlugin> _plugsins;
+        private readonly ILogger<InputDataPlugInEngine> _logger;
+        private IReadOnlyList<IInputDataPlugIn> _plugsins;
 
-        public InputDataPluginEngine(IServiceProvider serviceProvider, ILogger<InputDataPluginEngine> logger)
+        public InputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputDataPlugInEngine> logger)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -41,39 +41,39 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
         public void Configure(IReadOnlyList<string> pluginAssemblies)
         {
-            _plugsins = LoadPlugins(_serviceProvider, pluginAssemblies);
+            _plugsins = LoadPlugIns(_serviceProvider, pluginAssemblies);
         }
 
-        public async Task<Tuple<DicomFile, FileStorageMetadata>> ExecutePlugins(DicomFile dicomFile, FileStorageMetadata fileMetadata)
+        public async Task<Tuple<DicomFile, FileStorageMetadata>> ExecutePlugInsAsync(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {
             if (_plugsins == null)
             {
-                throw new ApplicationException("InputDataPluginEngine not configured, please call Configure() first.");
+                throw new ApplicationException("InputDataPlugInEngine not configured, please call Configure() first.");
             }
 
             foreach (var plugin in _plugsins)
             {
-                _logger.ExecutingInputDataPlugin(plugin.Name);
-                (dicomFile, fileMetadata) = await plugin.Execute(dicomFile, fileMetadata).ConfigureAwait(false);
+                _logger.ExecutingInputDataPlugIn(plugin.Name);
+                (dicomFile, fileMetadata) = await plugin.ExecuteAsync(dicomFile, fileMetadata).ConfigureAwait(false);
             }
 
             return new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata);
         }
 
-        private IReadOnlyList<IInputDataPlugin> LoadPlugins(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
+        private IReadOnlyList<IInputDataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
         {
             var exceptions = new List<Exception>();
-            var list = new List<IInputDataPlugin>();
+            var list = new List<IInputDataPlugIn>();
             foreach (var plugin in pluginAssemblies)
             {
                 try
                 {
-                    _logger.AddingInputDataPlugin(plugin);
-                    list.Add(typeof(IInputDataPlugin).CreateInstance<IInputDataPlugin>(serviceProvider, typeString: plugin));
+                    _logger.AddingInputDataPlugIn(plugin);
+                    list.Add(typeof(IInputDataPlugIn).CreateInstance<IInputDataPlugIn>(serviceProvider, typeString: plugin));
                 }
                 catch (Exception ex)
                 {
-                    exceptions.Add(new PlugingLoadingException($"Error loading plug-in '{plugin}'.", ex));
+                    exceptions.Add(new PlugInLoadingException($"Error loading plug-in '{plugin}'.", ex));
                 }
             }
 

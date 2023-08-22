@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -54,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly Mock<IStorageService> _storageService;
         private readonly Mock<IMessageBrokerSubscriberService> _messageSubscriberService;
         private readonly Mock<IMessageBrokerPublisherService> _messagePublisherService;
-        private readonly Mock<IOutputDataPluginEngine> _outputDataPluginEngine;
+        private readonly Mock<IOutputDataPlugInEngine> _outputDataPlugInEngine;
         private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly Mock<IHttpClientFactory> _httpClientFactory;
         private readonly Mock<IInferenceRequestRepository> _inferenceRequestStore;
@@ -72,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService = new Mock<IStorageService>();
             _messageSubscriberService = new Mock<IMessageBrokerSubscriberService>();
             _messagePublisherService = new Mock<IMessageBrokerPublisherService>();
-            _outputDataPluginEngine = new Mock<IOutputDataPluginEngine>();
+            _outputDataPlugInEngine = new Mock<IOutputDataPlugInEngine>();
             _loggerFactory = new Mock<ILoggerFactory>();
             _httpClientFactory = new Mock<IHttpClientFactory>();
             _inferenceRequestStore = new Mock<IInferenceRequestRepository>();
@@ -89,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             services.AddScoped(p => _inferenceRequestStore.Object);
             services.AddScoped(p => _messagePublisherService.Object);
             services.AddScoped(p => _messageSubscriberService.Object);
-            services.AddScoped(p => _outputDataPluginEngine.Object);
+            services.AddScoped(p => _outputDataPlugInEngine.Object);
             services.AddScoped(p => _storageService.Object);
             services.AddScoped(p => _storageInfoProvider.Object);
 
@@ -100,8 +101,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(scope.Object);
 
-            _outputDataPluginEngine.Setup(p => p.Configure(It.IsAny<IReadOnlyList<string>>()));
-            _outputDataPluginEngine.Setup(p => p.ExecutePlugins(It.IsAny<ExportRequestDataMessage>()))
+            _outputDataPlugInEngine.Setup(p => p.Configure(It.IsAny<IReadOnlyList<string>>()));
+            _outputDataPlugInEngine.Setup(p => p.ExecutePlugInsAsync(It.IsAny<ExportRequestDataMessage>()))
                 .Returns<ExportRequestDataMessage>((ExportRequestDataMessage message) => Task.FromResult(message));
 
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_loggerDicomWebClient.Object);

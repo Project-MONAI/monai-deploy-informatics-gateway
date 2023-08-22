@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -38,19 +39,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     {
         private readonly ILogger<DestinationAeTitleController> _logger;
         private readonly IDestinationApplicationEntityRepository _repository;
-        private readonly IDataPluginEngineFactory<IOutputDataPlugin> _outputDataPluginEngineFactory;
+        private readonly IDataPlugInEngineFactory<IOutputDataPlugIn> _outputDataPlugInEngineFactory;
         private readonly IScuQueue _scuQueue;
 
         public DestinationAeTitleController(
             ILogger<DestinationAeTitleController> logger,
             IDestinationApplicationEntityRepository repository,
             IScuQueue scuQueue,
-            IDataPluginEngineFactory<IOutputDataPlugin> outputDataPluginEngineFactory)
+            IDataPlugInEngineFactory<IOutputDataPlugIn> outputDataPlugInEngineFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _scuQueue = scuQueue ?? throw new ArgumentNullException(nameof(scuQueue));
-            _outputDataPluginEngineFactory = outputDataPluginEngineFactory ?? throw new ArgumentNullException(nameof(outputDataPluginEngineFactory));
+            _outputDataPlugInEngineFactory = outputDataPlugInEngineFactory ?? throw new ArgumentNullException(nameof(outputDataPlugInEngineFactory));
         }
 
         [HttpGet]
@@ -261,15 +262,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<MonaiApplicationEntity> GetPlugins()
+        public ActionResult<MonaiApplicationEntity> GetPlugIns()
         {
             try
             {
-                return Ok(_outputDataPluginEngineFactory.RegisteredPlugins());
+                return Ok(_outputDataPlugInEngineFactory.RegisteredPlugIns());
             }
             catch (Exception ex)
             {
-                _logger.ErrorReadingDataInputPlugins(ex);
+                _logger.ErrorReadingDataInputPlugIns(ex);
                 return Problem(title: "Error reading data input plug-ins.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }

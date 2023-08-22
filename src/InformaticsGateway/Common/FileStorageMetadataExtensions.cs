@@ -19,7 +19,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
-using FellowOakDicom.Serialization;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 

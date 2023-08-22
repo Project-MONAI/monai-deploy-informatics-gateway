@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-using System.IO;
 using System;
+using System.IO;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
 {
-    internal static class SR
+    public static class SR
     {
         public const string PlugInDirectoryName = "plug-ins";
         public static readonly string PlugInDirectoryPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, SR.PlugInDirectoryName);

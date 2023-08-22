@@ -28,6 +28,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Http;
@@ -46,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         private readonly Mock<ILogger<MonaiAeTitleController>> _logger;
         private readonly Mock<IMonaiAeChangedNotificationService> _aeChangedNotificationService;
         private readonly Mock<IMonaiApplicationEntityRepository> _repository;
-        private readonly Mock<IDataPluginEngineFactory<IInputDataPlugin>> _pluginFactory;
+        private readonly Mock<IDataPlugInEngineFactory<IInputDataPlugIn>> _pluginFactory;
 
         public MonaiAeTitleControllerTest()
         {
@@ -75,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 });
 
             _repository = new Mock<IMonaiApplicationEntityRepository>();
-            _pluginFactory = new Mock<IDataPluginEngineFactory<IInputDataPlugin>>();
+            _pluginFactory = new Mock<IDataPlugInEngineFactory<IInputDataPlugIn>>();
 
             var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() { User = new ClaimsPrincipal(new GenericIdentity(TestUsername)) } };
             _controller = new MonaiAeTitleController(
@@ -324,7 +325,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 Workflows = new List<string> { "1", "2", "3" },
                 AllowedSopClasses = new List<string> { "1.2.3" },
                 IgnoredSopClasses = new List<string> { "a.b.c" },
-                PluginAssemblies = new List<string> { "A", "B" },
+                PlugInAssemblies = new List<string> { "A", "B" },
             };
 
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
@@ -373,7 +374,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 Workflows = new List<string> { "1", "2" },
                 AllowedSopClasses = new List<string> { "1.2" },
                 IgnoredSopClasses = new List<string> { "a.b" },
-                PluginAssemblies = new List<string> { "A", "B" },
+                PlugInAssemblies = new List<string> { "A", "B" },
             };
 
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(originalEntity));
@@ -392,8 +393,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal(entity.Workflows, updatedEntity.Workflows);
             Assert.Equal(entity.AllowedSopClasses, updatedEntity.AllowedSopClasses);
             Assert.Equal(entity.IgnoredSopClasses, updatedEntity.IgnoredSopClasses);
-            Assert.Equal(entity.PluginAssemblies, updatedEntity.PluginAssemblies);
-            Assert.Collection(entity.PluginAssemblies, p => p.Equals("A", StringComparison.CurrentCultureIgnoreCase), p => p.Equals("B", StringComparison.CurrentCultureIgnoreCase));
+            Assert.Equal(entity.PlugInAssemblies, updatedEntity.PlugInAssemblies);
+            Assert.Collection(entity.PlugInAssemblies, p => p.Equals("A", StringComparison.CurrentCultureIgnoreCase), p => p.Equals("B", StringComparison.CurrentCultureIgnoreCase));
 
             Assert.NotNull(updatedEntity.DateTimeUpdated);
             Assert.Equal(TestUsername, updatedEntity.UpdatedBy);
@@ -554,30 +555,30 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
         #endregion Delete
 
-        #region GetPlugins
+        #region GetPlugIns
 
-        [RetryFact(5, 250, DisplayName = "GetPlugins - Shall return registered plugins")]
-        public void GetPlugins_ReturnsRegisteredPlugins()
+        [RetryFact(5, 250, DisplayName = "GetPlugIns - Shall return registered plug-ins")]
+        public void GetPlugIns_ReturnsRegisteredPlugIns()
         {
             var input = new Dictionary<string, string>() { { "A", "1" }, { "B", "3" }, { "C", "3" } };
 
-            _pluginFactory.Setup(p => p.RegisteredPlugins()).Returns(input);
+            _pluginFactory.Setup(p => p.RegisteredPlugIns()).Returns(input);
 
-            var result = _controller.GetPlugins();
+            var result = _controller.GetPlugIns();
             var okObjectResult = result.Result as OkObjectResult;
             var response = okObjectResult.Value as IDictionary<string, string>;
             Assert.NotNull(response);
             Assert.Equal(input, response);
 
-            _pluginFactory.Verify(p => p.RegisteredPlugins(), Times.Once());
+            _pluginFactory.Verify(p => p.RegisteredPlugIns(), Times.Once());
         }
 
-        [RetryFact(5, 250, DisplayName = "GetPlugins - Shall return problem on failure")]
-        public void GetPlugins_ShallReturnProblemOnFailure()
+        [RetryFact(5, 250, DisplayName = "GetPlugIns - Shall return problem on failure")]
+        public void GetPlugIns_ShallReturnProblemOnFailure()
         {
-            _pluginFactory.Setup(p => p.RegisteredPlugins()).Throws(new Exception("error"));
+            _pluginFactory.Setup(p => p.RegisteredPlugIns()).Throws(new Exception("error"));
 
-            var result = _controller.GetPlugins();
+            var result = _controller.GetPlugIns();
             var objectResult = result.Result as ObjectResult;
             Assert.NotNull(objectResult);
             var problem = objectResult.Value as ProblemDetails;
@@ -585,9 +586,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal("Error reading data input plug-ins.", problem.Title);
             Assert.Equal("error", problem.Detail);
             Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
-            _pluginFactory.Verify(p => p.RegisteredPlugins(), Times.Once());
+            _pluginFactory.Verify(p => p.RegisteredPlugIns(), Times.Once());
         }
 
-        #endregion GetPlugins
+        #endregion GetPlugIns
     }
 }

@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
                 Workflows = new List<string> { "W1", "W2" },
                 Grouping = "G",
                 IgnoredSopClasses = new List<string> { "4", "5" },
-                PluginAssemblies = new List<string> { "AssemblyA", "AssemblyB", "AssemblyC" },
+                PlugInAssemblies = new List<string> { "AssemblyA", "AssemblyB", "AssemblyC" },
             };
 
             var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);

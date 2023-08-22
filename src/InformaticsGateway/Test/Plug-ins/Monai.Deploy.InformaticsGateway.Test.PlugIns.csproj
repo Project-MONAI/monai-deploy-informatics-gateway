@@ -17,6 +17,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <RootNamespace>Monai.Deploy.InformaticsGateway.Test.PlugIns</RootNamespace>
+    <AssemblyName>Monai.Deploy.InformaticsGateway.Test.PlugIns</AssemblyName>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>

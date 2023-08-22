@@ -14,21 +14,11 @@
  * limitations under the License.
  */
 
-using System.Threading.Tasks;
-using FellowOakDicom;
-using Monai.Deploy.InformaticsGateway.Api.Storage;
-
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
-    /// <summary>
-    /// <c>IInputDataPlugin</c> enables lightweight data processing over incoming data received from supported data ingestion
-    /// services.
-    /// Refer to <see cref="IInputDataPluginEngine" /> for additional details.
-    /// </summary>
-    public interface IInputDataPlugin
+    public enum DatabaseType
     {
-        string Name { get; }
-
-        Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> Execute(DicomFile dicomFile, FileStorageMetadata fileMetadata);
+        EntityFramework,
+        MongoDb
     }
 }

@@ -17,17 +17,17 @@
 using System.Threading.Tasks;
 using FellowOakDicom;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
 {
     /// <summary>
-    /// <c>IOutputDataPlugin</c> enables lightweight data processing over incoming data received from supported data ingestion
+    /// <c>IOutputDataPlugIn</c> enables lightweight data processing over incoming data received from supported data ingestion
     /// services.
-    /// Refer to <see cref="IOutputDataPluginEngine" /> for additional details.
+    /// Refer to <see cref="IOutputDataPlugInEngine" /> for additional details.
     /// </summary>
-    public interface IOutputDataPlugin
+    public interface IOutputDataPlugIn
     {
         string Name { get; }
 
-        Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> Execute(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage);
+        Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> ExecuteAsync(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage);
     }
 }

@@ -17,14 +17,14 @@
 using System;
 using Ardalis.GuardClauses;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class PluginNameAttribute : Attribute
+    public class PlugInNameAttribute : Attribute
     {
         public string Name { get; set; }
 
-        public PluginNameAttribute(string name)
+        public PlugInNameAttribute(string name)
         {
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
 

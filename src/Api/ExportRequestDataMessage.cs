@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +17,7 @@
 
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api
@@ -32,9 +33,9 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public string Filename { get; }
 
         /// <summary>
-        /// Optional list of data output plug-in type names to be executed by the <see cref="IOutputDataPluginEngine"/>.
+        /// Optional list of data output plug-in type names to be executed by the <see cref="IOutputDataPlugInEngine"/>.
         /// </summary>
-        public List<string> PluginAssemblies
+        public List<string> PlugInAssemblies
         {
             get
             {
@@ -47,6 +48,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
             get { return _exportRequest.ExportTaskId; }
         }
 
+        public string WorkflowInstanceId
+        {
+            get { return _exportRequest.WorkflowInstanceId; }
+        }
+
         public string CorrelationId
         {
             get { return _exportRequest.CorrelationId; }
@@ -56,7 +62,6 @@ namespace Monai.Deploy.InformaticsGateway.Api
         {
             get { return _exportRequest.Destinations; }
         }
-
 
         public ExportRequestDataMessage(ExportRequestEvent exportRequest, string filename)
         {

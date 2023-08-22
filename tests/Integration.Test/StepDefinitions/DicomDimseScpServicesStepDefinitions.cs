@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Grouping = grouping,
                     Timeout = groupingTimeout,
                     Workflows = new List<string>(DummyWorkflows),
-                    PluginAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile).AssemblyQualifiedName }
+                    PlugInAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.PlugIns.TestInputDataPlugInModifyDicomFile).AssemblyQualifiedName }
                 }, CancellationToken.None);
 
                 _dataProvider.Workflows = DummyWorkflows;

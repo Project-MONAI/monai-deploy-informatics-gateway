@@ -114,6 +114,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 Timestamp = payload.DateTimeCreated,
                 CalledAeTitle = payload.CalledAeTitle,
                 CallingAeTitle = payload.CallingAeTitle,
+                WorkflowInstanceId = payload.WorkflowInstanceId,
+                TaskId = payload.TaskId,
             };
 
             workflowRequest.AddFiles(payload.GetUploadedFiles().AsEnumerable());

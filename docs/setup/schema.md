@@ -20,19 +20,18 @@
 
 The configuration file (`appsettings.json`) controls the behaviors and parameters of the internal services. The file is stored next to the main application binary and provides a subset of the default configuration options by default. Please refer to the [Monai.Deploy.InformaticsGateway.Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.InformaticsGatewayConfiguration) namespace for complete reference.
 
-
 ### Configuration Sections
 
 `appsettings.json` contains the following top-level sections:
 
 ```json
 {
-  "ConnectionStrings": "connection string to the database",
-  "InformaticsGateway": "configuration options for the Informatics Gateway & its internal services",
-  "Logging": "logging configuration options",
-  "Kestrel": "web server configuration options. See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-5.0",
-  "AllowedHosts": "host filtering option.  See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/host-filtering?view=aspnetcore-5.0",
-  "Cli": "configurations used by the CLI"
+    "ConnectionStrings": "connection string to the database",
+    "InformaticsGateway": "configuration options for the Informatics Gateway & its internal services",
+    "Logging": "logging configuration options",
+    "Kestrel": "web server configuration options. See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel?view=aspnetcore-5.0",
+    "AllowedHosts": "host filtering option.  See https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/host-filtering?view=aspnetcore-5.0",
+    "Cli": "configurations used by the CLI"
 }
 ```
 
@@ -49,6 +48,7 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
 | hl7       | HL7 listener configuration options                                                 | [Hl7Configuration](xref:Monai.Deploy.InformaticsGateway.Configuration.Hl7Configuration)                     |
 | storage   | Storage configuration options, including storage service and disk usage monitoring | [StorageConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration)             |
 | messaging | Message broker configuration options                                               | [MessageBrokerConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.MessageBrokerConfiguration) |
+| plug-ins  | Configuration options for plug-ins                                                 | [PlugInConfiguration](xref:Monai.Deploy.InformaticsGateway.Configuration.PlugInConfiguration)               |
 | Cli       | The configuration used by the CLI                                                  | -                                                                                                           |
 
 ---
@@ -57,89 +57,91 @@ The `InformaticsGateway` configuration section contains the following sub-sectio
 
 ```json
 {
-  "ConnectionStrings": {
-    "InformaticsGatewayDatabase": "Data Source=/database/mig.db"
-  },
-  "InformaticsGateway": {
-    "dicom": {
-      "scp": {
-        "port": 104,
-        "logDimseDatasets": false,
-        "rejectUnknownSources": true
+    "ConnectionStrings": {
+        "InformaticsGatewayDatabase": "Data Source=/database/mig.db"
+    },
+    "InformaticsGateway": {
+        "dicom": {
+            "scp": {
+                "port": 104,
+                "logDimseDatasets": false,
+                "rejectUnknownSources": true
+            },
+            "scu": {
+                "aeTitle": "MONAISCU",
+                "logDimseDatasets": false,
+                "logDataPDUs": false
+            }
+        },
+        "messaging": {
+            "publisherServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ",
+            "publisherSettings": {
+                "endpoint": "localhost",
+                "username": "username",
+                "password": "password",
+                "virtualHost": "monaideploy",
+                "exchange": "monaideploy"
+            },
+            "subscriberServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
+            "subscriberSettings": {
+                "endpoint": "localhost",
+                "username": "username",
+                "password": "password",
+                "virtualHost": "monaideploy",
+                "exchange": "monaideploy",
+                "exportRequestQueue": "export_tasks",
+                "deadLetterExchange": "monaideploy-dead-letter",
+                "deliveryLimit": 3,
+                "requeueDelay": 30
+            }
+        },
+        "storage": {
+            "localTemporaryStoragePath": "/payloads",
+            "remoteTemporaryStoragePath": "/incoming",
+            "bucketName": "monaideploy",
+            "storageRootPath": "/payloads",
+            "temporaryBucketName": "monaideploy",
+            "serviceAssemblyName": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO",
+            "watermarkPercent": 75,
+            "reserveSpaceGB": 5,
+            "settings": {
+                "endpoint": "localhost:9000",
+                "accessKey": "admin",
+                "accessToken": "password",
+                "securedConnection": false,
+                "region": "local",
+                "executableLocation": "/bin/mc",
+                "serviceName": "MinIO"
+            }
+        },
+        "hl7": {
+            "port": 2575,
+            "maximumNumberOfConnections": 10,
+            "clientTimeout": 60000,
+            "sendAck": true
+        },
+      "dicomWeb": {
+        "plugins": []
       },
-      "scu": {
-        "aeTitle": "MONAISCU",
-        "logDimseDatasets": false,
-        "logDataPDUs": false
-      }
     },
-    "messaging": {
-      "publisherServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessagePublisherService, Monai.Deploy.Messaging.RabbitMQ",
-      "publisherSettings": {
-        "endpoint": "localhost",
-        "username": "username",
-        "password": "password",
-        "virtualHost": "monaideploy",
-        "exchange": "monaideploy"
-      },
-      "subscriberServiceAssemblyName": "Monai.Deploy.Messaging.RabbitMQ.RabbitMQMessageSubscriberService, Monai.Deploy.Messaging.RabbitMQ",
-      "subscriberSettings": {
-        "endpoint": "localhost",
-        "username": "username",
-        "password": "password",
-        "virtualHost": "monaideploy",
-        "exchange": "monaideploy",
-        "exportRequestQueue": "export_tasks",
-        "deadLetterExchange": "monaideploy-dead-letter",
-        "deliveryLimit": 3,
-        "requeueDelay": 30
-      }
+    "Kestrel": {
+        "EndPoints": {
+            "Http": {
+                "Url": "http://+:5000"
+            }
+        }
     },
-    "storage": {
-      "localTemporaryStoragePath": "/payloads",
-      "remoteTemporaryStoragePath": "/incoming",
-      "bucketName": "monaideploy",
-      "storageRootPath": "/payloads",
-      "temporaryBucketName": "monaideploy",
-      "serviceAssemblyName": "Monai.Deploy.Storage.MinIO.MinIoStorageService, Monai.Deploy.Storage.MinIO",
-      "watermarkPercent": 75,
-      "reserveSpaceGB": 5,
-      "settings": {
-        "endpoint": "localhost:9000",
-        "accessKey": "admin",
-        "accessToken": "password",
-        "securedConnection": false,
-        "region": "local",
-        "executableLocation": "/bin/mc",
-        "serviceName": "MinIO"
-      }
-    },
-    "hl7": {
-      "port": 2575,
-      "maximumNumberOfConnections": 10,
-      "clientTimeout": 60000,
-      "sendAck": true
+    "AllowedHosts": "*",
+    "Cli": {
+        "Runner": "Docker",
+        "HostDataStorageMount": "~/.mig/data",
+        "HostPlugInsStorageMount": "~/.mig/plug-ins",
+        "HostDatabaseStorageMount": "~/.mig/database",
+        "HostLogsStorageMount": "~/.mig/logs",
+        "InformaticsGatewayServerEndpoint": "http://localhost:5000",
+        "DockerImagePrefix": "ghcr.io/project-monai/monai-deploy-informatics-gateway"
     }
-  },
-  "Kestrel": {
-    "EndPoints": {
-      "Http": {
-        "Url": "http://+:5000"
-      }
-    }
-  },
-  "AllowedHosts": "*",
-  "Cli": {
-    "Runner": "Docker",
-    "HostDataStorageMount": "~/.mig/data",
-    "HostPlugInsStorageMount": "~/.mig/plug-ins",
-    "HostDatabaseStorageMount": "~/.mig/database",
-    "HostLogsStorageMount": "~/.mig/logs",
-    "InformaticsGatewayServerEndpoint": "http://localhost:5000",
-    "DockerImagePrefix": "ghcr.io/project-monai/monai-deploy-informatics-gateway"
-  }
 }
-
 ```
 
 ### Configuration Validation

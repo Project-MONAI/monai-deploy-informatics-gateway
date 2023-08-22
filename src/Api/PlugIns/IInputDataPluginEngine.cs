@@ -20,11 +20,11 @@ using System.Threading.Tasks;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
 {
     /// <summary>
-    /// <c>IInputDataPluginEngine</c> processes incoming data receivied from various supported services through
-    /// a list of plug-ins based on <see cref="IInputDataPlugin"/>.
+    /// <c>IInputDataPlugInEngine</c> processes incoming data receivied from various supported services through
+    /// a list of plug-ins based on <see cref="IInputDataPlugIn"/>.
     /// Rules:
     /// <list type="bullet">
     /// <item>SCP: A list of plug-ins can be configured with each AET, and each plug-in is executed in the order stored, enabling piping of the incoming data before each file is uploaded to the storage service.</item>
@@ -33,10 +33,10 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// <item>Plug-ins SHALL not accumulate files in memory or storage for bulk processing.</item>
     /// </list>
     /// </summary>
-    public interface IInputDataPluginEngine
+    public interface IInputDataPlugInEngine
     {
         void Configure(IReadOnlyList<string> pluginAssemblies);
 
-        Task<Tuple<DicomFile, FileStorageMetadata>> ExecutePlugins(DicomFile dicomFile, FileStorageMetadata fileMetadata);
+        Task<Tuple<DicomFile, FileStorageMetadata>> ExecutePlugInsAsync(DicomFile dicomFile, FileStorageMetadata fileMetadata);
     }
 }

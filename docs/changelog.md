@@ -23,6 +23,7 @@
 
 - gh-435 Fix CLI to read log dir path from NLog config file.
 - New Virtual Application Entity support for DICOMWeb STOW-RS APIs to enable dynamic endpoints.
+- New data [plug-ins](./plug-ins/overview.md) feature to manipulate incoming outgoing data.
 
 
 ## 0.3.21

@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             studySpec.InstanceMax.Should().BeGreaterThan(0);
 
             var instancesPerSeries = _random.Next(studySpec.InstanceMin, studySpec.InstanceMax);
-            var files = new List<DicomFile>();
+            var files = new Dictionary<string, DicomFile>();
             var studyInstanceUids = new List<string>();
             DicomFile dicomFile = null;
 
@@ -120,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                     {
                         var size = _random.NextLong(studySpec.SizeMinBytes, studySpec.SizeMaxBytes);
                         dicomFile = generator.GenerateNewInstance(size);
-                        files.Add(dicomFile);
+                        files.Add(dicomFile.GenerateFileName(), dicomFile);
                     }
                 }
                 _outputHelper.WriteLine("DICOM Instance: PID={0}, STUDY={1}",

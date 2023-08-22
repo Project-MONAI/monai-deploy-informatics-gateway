@@ -9,7 +9,19 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "PluginAssemblies",
+                name: "TaskId",
+                table: "Payloads",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "WorkflowInstanceId",
+                table: "Payloads",
+                type: "TEXT",
+                nullable: true);
+
+            migrationBuilder.AddColumn<string>(
+                name: "PlugInAssemblies",
                 table: "MonaiApplicationEntities",
                 type: "TEXT",
                 nullable: false,
@@ -22,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     Name = table.Column<string>(type: "TEXT", nullable: false),
                     VirtualAeTitle = table.Column<string>(type: "TEXT", nullable: false),
                     Workflows = table.Column<string>(type: "TEXT", nullable: false),
-                    PluginAssemblies = table.Column<string>(type: "TEXT", nullable: false),
+                    PlugInAssemblies = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     UpdatedBy = table.Column<string>(type: "TEXT", nullable: true),
                     DateTimeUpdated = table.Column<DateTime>(type: "TEXT", nullable: true),
@@ -46,7 +58,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                 name: "VirtualApplicationEntities");
 
             migrationBuilder.DropColumn(
-                name: "PluginAssemblies",
+                name: "TaskId",
+                table: "Payloads");
+
+            migrationBuilder.DropColumn(
+                name: "WorkflowInstanceId",
+                table: "Payloads");
+
+            migrationBuilder.DropColumn(
+                name: "PlugInAssemblies",
                 table: "MonaiApplicationEntities");
         }
     }

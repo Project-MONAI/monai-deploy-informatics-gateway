@@ -19,7 +19,7 @@ using BoDi;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Test.Plugins;
+using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -73,15 +73,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         }
 
         [Then(@"studies are uploaded to storage service with data input plugins")]
-        public async Task ThenXXFilesUploadedToStorageServiceWithDataInputPlugins()
+        public async Task ThenXXFilesUploadedToStorageServiceWithDataInputPlugIns()
         {
             await _assertions.ShouldHaveUploadedDicomDataToMinio(
                 _receivedMessages.Messages,
                 _dataProvider.DicomSpecs.FileHashes,
                 (dicomFile) =>
                 {
-                    dicomFile.Dataset.GetString(TestInputDataPluginModifyDicomFile.ExpectedTag)
-                        .Should().Be(TestInputDataPluginModifyDicomFile.ExpectedValue);
+                    dicomFile.Dataset.GetString(TestInputDataPlugInModifyDicomFile.ExpectedTag)
+                        .Should().Be(TestInputDataPlugInModifyDicomFile.ExpectedValue);
                 });
         }
     }

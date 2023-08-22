@@ -115,6 +115,5 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         {
             return await _repository.FindByAeTitleAsync(aet).ConfigureAwait(false);
         }
-
     }
 }

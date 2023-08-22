@@ -24,7 +24,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-using Monai.Deploy.InformaticsGateway.Test.Plugins;
+using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Name = virtualAe,
                     VirtualAeTitle = virtualAe,
                     Workflows = new List<string>(DummyWorkflows),
-                    PluginAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginVirtualAE).AssemblyQualifiedName }
+                    PlugInAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.PlugIns.TestInputDataPlugInVirtualAE).AssemblyQualifiedName }
                 }, CancellationToken.None);
 
                 _dataProvider.Workflows = DummyWorkflows;
@@ -110,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             await _dataSink.SendAsync(_dataProvider, $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}", _dataProvider.Workflows, async (DicomWebClient dicomWebClient, DicomDataSpecs specs) =>
             {
-                return await dicomWebClient.Stow.Store(specs.Files);
+                return await dicomWebClient.Stow.Store(specs.Files.Values);
             });
             _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }
@@ -122,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             await _dataSink.SendAsync(_dataProvider, $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}", null, async (DicomWebClient dicomWebClient, DicomDataSpecs specs) =>
             {
-                return await dicomWebClient.Stow.Store(specs.Files);
+                return await dicomWebClient.Stow.Store(specs.Files.Values);
             });
             _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }
@@ -135,21 +135,21 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             await _dataSink.SendAsync(_dataProvider, $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}", _dataProvider.Workflows, async (DicomWebClient dicomWebClient, DicomDataSpecs specs) =>
             {
                 // Note: the MIG DICOMweb client ignores instances without matching StudyInstanceUID.
-                return await dicomWebClient.Stow.Store(specs.StudyInstanceUids.First(), specs.Files);
+                return await dicomWebClient.Stow.Store(specs.StudyInstanceUids.First(), specs.Files.Values);
             });
             _dataProvider.ReplaceGeneratedDicomDataWithHashes();
         }
 
         [Then(@"studies are uploaded to storage service with data input VAE plugin")]
-        public async Task ThenXXFilesUploadedToStorageServiceWithDataInputPlugins()
+        public async Task ThenXXFilesUploadedToStorageServiceWithDataInputPlugIns()
         {
             await _assertions.ShouldHaveUploadedDicomDataToMinio(
                 _receivedMessages.Messages,
                 _dataProvider.DicomSpecs.FileHashes,
                 (dicomFile) =>
                 {
-                    dicomFile.Dataset.GetString(TestInputDataPluginVirtualAE.ExpectedTag)
-                        .Should().Be(TestInputDataPluginVirtualAE.ExpectedValue);
+                    dicomFile.Dataset.GetString(TestInputDataPlugInVirtualAE.ExpectedTag)
+                        .Should().Be(TestInputDataPlugInVirtualAE.ExpectedValue);
                 });
         }
     }

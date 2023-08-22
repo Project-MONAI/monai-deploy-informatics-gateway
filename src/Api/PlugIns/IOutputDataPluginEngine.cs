@@ -17,22 +17,22 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
 {
     /// <summary>
-    /// <c>IOutputDataPluginEngine</c> processes each file before exporting to its destination
-    /// through a list of plug-ins based on <see cref="IOutputDataPlugin"/>.
+    /// <c>IOutputDataPlugInEngine</c> processes each file before exporting to its destination
+    /// through a list of plug-ins based on <see cref="IOutputDataPlugIn"/>.
     /// Rules:
     /// <list type="bullet">
     /// <item>A list of plug-ins can be included with each export request, and each plug-in is executed in the order stored, processing one file at a time, enabling piping of the data before each file is exported.</item>
-    /// <item>Plugins MUST be lightweight and not hinder the export process.</item>
-    /// <item>Plugins SHALL not accumulate files in memory or storage for bulk processing.</item>
+    /// <item>Plug-ins MUST be lightweight and not hinder the export process.</item>
+    /// <item>Plug-ins SHALL not accumulate files in memory or storage for bulk processing.</item>
     /// </list>
     /// </summary>
-    public interface IOutputDataPluginEngine
+    public interface IOutputDataPlugInEngine
     {
         void Configure(IReadOnlyList<string> pluginAssemblies);
 
-        Task<ExportRequestDataMessage> ExecutePlugins(ExportRequestDataMessage exportRequestDataMessage);
+        Task<ExportRequestDataMessage> ExecutePlugInsAsync(ExportRequestDataMessage exportRequestDataMessage);
     }
 }

@@ -133,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PluginAssemblies")
+                    b.Property<string>("PlugInAssemblies")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -273,8 +273,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<int>("State")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("TaskId")
+                        .HasColumnType("TEXT");
+
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("WorkflowInstanceId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("PayloadId");
 
@@ -301,7 +307,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<DateTime?>("DateTimeUpdated")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("PluginAssemblies")
+                    b.Property<string>("PlugInAssemblies")
                         .IsRequired()
                         .HasColumnType("TEXT");
 

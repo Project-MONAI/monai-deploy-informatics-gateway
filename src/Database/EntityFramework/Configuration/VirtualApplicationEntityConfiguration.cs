@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2023 MONAI Consortium
- * Copyright 2021 NVIDIA Corporation
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(valueComparer);
-            builder.Property(j => j.PluginAssemblies)
+            builder.Property(j => j.PlugInAssemblies)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
