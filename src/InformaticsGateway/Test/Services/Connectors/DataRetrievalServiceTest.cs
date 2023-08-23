@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 using Moq.Protected;
 using xRetry;
@@ -191,21 +192,21 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             var restoredFile = new List<FileStorageMetadata>
                 {
-                    new DicomFileStorageMetadata(Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString()),
-                    new FhirFileStorageMetadata(Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(), FhirStorageFormat.Json)
+                    new DicomFileStorageMetadata(Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),Guid.NewGuid().ToString(),DataService.DicomWeb,"calling","called"),
+                    new FhirFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), FhirStorageFormat.Json, DataService.FHIR, "origin"),
                 };
             _storageMetadataWrapperRepository.Setup(p => p.GetFileStorageMetdadataAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()))
-                    .ReturnsAsync(restoredFile);
+                        .ReturnsAsync(restoredFile);
 
             _inferenceRequestStore.SetupSequence(p => p.TakeAsync(It.IsAny<CancellationToken>()))
-                        .Returns(Task.FromResult(request))
-                        .Returns(() =>
-                        {
-                            cancellationTokenSource.Cancel();
-                            throw new OperationCanceledException("canceled");
-                        });
+                            .Returns(Task.FromResult(request))
+                            .Returns(() =>
+                            {
+                                cancellationTokenSource.Cancel();
+                                throw new OperationCanceledException("canceled");
+                            });
 
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()));
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()));
 
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
@@ -327,7 +328,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.ToString().StartsWith($"{url}studies/")),
                ItExpr.IsAny<CancellationToken>());
 
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Never());
             _logger.VerifyLogging($"Error processing request: TransactionId = {request.TransactionId}.", LogLevel.Error, Times.Once());
         }
 
@@ -461,7 +462,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                ItExpr.IsAny<CancellationToken>());
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(4));
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(4));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(4));
         }
 
         [RetryFact(5, 250)]
@@ -579,7 +580,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             }
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(studyInstanceUids.Count));
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(studyInstanceUids.Count));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(studyInstanceUids.Count));
         }
 
         [RetryFact(5, 250)]
@@ -697,7 +698,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             }
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(2));
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(2));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(2));
         }
 
         [RetryFact(5, 250)]
@@ -807,7 +808,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.PathAndQuery.Contains("Observation/2")),
                ItExpr.IsAny<CancellationToken>());
 
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(2));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(2));
         }
 
         private static HttpResponseMessage GenerateQueryResult(DicomTag dicomTag, string queryValue, List<string> studyInstanceUids)

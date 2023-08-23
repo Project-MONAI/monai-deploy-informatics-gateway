@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml;
@@ -128,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
         [InlineData("<Patient xmlns=\"http://hl7.org/fhir\"><id value=\" \"/><name><family value=\"Monai\"/><given value=\"Deploy\"/></name></Patient>")]
         public async Task GetContentAsync_WhenCalledWithNoId_ReturnsOriginalWithId(string xml)
         {
-            var request = new Mock<HttpRequest>();
+            var request = CreateHttpRquestMock();
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationFhirXml);
@@ -147,6 +148,17 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             Assert.IsType<MemoryStream>(results.Metadata.File.Data);
             Assert.NotNull(results.Metadata);
             Assert.Contains($"<id value=\"{correlationId}\" />", results.RawData);
+        }
+
+        private Mock<HttpRequest> CreateHttpRquestMock()
+        {
+            var request = new Mock<HttpRequest>();
+            var context = new Mock<HttpContext>();
+            var connection = new Mock<ConnectionInfo>();
+            request.Setup(p => p.HttpContext).Returns(context.Object);
+            context.Setup(p => p.Connection).Returns(connection.Object);
+            connection.Setup(p => p.RemoteIpAddress).Returns(new IPAddress(16885952));
+            return request;
         }
     }
 }

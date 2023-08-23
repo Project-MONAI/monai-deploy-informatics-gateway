@@ -158,12 +158,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                     case DicomFileStorageMetadata dicom:
                         if (!string.IsNullOrWhiteSpace(dicom.JsonFile.TemporaryPath))
                         {
-                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.Source, dicom.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
+                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.DataOrigin.Source, dicom.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
                         }
                         break;
                 }
 
-                await UploadFileAndConfirm(blob.Id, blob.File, blob.Source, blob.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
+                await UploadFileAndConfirm(blob.Id, blob.File, blob.DataOrigin.Source, blob.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
             catch (Exception ex)
             {

@@ -23,6 +23,7 @@ using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Minio;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.Messaging.Events;
@@ -194,7 +195,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             }
         }
 
-        internal void ShouldHaveCorrectNumberOfWorkflowRequestMessages(DataProvider dataProvider, IReadOnlyList<Message> messages, int count)
+        internal void ShouldHaveCorrectNumberOfWorkflowRequestMessages(DataProvider dataProvider, DataService dataService, IReadOnlyList<Message> messages, int count)
         {
             Guard.Against.Null(dataProvider, nameof(dataProvider));
             Guard.Against.Null(messages, nameof(messages));
@@ -219,6 +220,48 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 {
                     request.Workflows.Should().Equal(dataProvider.Workflows);
                 }
+                request.DataTrigger.Should().NotBeNull();
+                request.DataTrigger.DataService.Should().Be(dataService);
+                request.DataTrigger.Source.Should().Be(dataProvider.Source);
+                request.DataTrigger.Destination.Should().Be(dataProvider.Destination);
+
+                foreach (var dataOrigin in request.DataOrigins)
+                {
+                    dataOrigin.DataService.Should().Be(dataService);
+                    dataOrigin.Source.Should().Be(dataProvider.Source);
+                    dataOrigin.Destination.Should().Be(dataProvider.Destination);
+                }
+            }
+        }
+
+        internal void ShouldHaveCorrectNumberOfWorkflowRequestMessagesForFhirRequest(DataProvider dataProvider, DataService dataService, IReadOnlyList<Message> messages, int count)
+        {
+            Guard.Against.Null(dataProvider, nameof(dataProvider));
+            Guard.Against.Null(messages, nameof(messages));
+
+            messages.Should().NotBeNullOrEmpty().And.HaveCount(count);
+            foreach (var message in messages)
+            {
+                message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
+                var request = message.ConvertTo<WorkflowRequestEvent>();
+                request.Should().NotBeNull();
+                request.FileCount.Should().Be(1);
+
+                if (dataProvider.Workflows is not null)
+                {
+                    request.Workflows.Should().Equal(dataProvider.Workflows);
+                }
+                request.DataTrigger.Should().NotBeNull();
+                request.DataTrigger.DataService.Should().Be(dataService);
+                request.DataTrigger.Source.Should().Be(dataProvider.Source);
+                request.DataTrigger.Destination.Should().Be(FileStorageMetadata.IpAddress());
+
+                foreach (var dataOrigin in request.DataOrigins)
+                {
+                    dataOrigin.DataService.Should().Be(dataService);
+                    dataOrigin.Source.Should().Be(dataProvider.Source);
+                    dataOrigin.Destination.Should().Be(dataProvider.Destination);
+                }
             }
         }
 
@@ -236,6 +279,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 request.Should().NotBeNull();
                 request.FileCount.Should().Be(dataProvider.DicomSpecs.FileCount);
                 request.Workflows.Should().Equal(dataProvider.AcrRequest.Application.Id);
+                request.DataTrigger.Should().NotBeNull();
+                request.DataTrigger.DataService.Should().Be(DataService.ACR);
+                request.DataTrigger.Source.Should().Be(dataProvider.AcrRequest.TransactionId);
+
+                foreach (var dataOrigin in request.DataOrigins)
+                {
+                    dataOrigin.DataService.Should().Be(DataService.DicomWeb);
+                    dataOrigin.Source.Should().Be(dataProvider.AcrRequest.TransactionId);
+                }
             }
         }
 

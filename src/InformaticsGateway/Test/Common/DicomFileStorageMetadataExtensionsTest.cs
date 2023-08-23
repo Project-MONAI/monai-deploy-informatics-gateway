@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using Monai.Deploy.Messaging.Events;
 using MongoDB.Bson;
 using Xunit;
 
@@ -40,7 +41,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString());
+                Guid.NewGuid().ToString(),
+                DataService.DicomWeb,
+                "calling",
+                "called");
 
             var dicom = InstanceGenerator.GenerateDicomFile();
             var json = dicom.ToJson(DicomJsonOptions.Complete, false);
@@ -71,7 +75,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString());
+                Guid.NewGuid().ToString(),
+                DataService.DicomWeb,
+                "calling",
+                "called");
 
             var dicom = InstanceGenerator.GenerateDicomFile();
             var json = dicom.ToJson(DicomJsonOptions.Complete, false);
@@ -105,7 +112,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString());
+                Guid.NewGuid().ToString(),
+                DataService.DicomWeb,
+                "calling",
+                "called");
 
             var dicom = InstanceGenerator.GenerateDicomFile();
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -124,7 +134,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString());
+                Guid.NewGuid().ToString(),
+                DataService.DicomWeb,
+                "calling",
+                "called");
 
             var dicom = InstanceGenerator.GenerateDicomFile();
 #pragma warning disable CS0618 // Type or member is obsolete

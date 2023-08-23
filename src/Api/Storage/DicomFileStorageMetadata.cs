@@ -17,6 +17,7 @@
 using System;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -30,21 +31,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public static readonly string DicomJsonFileExtension = ".json";
         public static readonly string DicomContentType = "application/dicom";
         public static readonly string DicomJsonContentType = System.Net.Mime.MediaTypeNames.Application.Json;
-
-        /// <summary>
-        /// The calling AE title of the DICOM instance.
-        /// For ACR, this is the Transaction ID of the original request.
-        /// Note: this value is same as <see cref="FileStorageMetadata.Source"/>
-        /// </summary>
-        [JsonIgnore]
-        public string CallingAeTitle { get => Source; }
-
-        /// <summary>
-        /// The MONAI AE Title that received the DICOM instance.
-        /// For ACR request, this field is empty.
-        /// </summary>
-        [JsonPropertyName("calledAeTitle")]
-        public string CalledAeTitle { get; set; } = default!;
 
         /// <summary>
         /// Gets or set the Study Instance UID of the DICOM instance.
@@ -95,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         [JsonConstructor]
         public DicomFileStorageMetadata() { }
 
-        public DicomFileStorageMetadata(string associationId, string identifier, string studyInstanceUid, string seriesInstanceUid, string sopInstanceUid)
+        public DicomFileStorageMetadata(string associationId, string identifier, string studyInstanceUid, string seriesInstanceUid, string sopInstanceUid, DataService dataService, string callingAeTitle, string calledAeTitle)
             : base(associationId.ToString(), identifier)
         {
             Guard.Against.NullOrWhiteSpace(associationId, nameof(associationId));
@@ -120,6 +106,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 UploadPath = $"{File.UploadPath}{DicomJsonFileExtension}",
                 ContentType = DicomJsonContentType,
             };
+
+            DataOrigin.DataService = dataService;
+            DataOrigin.Source = callingAeTitle;
+            DataOrigin.Destination = calledAeTitle;
         }
 
         public override void SetFailed()

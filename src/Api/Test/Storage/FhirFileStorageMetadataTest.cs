@@ -17,6 +17,7 @@
 using System;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.Messaging.Events;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Test
@@ -29,13 +30,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         public void GivenFhirFileStorageMetadataWithSpecifiedFormat_ExpectToHaveCorrectFileExtension(FhirStorageFormat fileFormat, string fileExtension)
         {
             var correlationId = Guid.NewGuid().ToString();
-            var metadata = new FhirFileStorageMetadata(correlationId, "TYPE", "ID", fileFormat)
+            var metadata = new FhirFileStorageMetadata(correlationId, "TYPE", "ID", fileFormat, DataService.FHIR, correlationId)
             {
                 ResourceId = "ID",
                 ResourceType = "TYPE",
             };
 
-            Assert.Equal(correlationId, metadata.Source);
+            Assert.Equal(correlationId, metadata.DataOrigin.Source);
             Assert.Equal(
                 $"{FhirFileStorageMetadata.FhirSubDirectoryName}/{metadata.ResourceType}/{metadata.ResourceId}{fileExtension}",
                 metadata.File.UploadPath);
@@ -50,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         public void GivenFhirFileStorageMetadata_WhenSetFailedIsCalled_AllFilesAreSetToFailed()
         {
             var correlationId = Guid.NewGuid().ToString();
-            var metadata = new FhirFileStorageMetadata(correlationId, "TYPE", "ID", FhirStorageFormat.Xml)
+            var metadata = new FhirFileStorageMetadata(correlationId, "TYPE", "ID", FhirStorageFormat.Xml, DataService.FHIR, "origin")
             {
                 ResourceId = "ID",
                 ResourceType = "TYPE",
@@ -66,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         {
             var payloadId = Guid.NewGuid();
             var correlationId = Guid.NewGuid().ToString();
-            var metadata = new FhirFileStorageMetadata(correlationId, "TYPE", "ID", FhirStorageFormat.Xml)
+            var metadata = new FhirFileStorageMetadata(correlationId, "TYPE", "ID", FhirStorageFormat.Xml, DataService.FHIR, "origin")
             {
                 ResourceId = "ID",
                 ResourceType = "TYPE",

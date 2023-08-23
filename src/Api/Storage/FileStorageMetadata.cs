@@ -16,9 +16,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -64,10 +66,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public string CorrelationId { get; set; } = default!;
 
         /// <summary>
-        /// Gets or sets the source of the file.
+        /// Gets or sets the data origin of this file.
         /// </summary>
-        [JsonPropertyName("source")]
-        public string Source { get; set; } = default!;
+        [JsonPropertyName("dataOrigin"), JsonInclude]
+        public DataOrigin DataOrigin { get; private set; }
 
         /// <summary>
         /// Gets a list of workflows designated for the file.
@@ -97,6 +99,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public string? TaskId { get; set; }
 
         /// <summary>
+        /// Gets or sets the PayloadId associated with this file.
+        /// </summary>
+        [JsonPropertyName("payloadId")]
+        public string? PayloadId { get; set; }
+
+        /// <summary>
         /// DO NOT USE
         /// This constructor is intended for JSON serializer.
         /// Due to limitation in current version of .NET, the constructor must be public.
@@ -114,6 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             Id = identifier;
             DateReceived = DateTime.UtcNow;
             Workflows = new List<string>();
+            DataOrigin = new DataOrigin();
         }
 
         /// <summary>
@@ -138,6 +147,19 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             CorrelationId = correlationId;
         }
 
-        public string? PayloadId { get; set; }
+        public static string IpAddress()
+        {
+            var entry = Dns.GetHostEntry(Dns.GetHostName());
+
+            foreach (var ip in entry.AddressList)
+            {
+                if (ip.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+
+            return "127.0.0.1";
+        }
     }
 }

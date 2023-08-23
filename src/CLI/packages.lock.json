@@ -399,8 +399,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "0.1.25",
-        "contentHash": "CllF1ANCwDV0ACbTU63SGxPPmgsivWP8dxgstAHvwo29w5TUs6PDCc8GcyVDTUO5Yl7/vsifdwcs3P/cYBe69w==",
+        "resolved": "1.0.0",
+        "contentHash": "Xr1V3ZrSJByfUP4w+aiOAqC7Uzt1GqRXj35qSTQs9C1oI4gCiBN4wnre0SSvoA7vHQNZPGWNWXtiqbI7Cov3Mg==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
@@ -515,7 +515,7 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.21, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[0.1.25, )",
+          "Monai.Deploy.Messaging": "[1.0.0, )",
           "Monai.Deploy.Storage": "[0.2.18, )",
           "fo-dicom": "[5.1.1, )"
         }

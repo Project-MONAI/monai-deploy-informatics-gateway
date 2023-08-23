@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -143,7 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 
         private async Task<FhirFileStorageMetadata> GenerateFhirFileStorageMetadata()
         {
-            var file = new FhirFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), FhirStorageFormat.Json);
+            var file = new FhirFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), FhirStorageFormat.Json, Messaging.Events.DataService.FHIR, "origin");
 
             await file.SetDataStream("[]", TemporaryDataStorageLocation.Memory);
             file.PayloadId = Guid.NewGuid().ToString();
@@ -152,11 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 
         private async Task<DicomFileStorageMetadata> GenerateDicomFileStorageMetadata()
         {
-            var file = new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
-            {
-                Source = "SOURCE",
-                CalledAeTitle = "AET"
-            };
+            var file = new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "SOURCE", "AET");
             var dataset = new DicomDataset
             {
                 { DicomTag.PatientID, "PID" },

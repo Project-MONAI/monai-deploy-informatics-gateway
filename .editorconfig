@@ -1,4 +1,4 @@
-# Copyright 2022 MONAI Consortium
+# Copyright 2022-2023 MONAI Consortium
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 root = true
 
 # Copyright File Header
-file_header_template                = SPDX-FileCopyrightText: © [year file created] - [last year file modified], MONAI Consortium\nSPDX-License-Identifier: Apache License 2.0
+file_header_template                = SPDX-FileCopyrightText: Â© [year file created] - [last year file modified], MONAI Consortium\nSPDX-License-Identifier: Apache License 2.0
 dotnet_diagnostic.IDE0073.severity  = error
 
 # Default settings:
@@ -309,3 +309,7 @@ max_line_length                 = 88
 [*.json]
 indent_size                     = 2
 insert_final_newline            = ignore
+
+
+# Spelling
+spelling_error_severity         = information
