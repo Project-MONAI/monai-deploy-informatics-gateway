@@ -193,13 +193,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             do
             {
                 await UploadFile(storageObjectMetadata, source, workflows, payloadId, cancellationToken).ConfigureAwait(false);
-                if (count-- <= 0)
+                if (--count <= 0)
                 {
                     throw new FileUploadException($"Failed to upload file after retries {identifier}.");
                 }
-            } while (!(
-            await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false)
-            ));
+            } while (!(await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false)));
         }
 
         private async Task<bool> VerifyExists(string path, CancellationToken cancellationToken)
