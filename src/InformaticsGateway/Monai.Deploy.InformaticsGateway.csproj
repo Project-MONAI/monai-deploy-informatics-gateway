@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2022-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,6 +73,7 @@
     <ProjectReference Include="..\Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="..\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
     <ProjectReference Include="..\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
+    <ProjectReference Include="..\Plug-ins\RemoteAppExecution\Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,16 +85,18 @@
   <Target Name="CopyPlugins" AfterTargets="Publish">
     <ItemGroup>
       <PluginDlls Include="$(PublishDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(PublishDir)Monai.Deploy.Storage.MinIO.dll;$(PublishDir)Minio.dll" />
+      <IOPligins Include="$(PublishDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(PublishDir)\plug-ins\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PluginDlls);@(IOPligins)" DestinationFolder="$(PublishDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(PublishDir)\plug-ins\." Importance="high" />
   </Target>
 
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
       <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll" />
+      <IOPligins Include="$(OutDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PluginDlls);@(IOPligins)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />
   </Target>
 
