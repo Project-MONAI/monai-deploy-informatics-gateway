@@ -73,6 +73,7 @@
     <ProjectReference Include="..\Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="..\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
     <ProjectReference Include="..\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
+    <ProjectReference Include="..\Plug-ins\RemoteAppExecution\Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -84,7 +85,7 @@
   <Target Name="CopyPlugins" AfterTargets="Publish">
     <ItemGroup>
       <PluginDlls Include="$(PublishDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(PublishDir)Monai.Deploy.Storage.MinIO.dll;$(PublishDir)Minio.dll" />
-      <IOPligins Include="$(SolutionDir)/Plug-ins/RemoteAppExecution/bin/Debug/net6.0/Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
+      <IOPligins Include="$(PublishDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDlls);@(IOPligins)" DestinationFolder="$(PublishDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(PublishDir)\plug-ins\." Importance="high" />
@@ -93,7 +94,7 @@
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
       <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll" />
-      <IOPligins Include="$(SolutionDir)/Plug-ins/RemoteAppExecution/bin/Debug/net6.0/Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
+      <IOPligins Include="$(OutDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDlls);@(IOPligins)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />
