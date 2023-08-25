@@ -314,7 +314,7 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
     :versions:
     - 17.4.1
-    - 17.6.3
+    - 17.7.1
     :when: 2022-08-16 23:05:48.342748414 Z
 - - :approve
   - Microsoft.Data.Sqlite.Core
@@ -682,7 +682,7 @@
     :why: MIT (https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
     :versions:
     - 17.4.1
-    - 17.6.3
+    - 17.7.1
     :when: 2022-09-01 23:06:13.008314524 Z
 - - :approve
   - Microsoft.NETCore.Platforms
@@ -733,7 +733,7 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
     :versions:
     - 17.4.1
-    - 17.6.3
+    - 17.7.1
     :when: 2022-08-16 23:06:16.175705981 Z
 - - :approve
   - Microsoft.TestPlatform.TestHost
@@ -741,7 +741,7 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
     :versions:
     - 17.4.1
-    - 17.6.3
+    - 17.7.1
     :when: 2022-08-16 23:06:17.671459450 Z
 - - :approve
   - Microsoft.Toolkit.HighPerformance
