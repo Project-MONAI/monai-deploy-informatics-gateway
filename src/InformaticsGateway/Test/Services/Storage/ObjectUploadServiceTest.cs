@@ -28,6 +28,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Storage.API;
 using Moq;
 using xRetry;
@@ -117,6 +118,34 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             Assert.True(countdownEvent.Wait(TimeSpan.FromSeconds(3)));
 
             _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
+        }
+
+        [RetryFact(10, 250)]
+        public async Task GivenADicomFileStorageMetadata_WhenVerificationFailsOver3Times_ExpectExceptionToBeThrow()
+        {
+            _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1 };
+            var countdownEvent = new CountdownEvent(3);
+            _storageService.Setup(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()));
+            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Callback(() =>
+                {
+                    countdownEvent.Signal();
+                })
+                .ReturnsAsync(false);
+
+            var svc = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
+            _ = svc.StartAsync(_cancellationTokenSource.Token);
+
+            Assert.Equal(ServiceStatus.Running, svc.Status);
+
+            var file = await GenerateDicomFileStorageMetadata();
+            _uploadQueue.Queue(file);
+
+            Assert.True(countdownEvent.Wait(TimeSpan.FromSeconds(3)));
+
+            _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Once());
+            _storageService.Verify(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(3));
+            _logger.VerifyLoggingMessageBeginsWith("Failed to upload file", LogLevel.Warning, Times.Once());
         }
 
         [RetryFact(10, 25000)]
