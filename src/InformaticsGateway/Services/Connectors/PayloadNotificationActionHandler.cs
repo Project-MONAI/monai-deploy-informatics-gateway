@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,11 +112,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 FileCount = payload.Count,
                 CorrelationId = payload.CorrelationId,
                 Timestamp = payload.DateTimeCreated,
-                CalledAeTitle = payload.CalledAeTitle,
-                CallingAeTitle = payload.CallingAeTitle,
+                DataTrigger = payload.DataTrigger,
                 WorkflowInstanceId = payload.WorkflowInstanceId,
                 TaskId = payload.TaskId,
             };
+            workflowRequest.DataOrigins.AddRange(payload.DataOrigins);
 
             workflowRequest.AddFiles(payload.GetUploadedFiles().AsEnumerable());
 

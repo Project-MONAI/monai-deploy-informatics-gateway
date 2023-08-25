@@ -24,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories;
+using Monai.Deploy.Messaging.Events;
 using MongoDB.Driver;
 using Moq;
 
@@ -143,12 +144,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         correlationId.ToString(),
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        FhirStorageFormat.Json),
+                        FhirStorageFormat.Json,
+                        DataService.ACR,
+                        "origin"),
                     new FhirFileStorageMetadata(
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        FhirStorageFormat.Json),
+                        FhirStorageFormat.Json,
+                        DataService.ACR,
+                        "origin"),
             };
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
@@ -178,7 +183,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         identifier,
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        Guid.NewGuid().ToString());
+                        Guid.NewGuid().ToString(),
+                        DataService.DIMSE,
+                        "calling",
+                        "called");
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
             await store.AddOrUpdateAsync(expected).ConfigureAwait(false);
@@ -200,7 +208,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         identifier,
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        Guid.NewGuid().ToString());
+                        Guid.NewGuid().ToString(),
+                        DataService.DIMSE,
+                        "calling",
+                        "called");
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
             await store.AddAsync(expected).ConfigureAwait(false);
@@ -261,6 +272,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        Guid.NewGuid().ToString());
+                        Guid.NewGuid().ToString(),
+                        DataService.DicomWeb,
+                        "calling",
+                        "called");
     }
 }

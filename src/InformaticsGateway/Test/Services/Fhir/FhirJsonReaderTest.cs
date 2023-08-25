@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.IO.Abstractions.TestingHelpers;
+using System.Net;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -52,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
         [Fact]
         public async Task GetContentAsync_WhenCalled_EnsuresArgumentsAreValid()
         {
-            var request = new Mock<HttpRequest>();
+            var request = CreateHttpRquestMock();
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var reader = new FhirJsonReader(_logger.Object, _options, _fileSystem);
@@ -67,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
         [Fact]
         public async Task GetContentAsync_WhenCalledWithEmptyContent_ThrowsException()
         {
-            var request = new Mock<HttpRequest>();
+            var request = CreateHttpRquestMock();
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationFhirJson);
@@ -88,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
         [Fact]
         public async Task GetContentAsync_WhenCalledWithNonXmlContent_ThrowsException()
         {
-            var request = new Mock<HttpRequest>();
+            var request = CreateHttpRquestMock();
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationFhirJson);
@@ -111,7 +112,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
         [InlineData("{\"resourceType\":\"Patient\",\"id\":\" \",\"name\":[{\"use\":\"official\",\"family\":\"Monai\",\"given\":[\"Deploy\"]}]}")]
         public async Task GetContentAsync_WhenCalledWithNoId_ReturnsOriginalWithId(string xml)
         {
-            var request = new Mock<HttpRequest>();
+            var request = CreateHttpRquestMock();
+
             var correlationId = Guid.NewGuid().ToString();
             var resourceType = "Patient";
             var contentType = new MediaTypeHeaderValue(ContentTypes.ApplicationFhirJson);
@@ -130,6 +132,17 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             Assert.IsType<MemoryStream>(results.Metadata.File.Data);
             Assert.NotNull(results.Metadata);
             Assert.Contains($"\"id\": \"{correlationId}\"", results.RawData);
+        }
+
+        private Mock<HttpRequest> CreateHttpRquestMock()
+        {
+            var request = new Mock<HttpRequest>();
+            var context = new Mock<HttpContext>();
+            var connection = new Mock<ConnectionInfo>();
+            request.Setup(p => p.HttpContext).Returns(context.Object);
+            context.Setup(p => p.Connection).Returns(connection.Object);
+            connection.Setup(p => p.RemoteIpAddress).Returns(new IPAddress(16885952));
+            return request;
         }
     }
 }

@@ -32,6 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomWebStowServiceStepDefinitions
     {
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
@@ -51,6 +52,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataSink = objectContainer.Resolve<IDataClient>("DicomWebClient");
             _informaticsGatewayClient = objectContainer.Resolve<InformaticsGatewayClient>("InformaticsGatewayClient");
             _assertions = objectContainer.Resolve<Assertions>("Assertions");
+
+            _dataProvider.Source = "::ffff:127.0.0.1";
+            _dataProvider.Destination = "default";
         }
 
         [Given(@"a VirtualAE '(.*)'")]
@@ -69,6 +73,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 }, CancellationToken.None);
 
                 _dataProvider.Workflows = DummyWorkflows;
+                _dataProvider.Source = "::ffff:127.0.0.1";
+                _dataProvider.Destination = virtualAe;
             }
             catch (ProblemException ex)
             {
@@ -151,6 +157,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     dicomFile.Dataset.GetString(TestInputDataPlugInVirtualAE.ExpectedTag)
                         .Should().Be(TestInputDataPlugInVirtualAE.ExpectedValue);
                 });
+        }
+
+        [Then(@"(.*) workflow requests received from message broker")]
+        public async Task ThenWorkflowRequestSentToMessageBrokerAsync(int workflowCount)
+        {
+            Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
+
+            (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, Messaging.Events.DataService.DicomWeb, _receivedMessages.Messages, workflowCount);
         }
     }
 }

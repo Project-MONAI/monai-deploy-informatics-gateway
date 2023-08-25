@@ -27,7 +27,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class SharedDefinitions
     {
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly RabbitMqConsumer _receivedMessages;
         private readonly Assertions _assertions;
@@ -55,15 +54,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider.GenerateDicomData(modality, studyCount);
 
             _receivedMessages.ClearMessages();
-        }
-
-        [Then(@"(.*) workflow requests sent to message broker")]
-        public async Task ThenWorkflowRequestSentToMessageBrokerAsync(int workflowCount)
-        {
-            Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
-
-            (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
-            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, _receivedMessages.Messages, workflowCount);
         }
 
         [Then(@"studies are uploaded to storage service")]

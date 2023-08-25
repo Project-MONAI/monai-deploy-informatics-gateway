@@ -148,6 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     AeTitle = SourceAeTitle,
                     HostIp = _configuration.InformaticsGatewayOptions.Host,
                 }, CancellationToken.None);
+                _dataProvider.Source = SourceAeTitle;
             }
             catch (ProblemException ex)
             {
@@ -174,6 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Timeout = 3,
                     PlugInAssemblies = new List<string>() { typeof(DicomReidentifier).AssemblyQualifiedName }
                 }, CancellationToken.None);
+                _dataProvider.Destination = MonaiAeTitle;
             }
             catch (ProblemException ex)
             {
@@ -196,15 +198,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 (await Extensions.WaitUntil(() => _dicomServer.Instances.ContainsKey(key), DicomScpWaitTimeSpan)).Should().BeTrue("{0} should be received", key);
             }
 
-            // Clear workflow request messages
-            _receivedWorkflowRequestMessages.ClearMessages();
-
             // Send data received back to MIG
             var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");
 
             var host = _configuration.InformaticsGatewayOptions.Host;
             var port = _informaticsGatewayConfiguration.Dicom.Scp.Port;
 
+            _dataProvider.Workflows = null;
             _dataProvider.DicomSpecs.Files.Clear();
             _dataProvider.DicomSpecs.Files = new Dictionary<string, DicomFile>(_dicomServer.DicomFiles);
             _dataProvider.DicomSpecs.Files.Should().NotBeNull();
@@ -216,11 +216,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 port,
                 MonaiAeTitle);
 
+            // Clear workflow request messages
+            _receivedWorkflowRequestMessages.ClearMessages();
+
             _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
 
             // Wait for workflow request events
             (await _receivedWorkflowRequestMessages.WaitforAsync(1, MessageWaitTimeSpan)).Should().BeTrue();
-            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, _receivedWorkflowRequestMessages.Messages, 1);
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, DataService.DIMSE, _receivedWorkflowRequestMessages.Messages, 1);
         }
 
         [Then(@"ensure the original study and the received study are the same")]

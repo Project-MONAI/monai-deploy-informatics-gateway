@@ -22,7 +22,8 @@
 [GitHub Milestone 0.4.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/5)
 
 - gh-435 Fix CLI to read log dir path from NLog config file.
-- New Virtual Application Entity support for DICOMWeb STOW-RS APIs to enable dynamic endpoints.
+- gh-425 New Virtual Application Entity support for DICOMWeb STOW-RS APIs to enable dynamic endpoints.
+- gh-421 Integrate updated Workflow Request data structure to support multiple sources.
 - New data [plug-ins](./plug-ins/overview.md) feature to manipulate incoming outgoing data.
 
 

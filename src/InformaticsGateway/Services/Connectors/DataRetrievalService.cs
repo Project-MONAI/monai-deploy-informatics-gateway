@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,6 +40,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.Messaging.Events;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
@@ -200,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 var FileMeta = retrievedFiles[key];
 
-                var payloadId = await _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key]).ConfigureAwait(false);
+                var payloadId = await _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key], new DataOrigin { DataService = DataService.ACR, Source = inferenceRequest.TransactionId, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
                 retrievedFiles[key].PayloadId = payloadId.ToString();
                 _uploadQueue.Queue(retrievedFiles[key]);
             }
@@ -344,7 +345,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     return false;
                 }
 
-                var fhirFile = new FhirFileStorageMetadata(transactionId, resource.Type, resource.Id, fhirFormat);
+                var fhirFile = new FhirFileStorageMetadata(transactionId, resource.Type, resource.Id, fhirFormat, DataService.FHIR, source.ConnectionDetails.Uri);
                 await fhirFile.SetDataStream(json, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
                 retrievedResources.Add(fhirFile.Id, fhirFile);
                 return true;
@@ -564,11 +565,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(transactionId, nameof(transactionId));
             Guard.Against.Null(file, nameof(file));
 
-            return new DicomFileStorageMetadata(transactionId, uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid)
-            {
-                CalledAeTitle = string.Empty,
-                Source = transactionId,
-            };
+            return new DicomFileStorageMetadata(transactionId, uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid, DataService.DicomWeb, transactionId, FileStorageMetadata.IpAddress());
         }
 
         protected virtual void Dispose(bool disposing)

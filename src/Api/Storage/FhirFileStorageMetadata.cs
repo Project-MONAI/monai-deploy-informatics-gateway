@@ -18,6 +18,7 @@ using System;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -29,13 +30,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public const string FhirSubDirectoryName = "ehr";
         public const string JsonFilExtension = ".json";
         public const string XmlFileExtension = ".xml";
-
-        /// <summary>
-        /// The transaction ID of the original ACR request.
-        /// Note: this value is same as <see cref="FileStorageMetadata.Source"/>
-        /// </summary>
-        [JsonIgnore]
-        public string TransactionId { get => Source; }
 
         /// <summary>
         /// Gets or set the FHIR resource type.
@@ -66,16 +60,19 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         [JsonConstructor]
         public FhirFileStorageMetadata() { }
 
-        public FhirFileStorageMetadata(string transactionId, string resourceType, string resourceId, FhirStorageFormat fhirFileFormat)
+        public FhirFileStorageMetadata(string transactionId, string resourceType, string resourceId, FhirStorageFormat fhirFileFormat, DataService dataType, string dataOrigin)
             : base(transactionId, $"{resourceType}{PathSeparator}{resourceId}")
         {
             Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
             Guard.Against.NullOrWhiteSpace(resourceType, nameof(resourceType));
             Guard.Against.NullOrWhiteSpace(resourceId, nameof(resourceId));
 
-            Source = transactionId;
             ResourceType = resourceType;
             ResourceId = resourceId;
+
+            DataOrigin.DataService = dataType;
+            DataOrigin.Source = dataOrigin;
+            DataOrigin.Destination = IpAddress();
 
             var fileExtension = fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFileExtension;
             File = new StorageObjectMetadata(fileExtension)

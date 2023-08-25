@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 using xRetry;
 using Xunit;
@@ -78,7 +79,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            await payloadAssembler.Queue("A", new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt"));
+            await payloadAssembler.Queue(
+                "A",
+                new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }),
+                new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
 
             _logger.VerifyLogging($"Bucket A created with timeout {PayloadAssembler.DEFAULT_TIMEOUT}s.", LogLevel.Information, Times.Once());
             payloadAssembler.Dispose();
@@ -105,7 +109,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            await payloadAssembler.Queue("A", new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt"));
+            await payloadAssembler.Queue(
+                "A",
+                new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }),
+                new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
 
             payloadAssembler.Dispose();
             _cancellationTokenSource.Cancel();
@@ -119,11 +126,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
 
-            var file1 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
-            var file2 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
+            var file1 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
+            var file2 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
 
-            await payloadAssembler.Queue("A", file1, 1);
-            await payloadAssembler.Queue("A", file2, 1);
+            await payloadAssembler.Queue("A", file1, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1);
+            await payloadAssembler.Queue("A", file2, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1);
 
             file1.SetFailed();
             file2.SetUploaded();
@@ -139,9 +146,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
 
-            var file = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt");
+            var file = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
             file.File.SetUploaded("bucket");
-            await payloadAssembler.Queue("A", file, 1);
+            await payloadAssembler.Queue("A", file, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1);
             await Task.Delay(1001);
             var result = payloadAssembler.Dequeue(_cancellationTokenSource.Token);
             payloadAssembler.Dispose();

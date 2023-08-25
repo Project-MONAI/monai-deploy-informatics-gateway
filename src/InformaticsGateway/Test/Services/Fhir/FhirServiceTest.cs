@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 using System;
 using System.IO;
 using System.IO.Abstractions;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -30,6 +31,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 using xRetry;
 using Xunit;
@@ -67,6 +69,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             _fileSystem = new Mock<IFileSystem>();
 
             _httpRequest = new Mock<HttpRequest>();
+            var context = new Mock<HttpContext>();
+            var connection = new Mock<ConnectionInfo>();
+            _httpRequest.Setup(p => p.HttpContext).Returns(context.Object);
+            context.Setup(p => p.Connection).Returns(connection.Object);
+            connection.Setup(p => p.RemoteIpAddress).Returns(new IPAddress(16885952));
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
 
@@ -151,7 +158,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             Assert.Equal(StatusCodes.Status201Created, results.StatusCode);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Once());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<uint>()), Times.Once());
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Once());
         }
     }
 }

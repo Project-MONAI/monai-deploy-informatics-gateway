@@ -31,6 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomDimseScpServicesStepDefinitions
     {
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly ObjectContainer _objectContainer;
@@ -38,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
         private readonly RabbitMqConsumer _receivedMessages;
         private readonly DataProvider _dataProvider;
+        private readonly Assertions _assertions;
 
         public DicomDimseScpServicesStepDefinitions(
             ObjectContainer objectContainer,
@@ -49,6 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
             _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
+            _assertions = objectContainer.Resolve<Assertions>("Assertions");
             _informaticsGatewayClient = objectContainer.Resolve<InformaticsGatewayClient>("InformaticsGatewayClient");
         }
 
@@ -65,6 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     AeTitle = callingAeTitle,
                     HostIp = _configuration.InformaticsGatewayOptions.Host,
                 }, CancellationToken.None);
+                _dataProvider.Source = callingAeTitle;
             }
             catch (ProblemException ex)
             {
@@ -113,6 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 }, CancellationToken.None);
 
                 _dataProvider.Workflows = DummyWorkflows;
+                _dataProvider.Destination = calledAeTitle;
             }
             catch (ProblemException ex)
             {
@@ -190,6 +195,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 calledAeTitle);
 
             _dataProvider.ReplaceGeneratedDicomDataWithHashes();
+        }
+
+        [Then(@"(.*) workflow requests sent to message broker")]
+        public async Task ThenWorkflowRequestSentToMessageBrokerAsync(int workflowCount)
+        {
+            Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
+
+            (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, Messaging.Events.DataService.DIMSE, _receivedMessages.Messages, workflowCount);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -8,6 +9,20 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<string>(
+                name: "DataOrigins",
+                table: "Payloads",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "DataTrigger",
+                table: "Payloads",
+                type: "TEXT",
+                nullable: false,
+                defaultValue: "");
+
             migrationBuilder.AddColumn<string>(
                 name: "TaskId",
                 table: "Payloads",
@@ -56,6 +71,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
         {
             migrationBuilder.DropTable(
                 name: "VirtualApplicationEntities");
+
+            migrationBuilder.DropColumn(
+                name: "DataOrigins",
+                table: "Payloads");
+
+            migrationBuilder.DropColumn(
+                name: "DataTrigger",
+                table: "Payloads");
 
             migrationBuilder.DropColumn(
                 name: "TaskId",

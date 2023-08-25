@@ -22,6 +22,7 @@ using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 using Xunit;
 
@@ -75,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
             var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var dicom = InstanceGenerator.GenerateDicomFile(studyInstanceUid, seriesInstanceUid, sopInstanceUid);
-            var metadata = new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), studyInstanceUid, seriesInstanceUid, sopInstanceUid);
+            var metadata = new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), studyInstanceUid, seriesInstanceUid, sopInstanceUid, DataService.DIMSE, "calling", "called");
 
             _repository.Setup(p => p.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(default(RemoteAppExecution));
 
@@ -95,7 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
             var seriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var dicom = InstanceGenerator.GenerateDicomFile(studyInstanceUid, seriesInstanceUid, sopInstanceUid);
-            var metadata = new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), studyInstanceUid, seriesInstanceUid, sopInstanceUid);
+            var metadata = new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), studyInstanceUid, seriesInstanceUid, sopInstanceUid, DataService.DIMSE, "calling", "called");
             var record = new RemoteAppExecution
             {
                 CorrelationId = Guid.NewGuid().ToString(),
