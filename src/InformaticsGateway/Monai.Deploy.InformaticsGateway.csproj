@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2022 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,16 +84,18 @@
   <Target Name="CopyPlugins" AfterTargets="Publish">
     <ItemGroup>
       <PluginDlls Include="$(PublishDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(PublishDir)Monai.Deploy.Storage.MinIO.dll;$(PublishDir)Minio.dll" />
+      <IOPligins Include="$(SolutionDir)/Plug-ins/RemoteAppExecution/bin/Debug/net6.0/Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(PublishDir)\plug-ins\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PluginDlls);@(IOPligins)" DestinationFolder="$(PublishDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(PublishDir)\plug-ins\." Importance="high" />
   </Target>
 
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
       <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll" />
+      <IOPligins Include="$(SolutionDir)/Plug-ins/RemoteAppExecution/bin/Debug/net6.0/Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
     </ItemGroup>
-    <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(PluginDlls);@(IOPligins)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />
   </Target>
 
