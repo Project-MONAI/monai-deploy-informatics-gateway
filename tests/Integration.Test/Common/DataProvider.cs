@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,6 +163,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         public int ClientTimeout { get; internal set; }
         public int ClientAssociationPulseTime { get; internal set; } = 0;
         public int ClientSendOverAssociations { get; internal set; } = 1;
+        public string Source { get; internal set; } = string.Empty;
+        public string Destination { get; internal set; } = string.Empty;
 
         public DataProvider(Configurations configurations, ISpecFlowOutputHelper outputHelper)
         {

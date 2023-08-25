@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,10 +80,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         {
             PurgeQueue(configuration, configuration.Topics.WorkflowRequest);
             PurgeQueue(configuration, configuration.Topics.ExportComplete);
-            PurgeQueue(configuration, configuration.Topics.ExportRequestPrefix); // TODO
+            PurgeQueue(configuration, configuration.Topics.ExportRequestPrefix);
             PurgeQueue(configuration, $"{configuration.Topics.WorkflowRequest}-dead-letter");
             PurgeQueue(configuration, $"{configuration.Topics.ExportComplete}-dead-letter");
-            PurgeQueue(configuration, $"{configuration.Topics.ExportRequestPrefix}-dead-letter"); // TODO
+            PurgeQueue(configuration, $"{configuration.Topics.ExportRequestPrefix}-dead-letter");
         }
     }
 }

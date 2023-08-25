@@ -36,6 +36,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
@@ -121,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                         _logger.ZeroLengthDicomWebStowStream();
                         continue;
                     }
-                    await SaveInstance(stream, studyInstanceUid, inputDataPlugInEngine, correlationId, dataSource, cancellationToken, workflows).ConfigureAwait(false);
+                    await SaveInstance(stream, studyInstanceUid, inputDataPlugInEngine, correlationId, dataSource, virtualApplicationEntity?.Name ?? "default", cancellationToken, workflows).ConfigureAwait(false);
                 }
                 catch (Exception ex)
                 {
@@ -153,7 +154,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             }
         }
 
-        private async Task SaveInstance(Stream stream, string studyInstanceUid, IInputDataPlugInEngine inputDataPlugInEngine, string correlationId, string dataSource, CancellationToken cancellationToken = default, params string[] workflows)
+        private async Task SaveInstance(Stream stream, string studyInstanceUid, IInputDataPlugInEngine inputDataPlugInEngine, string correlationId, string dataSource, string endpointName, CancellationToken cancellationToken = default, params string[] workflows)
         {
             Guard.Against.Null(stream, nameof(stream));
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
@@ -186,11 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 return;
             }
 
-            var dicomInfo = new DicomFileStorageMetadata(correlationId, uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid)
-            {
-                CalledAeTitle = string.Empty,
-                Source = dataSource,
-            };
+            var dicomInfo = new DicomFileStorageMetadata(correlationId, uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid, Messaging.Events.DataService.DicomWeb, dataSource, endpointName);
 
             if (!workflows.IsNullOrEmpty())
             {
@@ -202,7 +199,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             dicomInfo = result.Item2 as DicomFileStorageMetadata;
 
             // for DICOMweb, use correlation ID as the grouping key
-            var payloadId = await _payloadAssembler.Queue(correlationId, dicomInfo, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
+            var payloadId = await _payloadAssembler.Queue(correlationId, dicomInfo, new DataOrigin { DataService = DataService.DicomWeb, Source = dataSource, Destination = endpointName }, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
             dicomInfo.PayloadId = payloadId.ToString();
 
             await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson, _configuration.Value.Dicom.ValidateDicomOnSerialization), _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);

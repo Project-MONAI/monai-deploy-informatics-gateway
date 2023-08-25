@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.Messaging.API;
+using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Moq;
 using Xunit;
@@ -89,13 +90,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             });
 
             var correlationId = Guid.NewGuid();
-            var payload = new Payload("key", correlationId.ToString(), 0)
+            var payload = new Payload("key", correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 0)
             {
                 State = Payload.PayloadState.Created,
                 Files = new List<FileStorageMetadata>
                  {
-                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()),
-                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()),
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
                  },
             };
 
@@ -120,14 +121,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 .Throws(new Exception("error"));
 
             var correlationId = Guid.NewGuid();
-            var payload = new Payload("key", correlationId.ToString(), 0)
+            var payload = new Payload("key", correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 0)
             {
                 RetryCount = retryCount,
                 State = Payload.PayloadState.Notify,
                 Files = new List<FileStorageMetadata>
                  {
-                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()),
-                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()),
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
                  },
             };
 
@@ -150,14 +151,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 .Throws(new Exception("error"));
 
             var correlationId = Guid.NewGuid();
-            var payload = new Payload("key", correlationId.ToString(), 0)
+            var payload = new Payload("key", correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 0)
             {
                 RetryCount = 3,
                 State = Payload.PayloadState.Notify,
                 Files = new List<FileStorageMetadata>
                  {
-                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()),
-                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()),
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
                  },
             };
 
@@ -176,14 +177,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             });
 
             var correlationId = Guid.NewGuid();
-            var payload = new Payload("key", correlationId.ToString(), 0)
+            var payload = new Payload("key", correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 0)
             {
                 RetryCount = 3,
                 State = Payload.PayloadState.Notify,
                 Files = new List<FileStorageMetadata>
                  {
-                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()),
-                     new FhirFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Api.Rest.FhirStorageFormat.Json),
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
+                     new FhirFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Api.Rest.FhirStorageFormat.Json, Messaging.Events.DataService.FHIR, "origin"),
                  },
             };
 

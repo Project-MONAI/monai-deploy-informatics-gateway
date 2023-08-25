@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 using System;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.Messaging.Events;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Test
@@ -29,16 +30,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             var identifier = Guid.NewGuid().ToString();
             var callingAeTitle = "calling";
             var calledAeTitle = "called";
-            var metadata = new DicomFileStorageMetadata(correlationId, identifier, "study", "series", "sop")
-            {
-                Source = callingAeTitle,
-                CalledAeTitle = calledAeTitle
-            };
+            var metadata = new DicomFileStorageMetadata(correlationId, identifier, "study", "series", "sop", DataService.DIMSE, callingAeTitle, calledAeTitle);
 
             Assert.Equal(identifier, metadata.Id);
             Assert.Equal(correlationId, metadata.CorrelationId);
-            Assert.Equal(callingAeTitle, metadata.CallingAeTitle);
-            Assert.Equal(calledAeTitle, metadata.CalledAeTitle);
+            Assert.Equal(callingAeTitle, metadata.DataOrigin.Source);
+            Assert.Equal(calledAeTitle, metadata.DataOrigin.Destination);
+            Assert.Equal(DataService.DIMSE, metadata.DataOrigin.DataService);
             Assert.NotNull(metadata.Workflows);
         }
 
@@ -50,11 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             var callingAeTitle = "calling";
             var calledAeTitle = "called";
 
-            var metadata = new DicomFileStorageMetadata(correlationId, identifier, "study", "series", "sop")
-            {
-                Source = callingAeTitle,
-                CalledAeTitle = calledAeTitle
-            };
+            var metadata = new DicomFileStorageMetadata(correlationId, identifier, "study", "series", "sop", DataService.DIMSE, callingAeTitle, calledAeTitle);
 
             Assert.Equal($"{DicomFileStorageMetadata.DicomSubDirectoryName}/study/series/sop{DicomFileStorageMetadata.FileExtension}", metadata.File.UploadPath);
             Assert.StartsWith($"{correlationId}/{DicomFileStorageMetadata.DicomSubDirectoryName}/", metadata.File.TemporaryPath, StringComparison.OrdinalIgnoreCase);
@@ -73,11 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             var callingAeTitle = "calling";
             var calledAeTitle = "called";
 
-            var metadata = new DicomFileStorageMetadata(correlationId, identifier, "study", "series", "sop")
-            {
-                Source = callingAeTitle,
-                CalledAeTitle = calledAeTitle
-            };
+            var metadata = new DicomFileStorageMetadata(correlationId, identifier, "study", "series", "sop", DataService.DIMSE, callingAeTitle, calledAeTitle);
 
             metadata.SetFailed();
 
@@ -94,11 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             var callingAeTitle = "calling";
             var calledAeTitle = "called";
 
-            var metadata = new DicomFileStorageMetadata(correlationId, identifier, "study", "series", "sop")
-            {
-                Source = callingAeTitle,
-                CalledAeTitle = calledAeTitle
-            };
+            var metadata = new DicomFileStorageMetadata(correlationId, identifier, "study", "series", "sop", DataService.DIMSE, callingAeTitle, calledAeTitle);
 
             Assert.Equal($"{payloadId}/{metadata.File.UploadPath}", metadata.File.GetPayloadPath(payloadId));
             Assert.Equal($"{payloadId}/{metadata.JsonFile.UploadPath}", metadata.JsonFile.GetPayloadPath(payloadId));

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Storage.API;
 using Moq;
 using xRetry;
@@ -119,6 +120,34 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Exactly(2));
         }
 
+        [RetryFact(10, 250)]
+        public async Task GivenADicomFileStorageMetadata_WhenVerificationFailsOver3Times_ExpectExceptionToBeThrow()
+        {
+            _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1 };
+            var countdownEvent = new CountdownEvent(3);
+            _storageService.Setup(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()));
+            _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .Callback(() =>
+                {
+                    countdownEvent.Signal();
+                })
+                .ReturnsAsync(false);
+
+            var svc = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
+            _ = svc.StartAsync(_cancellationTokenSource.Token);
+
+            Assert.Equal(ServiceStatus.Running, svc.Status);
+
+            var file = await GenerateDicomFileStorageMetadata();
+            _uploadQueue.Queue(file);
+
+            Assert.True(countdownEvent.Wait(TimeSpan.FromSeconds(3)));
+
+            _storageService.Verify(p => p.PutObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Stream>(), It.IsAny<long>(), It.IsAny<string>(), It.IsAny<Dictionary<string, string>>(), It.IsAny<CancellationToken>()), Times.Once());
+            _storageService.Verify(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Exactly(3));
+            _logger.VerifyLoggingMessageBeginsWith("Failed to upload file", LogLevel.Warning, Times.Once());
+        }
+
         [RetryFact(10, 25000)]
         public async Task GivenAFhirFileStorageMetadata_WhenQueuedForUpload_ExpectSingleFileToBeUploaded()
         {
@@ -143,7 +172,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 
         private async Task<FhirFileStorageMetadata> GenerateFhirFileStorageMetadata()
         {
-            var file = new FhirFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), FhirStorageFormat.Json);
+            var file = new FhirFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), FhirStorageFormat.Json, Messaging.Events.DataService.FHIR, "origin");
 
             await file.SetDataStream("[]", TemporaryDataStorageLocation.Memory);
             file.PayloadId = Guid.NewGuid().ToString();
@@ -152,11 +181,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 
         private async Task<DicomFileStorageMetadata> GenerateDicomFileStorageMetadata()
         {
-            var file = new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString())
-            {
-                Source = "SOURCE",
-                CalledAeTitle = "AET"
-            };
+            var file = new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "SOURCE", "AET");
             var dataset = new DicomDataset
             {
                 { DicomTag.PatientID, "PID" },

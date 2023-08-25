@@ -34,6 +34,7 @@ using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 using Xunit;
 
@@ -119,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             var uids = new List<StudySerieSopUids>();
             SetupDicomToolkitMocks(uids);
 
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var writer = new StreamsWriter(_serviceScopeFactory.Object, _uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
@@ -150,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             }
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
         }
 
         [Fact]
@@ -158,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         {
             var uids = new List<StudySerieSopUids>();
             SetupDicomToolkitMocks(uids);
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var writer = new StreamsWriter(_serviceScopeFactory.Object, _uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
@@ -176,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             Assert.Equal(StatusCodes.Status204NoContent, result.StatusCode);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
             _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Never());
             _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
@@ -186,7 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         {
             var uids = new List<StudySerieSopUids>();
             SetupDicomToolkitMocks(uids);
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var writer = new StreamsWriter(_serviceScopeFactory.Object, _uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
@@ -204,7 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             Assert.Equal(StatusCodes.Status409Conflict, result.StatusCode);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
             _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
             _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
@@ -214,7 +215,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
         {
             var uids = new List<StudySerieSopUids>();
             SetupDicomToolkitMocks(uids);
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var writer = new StreamsWriter(_serviceScopeFactory.Object, _uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
@@ -243,7 +244,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             }
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
-            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Exactly(streams.Count));
+            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Exactly(streams.Count));
             _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
             _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
         }
@@ -254,7 +255,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             var uids = new List<StudySerieSopUids>();
 
             _dicomToolkit.Setup(p => p.OpenAsync(It.IsAny<Stream>(), It.IsAny<FileReadOption>())).Throws(new Exception("error"));
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var writer = new StreamsWriter(_serviceScopeFactory.Object, _uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
@@ -275,7 +276,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             Assert.Equal(0, failedSopSequence.Items.Count);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
             _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
             _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Never());
         }
@@ -291,7 +292,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             };
             var uids = new List<StudySerieSopUids>();
             SetupDicomToolkitMocks(uids);
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()));
+            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()));
 
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var writer = new StreamsWriter(_serviceScopeFactory.Object, _uploadQueue.Object, _dicomToolkit.Object, _payloadAssembler.Object, _configuration, _logger.Object, _fileSystem);
@@ -320,7 +321,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             }
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
-            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<uint>()), Times.Exactly(streams.Count));
+            _payloadAssembler.Verify(p => p.Queue(It.Is<string>(p => p == correlationId), It.IsAny<DicomFileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Exactly(streams.Count));
             _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
             _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(streams.Count));
         }

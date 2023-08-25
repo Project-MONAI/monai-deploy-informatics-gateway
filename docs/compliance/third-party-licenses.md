@@ -7304,14 +7304,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging 0.1.25</summary>
+<summary>Monai.Deploy.Messaging 1.0.0</summary>
 
 ## Monai.Deploy.Messaging
 
-- Version: 0.1.25
+- Version: 1.0.0
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.25)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/1.0.0)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7532,14 +7532,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Messaging.RabbitMQ 0.1.25</summary>
+<summary>Monai.Deploy.Messaging.RabbitMQ 1.0.0</summary>
 
 ## Monai.Deploy.Messaging.RabbitMQ
 
-- Version: 0.1.25
+- Version: 1.0.0
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.25)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/1.0.0)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 

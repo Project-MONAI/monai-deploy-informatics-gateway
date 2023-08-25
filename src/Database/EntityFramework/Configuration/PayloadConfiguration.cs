@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
@@ -33,6 +34,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
                 (c1, c2) => c1.SequenceEqual(c2),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToList());
+            var dataOriginsComparer = new ValueComparer<HashSet<DataOrigin>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToHashSet());
 
             var jsonSerializerSettings = new JsonSerializerOptions
             {
@@ -47,15 +52,21 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.RetryCount).IsRequired();
             builder.Property(j => j.State).IsRequired();
             builder.Property(j => j.CorrelationId).IsRequired();
+            builder.Property(j => j.DataTrigger).IsRequired().HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<DataOrigin>(v, jsonSerializerSettings));
             builder.Property(j => j.MachineName);
             builder.Property(j => j.Files)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<FileStorageMetadata>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(metadataComparer);
+            builder.Property(j => j.DataOrigins)
+                .HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<HashSet<DataOrigin>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(dataOriginsComparer);
 
-            builder.Ignore(j => j.CalledAeTitle);
-            builder.Ignore(j => j.CallingAeTitle);
             builder.Ignore(j => j.HasTimedOut);
             builder.Ignore(j => j.Elapsed);
             builder.Ignore(j => j.Count);

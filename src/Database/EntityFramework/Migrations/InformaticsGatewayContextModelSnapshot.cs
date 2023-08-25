@@ -253,6 +253,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("DataOrigins")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DataTrigger")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 

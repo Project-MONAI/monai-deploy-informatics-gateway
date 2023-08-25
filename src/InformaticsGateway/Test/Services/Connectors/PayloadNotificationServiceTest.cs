@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -30,7 +29,6 @@ using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.Messaging.API;
 using Monai.Deploy.Messaging.Events;
-using Monai.Deploy.Messaging.Messages;
 using Moq;
 using xRetry;
 using Xunit;
@@ -96,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(10, 200)]
         public async Task GivenThePayloadNotificationService_WhenStopAsyncIsCalled_ExpectServiceToStopAnyProcessing()
         {
-            var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Move };
+            var payload = new Payload("test", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 100) { State = Payload.PayloadState.Move };
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                 .Returns(() =>
                 {
@@ -122,9 +120,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             var testData = new List<Payload>
             {
-                new Payload("created-test", Guid.NewGuid().ToString(), 10){ State = Payload.PayloadState.Created},
-                new Payload("upload-test", Guid.NewGuid().ToString(), 10){ State = Payload.PayloadState.Move},
-                new Payload("notification-test", Guid.NewGuid().ToString(), 10) {State = Payload.PayloadState.Notify},
+                new Payload("created-test", Guid.NewGuid().ToString(),Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 10){ State = Payload.PayloadState.Created},
+                new Payload("upload-test", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" },10){ State = Payload.PayloadState.Move},
+                new Payload("notification-test", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" },10) {State = Payload.PayloadState.Notify},
             };
 
             _payloadRepository.Setup(p => p.GetPayloadsInStateAsync(It.IsAny<CancellationToken>(), It.IsAny<Payload.PayloadState[]>()))
@@ -144,7 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         public void GivenAPayload_WhenDequedFromPayloadAssemblerAndFailedToBeProcessByTheMoveActionHandler()
         {
             var resetEvent = new ManualResetEventSlim();
-            var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Move };
+            var payload = new Payload("test", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 100) { State = Payload.PayloadState.Move };
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>()))
                 .Returns(payload);
 
@@ -162,7 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         [RetryFact(10, 200)]
         public void GivenAPayload_WhenDequedFromPayloadAssembler_ExpectThePayloadBeProcessedByTheMoveActionHandler()
         {
-            var payload = new Payload("test", Guid.NewGuid().ToString(), 100) { State = Payload.PayloadState.Move };
+            var payload = new Payload("test", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 100) { State = Payload.PayloadState.Move };
             _payloadAssembler.Setup(p => p.Dequeue(It.IsAny<CancellationToken>())).Returns(payload);
             _payloadRepository.Setup(p => p.GetPayloadsInStateAsync(It.IsAny<CancellationToken>(), It.IsAny<Payload.PayloadState[]>())).ReturnsAsync(new List<Payload>());
 
@@ -175,26 +173,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _payloadMoveActionHandler.Verify(p => p.MoveFilesAsync(It.IsAny<Payload>(), It.IsAny<ActionBlock<Payload>>(), It.IsAny<ActionBlock<Payload>>(), It.IsAny<CancellationToken>()), Times.AtLeastOnce());
 
             _logger.VerifyLogging($"Payload {payload.PayloadId} added to {service.ServiceName} for processing.", LogLevel.Information, Times.AtLeastOnce());
-        }
-
-        private bool VerifyHelper(Payload payload, Message message)
-        {
-            var workflowRequestEvent = message.ConvertTo<WorkflowRequestEvent>();
-            if (workflowRequestEvent is null) return false;
-            if (workflowRequestEvent.Payload.Count != 1) return false;
-            if (workflowRequestEvent.PayloadId != payload.PayloadId) return false;
-            if (workflowRequestEvent.FileCount != payload.Files.Count) return false;
-            if (workflowRequestEvent.CorrelationId != payload.CorrelationId) return false;
-            if (workflowRequestEvent.Timestamp != payload.DateTimeCreated) return false;
-            if (workflowRequestEvent.CallingAeTitle != payload.Files.First().Source) return false;
-            if (workflowRequestEvent.CalledAeTitle != payload.Files.OfType<DicomFileStorageMetadata>().First().CalledAeTitle) return false;
-
-            var workflowInPayload = payload.GetWorkflows();
-            if (workflowRequestEvent.Workflows.Count() != workflowInPayload.Count) return false;
-            if (workflowRequestEvent.Workflows.Except(workflowInPayload).Any()) return false;
-            if (workflowInPayload.Except(workflowRequestEvent.Workflows).Any()) return false;
-
-            return true;
         }
     }
 }

@@ -24,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Test.PlugIns;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 using Xunit;
 
@@ -95,7 +96,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 Guid.NewGuid().ToString(),
                 dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
                 dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
-                dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID));
+                dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID),
+                DataService.DicomWeb,
+                "calling",
+                "called");
 
             await Assert.ThrowsAsync<ApplicationException>(async () => await pluginEngine.ExecutePlugInsAsync(dicomFile, dicomInfo));
         }
@@ -119,7 +123,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 Guid.NewGuid().ToString(),
                 dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
                 dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
-                dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID));
+                dicomFile.Dataset.GetString(DicomTag.SOPInstanceUID),
+                DataService.DicomWeb,
+                "calling",
+                "called");
 
             var (resultDicomFile, resultDicomInfo) = await pluginEngine.ExecutePlugInsAsync(dicomFile, dicomInfo);
 
