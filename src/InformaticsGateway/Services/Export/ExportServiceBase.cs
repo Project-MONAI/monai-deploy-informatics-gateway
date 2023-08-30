@@ -275,10 +275,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest, CancellationToken token)
         {
-            var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPlugInEngine));
+            try
+            {
+                var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPlugInEngine));
 
-            outputDataEngine.Configure(exportDataRequest.PlugInAssemblies);
-            return await outputDataEngine.ExecutePlugInsAsync(exportDataRequest).ConfigureAwait(false);
+                outputDataEngine.Configure(exportDataRequest.PlugInAssemblies);
+                return await outputDataEngine.ExecutePlugInsAsync(exportDataRequest).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error executing data plug-ins: {ex}";
+                _logger.ErrorExecutingDataPlugIns(ex);
+                exportDataRequest.SetFailed(FileExportStatus.ServiceError, errorMessage);
+                return exportDataRequest;
+            }
         }
 
         private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)
