@@ -90,9 +90,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private async Task HandleTransaction(ExportRequestDataMessage exportRequestData, IInferenceRequestRepository repository, string transaction, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(exportRequestData);
-            Guard.Against.Null(repository);
-            Guard.Against.NullOrWhiteSpace(transaction);
+            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
+            Guard.Against.Null(repository, nameof(repository));
+            Guard.Against.NullOrWhiteSpace(transaction, nameof(transaction));
 
             var inferenceRequest = await repository.GetInferenceRequestAsync(transaction, cancellationToken).ConfigureAwait(false);
             if (inferenceRequest is null)
@@ -166,7 +166,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void CheckAndLogResult(DicomWebResponse<string> result)
         {
-            Guard.Against.Null(result);
+            Guard.Against.Null(result, nameof(result));
             switch (result.StatusCode)
             {
                 case System.Net.HttpStatusCode.OK:

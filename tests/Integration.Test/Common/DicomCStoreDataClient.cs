@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {
-            Guard.Against.NullOrEmpty(args);
+            Guard.Against.NullOrEmpty(args, nameof(args));
 
             var callingAeTitle = args[0].ToString();
             var host = args[1].ToString();
@@ -62,10 +62,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             var failureStatus = new List<DicomStatus>();
             for (int i = 0; i < associations; i++)
             {
-                var files = dataProvider.DicomSpecs.Files.Skip(i * filesPerAssociations).Take(filesPerAssociations).ToList(); // .Take(20)
+                var files = dataProvider.DicomSpecs.Files.Values.Skip(i * filesPerAssociations).Take(filesPerAssociations).ToList(); // .Take(20)
                 if (i + 1 == associations && dataProvider.DicomSpecs.Files.Count > (i + 1) * filesPerAssociations)
                 {
-                    files.AddRange(dataProvider.DicomSpecs.Files.Skip(i * filesPerAssociations));
+                    files.AddRange(dataProvider.DicomSpecs.Files.Values.Skip(i * filesPerAssociations));
                 }
 
                 try

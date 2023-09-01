@@ -18,7 +18,6 @@
 using System;
 using System.Threading.Tasks;
 using FellowOakDicom.Network;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
 
@@ -50,11 +49,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// </summary>
         /// <typeparam name="T"></typeparam>
         T GetService<T>();
-
-        /// <summary>
-        /// Wrapper to get a typed logger.
-        /// </summary>
-        ILogger GetLogger(string calledAeTitle);
 
         /// <summary>
         /// Checks if source AE Title is configured.

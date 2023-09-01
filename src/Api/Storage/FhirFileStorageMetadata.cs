@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ using System;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -28,14 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     {
         public const string FhirSubDirectoryName = "ehr";
         public const string JsonFilExtension = ".json";
-        public const string XmlFilExtension = ".xml";
-
-        /// <summary>
-        /// The transaction ID of the original ACR request.
-        /// Note: this value is same as <seealso cref="Source"></c>
-        /// </summary>
-        [JsonIgnore]
-        public string TransactionId { get => Source; }
+        public const string XmlFileExtension = ".xml";
 
         /// <summary>
         /// Gets or set the FHIR resource type.
@@ -66,18 +60,21 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         [JsonConstructor]
         public FhirFileStorageMetadata() { }
 
-        public FhirFileStorageMetadata(string transactionId, string resourceType, string resourceId, FhirStorageFormat fhirFileFormat)
+        public FhirFileStorageMetadata(string transactionId, string resourceType, string resourceId, FhirStorageFormat fhirFileFormat, DataService dataType, string dataOrigin)
             : base(transactionId, $"{resourceType}{PathSeparator}{resourceId}")
         {
-            Guard.Against.NullOrWhiteSpace(transactionId);
-            Guard.Against.NullOrWhiteSpace(resourceType);
-            Guard.Against.NullOrWhiteSpace(resourceId);
+            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
+            Guard.Against.NullOrWhiteSpace(resourceType, nameof(resourceType));
+            Guard.Against.NullOrWhiteSpace(resourceId, nameof(resourceId));
 
-            Source = transactionId;
             ResourceType = resourceType;
             ResourceId = resourceId;
 
-            var fileExtension = fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFilExtension;
+            DataOrigin.DataService = dataType;
+            DataOrigin.Source = dataOrigin;
+            DataOrigin.Destination = IpAddress();
+
+            var fileExtension = fhirFileFormat == FhirStorageFormat.Json ? JsonFilExtension : XmlFileExtension;
             File = new StorageObjectMetadata(fileExtension)
             {
                 TemporaryPath = string.Join(PathSeparator, transactionId, DataTypeDirectoryName, $"{Guid.NewGuid()}{fileExtension}"),

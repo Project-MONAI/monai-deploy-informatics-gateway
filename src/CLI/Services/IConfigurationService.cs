@@ -27,6 +27,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         IConfigurationOptionAccessor Configurations { get; }
 
         /// <summary>
+        /// Gets the configurations inside nlog.config
+        /// </summary>
+        INLogConfigurationOptionAccessor NLogConfigurations { get; }
+
+        /// <summary>
         /// Gets whether the configuration file exists or not.
         /// </summary>
         bool IsConfigExists { get; }

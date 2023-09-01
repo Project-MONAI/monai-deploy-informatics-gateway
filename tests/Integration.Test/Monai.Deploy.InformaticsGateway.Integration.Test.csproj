@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2022 MONAI Consortium
+  ~ Copyright 2022-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -24,30 +24,34 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="fo-dicom" Version="5.0.3" />
-    <PackageReference Include="HL7-dotnetcore" Version="2.35.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.15" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.15" />
+    <PackageReference Include="coverlet.collector" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="fo-dicom" Version="5.1.1" />
+    <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.21" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.21" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.5.0" />
-    <PackageReference Include="Minio" Version="4.0.7" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="0.1.22" />
-    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.16" />
-    <PackageReference Include="Moq" Version="4.18.4" />
-    <PackageReference Include="Polly" Version="7.2.3" />
-    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
+    <PackageReference Include="Minio" Version="5.0.0" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="1.0.0" />
+    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="0.2.18" />
+    <PackageReference Include="Moq" Version="4.20.69" />
+    <PackageReference Include="Polly" Version="7.2.4" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.5.0" />
     <PackageReference Include="SpecFlow.Plus.LivingDocPlugin" Version="3.9.57" />
     <PackageReference Include="SpecFlow.xUnit" Version="3.9.74" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
-    <PackageReference Include="xunit" Version="2.4.2" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+    <PackageReference Include="xunit" Version="2.5.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.0">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="FluentAssertions" Version="6.10.0" />
+    <PackageReference Include="FluentAssertions" Version="6.11.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -66,6 +70,8 @@
     <ProjectReference Include="..\..\src\Database\Monai.Deploy.InformaticsGateway.Database.csproj" />
     <ProjectReference Include="..\..\src\DicomWebClient\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
     <ProjectReference Include="..\..\src\InformaticsGateway\Monai.Deploy.InformaticsGateway.csproj" />
+    <ProjectReference Include="..\..\src\InformaticsGateway\Test\Plug-ins\Monai.Deploy.InformaticsGateway.Test.PlugIns.csproj" />
+    <ProjectReference Include="..\..\src\Plug-ins\RemoteAppExecution\Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -89,7 +95,7 @@
 
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
-      <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll" />
+      <PluginDlls Include="$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Minio.dll;$(OutDir)Monai.Deploy.InformaticsGateway.Test.PlugIns.dll;$(OutDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />

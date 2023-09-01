@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api.Test
 {
@@ -28,7 +29,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Test
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                FhirStorageFormat.Json);
+                FhirStorageFormat.Json,
+                DataService.ACR,
+                "somewhere");
             metadata.SetWorkflows("A", "B", "C");
 
             var wrapper = new StorageMetadataWrapper(metadata);
@@ -46,8 +49,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Test
             Assert.Equal(metadata.IsUploaded, unwrapped.IsUploaded);
             Assert.Equal(metadata.ResourceId, unwrapped.ResourceId);
             Assert.Equal(metadata.ResourceType, unwrapped.ResourceType);
-            Assert.Equal(metadata.Source, unwrapped.Source);
-            Assert.Equal(metadata.TransactionId, unwrapped.TransactionId);
+            Assert.Equal(metadata.DataOrigin.DataService, unwrapped.DataOrigin.DataService);
+            Assert.Equal(metadata.DataOrigin.Source, unwrapped.DataOrigin.Source);
+            Assert.Equal(metadata.DataOrigin.Destination, unwrapped.DataOrigin.Destination);
             Assert.Equal(metadata.Workflows, unwrapped.Workflows);
 
             Assert.Equal(metadata.File.FileExtension, unwrapped.File.FileExtension);
@@ -65,12 +69,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Test
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
-                Guid.NewGuid().ToString())
-            {
-                CalledAeTitle = "CALLEDAET",
-                Source = "SOURCE",
-            };
+                Guid.NewGuid().ToString(),
+                DataService.DIMSE,
+                "SOURCE"
+,
+                "CALLEDAET");
             metadata.SetWorkflows("A", "B", "C");
+            metadata.WorkflowInstanceId = Guid.NewGuid().ToString();
+            metadata.TaskId = Guid.NewGuid().ToString();
 
             var wrapper = new StorageMetadataWrapper(metadata);
 
@@ -80,8 +86,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Test
 
             var unwrapped = wrapper.GetObject() as DicomFileStorageMetadata;
 
-            Assert.Equal(metadata.CalledAeTitle, unwrapped!.CalledAeTitle);
-            Assert.Equal(metadata.CallingAeTitle, unwrapped.CallingAeTitle);
+            Assert.Equal(metadata.DataOrigin.Source, unwrapped!.DataOrigin.Source);
+            Assert.Equal(metadata.DataOrigin.Destination, unwrapped!.DataOrigin.Destination);
+            Assert.Equal(metadata.DataOrigin.DataService, unwrapped!.DataOrigin.DataService);
             Assert.Equal(metadata.CorrelationId, unwrapped.CorrelationId);
             Assert.Equal(metadata.Id, unwrapped.Id);
             Assert.Equal(metadata.DataTypeDirectoryName, unwrapped.DataTypeDirectoryName);
@@ -90,8 +97,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Test
             Assert.Equal(metadata.SeriesInstanceUid, unwrapped.SeriesInstanceUid);
             Assert.Equal(metadata.SopInstanceUid, unwrapped.SopInstanceUid);
             Assert.Equal(metadata.StudyInstanceUid, unwrapped.StudyInstanceUid);
-            Assert.Equal(metadata.Source, unwrapped.Source);
             Assert.Equal(metadata.Workflows, unwrapped.Workflows);
+            Assert.Equal(metadata.WorkflowInstanceId, unwrapped.WorkflowInstanceId);
+            Assert.Equal(metadata.TaskId, unwrapped.TaskId);
 
             Assert.Equal(metadata.File.FileExtension, unwrapped.File.FileExtension);
             Assert.Equal(metadata.File.UploadPath, unwrapped.File.UploadPath);

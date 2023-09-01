@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
@@ -27,19 +28,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     internal interface IPayloadAssembler
     {
         /// <summary>
-        /// Queue a new file for the spcified payload bucket.
+        /// Queue a new file for the specified payload bucket.
         /// </summary>
         /// <param name="bucket">The bucket group the file belongs to.</param>
         /// <param name="file">Path to the file to be added to the payload bucket.</param>
-        Task<Guid> Queue(string bucket, FileStorageMetadata file);
+        /// <param name="dataOrigin">The service that triggered this queue request</param>
+        Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin);
 
         /// <summary>
-        /// Queue a new file for the spcified payload bucket.
+        /// Queue a new file for the specified payload bucket.
         /// </summary>
         /// <param name="bucket">The bucket group the file belongs to.</param>
         /// <param name="file">Path to the file to be added to the payload bucket.</param>
+        /// <param name="dataOrigin">The service that triggered this queue request</param>
         /// <param name="timeout">Number of seconds to wait for additional files.</param>
-        Task<Guid> Queue(string bucket, FileStorageMetadata file, uint timeout);
+        Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout);
 
         /// <summary>
         /// Dequeue a payload from the queue for the message broker to notify subscribers.

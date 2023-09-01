@@ -15,7 +15,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.15");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.21");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
                 {
@@ -130,6 +130,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("IgnoredSopClasses")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PlugInAssemblies")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -249,6 +253,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("DataOrigins")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DataTrigger")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
@@ -269,8 +281,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<int>("State")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("TaskId")
+                        .HasColumnType("TEXT");
+
                     b.Property<uint>("Timeout")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("WorkflowInstanceId")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("PayloadId");
 
@@ -280,6 +298,44 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasIndex(new[] { "State" }, "idx_payload_state");
 
                     b.ToTable("Payloads");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity", b =>
+                {
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime?>("DateTimeUpdated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PlugInAssemblies")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("VirtualAeTitle")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Workflows")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Name");
+
+                    b.HasIndex(new[] { "Name" }, "idx_virtualae_name")
+                        .IsUnique();
+
+                    b.ToTable("VirtualApplicationEntities");
                 });
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper", b =>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ using System;
 using System.IO;
 using System.IO.Abstractions;
 using System.Reflection;
-using FellowOakDicom.Log;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +25,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
@@ -98,6 +98,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddOptions<MessageBrokerServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"));
                     services.AddOptions<StorageServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"));
                     services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));
+                    services.AddOptions<PlugInConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:plugins"));
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
 
                     services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"));
@@ -111,6 +112,10 @@ namespace Monai.Deploy.InformaticsGateway
 
                     services.AddScoped<IPayloadMoveActionHandler, PayloadMoveActionHandler>();
                     services.AddScoped<IPayloadNotificationActionHandler, PayloadNotificationActionHandler>();
+                    services.AddScoped<IInputDataPlugInEngine, InputDataPlugInEngine>();
+                    services.AddScoped<IOutputDataPlugInEngine, OutputDataPlugInEngine>();
+                    services.AddScoped<IDataPlugInEngineFactory<IInputDataPlugIn>, InputDataPlugInEngineFactory>();
+                    services.AddScoped<IDataPlugInEngineFactory<IOutputDataPlugIn>, OutputDataPlugInEngineFactory>();
 
                     services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
 
@@ -120,7 +125,6 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<ConfigurationValidator>();
                     services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
                     services.AddSingleton<IPayloadAssembler, PayloadAssembler>();
-                    services.AddSingleton<FellowOakDicom.Log.ILogManager, NLogManager>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
                     services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();
@@ -175,7 +179,6 @@ namespace Monai.Deploy.InformaticsGateway
             LayoutRenderer.Register("servicename", logEvent => typeof(Program).Namespace);
             LayoutRenderer.Register("serviceversion", logEvent => assemblyVersionNumber);
             LayoutRenderer.Register("machinename", logEvent => Environment.MachineName);
-
             return LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
         }
     }

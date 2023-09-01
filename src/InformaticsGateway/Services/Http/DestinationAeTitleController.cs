@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2020 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,10 +23,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Scu;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -37,16 +39,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     {
         private readonly ILogger<DestinationAeTitleController> _logger;
         private readonly IDestinationApplicationEntityRepository _repository;
+        private readonly IDataPlugInEngineFactory<IOutputDataPlugIn> _outputDataPlugInEngineFactory;
         private readonly IScuQueue _scuQueue;
 
         public DestinationAeTitleController(
             ILogger<DestinationAeTitleController> logger,
             IDestinationApplicationEntityRepository repository,
-            IScuQueue scuQueue)
+            IScuQueue scuQueue,
+            IDataPlugInEngineFactory<IOutputDataPlugIn> outputDataPlugInEngineFactory)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _scuQueue = scuQueue ?? throw new ArgumentNullException(nameof(scuQueue));
+            _outputDataPlugInEngineFactory = outputDataPlugInEngineFactory ?? throw new ArgumentNullException(nameof(outputDataPlugInEngineFactory));
         }
 
         [HttpGet]
@@ -250,6 +255,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 _logger.ErrorDeletingDestinationApplicationEntity(ex);
                 return Problem(title: "Error deleting DICOM destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
+            }
+        }
+
+        [HttpGet("plug-ins")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<MonaiApplicationEntity> GetPlugIns()
+        {
+            try
+            {
+                return Ok(_outputDataPlugInEngineFactory.RegisteredPlugIns());
+            }
+            catch (Exception ex)
+            {
+                _logger.ErrorReadingDataInputPlugIns(ex);
+                return Problem(title: "Error reading data input plug-ins.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 

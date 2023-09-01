@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -30,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsValid(this MonaiApplicationEntity monaiApplicationEntity, out IList<string> validationErrors)
         {
-            Guard.Against.Null(monaiApplicationEntity);
+            Guard.Against.Null(monaiApplicationEntity, nameof(monaiApplicationEntity));
 
             validationErrors = new List<string>();
 
@@ -43,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsValid(this DestinationApplicationEntity destinationApplicationEntity, out IList<string> validationErrors)
         {
-            Guard.Against.Null(destinationApplicationEntity);
+            Guard.Against.Null(destinationApplicationEntity, nameof(destinationApplicationEntity));
 
             validationErrors = new List<string>();
 
@@ -58,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsValid(this SourceApplicationEntity sourceApplicationEntity, out IList<string> validationErrors)
         {
-            Guard.Against.Null(sourceApplicationEntity);
+            Guard.Against.Null(sourceApplicationEntity, nameof(sourceApplicationEntity));
 
             validationErrors = new List<string>();
 
@@ -69,9 +70,23 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             return valid;
         }
 
+        public static bool IsValid(this VirtualApplicationEntity virtualApplicationEntity, out IList<string> validationErrors)
+        {
+            Guard.Against.Null(virtualApplicationEntity, nameof(virtualApplicationEntity));
+
+            validationErrors = new List<string>();
+
+            var valid = true;
+
+            // The virtual AE Title is used as a URL fragment but given that AE Title has stricter character sets, we will use the same validation.
+            valid &= IsAeTitleValid("virtualAeTitle", virtualApplicationEntity.VirtualAeTitle, validationErrors);
+
+            return valid;
+        }
+
         public static bool IsValidDicomTag(string source, string grouping, IList<string> validationErrors = null)
         {
-            Guard.Against.NullOrWhiteSpace(source);
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
 
             try
             {
@@ -93,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsAeTitleValid(string source, string aeTitle, IList<string> validationErrors = null)
         {
-            Guard.Against.NullOrWhiteSpace(source);
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
 
             if (!string.IsNullOrWhiteSpace(aeTitle) &&
                 aeTitle.Length <= 15 &&
@@ -121,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         public static bool IsPortValid(string source, int port, IList<string> validationErrors = null)
         {
-            Guard.Against.NullOrWhiteSpace(source);
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
 
             if (port > 0 && port <= 65535) return true;
 

@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Ardalis.GuardClauses;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -64,29 +65,38 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public string CorrelationId { get; init; }
 
+        public string? WorkflowInstanceId { get; init; }
+
+        public string? TaskId { get; init; }
+
+        public DataOrigin DataTrigger { get; init; }
+
+        public HashSet<DataOrigin> DataOrigins { get; init; }
+
         public int Count { get => Files.Count; }
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
 
         public TimeSpan Elapsed
-        { get { return DateTime.UtcNow.Subtract(DateTimeCreated); } }
-
-        public string? CallingAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CallingAeTitle).FirstOrDefault(); }
-
-        public string? CalledAeTitle { get => Files.OfType<DicomFileStorageMetadata>().Select(p => p.CalledAeTitle).FirstOrDefault(); }
+        {
+            get { return DateTime.UtcNow.Subtract(DateTimeCreated); }
+        }
 
         public int FilesUploaded { get => Files.Count(p => p.IsUploaded); }
 
         public int FilesFailedToUpload { get => Files.Count(p => p.IsUploadFailed); }
 
-        public Payload(string key, string correlationId, uint timeout)
+        public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout)
         {
-            Guard.Against.NullOrWhiteSpace(key);
+            Guard.Against.NullOrWhiteSpace(key, nameof(key));
 
             Files = new List<FileStorageMetadata>();
+            DataOrigins = new HashSet<DataOrigin>();
             _lastReceived = new Stopwatch();
 
             CorrelationId = correlationId;
+            WorkflowInstanceId = workflowInstanceId;
+            TaskId = taskId;
             MachineName = Environment.MachineName;
             DateTimeCreated = DateTime.UtcNow;
             PayloadId = Guid.NewGuid();
@@ -94,13 +104,20 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             State = PayloadState.Created;
             RetryCount = 0;
             Timeout = timeout;
+            DataTrigger = dataTrigger;
         }
 
         public void Add(FileStorageMetadata value)
         {
-            Guard.Against.Null(value);
+            Guard.Against.Null(value, nameof(value));
 
             Files.Add(value);
+
+            if (!DataTrigger.Equals(value.DataOrigin))
+            {
+                DataOrigins.Add(value.DataOrigin);
+            }
+
             _lastReceived.Reset();
             _lastReceived.Start();
         }

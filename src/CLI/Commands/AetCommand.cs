@@ -43,6 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             SetupEditAetCommand();
             SetupRemoveAetCommand();
             SetupListAetCommand();
+            SetupPlugInsCommand();
         }
 
         private void SetupListAetCommand()
@@ -97,6 +98,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 IsRequired = false,
             };
             addCommand.AddOption(allowedSopsOption);
+            var plugins = new Option<List<string>>(new string[] { "-p", "--plugins" }, description: "A space separated list of fully qualified type names of the plug-ins (surround each plug-in with double quotes)")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+            };
+            addCommand.AddOption(plugins);
 
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(AddAeTitlehandlerAsync);
         }
@@ -130,13 +137,27 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 IsRequired = false,
             };
             addCommand.AddOption(allowedSopsOption);
+            var plugins = new Option<List<string>>(new string[] { "-p", "--plugins" }, description: "A space separated list of fully qualified type names of the plug-ins (surround each plug-in with double quotes)")
+            {
+                AllowMultipleArgumentsPerToken = true,
+                IsRequired = false,
+            };
+            addCommand.AddOption(plugins);
 
             addCommand.Handler = CommandHandler.Create<MonaiApplicationEntity, IHost, bool, CancellationToken>(EditAeTitleHandlerAsync);
         }
 
+        private void SetupPlugInsCommand()
+        {
+            var pluginsCommand = new Command("plugins", "List all available plug-ins for SCP Application Entities");
+            AddCommand(pluginsCommand);
+
+            pluginsCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListPlugInsHandlerAsync);
+        }
+
         private async Task<int> ListAeTitlehandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(host);
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
 
@@ -204,8 +225,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> RemoveAeTitlehandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(name);
-            Guard.Against.Null(host);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -240,8 +261,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> AddAeTitlehandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity);
-            Guard.Against.Null(host);
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -275,7 +296,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                 if (result.AllowedSopClasses.Any())
                 {
                     logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
-                    logger.AcceptedSopClassesWarning();
+                }
+                if (result.PlugInAssemblies.Any())
+                {
+                    logger.MonaiAePlugIns(string.Join(',', result.PlugInAssemblies));
                 }
             }
             catch (ConfigurationException ex)
@@ -293,8 +317,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> EditAeTitleHandlerAsync(MonaiApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity);
-            Guard.Against.Null(host);
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -330,6 +354,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI
                     logger.MonaiAeAllowedSops(string.Join(',', result.AllowedSopClasses));
                     logger.AcceptedSopClassesWarning();
                 }
+                if (result.PlugInAssemblies.Any())
+                {
+                    logger.MonaiAePlugIns(string.Join(',', result.PlugInAssemblies));
+                }
             }
             catch (ConfigurationException ex)
             {
@@ -340,6 +368,69 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 logger.ErrorUpdatingMonaiApplicationEntity(entity.AeTitle, ex.Message);
                 return ExitCodes.MonaiScp_ErrorUpdate;
+            }
+            return ExitCodes.Success;
+        }
+
+        private async Task<int> ListPlugInsHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(host, nameof(host));
+
+            LogVerbose(verbose, host, "Configuring services...");
+
+            var console = host.Services.GetRequiredService<IConsole>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
+            var consoleRegion = host.Services.GetRequiredService<IConsoleRegion>();
+            var logger = CreateLogger<AetCommand>(host);
+
+            Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
+            Guard.Against.Null(console, nameof(console), "Console service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
+            Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
+
+            IDictionary<string, string> items = null;
+            try
+            {
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
+                items = await client.MonaiScpAeTitle.PlugIns(cancellationToken).ConfigureAwait(false);
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.ConfigurationException(ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
+            catch (Exception ex)
+            {
+                logger.ErrorListingDataInputPlugIns(ex.Message);
+                return ExitCodes.MonaiScp_ErrorPlugIns;
+            }
+
+            if (items.IsNullOrEmpty())
+            {
+                logger.NoAeTitlesFound();
+            }
+            else
+            {
+                if (console is ITerminal terminal)
+                {
+                    terminal.Clear();
+                }
+                var consoleRenderer = new ConsoleRenderer(console);
+
+                var table = new TableView<KeyValuePair<string, string>>
+                {
+                    Items = items.Select(x => new KeyValuePair<string, string>(x.Key, x.Value)).ToList()
+                };
+                table.AddColumn(p => p.Key, new ContentView("Name".Underline()));
+                table.AddColumn(p => p.Value, new ContentView("Assembly Name".Underline()));
+                table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
+
+                logger.ListedNItems(items.Count);
             }
             return ExitCodes.Success;
         }

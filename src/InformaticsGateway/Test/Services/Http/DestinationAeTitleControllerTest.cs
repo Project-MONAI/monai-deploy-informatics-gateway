@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scu;
 using Moq;
@@ -45,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         private readonly Mock<ILogger<DestinationAeTitleController>> _logger;
         private readonly Mock<IScuQueue> _scuQueue;
         private readonly Mock<IDestinationApplicationEntityRepository> _repository;
+        private readonly Mock<IDataPlugInEngineFactory<IOutputDataPlugIn>> _pluginFactory;
 
         public DestinationAeTitleControllerTest()
         {
@@ -73,12 +76,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 });
 
             _repository = new Mock<IDestinationApplicationEntityRepository>();
+            _pluginFactory = new Mock<IDataPlugInEngineFactory<IOutputDataPlugIn>>();
 
             var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() };
             _controller = new DestinationAeTitleController(
                  _logger.Object,
                  _repository.Object,
-                 _scuQueue.Object)
+                 _scuQueue.Object,
+                 _pluginFactory.Object)
             {
                 ProblemDetailsFactory = _problemDetailsFactory.Object,
                 ControllerContext = controllerContext,
@@ -420,7 +425,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var controller = new DestinationAeTitleController(
                  _logger.Object,
                  _repository.Object,
-                 _scuQueue.Object)
+                 _scuQueue.Object,
+                 _pluginFactory.Object)
             {
                 ProblemDetailsFactory = _problemDetailsFactory.Object,
                 ControllerContext = controllerContext,
@@ -592,5 +598,41 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         }
 
         #endregion Delete
+
+        #region GetPlugIns
+
+        [RetryFact(5, 250, DisplayName = "GetPlugIns - Shall return registered plug-ins")]
+        public void GetPlugIns_ReturnsRegisteredPlugIns()
+        {
+            var input = new Dictionary<string, string>() { { "A", "1" }, { "B", "3" }, { "C", "3" } };
+
+            _pluginFactory.Setup(p => p.RegisteredPlugIns()).Returns(input);
+
+            var result = _controller.GetPlugIns();
+            var okObjectResult = result.Result as OkObjectResult;
+            var response = okObjectResult.Value as IDictionary<string, string>;
+            Assert.NotNull(response);
+            Assert.Equal(input, response);
+
+            _pluginFactory.Verify(p => p.RegisteredPlugIns(), Times.Once());
+        }
+
+        [RetryFact(5, 250, DisplayName = "GetPlugIns - Shall return problem on failure")]
+        public void GetPlugIns_ShallReturnProblemOnFailure()
+        {
+            _pluginFactory.Setup(p => p.RegisteredPlugIns()).Throws(new Exception("error"));
+
+            var result = _controller.GetPlugIns();
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var problem = objectResult.Value as ProblemDetails;
+            Assert.NotNull(problem);
+            Assert.Equal("Error reading data input plug-ins.", problem.Title);
+            Assert.Equal("error", problem.Detail);
+            Assert.Equal((int)HttpStatusCode.InternalServerError, problem.Status);
+            _pluginFactory.Verify(p => p.RegisteredPlugIns(), Times.Once());
+        }
+
+        #endregion GetPlugIns
     }
 }

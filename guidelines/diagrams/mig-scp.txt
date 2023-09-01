@@ -8,6 +8,7 @@ fontawesome f0f8 "Hospital\nDICOM Devices" as DICOM
 
 participantgroup #00CC66 Informatics\nGateway
 participant "DICOM SCP" as SCP
+participant "Input Data Plugin Engine" as IDPE
 participant "Payload Assembler Service" as PA
 participant "Payload Notification Service" as PN
 participant "Object Upload Service" as OUS
@@ -45,6 +46,17 @@ SCP->DB: Query for \nconfigured\nsources
 SCP<--DB: Response
 SCP->SCP: Validate
 SCP->SCP: Extract DICOM headers
+SCP->IDPE: Execute Plugins (DicomFile, DicomFileStorageMetadata)
+activate IDPE
+loop plugin in plugins
+IDPE->IDPE: execute plugin
+activate IDPE
+IDPE<<--IDPE: return DicomFileStorageMetadata
+deactivate IDPE
+end
+SCP<<--IDPE: return DicomFileStorageMetadata
+deactivate IDPE
+
 SCP->OUS: Queue for upload
 activate OUS
 OUS->DISK: Upload to temporary bucket path

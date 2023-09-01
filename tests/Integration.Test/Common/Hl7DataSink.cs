@@ -39,8 +39,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {
-            Guard.Against.Null(dataProvider);
-            Guard.Against.NullOrEmpty(args);
+            Guard.Against.Null(dataProvider, nameof(dataProvider));
+            Guard.Against.NullOrEmpty(args, nameof(args));
 
             var batch = (bool)args[0];
 

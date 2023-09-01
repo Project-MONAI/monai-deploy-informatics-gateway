@@ -1548,14 +1548,14 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 
 <details>
-<summary>HL7-dotnetcore 2.35.0</summary>
+<summary>HL7-dotnetcore 2.36.0</summary>
 
 ## HL7-dotnetcore
 
-- Version: 2.35.0
+- Version: 2.36.0
 - Authors: HL7-dotnetcore
 - Project URL: https://github.com/Efferent-Health/HL7-dotnetcore
-- Source: [NuGet](https://www.nuget.org/packages/HL7-dotnetcore/2.35.0)
+- Source: [NuGet](https://www.nuget.org/packages/HL7-dotnetcore/2.36.0)
 - License: [MIT](https://github.com/Efferent-Health/HL7-dotnetcore/raw/master/LICENSE.txt)
 
 
@@ -7304,14 +7304,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging 0.1.21</summary>
+<summary>Monai.Deploy.Messaging 1.0.0</summary>
 
 ## Monai.Deploy.Messaging
 
-- Version: 0.1.21
+- Version: 1.0.0
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/0.1.21)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/1.0.0)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7532,14 +7532,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Messaging.RabbitMQ 0.1.21</summary>
+<summary>Monai.Deploy.Messaging.RabbitMQ 1.0.0</summary>
 
 ## Monai.Deploy.Messaging.RabbitMQ
 
-- Version: 0.1.21
+- Version: 1.0.0
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/0.1.21)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/1.0.0)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7988,14 +7988,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage 0.2.13</summary>
+<summary>Monai.Deploy.Storage 0.2.18</summary>
 
 ## Monai.Deploy.Storage
 
-- Version: 0.2.13
+- Version: 0.2.18
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.2.13)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/0.2.18)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8216,14 +8216,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.MinIO 0.2.13</summary>
+<summary>Monai.Deploy.Storage.MinIO 0.2.18</summary>
 
 ## Monai.Deploy.Storage.MinIO
 
-- Version: 0.2.13
+- Version: 0.2.18
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.2.13)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/0.2.18)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8444,14 +8444,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.S3Policy 0.2.13</summary>
+<summary>Monai.Deploy.Storage.S3Policy 0.2.18</summary>
 
 ## Monai.Deploy.Storage.S3Policy
 
-- Version: 0.2.13
+- Version: 0.2.18
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.2.13)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/0.2.18)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8800,14 +8800,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Moq 4.18.1</summary>
+<summary>Moq 4.20.69</summary>
 
 ## Moq
 
-- Version: 4.18.1
+- Version: 4.20.69
 - Authors: Daniel Cazzulino, kzu
 - Project URL: https://github.com/moq/moq4
-- Source: [NuGet](https://www.nuget.org/packages/Moq/4.18.1)
+- Source: [NuGet](https://www.nuget.org/packages/Moq/4.20.69)
 - License: [BSD 3-Clause License]( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
 
 
@@ -8847,14 +8847,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>Moq 4.18.4</summary>
+<summary>Moq 4.20.1</summary>
 
 ## Moq
 
-- Version: 4.18.4
+- Version: 4.20.1
 - Authors: Daniel Cazzulino, kzu
 - Project URL: https://github.com/moq/moq4
-- Source: [NuGet](https://www.nuget.org/packages/Moq/4.18.4)
+- Source: [NuGet](https://www.nuget.org/packages/Moq/4.20.1)
 - License: [BSD 3-Clause License]( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
 
 
@@ -9182,14 +9182,14 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>NLog.Extensions.Logging 5.2.2</summary>
+<summary>NLog.Extensions.Logging 5.2.3</summary>
 
 ## NLog.Extensions.Logging
 
-- Version: 5.2.2
+- Version: 5.2.3
 - Authors: Microsoft,Julian Verdurmen
 - Project URL: https://github.com/NLog/NLog.Extensions.Logging
-- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.2.2)
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.2.3)
 - License: [BSD 2-Clause Simplified License](https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
 
 
@@ -9223,14 +9223,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>NLog.Web.AspNetCore 5.2.2</summary>
+<summary>NLog.Web.AspNetCore 5.2.3</summary>
 
 ## NLog.Web.AspNetCore
 
-- Version: 5.2.2
+- Version: 5.2.3
 - Authors: Julian Verdurmen
 - Project URL: https://github.com/NLog/NLog.Web
-- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.2.2)
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.2.3)
 - License: [BSD 3-Clause License](https://github.com/NLog/NLog.Web/raw/master/LICENSE)
 
 
@@ -9571,14 +9571,14 @@ C# is a registered trademark of Microsoft ®.
 
 
 <details>
-<summary>RabbitMQ.Client 6.4.0</summary>
+<summary>RabbitMQ.Client 6.5.0</summary>
 
 ## RabbitMQ.Client
 
-- Version: 6.4.0
+- Version: 6.5.0
 - Authors: VMware
 - Project URL: https://www.rabbitmq.com/dotnet.html
-- Source: [NuGet](https://www.nuget.org/packages/RabbitMQ.Client/6.4.0)
+- Source: [NuGet](https://www.nuget.org/packages/RabbitMQ.Client/6.5.0)
 - License: [Apache-2.0](https://github.com/rabbitmq/rabbitmq-dotnet-client/raw/main/LICENSE-APACHE2)
 
 
@@ -17176,15 +17176,15 @@ SOFTWARE.
 
 
 <details>
-<summary>System.Memory 4.5.4</summary>
+<summary>System.Memory 4.5.5</summary>
 
 ## System.Memory
 
-- Version: 4.5.4
+- Version: 4.5.5
 - Authors: Microsoft
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/System.Memory/4.5.4)
+- Source: [NuGet](https://www.nuget.org/packages/System.Memory/4.5.5)
 - License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
 
 
@@ -26326,14 +26326,14 @@ SOFTWARE.
 
 
 <details>
-<summary>System.Threading.Channels 6.0.0</summary>
+<summary>System.Threading.Channels 7.0.0</summary>
 
 ## System.Threading.Channels
 
-- Version: 6.0.0
+- Version: 7.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Channels/6.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Channels/7.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -41669,4 +41669,3 @@ Data pulled from spdx/license-list-data on February 9, 2023.
 ```
 
 </details>
-

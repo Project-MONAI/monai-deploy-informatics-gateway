@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,8 +26,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
@@ -37,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly ILogger<StowService> _logger;
+        private readonly IVirtualApplicationEntityRepository _repository;
 
         public StowService(IServiceScopeFactory serviceScopeFactory, IOptions<InformaticsGatewayConfiguration> configuration)
         {
@@ -45,12 +48,25 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 
             var scope = _serviceScopeFactory.CreateScope();
             _logger = scope.ServiceProvider.GetService<ILogger<StowService>>() ?? throw new ServiceNotFoundException(nameof(ILogger<StowService>));
+            _repository = scope.ServiceProvider.GetService<IVirtualApplicationEntityRepository>() ?? throw new ServiceNotFoundException(nameof(IVirtualApplicationEntityRepository));
         }
 
-        public async Task<StowResult> StoreAsync(HttpRequest request, string studyInstanceUid, string workflowName, string correlationId, CancellationToken cancellationToken)
+        public async Task<StowResult> StoreAsync(HttpRequest request, string studyInstanceUid, string aet, string workflowName, string correlationId, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request);
-            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.Null(request, nameof(request));
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
+
+            VirtualApplicationEntity? vae = null;
+
+            if (!string.IsNullOrWhiteSpace(aet))
+            {
+                vae = await ValidateVirtualAet(aet).ConfigureAwait(false);
+
+                if (vae is null)
+                {
+                    throw new ApplicationEntityNotFoundException($"{aet} cannot be found and may be not configured.");
+                }
+            }
 
             if (!string.IsNullOrWhiteSpace(studyInstanceUid))
             {
@@ -71,12 +87,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             var streamsWriter = scope.ServiceProvider.GetService<IStreamsWriter>() ?? throw new ServiceNotFoundException(nameof(IStreamsWriter));
 
             _logger.SavingStream(streams.Count);
-            return await streamsWriter.Save(streams, studyInstanceUid, workflowName, correlationId, request.HttpContext.Connection.RemoteIpAddress.ToString(), cancellationToken).ConfigureAwait(false);
+            return await streamsWriter.Save(streams, studyInstanceUid, vae, workflowName, correlationId, request.HttpContext.Connection.RemoteIpAddress.ToString(), cancellationToken).ConfigureAwait(false);
         }
 
         private IStowRequestReader GetRequestReader(MediaTypeHeaderValue mediaTypeHeaderValue)
         {
-            Guard.Against.Null(mediaTypeHeaderValue);
+            Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
 
             var scope = _serviceScopeFactory.CreateScope();
             var fileSystem = scope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
@@ -93,6 +109,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             }
 
             throw new UnsupportedContentTypeException($"Media type of '{mediaTypeHeaderValue.MediaType}' is not supported.");
+        }
+
+        private async Task<VirtualApplicationEntity> ValidateVirtualAet(string aet)
+        {
+            return await _repository.FindByAeTitleAsync(aet).ConfigureAwait(false);
         }
     }
 }

@@ -42,6 +42,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8005, Level = LogLevel.Information, Message = "MONAI SCP AE Title {name} updated AE Title={aeTitle}.")]
         public static partial void MonaiApplicationEntityUpdated(this ILogger logger, string name, string aeTitle);
 
+        [LoggerMessage(EventId = 8006, Level = LogLevel.Error, Message = "Error reading data input plug-ins.")]
+        public static partial void ErrorReadingDataInputPlugIns(this ILogger logger, Exception ex);
 
         // Destination AE Title Controller
         [LoggerMessage(EventId = 8010, Level = LogLevel.Information, Message = "DICOM destination added AE Title={aeTitle}, Host/IP={hostIp}.")]
@@ -98,6 +100,25 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8040, Level = LogLevel.Error, Message = "Error collecting system status.")]
         public static partial void ErrorCollectingSystemStatus(this ILogger logger, Exception ex);
 
+        // Virtual AE Title Controller
+        [LoggerMessage(EventId = 8050, Level = LogLevel.Error, Message = "Error querying Virtual Application Entity.")]
+        public static partial void ErrorListingVirtualApplicationEntities(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8051, Level = LogLevel.Error, Message = "Error adding Virtual Application Entity.")]
+        public static partial void ErrorAddingVirtualApplicationEntity(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8052, Level = LogLevel.Error, Message = "Error deleting Virtual Application Entity.")]
+        public static partial void ErrorDeletingVirtualApplicationEntity(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8053, Level = LogLevel.Information, Message = "Virtual SCP AE Title added AE Title={aeTitle}.")]
+        public static partial void VirtualApplicationEntityAdded(this ILogger logger, string aeTitle);
+
+        [LoggerMessage(EventId = 8054, Level = LogLevel.Information, Message = "MONAI SCP Application Entity deleted {name}.")]
+        public static partial void VirtualApplicationEntityDeleted(this ILogger logger, string name);
+
+        [LoggerMessage(EventId = 8055, Level = LogLevel.Information, Message = "Virtual SCP AE Title {name} updated AE Title={aeTitle}.")]
+        public static partial void VirtualApplicationEntityUpdated(this ILogger logger, string name, string aeTitle);
+
         // Middleware
         [LoggerMessage(EventId = 8090, Level = LogLevel.Error, Message = "HTTP error in request {path}.")]
         public static partial void HttpRequestError(this ILogger logger, string path, Exception ex);
@@ -132,6 +153,9 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8110, Level = LogLevel.Warning, Message = "Ignoring zero length stream.")]
         public static partial void ZeroLengthDicomWebStowStream(this ILogger logger);
+
+        [LoggerMessage(EventId = 8111, Level = LogLevel.Error, Message = "Unknown virtual application entity specified {aet}.")]
+        public static partial void ErrorDicomWebStowUnknownVirtualApplicationEntity(this ILogger logger, string aet, Exception ex);
 
         // FHIR Serer
 

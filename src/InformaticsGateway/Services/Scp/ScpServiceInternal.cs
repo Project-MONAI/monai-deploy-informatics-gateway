@@ -22,6 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using FellowOakDicom.Network;
+using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -39,15 +40,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         IDicomCStoreProvider
     {
         private readonly DicomAssociationInfo _associationInfo;
-        private Microsoft.Extensions.Logging.ILogger _logger;
+        private readonly ILogger _logger;
         private IApplicationEntityManager _associationDataProvider;
         private IDisposable _loggerScope;
         private Guid _associationId;
         private DateTimeOffset? _associationReceived;
 
-        public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, FellowOakDicom.Log.ILogger log, DicomServiceDependencies dicomServiceDependencies)
-                : base(stream, fallbackEncoding, log, dicomServiceDependencies)
+        public ScpServiceInternal(INetworkStream stream, Encoding fallbackEncoding, ILogger logger, DicomServiceDependencies dicomServiceDependencies)
+                : base(stream, fallbackEncoding, logger, dicomServiceDependencies)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _associationInfo = new DicomAssociationInfo();
         }
 
@@ -147,8 +149,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             {
                 throw new ServiceException($"{nameof(UserState)} must be an instance of IAssociationDataProvider");
             }
-
-            _logger = _associationDataProvider.GetLogger(Association.CalledAE);
 
             _associationId = Guid.NewGuid();
             var associationIdStr = $"#{_associationId} {association.RemoteHost}:{association.RemotePort}";

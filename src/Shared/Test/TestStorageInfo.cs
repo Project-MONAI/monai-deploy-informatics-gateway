@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,13 @@
  */
 
 using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.SharedTest;
 
 internal record TestStorageInfo : FileStorageMetadata
 {
-    public TestStorageInfo(string correlationsId, string identifier, string filePath, string fileExtension)
+    public TestStorageInfo(string correlationsId, string identifier, string filePath, string fileExtension, DataOrigin dataOrigin)
         : base(correlationsId, identifier)
     {
         File = new StorageObjectMetadata(fileExtension)
@@ -28,6 +29,9 @@ internal record TestStorageInfo : FileStorageMetadata
             UploadPath = filePath,
             TemporaryPath = filePath
         };
+        DataOrigin.Source = dataOrigin.Source;
+        DataOrigin.Destination = dataOrigin.Destination;
+        DataOrigin.DataService = dataOrigin.DataService;
     }
 
     public override string DataTypeDirectoryName => "dir";

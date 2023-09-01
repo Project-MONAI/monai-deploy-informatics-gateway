@@ -27,7 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         public ConsoleLogger(string name, ConsoleLoggerConfiguration configuration)
         {
-            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
             _ = name;
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));

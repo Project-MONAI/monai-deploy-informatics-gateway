@@ -20,9 +20,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations;
 using MongoDB.Driver;
 using Polly;
 using Polly.Retry;
@@ -41,11 +41,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DicomAssociationInfoRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options,
-            IOptions<MongoDBOptions> mongoDbOptions)
+            IOptions<DatabaseOptions> mongoDbOptions)
         {
-            Guard.Against.Null(serviceScopeFactory);
-            Guard.Against.Null(options);
-            Guard.Against.Null(mongoDbOptions);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(options, nameof(options));
+            Guard.Against.Null(mongoDbOptions, nameof(mongoDbOptions));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -55,13 +55,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
-            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DaatabaseName);
+            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DatabaseName);
             _collection = mongoDatabase.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
         }
 
         public async Task<DicomAssociationInfo> AddAsync(DicomAssociationInfo item, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(item);
+            Guard.Against.Null(item, nameof(item));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {

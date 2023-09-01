@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 {
@@ -58,8 +60,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
         public async Task<FhirStoreResult> StoreAsync(HttpRequest request, string correlationId, string resourceType, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request);
-            Guard.Against.NullOrWhiteSpace(correlationId);
+            Guard.Against.Null(request, nameof(request));
+            Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
 
             if (!MediaTypeHeaderValue.TryParse(request.ContentType, out var mediaTypeHeaderValue))
             {
@@ -87,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 throw new FhirStoreException(correlationId, $"Provided resource is of type '{content.InternalResourceType}' but request targeted type '{resourceType}'.", IssueType.Invalid);
             }
 
-            var payloadId = await _payloadAssembler.Queue(correlationId, content.Metadata, Resources.PayloadAssemblerTimeout).ConfigureAwait(false);
+            var payloadId = await _payloadAssembler.Queue(correlationId, content.Metadata, new DataOrigin { DataService = DataService.FHIR, Source = request.HttpContext.Connection.RemoteIpAddress.ToString(), Destination = FileStorageMetadata.IpAddress() }, Resources.PayloadAssemblerTimeout).ConfigureAwait(false);
             content.Metadata.PayloadId = payloadId.ToString();
             _uploadQueue.Queue(content.Metadata);
             _logger.QueuedStowInstance();
@@ -98,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 
         private IFHirRequestReader GetRequestReader(MediaTypeHeaderValue mediaTypeHeaderValue)
         {
-            Guard.Against.Null(mediaTypeHeaderValue);
+            Guard.Against.Null(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue));
 
             var scope = _serviceScopeFactory.CreateScope();
             if (mediaTypeHeaderValue.MediaType.Equals(ContentTypes.ApplicationFhirJson, StringComparison.OrdinalIgnoreCase))

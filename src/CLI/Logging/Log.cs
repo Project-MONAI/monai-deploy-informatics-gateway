@@ -133,8 +133,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         [LoggerMessage(EventId = 30043, Level = LogLevel.Debug, Message = "Available manifest names {names}.")]
         public static partial void AvailableManifest(this ILogger logger, string names);
 
-        [LoggerMessage(EventId = 30044, Level = LogLevel.Information, Message = "Saving appsettings.json to {path}.")]
-        public static partial void SaveAppSettings(this ILogger logger, string path);
+        [LoggerMessage(EventId = 30044, Level = LogLevel.Information, Message = "Saving {resource} to {path}.")]
+        public static partial void SaveAppSettings(this ILogger logger, string resource, string path);
 
         [LoggerMessage(EventId = 30045, Level = LogLevel.Information, Message = "{path} updated successfully.")]
         public static partial void AppSettingUpdated(this ILogger logger, string path);
@@ -187,6 +187,15 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         [LoggerMessage(EventId = 30061, Level = LogLevel.Critical, Message = "Error updating SCP Application Entity {aeTitle}: {message}")]
         public static partial void ErrorUpdatingMonaiApplicationEntity(this ILogger logger, string aeTitle, string message);
 
+        [LoggerMessage(EventId = 30062, Level = LogLevel.Information, Message = "\tPlug-ins: {plugins}")]
+        public static partial void MonaiAePlugIns(this ILogger logger, string plugins);
+
+        [LoggerMessage(EventId = 30063, Level = LogLevel.Critical, Message = "Error retrieving data input plug-ins: {message}.")]
+        public static partial void ErrorListingDataInputPlugIns(this ILogger logger, string message);
+
+        [LoggerMessage(EventId = 30064, Level = LogLevel.Critical, Message = "Error retrieving data output plug-ins: {message}.")]
+        public static partial void ErrorListingDataOutputPlugIns(this ILogger logger, string message);
+
         // Docker Runner
         [LoggerMessage(EventId = 31000, Level = LogLevel.Debug, Message = "Checking for existing {applicationName} ({version}) containers...")]
         public static partial void CheckingExistingAppContainer(this ILogger logger, string applicationName, string version);
@@ -237,6 +246,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         public static partial void DockerCreateWarnings(this ILogger logger, string warnings);
 
         [LoggerMessage(EventId = 31016, Level = LogLevel.Information, Message = "\tMount (plug-ins):   {hostPath} => {containerPath}")]
-        public static partial void DockerMountPlugins(this ILogger logger, string hostPath, string containerPath);
+        public static partial void DockerMountPlugIns(this ILogger logger, string hostPath, string containerPath);
     }
 }

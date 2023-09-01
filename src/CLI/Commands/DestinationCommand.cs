@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             SetupRemoveDestinationCommand();
             SetupListDestinationCommand();
             SetupCEchoCommand();
+            SetupPlugInsCommand();
         }
 
         private void SetupCEchoCommand()
@@ -114,10 +115,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             addCommand.Handler = CommandHandler.Create<DestinationApplicationEntity, IHost, bool, CancellationToken>(AddDestinationHandlerAsync);
         }
 
+        private void SetupPlugInsCommand()
+        {
+            var pluginsCommand = new Command("plugins", "List all available plug-ins for DICOM destinations");
+            AddCommand(pluginsCommand);
+
+            pluginsCommand.Handler = CommandHandler.Create<IHost, bool, CancellationToken>(ListPlugInsHandlerAsync);
+        }
+
         private async Task<int> ListDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity);
-            Guard.Against.Null(host);
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
 
@@ -182,8 +191,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> CEchoDestinationHandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(name);
-            Guard.Against.Null(host);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -218,8 +227,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> RemoveDestinationHandlerAsync(string name, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(name);
-            Guard.Against.Null(host);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -254,8 +263,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> EditDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity);
-            Guard.Against.Null(host);
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -292,8 +301,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         private async Task<int> AddDestinationHandlerAsync(DestinationApplicationEntity entity, IHost host, bool verbose, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(entity);
-            Guard.Against.Null(host);
+            Guard.Against.Null(entity, nameof(entity));
+            Guard.Against.Null(host, nameof(host));
 
             LogVerbose(verbose, host, "Configuring services...");
             var configService = host.Services.GetRequiredService<IConfigurationService>();
@@ -323,6 +332,69 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 logger.ErrorCreatingDicomDestination(entity.AeTitle, ex.Message);
                 return ExitCodes.DestinationAe_ErrorCreate;
+            }
+            return ExitCodes.Success;
+        }
+
+        private async Task<int> ListPlugInsHandlerAsync(IHost host, bool verbose, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(host, nameof(host));
+
+            LogVerbose(verbose, host, "Configuring services...");
+
+            var console = host.Services.GetRequiredService<IConsole>();
+            var configService = host.Services.GetRequiredService<IConfigurationService>();
+            var client = host.Services.GetRequiredService<IInformaticsGatewayClient>();
+            var consoleRegion = host.Services.GetRequiredService<IConsoleRegion>();
+            var logger = CreateLogger<AetCommand>(host);
+
+            Guard.Against.Null(logger, nameof(logger), "Logger is unavailable.");
+            Guard.Against.Null(console, nameof(console), "Console service is unavailable.");
+            Guard.Against.Null(configService, nameof(configService), "Configuration service is unavailable.");
+            Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
+            Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
+
+            IDictionary<string, string> items = null;
+            try
+            {
+                CheckConfiguration(configService);
+                client.ConfigureServiceUris(configService.Configurations.InformaticsGatewayServerUri);
+                LogVerbose(verbose, host, $"Connecting to {Strings.ApplicationName} at {configService.Configurations.InformaticsGatewayServerEndpoint}...");
+                LogVerbose(verbose, host, $"Retrieving MONAI SCP AE Titles...");
+                items = await client.DicomDestinations.PlugIns(cancellationToken).ConfigureAwait(false);
+            }
+            catch (ConfigurationException ex)
+            {
+                logger.ConfigurationException(ex.Message);
+                return ExitCodes.Config_NotConfigured;
+            }
+            catch (Exception ex)
+            {
+                logger.ErrorListingDataOutputPlugIns(ex.Message);
+                return ExitCodes.DestinationAe_ErrorPlugIns;
+            }
+
+            if (items.IsNullOrEmpty())
+            {
+                logger.NoAeTitlesFound();
+            }
+            else
+            {
+                if (console is ITerminal terminal)
+                {
+                    terminal.Clear();
+                }
+                var consoleRenderer = new ConsoleRenderer(console);
+
+                var table = new TableView<KeyValuePair<string, string>>
+                {
+                    Items = items.Select(x => new KeyValuePair<string, string>(x.Key, x.Value)).ToList()
+                };
+                table.AddColumn(p => p.Key, new ContentView("Name".Underline()));
+                table.AddColumn(p => p.Value, new ContentView("Assembly Name".Underline()));
+                table.Render(consoleRenderer, consoleRegion.GetDefaultConsoleRegion());
+
+                logger.ListedNItems(items.Count);
             }
             return ExitCodes.Success;
         }

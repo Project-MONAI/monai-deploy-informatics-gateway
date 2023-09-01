@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,7 @@ using BoDi;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
+using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -26,7 +27,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class SharedDefinitions
     {
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly RabbitMqConsumer _receivedMessages;
         private readonly Assertions _assertions;
@@ -48,27 +48,31 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"(.*) (.*) studies")]
         public void GivenNStudies(int studyCount, string modality)
         {
-            Guard.Against.NegativeOrZero(studyCount);
-            Guard.Against.NullOrWhiteSpace(modality);
+            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
+            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
 
             _dataProvider.GenerateDicomData(modality, studyCount);
 
             _receivedMessages.ClearMessages();
         }
 
-        [Then(@"(.*) workflow requests sent to message broker")]
-        public async Task ThenWorkflowRequestSentToMessageBrokerAsync(int workflowCount)
-        {
-            Guard.Against.NegativeOrZero(workflowCount);
-
-            (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
-            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, _receivedMessages.Messages, workflowCount);
-        }
-
         [Then(@"studies are uploaded to storage service")]
         public async Task ThenXXFilesUploadedToStorageService()
         {
             await _assertions.ShouldHaveUploadedDicomDataToMinio(_receivedMessages.Messages, _dataProvider.DicomSpecs.FileHashes);
+        }
+
+        [Then(@"studies are uploaded to storage service with data input plugins")]
+        public async Task ThenXXFilesUploadedToStorageServiceWithDataInputPlugIns()
+        {
+            await _assertions.ShouldHaveUploadedDicomDataToMinio(
+                _receivedMessages.Messages,
+                _dataProvider.DicomSpecs.FileHashes,
+                (dicomFile) =>
+                {
+                    dicomFile.Dataset.GetString(TestInputDataPlugInModifyDicomFile.ExpectedTag)
+                        .Should().Be(TestInputDataPlugInModifyDicomFile.ExpectedValue);
+                });
         }
     }
 }

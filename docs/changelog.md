@@ -17,11 +17,52 @@
 
 # Changelog
 
+## 0.4.0
+
+[GitHub Milestone 0.4.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/5)
+
+- gh-435 Fix CLI to read log dir path from NLog config file.
+- gh-425 New Virtual Application Entity support for DICOMWeb STOW-RS APIs to enable dynamic endpoints
+- gh-421 Integrate updated Workflow Request data structure to support multiple sources.
+- New data [plug-ins](./plug-ins/overview.md) feature to manipulate incoming outgoing data.
+
+
+## 0.3.21
+
+[GitHub Milestone 0.3.21](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/26)
+
+- Remove the need to double-copy files to storage service.
+
+## 0.3.20
+
+[GitHub Milestone 0.3.20](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/25)
+
+- gh-396 Spawn new thread for processing echo requests.
+
+## 0.3.19
+
+[GitHub Milestone 0.3.19](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/24)
+
+- gh-392 Fix GET `/config/aetitle` URL.
+
+## 0.3.18
+
+[GitHub Milestone 0.3.18](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/23)
+
+- gh-390 New API to retrieve registered source AETs
+
+## 0.3.11
+
+[GitHub Milestone 0.3.17](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/22)
+
+- gh-385 Resets ActionBlock if faulted or cancelled in the Payload assembler pipeline.
+
+
 ## 0.3.16
 
 [GitHub Milestone 0.3.16](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/21)
 
-- gh-347 Set time limit when calling Storage List/Verify APIs
+- gh-347 Set time limit when calling Storage List/Verify APIs.
 
 ## 0.3.15
 

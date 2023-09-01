@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,6 +27,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -157,6 +159,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     exportRequest => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
                     executionOptions);
 
+                var outputDataEngineBLock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
+                    async (exportDataRequest) =>
+                    {
+                        if (exportDataRequest.IsFailed) return exportDataRequest;
+                        return await ExecuteOutputDataEngineCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
+                    },
+                    executionOptions);
+
                 var exportActionBlock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
                     async (exportDataRequest) =>
                     {
@@ -169,7 +179,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
                 var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
 
-                exportFlow.LinkTo(exportActionBlock, linkOptions);
+                exportFlow.LinkTo(outputDataEngineBLock, linkOptions);
+                outputDataEngineBLock.LinkTo(exportActionBlock, linkOptions);
                 exportActionBlock.LinkTo(reportingActionBlock, linkOptions);
 
                 lock (SyncRoot)
@@ -222,7 +233,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         // https://github.com/dotnet/runtime/issues/30863
         private IEnumerable<ExportRequestDataMessage> DownloadPayloadActionCallback(ExportRequestEventDetails exportRequest, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(exportRequest);
+            Guard.Against.Null(exportRequest, nameof(exportRequest));
             using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequest.ExportTaskId }, { "CorrelationId", exportRequest.CorrelationId } });
             var scope = _serviceScopeFactory.CreateScope();
             var storageService = scope.ServiceProvider.GetRequiredService<IStorageService>();
@@ -259,6 +270,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 }
 
                 yield return exportRequestData;
+            }
+        }
+
+        private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest, CancellationToken token)
+        {
+            try
+            {
+                var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPlugInEngine));
+
+                outputDataEngine.Configure(exportDataRequest.PlugInAssemblies);
+                return await outputDataEngine.ExecutePlugInsAsync(exportDataRequest).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error executing data plug-ins: {ex}";
+                _logger.ErrorExecutingDataPlugIns(ex);
+                exportDataRequest.SetFailed(FileExportStatus.ServiceError, errorMessage);
+                return exportDataRequest;
             }
         }
 

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System.Collections.Generic;
 using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
@@ -30,8 +31,9 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
         /// <summary>
         /// Gets or sets the (postfix) name of the DICOMweb export agent used for receiving messages.
-        /// The agent name is combine with <see cref="MessageBrokerConfigurationKeys.ExportRequestPrefix"/>
-        /// for subscribing messages from the message broker service.
+        /// This value is appended to <see cref="MessageBrokerConfigurationKeys.ExportRequestPrefix"/>
+        /// as the name for subscribing to messages from the message broker service.
+        /// </summary>
         [ConfigurationKeyName("agentName")]
         public string AgentName { get; set; } = "monaidicomweb";
 
@@ -58,8 +60,20 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("timeout")]
         public uint Timeout { get; set; } = 10;
 
+        /// <summary>
+        /// Optional list of data input plug-in type names to be executed by the *IInputDataPlugInEngine*
+        /// on the data received using default DICOMWeb STOW-RS endpoints:
+        /// <list type="bullet">
+        /// <item>POST /dicomweb/studies/[{study-instance-uid}]</item>
+        /// <item>POST /dicomweb/{workflow-id}/studies/[{study-instance-uid}]</item>
+        /// </list>
+        /// </summary>
+        [ConfigurationKeyName("plugins")]
+        public List<string> PlugInAssemblies { get; set; } = default!;
+
         public DicomWebConfiguration()
         {
+            PlugInAssemblies ??= new List<string>();
         }
     }
 }

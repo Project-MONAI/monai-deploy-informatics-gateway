@@ -38,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public IDisposable Subscribe(IObserver<MonaiApplicationentityChangedEvent> observer)
         {
-            Guard.Against.Null(observer);
+            Guard.Against.Null(observer, nameof(observer));
 
             if (!_observers.Contains(observer))
             {
@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public void Notify(MonaiApplicationentityChangedEvent monaiApplicationChangedEvent)
         {
-            Guard.Against.Null(monaiApplicationChangedEvent);
+            Guard.Against.Null(monaiApplicationChangedEvent, nameof(monaiApplicationChangedEvent));
 
             _logger.NotifyAeChanged(_observers.Count, monaiApplicationChangedEvent.Event);
 

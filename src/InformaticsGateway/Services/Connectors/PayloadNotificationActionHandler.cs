@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,8 +61,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public async Task NotifyAsync(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
-            Guard.Against.Null(notificationQueue);
+            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(notificationQueue, nameof(notificationQueue));
 
             if (payload.State != Payload.PayloadState.Notify)
             {
@@ -91,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task DeletePayload(Payload payload, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
@@ -100,7 +100,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task NotifyPayloadReady(Payload payload)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             _logger.GenerateWorkflowRequest(payload.PayloadId);
 
@@ -112,9 +112,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 FileCount = payload.Count,
                 CorrelationId = payload.CorrelationId,
                 Timestamp = payload.DateTimeCreated,
-                CalledAeTitle = payload.CalledAeTitle,
-                CallingAeTitle = payload.CallingAeTitle,
+                DataTrigger = payload.DataTrigger,
+                WorkflowInstanceId = payload.WorkflowInstanceId,
+                TaskId = payload.TaskId,
             };
+            workflowRequest.DataOrigins.AddRange(payload.DataOrigins);
 
             workflowRequest.AddFiles(payload.GetUploadedFiles().AsEnumerable());
 
@@ -136,7 +138,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task<PayloadAction> UpdatePayloadState(Payload payload, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));

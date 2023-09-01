@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
@@ -61,8 +62,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         [Fact]
         public async Task GivenAPayload_WhenAddingToDatabase_ExpectItToBeSaved()
         {
-            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
-            payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
+            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = DataService.DIMSE, Destination = "dest", Source = "source" }, 5);
+            payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "source", "dest"));
+            payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "calling1", "called1"));
+            payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "calling2", "called2"));
             payload.State = Payload.PayloadState.Move;
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -75,17 +78,24 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.Equal(payload.Count, actual!.Count);
             Assert.Equal(payload.RetryCount, actual!.RetryCount);
             Assert.Equal(payload.CorrelationId, actual!.CorrelationId);
-            Assert.Equal(payload.CalledAeTitle, actual!.CalledAeTitle);
-            Assert.Equal(payload.CallingAeTitle, actual!.CallingAeTitle);
+            Assert.Equal(payload.WorkflowInstanceId, actual!.WorkflowInstanceId);
+            Assert.Equal(payload.TaskId, actual!.TaskId);
+            Assert.Equal(payload.DataTrigger.Source, actual!.DataTrigger.Source);
+            Assert.Equal(payload.DataTrigger.Destination, actual!.DataTrigger.Destination);
+            Assert.Equal(payload.DataTrigger.DataService, actual!.DataTrigger.DataService);
             Assert.Equal(payload.Timeout, actual!.Timeout);
             Assert.Equal(payload.Files, actual!.Files);
+            Assert.Equal(payload.DataTrigger, actual.Files[0].DataOrigin);
+            Assert.Collection(payload.DataOrigins,
+                item => item.Equals(actual.Files[1]),
+                item => item.Equals(actual.Files[2]));
         }
 
         [Fact]
         public async Task GivenAPayload_WhenRemoveIsCalled_ExpectItToDeleted()
         {
-            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
-            payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
+            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = DataService.DIMSE, Destination = "dest", Source = "source" }, 5);
+            payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "calling", "called"));
             payload.State = Payload.PayloadState.Move;
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -112,14 +122,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         [Fact]
         public async Task GivenAPayload_WhenUpdateIsCalled_ExpectItToSaved()
         {
-            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5);
-            payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
+            var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = DataService.DIMSE, Destination = "called", Source = "calling" }, 5);
+            payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "calling", "called"));
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             var added = await store.AddAsync(payload).ConfigureAwait(false);
 
             added.State = Payload.PayloadState.Notify;
-            added.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString()));
+            added.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.ACR, "calling1", "called1"));
             var updated = await store.UpdateAsync(payload).ConfigureAwait(false);
             Assert.NotNull(updated);
 
@@ -131,10 +141,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.Equal(updated.Count, actual!.Count);
             Assert.Equal(updated.RetryCount, actual!.RetryCount);
             Assert.Equal(updated.CorrelationId, actual!.CorrelationId);
-            Assert.Equal(updated.CalledAeTitle, actual!.CalledAeTitle);
-            Assert.Equal(updated.CallingAeTitle, actual!.CallingAeTitle);
+            Assert.Equal(payload.WorkflowInstanceId, actual!.WorkflowInstanceId);
+            Assert.Equal(payload.TaskId, actual!.TaskId);
+            Assert.Equal(payload.DataTrigger.Source, actual!.DataTrigger.Source);
+            Assert.Equal(payload.DataTrigger.Destination, actual!.DataTrigger.Destination);
+            Assert.Equal(payload.DataTrigger.DataService, actual!.DataTrigger.DataService);
             Assert.Equal(updated.Timeout, actual!.Timeout);
             Assert.Equal(updated.Files, actual!.Files);
+
+            Assert.Equal(payload.DataTrigger, payload.Files[0].DataOrigin);
+
+            Assert.Collection(payload.DataOrigins,
+                item => item.Equals(payload.Files[1].DataOrigin));
         }
 
         [Fact]
@@ -144,11 +162,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             set.RemoveRange(set.ToList());
             await _databaseFixture.DatabaseContext.SaveChangesAsync().ConfigureAwait(false);
 
-            var payload1 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Created };
-            var payload2 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Created };
-            var payload3 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Move };
-            var payload4 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Notify };
-            var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Notify };
+            var payload1 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Created };
+            var payload2 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Created };
+            var payload3 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Move };
+            var payload4 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
+            var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             _ = await store.AddAsync(payload1).ConfigureAwait(false);
@@ -176,11 +194,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             set.RemoveRange(set.ToList());
             await _databaseFixture.DatabaseContext.SaveChangesAsync().ConfigureAwait(false);
 
-            var payload1 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Created };
-            var payload2 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Created };
-            var payload3 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Move };
-            var payload4 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Notify };
-            var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), 5) { State = Payload.PayloadState.Notify };
+            var payload1 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Created };
+            var payload2 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Created };
+            var payload3 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Move };
+            var payload4 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
+            var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             _ = await store.AddAsync(payload1).ConfigureAwait(false);

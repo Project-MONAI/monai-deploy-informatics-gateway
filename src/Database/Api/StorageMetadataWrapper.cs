@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
     /// </summary>
     public class StorageMetadataWrapper : MongoDBEntityBase
     {
+        private readonly JsonSerializerOptions _options;
+
         [JsonPropertyName("correlationId")]
         public string CorrelationId { get; set; } = string.Empty;
 
@@ -42,12 +44,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
         [JsonPropertyName("isUploaded")]
         public bool IsUploaded { get; set; }
 
+        [JsonConstructor]
         private StorageMetadataWrapper()
         { }
 
         public StorageMetadataWrapper(FileStorageMetadata metadata)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
+
+            _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+            _options.Converters.Add(new JsonStringEnumConverter());
 
             CorrelationId = metadata.CorrelationId;
             Identity = metadata.Id;
@@ -56,10 +62,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 
         public void Update(FileStorageMetadata metadata)
         {
-            Guard.Against.Null(metadata);
+            Guard.Against.Null(metadata, nameof(metadata));
 
             IsUploaded = metadata.IsUploaded;
-            Value = JsonSerializer.Serialize<object>(metadata); // Must be <object> here
+
+            //Value = JsonSerializer.Serialize<object>(metadata); // Must be <object> here
+            Value = JsonSerializer.Serialize(metadata, metadata.GetType());
 
             if (metadata.GetType() is null || string.IsNullOrWhiteSpace(metadata.GetType().AssemblyQualifiedName))
             {

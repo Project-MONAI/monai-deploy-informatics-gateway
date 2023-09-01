@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,23 +17,40 @@
 
 using System.Collections.Generic;
 using Ardalis.GuardClauses;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.Messaging.Events;
 
-namespace Monai.Deploy.InformaticsGateway.Services.Export
+namespace Monai.Deploy.InformaticsGateway.Api
 {
     public class ExportRequestDataMessage
     {
         private readonly ExportRequestEvent _exportRequest;
 
-        public byte[] FileContent { get; private set; }
+        public byte[] FileContent { get; private set; } = default!;
         public bool IsFailed { get; private set; }
         public IList<string> Messages { get; init; }
         public FileExportStatus ExportStatus { get; private set; }
         public string Filename { get; }
 
+        /// <summary>
+        /// Optional list of data output plug-in type names to be executed by the <see cref="IOutputDataPlugInEngine"/>.
+        /// </summary>
+        public List<string> PlugInAssemblies
+        {
+            get
+            {
+                return _exportRequest.PluginAssemblies;
+            }
+        }
+
         public string ExportTaskId
         {
             get { return _exportRequest.ExportTaskId; }
+        }
+
+        public string WorkflowInstanceId
+        {
+            get { return _exportRequest.WorkflowInstanceId; }
         }
 
         public string CorrelationId
@@ -58,13 +75,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         public void SetData(byte[] data)
         {
-            Guard.Against.Null(data);
+            Guard.Against.Null(data, nameof(data));
             FileContent = data;
         }
 
         public void SetFailed(FileExportStatus fileExportStatus, string errorMessage)
         {
-            Guard.Against.NullOrWhiteSpace(errorMessage);
+            Guard.Against.NullOrWhiteSpace(errorMessage, nameof(errorMessage));
 
             ExportStatus = fileExportStatus;
             IsFailed = true;

@@ -484,4 +484,23 @@ Setup notification service, make one of the dependencies unavailable, and expect
 
 #### Target Release
 
-MONAI Deploy Informatics Gateway R2
+TBD
+
+### [REQ-FNC-06] MIG SHALL allow minimum data manipulation of incoming and outgoing data while data is in memory
+
+#### Background
+
+Accessing and managing large-scale medical data between storage devices or services has posed significant bottlenecks
+in medical systems. This requirement aims to address these challenges by enabling users to effortlessly manipulate data
+as it flows into the Informatics Gateway and just before it is saved to a designated storage service. Moreover, it
+empowers users to perform data manipulation at the moment the Informatics Gateway exports the data, ensuring a seamless
+and efficient data processing experience.
+
+#### Verification Strategy
+
+Configure suported inbound and export services with one or moreplug-ins and ensure the plug-ins are called in the automated testing.
+
+#### Target Release
+
+MONAI Deploy Informatics Gateway R4
+

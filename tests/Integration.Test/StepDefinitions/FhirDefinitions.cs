@@ -48,13 +48,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
             _assertions = objectContainer.Resolve<Assertions>("Assertions");
             _dataSink = objectContainer.Resolve<IDataClient>("FhirClient");
+
+            _dataProvider.Source = "::ffff:127.0.0.1";
         }
 
         [Given(@"FHIR message (.*) in (.*)")]
         public async Task GivenHl7MessagesInVersionX(string version, string format)
         {
-            Guard.Against.NullOrWhiteSpace(version);
-            Guard.Against.NullOrWhiteSpace(format);
+            Guard.Against.NullOrWhiteSpace(version, nameof(version));
+            Guard.Against.NullOrWhiteSpace(format, nameof(format));
 
             await _dataProvider.GenerateFhirMessages(version, format);
             _receivedMessages.ClearMessages();
@@ -70,6 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         public async Task ThenWorkflowRequestAreSentToMessageBrokerAsync()
         {
             (await _receivedMessages.WaitforAsync(_dataProvider.FhirSpecs.Files.Count, WaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessagesForFhirRequest(_dataProvider, Messaging.Events.DataService.FHIR, _receivedMessages.Messages, _dataProvider.FhirSpecs.Files.Count);
         }
 
         [Then(@"FHIR resources are uploaded to storage service")]

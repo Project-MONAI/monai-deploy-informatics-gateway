@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
                 AllowedSopClasses = new List<string> { "1", "2", "3" },
                 Workflows = new List<string> { "W1", "W2" },
                 Grouping = "G",
-                IgnoredSopClasses = new List<string> { "4", "5" }
+                IgnoredSopClasses = new List<string> { "4", "5" },
+                PlugInAssemblies = new List<string> { "AssemblyA", "AssemblyB", "AssemblyC" },
             };
 
             var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -132,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         }
 
         [Fact]
-        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
+        public async Task GivenMonaiApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
         {
             var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 

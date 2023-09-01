@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,6 +42,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         public Guid ClientId { get; }
 
+        public string ClientIp
+        {
+            get { return _client.RemoteEndPoint.ToString(); }
+        }
+
         public MllpClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
@@ -66,13 +71,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
             if (onDisconnect is not null)
             {
-                await onDisconnect(this, new MllpClientResult(_messages, _exceptions.Count > 0 ? new AggregateException(_exceptions) : null));
+                await onDisconnect(this, new MllpClientResult(_messages, _exceptions.Count > 0 ? new AggregateException(_exceptions) : null)).ConfigureAwait(false);
             }
         }
 
         private async Task<IList<Message>> ReceiveData(INetworkStream clientStream, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(clientStream);
+            Guard.Against.Null(clientStream, nameof(clientStream));
 
             var data = string.Empty;
             var messages = new List<Message>();
@@ -143,8 +148,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private async Task SendAcknowledgment(INetworkStream clientStream, Message message, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(clientStream);
-            Guard.Against.Null(message);
+            Guard.Against.Null(clientStream, nameof(clientStream));
+            Guard.Against.Null(message, nameof(message));
 
             if (!_configurations.SendAcknowledgment)
             {
@@ -171,7 +176,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private bool ShouldSendAcknowledgment(Message message)
         {
-            Guard.Against.Null(message);
+            Guard.Against.Null(message, nameof(message));
             try
             {
                 var value = message.DefaultSegment(Resources.MessageHeaderSegment).Fields(Resources.AcceptAcknowledgementType);

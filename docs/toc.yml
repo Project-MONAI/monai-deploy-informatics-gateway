@@ -18,6 +18,8 @@
   href: setup/
 - name: API Documentation
   href: api/
+- name: Plug-ins
+  href: plug-ins/
 - name: Compliance
   href: compliance/
 - name: Changelog

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
@@ -161,16 +162,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         private async Task OnDisconnect(IMllpClient client, MllpClientResult result)
         {
-            Guard.Against.Null(client);
-            Guard.Against.Null(result);
+            Guard.Against.Null(client, nameof(client));
+            Guard.Against.Null(result, nameof(result));
 
             try
             {
                 foreach (var message in result.Messages)
                 {
-                    var hl7Fileetadata = new Hl7FileStorageMetadata(client.ClientId.ToString());
+                    var hl7Fileetadata = new Hl7FileStorageMetadata(client.ClientId.ToString(), DataService.HL7, client.ClientIp);
                     await hl7Fileetadata.SetDataStream(message.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
-                    var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata).ConfigureAwait(false);
+                    var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata, new DataOrigin { DataService = DataService.HL7, Source = client.ClientIp, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
                     hl7Fileetadata.PayloadId = payloadId.ToString();
                     _uploadQueue.Queue(hl7Fileetadata);
                 }

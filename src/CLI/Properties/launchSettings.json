@@ -2,7 +2,7 @@
   "profiles": {
     "Monai.Deploy.InformaticsGateway.CLI": {
       "commandName": "Project",
-      "commandLineArgs": "aet add -a Test"
+      "commandLineArgs": "start"
     }
   }
 }

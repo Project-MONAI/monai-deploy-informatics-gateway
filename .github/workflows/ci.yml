@@ -255,7 +255,7 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7, Fhir]
+        feature: [AcrApi, DicomDimseScp, DicomDimseScu, DicomWebExport, DicomWebStow, HealthLevel7, Fhir, RemoteAppExecutionPlugIn]
         database: [ef, mongodb]
       fail-fast: false
     env:
@@ -389,7 +389,7 @@ jobs:
           retention-days: 7
 
       - name: Log in to the Container registry
-        uses: docker/login-action@v2.1.0
+        uses: docker/login-action@v2.2.0
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           registry: ${{ env.REGISTRY }}
@@ -398,7 +398,7 @@ jobs:
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
-        uses: docker/metadata-action@v4.3.0
+        uses: docker/metadata-action@v4.6.0
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -407,7 +407,7 @@ jobs:
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v4.0.0
+        uses: docker/build-push-action@v4.1.1
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           context: .
@@ -425,7 +425,7 @@ jobs:
 
       - name: Anchore container scan
         id: anchore-scan
-        uses: anchore/scan-action@v3.3.5
+        uses: anchore/scan-action@v3.3.6
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}

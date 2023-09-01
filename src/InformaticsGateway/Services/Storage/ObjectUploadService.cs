@@ -145,7 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private async Task ProcessObject(int thread, FileStorageMetadata blob)
         {
-            Guard.Against.Null(blob);
+            Guard.Against.Null(blob, nameof(blob));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Thread", thread }, { "File ID", blob.Id }, { "CorrelationId", blob.CorrelationId } });
             var stopwatch = new Stopwatch();
@@ -158,12 +158,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                     case DicomFileStorageMetadata dicom:
                         if (!string.IsNullOrWhiteSpace(dicom.JsonFile.TemporaryPath))
                         {
-                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.Source, dicom.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
+                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.DataOrigin.Source, dicom.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
                         }
                         break;
                 }
 
-                await UploadFileAndConfirm(blob.Id, blob.File, blob.Source, blob.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
+                await UploadFileAndConfirm(blob.Id, blob.File, blob.DataOrigin.Source, blob.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -179,27 +179,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private async Task UploadFileAndConfirm(string identifier, StorageObjectMetadata storageObjectMetadata, string source, List<string> workflows, string payloadId, CancellationToken cancellationToken)
         {
-            Guard.Against.NullOrWhiteSpace(identifier);
-            Guard.Against.Null(storageObjectMetadata);
-            Guard.Against.NullOrWhiteSpace(source);
-            Guard.Against.Null(workflows);
+            Guard.Against.NullOrWhiteSpace(identifier, nameof(identifier));
+            Guard.Against.Null(storageObjectMetadata, nameof(storageObjectMetadata));
+            Guard.Against.NullOrWhiteSpace(source, nameof(source));
+            Guard.Against.Null(workflows, nameof(workflows));
 
             if (storageObjectMetadata.IsUploaded)
             {
                 return;
             }
 
+            await UploadFile(storageObjectMetadata, source, workflows, payloadId, cancellationToken).ConfigureAwait(false);
             var count = 3;
-            do
+            while (
+                count-- > 0 &&
+                !(await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false))) ;
+
+            if (count <= 0)
             {
-                await UploadFile(storageObjectMetadata, source, workflows, payloadId, cancellationToken).ConfigureAwait(false);
-                if (count-- <= 0)
-                {
-                    throw new FileUploadException($"Failed to upload file after retries {identifier}.");
-                }
-            } while (!(
-            await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false)
-            ));
+                throw new FileUploadException($"Failed to upload file after retries {identifier}.");
+            }
         }
 
         private async Task<bool> VerifyExists(string path, CancellationToken cancellationToken)

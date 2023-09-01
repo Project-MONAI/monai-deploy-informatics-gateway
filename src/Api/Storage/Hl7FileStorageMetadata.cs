@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 using System;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
@@ -45,12 +46,14 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         [JsonConstructor]
         public Hl7FileStorageMetadata() { }
 
-        public Hl7FileStorageMetadata(string connectionId)
+        public Hl7FileStorageMetadata(string connectionId, DataService dataType, string dataOrigin)
             : base(connectionId, Guid.NewGuid().ToString())
         {
-            Guard.Against.NullOrWhiteSpace(connectionId);
+            Guard.Against.NullOrWhiteSpace(connectionId, nameof(connectionId));
 
-            Source = connectionId;
+            DataOrigin.DataService = dataType;
+            DataOrigin.Source = dataOrigin;
+            DataOrigin.Destination = IpAddress();
 
             File = new StorageObjectMetadata(FileExtension)
             {

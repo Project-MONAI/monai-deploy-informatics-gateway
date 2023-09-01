@@ -24,7 +24,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations;
 using MongoDB.Driver;
 using Polly;
 using Polly.Retry;
@@ -43,11 +42,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DestinationApplicationEntityRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options,
-            IOptions<MongoDBOptions> mongoDbOptions)
+            IOptions<DatabaseOptions> mongoDbOptions)
         {
-            Guard.Against.Null(serviceScopeFactory);
-            Guard.Against.Null(options);
-            Guard.Against.Null(mongoDbOptions);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
+            Guard.Against.Null(options, nameof(options));
+            Guard.Against.Null(mongoDbOptions, nameof(mongoDbOptions));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -57,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
-            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DaatabaseName);
+            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DatabaseName);
             _collection = mongoDatabase.GetCollection<DestinationApplicationEntity>(nameof(DestinationApplicationEntity));
             CreateIndexes();
         }
@@ -88,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public async Task<DestinationApplicationEntity?> FindByNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(name);
+            Guard.Against.NullOrWhiteSpace(name, nameof(name));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -100,7 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public async Task<DestinationApplicationEntity> AddAsync(DestinationApplicationEntity item, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(item);
+            Guard.Against.Null(item, nameof(item));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -111,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public async Task<DestinationApplicationEntity> UpdateAsync(DestinationApplicationEntity entity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -126,7 +125,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public async Task<DestinationApplicationEntity> RemoveAsync(DestinationApplicationEntity entity, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(entity);
+            Guard.Against.Null(entity, nameof(entity));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {

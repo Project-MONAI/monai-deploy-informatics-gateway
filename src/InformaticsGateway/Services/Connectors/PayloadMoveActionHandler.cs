@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -32,7 +31,6 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.Storage.API;
-using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
@@ -65,9 +63,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public async Task MoveFilesAsync(Payload payload, ActionBlock<Payload> moveQueue, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
-            Guard.Against.Null(moveQueue);
-            Guard.Against.Null(notificationQueue);
+            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(moveQueue, nameof(moveQueue));
+            Guard.Against.Null(notificationQueue, nameof(notificationQueue));
 
             if (payload.State != Payload.PayloadState.Move)
             {
@@ -100,8 +98,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task NotifyIfCompleted(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
-            Guard.Against.Null(notificationQueue);
+            Guard.Against.Null(payload, nameof(payload));
+            Guard.Against.Null(notificationQueue, nameof(notificationQueue));
 
             if (payload.IsMoveCompleted())
             {
@@ -128,7 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task<PayloadAction> UpdatePayloadState(Payload payload, Exception ex, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(payload);
+            Guard.Against.Null(payload, nameof(payload));
 
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 using xRetry;
 using Xunit;
@@ -264,7 +265,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
             clientAdapter.Verify(p => p.Close(), Times.AtLeastOnce());
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Never());
         }
 
         [RetryFact(10, 250)]
@@ -304,7 +305,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             await Task.Delay(500).ConfigureAwait(false);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(3));
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>()), Times.Exactly(3));
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(3));
         }
     }
 }

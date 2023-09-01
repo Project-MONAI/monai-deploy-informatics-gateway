@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  * Copyright 2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Api;
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
 {
 #pragma warning disable CS8604, CS8603
+
     internal class MonaiApplicationEntityConfiguration : IEntityTypeConfiguration<MonaiApplicationEntity>
     {
         public void Configure(EntityTypeBuilder<MonaiApplicationEntity> builder)
@@ -51,6 +52,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
                         v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
                 .Metadata.SetValueComparer(valueComparer);
+            builder.Property(j => j.PlugInAssemblies)
+                .HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(valueComparer);
             builder.Property(j => j.IgnoredSopClasses)
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
@@ -67,5 +73,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Ignore(p => p.Id);
         }
     }
+
 #pragma warning restore CS8604, CS8603
 }

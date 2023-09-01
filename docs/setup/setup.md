@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,8 +20,19 @@ This section outlines the steps to download and install the Informatics Gateway 
 ## Runtime Requirements
 
 * Docker 20.10.12 or higher
+* [Database service](#database-configuration)
+* [Message Broker service](#message-broker)
+* [Storage service](#storage-service)
 
 For development requirements, refer to the [Informatics Gateway README.md](https://github.com/Project-MONAI/monai-deploy-informatics-gateway).
+
+> [!Note]
+> Use [MONAI Deploy Express](https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express) to quickly
+> bring up all required services, including the Informatics Gateway.
+> 
+> Skip to [Configure Informatics Gateway](#configure-informatics-gateway) if you are using MONAI Deploy Express.
+
+
 
 ## Installation
 
@@ -29,6 +40,10 @@ For development requirements, refer to the [Informatics Gateway README.md](https
 
 Download and install the Informatics Gateway CLI from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section of
 the repository and install it.
+
+> [!Note]
+> The example below uses the `v0.2.0` release; we recommend always downloading the latest version from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases)
+> section.
 
 #### On Linux
 
@@ -79,6 +94,9 @@ mig-cli config endpoint http://localhost:5000 #skip if running locally
 mig-cli.exe config init
 mig-cli.exe config endpoint http://localhost:5000 #skip if running locally
 ```
+
+> [!Note]
+> For [MONAI Deploy Express](https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express), use `http://localhost:5003`.
 
 The first command extracts the default `appsettings.json` file into the home directory:
 
@@ -142,6 +160,28 @@ Extending the Informatics Gateway to support other database systems can be done 
 If the database system is supported by [Microsoft Entity Framework](https://learn.microsoft.com/en-us/ef/core/providers/), then it can be added to the existing [project](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/tree/develop/src/Database/EntityFramework).
 
 For other database systems that are not listed in the link above, simply implement the [Repository APIs](xref:Monai.Deploy.InformaticsGateway.Database.Api.Repositories), update the [Database Manager](xref:Monai.Deploy.InformaticsGateway.Database.DatabaseManager) to support the new database type and optionally, implement the [IDabaseMigrationManager](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager).
+
+
+## Authentication
+
+Authentication is disabled by default. To enable authentication using OpenID, edit the `appsettings.json` file and set `bypassAuthentication` to `true`:
+
+```json
+{
+  "MonaiDeployAuthentication": {
+    "bypassAuthentication": true,
+    "openId": {
+      "realm": "{realm}",
+      "realmKey": "{realm-secret-key}",
+      "clientId": "{client-id}",
+      "audiences": [ "{audiences}" ],
+      "roleClaimType": "{roles}",
+  ...
+}
+```
+
+Refer to the [Authentication Setup Using Keycloak](https://github.com/Project-MONAI/monai-deploy-workflow-manager/blob/develop/guidelines/mwm-auth.md)
+section for additional details.
 
 
 ## Storage Consideration & Configuration
@@ -304,33 +344,45 @@ The next step is to configure the Informatics Gateway to enable receiving of DIC
 
 1. Configure a listening AE Title to receive instances:
 
-```bash
-mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
-```
+   ```bash
+   mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
+   ```
 
-The command creates a new listening AE Title with AE Title `BrainAET`. The listening AE Title
-will group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
+   The command creates a new listening AE Title with AE Title `BrainAET`. The listening AE Title
+   will group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
 
-> [!Note]
-> `-grouping` is optional, with a default value of 0020,000D.
-> `-t` is optional, with a default value of 5 seconds.
-> For complete reference, refer to the [Config API](../api/rest/config.md).
+   Each listening AE Title may be configured with one or more plug-ins to manipulate incoming DICOM files before saving to the storage
+   service and dispatching a workflow request. To include input data plug-ins, first create your plug-ins by implementing the
+   [IInputDataPlugIn](xref:Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn) interface, then add the `-p` argument, with the fully
+   qualified type name, to the `mig-cli aet add` command. For example, the following command adds the `MyNamespace.AnonymizePlugIn`
+   and `MyNamespace.FixSeriesData` plug-ins from the `MyNamespace.Plugins` assembly file.
+
+   ```bash
+   mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p "MyNamespace.AnonymizePlugIn, MyNamespace.PlugIns" "MyNamespace.FixSeriesData, MyNamespace.PlugIns"
+   ```
+
+   > [!Note]
+   > The `-grouping` argument is optional, with a default value of 0020,000D.
+   > The `-t` argument is also optional, with a default value of 5 seconds.
+   > For a complete reference, refer to the [Configuration API](../api/rest/config.md).
 
 2. Enable the receiving of DICOM instances from external DICOM devices:
 
-```bash
-mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55
-```
+   ```bash
+   mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55
+   ```
 
-The above command tells the Informatics Gateway to accept instances from AE Title `PACSLA001` at IP `20.10.30.55` and port `104`.
+   The above command tells the Informatics Gateway to accept instances from AE Title `PACSLA001` at IP `20.10.30.55` and port `104`.
 
-> [!Note]
-> By default, Informatics Gateway blocks all unknown sources.
-> To allow all unknown sources, set the `dicom>scp>rejectUnknownSources` parameter to `false` in the `appsettings.json` file.
+   > [!Note]
+   > By default, Informatics Gateway blocks all unknown sources.
+   > To allow all unknown sources, set the `dicom>scp>rejectUnknownSources` parameter to `false` in the `appsettings.json` file.
 
-> [!WARNING]
-> The Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
-> When the Informatics Gateway is running in a container and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
+   > [!WARNING]
+   > The Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
+   > When the Informatics Gateway is running in a container and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
+
+   See [Data Plug-ins](../plug-ins/overview.md) to configure data plug-ins or create your own data plug-ins.
 
 ## Export Processed Results
 

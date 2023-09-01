@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Minio;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.Messaging.Events;
@@ -48,10 +49,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(retryCount: 5, sleepDurationProvider: _ => TimeSpan.FromMilliseconds(500));
         }
 
-        internal async Task ShouldHaveUploadedDicomDataToMinio(IReadOnlyList<Message> messages, Dictionary<string, string> fileHashes)
+        internal async Task ShouldHaveUploadedDicomDataToMinio(IReadOnlyList<Message> messages, Dictionary<string, string> fileHashes, Action<DicomFile> additionalChecks = null)
         {
-            Guard.Against.Null(messages);
-            Guard.Against.NullOrEmpty(fileHashes);
+            Guard.Against.Null(messages, nameof(messages));
+            Guard.Against.NullOrEmpty(fileHashes, nameof(fileHashes));
 
             var minioClient = GetMinioClient();
 
@@ -75,6 +76,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                                 memoryStream.Position = 0;
                                 var dicomFile = DicomFile.Open(memoryStream);
                                 dicomValidationKey = dicomFile.GenerateFileName();
+
+                                if (additionalChecks is not null)
+                                {
+                                    additionalChecks(dicomFile);
+                                }
+
                                 fileHashes.Should().ContainKey(dicomValidationKey).WhoseValue.Should().Be(dicomFile.CalculateHash());
                             });
                         await minioClient.GetObjectAsync(getObjectArgs);
@@ -101,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal async Task ShouldHaveUploadedFhirDataToMinio(IReadOnlyList<Message> messages, Dictionary<string, string> fhirData)
         {
-            Guard.Against.Null(messages);
+            Guard.Against.Null(messages, nameof(messages));
 
             var minioClient = GetMinioClient();
 
@@ -146,7 +153,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 
         internal async Task ShouldHaveUploadedHl7ataToMinio(IReadOnlyList<Message> messages)
         {
-            Guard.Against.Null(messages);
+            Guard.Against.Null(messages, nameof(messages));
 
             var minioClient = GetMinioClient();
 
@@ -188,10 +195,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             }
         }
 
-        internal void ShouldHaveCorrectNumberOfWorkflowRequestMessages(DataProvider dataProvider, IReadOnlyList<Message> messages, int count)
+        internal void ShouldHaveCorrectNumberOfWorkflowRequestMessages(DataProvider dataProvider, DataService dataService, IReadOnlyList<Message> messages, int count)
         {
-            Guard.Against.Null(dataProvider);
-            Guard.Against.Null(messages);
+            Guard.Against.Null(dataProvider, nameof(dataProvider));
+            Guard.Against.Null(messages, nameof(messages));
 
             messages.Should().NotBeNullOrEmpty().And.HaveCount(count);
             foreach (var message in messages)
@@ -213,13 +220,55 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 {
                     request.Workflows.Should().Equal(dataProvider.Workflows);
                 }
+                request.DataTrigger.Should().NotBeNull();
+                request.DataTrigger.DataService.Should().Be(dataService);
+                request.DataTrigger.Source.Should().Be(dataProvider.Source);
+                request.DataTrigger.Destination.Should().Be(dataProvider.Destination);
+
+                foreach (var dataOrigin in request.DataOrigins)
+                {
+                    dataOrigin.DataService.Should().Be(dataService);
+                    dataOrigin.Source.Should().Be(dataProvider.Source);
+                    dataOrigin.Destination.Should().Be(dataProvider.Destination);
+                }
+            }
+        }
+
+        internal void ShouldHaveCorrectNumberOfWorkflowRequestMessagesForFhirRequest(DataProvider dataProvider, DataService dataService, IReadOnlyList<Message> messages, int count)
+        {
+            Guard.Against.Null(dataProvider, nameof(dataProvider));
+            Guard.Against.Null(messages, nameof(messages));
+
+            messages.Should().NotBeNullOrEmpty().And.HaveCount(count);
+            foreach (var message in messages)
+            {
+                message.ApplicationId.Should().Be(MessageBrokerConfiguration.InformaticsGatewayApplicationId);
+                var request = message.ConvertTo<WorkflowRequestEvent>();
+                request.Should().NotBeNull();
+                request.FileCount.Should().Be(1);
+
+                if (dataProvider.Workflows is not null)
+                {
+                    request.Workflows.Should().Equal(dataProvider.Workflows);
+                }
+                request.DataTrigger.Should().NotBeNull();
+                request.DataTrigger.DataService.Should().Be(dataService);
+                request.DataTrigger.Source.Should().Be(dataProvider.Source);
+                request.DataTrigger.Destination.Should().Be(FileStorageMetadata.IpAddress());
+
+                foreach (var dataOrigin in request.DataOrigins)
+                {
+                    dataOrigin.DataService.Should().Be(dataService);
+                    dataOrigin.Source.Should().Be(dataProvider.Source);
+                    dataOrigin.Destination.Should().Be(dataProvider.Destination);
+                }
             }
         }
 
         internal void ShouldHaveCorrectNumberOfWorkflowRequestMessagesAndAcrRequest(DataProvider dataProvider, IReadOnlyList<Message> messages, int count)
         {
-            Guard.Against.Null(dataProvider);
-            Guard.Against.Null(messages);
+            Guard.Against.Null(dataProvider, nameof(dataProvider));
+            Guard.Against.Null(messages, nameof(messages));
 
             messages.Should().NotBeNullOrEmpty().And.HaveCount(count);
 
@@ -230,13 +279,22 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 request.Should().NotBeNull();
                 request.FileCount.Should().Be(dataProvider.DicomSpecs.FileCount);
                 request.Workflows.Should().Equal(dataProvider.AcrRequest.Application.Id);
+                request.DataTrigger.Should().NotBeNull();
+                request.DataTrigger.DataService.Should().Be(DataService.ACR);
+                request.DataTrigger.Source.Should().Be(dataProvider.AcrRequest.TransactionId);
+
+                foreach (var dataOrigin in request.DataOrigins)
+                {
+                    dataOrigin.DataService.Should().Be(DataService.DicomWeb);
+                    dataOrigin.Source.Should().Be(dataProvider.AcrRequest.TransactionId);
+                }
             }
         }
 
         internal void ShouldHaveCorrectNumberOfWorkflowRequestMessagesAndHl7Messages(Hl7Messages hL7Specs, IReadOnlyList<Message> messages, int count)
         {
-            Guard.Against.Null(hL7Specs);
-            Guard.Against.Null(messages);
+            Guard.Against.Null(hL7Specs, nameof(hL7Specs));
+            Guard.Against.Null(messages, nameof(messages));
 
             messages.Should().NotBeNullOrEmpty().And.HaveCount(count);
 
@@ -294,6 +352,53 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 var segment = message.DefaultSegment("MSH");
                 _outputHelper.WriteLine($"ACK Value= {segment.Value}...");
                 segment.Fields(9).Value.Should().Be("ACK");
+            }
+        }
+
+        internal async Task ShouldRestoreAllDicomMetaata(IReadOnlyList<Message> messages, Dictionary<string, DicomFile> originalDicomFiles, params DicomTag[] dicomTags)
+        {
+            Guard.Against.Null(messages, nameof(messages));
+            Guard.Against.NullOrEmpty(originalDicomFiles, nameof(originalDicomFiles));
+
+            var minioClient = GetMinioClient();
+
+            foreach (var message in messages)
+            {
+                var request = message.ConvertTo<WorkflowRequestEvent>();
+                foreach (var file in request.Payload)
+                {
+                    await _retryPolicy.ExecuteAsync(async () =>
+                    {
+                        var dicomValidationKey = string.Empty;
+
+                        _outputHelper.WriteLine($"Reading file from {request.Bucket} => {request.PayloadId}/{file.Path}.");
+                        var getObjectArgs = new GetObjectArgs()
+                            .WithBucket(request.Bucket)
+                            .WithObject($"{request.PayloadId}/{file.Path}")
+                            .WithCallbackStream((stream) =>
+                            {
+                                using var memoryStream = new MemoryStream();
+                                stream.CopyTo(memoryStream);
+                                memoryStream.Position = 0;
+                                var dicomFile = DicomFile.Open(memoryStream);
+                                dicomValidationKey = dicomFile.GenerateFileName();
+                                originalDicomFiles.Should().ContainKey(dicomValidationKey);
+                                CompareDicomFiles(originalDicomFiles[dicomValidationKey], dicomFile, dicomTags);
+                            });
+                        await minioClient.GetObjectAsync(getObjectArgs);
+                    });
+                }
+            }
+        }
+
+        private void CompareDicomFiles(DicomFile left, DicomFile right, DicomTag[] dicomTags)
+        {
+            left.Should().NotBeNull();
+            right.Should().NotBeNull();
+
+            foreach (var tag in dicomTags)
+            {
+                left.Dataset.GetString(tag).Should().Be(right.Dataset.GetString(tag));
             }
         }
     }

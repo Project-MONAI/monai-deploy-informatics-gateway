@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -28,10 +28,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="fo-dicom" Version="5.1.1" />
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.15" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="0.1.22" />
-    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.16" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.21" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="1.0.0" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="0.2.18" />
   </ItemGroup>
 
   <ItemGroup>

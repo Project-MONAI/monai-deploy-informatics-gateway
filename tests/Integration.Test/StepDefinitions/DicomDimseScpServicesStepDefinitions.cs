@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomDimseScpServicesStepDefinitions
     {
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly ObjectContainer _objectContainer;
@@ -38,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
         private readonly RabbitMqConsumer _receivedMessages;
         private readonly DataProvider _dataProvider;
+        private readonly Assertions _assertions;
 
         public DicomDimseScpServicesStepDefinitions(
             ObjectContainer objectContainer,
@@ -49,13 +51,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
             _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
+            _assertions = objectContainer.Resolve<Assertions>("Assertions");
             _informaticsGatewayClient = objectContainer.Resolve<InformaticsGatewayClient>("InformaticsGatewayClient");
         }
 
         [Given(@"a calling AE Title '([^']*)'")]
         public async Task GivenACallingAETitle(string callingAeTitle)
         {
-            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
 
             try
             {
@@ -65,6 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     AeTitle = callingAeTitle,
                     HostIp = _configuration.InformaticsGatewayOptions.Host,
                 }, CancellationToken.None);
+                _dataProvider.Source = callingAeTitle;
             }
             catch (ProblemException ex)
             {
@@ -83,9 +87,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"(.*) (.*) studies with (.*) series per study")]
         public void GivenXStudiesWithYSeriesPerStudy(int studyCount, string modality, int seriesPerStudy)
         {
-            Guard.Against.NegativeOrZero(studyCount);
-            Guard.Against.NullOrWhiteSpace(modality);
-            Guard.Against.NegativeOrZero(seriesPerStudy);
+            Guard.Against.NegativeOrZero(studyCount, nameof(studyCount));
+            Guard.Against.NullOrWhiteSpace(modality, nameof(modality));
+            Guard.Against.NegativeOrZero(seriesPerStudy, nameof(seriesPerStudy));
 
             _dataProvider.GenerateDicomData(modality, studyCount, seriesPerStudy);
 
@@ -95,9 +99,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"a called AE Title named '([^']*)' that groups by '([^']*)' for (.*) seconds")]
         public async Task GivenACalledAETitleNamedThatGroupsByForSeconds(string calledAeTitle, string grouping, uint groupingTimeout)
         {
-            Guard.Against.NullOrWhiteSpace(calledAeTitle);
-            Guard.Against.NullOrWhiteSpace(grouping);
-            Guard.Against.NegativeOrZero(groupingTimeout);
+            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
+            Guard.Against.NullOrWhiteSpace(grouping, nameof(grouping));
+            Guard.Against.NegativeOrZero(groupingTimeout, nameof(groupingTimeout));
 
             _dataProvider.StudyGrouping = grouping;
             try
@@ -108,9 +112,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Name = calledAeTitle,
                     Grouping = grouping,
                     Timeout = groupingTimeout,
-                    Workflows = new List<string>(DummyWorkflows)
+                    Workflows = new List<string>(DummyWorkflows),
+                    PlugInAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.PlugIns.TestInputDataPlugInModifyDicomFile).AssemblyQualifiedName }
                 }, CancellationToken.None);
+
                 _dataProvider.Workflows = DummyWorkflows;
+                _dataProvider.Destination = calledAeTitle;
             }
             catch (ProblemException ex)
             {
@@ -129,15 +136,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Given(@"a DICOM client configured with (.*) seconds timeout")]
         public void GivenADICOMClientConfiguredWithSecondsTimeout(int timeout)
         {
-            Guard.Against.NegativeOrZero(timeout);
+            Guard.Against.NegativeOrZero(timeout, nameof(timeout));
             _dataProvider.ClientTimeout = timeout;
         }
 
         [Given(@"a DICOM client configured to send data over (.*) associations and wait (.*) between each association")]
         public void GivenADICOMClientConfiguredToSendDataOverAssociationsAndWaitSecondsBetweenEachAssociation(int associations, int pulseTime)
         {
-            Guard.Against.NegativeOrZero(associations);
-            Guard.Against.Negative(pulseTime);
+            Guard.Against.NegativeOrZero(associations, nameof(associations));
+            Guard.Against.Negative(pulseTime, nameof(associations));
 
             _dataProvider.ClientSendOverAssociations = associations;
             _dataProvider.ClientAssociationPulseTime = pulseTime;
@@ -146,8 +153,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"a C-ECHO-RQ is sent to '([^']*)' from '([^']*)'")]
         public async Task WhenAC_ECHO_RQIsSentToFromWithTimeoutOfSeconds(string calledAeTitle, string callingAeTitle)
         {
-            Guard.Against.NullOrWhiteSpace(calledAeTitle);
-            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
+            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
 
             var echoScu = _objectContainer.Resolve<IDataClient>("EchoSCU");
             await echoScu.SendAsync(
@@ -169,9 +176,9 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"C-STORE-RQ are sent to '([^']*)' with AET '([^']*)' from '([^']*)'")]
         public async Task WhenAC_STORE_RQIsSentToWithAETFromWithTimeoutOfSeconds(string application, string calledAeTitle, string callingAeTitle)
         {
-            Guard.Against.NullOrWhiteSpace(application);
-            Guard.Against.NullOrWhiteSpace(calledAeTitle);
-            Guard.Against.NullOrWhiteSpace(callingAeTitle);
+            Guard.Against.NullOrWhiteSpace(application, nameof(application));
+            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
+            Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
 
             var storeScu = _objectContainer.Resolve<IDataClient>("StoreSCU");
 
@@ -188,6 +195,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 calledAeTitle);
 
             _dataProvider.ReplaceGeneratedDicomDataWithHashes();
+        }
+
+        [Then(@"(.*) workflow requests sent to message broker")]
+        public async Task ThenWorkflowRequestSentToMessageBrokerAsync(int workflowCount)
+        {
+            Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
+
+            (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, Messaging.Events.DataService.DIMSE, _receivedMessages.Messages, workflowCount);
         }
     }
 }

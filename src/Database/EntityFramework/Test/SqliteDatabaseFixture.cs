@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,6 +68,25 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet5 = new MonaiApplicationEntity { AeTitle = "AET5", Name = "AET5" };
 
             var set = DatabaseContext.Set<MonaiApplicationEntity>();
+            set.RemoveRange(set.ToList());
+            set.Add(aet1);
+            set.Add(aet2);
+            set.Add(aet3);
+            set.Add(aet4);
+            set.Add(aet5);
+
+            DatabaseContext.SaveChanges();
+        }
+
+        public void InitDatabaseWithVirtualApplicationEntities()
+        {
+            var aet1 = new VirtualApplicationEntity { VirtualAeTitle = "AET1", Name = "AET1" };
+            var aet2 = new VirtualApplicationEntity { VirtualAeTitle = "AET2", Name = "AET2" };
+            var aet3 = new VirtualApplicationEntity { VirtualAeTitle = "AET3", Name = "AET3" };
+            var aet4 = new VirtualApplicationEntity { VirtualAeTitle = "AET4", Name = "AET4" };
+            var aet5 = new VirtualApplicationEntity { VirtualAeTitle = "AET5", Name = "AET5" };
+
+            var set = DatabaseContext.Set<VirtualApplicationEntity>();
             set.RemoveRange(set.ToList());
             set.Add(aet1);
             set.Add(aet2);

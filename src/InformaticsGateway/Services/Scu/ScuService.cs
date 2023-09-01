@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
                           ILogger<ScuService> logger,
                           IOptions<InformaticsGatewayConfiguration> configuration)
         {
-            Guard.Against.Null(serviceScopeFactory);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
 
             _scope = serviceScopeFactory.CreateScope();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             _workQueue = _scope.ServiceProvider.GetService<IScuQueue>() ?? throw new ServiceNotFoundException(nameof(IScuQueue));
         }
 
-        private async Task BackgroundProcessingAsync(CancellationToken cancellationToken)
+        private Task BackgroundProcessing(CancellationToken cancellationToken)
         {
             _logger.ServiceRunning(ServiceName);
             while (!cancellationToken.IsCancellationRequested)
@@ -83,11 +83,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             }
             Status = ServiceStatus.Cancelled;
             _logger.ServiceCancelled(ServiceName);
+            return Task.CompletedTask;
         }
 
         private void ProcessThread(ScuWorkRequest request, CancellationToken cancellationToken)
         {
-            Task.Run(() => Process(request, cancellationToken));
+            Task.Run(() => Process(request, cancellationToken), cancellationToken);
         }
 
         private async Task Process(ScuWorkRequest request, CancellationToken cancellationToken)
@@ -113,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
 
         private async Task<ScuWorkResponse> HandleCEchoRequest(ScuWorkRequest request, CancellationToken cancellationToken)
         {
-            Guard.Against.Null(request);
+            Guard.Against.Null(request, nameof(request));
 
             var scuResponse = new ScuWorkResponse();
             var manualResetEvent = new ManualResetEventSlim();
@@ -200,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         {
             var task = Task.Run(async () =>
             {
-                await BackgroundProcessingAsync(cancellationToken).ConfigureAwait(false);
+                await BackgroundProcessing(cancellationToken).ConfigureAwait(false);
             }, CancellationToken.None);
 
             Status = ServiceStatus.Running;

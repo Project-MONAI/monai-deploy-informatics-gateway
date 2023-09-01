@@ -25,12 +25,15 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.InformaticsGateway.Test.PlugIns;
+using Monai.Deploy.Messaging.Events;
 using Moq;
 using xRetry;
 using Xunit;
@@ -43,6 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
 
         private readonly Mock<IServiceScope> _serviceScope;
+        private readonly Mock<IInputDataPlugInEngine> _inputDataPlugInEngine;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
@@ -54,6 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger = new Mock<ILogger<ApplicationEntityHandler>>();
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _serviceScope = new Mock<IServiceScope>();
+            _inputDataPlugInEngine = new Mock<IInputDataPlugInEngine>();
 
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _uploadQueue = new Mock<IObjectUploadQueue>();
@@ -64,6 +69,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             services.AddScoped(p => _payloadAssembler.Object);
             services.AddScoped(p => _uploadQueue.Object);
             services.AddScoped(p => _fileSystem);
+            services.AddScoped(p => _inputDataPlugInEngine.Object);
+
+            _inputDataPlugInEngine.Setup(p => p.Configure(It.IsAny<IReadOnlyList<string>>()));
+
             _serviceProvider = services.BuildServiceProvider();
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
@@ -123,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
         }
 
         [RetryFact(5, 250)]
@@ -147,7 +156,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<uint>()), Times.Never());
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
         }
 
         [RetryFact(5, 250)]
@@ -157,7 +166,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             {
                 AeTitle = "TESTAET",
                 Name = "TESTAET",
-                Workflows = new List<string>() { "AppA", "AppB", Guid.NewGuid().ToString() }
+                Workflows = new List<string>() { "AppA", "AppB", Guid.NewGuid().ToString() },
+                PlugInAssemblies = new List<string>() { typeof(TestInputDataPlugInAddWorkflow).AssemblyQualifiedName }
             };
 
             var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -166,11 +176,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             var dicomToolkit = new DicomToolkit();
             var uids = dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
+            _inputDataPlugInEngine.Setup(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()))
+                .Returns((DicomFile dicomFile, FileStorageMetadata fileMetadata) => Task.FromResult(new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata)));
 
             await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Once());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<uint>()), Times.Once());
+            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Once());
+            _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
+            _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Once());
         }
 
         [RetryFact(5, 250)]

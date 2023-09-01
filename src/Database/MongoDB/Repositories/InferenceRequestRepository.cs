@@ -16,16 +16,15 @@
  */
 
 using Ardalis.GuardClauses;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations;
 using MongoDB.Driver;
 using Polly;
 using Polly.Retry;
@@ -47,9 +46,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             IServiceScopeFactory serviceScopeFactory,
             ILogger<InferenceRequestRepository> logger,
             IOptions<InformaticsGatewayConfiguration> options,
-            IOptions<MongoDBOptions> mongoDbOptions) : base(logger, options)
+            IOptions<DatabaseOptions> mongoDbOptions) : base(logger, options)
         {
-            Guard.Against.Null(serviceScopeFactory);
+            Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -59,7 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
-            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DaatabaseName);
+            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DatabaseName);
             _collection = mongoDatabase.GetCollection<InferenceRequest>(nameof(InferenceRequest));
             CreateIndexes();
         }
@@ -79,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public override async Task AddAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
             using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
             await _retryPolicy.ExecuteAsync(async () =>
@@ -123,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public override async Task<InferenceRequest?> GetInferenceRequestAsync(string transactionId, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(transactionId);
+            Guard.Against.NullOrWhiteSpace(transactionId, nameof(transactionId));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -135,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         public override async Task<InferenceRequest?> GetInferenceRequestAsync(Guid inferenceRequestId, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrEmpty(inferenceRequestId);
+            Guard.Against.NullOrEmpty(inferenceRequestId, nameof(inferenceRequestId));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
@@ -147,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         protected override async Task SaveAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(inferenceRequest);
+            Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
             await _retryPolicy.ExecuteAsync(async () =>
             {

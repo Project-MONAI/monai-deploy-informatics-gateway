@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -54,7 +54,11 @@ curl --location --request GET 'http://localhost:5000/config/ae'
     "grouping": "0020,000D",
     "timeout": 5,
     "ignoredSopClasses": ["1.2.840.10008.5.1.4.1.1.1.1"],
-    "allowedSopClasses": ["1.2.840.10008.5.1.4.1.1.1.2"]
+    "allowedSopClasses": ["1.2.840.10008.5.1.4.1.1.1.2"],
+    "pluginAssemblies": [
+        "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+        "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
+    ]
   },
   {
     "name": "liver-seg",
@@ -151,6 +155,10 @@ curl --location --request POST 'http://localhost:5000/config/ae/' \
             "timeout": 5,
             "workflows": [
                 "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
+            ],
+            "pluginAssemblies": [
+                "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+                "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
             ]
         }
     }'
@@ -162,7 +170,11 @@ curl --location --request POST 'http://localhost:5000/config/ae/' \
 {
   "name": "breast-tumor",
   "aeTitle": "BREASTV1",
-  "workflows": ["3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"]
+  "workflows": ["3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"],
+  "pluginAssemblies": [
+      "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+      "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
+  ]
 }
 ```
 
@@ -210,6 +222,10 @@ curl --location --request PUT 'http://localhost:5000/config/ae/' \
             "timeout": 3,
             "workflows": [
                 "3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"
+            ],
+            "pluginAssemblies": [
+                "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+                "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
             ]
         }
     }'
@@ -222,6 +238,10 @@ curl --location --request PUT 'http://localhost:5000/config/ae/' \
   "name": "breast-tumor",
   "aeTitle": "BREASTV1",
   "workflows": ["3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"],
+  "pluginAssemblies": [
+      "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins",
+      "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins"
+  ],
   "timeout": 3
 }
 ```
@@ -260,6 +280,42 @@ curl --location --request DELETE 'http://localhost:5000/config/ae/breast-tumor'
   "name": "breast-tumor",
   "aeTitle": "BREASTV1",
   "workflows": ["3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e"]
+}
+```
+
+---
+
+## GET /config/ae/plug-ins
+
+Returns a list of data input plug-ins that can be used with the SCP Application Entity.
+
+### Parameters
+
+N/A
+
+### Responses
+
+Response Content Type: JSON - An object containing zero or more key-value pairs, where the key is the name of the plug-in and
+the value is the fully qualified assembly type name of the plug-in.
+
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | Plug-ins retrieved successfully.                                                                                                        |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+
+### Example Request
+
+```bash
+curl --location --request GET 'http://localhost:5000/config/ae/plug-ins'
+```
+
+### Example Response
+
+```json
+{
+ "testInputDataPluginAddWorkflow": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+ "testInputDataPluginResumeWorkflow": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginResumeWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+ "testInputDataPluginModifyDicomFile": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
 }
 ```
 
@@ -748,3 +804,39 @@ curl --location --request DELETE 'http://localhost:5000/config/destination/USEAS
   "hostIp": "10.20.3.4"
 }
 ```
+---
+
+## GET /config/destination/plug-ins
+
+Returns a list of data output plug-ins that can be used with the SCP Application Entity.
+
+### Parameters
+
+N/A
+
+### Responses
+
+Response Content Type: JSON - An object containing zero or more key-value pairs, where the key is the name of the plug-in
+and the value is the fully qualified assembly type name of the plug-in.
+
+| Code | Description                                                                                                                             |
+| ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| 200  | Plug-ins retrieved successfully.                                                                                                        |
+| 500  | Server error. The response will be a [Problem details](https://datatracker.ietf.org/doc/html/rfc7807) object with server error details. |
+
+### Example Request
+
+```bash
+curl --location --request GET 'http://localhost:5000/config/destination/plug-ins'
+```
+
+### Example Response
+
+```json
+{
+ "testOutputDataPluginAddMessage": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestOutputDataPluginAddMessage, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+ "testOutputDataPluginModifyDicomFile": "Monai.Deploy.InformaticsGateway.Test.Plugins.TestOutputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+}
+```
+
+---

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ using System.IO.Abstractions;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
+using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.CLI.Services
@@ -35,13 +36,20 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         public bool IsConfigExists => _fileSystem.File.Exists(Common.ConfigFilePath);
 
         public IConfigurationOptionAccessor Configurations { get; }
+        public INLogConfigurationOptionAccessor NLogConfigurations { get; }
 
-        public ConfigurationService(ILogger<ConfigurationService> logger, IFileSystem fileSystem, IEmbeddedResource embeddedResource)
+        public ConfigurationService(
+            ILogger<ConfigurationService> logger,
+            IFileSystem fileSystem,
+            IEmbeddedResource embeddedResource,
+            IConfigurationOptionAccessor configurationOptionAccessor,
+            INLogConfigurationOptionAccessor nLogConfigurationOptionAccessor)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _fileSystem = fileSystem ?? throw new ArgumentNullException(nameof(fileSystem));
             _embeddedResource = embeddedResource ?? throw new ArgumentNullException(nameof(embeddedResource));
-            Configurations = new ConfigurationOptionAccessor(fileSystem);
+            Configurations = configurationOptionAccessor ?? throw new ArgumentNullException(nameof(configurationOptionAccessor));
+            NLogConfigurations = nLogConfigurationOptionAccessor ?? throw new ArgumentNullException(nameof(nLogConfigurationOptionAccessor));
         }
 
         public void CreateConfigDirectoryIfNotExist()
@@ -55,22 +63,31 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         public async Task Initialize(CancellationToken cancellationToken)
         {
             _logger.DebugMessage("Reading default application configurations...");
-            using var stream = _embeddedResource.GetManifestResourceStream(Common.AppSettingsResourceName);
+            await WriteConfigFile(Common.AppSettingsResourceName, Common.ConfigFilePath, cancellationToken).ConfigureAwait(false);
+            await WriteConfigFile(Common.NLogConfigResourceName, Common.NLogConfigFilePath, cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task WriteConfigFile(string resourceName, string outputPath, CancellationToken cancellationToken)
+        {
+            Guard.Against.NullOrWhiteSpace(resourceName, nameof(resourceName));
+            Guard.Against.NullOrWhiteSpace(outputPath, nameof(outputPath));
+
+            using var stream = _embeddedResource.GetManifestResourceStream(resourceName);
 
             if (stream is null)
             {
                 _logger.AvailableManifest(string.Join(",", Assembly.GetExecutingAssembly().GetManifestResourceNames()));
-                throw new ConfigurationException($"Default configuration file could not be loaded, please reinstall the CLI.");
+                throw new ConfigurationException($"Default configuration file: {resourceName} could not be loaded, please reinstall the CLI.");
             }
             CreateConfigDirectoryIfNotExist();
 
-            _logger.SaveAppSettings(Common.ConfigFilePath);
-            using (var fileStream = _fileSystem.FileStream.Create(Common.ConfigFilePath, FileMode.Create))
+            _logger.SaveAppSettings(resourceName, outputPath);
+            using (var fileStream = _fileSystem.FileStream.Create(outputPath, FileMode.Create))
             {
                 await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
                 await fileStream.FlushAsync(cancellationToken).ConfigureAwait(false);
             }
-            _logger.AppSettingUpdated(Common.ConfigFilePath);
+            _logger.AppSettingUpdated(outputPath);
         }
     }
 }

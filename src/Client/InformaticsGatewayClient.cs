@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,9 @@ namespace Monai.Deploy.InformaticsGateway.Client
         /// <inheritdoc/>
         public IAeTitleService<DestinationApplicationEntity> DicomDestinations { get; }
 
+        /// <inheritdoc/>
+        public IAeTitleService<VirtualApplicationEntity> VirtualAeTitle { get; }
+
         /// <summary>
         /// Initializes a new instance of the InformaticsGatewayClient class that connects to the specified URI using the credentials provided.
         /// </summary>
@@ -62,6 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Client
             MonaiScpAeTitle = new AeTitleService<MonaiApplicationEntity>("config/ae", _httpClient, _logger);
             DicomSources = new AeTitleService<SourceApplicationEntity>("config/source", _httpClient, _logger);
             DicomDestinations = new AeTitleService<DestinationApplicationEntity>("config/destination", _httpClient, _logger);
+            VirtualAeTitle = new AeTitleService<VirtualApplicationEntity>("config/vae", _httpClient, _logger);
         }
 
         /// <inheritdoc/>

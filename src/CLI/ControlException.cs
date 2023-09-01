@@ -49,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            Guard.Against.Null(info);
+            Guard.Against.Null(info, nameof(info));
 
             info.AddValue(nameof(ErrorCode), ErrorCode);
 

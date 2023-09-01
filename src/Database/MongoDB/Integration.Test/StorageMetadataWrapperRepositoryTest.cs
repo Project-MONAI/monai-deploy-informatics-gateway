@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,6 @@
  */
 
 using System.Text.Json;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -25,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories;
+using Monai.Deploy.Messaging.Events;
 using MongoDB.Driver;
 using Moq;
 
@@ -144,12 +144,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         correlationId.ToString(),
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        FhirStorageFormat.Json),
+                        FhirStorageFormat.Json,
+                        DataService.ACR,
+                        "origin"),
                     new FhirFileStorageMetadata(
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        FhirStorageFormat.Json),
+                        FhirStorageFormat.Json,
+                        DataService.ACR,
+                        "origin"),
             };
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
@@ -170,7 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         }
 
         [Fact]
-        public async Task GivenACorrelationIdAndAnIdentity_WhenGetFileStorageMetdadataIsCalled_ExpectMatchingFileStorageMetadataToBeReturned()
+        public async Task GivenACorrelationIdAndAnIdentity_WhenGetFileStorageMetadadataIsCalled_ExpectMatchingFileStorageMetadataToBeReturned()
         {
             var correlationId = Guid.NewGuid().ToString();
             var identifier = Guid.NewGuid().ToString();
@@ -179,7 +183,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         identifier,
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        Guid.NewGuid().ToString());
+                        Guid.NewGuid().ToString(),
+                        DataService.DIMSE,
+                        "calling",
+                        "called");
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
             await store.AddOrUpdateAsync(expected).ConfigureAwait(false);
@@ -201,7 +208,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         identifier,
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        Guid.NewGuid().ToString());
+                        Guid.NewGuid().ToString(),
+                        DataService.DIMSE,
+                        "calling",
+                        "called");
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
             await store.AddAsync(expected).ConfigureAwait(false);
@@ -262,6 +272,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
                         Guid.NewGuid().ToString(),
-                        Guid.NewGuid().ToString());
+                        Guid.NewGuid().ToString(),
+                        DataService.DicomWeb,
+                        "calling",
+                        "called");
     }
 }

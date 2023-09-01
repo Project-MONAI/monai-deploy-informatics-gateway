@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-using Microsoft.Extensions.Configuration;
-
-namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations
+namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
-    public class MongoDBOptions
+    public enum DatabaseType
     {
-        [ConfigurationKeyName("DatabaseName")]
-        public string DaatabaseName { get; set; } = string.Empty;
+        EntityFramework,
+        MongoDb
     }
 }

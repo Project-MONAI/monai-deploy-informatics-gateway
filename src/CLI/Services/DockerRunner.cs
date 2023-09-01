@@ -1,5 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<RunnerState> IsApplicationRunning(ImageVersion imageVersion, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(imageVersion);
+            Guard.Against.Null(imageVersion, nameof(imageVersion));
 
             _logger.CheckingExistingAppContainer(Strings.ApplicationName, imageVersion.Version);
             var parameters = new ContainersListParameters
@@ -72,7 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<ImageVersion> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(version);
+            Guard.Against.NullOrWhiteSpace(version, nameof(version));
 
             var results = await GetApplicationVersions(version, cancellationToken).ConfigureAwait(false);
             return results?.OrderByDescending(p => p.Created).FirstOrDefault();
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<IList<ImageVersion>> GetApplicationVersions(string version, CancellationToken cancellationToken = default)
         {
-            Guard.Against.NullOrWhiteSpace(version);
+            Guard.Against.NullOrWhiteSpace(version, nameof(version));
 
             _logger.ConnectingToDocker();
             var parameters = new ImagesListParameters
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<bool> StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(imageVersion);
+            Guard.Against.Null(imageVersion, nameof(imageVersion));
 
             _logger.CreatingDockerContainer(Strings.ApplicationName, imageVersion.Version, imageVersion.IdShort);
             var createContainerParams = new CreateContainerParameters
@@ -114,6 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             };
 
             createContainerParams.HostConfig.PortBindings = new Dictionary<string, IList<PortBinding>>();
+            createContainerParams.HostConfig.NetworkMode = "monaideploy";
 
             _logger.DockerPrtBinding(_configurationService.Configurations.DicomListeningPort);
             createContainerParams.ExposedPorts.Add($"{_configurationService.Configurations.DicomListeningPort}/tcp", new EmptyStruct());
@@ -135,11 +136,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostDatabaseStorageMount);
             createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostDatabaseStorageMount, Target = Common.MountedDatabasePath });
 
-            _logger.DockerMountAppLogs(_configurationService.Configurations.HostLogsStorageMount, _configurationService.Configurations.LogStoragePath);
+            _logger.DockerMountAppLogs(_configurationService.Configurations.HostLogsStorageMount, _configurationService.NLogConfigurations.LogStoragePath);
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostLogsStorageMount);
-            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostLogsStorageMount, Target = _configurationService.Configurations.LogStoragePath });
+            createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostLogsStorageMount, Target = _configurationService.NLogConfigurations.LogStoragePath });
 
-            _logger.DockerMountPlugins(_configurationService.Configurations.HostPlugInsStorageMount, Common.MountedPlugInsPath);
+            _logger.DockerMountPlugIns(_configurationService.Configurations.HostPlugInsStorageMount, Common.MountedPlugInsPath);
             _fileSystem.Directory.CreateDirectoryIfNotExists(_configurationService.Configurations.HostPlugInsStorageMount);
             createContainerParams.HostConfig.Mounts.Add(new Mount { Type = "bind", ReadOnly = false, Source = _configurationService.Configurations.HostPlugInsStorageMount, Target = Common.MountedPlugInsPath });
 
@@ -168,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         public async Task<bool> StopApplication(RunnerState runnerState, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(runnerState);
+            Guard.Against.Null(runnerState, nameof(runnerState));
 
             _logger.DockerContainerStopping(Strings.ApplicationName, runnerState.IdShort);
             var result = await _dockerClient.Containers.StopContainerAsync(runnerState.Id, new ContainerStopParameters() { WaitBeforeKillSeconds = 60 }, cancellationToken).ConfigureAwait(false);
