@@ -32881,7 +32881,7 @@ Contact
 
 ## System.Threading.Channels
 
-- Version: 6.0.0
+- Version: 7.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Threading.Channels/6.0.0)
@@ -49398,4 +49398,3 @@ SOFTWARE.
 ```
 
 </details>
-

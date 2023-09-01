@@ -115,6 +115,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 UploadPath = $"{File.UploadPath}{DicomJsonFileExtension}",
                 ContentType = DicomJsonContentType,
             };
+
+            DataOrigin.DataService = dataService;
+            DataOrigin.Source = callingAeTitle;
+            DataOrigin.Destination = calledAeTitle;
         }
 
         public void SetupGivenFilePaths(string? DestinationFolder)

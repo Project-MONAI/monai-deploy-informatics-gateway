@@ -53,7 +53,6 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
 
         public async Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> ExecuteAsync(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)
         {
-
             Guard.Against.Null(dicomFile, nameof(dicomFile));
             Guard.Against.Null(exportRequestDataMessage, nameof(exportRequestDataMessage));
 
@@ -104,7 +103,6 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
             await repository.AddAsync(newRecord).ConfigureAwait(false);
 
             return (dicomFile, exportRequestDataMessage);
-
         }
     }
 }
