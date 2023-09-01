@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Setup | MONAI Deploy Informatics Gateway v0.3.21 </title>
+    <title>Setup | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Setup | MONAI Deploy Informatics Gateway v0.3.21 ">
+    <meta name="title" content="Setup | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../images/favicon.ico">
@@ -79,7 +79,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="setup">Setup</h1>
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -98,12 +98,26 @@
 <h2 id="runtime-requirements">Runtime Requirements</h2>
 <ul>
 <li>Docker 20.10.12 or higher</li>
+<li><a href="#database-configuration">Database service</a></li>
+<li><a href="#message-broker">Message Broker service</a></li>
+<li><a href="#storage-service">Storage service</a></li>
 </ul>
 <p>For development requirements, refer to the <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway">Informatics Gateway README.md</a>.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>Use <a href="https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express">MONAI Deploy Express</a> to quickly
+bring up all required services, including the Informatics Gateway.</p>
+<p>Skip to <a href="#configure-informatics-gateway">Configure Informatics Gateway</a> if you are using MONAI Deploy Express.</p>
+</div>
 <h2 id="installation">Installation</h2>
 <h3 id="informatics-gateway-cli">Informatics Gateway CLI</h3>
 <p>Download and install the Informatics Gateway CLI from the <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases">Releases</a> section of
 the repository and install it.</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The example below uses the <code>v0.2.0</code> release; we recommend always downloading the latest version from the <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases">Releases</a>
+section.</p>
+</div>
 <h4 id="on-linux">On Linux</h4>
 <pre><code class="lang-bash"># Download the CLI
 curl -LO https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases/download/0.2.0/mig-cli-0.2.0-linux-x64.zip
@@ -138,6 +152,10 @@ mig-cli config endpoint http://localhost:5000 #skip if running locally
 <pre><code class="lang-powershell">mig-cli.exe config init
 mig-cli.exe config endpoint http://localhost:5000 #skip if running locally
 </code></pre>
+<div class="NOTE">
+<h5>Note</h5>
+<p>For <a href="https://github.com/Project-MONAI/monai-deploy/tree/main/deploy/monai-deploy-express">MONAI Deploy Express</a>, use <code>http://localhost:5003</code>.</p>
+</div>
 <p>The first command extracts the default <code>appsettings.json</code> file into the home directory:</p>
 <ul>
 <li>Linux: <code>~/.mig/appsettings.json</code></li>
@@ -184,6 +202,22 @@ username, password, IP address/hostname, and port.</p>
 <p>Extending the Informatics Gateway to support other database systems can be done with a few steps.</p>
 <p>If the database system is supported by <a href="https://learn.microsoft.com/en-us/ef/core/providers/">Microsoft Entity Framework</a>, then it can be added to the existing <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/tree/develop/src/Database/EntityFramework">project</a>.</p>
 <p>For other database systems that are not listed in the link above, simply implement the <a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.Repositories.html">Repository APIs</a>, update the <a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html">Database Manager</a> to support the new database type and optionally, implement the <a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManager.html">IDabaseMigrationManager</a>.</p>
+<h2 id="authentication">Authentication</h2>
+<p>Authentication is disabled by default. To enable authentication using OpenID, edit the <code>appsettings.json</code> file and set <code>bypassAuthentication</code> to <code>true</code>:</p>
+<pre><code class="lang-json">{
+  &quot;MonaiDeployAuthentication&quot;: {
+    &quot;bypassAuthentication&quot;: true,
+    &quot;openId&quot;: {
+      &quot;realm&quot;: &quot;{realm}&quot;,
+      &quot;realmKey&quot;: &quot;{realm-secret-key}&quot;,
+      &quot;clientId&quot;: &quot;{client-id}&quot;,
+      &quot;audiences&quot;: [ &quot;{audiences}&quot; ],
+      &quot;roleClaimType&quot;: &quot;{roles}&quot;,
+  ...
+}
+</code></pre>
+<p>Refer to the <a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager/blob/develop/guidelines/mwm-auth.md">Authentication Setup Using Keycloak</a>
+section for additional details.</p>
 <h2 id="storage-consideration--configuration">Storage Consideration &amp; Configuration</h2>
 <p>The Informatics Gateway operates on two storage locations. In the first location, the incoming data for data grouping is temporarily stored. In the second location, the Informatics Gateway uploads grouped datasets to final storage shared by other MONAI Deploy sub-systems.</p>
 <h3 id="temporary-storage-of-incoming-dataset">Temporary Storage of Incoming Dataset</h3>
@@ -312,21 +346,26 @@ mig-cli stop
 <h2 id="enable-incoming-associations">Enable Incoming Associations</h2>
 <p>The next step is to configure the Informatics Gateway to enable receiving of DICOM instances from external DICOM devices.</p>
 <ol>
-<li>Configure a listening AE Title to receive instances:</li>
-</ol>
+<li><p>Configure a listening AE Title to receive instances:</p>
 <pre><code class="lang-bash">mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
 </code></pre>
 <p>The command creates a new listening AE Title with AE Title <code>BrainAET</code>. The listening AE Title
 will group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.</p>
+<p>Each listening AE Title may be configured with one or more plug-ins to manipulate incoming DICOM files before saving to the storage
+service and dispatching a workflow request. To include input data plug-ins, first create your plug-ins by implementing the
+<a class="xref" href="../api/dotnet/Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn.html">IInputDataPlugIn</a> interface, then add the <code>-p</code> argument, with the fully
+qualified type name, to the <code>mig-cli aet add</code> command. For example, the following command adds the <code>MyNamespace.AnonymizePlugIn</code>
+and <code>MyNamespace.FixSeriesData</code> plug-ins from the <code>MyNamespace.Plugins</code> assembly file.</p>
+<pre><code class="lang-bash">mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p &quot;MyNamespace.AnonymizePlugIn, MyNamespace.PlugIns&quot; &quot;MyNamespace.FixSeriesData, MyNamespace.PlugIns&quot;
+</code></pre>
 <div class="NOTE">
 <h5>Note</h5>
-<p><code>-grouping</code> is optional, with a default value of 0020,000D.
-<code>-t</code> is optional, with a default value of 5 seconds.
-For complete reference, refer to the <a href="../api/rest/config.html">Config API</a>.</p>
+<p>The <code>-grouping</code> argument is optional, with a default value of 0020,000D.
+The <code>-t</code> argument is also optional, with a default value of 5 seconds.
+For a complete reference, refer to the <a href="../api/rest/config.html">Configuration API</a>.</p>
 </div>
-<ol start="2">
-<li>Enable the receiving of DICOM instances from external DICOM devices:</li>
-</ol>
+</li>
+<li><p>Enable the receiving of DICOM instances from external DICOM devices:</p>
 <pre><code class="lang-bash">mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55
 </code></pre>
 <p>The above command tells the Informatics Gateway to accept instances from AE Title <code>PACSLA001</code> at IP <code>20.10.30.55</code> and port <code>104</code>.</p>
@@ -340,6 +379,9 @@ To allow all unknown sources, set the <code>dicom&gt;scp&gt;rejectUnknownSources
 <p>The Informatics Gateway validates both the source IP address and AE Title when <code>rejectUnknownSources</code> is set to <code>true</code>.
 When the Informatics Gateway is running in a container and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under <code>Remote host</code>.</p>
 </div>
+<p>See <a href="../plug-ins/overview.html">Data Plug-ins</a> to configure data plug-ins or create your own data plug-ins.</p>
+</li>
+</ol>
 <h2 id="export-processed-results">Export Processed Results</h2>
 <p>If exporting via DIMSE is required, add a DICOM destination:</p>
 <pre><code class="lang-bash">mig-cli dst add -a WORKSTATION1 -h 100.200.10.20 -p 104
@@ -375,7 +417,7 @@ When the Informatics Gateway is running in a container and data is coming from t
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

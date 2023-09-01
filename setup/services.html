@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>MONAI Deploy Informatics Gateway Services | MONAI Deploy Informatics Gateway v0.4.0 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="MONAI Deploy Informatics Gateway Services | MONAI Deploy Informatics Gateway v0.4.0 ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../images/favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    <meta property="docfx:rel" content="../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../images/MONAI-logo-color.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="monai-deploy-informatics-gateway-services">MONAI Deploy Informatics Gateway Services</h1>
+<!--
+  ~ Copyright 2021-2023 MONAI Consortium
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+
+<p>MONAI Deploy Informatics Gateway supports the following standard protocols for communicating with medical devices:</p>
+<ul>
+<li><strong>DICOM SCP</strong>: C-ECHO, C-STORE</li>
+<li><strong>DICOM SCU</strong>: C-STORE</li>
+<li><strong>HL7 Server</strong>: An HL7 MLLP listener</li>
+<li><strong>ACR DSI API</strong>: <a href="https://www.acrdsi.org/-/media/DSI/Files/ACR-DSI-Model-API.pdf">The American College of Radiology�s Data Science Institute API</a></li>
+<li><strong>DICOMweb client</strong>: QIDO-RS, WADO-RS, STOW-RS</li>
+<li><strong>FHIR Server</strong>: POST</li>
+<li><strong>FHIR client</strong>: GET</li>
+</ul>
+<div class="NOTE">
+<h5>Note</h5>
+<p>The ACR DSI API uses the DICOMweb client and FHIR client.</p>
+</div>
+<h2 id="dicom-scp">DICOM SCP</h2>
+<p>The <em>DICOM SCP Service</em> accepts standard DICOM C-ECHO and C-STORE commands, which receive DICOM instances for processing. In addition,
+the Informatics Gateway groups received DICOM instances by the study or series based on the configuration. Once DICOM instances are grouped,
+they are assembled into a payload for the <a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager">MONAI Deploy Workflow Manager</a> to consume.</p>
+<h3 id="workflow-request">Workflow Request</h3>
+<p>With a DICOM SCP triggered workflow request, the data trigger contains the following:</p>
+<ul>
+<li><code>DataService</code>: <code>DataService.DIMSE</code></li>
+<li><code>Source</code>: <code>&lt;calling AE Title&gt;</code></li>
+<li><code>Destination</code>: <code>&lt;called AE Title&gt;</code></li>
+</ul>
+<h2 id="dicom-scu">DICOM SCU</h2>
+<p>The <em>DICOM SCU Service</em> allows users to export application-generated DICOM results to external DICOM devices. It subscribes
+to the <code>md.export.request.monaiscu</code> events generated by the <a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager">MONAI Deploy Workflow Manager</a>,
+then exports the data to user-configured DICOM destination(s).</p>
+<div class="NOTE">
+<h5>Note</h5>
+<p>DICOM instances are sent as-is; no codec conversion is done as part of the SCU process.
+See the <a href="../compliance/dicom.html#dimse-services-scu">DICOM Interface SCU</a> section for more information.</p>
+</div>
+<h2 id="dicomweb-stow-rs">DICOMWeb STOW-RS</h2>
+<p>The <em>DICOMWeb STOW-RS Service</em> allows users to trigger a new workflow request by uploading a DICOM dataset. The entire DICOM dataset is assembled into a
+payload for the <a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager">MONAI Deploy Workflow Manager</a> to consume.
+It provides options to trigger a workflow with or without specifying a workflow ID/name. See the
+<a href="../api/rest/dicomweb-stow.html">DICOMWeb STOW-RS</a> section for more information.</p>
+<h3 id="workflow-request-1">Workflow Request</h3>
+<p>With a DICOMWeb STOW-RS triggered workflow request, the data trigger contains the following:</p>
+<ul>
+<li><code>DataService</code>: <code>DataService.DicomWeb</code></li>
+<li><code>Source</code>: <code>&lt;caller's IP address&gt;</code></li>
+<li><code>Destination</code>: <code>default</code> or <code>&lt;name of Virtual AE Title&gt;</code></li>
+</ul>
+<h2 id="hl7-mllp-server">HL7 MLLP Server</h2>
+<p>The <em>HL7 MLLP Server</em> accepts Health Level 7 messages via the MLLP (Minimal Lower Layer Protocol). The received messages are
+validated and assembled into a payload for the <a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager">MONAI Deploy Workflow Manager</a>
+to consume.</p>
+<h3 id="workflow-request-2">Workflow Request</h3>
+<p>If a workflow request is triggered by an HL7 MLLP Server, the data trigger contains the following:</p>
+<ul>
+<li><code>DataService</code>: <code>DataService.HL7</code></li>
+<li><code>Source</code>: <code>&lt;caller's IP address&gt;</code></li>
+<li><code>Destination</code>: <code>&lt;MIG's IP address&gt;</code></li>
+</ul>
+<h2 id="acr-dsi-api">ACR DSI API</h2>
+<p>The ACR DSI API allows users to trigger inference requests via RESTful calls, utilizing DICOMweb and FHIR to
+retrieve data specified in the request. Upon data retrieval, the Informatics Gateway uploads the data to the
+shared storage and generates an <code>md.workflow.request</code> event, which notifies the
+<a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager">MONAI Deploy Workflow Manager</a> for processing.
+See the <a href="../api/rest/inference.html">Inference API</a> for more information.</p>
+<h3 id="workflow-request-3">Workflow Request</h3>
+<p>If a workflow request is triggered by the ACR DSI API, the data trigger contains the following:</p>
+<ul>
+<li><code>DataService</code>: <code>DataService.ACR</code></li>
+<li><code>Source</code>: <code>&lt;transaction ID from the ACR request&gt;</code></li>
+<li><code>Destination</code>: <code>&lt;MIG's IP address&gt;</code></li>
+</ul>
+<h2 id="dicomweb-export">DICOMweb Export</h2>
+<p>A DICOMweb export agent can export any user-generated DICOM content to configured DICOM destinations. The agent
+subscribes to the <code>md.export.request.monaidicomweb</code> events generated by the <a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager">MONAI Deploy Workflow Manager</a>,
+then exports the data to user-configured DICOMweb destination(s).</p>
+<h2 id="fhir-server">FHIR Server</h2>
+<p>The <em>FHIR Server</em> accepts FHIR resources as described in the <a href="../api/rest/fhir.html">FHIR API</a> section. When data arrives at the service,
+each resource is packaged into a payload and a workflow request is sent to the <a href="https://github.com/Project-MONAI/monai-deploy-workflow-manager">MONAI Deploy Workflow Manager</a>.</p>
+<h3 id="workflow-request-4">Workflow Request</h3>
+<p>With an FHIR Server triggered workflow request, the data trigger contains the following:</p>
+<ul>
+<li><code>DataService</code>: <code>DataService.FHIR</code></li>
+<li><code>Source</code>: <code>&lt;caller's IP address&gt;</code></li>
+<li><code>Destination</code>: <code>&lt;MIG's IP address&gt;</code></li>
+</ul>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/docs//#L1" class="contribution-link">Improve this Doc</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

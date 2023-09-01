@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class DicomWebClient
-   | MONAI Deploy Informatics Gateway v0.3.21 </title>
+   | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DicomWebClient
-   | MONAI Deploy Informatics Gateway v0.3.21 ">
+   | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -83,7 +83,8 @@
   
   <h1 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient" class="text-break">Class DicomWebClient
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>A DICOMweb client for sending HTTP requests and receiving HTTP responses from a DICOMweb server.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -98,7 +99,7 @@
   <h6><strong>Assembly</strong>: Monai.Deploy.InformaticsGateway.DicomWeb.Client.dll</h6>
   <h5 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class DicomWebClient : Object, IDicomWebClient</code></pre>
+    <pre><code class="lang-csharp hljs">public class DicomWebClient : IDicomWebClient</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -106,10 +107,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient__ctor_System_Net_Http_HttpClient_Microsoft_Extensions_Logging_ILogger_Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient__.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.%23ctor(System.Net.Http.HttpClient%2CMicrosoft.Extensions.Logging.ILogger%7BMonai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient%7D)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L50">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient__ctor_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.#ctor*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient__ctor_System_Net_Http_HttpClient_Microsoft_Extensions_Logging_ILogger_Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient__" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger{Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient})">DicomWebClient(HttpClient, ILogger&lt;DicomWebClient&gt;)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the DicomWebClient class that connects to the specified URI using the credentials provided.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -128,12 +132,14 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpclient">HttpClient</a></td>
         <td><span class="parametername">httpClient</span></td>
-        <td></td>
+        <td><p>HTTP client .</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.html">DicomWebClient</a>&gt;</td>
         <td><span class="parametername">logger</span></td>
-        <td></td>
+        <td><p>Optional logger for capturing client logs.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -143,10 +149,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Qido.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Qido%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L40">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Qido_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Qido*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Qido" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Qido">Qido</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Provides DICOMweb QIDO services for querying a remote server for studies.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -171,10 +180,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Stow.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Stow%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L43">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Stow_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Stow*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Stow" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Stow">Stow</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Provides DICOMweb STOW services for storing DICOM instances.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -199,10 +211,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Wado.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Wado%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L37">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Wado_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Wado*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Wado" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Wado">Wado</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Provides DICOMweb WADO services for retrieving studies, series, instances, frames and bulkdata.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -229,10 +244,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureAuthentication_System_Net_Http_Headers_AuthenticationHeaderValue_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureAuthentication(System.Net.Http.Headers.AuthenticationHeaderValue)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L114">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureAuthentication_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureAuthentication*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureAuthentication_System_Net_Http_Headers_AuthenticationHeaderValue_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureAuthentication(System.Net.Http.Headers.AuthenticationHeaderValue)">ConfigureAuthentication(AuthenticationHeaderValue)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures the authentication header for the DICOMweb client.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -259,10 +277,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServicePrefix_Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_DicomWebServiceType_System_String_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServicePrefix(Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebServiceType%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L83">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServicePrefix_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServicePrefix*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServicePrefix_Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_DicomWebServiceType_System_String_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServicePrefix(Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebServiceType,System.String)">ConfigureServicePrefix(DicomWebServiceType, String)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures prefix for the specified service</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -281,12 +302,14 @@
       <tr>
         <td><a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebServiceType.html">DicomWebServiceType</a></td>
         <td><span class="parametername">serviceType</span></td>
-        <td></td>
+        <td><p><code>ServiceType</code> to be configured</p>
+</td>
       </tr>
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">urlPrefix</span></td>
-        <td></td>
+        <td><p>Url prefix</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -294,10 +317,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServiceUris_System_Uri_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServiceUris(System.Uri)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L71">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServiceUris_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServiceUris*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServiceUris_System_Uri_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServiceUris(System.Uri)">ConfigureServiceUris(Uri)</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Configures the service URI of the DICOMweb service.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -316,7 +342,8 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uri">Uri</a></td>
         <td><span class="parametername">uriRoot</span></td>
-        <td></td>
+        <td><p>Base URL of the DICOMweb server.</p>
+</td>
       </tr>
     </tbody>
   </table>
@@ -333,6 +360,9 @@
                 <ul class="nav">
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L31" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -352,7 +382,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class MonaiApplicationEntity
-   | MONAI Deploy Informatics Gateway v0.3.21 </title>
+   | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class MonaiApplicationEntity
-   | MONAI Deploy Informatics Gateway v0.3.21 ">
+   | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -83,7 +83,9 @@
   
   <h1 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity" class="text-break">Class MonaiApplicationEntity
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>MONAI Application Entity
+MONAI's SCP AE Title is used to accept incoming associations and can, optionally, map to multiple workflows.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -106,13 +108,30 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class MonaiApplicationEntity : MongoDBEntityBase</code></pre>
   </div>
+  <h5 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_examples"><strong>Examples</strong></h5>
+  <pre><code>{
+    &quot;name&quot;: &quot;brain-tumor&quot;,
+    &quot;aeTitle&quot;: &quot;BrainTumorModel&quot;
+}</code></pre>
+<pre><code>{
+    &quot;name&quot;: &quot;COVID-19&quot;,
+    &quot;aeTitle&quot;: &quot;COVID-19&quot;,
+    &quot;workflows&quot;: [ &quot;EXAM&quot;, &quot;Delta&quot;, &quot;b75cd27a-068a-4f9c-b3da-e5d4ea08c55a&quot;],
+    &quot;grouping&quot;: [ &quot;0010,0020&quot;],
+    &quot;ignoredSopClasses&quot;: [&quot;1.2.840.10008.5.1.4.1.1.1.1&quot;],
+    &quot;allowedSopClasses&quot;: [&quot;1.2.840.10008.5.1.4.1.1.1.2&quot;],
+    &quot;timeout&quot;: 300
+}</code></pre>
+
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity__ctor.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L115">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.#ctor*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity__ctor" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.#ctor">MonaiApplicationEntity()</h4>
   <div class="markdown level1 summary"></div>
@@ -127,10 +146,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_AeTitle.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.AeTitle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L62">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_AeTitle_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.AeTitle*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_AeTitle" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.AeTitle">AeTitle</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the AE TItle.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -155,10 +177,14 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_AllowedSopClasses.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.AllowedSopClasses%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L91">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_AllowedSopClasses_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.AllowedSopClasses*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_AllowedSopClasses" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.AllowedSopClasses">AllowedSopClasses</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Optional field to specify accepted SOP Class UIDs.
+<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_IgnoredSopClasses">IgnoredSopClasses</a> and <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_AllowedSopClasses">AllowedSopClasses</a> are mutually exclusive.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -183,10 +209,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_CreatedBy.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L103">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_CreatedBy_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_CreatedBy" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.CreatedBy">CreatedBy</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or set the user who created the DICOM entity.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -211,14 +240,17 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_DateTimeUpdated.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L113">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_DateTimeUpdated_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_DateTimeUpdated" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.DateTimeUpdated">DateTimeUpdated</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or set the most recent date time the DICOM entity was updated.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Nullable&lt;DateTime&gt; DateTimeUpdated { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">public DateTime? DateTimeUpdated { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -239,10 +271,15 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Grouping.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Grouping%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L69">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Grouping_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Grouping*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Grouping" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Grouping">Grouping</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the DICOM tag used to group the instances.
+Defaults to 0020,000D (Study Instance UID).
+Valid DICOM Tags: &gt; Study Instance UID (0020,000D) and Series Instance UID (0020,000E).</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -267,10 +304,14 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_IgnoredSopClasses.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.IgnoredSopClasses%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L85">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_IgnoredSopClasses_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.IgnoredSopClasses*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_IgnoredSopClasses" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.IgnoredSopClasses">IgnoredSopClasses</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Optional field to specify SOP Class UIDs to ignore.
+<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_IgnoredSopClasses">IgnoredSopClasses</a> and <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_AllowedSopClasses">AllowedSopClasses</a> are mutually exclusive.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -295,14 +336,20 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Name.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Name%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L56">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Name_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Name*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Name" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Name">Name</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the name of a MONAI DICOM application entity.
+This value must be unique.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string Name { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[Key]
+[Column(Order = 0)]
+public string Name { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -321,12 +368,48 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_PlugInAssemblies.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.PlugInAssemblies%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L79">View Source</a>
+  </span>
+  <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_PlugInAssemblies_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.PlugInAssemblies*"></a>
+  <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_PlugInAssemblies" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.PlugInAssemblies">PlugInAssemblies</h4>
+  <div class="markdown level1 summary"><p>Optional list of data input plug-in type names to be executed by the <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugInEngine.html">IInputDataPlugInEngine</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; PlugInAssemblies { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Timeout.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Timeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L98">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Timeout_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Timeout*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Timeout" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Timeout">Timeout</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Timeout, in seconds, to wait for instances before notifying other subsystems of data arrival
+for the specified data group.
+Defaults to five seconds.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -351,10 +434,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_UpdatedBy.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L108">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_UpdatedBy_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_UpdatedBy" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.UpdatedBy">UpdatedBy</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or set the most recent user who updated the DICOM entity.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -379,10 +465,13 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Workflows.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Workflows%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L74">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Workflows_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Workflows*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_Workflows" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.Workflows">Workflows</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Optional field to map AE to one or more workflows.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
@@ -409,7 +498,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetAuthor_System_Security_Claims_ClaimsPrincipal_Monai_Deploy_InformaticsGateway_Api_EditMode_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal%2CMonai.Deploy.InformaticsGateway.Api.EditMode)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L146">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetAuthor_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetAuthor_System_Security_Claims_ClaimsPrincipal_Monai_Deploy_InformaticsGateway_Api_EditMode_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal,Monai.Deploy.InformaticsGateway.Api.EditMode)">SetAuthor(ClaimsPrincipal, EditMode)</h4>
   <div class="markdown level1 summary"></div>
@@ -444,7 +535,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetDefaultValues.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetDefaultValues%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L120">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetDefaultValues_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetDefaultValues*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_SetDefaultValues" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.SetDefaultValues">SetDefaultValues()</h4>
   <div class="markdown level1 summary"></div>
@@ -457,7 +550,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_ToString.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L141">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_ToString_" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_ToString" data-uid="Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity.ToString">ToString()</h4>
   <div class="markdown level1 summary"></div>
@@ -481,6 +576,8 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>
       <a class="xref" href="Monai.Deploy.InformaticsGateway.Configuration.ValidationExtensions.html#Monai_Deploy_InformaticsGateway_Configuration_ValidationExtensions_IsValid_Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity_System_Collections_Generic_IList_System_String___">ValidationExtensions.IsValid(MonaiApplicationEntity, out IList&lt;String&gt;)</a>
@@ -494,6 +591,9 @@
                 <ul class="nav">
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_MonaiApplicationEntity.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/MonaiApplicationEntity.cs/#L50" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -513,7 +613,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class Payload
-   | MONAI Deploy Informatics Gateway v0.3.21 </title>
+   | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Payload
-   | MONAI Deploy Informatics Gateway v0.3.21 ">
+   | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -98,22 +98,24 @@
   <h6><strong>Assembly</strong>: Monai.Deploy.InformaticsGateway.Api.dll</h6>
   <h5 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class Payload : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public class Payload : IDisposable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_System_String_System_String_System_UInt32_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.%23ctor(System.String%2CSystem.String%2CSystem.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_System_String_System_String_System_String_System_String_Monai_Deploy_Messaging_Events_DataOrigin_System_UInt32_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.%23ctor(System.String%2CSystem.String%2CSystem.String%2CSystem.String%2CMonai.Deploy.Messaging.Events.DataOrigin%2CSystem.UInt32)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L89">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_System_String_System_String_System_UInt32_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor(System.String,System.String,System.UInt32)">Payload(String, String, UInt32)</h4>
+  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_System_String_System_String_System_String_System_String_Monai_Deploy_Messaging_Events_DataOrigin_System_UInt32_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor(System.String,System.String,System.String,System.String,Monai.Deploy.Messaging.Events.DataOrigin,System.UInt32)">Payload(String, String, String, String, DataOrigin, UInt32)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Payload(string key, string correlationId, uint timeout)</code></pre>
+    <pre><code class="lang-csharp hljs">public Payload(string key, string correlationId, string workflowInstanceId, string taskId, DataOrigin dataTrigger, uint timeout)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -136,6 +138,21 @@
         <td></td>
       </tr>
       <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">workflowInstanceId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">taskId</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">Monai.Deploy.Messaging.Events.DataOrigin</span></td>
+        <td><span class="parametername">dataTrigger</span></td>
+        <td></td>
+      </tr>
+      <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">UInt32</a></td>
         <td><span class="parametername">timeout</span></td>
         <td></td>
@@ -148,7 +165,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MAX_RETRY.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MAX_RETRY%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L46">View Source</a>
+  </span>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MAX_RETRY" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MAX_RETRY">MAX_RETRY</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -175,65 +194,11 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CalledAeTitle.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CalledAeTitle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CalledAeTitle_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CalledAeTitle*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CalledAeTitle" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CalledAeTitle">CalledAeTitle</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string CalledAeTitle { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CallingAeTitle.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CallingAeTitle%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CallingAeTitle_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CallingAeTitle*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CallingAeTitle" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CallingAeTitle">CallingAeTitle</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string CallingAeTitle { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CorrelationId.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CorrelationId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L66">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CorrelationId_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CorrelationId*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CorrelationId" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CorrelationId">CorrelationId</h4>
   <div class="markdown level1 summary"></div>
@@ -261,7 +226,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Count.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Count%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L76">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Count_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Count*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Count" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Count">Count</h4>
   <div class="markdown level1 summary"></div>
@@ -287,9 +254,71 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataOrigins.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataOrigins%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L74">View Source</a>
+  </span>
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataOrigins_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataOrigins*"></a>
+  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataOrigins" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataOrigins">DataOrigins</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashSet&lt;DataOrigin&gt; DataOrigins { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1">HashSet</a>&lt;<span class="xref">Monai.Deploy.Messaging.Events.DataOrigin</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataTrigger.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataTrigger%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L72">View Source</a>
+  </span>
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataTrigger_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataTrigger*"></a>
+  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataTrigger" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataTrigger">DataTrigger</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DataOrigin DataTrigger { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Monai.Deploy.Messaging.Events.DataOrigin</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DateTimeCreated.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DateTimeCreated%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L58">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DateTimeCreated_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DateTimeCreated*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DateTimeCreated" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DateTimeCreated">DateTimeCreated</h4>
   <div class="markdown level1 summary"></div>
@@ -317,7 +346,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Elapsed.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L80">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Elapsed_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Elapsed" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed">Elapsed</h4>
   <div class="markdown level1 summary"></div>
@@ -345,7 +376,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Files.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Files%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L64">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Files_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Files*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Files" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Files">Files</h4>
   <div class="markdown level1 summary"></div>
@@ -373,7 +406,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesFailedToUpload.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L87">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesFailedToUpload_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesFailedToUpload" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload">FilesFailedToUpload</h4>
   <div class="markdown level1 summary"></div>
@@ -401,7 +436,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesUploaded.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L85">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesUploaded_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesUploaded" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded">FilesUploaded</h4>
   <div class="markdown level1 summary"></div>
@@ -429,7 +466,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_HasTimedOut.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.HasTimedOut%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L78">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_HasTimedOut_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.HasTimedOut*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_HasTimedOut" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.HasTimedOut">HasTimedOut</h4>
   <div class="markdown level1 summary"></div>
@@ -457,7 +496,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Key.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Key%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L54">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Key_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Key*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Key" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Key">Key</h4>
   <div class="markdown level1 summary"></div>
@@ -485,7 +526,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MachineName.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L56">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MachineName_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MachineName" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName">MachineName</h4>
   <div class="markdown level1 summary"></div>
@@ -513,7 +556,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_PayloadId.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L50">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_PayloadId_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_PayloadId" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId">PayloadId</h4>
   <div class="markdown level1 summary"></div>
@@ -541,7 +586,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_RetryCount.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.RetryCount%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L60">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_RetryCount_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.RetryCount*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_RetryCount" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.RetryCount">RetryCount</h4>
   <div class="markdown level1 summary"></div>
@@ -569,7 +616,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_State.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.State%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L62">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_State_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.State*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_State" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.State">State</h4>
   <div class="markdown level1 summary"></div>
@@ -595,9 +644,41 @@
   </table>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_TaskId.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.TaskId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L70">View Source</a>
+  </span>
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_TaskId_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.TaskId*"></a>
+  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_TaskId" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.TaskId">TaskId</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TaskId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Timeout.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Timeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L52">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Timeout_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Timeout*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Timeout" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Timeout">Timeout</h4>
   <div class="markdown level1 summary"></div>
@@ -621,13 +702,45 @@
       </tr>
     </tbody>
   </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_WorkflowInstanceId.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.WorkflowInstanceId%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L68">View Source</a>
+  </span>
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_WorkflowInstanceId_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.WorkflowInstanceId*"></a>
+  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_WorkflowInstanceId" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.WorkflowInstanceId">WorkflowInstanceId</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string WorkflowInstanceId { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="methods">Methods
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Add_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Add(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L110">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Add_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Add*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Add_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Add(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)">Add(FileStorageMetadata)</h4>
   <div class="markdown level1 summary"></div>
@@ -657,7 +770,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L154">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose">Dispose()</h4>
   <div class="markdown level1 summary"></div>
@@ -670,7 +785,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose_System_Boolean_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose(System.Boolean)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L135">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose_System_Boolean_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose(System.Boolean)">Dispose(Boolean)</h4>
   <div class="markdown level1 summary"></div>
@@ -700,7 +817,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ElapsedTime.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ElapsedTime%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L125">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ElapsedTime_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ElapsedTime*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ElapsedTime" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ElapsedTime">ElapsedTime()</h4>
   <div class="markdown level1 summary"></div>
@@ -728,7 +847,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ResetRetry.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ResetRetry%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L130">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ResetRetry_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ResetRetry*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ResetRetry" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ResetRetry">ResetRetry()</h4>
   <div class="markdown level1 summary"></div>
@@ -741,7 +862,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ToString.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L149">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ToString_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ToString" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString">ToString()</h4>
   <div class="markdown level1 summary"></div>
@@ -765,6 +888,8 @@
       </tr>
     </tbody>
   </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object.tostring#system-object-tostring">Object.ToString()</a></div>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">System.IDisposable</a>
@@ -778,6 +903,9 @@
                 <ul class="nav">
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L26" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -797,7 +925,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

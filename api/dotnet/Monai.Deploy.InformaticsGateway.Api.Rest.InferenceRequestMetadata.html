@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class InferenceRequestMetadata
-   | MONAI Deploy Informatics Gateway v0.3.21 </title>
+   | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class InferenceRequestMetadata
-   | MONAI Deploy Informatics Gateway v0.3.21 ">
+   | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -83,7 +83,8 @@
   
   <h1 id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata" class="text-break">Class InferenceRequestMetadata
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Represents the metadata associated with an inference request.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -94,37 +95,39 @@
   <h6><strong>Assembly</strong>: Monai.Deploy.InformaticsGateway.Api.dll</h6>
   <h5 id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class InferenceRequestMetadata : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public class InferenceRequestMetadata</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata__ctor.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.#ctor*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata__ctor" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.#ctor">InferenceRequestMetadata()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InferenceRequestMetadata()</code></pre>
-  </div>
+  <h5 id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p><code>details></code> is required.</p>
+</div>
+  <h5 id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_examples"><strong>Examples</strong></h5>
+  <pre><code>{
+    ...
+    &quot;inputMetadata&quot; : {
+        &quot;details&quot; : { ... },
+        &quot;inputs&quot;: [ ... ]
+    }
+    ...
+}</code></pre>
+
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_Details.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.Details%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Rest/InferenceRequestMetadata.cs/#L46">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_Details_" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.Details*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_Details" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.Details">Details</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the details of an inference request.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public InferenceRequestDetails Details { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;details&quot;)]
+public InferenceRequestDetails Details { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -145,14 +148,19 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_Inputs.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.Inputs%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Rest/InferenceRequestMetadata.cs/#L53">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_Inputs_" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.Inputs*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata_Inputs" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata.Inputs">Inputs</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets an array of inference request details.
+Note: this is an extension to the ACR specs to enable multiple input data types.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IList&lt;InferenceRequestDetails&gt; Inputs { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;inputs&quot;)]
+public IList&lt;InferenceRequestDetails&gt; Inputs { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -179,6 +187,9 @@
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestMetadata.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestMetadata%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Rest/InferenceRequestMetadata.cs/#L41" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
@@ -197,7 +208,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

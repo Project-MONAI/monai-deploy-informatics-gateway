@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Configuration APIs | MONAI Deploy Informatics Gateway v0.3.21 </title>
+    <title>Configuration APIs | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Configuration APIs | MONAI Deploy Informatics Gateway v0.3.21 ">
+    <meta name="title" content="Configuration APIs | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -79,7 +79,7 @@
             <article class="content wrap" id="_content" data-uid="">
 <h1 id="configuration-apis">Configuration APIs</h1>
 <!--
-  ~ Copyright 2021-2022 MONAI Consortium
+  ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -139,7 +139,11 @@
     &quot;grouping&quot;: &quot;0020,000D&quot;,
     &quot;timeout&quot;: 5,
     &quot;ignoredSopClasses&quot;: [&quot;1.2.840.10008.5.1.4.1.1.1.1&quot;],
-    &quot;allowedSopClasses&quot;: [&quot;1.2.840.10008.5.1.4.1.1.1.2&quot;]
+    &quot;allowedSopClasses&quot;: [&quot;1.2.840.10008.5.1.4.1.1.1.2&quot;],
+    &quot;pluginAssemblies&quot;: [
+        &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;,
+        &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;
+    ]
   },
   {
     &quot;name&quot;: &quot;liver-seg&quot;,
@@ -264,6 +268,10 @@ class definition for details.</p>
             &quot;timeout&quot;: 5,
             &quot;workflows&quot;: [
                 &quot;3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e&quot;
+            ],
+            &quot;pluginAssemblies&quot;: [
+                &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;,
+                &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;
             ]
         }
     }'
@@ -272,7 +280,11 @@ class definition for details.</p>
 <pre><code class="lang-json">{
   &quot;name&quot;: &quot;breast-tumor&quot;,
   &quot;aeTitle&quot;: &quot;BREASTV1&quot;,
-  &quot;workflows&quot;: [&quot;3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e&quot;]
+  &quot;workflows&quot;: [&quot;3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e&quot;],
+  &quot;pluginAssemblies&quot;: [
+      &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;,
+      &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;
+  ]
 }
 </code></pre>
 <hr>
@@ -332,6 +344,10 @@ class definition for details.</p>
             &quot;timeout&quot;: 3,
             &quot;workflows&quot;: [
                 &quot;3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e&quot;
+            ],
+            &quot;pluginAssemblies&quot;: [
+                &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;,
+                &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;
             ]
         }
     }'
@@ -341,6 +357,10 @@ class definition for details.</p>
   &quot;name&quot;: &quot;breast-tumor&quot;,
   &quot;aeTitle&quot;: &quot;BREASTV1&quot;,
   &quot;workflows&quot;: [&quot;3f6a08a1-0dea-44e9-ab82-1ff1adf43a8e&quot;],
+  &quot;pluginAssemblies&quot;: [
+      &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;,
+      &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins&quot;
+  ],
   &quot;timeout&quot;: 3
 }
 </code></pre>
@@ -399,11 +419,47 @@ class definition for details.</p>
 }
 </code></pre>
 <hr>
-<h2 id="get-configsource">GET /config/source</h2>
-<p>Returns a list of calling (source) AE Titles configured on the Informatics Gateway.</p>
+<h2 id="get-configaeplug-ins">GET /config/ae/plug-ins</h2>
+<p>Returns a list of data input plug-ins that can be used with the SCP Application Entity.</p>
 <h3 id="parameters-5">Parameters</h3>
 <p>N/A</p>
 <h3 id="responses-5">Responses</h3>
+<p>Response Content Type: JSON - An object containing zero or more key-value pairs, where the key is the name of the plug-in and
+the value is the fully qualified assembly type name of the plug-in.</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>Plug-ins retrieved successfully.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Server error. The response will be a <a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a> object with server error details.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-request-5">Example Request</h3>
+<pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/config/ae/plug-ins'
+</code></pre>
+<h3 id="example-response-5">Example Response</h3>
+<pre><code class="lang-json">{
+ &quot;testInputDataPluginAddWorkflow&quot;: &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginAddWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;,
+ &quot;testInputDataPluginResumeWorkflow&quot;: &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginResumeWorkflow, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;,
+ &quot;testInputDataPluginModifyDicomFile&quot;: &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestInputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;
+}
+</code></pre>
+<hr>
+<h2 id="get-configsource">GET /config/source</h2>
+<p>Returns a list of calling (source) AE Titles configured on the Informatics Gateway.</p>
+<h3 id="parameters-6">Parameters</h3>
+<p>N/A</p>
+<h3 id="responses-6">Responses</h3>
 <p>Response Content Type: JSON - Array of <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html">SourceApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -423,10 +479,10 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-5">Example Request</h3>
+<h3 id="example-request-6">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/config/source'
 </code></pre>
-<h3 id="example-response-5">Example Response</h3>
+<h3 id="example-response-6">Example Response</h3>
 <pre><code class="lang-json">[
   {
     &quot;name&quot;: &quot;USEAST&quot;,
@@ -443,7 +499,7 @@ class definition for details.</p>
 <hr>
 <h2 id="get-configsourcename">GET /config/source/{name}</h2>
 <p>Returns configurations for the specified calling (source) AET.</p>
-<h3 id="parameters-6">Parameters</h3>
+<h3 id="parameters-7">Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -460,7 +516,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="responses-6">Responses</h3>
+<h3 id="responses-7">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html">SourceApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -484,10 +540,10 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-6">Example Request</h3>
+<h3 id="example-request-7">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/config/source/USEAST'
 </code></pre>
-<h3 id="example-response-6">Example Response</h3>
+<h3 id="example-response-7">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;name&quot;: &quot;USEAST&quot;,
   &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;,
@@ -497,7 +553,7 @@ class definition for details.</p>
 <hr>
 <h2 id="get-configsourceaetitleaetitle">GET /config/source/aetitle/{aeTitle}</h2>
 <p>Returns configurations for the specified calling (source) AET.</p>
-<h3 id="parameters-7">Parameters</h3>
+<h3 id="parameters-8">Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -514,7 +570,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="responses-7">Responses</h3>
+<h3 id="responses-8">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html">SourceApplicationEntity[]</a>.</p>
 <table>
 <thead>
@@ -538,10 +594,10 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-7">Example Request</h3>
+<h3 id="example-request-8">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/config/source/aetitle/USEAST'
 </code></pre>
-<h3 id="example-response-7">Example Response</h3>
+<h3 id="example-response-8">Example Response</h3>
 <pre><code class="lang-json">[{
   &quot;name&quot;: &quot;USEAST&quot;,
   &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;,
@@ -552,10 +608,10 @@ class definition for details.</p>
 <hr>
 <h2 id="post-configsource">POST /config/source</h2>
 <p>Adds a new calling (source) AE Title to the Informatics Gateway to allow DICOM instances from the specified IP address and AE Title.</p>
-<h3 id="parameters-8">Parameters</h3>
+<h3 id="parameters-9">Parameters</h3>
 <p>See the <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html">SourceApplicationEntity</a>
 class definition for details.</p>
-<h3 id="responses-8">Responses</h3>
+<h3 id="responses-9">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html">SourceApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -583,7 +639,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-8">Example Request</h3>
+<h3 id="example-request-9">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request POST 'http://localhost:5000/config/source' \
     --header 'Content-Type: application/json' \
     --data-raw '{
@@ -592,7 +648,7 @@ class definition for details.</p>
         &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;
     }'
 </code></pre>
-<h3 id="example-response-8">Example Response</h3>
+<h3 id="example-response-9">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;name&quot;: &quot;USEAST&quot;,
   &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;,
@@ -602,10 +658,10 @@ class definition for details.</p>
 <hr>
 <h2 id="put-configsource">PUT /config/source</h2>
 <p>Updates an existing calling (source) AE Title.</p>
-<h3 id="parameters-9">Parameters</h3>
+<h3 id="parameters-10">Parameters</h3>
 <p>See the <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html">SourceApplicationEntity</a>
 class definition for details.</p>
-<h3 id="responses-9">Responses</h3>
+<h3 id="responses-10">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html">SourceApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -633,7 +689,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-9">Example Request</h3>
+<h3 id="example-request-10">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request PUT 'http://localhost:5000/config/source' \
     --header 'Content-Type: application/json' \
     --data-raw '{
@@ -642,7 +698,7 @@ class definition for details.</p>
         &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;
     }'
 </code></pre>
-<h3 id="example-response-9">Example Response</h3>
+<h3 id="example-response-10">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;name&quot;: &quot;USEAST&quot;,
   &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;,
@@ -652,7 +708,7 @@ class definition for details.</p>
 <hr>
 <h2 id="delete-configsourcename">DELETE /config/source/{name}</h2>
 <p>Deletes the specified calling (Source) AE Title to stop accepting requests from it.</p>
-<h3 id="parameters-10">Parameters</h3>
+<h3 id="parameters-11">Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -669,7 +725,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="responses-10">Responses</h3>
+<h3 id="responses-11">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.SourceApplicationEntity.html">SourceApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -693,10 +749,10 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-10">Example Request</h3>
+<h3 id="example-request-11">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request DELETE 'http://localhost:5000/config/source/USEAST'
 </code></pre>
-<h3 id="example-response-10">Example Response</h3>
+<h3 id="example-response-11">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;name&quot;: &quot;USEAST&quot;,
   &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;,
@@ -706,9 +762,9 @@ class definition for details.</p>
 <hr>
 <h2 id="get-configdestination">GET /config/destination</h2>
 <p>Returns a list of destination AE titles configured on the system.</p>
-<h3 id="parameters-11">Parameters</h3>
+<h3 id="parameters-12">Parameters</h3>
 <p>N/A</p>
-<h3 id="responses-11">Responses</h3>
+<h3 id="responses-12">Responses</h3>
 <p>Response Content Type: JSON - Array of <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html">DestinationApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -728,10 +784,10 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-11">Example Request</h3>
+<h3 id="example-request-12">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/config/destination'
 </code></pre>
-<h3 id="example-response-11">Example Response</h3>
+<h3 id="example-response-12">Example Response</h3>
 <pre><code class="lang-json">[
   {
     &quot;port&quot;: 104,
@@ -750,7 +806,7 @@ class definition for details.</p>
 <hr>
 <h2 id="get-configdestinationname">GET /config/destination/{name}</h2>
 <p>Retrieves the destination AE Title with the specified name.</p>
-<h3 id="parameters-12">Parameters</h3>
+<h3 id="parameters-13">Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -767,7 +823,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="responses-12">Responses</h3>
+<h3 id="responses-13">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html">DestinationApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -791,10 +847,10 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-12">Example Request</h3>
+<h3 id="example-request-13">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/config/destination/USEAST'
 </code></pre>
-<h3 id="example-response-12">Example Response</h3>
+<h3 id="example-response-13">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;port&quot;: 104,
   &quot;name&quot;: &quot;USEAST&quot;,
@@ -805,7 +861,7 @@ class definition for details.</p>
 <hr>
 <h2 id="get-configdestinationcechoname">GET /config/destination/cecho/{name}</h2>
 <p>Performs a DICOM C-Echo request to the named destination on behalf of <code>MONAISCU</code>.</p>
-<h3 id="parameters-13">Parameters</h3>
+<h3 id="parameters-14">Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -822,7 +878,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="responses-13">Responses</h3>
+<h3 id="responses-14">Responses</h3>
 <table>
 <thead>
 <tr>
@@ -849,16 +905,16 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-13">Example Request</h3>
+<h3 id="example-request-14">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request DELETE 'http://localhost:5000/config/destination/cecho/USEAST'
 </code></pre>
 <hr>
 <h2 id="put-configdestination">PUT /config/destination</h2>
 <p>Updates an existing DICOM destination.</p>
-<h3 id="parameters-14">Parameters</h3>
+<h3 id="parameters-15">Parameters</h3>
 <p>See the <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html">DestinationApplicationEntity</a>
 class definition for details.</p>
-<h3 id="responses-14">Responses</h3>
+<h3 id="responses-15">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html">DestinationApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -886,7 +942,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-14">Example Request</h3>
+<h3 id="example-request-15">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request PUT 'http://localhost:5000/config/destination' \
     --header 'Content-Type: application/json' \
     --data-raw '{
@@ -896,7 +952,7 @@ class definition for details.</p>
         &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;
     }'
 </code></pre>
-<h3 id="example-response-13">Example Response</h3>
+<h3 id="example-response-14">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;port&quot;: 104,
   &quot;name&quot;: &quot;USEAST&quot;,
@@ -907,10 +963,10 @@ class definition for details.</p>
 <hr>
 <h2 id="post-configdestination">POST /config/destination</h2>
 <p>Adds a new DICOM destination AET for exporting results to.</p>
-<h3 id="parameters-15">Parameters</h3>
+<h3 id="parameters-16">Parameters</h3>
 <p>See the <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html">DestinationApplicationEntity</a>
 class definition for details.</p>
-<h3 id="responses-15">Responses</h3>
+<h3 id="responses-16">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html">DestinationApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -934,7 +990,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-15">Example Request</h3>
+<h3 id="example-request-16">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request POST 'http://localhost:5000/config/destination' \
     --header 'Content-Type: application/json' \
     --data-raw '{
@@ -944,7 +1000,7 @@ class definition for details.</p>
         &quot;aeTitle&quot;: &quot;PACSUSEAST&quot;
     }'
 </code></pre>
-<h3 id="example-response-14">Example Response</h3>
+<h3 id="example-response-15">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;port&quot;: 104,
   &quot;name&quot;: &quot;USEAST&quot;,
@@ -955,7 +1011,7 @@ class definition for details.</p>
 <hr>
 <h2 id="delete-configdestinationname">DELETE /config/destination/{name}</h2>
 <p>Deletes a Destination AE Title.</p>
-<h3 id="parameters-16">Parameters</h3>
+<h3 id="parameters-17">Parameters</h3>
 <table>
 <thead>
 <tr>
@@ -972,7 +1028,7 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="responses-16">Responses</h3>
+<h3 id="responses-17">Responses</h3>
 <p>Response Content Type: JSON - <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity.html">DestinationApplicationEntity</a>.</p>
 <table>
 <thead>
@@ -996,10 +1052,10 @@ class definition for details.</p>
 </tr>
 </tbody>
 </table>
-<h3 id="example-request-16">Example Request</h3>
+<h3 id="example-request-17">Example Request</h3>
 <pre><code class="lang-bash">curl --location --request DELETE 'http://localhost:5000/config/destination/USEAST'
 </code></pre>
-<h3 id="example-response-15">Example Response</h3>
+<h3 id="example-response-16">Example Response</h3>
 <pre><code class="lang-json">{
   &quot;port&quot;: 104,
   &quot;name&quot;: &quot;USEAST&quot;,
@@ -1007,6 +1063,42 @@ class definition for details.</p>
   &quot;hostIp&quot;: &quot;10.20.3.4&quot;
 }
 </code></pre>
+<hr>
+<h2 id="get-configdestinationplug-ins">GET /config/destination/plug-ins</h2>
+<p>Returns a list of data output plug-ins that can be used with the SCP Application Entity.</p>
+<h3 id="parameters-18">Parameters</h3>
+<p>N/A</p>
+<h3 id="responses-18">Responses</h3>
+<p>Response Content Type: JSON - An object containing zero or more key-value pairs, where the key is the name of the plug-in
+and the value is the fully qualified assembly type name of the plug-in.</p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>Plug-ins retrieved successfully.</td>
+</tr>
+<tr>
+<td>500</td>
+<td>Server error. The response will be a <a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a> object with server error details.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="example-request-18">Example Request</h3>
+<pre><code class="lang-bash">curl --location --request GET 'http://localhost:5000/config/destination/plug-ins'
+</code></pre>
+<h3 id="example-response-17">Example Response</h3>
+<pre><code class="lang-json">{
+ &quot;testOutputDataPluginAddMessage&quot;: &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestOutputDataPluginAddMessage, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;,
+ &quot;testOutputDataPluginModifyDicomFile&quot;: &quot;Monai.Deploy.InformaticsGateway.Test.Plugins.TestOutputDataPluginModifyDicomFile, Monai.Deploy.InformaticsGateway.Test.Plugins, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null&quot;
+}
+</code></pre>
+<hr>
 </article>
           </div>
           
@@ -1035,7 +1127,7 @@ class definition for details.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

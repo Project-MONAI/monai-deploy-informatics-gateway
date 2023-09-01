@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class Hl7FileStorageMetadata
-   | MONAI Deploy Informatics Gateway v0.3.21 </title>
+   | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class Hl7FileStorageMetadata
-   | MONAI Deploy Informatics Gateway v0.3.21 ">
+   | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -83,7 +83,8 @@
   
   <h1 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata" class="text-break">Class Hl7FileStorageMetadata
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Provides basic information for a FHIR resource and storage hierarchy/path.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -98,12 +99,6 @@
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
-    <div>
-      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_SetWorkflows_System_String___">FileStorageMetadata.SetWorkflows(String[])</a>
-    </div>
-    <div>
-      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_SetFailed">FileStorageMetadata.SetFailed()</a>
-    </div>
     <div>
       <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_IsUploaded">FileStorageMetadata.IsUploaded</a>
     </div>
@@ -120,7 +115,7 @@
       <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_CorrelationId">FileStorageMetadata.CorrelationId</a>
     </div>
     <div>
-      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_Source">FileStorageMetadata.Source</a>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_DataOrigin">FileStorageMetadata.DataOrigin</a>
     </div>
     <div>
       <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_Workflows">FileStorageMetadata.Workflows</a>
@@ -129,14 +124,32 @@
       <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_DateReceived">FileStorageMetadata.DateReceived</a>
     </div>
     <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_WorkflowInstanceId">FileStorageMetadata.WorkflowInstanceId</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_TaskId">FileStorageMetadata.TaskId</a>
+    </div>
+    <div>
       <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_PayloadId">FileStorageMetadata.PayloadId</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_SetWorkflows_System_String___">FileStorageMetadata.SetWorkflows(String[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_SetFailed">FileStorageMetadata.SetFailed()</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_ChangeCorrelationId_Microsoft_Extensions_Logging_ILogger_System_String_">FileStorageMetadata.ChangeCorrelationId(ILogger, String)</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_IpAddress">FileStorageMetadata.IpAddress()</a>
     </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.html">Monai.Deploy.InformaticsGateway.Api.Storage</a></h6>
   <h6><strong>Assembly</strong>: Monai.Deploy.InformaticsGateway.Api.dll</h6>
   <h5 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed class Hl7FileStorageMetadata : FileStorageMetadata</code></pre>
+    <pre><code class="lang-csharp hljs">public sealed class Hl7FileStorageMetadata : FileStorageMetadata, IEquatable&lt;FileStorageMetadata&gt;, IEquatable&lt;Hl7FileStorageMetadata&gt;</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -144,27 +157,36 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__ctor.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Hl7FileStorageMetadata.cs/#L46">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.#ctor*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__ctor" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.#ctor">Hl7FileStorageMetadata()</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>DO NOT USE
+This constructor is intended for JSON serializer.
+Due to limitation in current version of .NET, the constructor must be public.
+<a href="https://github.com/dotnet/runtime/issues/31511">https://github.com/dotnet/runtime/issues/31511</a></p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Hl7FileStorageMetadata()</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonConstructor]
+public Hl7FileStorageMetadata()</code></pre>
   </div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__ctor_System_String_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.%23ctor(System.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__ctor_System_String_Monai_Deploy_Messaging_Events_DataService_System_String_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.%23ctor(System.String%2CMonai.Deploy.Messaging.Events.DataService%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Hl7FileStorageMetadata.cs/#L49">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.#ctor*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__ctor_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.#ctor(System.String)">Hl7FileStorageMetadata(String)</h4>
+  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__ctor_System_String_Monai_Deploy_Messaging_Events_DataService_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.#ctor(System.String,Monai.Deploy.Messaging.Events.DataService,System.String)">Hl7FileStorageMetadata(String, DataService, String)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Hl7FileStorageMetadata(string connectionId)</code></pre>
+    <pre><code class="lang-csharp hljs">public Hl7FileStorageMetadata(string connectionId, DataService dataType, string dataOrigin)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -181,6 +203,16 @@
         <td><span class="parametername">connectionId</span></td>
         <td></td>
       </tr>
+      <tr>
+        <td><span class="xref">Monai.Deploy.Messaging.Events.DataService</span></td>
+        <td><span class="parametername">dataType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
+        <td><span class="parametername">dataOrigin</span></td>
+        <td></td>
+      </tr>
     </tbody>
   </table>
   <h3 id="fields">Fields
@@ -189,7 +221,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_FileExtension.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.FileExtension%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Hl7FileStorageMetadata.cs/#L30">View Source</a>
+  </span>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_FileExtension" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.FileExtension">FileExtension</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -216,7 +250,9 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Hl7SubDirectoryName.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Hl7SubDirectoryName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Hl7FileStorageMetadata.cs/#L29">View Source</a>
+  </span>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Hl7SubDirectoryName" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Hl7SubDirectoryName">Hl7SubDirectoryName</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
@@ -245,14 +281,18 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_DataTypeDirectoryName.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.DataTypeDirectoryName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Hl7FileStorageMetadata.cs/#L33">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_DataTypeDirectoryName_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.DataTypeDirectoryName*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_DataTypeDirectoryName" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.DataTypeDirectoryName">DataTypeDirectoryName</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the root directory name</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string DataTypeDirectoryName { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public override string DataTypeDirectoryName { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -273,46 +313,20 @@
   <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_DataTypeDirectoryName">FileStorageMetadata.DataTypeDirectoryName</a></div>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_EqualityContract.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.EqualityContract%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_EqualityContract_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.EqualityContract*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_EqualityContract" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.EqualityContract">EqualityContract</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override Type EqualityContract { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.type">Type</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_EqualityContract">FileStorageMetadata.EqualityContract</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_File.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.File%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Hl7FileStorageMetadata.cs/#L37">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_File_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.File*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_File" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.File">File</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets the storage object associated.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override StorageObjectMetadata File { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;file&quot;)]
+public override StorageObjectMetadata File { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -331,386 +345,6 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_File">FileStorageMetadata.File</a></div>
-  <h3 id="methods">Methods
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__Clone__.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.%7BClone%7D%24%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__Clone___" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.{Clone}$*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata__Clone__" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.{Clone}$">&lt;Clone&gt;$()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override Hl7FileStorageMetadata &lt;Clone&gt;$()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.html">Hl7FileStorageMetadata</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata__Clone__">FileStorageMetadata.&lt;Clone&gt;$()</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)">Equals(FileStorageMetadata)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public sealed override bool Equals(FileStorageMetadata other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_Equals_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_">FileStorageMetadata.Equals(FileStorageMetadata)</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals(Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals(Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata)">Equals(Hl7FileStorageMetadata)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool Equals(Hl7FileStorageMetadata other)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.html">Hl7FileStorageMetadata</a></td>
-        <td><span class="parametername">other</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_System_Object_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals(System.Object)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Equals_System_Object_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.Equals(System.Object)">Equals(Object)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool Equals(object obj)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></td>
-        <td><span class="parametername">obj</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_Equals_System_Object_">FileStorageMetadata.Equals(Object)</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_GetHashCode.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.GetHashCode%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_GetHashCode_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.GetHashCode*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_GetHashCode" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.GetHashCode">GetHashCode()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int GetHashCode()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">Int32</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_GetHashCode">FileStorageMetadata.GetHashCode()</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_PrintMembers_System_Text_StringBuilder_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.PrintMembers(System.Text.StringBuilder)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_PrintMembers_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.PrintMembers*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_PrintMembers_System_Text_StringBuilder_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.PrintMembers(System.Text.StringBuilder)">PrintMembers(StringBuilder)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">protected override bool PrintMembers(StringBuilder builder)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.text.stringbuilder">StringBuilder</a></td>
-        <td><span class="parametername">builder</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_PrintMembers_System_Text_StringBuilder_">FileStorageMetadata.PrintMembers(StringBuilder)</a></div>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_ToString.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.ToString%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_ToString_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.ToString*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_ToString" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.ToString">ToString()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_ToString">FileStorageMetadata.ToString()</a></div>
-  <h3 id="operators">Operators
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_op_Equality_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.op_Equality(Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata%2CMonai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_op_Equality_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.op_Equality*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_op_Equality_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.op_Equality(Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata,Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata)">Equality(Hl7FileStorageMetadata, Hl7FileStorageMetadata)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator ==(Hl7FileStorageMetadata left, Hl7FileStorageMetadata right)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.html">Hl7FileStorageMetadata</a></td>
-        <td><span class="parametername">left</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.html">Hl7FileStorageMetadata</a></td>
-        <td><span class="parametername">right</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_op_Inequality_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.op_Inequality(Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata%2CMonai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_op_Inequality_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.op_Inequality*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_op_Inequality_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.op_Inequality(Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata,Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata)">Inequality(Hl7FileStorageMetadata, Hl7FileStorageMetadata)</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static bool operator !=(Hl7FileStorageMetadata left, Hl7FileStorageMetadata right)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.html">Hl7FileStorageMetadata</a></td>
-        <td><span class="parametername">left</span></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata.html">Hl7FileStorageMetadata</a></td>
-        <td><span class="parametername">right</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">Boolean</a></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">System.IEquatable&lt;T&gt;</a>
@@ -727,6 +361,9 @@
                 <ul class="nav">
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Hl7FileStorageMetadata.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Hl7FileStorageMetadata%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Hl7FileStorageMetadata.cs/#L27" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>
@@ -746,7 +383,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>DICOMWeb STOW-RS APIs | MONAI Deploy Informatics Gateway v0.3.21 </title>
+    <title>DICOMWeb STOW-RS APIs | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="DICOMWeb STOW-RS APIs | MONAI Deploy Informatics Gateway v0.3.21 ">
+    <meta name="title" content="DICOMWeb STOW-RS APIs | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -98,15 +98,20 @@
 defined by the DICOM committee to provide the <a href="https://www.dicomstandard.org/using/dicomweb/store-stow-rs">DICOMWeb STOW-RS</a>
 interface for triggering new workflows.</p>
 <p>The <em>STOW-RS</em> service provides the following two endpoints.</p>
-<h2 id="post-dicomwebstudiesstudy-instance-uid">POST /dicomweb/studies/[{study-instance-uid}]</h2>
+<h2 id="post-dicomwebstudiesstudy-instance-uid">POST /dicomweb/studies/[{study-instance-uid}/]</h2>
 <p>Triggers a new workflow request with the uploaded DICOM dataset.</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>Each HTTP POST request triggers a new workflow request; the service <em>does not</em> support waiting
 for additional instances like the DIMSE service.</p>
 </div>
+<h3 id="example-endpoints">Example Endpoints</h3>
+<ul>
+<li><code>POST /dicomweb/studies/</code></li>
+<li><code>POST /dicomweb/studies/123.001.123.1.4.976.20160825112022727.3/</code></li>
+</ul>
 <h3 id="parameters">Parameters</h3>
-<h4 id="query-parameters">Query Parameters:</h4>
+<h4 id="query-parameters">Query Parameters</h4>
 <table>
 <thead>
 <tr>
@@ -119,11 +124,11 @@ for additional instances like the DIMSE service.</p>
 <tr>
 <td>study-instance-uid</td>
 <td>string</td>
-<td>(Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as <code>Warning Reason (0008,1196)</code> = <code>B007</code>.</td>
+<td>(Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as <code>Warning Reason (0008,1196) = B007</code>.</td>
 </tr>
 </tbody>
 </table>
-<h4 id="request-body">Request Body:</h4>
+<h4 id="request-body">Request Body</h4>
 <p>Supported Content-Types:</p>
 <ul>
 <li><code>application/dicom</code></li>
@@ -143,7 +148,7 @@ for additional instances like the DIMSE service.</p>
 <tr>
 <td>200</td>
 <td><a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</a></td>
-<td>All instances are received and stored succesfully.</td>
+<td>All instances are received and stored successfully.</td>
 </tr>
 <tr>
 <td>202</td>
@@ -163,7 +168,7 @@ for additional instances like the DIMSE service.</p>
 <tr>
 <td>415</td>
 <td><code>none</code></td>
-<td>Unsupported media typ.</td>
+<td>Unsupported media type.</td>
 </tr>
 <tr>
 <td>500</td>
@@ -178,14 +183,19 @@ for additional instances like the DIMSE service.</p>
 </tbody>
 </table>
 <hr>
-<h2 id="post-dicomwebworkflow-idstudiesstudy-instance-uid">POST /dicomweb/{workflow-id}/studies/[{study-instance-uid}]</h2>
+<h2 id="post-dicomwebworkflow-idstudiesstudy-instance-uid">POST /dicomweb/{workflow-id}/studies/[{study-instance-uid}/]</h2>
 <p>Triggers the specified workflow with the uploaded DICOM dataset.</p>
 <div class="IMPORTANT">
 <h5>Important</h5>
 <p>Each HTTP POST request triggers a new workflow request; the service <em>does not</em> support waiting for additional instances like the DIMSE service.</p>
 </div>
+<h3 id="example-endpoints-1">Example Endpoints</h3>
+<ul>
+<li><code>POST /dicomweb/liver-segmentation/studies/</code></li>
+<li><code>POST /dicomweb/my-awesome-workflow/studies/123.001.123.1.4.976.20160825112022727.3/</code></li>
+</ul>
 <h3 id="parameters-1">Parameters</h3>
-<h4 id="query-parameters-1">Query Parameters:</h4>
+<h4 id="query-parameters-1">Query Parameters</h4>
 <table>
 <thead>
 <tr>
@@ -203,11 +213,11 @@ for additional instances like the DIMSE service.</p>
 <tr>
 <td>study-instance-uid</td>
 <td>string</td>
-<td>(Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as <code>Warning Reason (0008,1196)</code> = <code>B007</code>.</td>
+<td>(Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as <code>Warning Reason (0008,1196) = B007</code>.</td>
 </tr>
 </tbody>
 </table>
-<h4 id="request-body-1">Request Body:</h4>
+<h4 id="request-body-1">Request Body</h4>
 <p>Supported Content-Types:</p>
 <ul>
 <li><code>application/dicom</code></li>
@@ -227,7 +237,105 @@ for additional instances like the DIMSE service.</p>
 <tr>
 <td>200</td>
 <td><a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</a></td>
-<td>All instances are received and stored succesfully.</td>
+<td>All instances are received and stored successfully.</td>
+</tr>
+<tr>
+<td>202</td>
+<td><a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</a></td>
+<td>All instances are received and stored with warnings (e.g. for a mismatched StudyInstanceUID).</td>
+</tr>
+<tr>
+<td>204</td>
+<td><code>none</code></td>
+<td>No data is provided.</td>
+</tr>
+<tr>
+<td>400</td>
+<td><a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a></td>
+<td>Request contains invalid values.</td>
+</tr>
+<tr>
+<td>415</td>
+<td><code>none</code></td>
+<td>Unsupported media type</td>
+</tr>
+<tr>
+<td>500</td>
+<td><a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a></td>
+<td>Server error</td>
+</tr>
+<tr>
+<td>507</td>
+<td><a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a></td>
+<td>Insufficient storage</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="post-dicomwebvaeaetworkflow-idstudiesstudy-instance-uid">POST /dicomweb/vae/{aet}/[{workflow-id}/]studies/[{study-instance-uid}/]</h2>
+<p>A DICOMWeb STOW-RS endpoint associated with the specified <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.html">Virtual Application Entity</a>.</p>
+<p>This endpoint can either trigger workflows defined in a <a class="xref" href="../dotnet/Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.html">Virtual Application Entity</a> or trigger the workflow specified in the URL segment where the latter
+takes precedence when specified.</p>
+<div class="IMPORTANT">
+<h5>Important</h5>
+<p>Each HTTP POST request triggers a new workflow request; the service <em>does not</em> support waiting for additional instances like the DIMSE service.</p>
+</div>
+<h3 id="example-endpoints-2">Example Endpoints</h3>
+<ul>
+<li><code>POST /dicomweb/vae/my-aet/studies/</code></li>
+<li><code>POST /dicomweb/vae/my-aet/studies/123.001.123.1.4.976.20160825112022727.3/</code></li>
+<li><code>POST /dicomweb/vae/my-aet/my-awesome-workflow/studies/</code></li>
+<li><code>POST /dicomweb/vae/my-aet/my-awesome-workflow/studies/123.001.123.1.4.976.20160825112022727.3/</code></li>
+</ul>
+<h3 id="parameters-2">Parameters</h3>
+<h4 id="query-parameters-2">Query Parameters</h4>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aet</td>
+<td>string</td>
+<td>A registered Virtual Application Entity</td>
+</tr>
+<tr>
+<td>workflow-id</td>
+<td>string</td>
+<td>The unique identifier of the workflow registered with the Workflow Manager</td>
+</tr>
+<tr>
+<td>study-instance-uid</td>
+<td>string</td>
+<td>(Optional) A StudyInstanceUID to associate the DICOM dataset with. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as <code>Warning Reason (0008,1196) = B007</code>.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="request-body-2">Request Body</h4>
+<p>Supported Content-Types:</p>
+<ul>
+<li><code>application/dicom</code></li>
+<li><code>multipart/related</code></li>
+</ul>
+<h3 id="responses-2">Responses</h3>
+<p>Response Content Type: <code>JSON</code></p>
+<table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Data Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td><a href="https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs">DicomDataset</a></td>
+<td>All instances are received and stored successfully.</td>
 </tr>
 <tr>
 <td>202</td>
@@ -257,7 +365,7 @@ for additional instances like the DIMSE service.</p>
 <tr>
 <td>507</td>
 <td><a href="https://datatracker.ietf.org/doc/html/rfc7807">Problem details</a></td>
-<td>Insufficient storage.</td>
+<td>Insufficient storage</td>
 </tr>
 </tbody>
 </table>
@@ -289,7 +397,7 @@ for additional instances like the DIMSE service.</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class RequestedSeries
-   | MONAI Deploy Informatics Gateway v0.3.21 </title>
+   | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class RequestedSeries
-   | MONAI Deploy Informatics Gateway v0.3.21 ">
+   | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -83,7 +83,8 @@
   
   <h1 id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries" class="text-break">Class RequestedSeries
   </h1>
-  <div class="markdown level0 summary"></div>
+  <div class="markdown level0 summary"><p>Details of a DICOM series to be retrieved for an inference request.</p>
+</div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
@@ -94,37 +95,30 @@
   <h6><strong>Assembly</strong>: Monai.Deploy.InformaticsGateway.Api.dll</h6>
   <h5 id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class RequestedSeries : Object</code></pre>
+    <pre><code class="lang-csharp hljs">public class RequestedSeries</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries__ctor.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.#ctor*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries__ctor" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.#ctor">RequestedSeries()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RequestedSeries()</code></pre>
-  </div>
+  <h5 id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p><code>SeriesInstanceUID></code> is required.</p>
+<p>If <code>instances></code> is not specified, the entire series is retrieved.</p>
+</div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries_Instances.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.Instances%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Rest/RequestedSeries.cs/#L41">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries_Instances_" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.Instances*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries_Instances" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.Instances">Instances</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets a list of DICOM instances to be retrieved.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IList&lt;RequestedInstance&gt; Instances { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;instances&quot;)]
+public IList&lt;RequestedInstance&gt; Instances { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -145,14 +139,18 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries_SeriesInstanceUid.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.SeriesInstanceUid%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Rest/RequestedSeries.cs/#L35">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries_SeriesInstanceUid_" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.SeriesInstanceUid*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries_SeriesInstanceUid" data-uid="Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries.SeriesInstanceUid">SeriesInstanceUid</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the Series Instance UID to be retrieved.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string SeriesInstanceUid { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;SeriesInstanceUID&quot;)]
+public string SeriesInstanceUid { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -179,6 +177,9 @@
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Rest_RequestedSeries.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Rest.RequestedSeries%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Rest/RequestedSeries.cs/#L30" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
@@ -197,7 +198,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>

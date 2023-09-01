@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class StorageConfiguration
-   | MONAI Deploy Informatics Gateway v0.3.21 </title>
+   | MONAI Deploy Informatics Gateway v0.4.0 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class StorageConfiguration
-   | MONAI Deploy Informatics Gateway v0.3.21 ">
+   | MONAI Deploy Informatics Gateway v0.4.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -88,7 +88,17 @@
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
-    <div class="level1"><span class="xref">StorageConfiguration</span></div>
+    <div class="level1"><span class="xref">Monai.Deploy.Storage.Configuration.StorageServiceConfiguration</span></div>
+    <div class="level2"><span class="xref">StorageConfiguration</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">Monai.Deploy.Storage.Configuration.StorageServiceConfiguration.ServiceAssemblyName</span>
+    </div>
+    <div>
+      <span class="xref">Monai.Deploy.Storage.Configuration.StorageServiceConfiguration.Settings</span>
+    </div>
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="Monai.Deploy.InformaticsGateway.Configuration.html">Monai.Deploy.InformaticsGateway.Configuration</a></h6>
   <h6><strong>Assembly</strong>: Monai.Deploy.InformaticsGateway.Configuration.dll</h6>
@@ -96,35 +106,25 @@
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public class StorageConfiguration : StorageServiceConfiguration</code></pre>
   </div>
-  <h3 id="constructors">Constructors
-  </h3>
-  <span class="small pull-right mobile-hide">
-    <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration__ctor.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
-  </span>
-  
-  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.#ctor*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration__ctor" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.#ctor">StorageConfiguration()</h4>
-  <div class="markdown level1 summary"></div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public StorageConfiguration()</code></pre>
-  </div>
   <h3 id="properties">Properties
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferSize.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L43">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferSize_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferSize" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize">BufferSize</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the number of bytes buffered for reads and writes to the temporary file.
+Defaults to <code>128000</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int BufferSize { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;bufferSize&quot;)]
+public int BufferSize { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -145,14 +145,18 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ConcurrentUploads.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ConcurrentUploads%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L104">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ConcurrentUploads_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ConcurrentUploads*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ConcurrentUploads" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ConcurrentUploads">ConcurrentUploads</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or set the maximum number of concurrent uploads. Default is 2;</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int ConcurrentUploads { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;concurrentUploads&quot;)]
+public int ConcurrentUploads { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -173,14 +177,19 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_LocalTemporaryStoragePath.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L36">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_LocalTemporaryStoragePath_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_LocalTemporaryStoragePath" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath">LocalTemporaryStoragePath</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the path used for buffering incoming data.
+Defaults to <code>./temp</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string LocalTemporaryStoragePath { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;localTemporaryStoragePath&quot;)]
+public string LocalTemporaryStoragePath { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -201,14 +210,18 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_MemoryThreshold.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.MemoryThreshold%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L49">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_MemoryThreshold_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.MemoryThreshold*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_MemoryThreshold" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.MemoryThreshold">MemoryThreshold</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or set the maximum memory buffer size in bytes with default to 30MiB.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int MemoryThreshold { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;memoryThreshold&quot;)]
+public int MemoryThreshold { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -229,14 +242,18 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_PayloadProcessThreads.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.PayloadProcessThreads%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L98">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_PayloadProcessThreads_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.PayloadProcessThreads*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_PayloadProcessThreads" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.PayloadProcessThreads">PayloadProcessThreads</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or set number of payloads to be processed at a given time. Default is 1;</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int PayloadProcessThreads { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;payloadProcessThreads&quot;)]
+public int PayloadProcessThreads { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -257,14 +274,19 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_RemoteTemporaryStoragePath.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L68">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_RemoteTemporaryStoragePath_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_RemoteTemporaryStoragePath" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath">RemoteTemporaryStoragePath</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets root directory path for storing incoming data in the <code>temporaryBucketName</code>.
+Defaults to <code>/incoming</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string RemoteTemporaryStoragePath { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;remoteTemporaryStoragePath&quot;)]
+public string RemoteTemporaryStoragePath { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -285,14 +307,21 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ReserveSpaceGB.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ReserveSpaceGB%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L86">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ReserveSpaceGB_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ReserveSpaceGB*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ReserveSpaceGB" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ReserveSpaceGB">ReserveSpaceGB</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the reserved disk space for the MONAI Deploy Informatics Gateway with default value of 5GB.
+MONAI Deploy Informatics Gateway will stop accepting (C-STORE-RQ) associations,
+stop exporting and stop retrieving data via DICOMweb when available disk space
+is less than the value.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public uint ReserveSpaceGB { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;reserveSpaceGB&quot;)]
+public uint ReserveSpaceGB { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -313,14 +342,18 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Retries.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Retries%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L92">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Retries_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Retries*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Retries" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Retries">Retries</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets retry options relate to saving files to temporary storage, processing payloads and uploading payloads to the storage service.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public RetryConfiguration Retries { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;retries&quot;)]
+public RetryConfiguration Retries { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -341,14 +374,18 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceBucketName.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceBucketName%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L55">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceBucketName_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceBucketName*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceBucketName" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceBucketName">StorageServiceBucketName</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the name of the bucket where payloads are uploaded to.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string StorageServiceBucketName { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;bucketName&quot;)]
+public string StorageServiceBucketName { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -369,14 +406,19 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceListTimeout.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceListTimeout%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L111">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceListTimeout_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceListTimeout*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceListTimeout" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceListTimeout">StorageServiceListTimeout</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or set the timeout value, in milliseconds, for calls made to the storage service. Default is 5000;
+This applies to the following calls: ListObjectsAsync, VerifyObjectsExistAsync, VerifyObjectExistsAsync, ListObjectsWithCredentialsAsync.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int StorageServiceListTimeout { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;storageServiceListTimeout&quot;)]
+public int StorageServiceListTimeout { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -397,14 +439,19 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryDataStorage.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L29">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryDataStorage_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryDataStorage" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage">TemporaryDataStorage</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets whether to store temporary data in <code>Memory</code> or on <code>Disk</code>.
+Defaults to <code>Memory</code>.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TemporaryDataStorageLocation TemporaryDataStorage { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;tempStorageLocation&quot;)]
+public TemporaryDataStorageLocation TemporaryDataStorage { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -425,14 +472,18 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryStorageBucket.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageBucket%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L61">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryStorageBucket_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageBucket*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryStorageBucket" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageBucket">TemporaryStorageBucket</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the name of the bucket used for storing objects before they are assembled into payloads.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string TemporaryStorageBucket { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;temporaryBucketName&quot;)]
+public string TemporaryStorageBucket { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -453,14 +504,21 @@
     <span class="divider">|</span>
     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Watermark.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Watermark%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
-  
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L77">View Source</a>
+  </span>
   <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Watermark_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Watermark*"></a>
   <h4 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Watermark" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Watermark">Watermark</h4>
-  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 summary"><p>Gets or sets the watermark for disk usage with default value of 75%,
+meaning that MONAI Deploy Informatics Gateway will stop accepting (C-STORE-RQ) associations,
+stop exporting and stop retrieving data via DICOMweb when used disk space
+is above the watermark.</p>
+</div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public uint Watermark { get; set; }</code></pre>
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;watermarkPercent&quot;)]
+public uint Watermark { get; set; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -487,6 +545,9 @@
                   <li>
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L23" class="contribution-link">View Source</a>
+                  </li>
                 </ul>
               </div>
               <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
@@ -505,7 +566,7 @@
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
-            Copyright © 2022 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
             
           </div>
         </div>
