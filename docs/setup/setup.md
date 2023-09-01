@@ -42,7 +42,8 @@ Download and install the Informatics Gateway CLI from the [Releases](https://git
 the repository and install it.
 
 > [!Note]
-> We use `v0.2.0` release as an example here, always download the latest from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases) section.
+> The example below uses the `v0.2.0` release; we recommend always downloading the latest version from the [Releases](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/releases)
+> section.
 
 #### On Linux
 
@@ -179,7 +180,8 @@ Authentication is disabled by default. To enable authentication using OpenID, ed
 }
 ```
 
-Refer to [Authentication Setup Using Keycloak](https://github.com/Project-MONAI/monai-deploy-workflow-manager/blob/develop/guidelines/mwm-auth.md) for additional details.
+Refer to the [Authentication Setup Using Keycloak](https://github.com/Project-MONAI/monai-deploy-workflow-manager/blob/develop/guidelines/mwm-auth.md)
+section for additional details.
 
 
 ## Storage Consideration & Configuration
@@ -342,48 +344,45 @@ The next step is to configure the Informatics Gateway to enable receiving of DIC
 
 1. Configure a listening AE Title to receive instances:
 
-```bash
-mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
-```
+   ```bash
+   mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30
+   ```
 
-The command creates a new listening AE Title with AE Title `BrainAET`. The listening AE Title
-will group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
+   The command creates a new listening AE Title with AE Title `BrainAET`. The listening AE Title
+   will group instances by the Series Instance UID (0020,000E) with a timeout value of 30 seconds.
 
+   Each listening AE Title may be configured with one or more plug-ins to manipulate incoming DICOM files before saving to the storage
+   service and dispatching a workflow request. To include input data plug-ins, first create your plug-ins by implementing the
+   [IInputDataPlugIn](xref:Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn) interface, then add the `-p` argument, with the fully
+   qualified type name, to the `mig-cli aet add` command. For example, the following command adds the `MyNamespace.AnonymizePlugIn`
+   and `MyNamespace.FixSeriesData` plug-ins from the `MyNamespace.Plugins` assembly file.
 
-### Optional: Input Data Plug-ins
+   ```bash
+   mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p "MyNamespace.AnonymizePlugIn, MyNamespace.PlugIns" "MyNamespace.FixSeriesData, MyNamespace.PlugIns"
+   ```
 
-Each listening AE Title may be configured with zero or more plug-ins to manipulate incoming DICOM files before saving to the storage
-service and dispatching a workflow request. To include input data plug-ins, first create your plug-ins by implementing the
-[IInputDataPlugIn](xref:Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn) interface and then use `-p` argument with the fully
-qualified type name with the `mig-cli aet add` command. For example, the following command adds `MyNamespace.AnonymizePlugIn`
-and `MyNamespace.FixSeriesData` plug-ins from the `MyNamespace.Plugins` assembly file.
-
-```bash
-mig-cli aet add -a BrainAET -grouping 0020,000E, -t 30 -p "MyNamespace.AnonymizePlugIn, MyNamespace.PlugIns" "MyNamespace.FixSeriesData, MyNamespace.PlugIns"
-```
-
-> [!Note]
-> `-grouping` is optional, with a default value of 0020,000D.
-> `-t` is optional, with a default value of 5 seconds.
-> For complete reference, refer to the [Configuration API](../api/rest/config.md).
+   > [!Note]
+   > The `-grouping` argument is optional, with a default value of 0020,000D.
+   > The `-t` argument is also optional, with a default value of 5 seconds.
+   > For a complete reference, refer to the [Configuration API](../api/rest/config.md).
 
 2. Enable the receiving of DICOM instances from external DICOM devices:
 
-```bash
-mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55
-```
+   ```bash
+   mig-cli src add -n PACS-LA -a PACSLA001 --h 20.10.30.55
+   ```
 
-The above command tells the Informatics Gateway to accept instances from AE Title `PACSLA001` at IP `20.10.30.55` and port `104`.
+   The above command tells the Informatics Gateway to accept instances from AE Title `PACSLA001` at IP `20.10.30.55` and port `104`.
 
-> [!Note]
-> By default, Informatics Gateway blocks all unknown sources.
-> To allow all unknown sources, set the `dicom>scp>rejectUnknownSources` parameter to `false` in the `appsettings.json` file.
+   > [!Note]
+   > By default, Informatics Gateway blocks all unknown sources.
+   > To allow all unknown sources, set the `dicom>scp>rejectUnknownSources` parameter to `false` in the `appsettings.json` file.
 
-> [!WARNING]
-> The Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
-> When the Informatics Gateway is running in a container and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
+   > [!WARNING]
+   > The Informatics Gateway validates both the source IP address and AE Title when `rejectUnknownSources` is set to `true`.
+   > When the Informatics Gateway is running in a container and data is coming from the localhost, the IP address may not be the same as the host IP address. In this case, open the log file and locate the association that failed; the log should indicate the correct IP address under `Remote host`.
 
-See [Data Plug-ins](../plug-ins/overview.md) to configure data plug-ins or create your own data plug-ins.
+   See [Data Plug-ins](../plug-ins/overview.md) to configure data plug-ins or create your own data plug-ins.
 
 ## Export Processed Results
 

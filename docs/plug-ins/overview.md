@@ -22,12 +22,14 @@ Data plug-ins enable manipulation of incoming data before they are saved to the 
 
 The Informatics Gateway allows you to configure data plug-ins in the following services:
 
--   (DIMSE) MONAI Deploy DICOM Listener: configure each listening AE Title with zero or more data plug-ins via the [CLI](../setup/cli.md) or via the [Configuration API](../api/rest/config.md).
--   (DIMSE) DICOM Export: configure the `PluginAssemblies` with one or more data plug-ins in the [ExportRequestEvent](https://github.com/Project-MONAI/monai-deploy-messaging/blob/main/src/Messaging/Events/ExportRequestEvent.cs#L85).
+-   (DIMSE) MONAI Deploy DICOM Listener: Configure each listening AE Title with zero or more data plug-ins via the
+    [CLI](../setup/cli.md) or via the [Configuration API](../api/rest/config.md).
+-   (DIMSE) DICOM Export: configure the `Plug-inAssemblies` with one or more data plug-ins in the [ExportRequestEvent](https://github.com/Project-MONAI/monai-deploy-messaging/blob/main/src/Messaging/Events/ExportRequestEvent.cs#L85).
 -   (DICOMWeb) STOW-RS:
-    -   The Virtual AE endpoints (`/dicomweb/vae/...`) can be configured similarly to the DICOM listener by using the [DICOMWeb STOW API](../api/rest/dicomweb-stow.md##post-dicomwebvaeaetworkflow-idstudiesstudy-instance-uid).
-    -   For the default `/dicomweb/...` endpoints, set zero or more plug-ins under `InformaticsGateway>dicomWeb>plug-ins` in the `appsettings.json` [configuration](../setup/schema.md) file.
--   (DICOMWeb) Export: configure the `PluginAssemblies` with one or more data plug-ins in the [ExportRequestEvent](https://github.com/Project-MONAI/monai-deploy-messaging/blob/main/src/Messaging/Events/ExportRequestEvent.cs#L85).
+    -   The Virtual AE endpoints (`/dicomweb/vae/...`) can be configured similarly to the DICOM listener using the [DICOMWeb STOW API](../api/rest/dicomweb-stow.md##post-dicomwebvaeaetworkflow-idstudiesstudy-instance-uid).
+    -   For the default `/dicomweb/...` endpoints, set zero or more plug-ins under `InformaticsGateway>dicomWeb>plug-ins` in the
+        `appsettings.json` [configuration](../setup/schema.md) file.
+-   (DICOMWeb) Export: configure the `Plug-inAssemblies` with one or more data plug-ins in the [ExportRequestEvent](https://github.com/Project-MONAI/monai-deploy-messaging/blob/main/src/Messaging/Events/ExportRequestEvent.cs#L85).
 
 > [!Note]
 > When one or more plug-ins are defined, the plug-ins are executed in the order as they are listed.
@@ -42,34 +44,41 @@ The following plug-ins are available:
 | [DicomReidentifier](./remote-app.md) | A plug-in to be used together with the `DicomDeidentifier` plug-in to restore the original DICOM metadata.    | `Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.DicomReidentifier, Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution` |
 
 
-## Writing Your Plug-ins
+## Creating a Plug-in
 
-To write an input data plug-in, implement the [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn) interface and 
+To create an input data plug-in, implement the [IInputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn) interface and 
 put the [dynamic link library](https://learn.microsoft.com/en-us/troubleshoot/windows-client/deployment/dynamic-link-library) (DLL) in 
-the `plug-ins/` directories. Similarly, for output data plug-ins, implement the [IOutputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.PlugIns.IOutputDataPlugIn) interface.
+the `plug-ins/` directories. Similarly, for output data plug-ins, implement the [IOutputDataPlugin](xref:Monai.Deploy.InformaticsGateway.Api.PlugIns.IOutputDataPlugIn)
+interface.
 
-Refer to the [Configuration API](../api/rest/config.md) page to retrieve available [input](../api/rest/config.md#get-configaeplug-ins) and [output](../api/rest/config.md#get-configdestinationplug-ins) data plug-ins.
+Refer to the [Configuration API](../api/rest/config.md) page to retrieve available [input](../api/rest/config.md#get-configaeplug-ins) and
+[output](../api/rest/config.md#get-configdestinationplug-ins) data plug-ins.
 
 
 ### Database Extensions
 
-If a plug-in requires to persist data to the database, extend the [DatabaseRegistrationBase](xref:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase) class to register your database context and repositories.
+If a plug-in requires presistent data in the database, extend the [DatabaseRegistrationBase](xref:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase)
+class to register your database context and repositories.
 
-Refer to the _Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution_ plug-in as a reference.
+Refer to the `Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution` plug-in as a reference.
 
 > [!Important]
-> The Informatics Gateway requires all plug-ins to extend both Entity Framework (sqlite) and MongoDB databases.
+> The Informatics Gateway requires all plug-ins to extend both the Entity Framework (SQLite) and MongoDB databases.
 
 #### Entity Framework
 
-Implement the [IDatabaseMigrationManagerForPlugIns](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManagerForPlugIns) interface to register your Entity Framework (EF) database context. A `connectionString` is provided to the `Configure(...)`
-function when you extend the [DatabaseRegistrationBase](xref:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase) class and allows you to create your [code-first](https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/workflows/new-database)
-EF database context and generate your migration code using [dotnet ef](https://learn.microsoft.com/en-us/ef/core/cli/dotnet) CLI tool.
+Implement the [IDatabaseMigrationManagerForPlugIns](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManagerForPlugIns) interface to
+register your Entity Framework (EF) database context. A `connectionString` is provided to the `Configure(...)` function when you extend the
+[DatabaseRegistrationBase](xref:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase) class, allowing you to create your
+[code-first](https://learn.microsoft.com/en-us/ef/ef6/modeling/code-first/workflows/new-database) EF database context and generate your
+migration code using the [dotnet ef](https://learn.microsoft.com/en-us/ef/core/cli/dotnet) CLI tool.
 
-In the following example, we extend [DatabaseRegistrationBase](xref:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase) class to register a new EF database context named `RemoteAppExecutionDbContext`.
+The following example extends the [DatabaseRegistrationBase](xref:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase) class
+to register a new EF database context named `RemoteAppExecutionDbContext`.
 
-In the method, we first register the database context, then register our Migration Manager by implementing the [IDatabaseMigrationManagerForPlugIns](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManagerForPlugIns) interface.
-Lastly, we register our repository for the `RemoteAppExecutions` table.
+In the method, you first register the database context, then register your Migration Manager by implementing the
+[IDatabaseMigrationManagerForPlugIns](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManagerForPlugIns) interface.
+Lastly, you register your repository for the `RemoteAppExecutions` table.
 
 ```csharp
 public class DatabaseRegistrar : DatabaseRegistrationBase
@@ -97,8 +106,9 @@ public class DatabaseRegistrar : DatabaseRegistrationBase
 
 #### MongoDB
 
-Similar to the [Entity Framework](#entity-framework) section above, For MongoDB, we first register our Migration Manager by implementing the [IDatabaseMigrationManagerForPlugIns](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManagerForPlugIns) interface,
-and then we register our repository for the `RemoteAppExecutions` collection.
+Similar to the [Entity Framework](#entity-framework) section above, for MongoDB you first register your Migration Manager by implementing
+the [IDatabaseMigrationManagerForPlugIns](xref:Monai.Deploy.InformaticsGateway.Database.Api.IDatabaseMigrationManagerForPlugIns) interface
+and then register your repository for the `RemoteAppExecutions` collection.
 
 ```csharp
 public class DatabaseRegistrar : DatabaseRegistrationBase
@@ -122,7 +132,7 @@ public class DatabaseRegistrar : DatabaseRegistrationBase
 }
 ```
 
-In the `MigrationManager`, we configure the `RemoteAppExecutions` collection.
+In the `MigrationManager`, configure the `RemoteAppExecutions` collection.
 
 ```csharp
 public class MigrationManager : IDatabaseMigrationManagerForPlugIns

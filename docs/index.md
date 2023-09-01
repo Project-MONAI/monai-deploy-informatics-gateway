@@ -47,7 +47,7 @@ Licensed under the [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-in
 
 This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
 
-By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](./compliance/third-party-licenses.md) page.
+By downloading this software, you agree to the license terms and all licenses listed on the [third-party licenses](./compliance/third-party-licenses.md) page.
 
 ## Links
 
