@@ -41,7 +41,7 @@ Triggers a new workflow request with the uploaded DICOM dataset.
 
 | Name               | Type   | Description                                                                                                                                                                                                                     |
 | ------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| study-instance-uid | string | (Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as `Warning Reason (0008,1196)` = `B007`. |
+| study-instance-uid | string | (Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as `Warning Reason (0008,1196) = B007`.   |
 
 #### Request Body
 
@@ -85,7 +85,7 @@ Triggers the specified workflow with the uploaded DICOM dataset.
 | Name               | Type   | Description                                                                                                                                                                                                                     |
 | ------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | workflow-id        | string | The unique identifier of the workflow registered with the Workflow Manager.                                                                                                                                                     |
-| study-instance-uid | string | (Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as `Warning Reason (0008,1196)` = `B007`. |
+| study-instance-uid | string | (Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as `Warning Reason (0008,1196) = B007`.   |
 
 #### Request Body
 
@@ -101,12 +101,12 @@ Response Content Type: `JSON`
 | Code | Data Type                                                                                           | Description                                                                                  |
 | ---- | --------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | 200  | [DicomDataset](https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs) | All instances are received and stored successfully.                                          |
-| 202  | [DicomDataset](https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs) | All instances are received and stored with warnings (e.g. for a mismatched StudyInstanceUID. |
+| 202  | [DicomDataset](https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs) | All instances are received and stored with warnings (e.g. for a mismatched StudyInstanceUID).|
 | 204  | `none`                                                                                              | No data is provided.                                                                         |
 | 400  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Request contains invalid values.                                                             |
-| 415  | `none`                                                                                              | Unsupported media type.                                                                      |
-| 500  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Server error.                                                                                |
-| 507  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Insufficient storage.                                                                        |
+| 415  | `none`                                                                                              | Unsupported media type                                                                       |
+| 500  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Server error                                                                                 |
+| 507  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Insufficient storage                                                                         |
 
 ---
 
@@ -133,9 +133,9 @@ takes precedence when specified.
 
 | Name               | Type   | Description                                                                                                                                                                                                                     |
 | ------------------ | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| aet                | string | A registered Virtual Application Entity.                                                                                                                                                                                        |
-| workflow-id        | string | The unique identifier of the workflow registered with the Workflow Manager.                                                                                                                                                     |
-| study-instance-uid | string | (Optional) Associate the DICOM dataset with a StudyInstanceUID. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as `Warning Reason (0008,1196)` = `B007`. |
+| aet                | string | A registered Virtual Application Entity                                                                                                                                                                                         |
+| workflow-id        | string | The unique identifier of the workflow registered with the Workflow Manager                                                                                                                                                      |
+| study-instance-uid | string | (Optional) A StudyInstanceUID to associate the DICOM dataset with. Note that the service records any mismatch between the StudyInstanceUID header and the provided value in the response as `Warning Reason (0008,1196) = B007`.|
 
 #### Request Body
 
@@ -154,6 +154,6 @@ Response Content Type: `JSON`
 | 202  | [DicomDataset](https://github.com/fo-dicom/fo-dicom/blob/development/FO-DICOM.Core/DicomDataset.cs) | All instances are received and stored with warnings (e.g. for a mismatched StudyInstanceUID. |
 | 204  | `none`                                                                                              | No data is provided.                                                                         |
 | 400  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Request contains invalid values.                                                             |
-| 415  | `none`                                                                                              | Unsupported media type.                                                                      |
-| 500  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Server error.                                                                                |
-| 507  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Insufficient storage.                                                                        |
+| 415  | `none`                                                                                              | Unsupported media type                                                                       |
+| 500  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Server error                                                                                 |
+| 507  | [Problem details](https://datatracker.ietf.org/doc/html/rfc7807)                                    | Insufficient storage                                                                         |
