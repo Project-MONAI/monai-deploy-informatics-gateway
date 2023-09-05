@@ -35,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             serviceCollection.Setup(p => p.GetEnumerator()).Returns(serviceDescriptors.GetEnumerator());
 
             var registrar = new DatabaseRegistrar();
-            var returnedServiceCollection = registrar.Configure(serviceCollection.Object, DatabaseType.EntityFramework, "DataSource=file::memory:?cache=shared");
+            var returnedServiceCollection = registrar.Configure(serviceCollection.Object, DatabaseType.EntityFramework, "DataSource=file::memory:?cache=shared", new Mock<Microsoft.Extensions.Logging.ILogger>().Object);
 
             Assert.Same(serviceCollection.Object, returnedServiceCollection);
 
@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             serviceCollection.Setup(p => p.GetEnumerator()).Returns(serviceDescriptors.GetEnumerator());
 
             var registrar = new DatabaseRegistrar();
-            var returnedServiceCollection = registrar.Configure(serviceCollection.Object, DatabaseType.MongoDb, "DataSource=file::memory:?cache=shared");
+            var returnedServiceCollection = registrar.Configure(serviceCollection.Object, DatabaseType.MongoDb, "DataSource=file::memory:?cache=shared", new Mock<Microsoft.Extensions.Logging.ILogger>().Object);
 
             Assert.Same(serviceCollection.Object, returnedServiceCollection);
 

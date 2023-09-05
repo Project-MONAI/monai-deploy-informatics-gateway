@@ -1730,14 +1730,16 @@
           "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "[1.0.0, )",
-          "Monai.Deploy.InformaticsGateway.Database.MongoDB": "[1.0.0, )"
+          "Monai.Deploy.InformaticsGateway.Database.MongoDB": "[1.0.0, )",
+          "NLog.Web.AspNetCore": "[5.3.3, )"
         }
       },
       "monai.deploy.informaticsgateway.database.api": {
         "type": "Project",
         "dependencies": {
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
-          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )"
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "NLog": "[5.2.3, )"
         }
       },
       "monai.deploy.informaticsgateway.database.entityframework": {
@@ -1768,6 +1770,23 @@
           "Monai.Deploy.InformaticsGateway.Client.Common": "[1.0.0, )",
           "System.Linq.Async": "[6.0.1, )",
           "fo-dicom": "[5.1.1, )"
+        }
+      },
+      "monai.deploy.informaticsgateway.plugins.remoteappexecution": {
+        "type": "Project",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "[6.0.21, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[6.0.21, )",
+          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.21, )",
+          "Microsoft.Extensions.Configuration": "[6.0.1, )",
+          "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
+          "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
+          "MongoDB.Driver": "[2.21.0, )",
+          "NLog": "[5.2.3, )",
+          "Polly": "[7.2.4, )"
         }
       }
     }

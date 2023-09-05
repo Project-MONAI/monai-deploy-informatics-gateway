@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Reflection.Metadata;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -240,6 +241,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 try
                 {
                     payload = _payloadAssembler.Dequeue(cancellationToken);
+                    using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload ID", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
+
                     while (!_moveFileQueue.Post(payload))
                     {
                         ResetIfFaultedOrCancelled(_moveFileQueue, ResetMoveQueue, cancellationToken);

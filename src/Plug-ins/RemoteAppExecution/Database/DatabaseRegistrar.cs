@@ -17,13 +17,14 @@
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 
 namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database
 {
     public class DatabaseRegistrar : DatabaseRegistrationBase
     {
-        public override IServiceCollection Configure(IServiceCollection services, DatabaseType databaseType, string? connectionString)
+        public override IServiceCollection Configure(IServiceCollection services, DatabaseType databaseType, string? connectionString, ILogger logger)
         {
             Guard.Against.Null(services, nameof(services));
 
@@ -33,14 +34,16 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database
                     Guard.Against.Null(connectionString, nameof(connectionString));
                     services.AddDbContext<EntityFramework.RemoteAppExecutionDbContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Transient);
                     services.AddScoped<IDatabaseMigrationManagerForPlugIns, EntityFramework.MigrationManager>();
-
+                    logger.AddedDbScope("IDatabaseMigrationManagerForPlugIns", "EntityFramework");
                     services.AddScoped(typeof(IRemoteAppExecutionRepository), typeof(EntityFramework.RemoteAppExecutionRepository));
+                    logger.AddedDbScope("IRemoteAppExecutionRepository", "EntityFramework");
                     break;
 
                 case DatabaseType.MongoDb:
                     services.AddScoped<IDatabaseMigrationManagerForPlugIns, MongoDb.MigrationManager>();
-
+                    logger.AddedDbScope("IDatabaseMigrationManagerForPlugIns", "MongoDb");
                     services.AddScoped(typeof(IRemoteAppExecutionRepository), typeof(MongoDb.RemoteAppExecutionRepository));
+                    logger.AddedDbScope("IRemoteAppExecutionRepository", "MongoDb");
                     break;
             }
 

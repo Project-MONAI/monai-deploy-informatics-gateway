@@ -57,18 +57,21 @@ namespace Monai.Deploy.InformaticsGateway
         protected Program()
         { }
 
+        private static Logger s_logger;
+
         private static void Main(string[] args)
         {
             var version = typeof(Program).Assembly;
             var assemblyVersionNumber = version.GetCustomAttribute<AssemblyInformationalVersionAttribute>()?.InformationalVersion ?? "0.0.1";
 
-            var logger = ConfigureNLog(assemblyVersionNumber);
-            logger.Info($"Initializing MONAI Deploy Informatics Gateway v{assemblyVersionNumber}");
+            s_logger = ConfigureNLog(assemblyVersionNumber);
+            s_logger.Info($"Initializing MONAI Deploy Informatics Gateway v{assemblyVersionNumber}");
 
             var host = CreateHostBuilder(args).Build();
+
             host.MigrateDatabase();
             host.Run();
-            logger.Info("MONAI Deploy Informatics Gateway shutting down.");
+            s_logger.Info("MONAI Deploy Informatics Gateway shutting down.");
         }
 
         internal static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -92,6 +95,7 @@ namespace Monai.Deploy.InformaticsGateway
                     builder.ClearProviders();
                     builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 })
+                .UseNLog()
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<InformaticsGatewayConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway"));
@@ -100,8 +104,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));
                     services.AddOptions<PlugInConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:plugins"));
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
-
-                    services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"));
+                    services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"), services.BuildServiceProvider().GetService<ILogger<Program>>());
 
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
@@ -172,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway
                     webBuilder.CaptureStartupErrors(true);
                     webBuilder.UseStartup<Startup>();
                 })
-                .UseNLog();
+                ;
 
         private static NLog.Logger ConfigureNLog(string assemblyVersionNumber)
         {

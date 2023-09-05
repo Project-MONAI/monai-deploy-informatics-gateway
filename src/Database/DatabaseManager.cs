@@ -23,6 +23,7 @@ using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
@@ -36,6 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
     {
         public const string DbType_Sqlite = "sqlite";
         public const string DbType_MongoDb = "mongodb";
+
 
         public static IHealthChecksBuilder AddDatabaseHealthCheck(this IHealthChecksBuilder healthChecksBuilder, IConfigurationSection? connectionStringConfigurationSection)
         {
@@ -61,10 +63,10 @@ namespace Monai.Deploy.InformaticsGateway.Database
             }
         }
 
-        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection)
-            => services.ConfigureDatabase(connectionStringConfigurationSection, new FileSystem());
+        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, ILogger logger)
+            => services.ConfigureDatabase(connectionStringConfigurationSection, new FileSystem(), logger);
 
-        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IFileSystem fileSystem)
+        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IFileSystem fileSystem, ILogger logger)
         {
             if (connectionStringConfigurationSection is null)
             {
@@ -88,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(EntityFramework.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(EntityFramework.Repositories.VirtualApplicationEntityRepository));
 
-                    services.ConfigureDatabaseFromPlugIns(DatabaseType.EntityFramework, fileSystem, connectionStringConfigurationSection);
+                    services.ConfigureDatabaseFromPlugIns(DatabaseType.EntityFramework, fileSystem, connectionStringConfigurationSection, logger);
                     return services;
 
                 case DbType_MongoDb:
@@ -105,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(MongoDB.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(MongoDB.Repositories.VirtualApplicationEntityRepository));
 
-                    services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection);
+                    services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection, logger);
 
                     return services;
 
@@ -117,7 +119,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
         public static IServiceCollection ConfigureDatabaseFromPlugIns(this IServiceCollection services,
             DatabaseType databaseType,
             IFileSystem fileSystem,
-            IConfigurationSection? connectionStringConfigurationSection)
+            IConfigurationSection? connectionStringConfigurationSection,
+            ILogger logger)
         {
             Guard.Against.Null(fileSystem, nameof(fileSystem));
 
@@ -130,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 {
                     throw new ConfigurationException($"Error activating database registration from type '{type.FullName}'.");
                 }
-                registrar.Configure(services, databaseType, connectionStringConfigurationSection?[SR.DatabaseConnectionStringKey]);
+                registrar.Configure(services, databaseType, connectionStringConfigurationSection?[SR.DatabaseConnectionStringKey], logger);
             }
             return services;
         }
