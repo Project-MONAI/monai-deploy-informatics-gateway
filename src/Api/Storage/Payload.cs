@@ -40,7 +40,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             /// <summary>
             /// Payload is ready to be published to the message broker.
             /// </summary>
-            Notify
+            Notify,
+
+            /// <summary>
+            /// Payload has finished uploading.
+            /// </summary>
+            UploadComplete
         }
 
         public const int MAX_RETRY = 3;
@@ -89,14 +94,13 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public int FilesFailedToUpload { get => Files.Count(p => p.IsUploadFailed); }
 
         public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId,
-            DataOrigin dataTrigger, uint timeout, PatientDetails? patientDetails) : this(key, correlationId, workflowInstanceId, taskId, dataTrigger, timeout)
+             DataOrigin dataTrigger, uint timeout, PatientDetails? patientDetails) : this(key, correlationId, workflowInstanceId, taskId, dataTrigger, timeout)
         {
             if (patientDetails is not null)
             {
                 PatientDetails = patientDetails;
             }
         }
-
 
         public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout)
         {
