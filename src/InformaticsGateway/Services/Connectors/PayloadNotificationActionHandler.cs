@@ -93,9 +93,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
+            // NDS removed delete, replaced with new status of complete. so we can query the payload data from WFM
+            // TODO add config and cleanup methods that run on background thread/process
+
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetService<IPayloadRepository>() ?? throw new ServiceNotFoundException(nameof(IPayloadRepository));
-            await repository.RemoveAsync(payload, cancellationToken).ConfigureAwait(false);
+            payload.State = Payload.PayloadState.UploadComplete;
+            await repository.UpdateAsync(payload, cancellationToken).ConfigureAwait(false);
         }
 
         private async Task NotifyPayloadReady(Payload payload)

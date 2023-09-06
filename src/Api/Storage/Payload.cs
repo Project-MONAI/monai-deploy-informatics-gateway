@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Ardalis.GuardClauses;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Storage
@@ -40,7 +41,12 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             /// <summary>
             /// Payload is ready to be published to the message broker.
             /// </summary>
-            Notify
+            Notify,
+
+            /// <summary>
+            /// Payload has been finished with.
+            /// </summary>
+            UploadComplete
         }
 
         public const int MAX_RETRY = 3;
@@ -85,6 +91,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public int FilesUploaded { get => Files.Count(p => p.IsUploaded); }
 
         public int FilesFailedToUpload { get => Files.Count(p => p.IsUploadFailed); }
+
+        public PatientDetails? PatientDetails { get; set; }
 
         public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout)
         {

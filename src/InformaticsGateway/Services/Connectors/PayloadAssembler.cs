@@ -28,7 +28,9 @@ using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.Messaging.Events;
+using Monai.Deploy.Storage.API;
 
 #nullable enable
 
@@ -48,10 +50,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly Task _intializedTask;
         private readonly BlockingCollection<Payload> _workItems;
         private readonly System.Timers.Timer _timer;
+        private readonly IDicomService _dicicomService;
+        private readonly string defaultBucket;
 
         public PayloadAssembler(
             ILogger<PayloadAssembler> logger,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory
+            //,IOptions<StorageServiceConfiguration> storageSettings
+            )
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
@@ -67,6 +73,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             };
             _timer.Elapsed += OnTimedEvent;
             _timer.Enabled = true;
+
+            // defaultBucket = storageSettings.Value.bucketName
+            defaultBucket = "monaideploy";
+
+            var scope = _serviceScopeFactory.CreateScope();
+            _dicicomService = scope.ServiceProvider.GetRequiredService<IDicomService>();
         }
 
         private async Task RemovePendingPayloads()
@@ -143,6 +155,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     {
                         if (payload.IsUploadCompleted())
                         {
+
+                            var pd = await GetPatientDetails(payload);
+
                             _logger.ReceievedAPayload(payload.Elapsed.TotalSeconds, payload.Files.Count, payload.FilesFailedToUpload);
                             if (_payloads.TryRemove(key, out _))
                             {
@@ -211,6 +226,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 _logger.BucketCreated(key, timeout);
                 return newPayload;
             }));
+        }
+
+        private async Task<PatientDetails> GetPatientDetails(Payload payload)
+        {
+            try
+            {
+                var scope = _serviceScopeFactory.CreateScope();
+                var storage = scope.ServiceProvider.GetRequiredService<IStorageService>();
+                return await _dicicomService.GetPayloadPatientDetailsAsync(payload.PayloadId.ToString(), defaultBucket).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+
+                var e = ex.Message;
+                return null;
+            }
+
         }
 
         public void Dispose()

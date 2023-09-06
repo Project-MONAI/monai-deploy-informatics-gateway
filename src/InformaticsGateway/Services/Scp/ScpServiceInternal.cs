@@ -170,6 +170,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                     DicomRejectResult.Permanent,
                     DicomRejectSource.ServiceUser,
                     DicomRejectReason.CallingAENotRecognized).ConfigureAwait(false);
+                _logger.ScuAssociationRejected();
             }
 
             if (!await IsValidCalledAeAsync(association.CalledAE).ConfigureAwait(false))
@@ -180,6 +181,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                     DicomRejectResult.Permanent,
                     DicomRejectSource.ServiceUser,
                     DicomRejectReason.CalledAENotRecognized).ConfigureAwait(false);
+                _logger.ScuAssociationRejected();
             }
 
             foreach (var pc in association.PresentationContexts)

@@ -18,9 +18,12 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -33,6 +36,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.Storage.API;
+using Newtonsoft.Json;
 using Polly;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Storage
@@ -159,6 +163,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                         if (!string.IsNullOrWhiteSpace(dicom.JsonFile.TemporaryPath))
                         {
                             await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.DataOrigin.Source, dicom.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
+                            var jsonstream = dicom.JsonFile.Data;
+                            var jsonStr = Encoding.UTF8.GetString(((MemoryStream)jsonstream).ToArray());
+
+                            var dict = new Dictionary<string, DicomValue>(StringComparer.OrdinalIgnoreCase);
+                            JsonConvert.PopulateObject(jsonStr, dict);
+                            var test = 0;
                         }
                         break;
                 }
