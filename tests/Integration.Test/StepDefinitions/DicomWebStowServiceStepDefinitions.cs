@@ -114,7 +114,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         {
             Guard.Against.NullOrWhiteSpace(endpoint, nameof(endpoint));
 
-            await _dataSink.SendAsync(_dataProvider, $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}", _dataProvider.Workflows, async (DicomWebClient dicomWebClient, DicomDataSpecs specs) =>
+            await _dataSink.SendAsync(_dataProvider,
+                $"{_configurations.InformaticsGatewayOptions.ApiEndpoint}{endpoint}",
+                _dataProvider.Workflows,
+                async (DicomWebClient dicomWebClient,
+                    DicomDataSpecs specs) =>
             {
                 return await dicomWebClient.Stow.Store(specs.Files.Values);
             });

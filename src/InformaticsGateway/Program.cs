@@ -19,6 +19,7 @@ using System.IO;
 using System.IO.Abstractions;
 using System.Reflection;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -126,6 +127,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<ConfigurationValidator>();
                     services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
                     services.AddSingleton<IPayloadAssembler, PayloadAssembler>();
+                    services.AddTransient<IPayloadService, PayloadService>();
                     services.AddSingleton<IMonaiServiceLocator, MonaiServiceLocator>();
                     services.AddSingleton<IStorageInfoProvider, StorageInfoProvider>();
                     services.AddSingleton<IMonaiAeChangedNotificationService, MonaiAeChangedNotificationService>();
@@ -143,6 +145,16 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<MllpService>();
                     services.AddSingleton<ObjectUploadService>();
 
+                    services.AddHttpContextAccessor();
+                    services.AddSingleton<IUriService>(p =>
+                    {
+                        var accessor = p.GetRequiredService<IHttpContextAccessor>();
+                        var request = accessor?.HttpContext?.Request;
+                        var uri = string.Concat(request?.Scheme, "://", request?.Host.ToUriComponent());
+                        var newUri = new Uri(uri);
+                        return new UriService(newUri);
+                    });
+
                     var timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:dicomWeb:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
                         .AddHttpClient("dicomweb", configure => configure.Timeout = timeout)
@@ -158,14 +170,14 @@ namespace Monai.Deploy.InformaticsGateway
                         .AddHttpClient("fhir", configure => configure.Timeout = timeout)
                         .SetHandlerLifetime(timeout);
 
-                    services.AddHostedService<ObjectUploadService>(p => p.GetService<ObjectUploadService>());
-                    services.AddHostedService<DataRetrievalService>(p => p.GetService<DataRetrievalService>());
-                    services.AddHostedService<ScpService>(p => p.GetService<ScpService>());
-                    services.AddHostedService<ScuService>(p => p.GetService<ScuService>());
-                    services.AddHostedService<ScuExportService>(p => p.GetService<ScuExportService>());
-                    services.AddHostedService<DicomWebExportService>(p => p.GetService<DicomWebExportService>());
-                    services.AddHostedService<PayloadNotificationService>(p => p.GetService<PayloadNotificationService>());
-                    services.AddHostedService<MllpService>(p => p.GetService<MllpService>());
+                    services.AddHostedService<ObjectUploadService>(p => p.GetRequiredService<ObjectUploadService>());
+                    services.AddHostedService<DataRetrievalService>(p => p.GetRequiredService<DataRetrievalService>());
+                    services.AddHostedService<ScpService>(p => p.GetRequiredService<ScpService>());
+                    services.AddHostedService<ScuService>(p => p.GetRequiredService<ScuService>());
+                    services.AddHostedService<ScuExportService>(p => p.GetRequiredService<ScuExportService>());
+                    services.AddHostedService<DicomWebExportService>(p => p.GetRequiredService<DicomWebExportService>());
+                    services.AddHostedService<PayloadNotificationService>(p => p.GetRequiredService<PayloadNotificationService>());
+                    services.AddHostedService<MllpService>(p => p.GetRequiredService<MllpService>());
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
