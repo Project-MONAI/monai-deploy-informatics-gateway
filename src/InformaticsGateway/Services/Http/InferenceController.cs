@@ -22,8 +22,10 @@ using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 
@@ -31,14 +33,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
     [Route("[controller]")]
-    public class InferenceController : ControllerBase
+    public class InferenceController : ApiControllerBase
     {
         private readonly IInferenceRequestRepository _inferenceRequestRepository;
         private readonly ILogger<InferenceController> _logger;
 
         public InferenceController(
             IInferenceRequestRepository inferenceRequestRepository,
-            ILogger<InferenceController> logger)
+            ILogger<InferenceController> logger,
+            IOptions<HttpPaginationConfiguration> options) : base(options)
         {
             _inferenceRequestRepository = inferenceRequestRepository ?? throw new ArgumentNullException(nameof(inferenceRequestRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -59,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 if (status is null)
                 {
-                    return Problem(title: "Inference request not found.", statusCode: (int)HttpStatusCode.NotFound, detail: "Unable to locate the specified request.");
+                    return Problem(title: "Inference request not found.", statusCode: NotFound, detail: "Unable to locate the specified request.");
                 }
 
                 return Ok(status);
@@ -67,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorRetrievingJobStatus(transactionId, ex);
-                return Problem(title: "Failed to retrieve inference request status.", statusCode: (int)HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Failed to retrieve inference request status.", statusCode: InternalServerError, detail: ex.Message);
             }
         }
 
@@ -101,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorQueuingInferenceRequest(request.TransactionId, ex);
-                return Problem(title: "Failed to save request", statusCode: (int)HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Failed to save request", statusCode: InternalServerError, detail: ex.Message);
             }
 
             return Ok(new InferenceRequestResponse

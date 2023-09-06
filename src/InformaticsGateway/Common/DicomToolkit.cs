@@ -45,11 +45,11 @@ namespace Monai.Deploy.InformaticsGateway.Common
             return dicomFile;
         }
 
-        public StudySerieSopUids GetStudySeriesSopInstanceUids(DicomFile dicomFile)
+        public StudySeriesSopAids GetStudySeriesSopInstanceUids(DicomFile dicomFile)
         {
             Guard.Against.Null(dicomFile, nameof(dicomFile));
 
-            return new StudySerieSopUids
+            return new StudySeriesSopAids
             {
                 SopClassUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPClassUID),
                 StudyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID),

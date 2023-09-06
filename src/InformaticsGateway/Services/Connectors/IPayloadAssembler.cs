@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="bucket">The bucket group the file belongs to.</param>
         /// <param name="file">Path to the file to be added to the payload bucket.</param>
         /// <param name="dataOrigin">The service that triggered this queue request</param>
-        Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin);
+        Task<Guid> QueueAsync(string bucket, FileStorageMetadata file, DataOrigin dataOrigin);
 
         /// <summary>
         /// Queue a new file for the specified payload bucket.
@@ -42,7 +42,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="file">Path to the file to be added to the payload bucket.</param>
         /// <param name="dataOrigin">The service that triggered this queue request</param>
         /// <param name="timeout">Number of seconds to wait for additional files.</param>
-        Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout);
+        /// <param name="patientDetails">Details of the patient.</param>
+        Task<Guid> QueueAsync(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout, PatientDetails? patientDetails = null);
 
         /// <summary>
         /// Dequeue a payload from the queue for the message broker to notify subscribers.

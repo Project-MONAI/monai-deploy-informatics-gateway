@@ -79,10 +79,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            await payloadAssembler.Queue(
+            await payloadAssembler.QueueAsync(
                 "A",
                 new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }),
-                new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
+                new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }).ConfigureAwait(false);
 
             _logger.VerifyLogging($"Bucket A created with timeout {PayloadAssembler.DEFAULT_TIMEOUT}s.", LogLevel.Information, Times.Once());
             payloadAssembler.Dispose();
@@ -109,10 +109,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _ = Assert.ThrowsAsync<OperationCanceledException>(async () => await Task.Run(() => payloadAssembler.Dequeue(_cancellationTokenSource.Token)));
 
-            await payloadAssembler.Queue(
+            await payloadAssembler.QueueAsync(
                 "A",
                 new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }),
-                new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
+                new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }).ConfigureAwait(false);
 
             payloadAssembler.Dispose();
             _cancellationTokenSource.Cancel();
@@ -129,8 +129,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var file1 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
             var file2 = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
 
-            await payloadAssembler.Queue("A", file1, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1);
-            await payloadAssembler.Queue("A", file2, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1);
+            await payloadAssembler.QueueAsync("A", file1, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1).ConfigureAwait(false);
+            await payloadAssembler.QueueAsync("A", file2, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1).ConfigureAwait(false);
 
             file1.SetFailed();
             file2.SetUploaded();
@@ -148,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             var file = new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" });
             file.File.SetUploaded("bucket");
-            await payloadAssembler.Queue("A", file, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1);
+            await payloadAssembler.QueueAsync("A", file, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1).ConfigureAwait(false);
             await Task.Delay(1001);
             var result = payloadAssembler.Dequeue(_cancellationTokenSource.Token);
             payloadAssembler.Dispose();

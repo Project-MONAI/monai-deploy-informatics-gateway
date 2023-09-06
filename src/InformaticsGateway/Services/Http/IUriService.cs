@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
- * Copyright 2019-2020 NVIDIA Corporation
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +14,21 @@
  * limitations under the License.
  */
 
-using System.IO;
-using System.Threading.Tasks;
-using FellowOakDicom;
+using Monai.Deploy.InformaticsGateway.Common.Filter;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
-    public interface IDicomToolkit
+    /// <summary>
+    /// Uri Serivce.
+    /// </summary>
+    public interface IUriService
     {
-        Task<DicomFile> OpenAsync(Stream stream, FileReadOption fileReadOption = FileReadOption.Default);
-
-        DicomFile Load(byte[] fileContent);
-
-        StudySeriesSopAids GetStudySeriesSopInstanceUids(DicomFile dicomFile);
+        /// <summary>
+        /// Gets Relative Uri path with filters as a string.
+        /// </summary>
+        /// <param name="filter">Filters.</param>
+        /// <param name="route">Route.</param>
+        /// <returns>Relative Uri string.</returns>
+        public string GetPageUriString(PaginationFilter filter, string route);
     }
 }

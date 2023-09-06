@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -73,7 +74,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 });
 
             var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() { User = new ClaimsPrincipal(new GenericIdentity(TestUsername)) } };
-            _controller = new InferenceController(_inferenceRequestRepository.Object, _logger.Object)
+            var options = Options.Create(new HttpPaginationConfiguration());
+            _controller = new InferenceController(_inferenceRequestRepository.Object, _logger.Object, options)
             {
                 ControllerContext = controllerContext,
                 ProblemDetailsFactory = _problemDetailsFactory.Object

@@ -16,7 +16,7 @@
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    public record StudySerieSopUids
+    public record StudySeriesSopAids
     {
         public string SopClassUid { get; set; }
         public string StudyInstanceUid { get; set; }

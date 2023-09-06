@@ -8,4 +8,9 @@
         "WADO"
     ],
     "liveServer.settings.port": 5501,
+    "workbench.colorCustomizations": {
+        "activityBar.background": "#2D2E2A",
+        "titleBar.activeBackground": "#3F413B",
+        "titleBar.activeForeground": "#FBFBFB"
+    },
 }

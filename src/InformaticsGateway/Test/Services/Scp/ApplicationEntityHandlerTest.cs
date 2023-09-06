@@ -35,8 +35,11 @@ using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 using Monai.Deploy.Messaging.Events;
 using Moq;
+using Newtonsoft.Json;
 using xRetry;
 using Xunit;
+using FluentAssertions;
+
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 {
@@ -132,7 +135,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(),
+                    It.IsAny<FileStorageMetadata>(),
+                    It.IsAny<DataOrigin>(),
+                    It.IsAny<uint>(), null),
+                Times.Never());
         }
 
         [RetryFact(5, 250)]
@@ -156,7 +163,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(),
+                    It.IsAny<FileStorageMetadata>(),
+                    It.IsAny<DataOrigin>(),
+                    It.IsAny<uint>(), null),
+                Times.Never());
         }
 
         [RetryFact(5, 250)]
@@ -179,10 +190,65 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _inputDataPlugInEngine.Setup(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()))
                 .Returns((DicomFile dicomFile, FileStorageMetadata fileMetadata) => Task.FromResult(new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata)));
 
-            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
+            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids).ConfigureAwait(false);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Once());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Once());
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(),
+                    It.IsAny<FileStorageMetadata>(),
+                    It.IsAny<DataOrigin>(),
+                    It.IsAny<uint>(),
+                    It.IsAny<PatientDetails>()),
+                Times.Once());
+            _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
+            _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Once());
+        }
+
+        [RetryFact(5, 250)]
+        public async Task GivenACStoreRequest_WhenHandleInstanceAsyncIsCalledWithPatientDetails_ExpectADicomFileStorageMetadataToBeCreatedAndQueued()
+        {
+            var aet = new MonaiApplicationEntity()
+            {
+                AeTitle = "TESTAET",
+                Name = "TESTAET",
+                Workflows = new List<string>() { "AppA", "AppB", Guid.NewGuid().ToString() },
+                PlugInAssemblies = new List<string>() { typeof(TestInputDataPlugInAddWorkflow).AssemblyQualifiedName }
+            };
+            var expectedPatientDetails = new PatientDetails
+            {
+                PatientId = "PID",
+                PatientName = "Lillie",
+                PatientHospitalId = "123 Unicorn Drive",
+                PatientSex = "O",
+                PatientAge = "021Y",
+                PatientDob = new DateTime(2023, 09, 05),
+            };
+
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
+
+            var request = GenerateRequestWithPatientDetails();
+            var dicomToolkit = new DicomToolkit();
+            var uids = dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
+            _inputDataPlugInEngine.Setup(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()))
+                .Returns((DicomFile dicomFile, FileStorageMetadata fileMetadata) => Task.FromResult(new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata)));
+
+            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids).ConfigureAwait(false);
+
+            _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Once());
+            _payloadAssembler.Verify(p =>
+                    p.QueueAsync(It.IsAny<string>(),
+                        It.IsAny<FileStorageMetadata>(),
+                        It.IsAny<DataOrigin>(),
+                        It.IsAny<uint>(),
+                        It.Is<PatientDetails>(p =>
+                            string.Equals(p.PatientName, expectedPatientDetails.PatientName, StringComparison.Ordinal)
+                            && string.Equals(p.PatientId, expectedPatientDetails.PatientId, StringComparison.Ordinal)
+                            && string.Equals(p.PatientSex, expectedPatientDetails.PatientSex, StringComparison.Ordinal)
+                            && string.Equals(p.PatientAge, expectedPatientDetails.PatientAge, StringComparison.Ordinal)
+                            && string.Equals(p.PatientHospitalId, expectedPatientDetails.PatientHospitalId, StringComparison.Ordinal)
+                            && DateTime.Compare(p.PatientDob.Value, expectedPatientDetails.PatientDob.Value) == 0
+                        )),
+                Times.Once());
             _inputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Once());
             _inputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()), Times.Once());
         }
@@ -219,6 +285,25 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var dataset = new DicomDataset
             {
                 { DicomTag.PatientID, "PID" },
+                { DicomTag.StudyInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SeriesInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
+                { DicomTag.SOPClassUID, DicomUID.SecondaryCaptureImageStorage.UID }
+            };
+            var file = new DicomFile(dataset);
+            return new DicomCStoreRequest(file);
+        }
+
+        private static DicomCStoreRequest GenerateRequestWithPatientDetails()
+        {
+            var dataset = new DicomDataset
+            {
+                { DicomTag.PatientID, "PID" },
+                { DicomTag.PatientName, "Lillie" },
+                { DicomTag.IssuerOfPatientID, "123 Unicorn Drive" },
+                { DicomTag.PatientSex, "O" },
+                new DicomAgeString(DicomTag.PatientAge, "021Y"),
+                { DicomTag.PatientBirthDate, new DateTime(2023, 09, 05) },
                 { DicomTag.StudyInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
                 { DicomTag.SeriesInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },
                 { DicomTag.SOPInstanceUID, DicomUIDGenerator.GenerateDerivedFromUUID() },

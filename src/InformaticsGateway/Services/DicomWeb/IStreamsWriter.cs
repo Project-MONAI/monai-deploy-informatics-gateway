@@ -199,7 +199,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             dicomInfo = result.Item2 as DicomFileStorageMetadata;
 
             // for DICOMweb, use correlation ID as the grouping key
-            var payloadId = await _payloadAssembler.Queue(correlationId, dicomInfo, new DataOrigin { DataService = DataService.DicomWeb, Source = dataSource, Destination = endpointName }, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
+            var payloadId = await _payloadAssembler.QueueAsync(correlationId, dicomInfo, new DataOrigin { DataService = DataService.DicomWeb, Source = dataSource, Destination = endpointName }, _configuration.Value.DicomWeb.Timeout).ConfigureAwait(false);
             dicomInfo.PayloadId = payloadId.ToString();
 
             await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_configuration.Value.Dicom.WriteDicomJson, _configuration.Value.Dicom.ValidateDicomOnSerialization), _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
@@ -212,7 +212,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             _storedCount++;
         }
 
-        private void AddSuccess(DicomStatus warningStatus = null, StudySerieSopUids uids = default)
+        private void AddSuccess(DicomStatus warningStatus = null, StudySeriesSopAids aids = default)
         {
             if (!_resultDicomDataset.TryGetSequence(DicomTag.ReferencedSOPSequence, out var referencedSopSequence))
             {
@@ -221,12 +221,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 _resultDicomDataset.Add(referencedSopSequence);
             }
 
-            if (uids is not null)
+            if (aids is not null)
             {
                 var referencedItem = new DicomDataset
                 {
-                    { DicomTag.ReferencedSOPInstanceUID, uids.SopInstanceUid },
-                    { DicomTag.ReferencedSOPClassUID, uids.SopClassUid },
+                    { DicomTag.ReferencedSOPInstanceUID, aids.SopInstanceUid },
+                    { DicomTag.ReferencedSOPClassUID, aids.SopClassUid },
                 };
 
                 if (warningStatus is not null)
@@ -239,7 +239,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         }
 
         /// <inheritdoc />
-        private void AddFailure(DicomStatus dicomStatus, StudySerieSopUids uids = default)
+        private void AddFailure(DicomStatus dicomStatus, StudySeriesSopAids aids = default)
         {
             Guard.Against.Null(dicomStatus, nameof(dicomStatus));
 
@@ -251,12 +251,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 _resultDicomDataset.Add(failedSopSequence);
             }
 
-            if (uids is not null)
+            if (aids is not null)
             {
                 var failedItem = new DicomDataset
                 {
-                    { DicomTag.ReferencedSOPInstanceUID, uids.SopInstanceUid },
-                    { DicomTag.ReferencedSOPClassUID, uids.SopClassUid },
+                    { DicomTag.ReferencedSOPInstanceUID, aids.SopInstanceUid },
+                    { DicomTag.ReferencedSOPClassUID, aids.SopClassUid },
                     { DicomTag.FailureReason, dicomStatus.Code },
                 };
 

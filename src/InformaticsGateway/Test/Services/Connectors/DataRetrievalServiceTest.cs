@@ -206,7 +206,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                                 throw new OperationCanceledException("canceled");
                             });
 
-            _payloadAssembler.Setup(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()));
+            _payloadAssembler.Setup(p => p.QueueAsync(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()));
 
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
@@ -328,7 +328,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.ToString().StartsWith($"{url}studies/")),
                ItExpr.IsAny<CancellationToken>());
 
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Never());
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Never());
             _logger.VerifyLogging($"Error processing request: TransactionId = {request.TransactionId}.", LogLevel.Error, Times.Once());
         }
 
@@ -440,7 +440,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                     .ReturnsAsync(new List<FileStorageMetadata>());
 
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
-                .Returns((DicomFile dicomFile) => new StudySerieSopUids
+                .Returns((DicomFile dicomFile) => new StudySeriesSopAids
                 {
                     StudyInstanceUid = dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
                     SeriesInstanceUid = dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
@@ -462,7 +462,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                ItExpr.IsAny<CancellationToken>());
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(4));
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(4));
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(4));
         }
 
         [RetryFact(5, 250)]
@@ -547,7 +547,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                         .ReturnsAsync(new List<FileStorageMetadata>());
 
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
-                .Returns((DicomFile dicomFile) => new StudySerieSopUids
+                .Returns((DicomFile dicomFile) => new StudySeriesSopAids
                 {
                     StudyInstanceUid = dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
                     SeriesInstanceUid = dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
@@ -580,7 +580,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             }
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(studyInstanceUids.Count));
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(studyInstanceUids.Count));
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(studyInstanceUids.Count));
         }
 
         [RetryFact(5, 250)]
@@ -665,7 +665,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                         .ReturnsAsync(new List<FileStorageMetadata>());
 
             _dicomToolkit.Setup(p => p.GetStudySeriesSopInstanceUids(It.IsAny<DicomFile>()))
-                .Returns((DicomFile dicomFile) => new StudySerieSopUids
+                .Returns((DicomFile dicomFile) => new StudySeriesSopAids
                 {
                     StudyInstanceUid = dicomFile.Dataset.GetString(DicomTag.StudyInstanceUID),
                     SeriesInstanceUid = dicomFile.Dataset.GetString(DicomTag.SeriesInstanceUID),
@@ -698,7 +698,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             }
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(2));
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(2));
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(2));
         }
 
         [RetryFact(5, 250)]
@@ -808,7 +808,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 req.RequestUri.PathAndQuery.Contains("Observation/2")),
                ItExpr.IsAny<CancellationToken>());
 
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(2));
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(2));
         }
 
         private static HttpResponseMessage GenerateQueryResult(DicomTag dicomTag, string queryValue, List<string> studyInstanceUids)

@@ -1,6 +1,5 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
- * Copyright 2019-2020 NVIDIA Corporation
+ * Copyright 2022 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,18 +14,16 @@
  * limitations under the License.
  */
 
-using System.IO;
-using System.Threading.Tasks;
-using FellowOakDicom;
+using Microsoft.Extensions.Configuration;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Configuration
 {
-    public interface IDicomToolkit
+    public class HttpPaginationConfiguration
     {
-        Task<DicomFile> OpenAsync(Stream stream, FileReadOption fileReadOption = FileReadOption.Default);
+        [ConfigurationKeyName("defaultPageSize")]
+        public int DefaultPageSize { get; set; } = 10;
 
-        DicomFile Load(byte[] fileContent);
-
-        StudySeriesSopAids GetStudySeriesSopInstanceUids(DicomFile dicomFile);
+        [ConfigurationKeyName("maxPageSize")]
+        public int MaxPageSize { get; set; } = 10;
     }
 }

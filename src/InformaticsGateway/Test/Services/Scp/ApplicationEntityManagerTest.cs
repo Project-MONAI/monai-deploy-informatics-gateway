@@ -305,7 +305,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     "AE1",
                     "AE",
                     associationId,
-                    It.Is<StudySerieSopUids>(p =>
+                    It.Is<StudySeriesSopAids>(p =>
                         p.SopClassUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SOPClassUID)) &&
                         p.StudyInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)) &&
                         p.SeriesInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)) &&

@@ -89,7 +89,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 throw new FhirStoreException(correlationId, $"Provided resource is of type '{content.InternalResourceType}' but request targeted type '{resourceType}'.", IssueType.Invalid);
             }
 
-            var payloadId = await _payloadAssembler.Queue(correlationId, content.Metadata, new DataOrigin { DataService = DataService.FHIR, Source = request.HttpContext.Connection.RemoteIpAddress.ToString(), Destination = FileStorageMetadata.IpAddress() }, Resources.PayloadAssemblerTimeout).ConfigureAwait(false);
+            var payloadId = await _payloadAssembler.QueueAsync(correlationId, content.Metadata,
+                new DataOrigin
+                {
+                    DataService = DataService.FHIR, Source = request.HttpContext.Connection.RemoteIpAddress.ToString(),
+                    Destination = FileStorageMetadata.IpAddress()
+                }, Resources.PayloadAssemblerTimeout).ConfigureAwait(false);
+
             content.Metadata.PayloadId = payloadId.ToString();
             _uploadQueue.Queue(content.Metadata);
             _logger.QueuedStowInstance();

@@ -23,6 +23,7 @@ using Ardalis.GuardClauses;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -36,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
     [Route("config/ae")]
-    public class MonaiAeTitleController : ControllerBase
+    public class MonaiAeTitleController : ApiControllerBase
     {
         private readonly ILogger<MonaiAeTitleController> _logger;
         private readonly IMonaiApplicationEntityRepository _repository;
@@ -47,7 +48,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             ILogger<MonaiAeTitleController> logger,
             IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
             IMonaiApplicationEntityRepository repository,
-            IDataPlugInEngineFactory<IInputDataPlugIn> inputDataPlugInEngineFactory)
+            IDataPlugInEngineFactory<IInputDataPlugIn> inputDataPlugInEngineFactory,
+            IOptions<HttpPaginationConfiguration> options) : base(options)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
@@ -68,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorQueryingDatabase(ex);
-                return Problem(title: "Error querying database.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error querying database.", statusCode: InternalServerError, detail: ex.Message);
             }
         }
 
@@ -94,7 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorListingMonaiApplicationEntities(ex);
-                return Problem(title: "Error querying MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error querying MONAI Application Entity.", statusCode: InternalServerError, detail: ex.Message);
             }
         }
 
@@ -125,12 +127,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (ConfigurationException ex)
             {
-                return Problem(title: "Validation error.", statusCode: (int)System.Net.HttpStatusCode.BadRequest, detail: ex.Message);
+                return Problem(title: "Validation error.", statusCode: BadRequest, detail: ex.Message);
             }
             catch (Exception ex)
             {
                 _logger.ErrorAddingMonaiApplicationEntity(ex);
-                return Problem(title: "Error adding new MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error adding new MONAI Application Entity.", statusCode: InternalServerError, detail: ex.Message);
             }
         }
 
@@ -173,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (ConfigurationException ex)
             {
-                return Problem(title: "Validation error.", statusCode: (int)System.Net.HttpStatusCode.BadRequest, detail: ex.Message);
+                return Problem(title: "Validation error.", statusCode: BadRequest, detail: ex.Message);
             }
             catch (Exception ex)
             {
@@ -206,7 +208,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorDeletingMonaiApplicationEntity(ex);
-                return Problem(title: "Error deleting MONAI Application Entity.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error deleting MONAI Application Entity.", statusCode: InternalServerError, detail: ex.Message);
             }
         }
 
@@ -223,7 +225,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             catch (Exception ex)
             {
                 _logger.ErrorReadingDataInputPlugIns(ex);
-                return Problem(title: "Error reading data input plug-ins.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
+                return Problem(title: "Error reading data input plug-ins.", statusCode: InternalServerError, detail: ex.Message);
             }
         }
 

@@ -265,7 +265,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
             clientAdapter.Verify(p => p.Close(), Times.AtLeastOnce());
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Never());
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Never());
         }
 
         [RetryFact(10, 250)]
@@ -305,7 +305,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             await Task.Delay(500).ConfigureAwait(false);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(3));
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(3));
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(3));
         }
     }
 }

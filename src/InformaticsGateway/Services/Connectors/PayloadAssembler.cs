@@ -38,16 +38,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     /// An in-memory queue for providing any files/DICOM instances received by the Informatics Gateway to
     /// other internal services.
     /// </summary>
-    internal sealed partial class PayloadAssembler : IPayloadAssembler, IDisposable
+    internal sealed class PayloadAssembler : IPayloadAssembler, IDisposable
     {
         internal const int DEFAULT_TIMEOUT = 5;
         private readonly ILogger<PayloadAssembler> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
-        private readonly ConcurrentDictionary<string, AsyncLazy<Payload>> _payloads;
+        private readonly ConcurrentDictionary<string, AsyncLazy<Payload>> _payloads = new();
         private readonly Task _intializedTask;
-        private readonly BlockingCollection<Payload> _workItems;
-        private readonly System.Timers.Timer _timer;
+        private readonly BlockingCollection<Payload> _workItems = new();
+        private readonly System.Timers.Timer _timer = new(1000)
+        {
+            AutoReset = false,
+        };
 
         public PayloadAssembler(
             ILogger<PayloadAssembler> logger,
@@ -56,20 +59,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            _workItems = new BlockingCollection<Payload>();
-            _payloads = new ConcurrentDictionary<string, AsyncLazy<Payload>>();
+            _intializedTask = RemovePendingPayloadsAsync();
 
-            _intializedTask = RemovePendingPayloads();
-
-            _timer = new System.Timers.Timer(1000)
-            {
-                AutoReset = false,
-            };
-            _timer.Elapsed += OnTimedEvent;
+            _timer.Elapsed += OnTimedEvent!;
             _timer.Enabled = true;
         }
 
-        private async Task RemovePendingPayloads()
+        private async Task RemovePendingPayloadsAsync()
         {
             _logger.RemovingPendingPayloads();
             var scope = _serviceScopeFactory.CreateScope();
@@ -86,7 +82,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
         /// <param name="dataOrigin">The service that triggered this queue request</param>
-        public async Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin) => await Queue(bucket, file, dataOrigin, DEFAULT_TIMEOUT).ConfigureAwait(false);
+        public Task<Guid> QueueAsync(string bucket, FileStorageMetadata file, DataOrigin dataOrigin) =>
+            QueueAsync(bucket, file, dataOrigin, DEFAULT_TIMEOUT);
 
         /// <summary>
         /// Queues a new instance of <see cref="FileStorageMetadata"/>.
@@ -94,8 +91,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="bucket">Name of the bucket where the file would be added to</param>
         /// <param name="file">Instance to be queued</param>
         /// <param name="dataOrigin">The service that triggered this queue request</param>
-        /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
-        public async Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout)
+        /// <param name="timeout">
+        /// Number of seconds the bucket shall wait before sending the payload to be processed.
+        /// Note: timeout cannot be modified once the bucket is created.
+        /// </param>
+        /// <param name="patientDetails">Details of the patients.</param>
+        public async Task<Guid> QueueAsync(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout, PatientDetails? patientDetails = null)
         {
             Guard.Against.Null(file, nameof(file));
 
@@ -103,7 +104,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "CorrelationId", file.CorrelationId } });
 
-            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, file.WorkflowInstanceId, file.TaskId, dataOrigin, timeout).ConfigureAwait(false);
+            var payload = await CreateOrGetPayloadAsync(bucket,
+                    file.CorrelationId,
+                    file.WorkflowInstanceId,
+                    file.TaskId,
+                    dataOrigin,
+                    timeout,
+                    patientDetails)
+                .ConfigureAwait(false);
             payload.Add(file);
             _logger.FileAddedToBucket(payload.Key, payload.Count);
             return payload.PayloadId;
@@ -120,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             return _workItems.Take(cancellationToken);
         }
 
-        private async void OnTimedEvent(Object source, System.Timers.ElapsedEventArgs e)
+        private async void OnTimedEvent(object source, System.Timers.ElapsedEventArgs e)
         {
             try
             {
@@ -144,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                         {
                             if (_payloads.TryRemove(key, out _))
                             {
-                                await QueueBucketForNotification(key, payload).ConfigureAwait(false);
+                                await QueueBucketForNotificationAsync(key, payload).ConfigureAwait(false);
                             }
                             else
                             {
@@ -173,7 +181,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task QueueBucketForNotification(string key, Payload payload)
+        private async Task QueueBucketForNotificationAsync(string key, Payload payload)
         {
             try
             {
@@ -198,17 +206,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task<Payload> CreateOrGetPayload(string key, string correlationId, string? workflowInstanceId, string? taskId, Messaging.Events.DataOrigin dataOrigin, uint timeout)
+        private async Task<Payload> CreateOrGetPayloadAsync(string key,
+            string correlationId,
+            string? workflowInstanceId,
+            string? taskId,
+            DataOrigin dataOrigin,
+            uint timeout,
+            PatientDetails? patientDetails)
         {
-            return await _payloads.GetOrAdd(key, x => new AsyncLazy<Payload>(async () =>
+            return await _payloads.GetOrAdd(key, _ => new AsyncLazy<Payload>(async () =>
             {
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
-                var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout);
+                var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout, patientDetails);
                 await repository.AddAsync(newPayload).ConfigureAwait(false);
                 _logger.BucketCreated(key, timeout);
                 return newPayload;
-            }));
+            })).ConfigureAwait(false);
         }
 
         public void Dispose()

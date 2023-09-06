@@ -73,6 +73,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public HashSet<DataOrigin> DataOrigins { get; init; }
 
+        public PatientDetails? PatientDetails { get; init; }
+
         public int Count { get => Files.Count; }
 
         public bool HasTimedOut { get => ElapsedTime().TotalSeconds >= Timeout; }
@@ -85,6 +87,16 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public int FilesUploaded { get => Files.Count(p => p.IsUploaded); }
 
         public int FilesFailedToUpload { get => Files.Count(p => p.IsUploadFailed); }
+
+        public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId,
+            DataOrigin dataTrigger, uint timeout, PatientDetails? patientDetails) : this(key, correlationId, workflowInstanceId, taskId, dataTrigger, timeout)
+        {
+            if (patientDetails is not null)
+            {
+                PatientDetails = patientDetails;
+            }
+        }
+
 
         public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout)
         {

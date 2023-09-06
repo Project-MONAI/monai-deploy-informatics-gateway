@@ -158,7 +158,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Fhir
             Assert.Equal(StatusCodes.Status201Created, results.StatusCode);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Once());
-            _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Once());
+            _payloadAssembler.Verify(p => p.QueueAsync(It.IsAny<string>(),
+                    It.IsAny<FileStorageMetadata>(),
+                    It.IsAny<DataOrigin>(),
+                    It.IsAny<uint>(), null),
+                Times.Once());
         }
     }
 }

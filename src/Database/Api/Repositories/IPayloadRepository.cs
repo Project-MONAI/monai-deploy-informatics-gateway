@@ -31,5 +31,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
         Task<int> RemovePendingPayloadsAsync(CancellationToken cancellationToken = default);
 
         Task<List<Payload>> GetPayloadsInStateAsync(CancellationToken cancellationToken = default, params Payload.PayloadState[] states);
+
+        Task<IList<Payload>> GetAllAsync(int? skip, int? limit, string patientId, string patientName);
+
+        Task<long> CountAsync();
     }
 }

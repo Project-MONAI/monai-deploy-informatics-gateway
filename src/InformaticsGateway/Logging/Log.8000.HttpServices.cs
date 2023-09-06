@@ -173,5 +173,9 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8204, Level = LogLevel.Error, Message = "Failed to store FHIR resource.")]
         public static partial void ErrorStoringFhirResource(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8205, Level = LogLevel.Error, Message = "Unexpected error occurred in GET /payload API.")]
+        public static partial void PayloadGetAllAsyncError(this ILogger logger, Exception ex);
+
     }
 }

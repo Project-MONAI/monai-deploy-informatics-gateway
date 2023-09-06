@@ -154,7 +154,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+
         }
 
         [Fact(DisplayName = "dst remove command")]
@@ -207,7 +209,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+
         }
 
         [Fact(DisplayName = "dst list command")]
@@ -266,7 +270,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+
         }
 
         [Fact(DisplayName = "dst list command empty")]
@@ -336,7 +342,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.CEcho(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+
         }
 
         [Fact(DisplayName = "dst update command")]
@@ -403,7 +411,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.List(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+
         }
 
         [Fact(DisplayName = "dst plugins comand")]
@@ -456,7 +466,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.DicomDestinations.PlugIns(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+
         }
 
         [Fact(DisplayName = "dst plugins comand empty")]

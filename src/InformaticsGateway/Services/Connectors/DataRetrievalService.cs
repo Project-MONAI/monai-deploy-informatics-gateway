@@ -201,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 var FileMeta = retrievedFiles[key];
 
-                var payloadId = await _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key], new DataOrigin { DataService = DataService.ACR, Source = inferenceRequest.TransactionId, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
+                var payloadId = await _payloadAssembler.QueueAsync(inferenceRequest.TransactionId, retrievedFiles[key], new DataOrigin { DataService = DataService.ACR, Source = inferenceRequest.TransactionId, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
                 retrievedFiles[key].PayloadId = payloadId.ToString();
                 _uploadQueue.Queue(retrievedFiles[key]);
             }
@@ -560,12 +560,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private static DicomFileStorageMetadata SaveFile(string transactionId, DicomFile file, StudySerieSopUids uids)
+        private static DicomFileStorageMetadata SaveFile(string transactionId, DicomFile file, StudySeriesSopAids aids)
         {
             Guard.Against.Null(transactionId, nameof(transactionId));
             Guard.Against.Null(file, nameof(file));
 
-            return new DicomFileStorageMetadata(transactionId, uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid, DataService.DicomWeb, transactionId, FileStorageMetadata.IpAddress());
+            return new DicomFileStorageMetadata(transactionId, aids.Identifier, aids.StudyInstanceUid, aids.SeriesInstanceUid, aids.SopInstanceUid, DataService.DicomWeb, transactionId, FileStorageMetadata.IpAddress());
         }
 
         protected virtual void Dispose(bool disposing)

@@ -23,6 +23,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
+using MongoDB.Bson;
 using MongoDB.Driver;
 using Polly;
 using Polly.Retry;
@@ -69,22 +70,22 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             _collection.Indexes.CreateOne(new CreateIndexModel<Payload>(indexDefinitionState));
         }
 
-        public async Task<Payload> AddAsync(Payload item, CancellationToken cancellationToken = default)
+        public Task<Payload> AddAsync(Payload item, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(item, nameof(item));
 
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(async () =>
             {
                 await _collection.InsertOneAsync(item, cancellationToken: cancellationToken).ConfigureAwait(false);
                 return item;
-            }).ConfigureAwait(false);
+            });
         }
 
-        public async Task<Payload> RemoveAsync(Payload entity, CancellationToken cancellationToken = default)
+        public Task<Payload> RemoveAsync(Payload entity, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(entity, nameof(entity));
 
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(async () =>
             {
                 var result = await _collection.DeleteOneAsync(Builders<Payload>.Filter.Where(p => p.PayloadId == entity.PayloadId), cancellationToken: cancellationToken).ConfigureAwait(false);
                 if (result.DeletedCount == 0)
@@ -92,48 +93,83 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
                     throw new DatabaseException("Failed to delete entity");
                 }
                 return entity;
-            }).ConfigureAwait(false);
+            });
         }
 
-        public async Task<List<Payload>> ToListAsync(CancellationToken cancellationToken = default)
+        public Task<List<Payload>> ToListAsync(CancellationToken cancellationToken = default)
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(() =>
             {
-                return await _collection.Find(Builders<Payload>.Filter.Empty).ToListAsync(cancellationToken).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+                return _collection.Find(Builders<Payload>.Filter.Empty).ToListAsync(cancellationToken);
+            });
         }
 
-        public async Task<Payload> UpdateAsync(Payload entity, CancellationToken cancellationToken = default)
+        public Task<Payload> UpdateAsync(Payload entity, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(entity, nameof(entity));
 
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(async () =>
             {
-                var result = await _collection.ReplaceOneAsync(p => p.PayloadId == entity.PayloadId, entity, cancellationToken: cancellationToken).ConfigureAwait(false);
+                var result = await _collection
+                    .ReplaceOneAsync(p => p.PayloadId == entity.PayloadId, entity, cancellationToken: cancellationToken)
+                    .ConfigureAwait(false);
                 if (result.ModifiedCount == 0)
                 {
                     throw new DatabaseException("Failed to update entity");
                 }
                 return entity;
-            }).ConfigureAwait(false);
+            });
         }
 
-        public async Task<int> RemovePendingPayloadsAsync(CancellationToken cancellationToken = default)
+        public Task<int> RemovePendingPayloadsAsync(CancellationToken cancellationToken = default)
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(async () =>
             {
                 var results = await _collection.DeleteManyAsync(Builders<Payload>.Filter.Where(p => p.State == Payload.PayloadState.Created && p.MachineName == Environment.MachineName), cancellationToken).ConfigureAwait(false);
                 return Convert.ToInt32(results.DeletedCount);
-            }).ConfigureAwait(false);
+            });
         }
 
-        public async Task<List<Payload>> GetPayloadsInStateAsync(CancellationToken cancellationToken = default, params Payload.PayloadState[] states)
+        public Task<List<Payload>> GetPayloadsInStateAsync(CancellationToken cancellationToken = default, params Payload.PayloadState[] states)
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(() =>
             {
-                return await _collection.Find(Builders<Payload>.Filter.Where(p => states.Contains(p.State))).ToListAsync(cancellationToken).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+                return _collection.Find(Builders<Payload>.Filter.Where(p => states.Contains(p.State))).ToListAsync(cancellationToken);
+            });
         }
+
+        public Task<IList<Payload>> GetAllAsync(int? skip, int? limit, string patientId, string patientName)
+        {
+            var builder = Builders<Payload>.Filter;
+            var filter = builder.Empty;
+
+            if (!string.IsNullOrEmpty(patientId) && !string.IsNullOrEmpty(patientName))
+                filter &= builder.Exists(p => p.PatientDetails);
+            if (!string.IsNullOrEmpty(patientId))
+                filter &= builder.Regex(p => p.PatientDetails!.PatientId, new BsonRegularExpression($"/{patientId}/i"));
+            if (!string.IsNullOrEmpty(patientName))
+                filter &= builder.Regex(p => p.PatientDetails!.PatientName, new BsonRegularExpression($"/{patientName}/i"));
+
+            return GetAllAsync(_collection,
+                filter,
+                Builders<Payload>.Sort.Descending(x => x.DateTimeCreated),
+                skip,
+                limit);
+        }
+
+        private static async Task<IList<T>> GetAllAsync<T>(IMongoCollection<T> collection,
+            FilterDefinition<T> filterFunction, SortDefinition<T> sortFunction, int? skip = null, int? limit = null)
+        {
+            return await collection
+                .Find(filterFunction)
+                .Skip(skip)
+                .Limit(limit)
+                .Sort(sortFunction)
+                .ToListAsync().ConfigureAwait(false);
+        }
+
+        public Task<long> CountAsync()
+            => _collection.CountDocumentsAsync(Builders<Payload>.Filter.Empty);
 
         protected virtual void Dispose(bool disposing)
         {

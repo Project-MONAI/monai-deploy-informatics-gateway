@@ -24,7 +24,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
         [Fact]
         public void GivenAStudySerieSopUids_WithUidsSet_ExpectIdentifierToHaveCorrectValue()
         {
-            var uids = new StudySerieSopUids
+            var uids = new StudySeriesSopAids
             {
                 StudyInstanceUid = "STUDY",
                 SeriesInstanceUid = "SERIES",

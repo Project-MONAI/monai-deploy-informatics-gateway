@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        public async Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
+        public async Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySeriesSopAids aids)
         {
             if (_configuration is null)
             {
@@ -98,33 +98,49 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
             Guard.Against.NullOrWhiteSpace(callingAeTitle, nameof(callingAeTitle));
             Guard.Against.Null(associationId, nameof(associationId));
-            Guard.Against.Null(uids, nameof(uids));
+            Guard.Against.Null(aids, nameof(aids));
 
-            if (!AcceptsSopClass(uids.SopClassUid))
+            if (!AcceptsSopClass(aids.SopClassUid))
             {
                 _logger.InstanceIgnoredWIthMatchingSopClassUid(request.SOPClassUID.UID);
                 return;
             }
 
-            var dicomInfo = new DicomFileStorageMetadata(associationId.ToString(), uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid, DataService.DIMSE, callingAeTitle, calledAeTitle);
+            var dicomInfo = new DicomFileStorageMetadata(associationId.ToString(), aids.Identifier, aids.StudyInstanceUid, aids.SeriesInstanceUid, aids.SopInstanceUid, DataService.DIMSE, callingAeTitle, calledAeTitle);
 
             if (_configuration.Workflows.Any())
             {
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
-            var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
+            var (dicomFile, fileStorageMetadata) = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
 
-            dicomInfo = result.Item2 as DicomFileStorageMetadata;
-            var dicomFile = result.Item1;
-            await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
+            dicomInfo = fileStorageMetadata as DicomFileStorageMetadata;
+            await dicomInfo!.SetDataStreams(dicomFile,
+                    dicomFile.ToJson(_dicomJsonOptions,
+                        _validateDicomValueOnJsonSerialization),
+                    _options.Value.Storage.TemporaryDataStorage,
+                    _fileSystem,
+                    _options.Value.Storage.LocalTemporaryStoragePath)
+                .ConfigureAwait(false);
 
             var dicomTag = FellowOakDicom.DicomTag.Parse(_configuration.Grouping);
             _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = dicomFile.Dataset.GetSingleValue<string>(dicomTag);
+            var patientDetails = PatientDetails.Dicom.Get(dicomFile.Dataset);
 
-            var payloadid = await _payloadAssembler.Queue(key, dicomInfo, new DataOrigin { DataService = DataService.DIMSE, Source = callingAeTitle, Destination = calledAeTitle }, _configuration.Timeout).ConfigureAwait(false);
-            dicomInfo.PayloadId = payloadid.ToString();
+            var payloadId = await _payloadAssembler.QueueAsync(key,
+                    dicomInfo,
+                    new DataOrigin
+                    {
+                        DataService = DataService.DIMSE,
+                        Source = callingAeTitle,
+                        Destination = calledAeTitle
+                    },
+                    _configuration.Timeout,
+                    patientDetails)
+                .ConfigureAwait(false);
+            dicomInfo.PayloadId = payloadId.ToString();
             _uploadQueue.Queue(dicomInfo);
         }
 

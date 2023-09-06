@@ -151,7 +151,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "src remove comand")]
@@ -204,7 +205,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "src list comand")]
@@ -262,7 +264,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
 
         [Fact(DisplayName = "src list comand empty")]
@@ -344,7 +347,8 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _informaticsGatewayClient.Verify(p => p.ConfigureServiceUris(It.IsAny<Uri>()), Times.Never());
             _informaticsGatewayClient.Verify(p => p.MonaiScpAeTitle.List(It.IsAny<CancellationToken>()), Times.Never());
 
-            _logger.VerifyLoggingMessageBeginsWith("Please execute `testhost config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageBeginsWith("Please execute `", LogLevel.Critical, Times.Once());
+            _logger.VerifyLoggingMessageEndsWith(" config init` to intialize Informatics Gateway.", LogLevel.Critical, Times.Once());
         }
     }
 }

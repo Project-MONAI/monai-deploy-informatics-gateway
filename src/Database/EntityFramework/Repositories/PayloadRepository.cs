@@ -55,73 +55,83 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             _dataset = _informaticsGatewayContext.Set<Payload>();
         }
 
-        public async Task<Payload> AddAsync(Payload item, CancellationToken cancellationToken = default)
+        public Task<Payload> AddAsync(Payload item, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(item, nameof(item));
 
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(async () =>
             {
                 var result = await _dataset.AddAsync(item, cancellationToken).ConfigureAwait(false);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 return result.Entity;
-            }).ConfigureAwait(false);
+            });
         }
 
-        public async Task<Payload> RemoveAsync(Payload entity, CancellationToken cancellationToken = default)
+        public Task<Payload> RemoveAsync(Payload entity, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(entity, nameof(entity));
 
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(async () =>
             {
                 var result = _dataset.Remove(entity);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 return result.Entity;
-            }).ConfigureAwait(false);
+            });
         }
 
-        public async Task<List<Payload>> ToListAsync(CancellationToken cancellationToken = default)
+        public Task<List<Payload>> ToListAsync(CancellationToken cancellationToken = default)
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
-            {
-                return await _dataset.ToListAsync(cancellationToken).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+            return _retryPolicy.ExecuteAsync(() => _dataset.ToListAsync(cancellationToken));
         }
 
-        public async Task<Payload> UpdateAsync(Payload entity, CancellationToken cancellationToken = default)
+        public Task<Payload> UpdateAsync(Payload entity, CancellationToken cancellationToken = default)
         {
             Guard.Against.Null(entity, nameof(entity));
 
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(async () =>
             {
                 var result = _dataset.Update(entity);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 return result.Entity;
-            }).ConfigureAwait(false);
+            });
         }
 
-        public async Task<int> RemovePendingPayloadsAsync(CancellationToken cancellationToken = default)
+        public Task<int> RemovePendingPayloadsAsync(CancellationToken cancellationToken = default)
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(async () =>
             {
                 var count = 0;
                 await _dataset.Where(p => p.State == Payload.PayloadState.Created && p.MachineName == Environment.MachineName).ForEachAsync(
-                   p =>
-                   {
-                       _dataset.Remove(p);
-                       count++;
-                   }).ConfigureAwait(false);
+                    p =>
+                    {
+                        _dataset.Remove(p);
+                        count++;
+                    }, cancellationToken: cancellationToken).ConfigureAwait(false);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 return count;
-            }).ConfigureAwait(false);
+            });
         }
 
-        public async Task<List<Payload>> GetPayloadsInStateAsync(CancellationToken cancellationToken = default, params Payload.PayloadState[] states)
+        public Task<List<Payload>> GetPayloadsInStateAsync(CancellationToken cancellationToken = default, params Payload.PayloadState[] states)
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
+            return _retryPolicy.ExecuteAsync(() =>
             {
-                return await _dataset.Where(p => states.Contains(p.State)).ToListAsync(cancellationToken).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+                return _dataset.Where(p => states.Contains(p.State)).ToListAsync(cancellationToken);
+            });
         }
+
+        public async Task<IList<Payload>> GetAllAsync(int? skip, int? limit, string patientId, string patientName)
+        {
+            return await _dataset
+                .Skip(skip ?? 0)
+                .Where(p => p.PatientDetails != null)
+                .Where(p => p.PatientDetails!.PatientId == patientId)
+                .Where(p => p.PatientDetails!.PatientName == patientName)
+                .Take(limit ?? 10)
+                .ToListAsync().ConfigureAwait(false);
+        }
+
+        public Task<long> CountAsync() => _dataset.LongCountAsync();
 
         protected virtual void Dispose(bool disposing)
         {

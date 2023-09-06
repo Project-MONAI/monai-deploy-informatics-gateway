@@ -27,8 +27,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Http;
@@ -77,13 +79,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             _repository = new Mock<IMonaiApplicationEntityRepository>();
             _pluginFactory = new Mock<IDataPlugInEngineFactory<IInputDataPlugIn>>();
+            var options = Options.Create(new HttpPaginationConfiguration());
 
             var controllerContext = new ControllerContext { HttpContext = new DefaultHttpContext() { User = new ClaimsPrincipal(new GenericIdentity(TestUsername)) } };
             _controller = new MonaiAeTitleController(
                  _logger.Object,
                  _aeChangedNotificationService.Object,
                  _repository.Object,
-                 _pluginFactory.Object)
+                 _pluginFactory.Object,
+                 options)
             {
                 ControllerContext = controllerContext,
                 ProblemDetailsFactory = _problemDetailsFactory.Object
