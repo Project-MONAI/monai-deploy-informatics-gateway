@@ -23,7 +23,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -153,8 +152,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
-
             try
             {
                 await _payloadNotificationActionHandler.NotifyAsync(payload, _publishQueue!, _cancellationTokenSource.Token).ConfigureAwait(false);
@@ -180,8 +177,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private async Task MoveActionHandler(Payload payload)
         {
             Guard.Against.Null(payload, nameof(payload));
-
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
 
             try
             {

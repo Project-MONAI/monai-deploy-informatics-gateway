@@ -25,6 +25,7 @@ using DotNext.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -63,6 +64,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(payload, nameof(payload));
             Guard.Against.Null(moveQueue, nameof(moveQueue));
             Guard.Against.Null(notificationQueue, nameof(notificationQueue));
+
+            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
 
             if (payload.State != Payload.PayloadState.Move)
             {
