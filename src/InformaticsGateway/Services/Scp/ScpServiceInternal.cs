@@ -86,8 +86,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             try
             {
                 _logger?.TransferSyntaxUsed(request.TransferSyntax);
-                await _associationDataProvider!.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId).ConfigureAwait(false);
-                _associationInfo.FileReceived();
+                var payloadId = await _associationDataProvider!.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId).ConfigureAwait(false);
+                _associationInfo.FileReceived(payloadId);
                 return new DicomCStoreResponse(request, DicomStatus.Success);
             }
             catch (InsufficientStorageAvailableException ex)

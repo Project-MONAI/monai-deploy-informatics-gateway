@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        public async Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
+        public async Task<string> HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
         {
             if (_configuration is null)
             {
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             if (!AcceptsSopClass(uids.SopClassUid))
             {
                 _logger.InstanceIgnoredWIthMatchingSopClassUid(request.SOPClassUID.UID);
-                return;
+                return null;
             }
 
             var dicomInfo = new DicomFileStorageMetadata(associationId.ToString(), uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid, DataService.DIMSE, callingAeTitle, calledAeTitle);
@@ -123,9 +123,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = dicomFile.Dataset.GetSingleValue<string>(dicomTag);
 
-            var payloadid = await _payloadAssembler.Queue(key, dicomInfo, new DataOrigin { DataService = DataService.DIMSE, Source = callingAeTitle, Destination = calledAeTitle }, _configuration.Timeout).ConfigureAwait(false);
-            dicomInfo.PayloadId = payloadid.ToString();
+            var payloadId = await _payloadAssembler.Queue(key, dicomInfo, new DataOrigin { DataService = DataService.DIMSE, Source = callingAeTitle, Destination = calledAeTitle }, _configuration.Timeout).ConfigureAwait(false);
+            dicomInfo.PayloadId = payloadId.ToString();
             _uploadQueue.Queue(dicomInfo);
+
+            return dicomInfo.PayloadId;
         }
 
         private bool AcceptsSopClass(string sopClassUid)

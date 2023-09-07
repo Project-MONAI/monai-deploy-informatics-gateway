@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
@@ -30,14 +31,21 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public string Errors { get; set; } = string.Empty;
         public TimeSpan Duration { get; private set; } = default!;
 
+        public HashSet<string> PayloadIds { get; private set; }
+
         public DicomAssociationInfo()
         {
             FileCount = 0;
+            PayloadIds = new HashSet<string>();
         }
 
-        public void FileReceived()
+        public void FileReceived(string? payloadId)
         {
-            FileCount++;
+            if (!string.IsNullOrWhiteSpace(payloadId))
+            {
+                FileCount++;
+                PayloadIds.Add(payloadId);
+            }
         }
 
         public void Disconnect()
