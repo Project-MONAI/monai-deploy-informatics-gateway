@@ -205,7 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     }
                     else
                     {
-                        _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                        _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.MessageId, exportRequest.ExportTaskId);
                     }
                 }
 
