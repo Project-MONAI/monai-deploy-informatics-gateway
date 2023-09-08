@@ -20,13 +20,11 @@ using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
-    internal interface IMllpClient
+    internal interface IMllpClient : IDisposable
     {
         Guid ClientId { get; }
 
         string ClientIp { get; }
-
-        void Dispose();
 
         Task Start(Func<IMllpClient, MllpClientResult, Task> onDisconnect, CancellationToken cancellationToken);
     }

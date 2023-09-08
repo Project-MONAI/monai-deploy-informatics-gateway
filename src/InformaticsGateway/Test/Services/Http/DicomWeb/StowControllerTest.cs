@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using FellowOakDicom;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +25,9 @@ using Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Moq;
 using Xunit;
+using System.Threading.Tasks;
+using System;
+using System.Threading;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Http.DicomWeb
 {

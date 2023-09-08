@@ -95,6 +95,12 @@
           "MongoDB.Libmongocrypt": "1.8.0"
         }
       },
+      "NLog": {
+        "type": "Direct",
+        "requested": "[5.2.3, )",
+        "resolved": "5.2.3",
+        "contentHash": "rHTNRtQF5qYqLutSR9ldUWXglKym/KA1R6GKw4JtDvza8i5+kgfmeKH75Ccn1noeJIOjHLXorphMxKk3EiN2tg=="
+      },
       "Polly": {
         "type": "Direct",
         "requested": "[7.2.4, )",
@@ -569,7 +575,8 @@
         "type": "Project",
         "dependencies": {
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
-          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )"
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "NLog": "[5.2.3, )"
         }
       }
     }

@@ -58,6 +58,7 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
     <PackageReference Include="MongoDB.Driver" Version="2.21.0" />
+    <PackageReference Include="NLog" Version="5.2.3" />
     <PackageReference Include="Polly" Version="7.2.4" />
   </ItemGroup>
 

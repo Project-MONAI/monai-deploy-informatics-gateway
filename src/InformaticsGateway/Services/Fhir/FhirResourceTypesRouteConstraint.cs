@@ -22,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 {
     internal class FhirResourceTypesRouteConstraint : IRouteConstraint
     {
-        public bool Match(HttpContext httpContext, IRouter route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
+        public bool Match(HttpContext? httpContext, IRouter? route, string routeKey, RouteValueDictionary values, RouteDirection routeDirection)
         {
             Guard.Against.Null(httpContext, nameof(httpContext));
             Guard.Against.Null(route, nameof(route));

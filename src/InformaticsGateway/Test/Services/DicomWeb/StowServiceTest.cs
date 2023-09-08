@@ -177,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 VirtualAeTitle = Guid.NewGuid().ToString(),
             };
 
-            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
             _repository.Setup(p => p.FindByAeTitleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(vae);
 
             var httpRequest = new Mock<HttpRequest>();
@@ -201,7 +201,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
                 VirtualAeTitle = Guid.NewGuid().ToString(),
             };
 
-            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
             _repository.Setup(p => p.FindByAeTitleAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(vae);
 
             var httpRequest = new Mock<HttpRequest>();
@@ -223,7 +223,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.DicomWeb
             var studyInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var service = new StowService(_serviceFactory.Object, _configuration);
 
-            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity?>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
+            _streamsWriter.Setup(p => p.Save(It.IsAny<IList<Stream>>(), It.IsAny<string>(), It.IsAny<VirtualApplicationEntity>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()));
 
             var httpRequest = new Mock<HttpRequest>();
             httpRequest.SetupGet(p => p.ContentType).Returns($"{ContentTypes.MultipartRelated}; boundary={Boundary}");

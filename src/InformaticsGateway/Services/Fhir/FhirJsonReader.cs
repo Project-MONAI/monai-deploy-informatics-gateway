@@ -64,18 +64,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 RawData = await new StreamReader(request.Body).ReadToEndAsync().ConfigureAwait(false)
             };
 
-            var jsonDoc = JsonNode.Parse(result.RawData);
+            var jsonDoc = JsonNode.Parse(result.RawData)!;
 
             if (jsonDoc[Resources.PropertyResourceType] is not null)
             {
-                result.InternalResourceType = jsonDoc[Resources.PropertyResourceType].GetValue<string>();
+                result.InternalResourceType = jsonDoc[Resources.PropertyResourceType]?.GetValue<string>() ?? string.Empty;
             }
 
             var resourceId = SetIdIfMIssing(correlationId, jsonDoc);
 
             result.RawData = jsonDoc.ToJsonString(new JsonSerializerOptions { WriteIndented = true });
 
-            var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, resourceId, Api.Rest.FhirStorageFormat.Json, DataService.FHIR, request.HttpContext.Connection.RemoteIpAddress.ToString());
+            var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, resourceId, Api.Rest.FhirStorageFormat.Json, DataService.FHIR, request.HttpContext.Connection.RemoteIpAddress!.ToString());
             await fileMetadata.SetDataStream(result.RawData, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath);
 
             result.Metadata = fileMetadata;
@@ -92,7 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 jsonDoc[Resources.PropertyId] = correlationId;
             }
 
-            return jsonDoc[Resources.PropertyId].GetValue<string>();
+            return jsonDoc[Resources.PropertyId]?.GetValue<string>() ?? string.Empty;
         }
     }
 }

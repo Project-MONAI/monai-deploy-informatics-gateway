@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
                 };
 
                 var streams = new List<Stream>();
-                MultipartSection multipartSection;
+                MultipartSection? multipartSection;
                 while ((multipartSection = await multipartReader.ReadNextSectionAsync(cancellationToken).ConfigureAwait(false)) is not null)
                 {
                     var contentType = multipartSection.ContentType;
