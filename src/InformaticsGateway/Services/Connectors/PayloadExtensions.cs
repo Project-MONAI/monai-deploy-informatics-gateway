@@ -25,17 +25,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     {
         public static bool IsUploadCompleted(this Payload payload)
         {
-            return payload.Files.All(p => p.IsUploaded);
+            return payload.Files.TrueForAll(p => p.IsUploaded);
         }
 
         public static bool IsUploadCompletedWithFailures(this Payload payload)
         {
-            return (payload.FilesFailedToUpload + payload.FilesUploaded) >= payload.Count; ;
+            return (payload.FilesFailedToUpload + payload.FilesUploaded) >= payload.Count;
         }
 
         public static bool IsMoveCompleted(this Payload payload)
         {
-            return payload.Files.All(p => p.IsMoveCompleted);
+            return payload.Files.TrueForAll(p => p.IsMoveCompleted);
         }
 
         public static IReadOnlyList<string> GetWorkflows(this Payload payload)
@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             return payload.Files.Select(p => new BlockStorageInfo
             {
                 Path = p.File.UploadPath,
-                Metadata = (p is DicomFileStorageMetadata dicom) ? dicom.JsonFile.UploadPath : null,
+                Metadata = (p is DicomFileStorageMetadata dicom) ? dicom.JsonFile.UploadPath : string.Empty,
             }).ToList();
         }
     }

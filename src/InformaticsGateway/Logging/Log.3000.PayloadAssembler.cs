@@ -56,5 +56,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 3014, Level = LogLevel.Error, Message = "Payload ({key}) with {totalNumberOfFiles} files deleted due to {failures} upload failure(s).")]
         public static partial void PayloadRemovedWithFailureUploads(this ILogger logger, string key, int totalNumberOfFiles, int failures);
+
+        [LoggerMessage(EventId = 3015, Level = LogLevel.Information, Message = "Receieved a payload with {totalNumberOfFiles} files and {failedFiles} failures in {elapsed} seconds.")]
+        public static partial void ReceievedAPayload(this ILogger logger, double elapsed, int totalNumberOfFiles, int failedFiles);
     }
 }

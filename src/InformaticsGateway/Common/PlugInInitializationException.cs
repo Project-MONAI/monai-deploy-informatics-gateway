@@ -14,10 +14,23 @@
  * limitations under the License.
  */
 
-namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
+using System;
+using System.Runtime.Serialization;
+
+namespace Monai.Deploy.InformaticsGateway.Common
 {
-    internal static class SR
+    public class PlugInInitializationException : Exception
     {
-        public const string ConfigKey_ReplaceTags = "ReplaceTags";
+        public PlugInInitializationException(string message) : base(message)
+        {
+        }
+
+        public PlugInInitializationException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected PlugInInitializationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

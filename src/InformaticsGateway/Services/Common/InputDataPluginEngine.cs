@@ -31,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<InputDataPlugInEngine> _logger;
-        private IReadOnlyList<IInputDataPlugIn> _plugsins;
+        private IReadOnlyList<IInputDataPlugIn>? _plugsins;
 
         public InputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputDataPlugInEngine> logger)
         {
@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
         {
             if (_plugsins == null)
             {
-                throw new ApplicationException("InputDataPlugInEngine not configured, please call Configure() first.");
+                throw new PlugInInitializationException("InputDataPlugInEngine not configured, please call Configure() first.");
             }
 
             foreach (var plugin in _plugsins)

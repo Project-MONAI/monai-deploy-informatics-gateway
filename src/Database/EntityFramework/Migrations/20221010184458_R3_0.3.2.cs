@@ -8,10 +8,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            // know that this is empty, can it be removed ?
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            // know that this is empty, can it be removed ?
         }
     }
 }

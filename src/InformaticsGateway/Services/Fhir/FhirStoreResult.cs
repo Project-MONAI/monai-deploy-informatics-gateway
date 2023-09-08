@@ -28,21 +28,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
         /// <summary>
         /// User posted data.
         /// </summary>
-        public string RawData { get; internal set; }
+        public string RawData { get; internal set; } = string.Empty;
 
         /// <summary>
         ///
         /// </summary>
-        public FhirFileStorageMetadata Metadata { get; internal set; }
+        public FhirFileStorageMetadata? Metadata { get; internal set; }
 
         /// <summary>
         /// ResourceType found in the original FHIR resource.
         /// </summary>
-        public string InternalResourceType { get; internal set; }
+        public string InternalResourceType { get; internal set; } = string.Empty;
 
         /// <summary>
         /// ResourceType specified by the user in the POST URI.
         /// </summary>
-        public string ResourceType { get; internal set; }
+        public string ResourceType { get; internal set; } = string.Empty;
     }
 }

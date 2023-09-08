@@ -29,6 +29,7 @@ using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
+using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
@@ -46,7 +47,6 @@ using Monai.Deploy.Security.Authentication.Configurations;
 using Monai.Deploy.Storage;
 using Monai.Deploy.Storage.Configuration;
 using NLog;
-using NLog.LayoutRenderers;
 using NLog.Web;
 using LogManager = NLog.LogManager;
 
@@ -66,6 +66,7 @@ namespace Monai.Deploy.InformaticsGateway
             logger.Info($"Initializing MONAI Deploy Informatics Gateway v{assemblyVersionNumber}");
 
             var host = CreateHostBuilder(args).Build();
+
             host.MigrateDatabase();
             host.Run();
             logger.Info("MONAI Deploy Informatics Gateway shutting down.");
@@ -92,6 +93,7 @@ namespace Monai.Deploy.InformaticsGateway
                     builder.ClearProviders();
                     builder.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
                 })
+                .UseNLog()
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<InformaticsGatewayConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway"));
@@ -100,8 +102,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));
                     services.AddOptions<PlugInConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:plugins"));
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
-
-                    services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"));
+                    services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"), services.BuildServiceProvider().GetService<ILogger<DatabaseRegistrar>>()!);
 
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
@@ -117,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddScoped<IDataPlugInEngineFactory<IInputDataPlugIn>, InputDataPlugInEngineFactory>();
                     services.AddScoped<IDataPlugInEngineFactory<IOutputDataPlugIn>, OutputDataPlugInEngineFactory>();
 
-                    services.AddMonaiDeployStorageService(hostContext.Configuration.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
+                    services.AddMonaiDeployStorageService(hostContext.Configuration!.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
 
                     services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value, true);
                     services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value, true);
@@ -157,6 +158,7 @@ namespace Monai.Deploy.InformaticsGateway
                         .AddHttpClient("fhir", configure => configure.Timeout = timeout)
                         .SetHandlerLifetime(timeout);
 
+#pragma warning disable CS8603 // Possible null reference return.
                     services.AddHostedService<ObjectUploadService>(p => p.GetService<ObjectUploadService>());
                     services.AddHostedService<DataRetrievalService>(p => p.GetService<DataRetrievalService>());
                     services.AddHostedService<ScpService>(p => p.GetService<ScpService>());
@@ -165,6 +167,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddHostedService<DicomWebExportService>(p => p.GetService<DicomWebExportService>());
                     services.AddHostedService<PayloadNotificationService>(p => p.GetService<PayloadNotificationService>());
                     services.AddHostedService<MllpService>(p => p.GetService<MllpService>());
+#pragma warning restore CS8603 // Possible null reference return.
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -172,14 +175,18 @@ namespace Monai.Deploy.InformaticsGateway
                     webBuilder.CaptureStartupErrors(true);
                     webBuilder.UseStartup<Startup>();
                 })
-                .UseNLog();
+                ;
 
         private static NLog.Logger ConfigureNLog(string assemblyVersionNumber)
         {
-            LayoutRenderer.Register("servicename", logEvent => typeof(Program).Namespace);
-            LayoutRenderer.Register("serviceversion", logEvent => assemblyVersionNumber);
-            LayoutRenderer.Register("machinename", logEvent => Environment.MachineName);
-            return LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+            return LogManager.Setup().SetupExtensions(ext =>
+                {
+                    ext.RegisterLayoutRenderer("servicename", logEvent => typeof(Program).Namespace);
+                    ext.RegisterLayoutRenderer("serviceversion", logEvent => assemblyVersionNumber);
+                    ext.RegisterLayoutRenderer("machinename", logEvent => Environment.MachineName);
+                })
+                .LoadConfigurationFromAppSettings()
+                .GetCurrentClassLogger();
         }
     }
 }

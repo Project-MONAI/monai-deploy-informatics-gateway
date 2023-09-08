@@ -83,13 +83,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         }
 
         [RetryFact(5, 250, DisplayName = "StopAsync - shall be able to stop SCP listener")]
-        public void StopAsync_ShallBeAbleToStopListener()
+        public async Task StopAsync_ShallBeAbleToStopListener()
         {
-            var service = CreateService();
+            var service = await CreateService();
 
             _appLifetime.Verify(p => p.StopApplication(), Times.Never());
 
-            service.StopAsync(_cancellationTokenSource.Token);
+            await service.StopAsync(_cancellationTokenSource.Token);
             Assert.Equal(ServiceStatus.Stopped, service.Status);
         }
 
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
 
             var countdownEvent = new CountdownEvent(1);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCEchoRequest());
@@ -133,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
 
             var countdownEvent = new CountdownEvent(1);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCEchoRequest());
@@ -161,7 +161,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(false);
 
             var countdownEvent = new CountdownEvent(1);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCEchoRequest());
@@ -189,7 +189,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
 
             var countdownEvent = new CountdownEvent(1);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCEchoRequest());
@@ -210,7 +210,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.CanStore).Returns(false);
 
             var countdownEvent = new CountdownEvent(1);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             await client.AddRequestAsync(new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile()));
@@ -237,7 +237,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new InsufficientStorageAvailableException());
 
             var countdownEvent = new CountdownEvent(3);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
@@ -268,7 +268,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new IOException { HResult = Constants.ERROR_HANDLE_DISK_FULL });
             var countdownEvent = new CountdownEvent(3);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
@@ -300,7 +300,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new Exception());
 
             var countdownEvent = new CountdownEvent(3);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
@@ -332,7 +332,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
 
             var countdownEvent = new CountdownEvent(3);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
@@ -364,7 +364,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
 
             var countdownEvent = new CountdownEvent(1);
-            var service = CreateService();
+            var service = await CreateService();
 
             var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.Port, false, "STORESCU", "STORESCP");
             var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
@@ -380,7 +380,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger.VerifyLogging($"Aborted {DicomAbortSource.ServiceUser} with reason {DicomAbortReason.NotSpecified}.", LogLevel.Warning, Times.Once());
         }
 
-        private ScpService CreateService()
+        private async Task<ScpService> CreateService()
         {
             var tryCount = 0;
             ScpService service = null;
@@ -391,7 +391,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 if (service != null)
                 {
                     service.Dispose();
-                    Thread.Sleep(100);
+                    await Task.Delay(100);
                 }
                 service = new ScpService(_serviceScopeFactory.Object, _associationDataProvider.Object, _appLifetime.Object, _configuration);
                 _ = service.StartAsync(_cancellationTokenSource.Token);

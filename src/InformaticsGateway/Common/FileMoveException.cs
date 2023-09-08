@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 namespace Monai.Deploy.InformaticsGateway.Common
 {
     [Serializable]
-    internal class FileMoveException : Exception
+    public class FileMoveException : Exception
     {
         public FileMoveException()
         {

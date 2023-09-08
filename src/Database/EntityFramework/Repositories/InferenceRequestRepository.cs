@@ -33,7 +33,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
     public class InferenceRequestRepository : InferenceRequestRepositoryBase, IDisposable
     {
         private readonly ILogger<InferenceRequestRepository> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly IServiceScope _scope;
         private readonly InformaticsGatewayContext _informaticsGatewayContext;
         private readonly AsyncRetryPolicy _retryPolicy;
@@ -50,7 +49,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _options = options ?? throw new ArgumentNullException(nameof(options));
             _scope = serviceScopeFactory.CreateScope();
             _informaticsGatewayContext = _scope.ServiceProvider.GetRequiredService<InformaticsGatewayContext>();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(

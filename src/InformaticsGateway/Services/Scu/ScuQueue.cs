@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,12 +25,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
     internal class ScuQueue : IScuQueue
     {
         private readonly BlockingCollection<ScuWorkRequest> _workItems;
-        private readonly ILogger<ScuQueue> _logger;
 
         public ScuQueue(ILogger<ScuQueue> logger)
         {
             _workItems = new BlockingCollection<ScuWorkRequest>();
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public ScuWorkRequest Dequeue(CancellationToken cancellationToken)

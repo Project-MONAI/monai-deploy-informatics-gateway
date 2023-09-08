@@ -400,6 +400,11 @@
         "resolved": "13.0.3",
         "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
       },
+      "NLog": {
+        "type": "Transitive",
+        "resolved": "5.2.3",
+        "contentHash": "rHTNRtQF5qYqLutSR9ldUWXglKym/KA1R6GKw4JtDvza8i5+kgfmeKH75Ccn1noeJIOjHLXorphMxKk3EiN2tg=="
+      },
       "NuGet.Frameworks": {
         "type": "Transitive",
         "resolved": "6.5.0",
@@ -1397,7 +1402,8 @@
         "type": "Project",
         "dependencies": {
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
-          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )"
+          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
+          "NLog": "[5.2.3, )"
         }
       },
       "monai.deploy.informaticsgateway.database.mongodb": {

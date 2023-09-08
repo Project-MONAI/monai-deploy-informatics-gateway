@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void NotifyAeChanged(this ILogger logger, int count, ChangedEventType eventType);
 
         [LoggerMessage(EventId = 113, Level = LogLevel.Error, Message = "Failed to update Application Entity Handler with updated AE Title {aeTitle}.")]
-        public static partial void FailedToUpdateAppliationEntityHandlerWithUpdatedAEChange(this ILogger logger, string aeTitle, Exception ex = null);
+        public static partial void FailedToUpdateAppliationEntityHandlerWithUpdatedAEChange(this ILogger logger, string aeTitle, Exception? ex = null);
 
         // SCP Service
         [LoggerMessage(EventId = 200, Level = LogLevel.Information, Message = "Initializing SCP Service at port {port}...")]

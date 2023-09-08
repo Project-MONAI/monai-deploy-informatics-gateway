@@ -62,8 +62,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
         private void CreateIndexes()
         {
-            var options = new CreateIndexOptions { Unique = true };
-
             var indexDefinitionState = Builders<Payload>.IndexKeys
                 .Ascending(_ => _.State);
             _collection.Indexes.CreateOne(new CreateIndexModel<Payload>(indexDefinitionState));
