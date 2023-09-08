@@ -23,6 +23,7 @@ using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -71,6 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             try
             {
+                using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
                 await NotifyPayloadReady(payload).ConfigureAwait(false);
                 await DeletePayload(payload, cancellationToken).ConfigureAwait(false);
             }

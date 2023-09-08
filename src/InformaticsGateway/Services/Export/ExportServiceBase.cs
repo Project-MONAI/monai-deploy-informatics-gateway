@@ -205,7 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     }
                     else
                     {
-                        _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                        _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.MessageId, exportRequest.ExportTaskId);
                     }
                 }
 
@@ -283,8 +283,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)
         {
-            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
-
             var exportRequest = _exportRequests[exportRequestData.ExportTaskId];
             lock (SyncRoot)
             {
@@ -309,7 +307,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 }
             }
 
-            _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count());
+            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
+            _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count(), exportRequest.Duration.TotalMilliseconds);
 
             var exportCompleteEvent = new ExportCompleteEvent(exportRequest, exportRequest.Status, exportRequest.FileStatuses);
 

@@ -15,7 +15,10 @@
  * limitations under the License.
  */
 
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api;
 
@@ -25,6 +28,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
     {
         public void Configure(EntityTypeBuilder<DicomAssociationInfo> builder)
         {
+            var comparer = new ValueComparer<HashSet<string>>(
+                (c1, c2) => c1.SequenceEqual(c2),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToHashSet());
+
+            var jsonSerializerSettings = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
             builder.HasKey(j => j.Id);
             builder.Property(j => j.CalledAeTitle).IsRequired();
             builder.Property(j => j.CalledAeTitle).IsRequired();
@@ -35,6 +47,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.RemoteHost).IsRequired();
             builder.Property(j => j.RemotePort).IsRequired();
             builder.Property(j => j.Errors).IsRequired();
+            builder.Property(j => j.PayloadIds).IsRequired()
+                .HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<HashSet<string>>(v, jsonSerializerSettings))
+                .Metadata.SetValueComparer(comparer);
         }
     }
 }

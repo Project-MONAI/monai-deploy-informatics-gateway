@@ -63,9 +63,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         public async Task GivenADicomAssociationInfo_WhenAddingToDatabase_ExpectItToBeSaved()
         {
             var association = new DicomAssociationInfo { CalledAeTitle = "called", CallingAeTitle = "calling", CorrelationId = Guid.NewGuid().ToString(), DateTimeCreated = DateTime.UtcNow, RemoteHost = "host", RemotePort = 100 };
-            association.FileReceived();
-            association.FileReceived();
-            association.FileReceived();
+            association.FileReceived(Guid.NewGuid().ToString());
+            association.FileReceived(Guid.NewGuid().ToString());
+            association.FileReceived(Guid.NewGuid().ToString());
+            association.FileReceived(null);
+            association.FileReceived(string.Empty);
+            association.Disconnect();
             association.Disconnect();
 
             var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
@@ -75,6 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.NotNull(actual);
             Assert.Equal(association.DateTimeCreated, actual!.DateTimeCreated);
             Assert.Equal(association.DateTimeDisconnected, actual!.DateTimeDisconnected);
+            Assert.Equal(3, actual!.FileCount);
             Assert.Equal(association.FileCount, actual!.FileCount);
             Assert.Equal(association.Duration, actual!.Duration);
             Assert.Equal(association.CalledAeTitle, actual!.CalledAeTitle);
