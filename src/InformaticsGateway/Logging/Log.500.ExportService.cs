@@ -37,8 +37,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 504, Level = LogLevel.Debug, Message = "File {file} ready for export.")]
         public static partial void FileReadyForExport(this ILogger logger, string file);
 
-        [LoggerMessage(EventId = 505, Level = LogLevel.Information, Message = "Export task completed with {failedCount} failures out of {fileCount}.")]
-        public static partial void ExportCompleted(this ILogger logger, int failedCount, int fileCount);
+        [LoggerMessage(EventId = 505, Level = LogLevel.Information, Message = "Export task completed with {failedCount} failures out of {fileCount}. Time to export: {durationMilliseconds}ms.")]
+        public static partial void ExportCompleted(this ILogger logger, int failedCount, int fileCount, double durationMilliseconds);
 
         [LoggerMessage(EventId = 506, Level = LogLevel.Error, Message = "Error downloading payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
         public static partial void ErrorDownloadingPayloadWithRetry(this ILogger logger, Exception ex, TimeSpan timeSpan, int retryCount);
@@ -118,8 +118,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 531, Level = LogLevel.Warning, Message = "Export service paused due to insufficient storage space.  Available storage space: {availableFreeSpace:D}")]
         public static partial void ExportServiceStoppedDueToLowStorageSpace(this ILogger logger, long availableFreeSpace);
 
-        [LoggerMessage(EventId = 532, Level = LogLevel.Information, Message = "CorrelationId={correlationId}. Export request {exportTaskId} received & queued for processing.")]
-        public static partial void ExportRequestQueuedForProcessing(this ILogger logger, string correlationId, string exportTaskId);
+        [LoggerMessage(EventId = 532, Level = LogLevel.Information, Message = "CorrelationId={correlationId}. MessageId={messageId}. Export request {exportTaskId} received & queued for processing.")]
+        public static partial void ExportRequestQueuedForProcessing(this ILogger logger, string correlationId, string exportTaskId, string messageId);
 
         [LoggerMessage(EventId = 533, Level = LogLevel.Error, Message = "Recovering messaging service connection due to {reason}.")]
         public static partial void MessagingServiceErrorRecover(this ILogger logger, string reason);

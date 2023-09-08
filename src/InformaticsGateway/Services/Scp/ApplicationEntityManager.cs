@@ -91,7 +91,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
-        public async Task HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+        public async Task<string> HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
         {
             Guard.Against.Null(request, nameof(request));
 
@@ -107,10 +107,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
             }
 
-            await HandleInstance(request, calledAeTitle, callingAeTitle, associationId).ConfigureAwait(false);
+            return await HandleInstance(request, calledAeTitle, callingAeTitle, associationId).ConfigureAwait(false);
         }
 
-        private async Task HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+        private async Task<string> HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
         {
             var uids = _dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
 
@@ -118,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             {
                 _logger.InstanceInformation(uids.StudyInstanceUid, uids.SeriesInstanceUid);
 
-                await _aeTitles[calledAeTitle].HandleInstanceAsync(request, calledAeTitle, callingAeTitle, associationId, uids).ConfigureAwait(false);
+                return await _aeTitles[calledAeTitle].HandleInstanceAsync(request, calledAeTitle, callingAeTitle, associationId, uids).ConfigureAwait(false);
             }
         }
 

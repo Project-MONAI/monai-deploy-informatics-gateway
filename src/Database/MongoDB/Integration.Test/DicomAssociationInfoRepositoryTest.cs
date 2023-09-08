@@ -65,9 +65,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         public async Task GivenADicomAssociationInfo_WhenAddingToDatabase_ExpectItToBeSaved()
         {
             var association = new DicomAssociationInfo { CalledAeTitle = "called", CallingAeTitle = "calling", CorrelationId = Guid.NewGuid().ToString(), DateTimeCreated = DateTime.UtcNow, RemoteHost = "host", RemotePort = 100 };
-            association.FileReceived();
-            association.FileReceived();
-            association.FileReceived();
+            association.FileReceived(Guid.NewGuid().ToString());
+            association.FileReceived(Guid.NewGuid().ToString());
+            association.FileReceived(Guid.NewGuid().ToString());
+            association.FileReceived(null);
+            association.FileReceived(string.Empty);
             association.Disconnect();
 
             var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
