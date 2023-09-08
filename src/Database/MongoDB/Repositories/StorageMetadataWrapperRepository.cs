@@ -71,13 +71,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             _collection.Indexes.CreateOne(new CreateIndexModel<StorageMetadataWrapper>(indexDefinition));
         }
 
-        protected override async Task<bool> DeleteInternalAsync(StorageMetadataWrapper toBeDeleted, CancellationToken cancellationToken)
+        protected override async Task<bool> DeleteInternalAsync(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)
         {
-            Guard.Against.Null(toBeDeleted, nameof(toBeDeleted));
+            Guard.Against.Null(metadata, nameof(metadata));
 
             return await _retryPolicy.ExecuteAsync(async () =>
             {
-                var results = await _collection.DeleteOneAsync(Builders<StorageMetadataWrapper>.Filter.Where(p => p.Identity == toBeDeleted.Identity), cancellationToken: cancellationToken).ConfigureAwait(false);
+                var results = await _collection.DeleteOneAsync(Builders<StorageMetadataWrapper>.Filter.Where(p => p.Identity == metadata.Identity), cancellationToken: cancellationToken).ConfigureAwait(false);
                 return results.DeletedCount == 1;
             }).ConfigureAwait(false);
         }

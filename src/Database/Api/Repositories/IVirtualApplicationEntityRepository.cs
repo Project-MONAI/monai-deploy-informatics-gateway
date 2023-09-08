@@ -25,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         Task<VirtualApplicationEntity?> FindByNameAsync(string name, CancellationToken cancellationToken = default);
 
-        Task<VirtualApplicationEntity?> FindByAeTitleAsync(string name, CancellationToken cancellationToken = default);
+        Task<VirtualApplicationEntity?> FindByAeTitleAsync(string aeTitle, CancellationToken cancellationToken = default);
 
         Task<VirtualApplicationEntity> AddAsync(VirtualApplicationEntity item, CancellationToken cancellationToken = default);
 

@@ -73,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
             return false;
         }
 
-        protected abstract Task<bool> DeleteInternalAsync(StorageMetadataWrapper toBeDeleted, CancellationToken cancellationToken);
+        protected abstract Task<bool> DeleteInternalAsync(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default);
 
         public abstract Task DeletePendingUploadsAsync(CancellationToken cancellationToken = default);
 
@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
             _logger.StorageMetadataSaved();
         }
 
-        protected abstract Task UpdateInternal(StorageMetadataWrapper obj, CancellationToken cancellationToken = default);
+        protected abstract Task UpdateInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default);
 
         protected abstract Task<StorageMetadataWrapper?> FindByIds(string id, string correlationId, CancellationToken cancellationToken = default);
 

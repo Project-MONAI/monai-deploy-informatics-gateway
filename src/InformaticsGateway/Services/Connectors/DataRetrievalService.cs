@@ -120,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     continue;
                 }
 
-                InferenceRequest request = null;
+                InferenceRequest? request = null;
                 try
                 {
                     request = await repository.TakeAsync(cancellationToken).ConfigureAwait(false);
@@ -142,7 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 catch (Exception ex)
                 {
-                    _logger.ErrorProcessingInferenceRequest(request?.TransactionId, ex);
+                    _logger.ErrorProcessingInferenceRequest(request?.TransactionId!, ex);
                     if (request != null)
                     {
                         await repository.UpdateAsync(request, InferenceRequestStatus.Fail, cancellationToken).ConfigureAwait(false);
@@ -160,9 +160,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             var retrievedFiles = new Dictionary<string, FileStorageMetadata>(StringComparer.OrdinalIgnoreCase);
             await RestoreExistingInstances(inferenceRequest, retrievedFiles, cancellationToken).ConfigureAwait(false);
 
-            foreach (var source in inferenceRequest.InputResources)
+            foreach (var source in inferenceRequest.InputResources!)
             {
-                _logger.ProcessingInputResource(source.Interface, source.ConnectionDetails.Uri);
+                _logger.ProcessingInputResource(source.Interface, source.ConnectionDetails!.Uri!);
                 switch (source.Interface)
                 {
                     case InputInterfaceType.DicomWeb:
@@ -197,9 +197,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (inferenceRequest.Application is not null)
                 {
-                    retrievedFiles[key].SetWorkflows(inferenceRequest.Application.Id);
+                    retrievedFiles[key].SetWorkflows(inferenceRequest.Application.Id!);
                 }
-                var FileMeta = retrievedFiles[key];
 
                 var payloadId = await _payloadAssembler.Queue(inferenceRequest.TransactionId, retrievedFiles[key], new DataOrigin { DataService = DataService.ACR, Source = inferenceRequest.TransactionId, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
                 retrievedFiles[key].PayloadId = payloadId.ToString();
@@ -243,7 +242,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
             Guard.Against.Null(retrievedResources, nameof(retrievedResources));
 
-            foreach (var input in inferenceRequest.InputMetadata.Inputs)
+            foreach (var input in inferenceRequest.InputMetadata!.Inputs!)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -264,20 +263,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(source, nameof(source));
             Guard.Against.Null(retrievedResources, nameof(retrievedResources));
 
-            var pendingResources = new Queue<FhirResource>(requestDetails.Resources.Where(p => !p.IsRetrieved));
+            var pendingResources = new Queue<FhirResource>(requestDetails.Resources!.Where(p => !p.IsRetrieved));
 
             if (pendingResources.Count == 0)
             {
                 return;
             }
 
-            var authenticationHeaderValue = AuthenticationHeaderValueExtensions.ConvertFrom(source.ConnectionDetails.AuthType, source.ConnectionDetails.AuthId);
+            var authenticationHeaderValue = AuthenticationHeaderValueExtensions.ConvertFrom(source.ConnectionDetails!.AuthType!, source.ConnectionDetails!.AuthId!);
 
             var httpClient = _httpClientFactory.CreateClient("fhir");
             httpClient.DefaultRequestHeaders.Clear();
             httpClient.DefaultRequestHeaders.Authorization = authenticationHeaderValue;
 
-            FhirResource resource = null;
+            FhirResource? resource = null;
             try
             {
                 while (pendingResources.Count > 0)
@@ -323,7 +322,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
 
             _logger.RetrievingFhirResource(resource.Type, resource.Id, acceptHeader, fhirFormat);
-            var request = new HttpRequestMessage(HttpMethod.Get, $"{source.ConnectionDetails.Uri}{resource.Type}/{resource.Id}");
+            var request = new HttpRequestMessage(HttpMethod.Get, $"{source.ConnectionDetails!.Uri!}{resource.Type}/{resource.Id}");
             request.Headers.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(acceptHeader));
             var response = await Policy
                 .HandleResult<HttpResponseMessage>(p => !p.IsSuccessStatusCode)
@@ -331,7 +330,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     _options.Value.Fhir.Retries.RetryDelays,
                     (result, timeSpan, retryCount, context) =>
                     {
-                        _logger.ErrorRetrievingFhirResourceWithRetry(resource.Type, resource.Id, result.Result.StatusCode, retryCount, result.Exception);
+                        _logger.ErrorRetrievingFhirResourceWithRetry(resource.Type, resource.Id, result.Result!.StatusCode!, retryCount, result.Exception);
                     })
                 .ExecuteAsync(async () => await httpClient.SendAsync(request).ConfigureAwait(false)).ConfigureAwait(false);
 
@@ -345,7 +344,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     return false;
                 }
 
-                var fhirFile = new FhirFileStorageMetadata(transactionId, resource.Type, resource.Id, fhirFormat, DataService.FHIR, source.ConnectionDetails.Uri);
+                var fhirFile = new FhirFileStorageMetadata(transactionId, resource.Type, resource.Id, fhirFormat, DataService.FHIR, source.ConnectionDetails!.Uri!);
                 await fhirFile.SetDataStream(json, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
                 retrievedResources.Add(fhirFile.Id, fhirFile);
                 return true;
@@ -362,17 +361,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
             Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
 
-            var authenticationHeaderValue = AuthenticationHeaderValueExtensions.ConvertFrom(source.ConnectionDetails.AuthType, source.ConnectionDetails.AuthId);
+            var authenticationHeaderValue = AuthenticationHeaderValueExtensions.ConvertFrom(source.ConnectionDetails!.AuthType, source.ConnectionDetails.AuthId!);
 
             var dicomWebClient = new DicomWebClient(_httpClientFactory.CreateClient("dicomweb"), _loggerFactory.CreateLogger<DicomWebClient>());
-            dicomWebClient.ConfigureServiceUris(new Uri(source.ConnectionDetails.Uri, UriKind.Absolute));
+            dicomWebClient.ConfigureServiceUris(new Uri(source.ConnectionDetails.Uri!, UriKind.Absolute));
 
             if (authenticationHeaderValue is not null)
             {
                 dicomWebClient.ConfigureAuthentication(authenticationHeaderValue);
             }
 
-            foreach (var input in inferenceRequest.InputMetadata.Inputs)
+            foreach (var input in inferenceRequest.InputMetadata!.Inputs!)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -382,15 +381,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 switch (input.Type)
                 {
                     case InferenceRequestType.DicomUid:
-                        await RetrieveStudies(inferenceRequest.TransactionId, dicomWebClient, input.Studies, retrievedInstance, cancellationToken).ConfigureAwait(false);
+                        await RetrieveStudies(inferenceRequest.TransactionId, dicomWebClient, input.Studies!, retrievedInstance, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case InferenceRequestType.DicomPatientId:
-                        await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.PatientID.Group:X4}{DicomTag.PatientID.Element:X4}", input.PatientId, cancellationToken).ConfigureAwait(false);
+                        await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.PatientID.Group:X4}{DicomTag.PatientID.Element:X4}", input.PatientId!, cancellationToken).ConfigureAwait(false);
                         break;
 
                     case InferenceRequestType.AccessionNumber:
-                        foreach (var accessionNumber in input.AccessionNumber)
+                        foreach (var accessionNumber in input.AccessionNumber!)
                         {
                             await QueryStudies(inferenceRequest.TransactionId, dicomWebClient, inferenceRequest, retrievedInstance, $"{DicomTag.AccessionNumber.Group:X4}{DicomTag.AccessionNumber.Element:X4}", accessionNumber, cancellationToken).ConfigureAwait(false);
                         }
@@ -461,7 +460,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 if (study.Series.IsNullOrEmpty())
                 {
-                    _logger.RetrievingStudyWithWado(study.StudyInstanceUid);
+                    _logger.RetrievingStudyWithWado(study.StudyInstanceUid!);
                     var files = dicomWebClient.Wado.Retrieve(study.StudyInstanceUid);
                     await SaveFiles(transactionId, files, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
@@ -478,7 +477,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(study, nameof(study));
             Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
 
-            foreach (var series in study.Series)
+            foreach (var series in study.Series!)
             {
                 if (cancellationToken.IsCancellationRequested)
                 {
@@ -486,13 +485,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 if (series.Instances.IsNullOrEmpty())
                 {
-                    _logger.RetrievingSeriesWithWado(series.SeriesInstanceUid);
+                    _logger.RetrievingSeriesWithWado(series.SeriesInstanceUid!);
                     var files = dicomWebClient.Wado.Retrieve(study.StudyInstanceUid, series.SeriesInstanceUid);
                     await SaveFiles(transactionId, files, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
                 else
                 {
-                    await RetrieveInstances(transactionId, dicomWebClient, study.StudyInstanceUid, series, retrievedInstance, cancellationToken).ConfigureAwait(false);
+                    await RetrieveInstances(transactionId, dicomWebClient, study.StudyInstanceUid!, series, retrievedInstance, cancellationToken).ConfigureAwait(false);
                 }
             }
         }
@@ -505,9 +504,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             Guard.Against.Null(retrievedInstance, nameof(retrievedInstance));
 
             var count = retrievedInstance.Count;
-            foreach (var instance in series.Instances)
+            foreach (var instance in series.Instances!)
             {
-                foreach (var sopInstanceUid in instance.SopInstanceUid)
+                foreach (var sopInstanceUid in instance.SopInstanceUid!)
                 {
                     if (cancellationToken.IsCancellationRequested)
                     {

@@ -15,6 +15,7 @@
  */
 
 using System;
+using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
@@ -25,6 +26,10 @@ namespace Monai.Deploy.InformaticsGateway.Common
         }
 
         public PlugInLoadingException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected PlugInLoadingException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

@@ -18,10 +18,10 @@ namespace Monai.Deploy.InformaticsGateway.Common
 {
     public record StudySerieSopUids
     {
-        public string SopClassUid { get; set; }
-        public string StudyInstanceUid { get; set; }
-        public string SeriesInstanceUid { get; set; }
-        public string SopInstanceUid { get; set; }
+        public string SopClassUid { get; set; } = string.Empty;
+        public string StudyInstanceUid { get; set; } = string.Empty;
+        public string SeriesInstanceUid { get; set; } = string.Empty;
+        public string SopInstanceUid { get; set; } = string.Empty;
         public string Identifier { get => $"{StudyInstanceUid}/{SeriesInstanceUid}/{SopInstanceUid}"; }
     }
 }

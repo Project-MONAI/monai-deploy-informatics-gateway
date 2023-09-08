@@ -30,6 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
     public class NLogConfigurationOptionAccessor : INLogConfigurationOptionAccessor
     {
+        public const string NlogSchema = "http://www.nlog-project.org/schemas/NLog.xsd";
         private readonly XmlDocument _xmlDocument;
         private readonly XmlNamespaceManager _namespaceManager;
 
@@ -44,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             _xmlDocument = new XmlDocument();
             _xmlDocument.LoadXml(xml);
             _namespaceManager = new XmlNamespaceManager(_xmlDocument.NameTable);
-            _namespaceManager.AddNamespace("ns", "http://www.nlog-project.org/schemas/NLog.xsd");
+            _namespaceManager.AddNamespace("ns", NlogSchema);
         }
 
         public string LogStoragePath

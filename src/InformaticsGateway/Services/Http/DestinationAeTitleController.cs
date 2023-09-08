@@ -113,7 +113,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     return NotFound();
                 }
 
-                var destinationApplicationEntity = await _repository.FindByNameAsync(name, HttpContext.RequestAborted).ConfigureAwait(false);
+                var destinationApplicationEntity = await _repository.FindByNameAsync(name, HttpContext!.RequestAborted).ConfigureAwait(false);
 
                 if (destinationApplicationEntity is null)
                 {
@@ -192,7 +192,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<DestinationApplicationEntity>> Edit(DestinationApplicationEntity item)
+        public async Task<ActionResult<DestinationApplicationEntity>> Edit(DestinationApplicationEntity? item)
         {
             try
             {

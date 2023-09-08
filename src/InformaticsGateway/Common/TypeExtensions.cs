@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
                       {
                           var assembly = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(z => !string.IsNullOrWhiteSpace(z.FullName) && z.FullName.StartsWith(name.FullName));
 
-                          assembly ??= Assembly.LoadFile(Path.Combine(SR.PlugInDirectoryPath, $"{name.Name}.dll"));
+                          assembly ??= Assembly.Load(File.ReadAllBytes(Path.Combine(SR.PlugInDirectoryPath, $"{name.Name}.dll")));
 
                           return assembly;
                       },

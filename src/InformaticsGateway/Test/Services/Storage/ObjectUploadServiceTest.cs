@@ -96,6 +96,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
         public void GivenAObjectUploadService_WhenInitialized_ExpectItToRemovingAllPendingObjects()
         {
             var svc = new ObjectUploadService(_serviceScopeFactory.Object, _logger.Object, _options);
+            Assert.NotNull(svc);
         }
 
         [RetryFact(10, 250)]

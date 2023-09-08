@@ -125,10 +125,10 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         // DicomWeb STOW
         [LoggerMessage(EventId = 8100, Level = LogLevel.Error, Message = "Error processing DICOMWeb STOW StudyInstanceUID= {studyInstanceUid}, Workflow={workflowName}.")]
-        public static partial void ErrorDicomWebStow(this ILogger logger, string studyInstanceUid, string workflowName, Exception ex);
+        public static partial void ErrorDicomWebStow(this ILogger logger, string? studyInstanceUid, string? workflowName, Exception? ex);
 
         [LoggerMessage(EventId = 8101, Level = LogLevel.Error, Message = "Error processing DICOMWeb STOW StudyInstanceUID is invalid '{studyInstanceUid}'.")]
-        public static partial void ErrorDicomWebStowInvalidStudyInstanceUid(this ILogger logger, string studyInstanceUid, Exception ex);
+        public static partial void ErrorDicomWebStowInvalidStudyInstanceUid(this ILogger logger, string? studyInstanceUid, Exception? ex);
 
         [LoggerMessage(EventId = 8102, Level = LogLevel.Warning, Message = "The parameter '{parameterName} with the value of '{parameterValue}' in the multipart message is ignored.")]
         public static partial void MultipartParameterIgnored(this ILogger logger, string parameterName, string parameterValue);
@@ -137,13 +137,13 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void ConvertingStreamToFileBufferingReadStream(this ILogger logger, int memoryThreashold, string tempPath);
 
         [LoggerMessage(EventId = 8104, Level = LogLevel.Error, Message = "Error saving instance from STOW service stream.")]
-        public static partial void FailedToSaveInstance(this ILogger logger, Exception ex);
+        public static partial void FailedToSaveInstance(this ILogger logger, Exception? ex);
 
         [LoggerMessage(EventId = 8105, Level = LogLevel.Error, Message = "Failed to open STOW service stream.")]
-        public static partial void FailedToOpenStream(this ILogger logger, Exception ex);
+        public static partial void FailedToOpenStream(this ILogger logger, Exception? ex);
 
         [LoggerMessage(EventId = 8106, Level = LogLevel.Error, Message = "Failed to process STOW request, out of storage space.")]
-        public static partial void StowFailedWithNoSpace(this ILogger logger, Exception ex = null);
+        public static partial void StowFailedWithNoSpace(this ILogger logger, Exception? ex = null);
 
         [LoggerMessage(EventId = 8108, Level = LogLevel.Information, Message = "STOW instance queued.")]
         public static partial void QueuedStowInstance(this ILogger logger);
@@ -155,7 +155,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void ZeroLengthDicomWebStowStream(this ILogger logger);
 
         [LoggerMessage(EventId = 8111, Level = LogLevel.Error, Message = "Unknown virtual application entity specified {aet}.")]
-        public static partial void ErrorDicomWebStowUnknownVirtualApplicationEntity(this ILogger logger, string aet, Exception ex);
+        public static partial void ErrorDicomWebStowUnknownVirtualApplicationEntity(this ILogger logger, string? aet, Exception ex);
 
         // FHIR Serer
 

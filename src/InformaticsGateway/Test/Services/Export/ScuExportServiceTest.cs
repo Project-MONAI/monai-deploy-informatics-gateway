@@ -539,7 +539,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         {
             await service.StopAsync(_cancellationTokenSource.Token);
             _logger.VerifyLogging($"{service.ServiceName} is stopping.", LogLevel.Information, Times.Once());
-            Thread.Sleep(500);
+            await Task.Delay(500);
         }
     }
 }

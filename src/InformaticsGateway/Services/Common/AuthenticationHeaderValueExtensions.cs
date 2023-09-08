@@ -22,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
     public static class AuthenticationHeaderValueExtensions
     {
-        public static AuthenticationHeaderValue ConvertFrom(ConnectionAuthType connectionAuthType, string authId)
+        public static AuthenticationHeaderValue? ConvertFrom(ConnectionAuthType connectionAuthType, string authId)
         {
             return connectionAuthType switch
             {

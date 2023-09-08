@@ -25,7 +25,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
     public class ScuWorkRequest : IDisposable
     {
         private readonly AsyncManualResetEvent _awaiter;
-        private ScuWorkResponse _response;
+        private ScuWorkResponse? _response;
         private bool _disposedValue;
 
         public string CorrelationId { get; }
@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
         public async Task<ScuWorkResponse> WaitAsync(CancellationToken cancellationToken = default)
         {
             await _awaiter.WaitAsync(cancellationToken).ConfigureAwait(false);
-            return _response;
+            return _response!;
         }
 
         protected virtual void Dispose(bool disposing)
