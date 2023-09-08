@@ -37,8 +37,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 504, Level = LogLevel.Debug, Message = "File {file} ready for export.")]
         public static partial void FileReadyForExport(this ILogger logger, string file);
 
-        [LoggerMessage(EventId = 505, Level = LogLevel.Information, Message = "Export task completed with {failedCount} failures out of {fileCount}.")]
-        public static partial void ExportCompleted(this ILogger logger, int failedCount, int fileCount);
+        [LoggerMessage(EventId = 505, Level = LogLevel.Information, Message = "Export task completed with {failedCount} failures out of {fileCount}. Time to export: {durationMilliseconds}ms.")]
+        public static partial void ExportCompleted(this ILogger logger, int failedCount, int fileCount, int durationMilliseconds);
 
         [LoggerMessage(EventId = 506, Level = LogLevel.Error, Message = "Error downloading payload. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
         public static partial void ErrorDownloadingPayloadWithRetry(this ILogger logger, Exception ex, TimeSpan timeSpan, int retryCount);
