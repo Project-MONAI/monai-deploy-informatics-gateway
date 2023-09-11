@@ -467,7 +467,7 @@ jobs:
             ${{ runner.os }}-nuget
 
       - name: Setup DocFX
-        uses: crazy-max/ghaction-chocolatey@v2
+        uses: crazy-max/ghaction-chocolatey@v3
         with:
           args: install docfx
 
