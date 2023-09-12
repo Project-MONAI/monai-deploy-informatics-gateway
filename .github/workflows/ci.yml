@@ -383,6 +383,13 @@ jobs:
           popd
           dir -r ~/release
 
+      - name: Upload CLI
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: artifacts
+          path: ~/release
+          retention-days: 7
+
       - name: Package API
         env:
           PACKAGEDIR: '${{ github.workspace }}/nupkg/'
@@ -392,22 +399,13 @@ jobs:
           dotnet pack --no-build -c ${{ env.BUILD_CONFIG }} -o $PACKAGEDIR -p:PackageVersion=${{ env.NUGETVER }}
           ls -lR $PACKAGEDIR
         working-directory: ./src/Api
-
-      - name: Upload CLI
-        uses: actions/upload-artifact@v3.1.2
-        with:
-          name: artifacts
-          path: ~/release
-          retention-days: 7
           
       - name: Upload Nuget
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: actions/upload-artifact@v3.1.2
-        env:
-          PACKAGEDIR: '${{ github.workspace }}/nupkg'
         with:
           name: nuget
-          path: $PACKAGEDIR/*.nupkg
+          path: ~/nupkg
           retention-days: 30
 
       - name: Log in to the Container registry
