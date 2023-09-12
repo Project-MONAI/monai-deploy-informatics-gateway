@@ -63,14 +63,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             try
             {
+                if (tenantId is not null)
                 {
-                    if (tenantId is not null)
-                    {
-                        return Ok(await _repository.ToListAsync(d => d.TenantId == tenantId, HttpContext.RequestAborted).ConfigureAwait(false));
-                    }
-
-                    return Ok(await _repository.ToListAsync(d => true, HttpContext.RequestAborted).ConfigureAwait(false));
+                    return Ok(await _repository.ToListAsync(d => d.TenantId == tenantId, HttpContext.RequestAborted).ConfigureAwait(false));
                 }
+
+                return Ok(await _repository.ToListAsync(d => true, HttpContext.RequestAborted).ConfigureAwait(false));
             }
             catch (Exception ex)
             {

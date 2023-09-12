@@ -56,12 +56,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet3 = new DestinationApplicationEntity { AeTitle = "AET3", HostIp = "1.2.3.4", Port = 114, Name = "AET3", DateTimeCreated = DateTime.UtcNow };
             var aet4 = new DestinationApplicationEntity { AeTitle = "AET4", HostIp = "1.2.3.4", Port = 114, Name = "AET4", DateTimeCreated = DateTime.UtcNow };
             var aet5 = new DestinationApplicationEntity { AeTitle = "AET5", HostIp = "1.2.3.4", Port = 114, Name = "AET5", DateTimeCreated = DateTime.UtcNow };
+            var aet6 = new DestinationApplicationEntity { AeTitle = "AET6", HostIp = "1.2.3.4", Port = 114, Name = "AET6", DateTimeCreated = DateTime.UtcNow, TenantId = new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1") };
 
             collection.InsertOne(aet1);
             collection.InsertOne(aet2);
             collection.InsertOne(aet3);
             collection.InsertOne(aet4);
             collection.InsertOne(aet5);
+            collection.InsertOne(aet6);
         }
 
         public void InitDatabaseWithMonaiApplicationEntities()
@@ -73,12 +75,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet3 = new MonaiApplicationEntity { AeTitle = "AET3", Name = "AET3", DateTimeCreated = DateTime.UtcNow };
             var aet4 = new MonaiApplicationEntity { AeTitle = "AET4", Name = "AET4", DateTimeCreated = DateTime.UtcNow };
             var aet5 = new MonaiApplicationEntity { AeTitle = "AET5", Name = "AET5", DateTimeCreated = DateTime.UtcNow };
+            var aet6 = new MonaiApplicationEntity { AeTitle = "AET6", Name = "AET6", DateTimeCreated = DateTime.UtcNow, TenantId = new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1") };
 
             collection.InsertOne(aet1);
             collection.InsertOne(aet2);
             collection.InsertOne(aet3);
             collection.InsertOne(aet4);
             collection.InsertOne(aet5);
+            collection.InsertOne(aet6);
         }
 
         public void InitDatabaseWithVirtualApplicationEntities()
@@ -90,12 +94,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet3 = new VirtualApplicationEntity { VirtualAeTitle = "AET3", Name = "AET3", DateTimeCreated = DateTime.UtcNow };
             var aet4 = new VirtualApplicationEntity { VirtualAeTitle = "AET4", Name = "AET4", DateTimeCreated = DateTime.UtcNow };
             var aet5 = new VirtualApplicationEntity { VirtualAeTitle = "AET5", Name = "AET5", DateTimeCreated = DateTime.UtcNow };
+            var aet6 = new VirtualApplicationEntity { VirtualAeTitle = "AET6", Name = "AET6", DateTimeCreated = DateTime.UtcNow };
 
             collection.InsertOne(aet1);
             collection.InsertOne(aet2);
             collection.InsertOne(aet3);
             collection.InsertOne(aet4);
             collection.InsertOne(aet5);
+            collection.InsertOne(aet6);
         }
 
         public void InitDatabaseWithSourceApplicationEntities()
@@ -107,12 +113,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet3 = new SourceApplicationEntity { AeTitle = "AET3", Name = "AET3", HostIp = "1.2.3.4", DateTimeCreated = DateTime.UtcNow };
             var aet4 = new SourceApplicationEntity { AeTitle = "AET4", Name = "AET4", HostIp = "1.2.3.4", DateTimeCreated = DateTime.UtcNow };
             var aet5 = new SourceApplicationEntity { AeTitle = "AET5", Name = "AET5", HostIp = "1.2.3.4", DateTimeCreated = DateTime.UtcNow };
+            var aet6 = new SourceApplicationEntity { AeTitle = "AET6", Name = "AET6", HostIp = "1.2.3.4", DateTimeCreated = DateTime.UtcNow, TenantId = new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1") };
 
             collection.InsertOne(aet1);
             collection.InsertOne(aet2);
             collection.InsertOne(aet3);
             collection.InsertOne(aet4);
             collection.InsertOne(aet5);
+            collection.InsertOne(aet6);
         }
 
         public void InitDatabaseWithInferenceRequests()

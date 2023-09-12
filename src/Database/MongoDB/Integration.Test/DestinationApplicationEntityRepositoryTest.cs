@@ -108,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             Assert.Equal(114, actual!.Port);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByNameAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByNameAsync("AET7").ConfigureAwait(false);
             Assert.Null(actual);
         }
 
@@ -136,6 +136,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var collection = _databaseFixture.Database.GetCollection<DestinationApplicationEntity>(nameof(DestinationApplicationEntity));
             var expected = await collection.Find(Builders<DestinationApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(false);
             var actual = await store.ToListAsync(d => true).ConfigureAwait(false);
+
+            actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
+        }
+
+        [Fact]
+        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalledWithFilter_ExpectFilteredEntitiesToBeReturned()
+        {
+            var store = new DestinationApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+
+            var collection = _databaseFixture.Database.GetCollection<DestinationApplicationEntity>(nameof(DestinationApplicationEntity));
+            var expected = await collection.Find(d => d.TenantId == new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1")).ToListAsync().ConfigureAwait(false);
+            var actual = await store.ToListAsync(d => d.TenantId == new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1")).ConfigureAwait(false);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
         }

@@ -47,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet3 = new DestinationApplicationEntity { AeTitle = "AET3", HostIp = "1.2.3.4", Port = 114, Name = "AET3" };
             var aet4 = new DestinationApplicationEntity { AeTitle = "AET4", HostIp = "1.2.3.4", Port = 114, Name = "AET4" };
             var aet5 = new DestinationApplicationEntity { AeTitle = "AET5", HostIp = "1.2.3.4", Port = 114, Name = "AET5" };
+            var aet6 = new DestinationApplicationEntity { AeTitle = "AET6", HostIp = "1.2.3.4", Port = 114, Name = "AET6", TenantId = new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1") };
 
             var set = DatabaseContext.Set<DestinationApplicationEntity>();
             set.RemoveRange(set.ToList());
@@ -55,6 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             set.Add(aet3);
             set.Add(aet4);
             set.Add(aet5);
+            set.Add(aet6);
 
             DatabaseContext.SaveChanges();
         }
@@ -66,6 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet3 = new MonaiApplicationEntity { AeTitle = "AET3", Name = "AET3" };
             var aet4 = new MonaiApplicationEntity { AeTitle = "AET4", Name = "AET4" };
             var aet5 = new MonaiApplicationEntity { AeTitle = "AET5", Name = "AET5" };
+            var aet6 = new MonaiApplicationEntity { AeTitle = "AET6", Name = "AET6", TenantId = new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1") };
 
             var set = DatabaseContext.Set<MonaiApplicationEntity>();
             set.RemoveRange(set.ToList());
@@ -74,6 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             set.Add(aet3);
             set.Add(aet4);
             set.Add(aet5);
+            set.Add(aet6);
 
             DatabaseContext.SaveChanges();
         }
@@ -85,6 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet3 = new SourceApplicationEntity { AeTitle = "AET3", Name = "AET3", HostIp = "1.2.3.4" };
             var aet4 = new SourceApplicationEntity { AeTitle = "AET4", Name = "AET4", HostIp = "1.2.3.4" };
             var aet5 = new SourceApplicationEntity { AeTitle = "AET5", Name = "AET5", HostIp = "1.2.3.4" };
+            var aet6 = new SourceApplicationEntity { AeTitle = "AET6", Name = "AET6", HostIp = "1.2.3.4", TenantId = new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1") };
 
             var set = DatabaseContext.Set<SourceApplicationEntity>();
             set.RemoveRange(set.ToList());
@@ -93,6 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             set.Add(aet3);
             set.Add(aet4);
             set.Add(aet5);
+            set.Add(aet6);
 
             DatabaseContext.SaveChanges();
         }

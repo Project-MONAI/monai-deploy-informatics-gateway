@@ -102,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             Assert.True(result);
             result = await store.ContainsAsync(p => p.Name != "AET2").ConfigureAwait(false);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Name == "AET7").ConfigureAwait(false);
             Assert.False(result);
         }
 
@@ -116,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             Assert.Equal("AET1", actual!.AeTitle);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByNameAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByNameAsync("AET7").ConfigureAwait(false);
             Assert.Null(actual);
         }
 
@@ -144,6 +144,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var collection = _databaseFixture.Database.GetCollection<MonaiApplicationEntity>(nameof(MonaiApplicationEntity));
             var expected = await collection.Find(Builders<MonaiApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(false);
             var actual = await store.ToListAsync(d => true).ConfigureAwait(false);
+
+            actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
+        }
+
+        [Fact]
+        public async Task GivenMonaiApplicationEntitiesInTheDatabase_WhenToListIsCalledWithFilter_ExpectFilteredEntitiesToBeReturned()
+        {
+            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+
+            var collection = _databaseFixture.Database.GetCollection<MonaiApplicationEntity>(nameof(MonaiApplicationEntity));
+            var expected = await collection.Find(d => d.TenantId == new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1")).ToListAsync().ConfigureAwait(false);
+            var actual = await store.ToListAsync(d => d.TenantId == new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1")).ConfigureAwait(false);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
         }

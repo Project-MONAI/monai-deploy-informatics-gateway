@@ -90,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.True(result);
             result = await store.ContainsAsync(p => p.Name != "AET2").ConfigureAwait(false);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Name == "AET7").ConfigureAwait(false);
             Assert.False(result);
         }
 
@@ -104,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.Equal("AET1", actual!.AeTitle);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByNameAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByNameAsync("AET7").ConfigureAwait(false);
             Assert.Null(actual);
         }
 
@@ -118,7 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             Assert.Equal("AET1", actual.FirstOrDefault()!.AeTitle);
             Assert.Equal("AET1", actual.FirstOrDefault()!.Name);
 
-            actual = await store.FindByAETAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByAETAsync("AET7").ConfigureAwait(false);
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
@@ -158,7 +158,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var actual = await store.ToListAsync(d => d.TenantId == new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1")).ConfigureAwait(false);
 
             Assert.Single(actual);
-            Assert.Equal(expected.LastOrDefault(), actual.FirstOrDefault());
+            Assert.Equal(expected.Find(d => d.AeTitle == "AET6"), actual.FirstOrDefault());
         }
 
         [Fact]
