@@ -510,6 +510,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
+    - 6.0.21
     - 6.0.22
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
@@ -517,6 +518,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
+    - 6.0.21
     - 6.0.22
     :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
