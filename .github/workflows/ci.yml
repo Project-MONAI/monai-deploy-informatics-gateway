@@ -391,13 +391,11 @@ jobs:
           retention-days: 7
 
       - name: Package API
-        env:
-          PACKAGEDIR: '${{ github.workspace }}/nupkg/'
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         run: |
-          mkdir $PACKAGEDIR
-          dotnet pack --no-build -c ${{ env.BUILD_CONFIG }} -o $PACKAGEDIR -p:PackageVersion=${{ env.NUGETVER }}
-          ls -lR $PACKAGEDIR
+          mkdir ~/nupkg
+          dotnet pack --no-build -c ${{ env.BUILD_CONFIG }} -o ~/nupkg -p:PackageVersion=${{ env.NUGETVER }}
+          ls -lR ~/nupkg
         working-directory: ./src/Api
           
       - name: Upload Nuget
