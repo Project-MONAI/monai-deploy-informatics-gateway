@@ -39,6 +39,7 @@ jobs:
       semVer: ${{ steps.gitversion.outputs.semVer }}
       preReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}
       majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
+      nuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
 
     steps:
       - uses: actions/checkout@v3
