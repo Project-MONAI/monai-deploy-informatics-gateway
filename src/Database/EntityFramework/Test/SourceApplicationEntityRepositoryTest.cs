@@ -139,14 +139,26 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         }
 
         [Fact]
-        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
+        public async Task GivenSourceApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var expected = await _databaseFixture.DatabaseContext.Set<SourceApplicationEntity>().ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var actual = await store.ToListAsync(d => true).ConfigureAwait(false);
 
             Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public async Task GivenSourceApplicationEntitiesInTheDatabase_WhenToListIsCalledWithFilter_ExpectFilteredEntitiesToBeReturned()
+        {
+            var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
+
+            var expected = await _databaseFixture.DatabaseContext.Set<SourceApplicationEntity>().ToListAsync().ConfigureAwait(false);
+            var actual = await store.ToListAsync(d => d.TenantId == new Guid("17d95c58-f100-4dc3-ae58-73d052fc38d1")).ConfigureAwait(false);
+
+            Assert.Single(actual);
+            Assert.Equal(expected.LastOrDefault(), actual.FirstOrDefault());
         }
 
         [Fact]

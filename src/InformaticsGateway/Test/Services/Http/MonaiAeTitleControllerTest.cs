@@ -106,19 +106,25 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 });
             }
 
-            _repository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).Returns(Task.FromResult(data));
+            _repository.Setup(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>())).Returns(Task.FromResult(data));
 
             var result = await _controller.Get();
             var okObjectResult = result.Result as OkObjectResult;
             var response = okObjectResult.Value as IEnumerable<MonaiApplicationEntity>;
             Assert.Equal(data.Count, response.Count());
-            _repository.Verify(p => p.ToListAsync(It.IsAny<CancellationToken>()), Times.Once());
+            _repository.Verify(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [RetryFact(5, 250, DisplayName = "Get - Shall return problem on failure")]
         public async Task Get_ShallReturnProblemOnFailure()
         {
-            _repository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).Throws(new Exception("error"));
+            _repository.Setup(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>())).Throws(new Exception("error"));
 
             var result = await _controller.Get();
             var objectResult = result.Result as ObjectResult;

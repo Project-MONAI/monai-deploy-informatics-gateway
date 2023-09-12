@@ -141,7 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IMonaiApplicationEntityRepository>();
-            foreach (var ae in await repository.ToListAsync().ConfigureAwait(false))
+            foreach (var ae in await repository.ToListAsync(d => true).ConfigureAwait(false))
             {
                 AddNewAeTitle(ae);
             }
@@ -228,7 +228,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             if (!containsSource)
             {
-                foreach (var src in await repository.ToListAsync().ConfigureAwait(false))
+                foreach (var src in await repository.ToListAsync(d => true).ConfigureAwait(false))
                 {
                     _logger.AvailableSource(src.AeTitle, src.HostIp);
                 }

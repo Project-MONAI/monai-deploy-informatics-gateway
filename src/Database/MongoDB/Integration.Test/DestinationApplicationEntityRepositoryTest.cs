@@ -135,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             var collection = _databaseFixture.Database.GetCollection<DestinationApplicationEntity>(nameof(DestinationApplicationEntity));
             var expected = await collection.Find(Builders<DestinationApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var actual = await store.ToListAsync(d => true).ConfigureAwait(false);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
         }

@@ -21,7 +21,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 {
     public interface ISourceApplicationEntityRepository
     {
-        Task<List<SourceApplicationEntity>> ToListAsync(CancellationToken cancellationToken = default);
+        Task<List<SourceApplicationEntity>> ToListAsync(Expression<Func<SourceApplicationEntity, bool>> filter, CancellationToken cancellationToken = default);
 
         Task<SourceApplicationEntity?> FindByNameAsync(string name, CancellationToken cancellationToken = default);
 

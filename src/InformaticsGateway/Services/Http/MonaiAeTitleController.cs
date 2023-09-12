@@ -59,11 +59,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<IEnumerable<MonaiApplicationEntity>>> Get()
+        public async Task<ActionResult<IEnumerable<MonaiApplicationEntity>>> Get([FromQuery] Guid? tenantId = null)
         {
             try
             {
-                return Ok(await _repository.ToListAsync(HttpContext.RequestAborted).ConfigureAwait(false));
+                {
+                    if (tenantId is not null)
+                    {
+                        return Ok(await _repository.ToListAsync(d => d.TenantId == tenantId, HttpContext.RequestAborted).ConfigureAwait(false));
+                    }
+
+                    return Ok(await _repository.ToListAsync(d => true, HttpContext.RequestAborted).ConfigureAwait(false));
+                }
             }
             catch (Exception ex)
             {

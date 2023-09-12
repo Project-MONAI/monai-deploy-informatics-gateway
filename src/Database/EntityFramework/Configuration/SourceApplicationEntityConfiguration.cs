@@ -31,6 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.UpdatedBy).IsRequired(false);
             builder.Property(j => j.DateTimeCreated).IsRequired();
             builder.Property(j => j.DateTimeUpdated).IsRequired(false);
+            builder.Property(j => j.TenantId).IsRequired(false);
 
             builder.HasIndex(p => p.Name, "idx_source_name").IsUnique();
             builder.HasIndex(p => new { p.Name, p.AeTitle, p.HostIp }, "idx_source_all").IsUnique();

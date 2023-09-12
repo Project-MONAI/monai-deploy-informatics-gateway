@@ -99,12 +99,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             }).ConfigureAwait(false);
         }
 
-        public async Task<List<MonaiApplicationEntity>> ToListAsync(CancellationToken cancellationToken = default)
+        public async Task<List<MonaiApplicationEntity>> ToListAsync(
+            Expression<Func<MonaiApplicationEntity, bool>> filter,
+            CancellationToken cancellationToken = default)
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
-            {
-                return await _dataset.ToListAsync(cancellationToken).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+            return await _retryPolicy.ExecuteAsync(async () => await _dataset.Where(filter).ToListAsync(cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         public async Task<MonaiApplicationEntity> UpdateAsync(MonaiApplicationEntity entity, CancellationToken cancellationToken = default)

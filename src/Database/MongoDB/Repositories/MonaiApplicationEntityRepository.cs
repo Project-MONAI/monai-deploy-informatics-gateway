@@ -70,12 +70,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             _collection.Indexes.CreateOne(new CreateIndexModel<MonaiApplicationEntity>(indexDefinition, options));
         }
 
-        public async Task<List<MonaiApplicationEntity>> ToListAsync(CancellationToken cancellationToken = default)
+        public async Task<List<MonaiApplicationEntity>> ToListAsync(
+            Expression<Func<MonaiApplicationEntity, bool>> filter,
+            CancellationToken cancellationToken = default)
         {
-            return await _retryPolicy.ExecuteAsync(async () =>
-            {
-                return await _collection.Find(Builders<MonaiApplicationEntity>.Filter.Empty).ToListAsync(cancellationToken).ConfigureAwait(false);
-            }).ConfigureAwait(false);
+            return await _retryPolicy.ExecuteAsync(async () => await _collection.Find(filter).ToListAsync(cancellationToken).ConfigureAwait(false)).ConfigureAwait(false);
         }
 
         public async Task<MonaiApplicationEntity?> FindByNameAsync(string name, CancellationToken cancellationToken = default)

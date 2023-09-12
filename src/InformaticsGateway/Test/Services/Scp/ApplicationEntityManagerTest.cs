@@ -97,9 +97,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         }
 
         [RetryFact(5, 250, DisplayName = "HandleCStoreRequest - Shall throw if AE Title not configured")]
-        public async Task HandleCStoreRequest_ShallThrowIfAENotConfigured()
+        public async Task HandleCStoreRequest_ShallThrowIfA6ENotConfigured()
         {
-            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
+            _applicationEntityRepository.Setup(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -129,7 +131,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     Name =aet
                 }
             };
-            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(data);
+            _applicationEntityRepository.Setup(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>())).ReturnsAsync(data);
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -146,7 +150,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger.VerifyLoggingMessageBeginsWith($"Instanced saved", LogLevel.Information, Times.Never());
             _logger.VerifyLoggingMessageBeginsWith($"Instance queued for upload", LogLevel.Information, Times.Never());
 
-            _applicationEntityRepository.Verify(p => p.ToListAsync(It.IsAny<CancellationToken>()), Times.Once());
+            _applicationEntityRepository.Verify(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>()), Times.Once());
             _storageInfoProvider.Verify(p => p.HasSpaceAvailableToStore, Times.AtLeastOnce());
             _storageInfoProvider.Verify(p => p.AvailableFreeSpace, Times.AtLeastOnce());
         }
@@ -184,7 +190,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
 
             _sourceEntityRepository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(false);
-            _sourceEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(
+            _sourceEntityRepository.Setup(p => p.ToListAsync(
+                It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>())).ReturnsAsync(
                 (
                     new List<SourceApplicationEntity>
                     {
@@ -219,7 +227,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "Shall handle AE change events")]
         public async Task ShallHandleAEChangeEventsAsync()
         {
-            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
+            _applicationEntityRepository.Setup(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -253,7 +263,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         [RetryFact(5, 250, DisplayName = "Shall prevent AE update when AE Title do not match")]
         public async Task ShallPreventAEUpdateWHenAETDoNotMatchAsync()
         {
-            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
+            _applicationEntityRepository.Setup(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,
@@ -282,7 +294,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         public async Task ShallHandleCStoreRequest()
         {
             var associationId = Guid.NewGuid();
-            _applicationEntityRepository.Setup(p => p.ToListAsync(It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
+            _applicationEntityRepository.Setup(p => p.ToListAsync(
+                It.IsAny<Expression<Func<MonaiApplicationEntity, bool>>>(),
+                It.IsAny<CancellationToken>())).ReturnsAsync(new List<MonaiApplicationEntity>());
             var manager = new ApplicationEntityManager(_hostApplicationLifetime.Object,
                                                        _serviceScopeFactory.Object,
                                                        _monaiAeChangedNotificationService,

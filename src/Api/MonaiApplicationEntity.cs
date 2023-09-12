@@ -112,6 +112,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// </summary>
         public DateTime? DateTimeUpdated { get; set; }
 
+        /// <summary>
+        /// Gets or set the ID of the tenant used where multiple clients would share the same data
+        /// </summary>
+        public Guid? TenantId { get; set; }
+
         public MonaiApplicationEntity()
         {
             SetDefaultValues();

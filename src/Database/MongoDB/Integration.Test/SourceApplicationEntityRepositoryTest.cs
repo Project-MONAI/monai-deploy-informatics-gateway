@@ -144,13 +144,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         }
 
         [Fact]
-        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
+        public async Task GivenSourceApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
 
             var collection = _databaseFixture.Database.GetCollection<SourceApplicationEntity>(nameof(SourceApplicationEntity));
             var expected = await collection.Find(Builders<SourceApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var actual = await store.ToListAsync(d => true).ConfigureAwait(false);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
         }
