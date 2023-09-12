@@ -403,10 +403,10 @@ jobs:
         if: ${{ matrix.os == 'ubuntu-latest' }}
         uses: actions/upload-artifact@v3.1.2
         env:
-          PACKAGEDIR: '${{ github.workspace }}/nupkg/'
+          PACKAGEDIR: '${{ github.workspace }}/nupkg'
         with:
           name: nuget
-          path: ${{ PACKAGEDIR }}*.nupkg
+          path: $PACKAGEDIR/*.nupkg
           retention-days: 30
 
       - name: Log in to the Container registry
