@@ -523,7 +523,7 @@ jobs:
   publish:
     name: Publish to GitHub Packages
     runs-on: ubuntu-latest
-    needs: [build, unit-test]
+    needs: [build, unit-test, integration-test]
     if: ${{ ! ( github.event.inputs.nuget ) && ! ( contains(github.ref, 'refs/heads/main') ) }}
     steps:
       - uses: actions/download-artifact@v3
