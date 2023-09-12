@@ -306,8 +306,7 @@
   - :who: mocsharp
     :why: MIT (https://github.com/microsoft/vstest/raw/main/LICENSE)
     :versions:
-    - 17.4.1
-    - 17.7.1
+    - 17.7.2
     :when: 2022-08-16 23:05:48.342748414 Z
 - - :approve
   - Microsoft.Data.Sqlite.Core
@@ -675,7 +674,6 @@
     :why: MIT (https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
     :versions:
     - 17.7.2
-    - 17.7.1
     :when: 2022-09-01 23:06:13.008314524 Z
 - - :approve
   - Microsoft.NETCore.Platforms
@@ -726,7 +724,6 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
     :versions:
     - 17.7.2
-    - 17.7.1
     :when: 2022-08-16 23:06:16.175705981 Z
 - - :approve
   - Microsoft.TestPlatform.TestHost
@@ -734,7 +731,6 @@
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
     :versions:
     - 17.7.2
-    - 17.7.1
     :when: 2022-08-16 23:06:17.671459450 Z
 - - :approve
   - Microsoft.Toolkit.HighPerformance
@@ -2270,14 +2266,14 @@
   - :who: mocsharp
     :why: BSD 2-Clause Simplified License (https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
     :versions:
-    - 5.3.3
+    - 5.3.4
     :when: 2022-10-12 03:14:06.964203977 Z
 - - :approve
   - NLog.Web.AspNetCore
   - :who: mocsharp
     :why: BSD 3-Clause License (https://github.com/NLog/NLog.Web/raw/master/LICENSE)
     :versions:
-    - 5.3.3
+    - 5.3.4
     :when: 2022-10-12 03:14:07.396706995 Z
 - - :approve
   - fo-dicom.NLog
