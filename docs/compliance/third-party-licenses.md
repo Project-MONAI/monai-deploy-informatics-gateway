@@ -1681,45 +1681,6 @@ SOFTWARE.
 
 
 <details>
-<summary>Karambolo.Extensions.Logging.File 3.4.0</summary>
-
-## Karambolo.Extensions.Logging.File
-
-- Version: 3.4.0
-- Authors: Adam Simon
-- Project URL: https://github.com/adams85/filelogger
-- Source: [NuGet](https://www.nuget.org/packages/Karambolo.Extensions.Logging.File/3.4.0)
-- License: [MIT](https://github.com/adams85/filelogger/raw/master/LICENSE)
-
-
-```
-MIT License
-
-Copyright (c) 2023 Adam Simon
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
 <summary>Macross.Json.Extensions 3.0.0</summary>
 
 ## Macross.Json.Extensions
@@ -3339,15 +3300,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.CodeCoverage 17.4.1</summary>
+<summary>Microsoft.CodeCoverage 17.7.2</summary>
 
 ## Microsoft.CodeCoverage
 
-- Version: 17.4.1
+- Version: 17.7.2
 - Authors: Microsoft
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.4.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.7.2)
 - License: [MIT](https://github.com/microsoft/vstest/raw/main/LICENSE)
 
 
@@ -3377,14 +3338,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Data.Sqlite.Core 6.0.14</summary>
+<summary>Microsoft.Data.Sqlite.Core 6.0.22</summary>
 
 ## Microsoft.Data.Sqlite.Core
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/dotnet/standard/data/sqlite/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3418,14 +3379,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore 6.0.14</summary>
+<summary>Microsoft.EntityFrameworkCore 6.0.22</summary>
 
 ## Microsoft.EntityFrameworkCore
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3459,14 +3420,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Abstractions 6.0.14</summary>
+<summary>Microsoft.EntityFrameworkCore.Abstractions 6.0.22</summary>
 
 ## Microsoft.EntityFrameworkCore.Abstractions
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3500,14 +3461,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Analyzers 6.0.14</summary>
+<summary>Microsoft.EntityFrameworkCore.Analyzers 6.0.22</summary>
 
 ## Microsoft.EntityFrameworkCore.Analyzers
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3541,14 +3502,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Design 6.0.14</summary>
+<summary>Microsoft.EntityFrameworkCore.Design 6.0.22</summary>
 
 ## Microsoft.EntityFrameworkCore.Design
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3582,14 +3543,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.InMemory 6.0.14</summary>
+<summary>Microsoft.EntityFrameworkCore.InMemory 6.0.22</summary>
 
 ## Microsoft.EntityFrameworkCore.InMemory
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3623,14 +3584,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Relational 6.0.14</summary>
+<summary>Microsoft.EntityFrameworkCore.Relational 6.0.22</summary>
 
 ## Microsoft.EntityFrameworkCore.Relational
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3664,14 +3625,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite 6.0.14</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite 6.0.22</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3705,14 +3666,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 6.0.14</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 6.0.22</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite.Core
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/6.0.22)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -4591,14 +4552,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks 6.0.14</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks 6.0.22</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks/6.0.22)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -4673,14 +4634,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions 6.0.14</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions 6.0.22</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions/6.0.22)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -4755,14 +4716,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore 6.0.14</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore 6.0.22</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
 
-- Version: 6.0.14
+- Version: 6.0.22
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore/6.0.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore/6.0.22)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -5869,15 +5830,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.NET.Test.Sdk 17.4.1</summary>
+<summary>Microsoft.NET.Test.Sdk 17.7.2</summary>
 
 ## Microsoft.NET.Test.Sdk
 
-- Version: 17.4.1
+- Version: 17.7.2
 - Authors: Microsoft
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.4.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.7.2)
 - License: [MIT](https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
 
 
@@ -6663,15 +6624,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.TestPlatform.ObjectModel 17.4.1</summary>
+<summary>Microsoft.TestPlatform.ObjectModel 17.7.2</summary>
 
 ## Microsoft.TestPlatform.ObjectModel
 
-- Version: 17.4.1
+- Version: 17.7.2
 - Authors: Microsoft
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.4.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.7.2)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
 
 
@@ -6701,15 +6662,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.TestPlatform.TestHost 17.4.1</summary>
+<summary>Microsoft.TestPlatform.TestHost 17.7.2</summary>
 
 ## Microsoft.TestPlatform.TestHost
 
-- Version: 17.4.1
+- Version: 17.7.2
 - Authors: Microsoft
 - Owners: Microsoft
 - Project URL: https://github.com/microsoft/vstest/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.4.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.7.2)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
 
 
@@ -7335,14 +7296,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging 1.0.0</summary>
+<summary>Monai.Deploy.Messaging 1.0.1</summary>
 
 ## Monai.Deploy.Messaging
 
-- Version: 1.0.0
+- Version: 1.0.1
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/1.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/1.0.1)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7563,14 +7524,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Messaging.RabbitMQ 1.0.0</summary>
+<summary>Monai.Deploy.Messaging.RabbitMQ 1.0.1</summary>
 
 ## Monai.Deploy.Messaging.RabbitMQ
 
-- Version: 1.0.0
+- Version: 1.0.1
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/1.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/1.0.1)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -9165,14 +9126,14 @@ SOFTWARE.
 
 
 <details>
-<summary>NLog 5.1.2</summary>
+<summary>NLog 5.2.3</summary>
 
 ## NLog
 
-- Version: 5.1.2
+- Version: 5.2.3
 - Authors: Jarek Kowalski,Kim Christensen,Julian Verdurmen
 - Project URL: https://nlog-project.org/
-- Source: [NuGet](https://www.nuget.org/packages/NLog/5.1.2)
+- Source: [NuGet](https://www.nuget.org/packages/NLog/5.2.3)
 - License: [BSD 3-Clause License](https://github.com/NLog/NLog/raw/dev/LICENSE.txt)
 
 

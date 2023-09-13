@@ -1,4 +1,4 @@
-<!--
+﻿<!--
   ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,8 +36,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.21" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.22" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageReference Include="Moq" Version="4.20.69" />
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.2.3" />
     <PackageReference Include="xRetry" Version="1.9.0" />
