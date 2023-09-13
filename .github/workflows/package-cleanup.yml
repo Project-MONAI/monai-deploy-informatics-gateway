@@ -36,10 +36,18 @@ jobs:
         delete-only-pre-release-versions: "true"
 
     - uses: actions/delete-package-versions@v4
-      name: monai-deploy-informatics-gateway
+      name: delete pre-release monai-deploy-informatics-gateway
       with: 
         package-name: 'monai-deploy-informatics-gateway'
         package-type: container
         min-versions-to-keep: 10
         delete-only-pre-release-versions: "true"
+
+    - uses: actions/delete-package-versions@v4
+      name: delete untagged monai-deploy-informatics-gateway
+      with: 
+        package-name: 'monai-deploy-informatics-gateway'
+        package-type: container
+        min-versions-to-keep: 0
+        delete-only-untagged-versions: "true"
         
