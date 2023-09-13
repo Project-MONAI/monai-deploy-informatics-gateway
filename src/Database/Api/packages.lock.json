@@ -4,9 +4,9 @@
     "net6.0": {
       "NLog": {
         "type": "Direct",
-        "requested": "[5.2.3, )",
-        "resolved": "5.2.3",
-        "contentHash": "rHTNRtQF5qYqLutSR9ldUWXglKym/KA1R6GKw4JtDvza8i5+kgfmeKH75Ccn1noeJIOjHLXorphMxKk3EiN2tg=="
+        "requested": "[5.2.4, )",
+        "resolved": "5.2.4",
+        "contentHash": "/qzds1Cp9rQD53La3mlWOmCHsFSbmT9BCb8q6k3eOrbOYDfdf3ZN1hBW7IDImUD6V8BfPfEFBhXGDLOEOQxHgQ=="
       },
       "Ardalis.GuardClauses": {
         "type": "Transitive",
@@ -66,8 +66,8 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.21",
-        "contentHash": "GlNsy7qoFnCxgZlPpb8H/Srq1juOiV6W5XaijSA0+h8V0yn1VJ0owjb01If3di3Covs/8682A+ByTFjmEUxePA=="
+        "resolved": "6.0.22",
+        "contentHash": "3ycEYrtWoa4kv5mUECU2LNBbWiYh345b1uQLvg4pHCEICXoJZ8Sfu/2yGloKiMNgMdDc02gFYCRHxsqQNZpnWA=="
       },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "Transitive",
@@ -161,8 +161,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "1.0.0",
-        "contentHash": "Xr1V3ZrSJByfUP4w+aiOAqC7Uzt1GqRXj35qSTQs9C1oI4gCiBN4wnre0SSvoA7vHQNZPGWNWXtiqbI7Cov3Mg==",
+        "resolved": "1.0.1",
+        "contentHash": "w0+37sCMzhZg4vhYFG+9TKmDW+Dks5DOiTrJzdnT8xJCfH1MK6xkRnIf+dBfxes0wFwPiKueaUWDcUsg1RnadQ==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
@@ -252,9 +252,9 @@
         "type": "Project",
         "dependencies": {
           "Macross.Json.Extensions": "[3.0.0, )",
-          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.21, )",
+          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.22, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[1.0.0, )",
+          "Monai.Deploy.Messaging": "[1.0.1, )",
           "Monai.Deploy.Storage": "[0.2.18, )",
           "fo-dicom": "[5.1.1, )"
         }

@@ -25,13 +25,28 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <Nullable>enable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <PackageId>Monai.Deploy.InformaticsGateway.Api</PackageId>
+    <Version>0.4.1</Version>
+    <Authors>MONAI Consortium</Authors>
+    <Company>MONAI Consortium</Company>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>MONAI Deploy Informatics Gateway API</Description>
+    <Copyright>MONAI Consortium</Copyright>
+    <PackageProjectUrl>https://github.com/Project-MONAI/monai-deploy-informatics-gateway</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Project-MONAI/monai-deploy-informatics-gateway</RepositoryUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="fo-dicom" Version="5.1.1" />
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.21" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="1.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.22" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="1.0.1" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.18" />
   </ItemGroup>
 

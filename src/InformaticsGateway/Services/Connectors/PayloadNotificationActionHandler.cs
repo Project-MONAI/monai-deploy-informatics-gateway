@@ -135,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 _options.Value.Messaging.Topics.WorkflowRequest,
                 message.ToMessage()).ConfigureAwait(false);
 
-            _logger.WorkflowRequestPublished(_options.Value.Messaging.Topics.WorkflowRequest, message.MessageId, payload.Elapsed);
+            _logger.WorkflowRequestPublished(_options.Value.Messaging.Topics.WorkflowRequest, message.MessageId, payload.Elapsed.TotalSeconds);
         }
 
         private async Task<PayloadAction> UpdatePayloadState(Payload payload, CancellationToken cancellationToken = default)

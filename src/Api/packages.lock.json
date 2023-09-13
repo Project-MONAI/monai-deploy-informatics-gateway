@@ -29,15 +29,15 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Direct",
-        "requested": "[6.0.21, )",
-        "resolved": "6.0.21",
-        "contentHash": "GlNsy7qoFnCxgZlPpb8H/Srq1juOiV6W5XaijSA0+h8V0yn1VJ0owjb01If3di3Covs/8682A+ByTFjmEUxePA=="
+        "requested": "[6.0.22, )",
+        "resolved": "6.0.22",
+        "contentHash": "3ycEYrtWoa4kv5mUECU2LNBbWiYh345b1uQLvg4pHCEICXoJZ8Sfu/2yGloKiMNgMdDc02gFYCRHxsqQNZpnWA=="
       },
       "Monai.Deploy.Messaging": {
         "type": "Direct",
-        "requested": "[1.0.0, )",
-        "resolved": "1.0.0",
-        "contentHash": "Xr1V3ZrSJByfUP4w+aiOAqC7Uzt1GqRXj35qSTQs9C1oI4gCiBN4wnre0SSvoA7vHQNZPGWNWXtiqbI7Cov3Mg==",
+        "requested": "[1.0.1, )",
+        "resolved": "1.0.1",
+        "contentHash": "w0+37sCMzhZg4vhYFG+9TKmDW+Dks5DOiTrJzdnT8xJCfH1MK6xkRnIf+dBfxes0wFwPiKueaUWDcUsg1RnadQ==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
