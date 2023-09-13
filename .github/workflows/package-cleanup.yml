@@ -22,29 +22,33 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-
+  nuget-api-prerelease-cleanup:
+    name: pre-release Monai.Deploy.InformaticsGateway.Api
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/delete-package-versions@v4
-      name: Monai.Deploy.InformaticsGateway.Api
       with: 
         package-name: 'Monai.Deploy.InformaticsGateway.Api'
         package-type: nuget
         min-versions-to-keep: 10
         delete-only-pre-release-versions: "true"
-
+        
+  container-prerelease-cleanup:
+    name: delete pre-release monai-deploy-informatics-gateway
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/delete-package-versions@v4
-      name: delete pre-release monai-deploy-informatics-gateway
       with: 
         package-name: 'monai-deploy-informatics-gateway'
         package-type: container
         min-versions-to-keep: 10
         delete-only-pre-release-versions: "true"
 
+  container-untagged-cleanup:
+    name: delete untagged monai-deploy-informatics-gateway
+    runs-on: ubuntu-latest
+    steps:
     - uses: actions/delete-package-versions@v4
-      name: delete untagged monai-deploy-informatics-gateway
       with: 
         package-name: 'monai-deploy-informatics-gateway'
         package-type: container
