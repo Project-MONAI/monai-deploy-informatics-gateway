@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class DatabaseRegistrationBase
-   | MONAI Deploy Informatics Gateway v0.4.0 </title>
+   | MONAI Deploy Informatics Gateway v0.4.1 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class DatabaseRegistrationBase
-   | MONAI Deploy Informatics Gateway v0.4.0 ">
+   | MONAI Deploy Informatics Gateway v0.4.1 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -100,18 +100,18 @@
   </h3>
   <span class="small pull-right mobile-hide">
     <span class="divider">|</span>
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase_Configure_Microsoft_Extensions_DependencyInjection_IServiceCollection_Monai_Deploy_InformaticsGateway_Database_Api_DatabaseType_System_String_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection%2CMonai.Deploy.InformaticsGateway.Database.Api.DatabaseType%2CSystem.String)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase_Configure_Microsoft_Extensions_DependencyInjection_IServiceCollection_Monai_Deploy_InformaticsGateway_Database_Api_DatabaseType_System_String_Microsoft_Extensions_Logging_ILogger_.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection%2CMonai.Deploy.InformaticsGateway.Database.Api.DatabaseType%2CSystem.String%2CMicrosoft.Extensions.Logging.ILogger)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
   </span>
   <span class="small pull-right mobile-hide">
-    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/DatabaseRegistrationBase.cs/#L23">View Source</a>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/DatabaseRegistrationBase.cs/#L24">View Source</a>
   </span>
   <a id="Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase_Configure_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure*"></a>
-  <h4 id="Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase_Configure_Microsoft_Extensions_DependencyInjection_IServiceCollection_Monai_Deploy_InformaticsGateway_Database_Api_DatabaseType_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.String)">Configure(IServiceCollection, DatabaseType, String)</h4>
+  <h4 id="Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase_Configure_Microsoft_Extensions_DependencyInjection_IServiceCollection_Monai_Deploy_InformaticsGateway_Database_Api_DatabaseType_System_String_Microsoft_Extensions_Logging_ILogger_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.String,Microsoft.Extensions.Logging.ILogger)">Configure(IServiceCollection, DatabaseType, String, ILogger)</h4>
   <div class="markdown level1 summary"></div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract IServiceCollection Configure(IServiceCollection services, DatabaseType databaseType, string connectionString)</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract IServiceCollection Configure(IServiceCollection services, DatabaseType databaseType, string connectionString, ILogger logger)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -136,6 +136,11 @@
       <tr>
         <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">String</a></td>
         <td><span class="parametername">connectionString</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></td>
+        <td><span class="parametername">logger</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -166,7 +171,7 @@
                     <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
                   </li>
                   <li>
-                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/DatabaseRegistrationBase.cs/#L21" class="contribution-link">View Source</a>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/DatabaseRegistrationBase.cs/#L22" class="contribution-link">View Source</a>
                   </li>
                 </ul>
               </div>

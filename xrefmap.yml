@@ -285,12 +285,12 @@ references:
   isSpec: "True"
   fullName: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileCount
   nameWithType: DicomAssociationInfo.FileCount
-- uid: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileReceived
-  name: FileReceived()
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.html#Monai_Deploy_InformaticsGateway_Api_DicomAssociationInfo_FileReceived
-  commentId: M:Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileReceived
-  fullName: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileReceived()
-  nameWithType: DicomAssociationInfo.FileReceived()
+- uid: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileReceived(System.String)
+  name: FileReceived(String)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.html#Monai_Deploy_InformaticsGateway_Api_DicomAssociationInfo_FileReceived_System_String_
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileReceived(System.String)
+  fullName: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileReceived(System.String)
+  nameWithType: DicomAssociationInfo.FileReceived(String)
 - uid: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileReceived*
   name: FileReceived
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.html#Monai_Deploy_InformaticsGateway_Api_DicomAssociationInfo_FileReceived_
@@ -298,6 +298,19 @@ references:
   isSpec: "True"
   fullName: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.FileReceived
   nameWithType: DicomAssociationInfo.FileReceived
+- uid: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.PayloadIds
+  name: PayloadIds
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.html#Monai_Deploy_InformaticsGateway_Api_DicomAssociationInfo_PayloadIds
+  commentId: P:Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.PayloadIds
+  fullName: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.PayloadIds
+  nameWithType: DicomAssociationInfo.PayloadIds
+- uid: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.PayloadIds*
+  name: PayloadIds
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.html#Monai_Deploy_InformaticsGateway_Api_DicomAssociationInfo_PayloadIds_
+  commentId: Overload:Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.PayloadIds
+  isSpec: "True"
+  fullName: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.PayloadIds
+  nameWithType: DicomAssociationInfo.PayloadIds
 - uid: Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.RemoteHost
   name: RemoteHost
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo.html#Monai_Deploy_InformaticsGateway_Api_DicomAssociationInfo_RemoteHost
@@ -5450,12 +5463,12 @@ references:
   commentId: T:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase
   fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase
   nameWithType: DatabaseRegistrationBase
-- uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.String)
-  name: Configure(IServiceCollection, DatabaseType, String)
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.html#Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase_Configure_Microsoft_Extensions_DependencyInjection_IServiceCollection_Monai_Deploy_InformaticsGateway_Database_Api_DatabaseType_System_String_
-  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.String)
-  fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection, Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType, System.String)
-  nameWithType: DatabaseRegistrationBase.Configure(IServiceCollection, DatabaseType, String)
+- uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.String,Microsoft.Extensions.Logging.ILogger)
+  name: Configure(IServiceCollection, DatabaseType, String, ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.html#Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase_Configure_Microsoft_Extensions_DependencyInjection_IServiceCollection_Monai_Deploy_InformaticsGateway_Database_Api_DatabaseType_System_String_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.String,Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure(Microsoft.Extensions.DependencyInjection.IServiceCollection, Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType, System.String, Microsoft.Extensions.Logging.ILogger)
+  nameWithType: DatabaseRegistrationBase.Configure(IServiceCollection, DatabaseType, String, ILogger)
 - uid: Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.Configure*
   name: Configure
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.Api.DatabaseRegistrationBase.html#Monai_Deploy_InformaticsGateway_Database_Api_DatabaseRegistrationBase_Configure_
@@ -6800,18 +6813,18 @@ references:
   isSpec: "True"
   fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.AddDatabaseHealthCheck
   nameWithType: DatabaseManager.AddDatabaseHealthCheck
-- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection)
-  name: ConfigureDatabase(IServiceCollection, IConfigurationSection)
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabase_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfigurationSection_
-  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection)
-  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection, Microsoft.Extensions.Configuration.IConfigurationSection)
-  nameWithType: DatabaseManager.ConfigureDatabase(IServiceCollection, IConfigurationSection)
-- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection,System.IO.Abstractions.IFileSystem)
-  name: ConfigureDatabase(IServiceCollection, IConfigurationSection, IFileSystem)
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabase_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfigurationSection_System_IO_Abstractions_IFileSystem_
-  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection,System.IO.Abstractions.IFileSystem)
-  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection, Microsoft.Extensions.Configuration.IConfigurationSection, System.IO.Abstractions.IFileSystem)
-  nameWithType: DatabaseManager.ConfigureDatabase(IServiceCollection, IConfigurationSection, IFileSystem)
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection,Microsoft.Extensions.Logging.ILogger)
+  name: ConfigureDatabase(IServiceCollection, IConfigurationSection, ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabase_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfigurationSection_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection,Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection, Microsoft.Extensions.Configuration.IConfigurationSection, Microsoft.Extensions.Logging.ILogger)
+  nameWithType: DatabaseManager.ConfigureDatabase(IServiceCollection, IConfigurationSection, ILogger)
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection,System.IO.Abstractions.IFileSystem,Microsoft.Extensions.Logging.ILogger)
+  name: ConfigureDatabase(IServiceCollection, IConfigurationSection, IFileSystem, ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabase_Microsoft_Extensions_DependencyInjection_IServiceCollection_Microsoft_Extensions_Configuration_IConfigurationSection_System_IO_Abstractions_IFileSystem_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection,Microsoft.Extensions.Configuration.IConfigurationSection,System.IO.Abstractions.IFileSystem,Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase(Microsoft.Extensions.DependencyInjection.IServiceCollection, Microsoft.Extensions.Configuration.IConfigurationSection, System.IO.Abstractions.IFileSystem, Microsoft.Extensions.Logging.ILogger)
+  nameWithType: DatabaseManager.ConfigureDatabase(IServiceCollection, IConfigurationSection, IFileSystem, ILogger)
 - uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase*
   name: ConfigureDatabase
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabase_
@@ -6819,12 +6832,12 @@ references:
   isSpec: "True"
   fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabase
   nameWithType: DatabaseManager.ConfigureDatabase
-- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabaseFromPlugIns(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.IO.Abstractions.IFileSystem,Microsoft.Extensions.Configuration.IConfigurationSection)
-  name: ConfigureDatabaseFromPlugIns(IServiceCollection, DatabaseType, IFileSystem, IConfigurationSection)
-  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabaseFromPlugIns_Microsoft_Extensions_DependencyInjection_IServiceCollection_Monai_Deploy_InformaticsGateway_Database_Api_DatabaseType_System_IO_Abstractions_IFileSystem_Microsoft_Extensions_Configuration_IConfigurationSection_
-  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabaseFromPlugIns(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.IO.Abstractions.IFileSystem,Microsoft.Extensions.Configuration.IConfigurationSection)
-  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabaseFromPlugIns(Microsoft.Extensions.DependencyInjection.IServiceCollection, Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType, System.IO.Abstractions.IFileSystem, Microsoft.Extensions.Configuration.IConfigurationSection)
-  nameWithType: DatabaseManager.ConfigureDatabaseFromPlugIns(IServiceCollection, DatabaseType, IFileSystem, IConfigurationSection)
+- uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabaseFromPlugIns(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.IO.Abstractions.IFileSystem,Microsoft.Extensions.Configuration.IConfigurationSection,Microsoft.Extensions.Logging.ILogger)
+  name: ConfigureDatabaseFromPlugIns(IServiceCollection, DatabaseType, IFileSystem, IConfigurationSection, ILogger)
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabaseFromPlugIns_Microsoft_Extensions_DependencyInjection_IServiceCollection_Monai_Deploy_InformaticsGateway_Database_Api_DatabaseType_System_IO_Abstractions_IFileSystem_Microsoft_Extensions_Configuration_IConfigurationSection_Microsoft_Extensions_Logging_ILogger_
+  commentId: M:Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabaseFromPlugIns(Microsoft.Extensions.DependencyInjection.IServiceCollection,Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType,System.IO.Abstractions.IFileSystem,Microsoft.Extensions.Configuration.IConfigurationSection,Microsoft.Extensions.Logging.ILogger)
+  fullName: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabaseFromPlugIns(Microsoft.Extensions.DependencyInjection.IServiceCollection, Monai.Deploy.InformaticsGateway.Database.Api.DatabaseType, System.IO.Abstractions.IFileSystem, Microsoft.Extensions.Configuration.IConfigurationSection, Microsoft.Extensions.Logging.ILogger)
+  nameWithType: DatabaseManager.ConfigureDatabaseFromPlugIns(IServiceCollection, DatabaseType, IFileSystem, IConfigurationSection, ILogger)
 - uid: Monai.Deploy.InformaticsGateway.Database.DatabaseManager.ConfigureDatabaseFromPlugIns*
   name: ConfigureDatabaseFromPlugIns
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Database.DatabaseManager.html#Monai_Deploy_InformaticsGateway_Database_DatabaseManager_ConfigureDatabaseFromPlugIns_
