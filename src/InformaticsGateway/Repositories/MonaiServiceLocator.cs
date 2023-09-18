@@ -51,8 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         {
             Guard.Against.Null(type, nameof(type));
 
-            return
-                (_serviceProvider.GetService(type) as IMonaiService);
+            return (_serviceProvider.GetService(type) as IMonaiService);
 
         }
 

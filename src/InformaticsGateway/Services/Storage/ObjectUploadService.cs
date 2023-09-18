@@ -193,7 +193,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             while (
                 count-- > 0 &&
                 !await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false)
-                ) { /* do nothing! was this the intent? */};
+                ) { /* no op */};
 
             if (count <= 0)
             {

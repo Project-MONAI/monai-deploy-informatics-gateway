@@ -129,5 +129,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 535, Level = LogLevel.Warning, Message = "Exceeded maximum number of worker in {serviceName}: {count}.")]
         public static partial void ExceededMaxmimumNumberOfWorkers(this ILogger logger, string serviceName, ulong count);
+
+        [LoggerMessage(EventId = 536, Level = LogLevel.Error, Message = "Error executing data plug-ins.")]
+        public static partial void ErrorExecutingDataPlugIns(this ILogger logger, Exception ex);
     }
 }
