@@ -253,11 +253,11 @@
       },
       "Microsoft.EntityFrameworkCore": {
         "type": "Transitive",
-        "resolved": "6.0.21",
-        "contentHash": "XUPcDrn/Vrv9yF4M3b9FYEZvqW1gyS3hfJhFiP0pttuRYnGRB+y3/6g/9k0GIoU62+XkxGa78l1JUccq1uvAXQ==",
+        "resolved": "6.0.22",
+        "contentHash": "vNe+y8ZsEf1CsfmfYttfKAz/IgCCtphgguvao0HWNJNdjZf9cabD288nZJ17b/WaQMWXhLwYAsofk8vNVkfTOA==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.21",
-          "Microsoft.EntityFrameworkCore.Analyzers": "6.0.21",
+          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.22",
+          "Microsoft.EntityFrameworkCore.Analyzers": "6.0.22",
           "Microsoft.Extensions.Caching.Memory": "6.0.1",
           "Microsoft.Extensions.DependencyInjection": "6.0.1",
           "Microsoft.Extensions.Logging": "6.0.0",
@@ -439,17 +439,17 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.21",
-        "contentHash": "5FSA1euCRtbRqVgTn2ahgCG9Cy29UQXAZMCJLUlrQQaC5rko0+d/aq9SiFGIDP7cvoWUsatrlNdfc6UyOMV5aA=="
+        "resolved": "6.0.22",
+        "contentHash": "yvz+0r3qAt6gNEKlGSBO1BXMhtD3Tt8yzU59dHASolpwlSHvgqy0tEP6KXn3MPoKlPr0CiAHUdzOwYSoljzRSg=="
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": {
         "type": "Transitive",
-        "resolved": "6.0.21",
-        "contentHash": "6StjSICTiNdXK9NiQx0jpmsfJhSsXekjfJt8r/3K9qUx9dxVF8V2hhhIxRnZt8HM+4YagFLejNCD6hFUAnx9pw==",
+        "resolved": "6.0.22",
+        "contentHash": "PNj+/e/GCJh3ZNzxEGhkMpKJgmmbuGar6Uk/R3mPFZacTx6lBdLs4Ev7uf4XQWqTdJe56rK+2P3oF/9jIGbxgw==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Relational": "6.0.21",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.21"
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.22",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.22",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.22"
         }
       },
       "Microsoft.Extensions.FileProviders.Abstractions": {
