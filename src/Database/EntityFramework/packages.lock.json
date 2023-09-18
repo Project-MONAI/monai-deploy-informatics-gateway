@@ -4,12 +4,12 @@
     "net6.0": {
       "Microsoft.EntityFrameworkCore": {
         "type": "Direct",
-        "requested": "[6.0.21, )",
-        "resolved": "6.0.21",
-        "contentHash": "XUPcDrn/Vrv9yF4M3b9FYEZvqW1gyS3hfJhFiP0pttuRYnGRB+y3/6g/9k0GIoU62+XkxGa78l1JUccq1uvAXQ==",
+        "requested": "[6.0.22, )",
+        "resolved": "6.0.22",
+        "contentHash": "vNe+y8ZsEf1CsfmfYttfKAz/IgCCtphgguvao0HWNJNdjZf9cabD288nZJ17b/WaQMWXhLwYAsofk8vNVkfTOA==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.21",
-          "Microsoft.EntityFrameworkCore.Analyzers": "6.0.21",
+          "Microsoft.EntityFrameworkCore.Abstractions": "6.0.22",
+          "Microsoft.EntityFrameworkCore.Analyzers": "6.0.22",
           "Microsoft.Extensions.Caching.Memory": "6.0.1",
           "Microsoft.Extensions.DependencyInjection": "6.0.1",
           "Microsoft.Extensions.Logging": "6.0.0",
@@ -19,12 +19,12 @@
       },
       "Microsoft.EntityFrameworkCore.Design": {
         "type": "Direct",
-        "requested": "[6.0.21, )",
-        "resolved": "6.0.21",
-        "contentHash": "G+e0jPI1nD2DHszHXGqO57ogAVIKRy4930jCb7W/v2JfYKVcEbupzdYxEOQAGZws98MXllHNSqeb6fE1EW131A==",
+        "requested": "[6.0.22, )",
+        "resolved": "6.0.22",
+        "contentHash": "es9TKd0cpM263Ou0QMEETN7MDzD7kXDkThiiXl1+c/69v97AZlzeLoM5tDdC0RC4L74ZWyk3+WMnoDPL93DDyQ==",
         "dependencies": {
           "Humanizer.Core": "2.8.26",
-          "Microsoft.EntityFrameworkCore.Relational": "6.0.21"
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.22"
         }
       },
       "Microsoft.EntityFrameworkCore.Sqlite": {
@@ -140,20 +140,20 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.21",
-        "contentHash": "GlNsy7qoFnCxgZlPpb8H/Srq1juOiV6W5XaijSA0+h8V0yn1VJ0owjb01If3di3Covs/8682A+ByTFjmEUxePA=="
+        "resolved": "6.0.22",
+        "contentHash": "3ycEYrtWoa4kv5mUECU2LNBbWiYh345b1uQLvg4pHCEICXoJZ8Sfu/2yGloKiMNgMdDc02gFYCRHxsqQNZpnWA=="
       },
       "Microsoft.EntityFrameworkCore.Analyzers": {
         "type": "Transitive",
-        "resolved": "6.0.21",
-        "contentHash": "gS8tH419vOY2kEyqEZBX8VnXWmtHaor7gVx6zVaXCsEyQurGR/aVB++IZ62vzeQFS9R46LbNY6D6bqEA6j3iCg=="
+        "resolved": "6.0.22",
+        "contentHash": "82SZfdrLe7bdDB8/3INV0UULvlUzsdHkrEYylDCrzFXRWHXG9eO5jJQjRHU8j9XkGIN+MSPgIlczBnqeDvB36A=="
       },
       "Microsoft.EntityFrameworkCore.Relational": {
         "type": "Transitive",
-        "resolved": "6.0.21",
-        "contentHash": "Ev5FM2KpXJu7+Dm9qvLf1FhSJMytrhSXho92Vompmgeiz3p4InldluidmKKmv8nZQAjs9dTCUUyvk1pxQjysaQ==",
+        "resolved": "6.0.22",
+        "contentHash": "W7yfdEbEuS1OPPxU0EOA6haqI4uvzs7OwHKh81DiJFn3NFNP2ztSovkOzBDhTwHX0j+OySsAj3BEJhuzTVYIVw==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "6.0.21",
+          "Microsoft.EntityFrameworkCore": "6.0.22",
           "Microsoft.Extensions.Configuration.Abstractions": "6.0.0"
         }
       },
@@ -315,8 +315,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "1.0.0",
-        "contentHash": "Xr1V3ZrSJByfUP4w+aiOAqC7Uzt1GqRXj35qSTQs9C1oI4gCiBN4wnre0SSvoA7vHQNZPGWNWXtiqbI7Cov3Mg==",
+        "resolved": "1.0.1",
+        "contentHash": "w0+37sCMzhZg4vhYFG+9TKmDW+Dks5DOiTrJzdnT8xJCfH1MK6xkRnIf+dBfxes0wFwPiKueaUWDcUsg1RnadQ==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
@@ -351,8 +351,8 @@
       },
       "NLog": {
         "type": "Transitive",
-        "resolved": "5.2.3",
-        "contentHash": "rHTNRtQF5qYqLutSR9ldUWXglKym/KA1R6GKw4JtDvza8i5+kgfmeKH75Ccn1noeJIOjHLXorphMxKk3EiN2tg=="
+        "resolved": "5.2.4",
+        "contentHash": "/qzds1Cp9rQD53La3mlWOmCHsFSbmT9BCb8q6k3eOrbOYDfdf3ZN1hBW7IDImUD6V8BfPfEFBhXGDLOEOQxHgQ=="
       },
       "SQLitePCLRaw.bundle_e_sqlite3": {
         "type": "Transitive",
@@ -454,9 +454,9 @@
         "type": "Project",
         "dependencies": {
           "Macross.Json.Extensions": "[3.0.0, )",
-          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.21, )",
+          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.22, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[1.0.0, )",
+          "Monai.Deploy.Messaging": "[1.0.1, )",
           "Monai.Deploy.Storage": "[0.2.18, )",
           "fo-dicom": "[5.1.1, )"
         }
@@ -480,7 +480,7 @@
         "dependencies": {
           "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
-          "NLog": "[5.2.3, )"
+          "NLog": "[5.2.4, )"
         }
       }
     }

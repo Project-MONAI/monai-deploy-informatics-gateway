@@ -103,5 +103,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 213, Level = LogLevel.Error, Message = "Error saving DICOM association information. Correlation ID={correlationId}.")]
         public static partial void ErrorSavingDicomAssociationInfo(this ILogger logger, Guid correlationId, Exception ex);
+
+        [LoggerMessage(EventId = 214, Level = LogLevel.Information, Message = "Connection closed. Correlation ID={correlationId}. Calling AE Title={callingAeTitle}. Called AE Title={calledAeTitle}. Duration={durationSeconds} seconds.")]
+        public static partial void ConnectionClosed(this ILogger logger, string correlationId, string callingAeTitle, string calledAeTitle, double durationSeconds);
     }
 }
