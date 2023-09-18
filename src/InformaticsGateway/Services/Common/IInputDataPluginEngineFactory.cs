@@ -40,6 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
     public abstract class DataPlugInEngineFactoryBase<T> : IDataPlugInEngineFactory<T>
     {
+        private static readonly object SyncLock = new();
         private readonly IFileSystem _fileSystem;
         private readonly ILogger<DataPlugInEngineFactoryBase<T>> _logger;
         private readonly Type _type;

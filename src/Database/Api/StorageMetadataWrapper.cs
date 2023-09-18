@@ -27,6 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
     /// </summary>
     public class StorageMetadataWrapper : MongoDBEntityBase
     {
+        private readonly JsonSerializerOptions _options;
+
         [JsonPropertyName("correlationId")]
         public string CorrelationId { get; set; } = string.Empty;
 

@@ -17,7 +17,7 @@
 # Remote App Execution Plug-ins
 
 The **Remote App Execution Plug-ins** allow the users to configure a set of DICOM metadata to be replaced with dummy data before
-being exported using the `DicomDeidentifier` plug-in. The original data is stored in the database so when the data returns
+being exported using the `DicomDeidentifier` plug-in. The original data is stored in the database; when the data returns
 via DICOM DIMSE or DICOMWeb, the data can be restored using the `DicomReidentifier` plug-in.
 
 ## Supported Data Types
@@ -26,8 +26,8 @@ via DICOM DIMSE or DICOMWeb, the data can be restored using the `DicomReidentifi
 
 ## Configuration
 
-One or more DICOM tags may be configured in the `appsettings.json` file. For example, the following snippet will replace
-`AccessionNumber`, `StudyDescription`, and `SeriesDescription`.
+One or more DICOM tags may be configured in the `appsettings.json` file. For example, the following snippet will replace the
+`AccessionNumber`, `StudyDescription`, and `SeriesDescription` tags.
 
 ```json
 {
