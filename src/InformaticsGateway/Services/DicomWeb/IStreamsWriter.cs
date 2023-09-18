@@ -77,13 +77,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             _failureCount = 0;
         }
 
-        public async Task<StowResult> Save(IList<Stream> streams, string studyInstanceUid, VirtualApplicationEntity? virtualApplicationEntity, string workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
-        {
-            if (streams.IsNullOrEmpty())
-            {
-                return new StowResult { StatusCode = StatusCodes.Status204NoContent };
-            }
-
         public async Task<StowResult> Save(IList<Stream> streams, string? studyInstanceUid, VirtualApplicationEntity? virtualApplicationEntity, string? workflowName, string correlationId, string dataSource, CancellationToken cancellationToken = default)
         {
             if (streams.IsNullOrEmpty())
