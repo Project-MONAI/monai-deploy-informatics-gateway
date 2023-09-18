@@ -155,6 +155,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _ = service.StartAsync(_cancellationTokenSource.Token);
             resetEvent.Wait();
+
+            Assert.NotNull(service);
         }
 
         [RetryFact(10, 200)]

@@ -21,6 +21,7 @@ using System.Reflection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
+using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.InformaticsGateway.Test.PlugIns;
@@ -50,6 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             var result = factory.RegisteredPlugIns();
 
             Assert.Collection(result,
+                p => VerifyPlugIn(p, typeof(DicomReidentifier)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInAddWorkflow)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInResumeWorkflow)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInModifyDicomFile)),
@@ -59,6 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             _logger.VerifyLogging($"{typeof(IInputDataPlugIn).Name} data plug-in found {typeof(TestInputDataPlugInResumeWorkflow).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(TestInputDataPlugInResumeWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"{typeof(IInputDataPlugIn).Name} data plug-in found {typeof(TestInputDataPlugInModifyDicomFile).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(TestInputDataPlugInModifyDicomFile).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"{typeof(IInputDataPlugIn).Name} data plug-in found {typeof(TestInputDataPlugInVirtualAE).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(TestInputDataPlugInVirtualAE).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
+            _logger.VerifyLogging($"{typeof(IInputDataPlugIn).Name} data plug-in found {typeof(DicomReidentifier).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(DicomReidentifier).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
         }
 
         private void VerifyPlugIn(KeyValuePair<string, string> values, Type type)

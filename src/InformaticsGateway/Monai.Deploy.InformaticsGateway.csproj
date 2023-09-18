@@ -28,6 +28,7 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <UserSecretsId>be0fffc8-bebb-4509-a2c0-3c981e5415ab</UserSecretsId>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -100,5 +101,9 @@
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />
   </Target>
 
-  <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/band-manifest.json" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties appsettings_1json__JsonSchema="https://json.schemastore.org/band-manifest.json" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

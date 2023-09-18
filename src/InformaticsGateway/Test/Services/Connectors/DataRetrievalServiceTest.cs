@@ -126,9 +126,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
-            Thread.Sleep(250);
+            await Task.Delay(250);
             await store.StopAsync(cancellationTokenSource.Token);
-            Thread.Sleep(500);
+            await Task.Delay(500);
 
             Assert.Equal(ServiceStatus.Stopped, store.Status);
             _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
@@ -146,9 +146,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             var store = new DataRetrievalService(_logger.Object, _serviceScopeFactory.Object, _options);
 
             await store.StartAsync(cancellationTokenSource.Token);
-            Thread.Sleep(250);
+            await Task.Delay(250);
             await store.StopAsync(cancellationTokenSource.Token);
-            Thread.Sleep(500);
+            await Task.Delay(500);
 
             _logger.VerifyLogging($"Data Retrieval Service is running.", LogLevel.Information, Times.Once());
             _logger.VerifyLogging($"Data Retrieval Service is stopping.", LogLevel.Information, Times.Once());

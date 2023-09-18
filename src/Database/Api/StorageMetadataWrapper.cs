@@ -52,9 +52,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
         {
             Guard.Against.Null(metadata, nameof(metadata));
 
-            _options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            _options.Converters.Add(new JsonStringEnumConverter());
-
             CorrelationId = metadata.CorrelationId;
             Identity = metadata.Id;
             Update(metadata);

@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IFileSystem _fileSystem;
         private readonly IInputDataPlugInEngine _pluginEngine;
-        private MonaiApplicationEntity _configuration;
+        private MonaiApplicationEntity? _configuration;
         private DicomJsonOptions _dicomJsonOptions;
         private bool _validateDicomValueOnJsonSerialization;
         private bool _disposedValue;
@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        public async Task HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
+        public async Task<string> HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
         {
             if (_configuration is null)
             {
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             if (!AcceptsSopClass(uids.SopClassUid))
             {
                 _logger.InstanceIgnoredWIthMatchingSopClassUid(request.SOPClassUID.UID);
-                return;
+                return null;
             }
 
             var dicomInfo = new DicomFileStorageMetadata(associationId.ToString(), uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid, DataService.DIMSE, callingAeTitle, calledAeTitle);
@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
 
-            dicomInfo = result.Item2 as DicomFileStorageMetadata;
+            dicomInfo = (result.Item2 as DicomFileStorageMetadata)!;
             var dicomFile = result.Item1;
             await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
 
@@ -123,16 +123,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = dicomFile.Dataset.GetSingleValue<string>(dicomTag);
 
-            var payloadid = await _payloadAssembler.Queue(key, dicomInfo, new DataOrigin { DataService = DataService.DIMSE, Source = callingAeTitle, Destination = calledAeTitle }, _configuration.Timeout).ConfigureAwait(false);
-            dicomInfo.PayloadId = payloadid.ToString();
+            var payloadId = await _payloadAssembler.Queue(key, dicomInfo, new DataOrigin { DataService = DataService.DIMSE, Source = callingAeTitle, Destination = calledAeTitle }, _configuration.Timeout).ConfigureAwait(false);
+            dicomInfo.PayloadId = payloadId.ToString();
             _uploadQueue.Queue(dicomInfo);
+
+            return dicomInfo.PayloadId;
         }
 
         private bool AcceptsSopClass(string sopClassUid)
         {
             Guard.Against.NullOrWhiteSpace(sopClassUid, nameof(sopClassUid));
 
-            if (_configuration.IgnoredSopClasses.Any())
+            if (_configuration!.IgnoredSopClasses.Any())
             {
                 return !_configuration.IgnoredSopClasses.Contains(sopClassUid);
             }

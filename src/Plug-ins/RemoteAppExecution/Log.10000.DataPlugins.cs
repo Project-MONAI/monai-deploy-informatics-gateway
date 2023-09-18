@@ -25,5 +25,8 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
 
         [LoggerMessage(EventId = 10001, Level = LogLevel.Error, Message = "Cannot find entry for incoming instance {sopInstanceUid}.")]
         public static partial void IncomingInstanceNotFound(this ILogger logger, string sopInstanceUid);
+
+        [LoggerMessage(EventId = 11002, Level = LogLevel.Debug, Message = "Added scoped service for DbType of {repo} for type {DbType}.")]
+        public static partial void AddedDbScope(this ILogger logger, string repo, string DbType);
     }
 }

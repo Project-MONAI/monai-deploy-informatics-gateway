@@ -22,13 +22,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
     [Serializable]
     public class FhirStoreException : Exception
     {
-        public OperationOutcome OperationOutcome { get; }
+        public OperationOutcome OperationOutcome { get; } = new();
 
         public FhirStoreException(string correlationId, string message, IssueType issueType) : this(correlationId, message, issueType, null)
         {
         }
 
-        public FhirStoreException(string correlationId, string message, IssueType issueType, Exception innerException) : base(message, innerException)
+        public FhirStoreException(string correlationId, string message, IssueType issueType, Exception? innerException) : base(message, innerException)
         {
             OperationOutcome = new OperationOutcome()
             {

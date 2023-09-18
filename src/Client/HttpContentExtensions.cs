@@ -24,7 +24,6 @@ namespace Monai.Deploy.InformaticsGateway.Client
     {
         public static async System.Threading.Tasks.Task<T> ReadAsAsync<T>(this HttpContent httpContent, CancellationToken cancellationToken)
         {
-            var json = await httpContent.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
             using (var contentStream = await httpContent.ReadAsStreamAsync(cancellationToken).ConfigureAwait(false))
             {
                 return await JsonSerializer.DeserializeAsync<T>(contentStream, Configuration.JsonSerializationOptions, cancellationToken: cancellationToken).ConfigureAwait(false);

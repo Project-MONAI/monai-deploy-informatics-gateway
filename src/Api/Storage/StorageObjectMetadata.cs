@@ -40,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets the file extension.
         /// </summary>
         [JsonPropertyName("fileExtension")]
-        public string FileExtension { get; init; } = default!;
+        public string FileExtension { get; init; }
 
         /// <summary>
         /// Gets or sets the content type of the file.
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or sets whether upload failed.
         /// </summary>
         [JsonPropertyName("isUploadFailed"), JsonInclude]
-        public bool IsUploadFailed { get; private set; } = default!;
+        public bool IsUploadFailed { get; private set; }
 
         [JsonPropertyName("isMoveCompleted"), JsonInclude]
         public bool IsMoveCompleted { get; private set; } = default!;

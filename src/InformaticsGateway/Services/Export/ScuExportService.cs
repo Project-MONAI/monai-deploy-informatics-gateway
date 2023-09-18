@@ -80,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             Guard.Against.Null(exportRequestData, nameof(exportRequestData));
 
             var manualResetEvent = new ManualResetEvent(false);
-            DestinationApplicationEntity destination = null;
+            DestinationApplicationEntity? destination = null;
             try
             {
                 destination = await LookupDestinationAsync(destinationName, cancellationToken).ConfigureAwait(false);
@@ -207,7 +207,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             if (exception is AggregateException)
             {
-                exception = exception.InnerException;
+                exception = exception.InnerException!;
             }
 
             var errorMessage = $"Job failed with error: {exception.Message}.";

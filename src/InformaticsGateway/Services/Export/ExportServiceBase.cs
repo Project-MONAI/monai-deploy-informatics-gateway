@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     {
         private static readonly object SyncRoot = new();
 
-        internal event EventHandler ReportActionCompleted;
+        internal event EventHandler? ReportActionCompleted;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly ILogger _logger;
@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     async (exportDataRequest) =>
                     {
                         if (exportDataRequest.IsFailed) return exportDataRequest;
-                        return await ExecuteOutputDataEngineCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
+                        return await ExecuteOutputDataEngineCallback(exportDataRequest).ConfigureAwait(false);
                     },
                     executionOptions);
 
@@ -205,7 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     }
                     else
                     {
-                        _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                        _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.MessageId, exportRequest.ExportTaskId);
                     }
                 }
 
@@ -255,7 +255,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                        .ExecuteAsync(async () =>
                        {
                            _logger.DownloadingFile(file);
-                           var stream = await storageService.GetObjectAsync(_configuration.Storage.StorageServiceBucketName, file, cancellationToken).ConfigureAwait(false) as MemoryStream;
+                           var stream = (await storageService.GetObjectAsync(_configuration.Storage.StorageServiceBucketName, file, cancellationToken).ConfigureAwait(false) as MemoryStream)!;
                            exportRequestData.SetData(stream.ToArray());
                            _logger.FileReadyForExport(file);
                        });
@@ -273,28 +273,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest, CancellationToken token)
+        private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest)
         {
-            try
-            {
-                var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPlugInEngine));
+            var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPlugInEngine));
 
-                outputDataEngine.Configure(exportDataRequest.PlugInAssemblies);
-                return await outputDataEngine.ExecutePlugInsAsync(exportDataRequest).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = $"Error executing data plug-ins: {ex}";
-                _logger.ErrorExecutingDataPlugIns(ex);
-                exportDataRequest.SetFailed(FileExportStatus.ServiceError, errorMessage);
-                return exportDataRequest;
-            }
+            outputDataEngine.Configure(exportDataRequest.PlugInAssemblies);
+            return await outputDataEngine.ExecutePlugInsAsync(exportDataRequest).ConfigureAwait(false);
         }
 
         private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)
         {
-            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
-
             var exportRequest = _exportRequests[exportRequestData.ExportTaskId];
             lock (SyncRoot)
             {
@@ -319,7 +307,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 }
             }
 
-            _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count());
+            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
+            _logger.ExportCompleted(exportRequest.FailedFiles, exportRequest.Files.Count(), exportRequest.Duration.TotalMilliseconds);
 
             var exportCompleteEvent = new ExportCompleteEvent(exportRequest, exportRequest.Status, exportRequest.FileStatuses);
 

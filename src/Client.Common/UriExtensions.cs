@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
 
             var str = input.ToString();
 
-            if (!string.IsNullOrWhiteSpace(str) && !str.EndsWith("/"))
+            if (!string.IsNullOrWhiteSpace(str) && !str.EndsWith('/'))
             {
 #pragma warning disable S1075 // URIs should not be hardcoded
                 return new Uri(str + '/');

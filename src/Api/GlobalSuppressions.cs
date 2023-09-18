@@ -1,5 +1,5 @@
-﻿/*
- * Copyright 2023 MONAI Consortium
+/*
+ * Copyright 2022 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
-{
-    internal static class SR
-    {
-        public const string ConfigKey_ReplaceTags = "ReplaceTags";
-    }
-}
+// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("Sonar Code Smell", "S2094: Remove this empty class, write its code or make it an \"interface\"", Justification = "placeholder code")]

@@ -77,9 +77,9 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
             ExportTaskId = exportRequestDataMessage.ExportTaskId;
             CorrelationId = exportRequestDataMessage.CorrelationId;
 
-            StudyInstanceUid = studyInstanceUid ?? Utilities.GetTagProxyValue<string>(DicomTag.StudyInstanceUID);
-            SeriesInstanceUid = seriesInstanceUid ?? Utilities.GetTagProxyValue<string>(DicomTag.SeriesInstanceUID);
-            SopInstanceUid = Utilities.GetTagProxyValue<string>(DicomTag.SOPInstanceUID);
+            StudyInstanceUid = studyInstanceUid ?? Utilities.GetTagProxyValue<string>(DicomTag.StudyInstanceUID) ?? "";
+            SeriesInstanceUid = seriesInstanceUid ?? Utilities.GetTagProxyValue<string>(DicomTag.SeriesInstanceUID) ?? "";
+            SopInstanceUid = Utilities.GetTagProxyValue<string>(DicomTag.SOPInstanceUID) ?? "";
         }
     }
 }

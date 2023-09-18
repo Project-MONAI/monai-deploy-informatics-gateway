@@ -112,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
             if (!string.IsNullOrWhiteSpace(aeTitle) &&
                 aeTitle.Length <= 15 &&
-                Regex.IsMatch(aeTitle, @"^[a-zA-Z0-9_\-]+$"))
+                Regex.IsMatch(aeTitle, @"^[a-zA-Z0-9_\-]+$", RegexOptions.None, TimeSpan.FromSeconds(2)))
             {
                 return true;
             }
@@ -124,8 +124,8 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public static bool IsValidHostNameIp(string source, string hostIp, IList<string> validationErrors = null)
         {
             if (!string.IsNullOrWhiteSpace(hostIp) &&
-                (Regex.IsMatch(hostIp, @"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$") || // IP address
-                 Regex.IsMatch(hostIp, @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$"))) // Host/domain name
+                (Regex.IsMatch(hostIp, @"^((25[0-5]|(2[0-4]|1\d|[1-9]|)\d)\.?\b){4}$", RegexOptions.None, TimeSpan.FromSeconds(2)) || // IP address
+                 Regex.IsMatch(hostIp, @"^(([a-zA-Z]|[a-zA-Z][a-zA-Z0-9\-]*[a-zA-Z0-9])\.)*([A-Za-z]|[A-Za-z][A-Za-z0-9\-]*[A-Za-z0-9])$", RegexOptions.None, TimeSpan.FromSeconds(2)))) // Host/domain name
             {
                 return true;
             }

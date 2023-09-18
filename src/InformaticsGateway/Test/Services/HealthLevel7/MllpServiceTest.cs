@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Net;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -128,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         }
 
         [RetryFact(10, 100)]
-        public void GivenTcpConnections_WhenConnectsAndDisconnectsFromMllpService_ExpectItToTrackActiveConnections()
+        public async Task GivenTcpConnections_WhenConnectsAndDisconnectsFromMllpService_ExpectItToTrackActiveConnections()
         {
             var actions = new Dictionary<IMllpClient, Func<IMllpClient, MllpClientResult, Task>>();
             var mllpClients = new List<Mock<IMllpClient>>();
@@ -158,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
                     while (true)
                     {
-                        Thread.Sleep(100);
+                        Task.Delay(100).GetAwaiter().GetResult();
                     }
                 });
 
@@ -166,18 +167,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));
-            Thread.Sleep(200);
+            await Task.Delay(200);
             Assert.Equal(checkEvent.InitialCount, service.ActiveConnections);
 
             foreach (var action in actions.Keys)
             {
-                actions[action](action, new MllpClientResult(null, null));
+                await actions[action](action, new MllpClientResult(null, null));
             }
             Assert.Equal(0, service.ActiveConnections);
         }
 
         [RetryFact(10, 250)]
-        public void GivenAMllpService_WhenMaximumConnectionLimitIsConfigure_ExpectTheServiceToAbideByTheLimit()
+        public async Task GivenAMllpService_WhenMaximumConnectionLimitIsConfigure_ExpectTheServiceToAbideByTheLimit()
         {
             var checkEvent = new CountdownEvent(_options.Value.Hl7.MaximumNumberOfConnections);
             var mllpClients = new List<Mock<IMllpClient>>();
@@ -202,7 +203,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             checkEvent.Wait();
-            Thread.Sleep(500);
+            await Task.Delay(500);
             Assert.Equal(_options.Value.Hl7.MaximumNumberOfConnections, service.ActiveConnections);
             _tcpListener.Verify(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()), Times.Exactly(_options.Value.Hl7.MaximumNumberOfConnections));
 

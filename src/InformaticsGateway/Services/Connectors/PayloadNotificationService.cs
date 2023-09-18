@@ -62,8 +62,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IPayloadNotificationActionHandler _payloadNotificationActionHandler;
         private readonly IPayloadMoveActionHandler _payloadMoveActionHandler;
         private readonly CancellationTokenSource _cancellationTokenSource;
-        private ActionBlock<Payload> _moveFileQueue;
-        private ActionBlock<Payload> _publishQueue;
+        private ActionBlock<Payload>? _moveFileQueue;
+        private ActionBlock<Payload>? _publishQueue;
         private bool _disposedValue;
 
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
@@ -153,11 +153,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
-
             try
             {
-                await _payloadNotificationActionHandler.NotifyAsync(payload, _publishQueue, _cancellationTokenSource.Token).ConfigureAwait(false);
+                await _payloadNotificationActionHandler.NotifyAsync(payload, _publishQueue!, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
             catch (PostPayloadException ex)
             {
@@ -181,11 +179,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
-
             try
             {
-                await _payloadMoveActionHandler.MoveFilesAsync(payload, _moveFileQueue, _publishQueue, _cancellationTokenSource.Token).ConfigureAwait(false);
+                await _payloadMoveActionHandler.MoveFilesAsync(payload, _moveFileQueue!, _publishQueue!, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
             catch (PostPayloadException ex)
             {
@@ -211,16 +207,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             if (ex.TargetQueue == Payload.PayloadState.Move)
             {
-                ResetIfFaultedOrCancelled(_moveFileQueue, ResetMoveQueue, CancellationToken.None);
-                if (!_moveFileQueue.Post(ex.Payload))
+                ResetIfFaultedOrCancelled(_moveFileQueue!, ResetMoveQueue, CancellationToken.None);
+                if (!_moveFileQueue!.Post(ex.Payload!))
                 {
                     _logger.ErrorPostingJobToMovePayloadsQueue();
                 }
             }
             else if (ex.TargetQueue == Payload.PayloadState.Notify)
             {
-                ResetIfFaultedOrCancelled(_publishQueue, ResetPublishQueue, CancellationToken.None);
-                if (!_publishQueue.Post(ex.Payload))
+                ResetIfFaultedOrCancelled(_publishQueue!, ResetPublishQueue, CancellationToken.None);
+                if (!_publishQueue!.Post(ex.Payload!))
                 {
                     _logger.ErrorPostingJobToPublishPayloadsQueue();
                 }
@@ -233,16 +229,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                ResetIfFaultedOrCancelled(_moveFileQueue, ResetMoveQueue, cancellationToken);
-                ResetIfFaultedOrCancelled(_publishQueue, ResetPublishQueue, cancellationToken);
+                ResetIfFaultedOrCancelled(_moveFileQueue!, ResetMoveQueue, cancellationToken);
+                ResetIfFaultedOrCancelled(_publishQueue!, ResetPublishQueue, cancellationToken);
 
-                Payload payload = null;
+                Payload? payload = null;
                 try
                 {
                     payload = _payloadAssembler.Dequeue(cancellationToken);
-                    while (!_moveFileQueue.Post(payload))
+                    using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload ID", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
+
+                    while (!_moveFileQueue!.Post(payload))
                     {
-                        ResetIfFaultedOrCancelled(_moveFileQueue, ResetMoveQueue, cancellationToken);
+                        ResetIfFaultedOrCancelled(_moveFileQueue!, ResetMoveQueue, cancellationToken);
                     }
                     _logger.PayloadQueuedForProcessing(payload.PayloadId, ServiceName);
                 }
@@ -286,17 +284,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (payload.State == Payload.PayloadState.Move)
                 {
-                    if (!_moveFileQueue.Post(payload))
+                    if (!_moveFileQueue!.Post(payload))
                     {
                         _logger.ErrorPostingJobToMovePayloadsQueue();
                     }
                 }
-                else if (payload.State == Payload.PayloadState.Notify)
+                else if (payload.State == Payload.PayloadState.Notify && !_publishQueue!.Post(payload))
                 {
-                    if (!_publishQueue.Post(payload))
-                    {
-                        _logger.ErrorPostingJobToPublishPayloadsQueue();
-                    }
+                    _logger.ErrorPostingJobToPublishPayloadsQueue();
                 }
             }
             _logger.RestoredFromDatabase(payloads.Count);
@@ -306,8 +301,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             _logger.ServiceStopping(ServiceName);
             _cancellationTokenSource.Cancel();
-            _moveFileQueue.Complete();
-            _publishQueue.Complete();
+            _moveFileQueue!.Complete();
+            _publishQueue!.Complete();
             Status = ServiceStatus.Stopped;
 
             _logger.ServiceStopPending(ServiceName);

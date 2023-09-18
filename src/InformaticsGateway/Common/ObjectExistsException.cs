@@ -21,7 +21,7 @@ using System.Runtime.Serialization;
 namespace Monai.Deploy.InformaticsGateway.Common
 {
     [Serializable]
-    internal class ObjectExistsException : Exception
+    public class ObjectExistsException : Exception
     {
         public ObjectExistsException()
         {

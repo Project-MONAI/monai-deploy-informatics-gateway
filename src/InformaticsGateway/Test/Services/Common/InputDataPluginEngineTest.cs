@@ -82,6 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             var assemblies = new List<string>() { typeof(TestInputDataPlugInAddWorkflow).AssemblyQualifiedName };
 
             pluginEngine.Configure(assemblies);
+            Assert.NotNull(pluginEngine);
         }
 
         [Fact]
@@ -101,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 "calling",
                 "called");
 
-            await Assert.ThrowsAsync<ApplicationException>(async () => await pluginEngine.ExecutePlugInsAsync(dicomFile, dicomInfo));
+            await Assert.ThrowsAsync<PlugInInitializationException>(async () => await pluginEngine.ExecutePlugInsAsync(dicomFile, dicomInfo));
         }
 
         [Fact]

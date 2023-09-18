@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             _repository = scope.ServiceProvider.GetService<IVirtualApplicationEntityRepository>() ?? throw new ServiceNotFoundException(nameof(IVirtualApplicationEntityRepository));
         }
 
-        public async Task<StowResult> StoreAsync(HttpRequest request, string studyInstanceUid, string aet, string workflowName, string correlationId, CancellationToken cancellationToken)
+        public async Task<StowResult> StoreAsync(HttpRequest request, string? studyInstanceUid, string? aet, string? workflowName, string correlationId, CancellationToken cancellationToken)
         {
             Guard.Against.Null(request, nameof(request));
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             var streamsWriter = scope.ServiceProvider.GetService<IStreamsWriter>() ?? throw new ServiceNotFoundException(nameof(IStreamsWriter));
 
             _logger.SavingStream(streams.Count);
-            return await streamsWriter.Save(streams, studyInstanceUid, vae, workflowName, correlationId, request.HttpContext.Connection.RemoteIpAddress.ToString(), cancellationToken).ConfigureAwait(false);
+            return await streamsWriter.Save(streams, studyInstanceUid, vae, workflowName, correlationId, request.HttpContext.Connection.RemoteIpAddress!.ToString(), cancellationToken).ConfigureAwait(false);
         }
 
         private IStowRequestReader GetRequestReader(MediaTypeHeaderValue mediaTypeHeaderValue)
@@ -111,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             throw new UnsupportedContentTypeException($"Media type of '{mediaTypeHeaderValue.MediaType}' is not supported.");
         }
 
-        private async Task<VirtualApplicationEntity> ValidateVirtualAet(string aet)
+        private async Task<VirtualApplicationEntity?> ValidateVirtualAet(string aet)
         {
             return await _repository.FindByAeTitleAsync(aet).ConfigureAwait(false);
         }

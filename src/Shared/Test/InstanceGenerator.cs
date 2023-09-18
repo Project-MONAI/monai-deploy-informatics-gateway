@@ -28,7 +28,9 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
         }
 
         public static DicomFile GenerateDicomFile(
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             string studyInstanceUid = null,
+
             string seriesInstanceUid = null,
             string sopInstanceUid = null,
             IFileSystem fileSystem = null)
@@ -70,3 +72,4 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
         }
     }
 }
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.

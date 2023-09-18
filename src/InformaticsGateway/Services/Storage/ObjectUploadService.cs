@@ -42,7 +42,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         private readonly ILogger<ObjectUploadService> _logger;
         private readonly IObjectUploadQueue _uplaodQueue;
         private readonly IStorageService _storageService;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IServiceScope _scope;
@@ -56,12 +55,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             ILogger<ObjectUploadService> logger,
             IOptions<InformaticsGatewayConfiguration> configuration)
         {
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+            var localServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _cancellationTokenSource = new CancellationTokenSource();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            _scope = _serviceScopeFactory.CreateScope();
+            _scope = localServiceScopeFactory.CreateScope();
             _uplaodQueue = _scope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _storageService = _scope.ServiceProvider.GetService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
         }
@@ -158,12 +157,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                     case DicomFileStorageMetadata dicom:
                         if (!string.IsNullOrWhiteSpace(dicom.JsonFile.TemporaryPath))
                         {
-                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.DataOrigin.Source, dicom.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
+                            await UploadFileAndConfirm(dicom.Id, dicom.JsonFile, dicom.DataOrigin.Source, dicom.Workflows, blob.PayloadId!, _cancellationTokenSource.Token).ConfigureAwait(false);
                         }
                         break;
                 }
 
-                await UploadFileAndConfirm(blob.Id, blob.File, blob.DataOrigin.Source, blob.Workflows, blob.PayloadId, _cancellationTokenSource.Token).ConfigureAwait(false);
+                await UploadFileAndConfirm(blob.Id, blob.File, blob.DataOrigin.Source, blob.Workflows, blob.PayloadId!, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -193,7 +192,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             var count = 3;
             while (
                 count-- > 0 &&
-                !(await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false))) ;
+                !await VerifyExists(storageObjectMetadata.GetPayloadPath(Guid.Parse(payloadId)), cancellationToken).ConfigureAwait(false)
+                ) { /* no op */};
 
             if (count <= 0)
             {

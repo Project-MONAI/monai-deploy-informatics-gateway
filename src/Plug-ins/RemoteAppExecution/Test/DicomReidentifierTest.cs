@@ -59,7 +59,9 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         [Fact]
         public void GivenDicomDeidentifier_TestConstructors()
         {
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             Assert.Throws<ArgumentNullException>(() => new DicomReidentifier(null, null));
+
             Assert.Throws<ArgumentNullException>(() => new DicomReidentifier(_logger.Object, null));
 
             var app = new DicomReidentifier(_logger.Object, _serviceScopeFactory.Object);
@@ -132,3 +134,4 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         }
     }
 }
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.

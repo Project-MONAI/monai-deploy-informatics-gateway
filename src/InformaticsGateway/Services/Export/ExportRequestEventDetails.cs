@@ -37,6 +37,25 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             PluginAssemblies.AddRange(exportRequest.PluginAssemblies);
             ErrorMessages.AddRange(exportRequest.ErrorMessages);
+
+            StartTime = DateTimeOffset.UtcNow;
+        }
+
+        /// <summary>
+        /// Gets the time the export request received.
+        /// </summary>
+        public DateTimeOffset StartTime { get; }
+
+
+        /// <summary>
+        /// Gets time between now and <see cref="StartTime"/>.
+        /// </summary>
+        public TimeSpan Duration
+        {
+            get
+            {
+                return DateTimeOffset.UtcNow.Subtract(StartTime);
+            }
         }
 
         /// <summary>
@@ -53,7 +72,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         /// Gets whether the export task is completed or not based on file count.
         /// </summary>
         public bool IsCompleted
-        { get { return (SucceededFiles + FailedFiles) == Files.Count(); } }
+        {
+            get
+            {
+                return (SucceededFiles + FailedFiles) == Files.Count();
+            }
+        }
 
         public Dictionary<string, FileExportStatus> FileStatuses { get; private set; } = new Dictionary<string, FileExportStatus>();
 

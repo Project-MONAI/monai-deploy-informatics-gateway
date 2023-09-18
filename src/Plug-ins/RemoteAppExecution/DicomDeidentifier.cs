@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _options = configuration?.Value ?? throw new ArgumentNullException(nameof(configuration));
 
-            if (_options.RemoteAppConfigurations.ContainsKey(SR.ConfigKey_ReplaceTags) is false)
+            if (!_options.RemoteAppConfigurations.ContainsKey(SR.ConfigKey_ReplaceTags))
             {
                 throw new ArgumentNullException(nameof(configuration));
             }
@@ -88,8 +88,11 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
                 {
                     newRecord.OriginalValues.Add(tag.ToString(), value);
                     var newValue = Utilities.GetTagProxyValue<string>(tag);
-                    dicomFile.Dataset.AddOrUpdate(tag, newValue);
-                    _logger.ValueChanged(tag.ToString(), value, newValue);
+                    if (newValue != null)
+                    {
+                        dicomFile.Dataset.AddOrUpdate(tag, newValue);
+                        _logger.ValueChanged(tag.ToString(), value, newValue);
+                    }
                 }
             }
 
