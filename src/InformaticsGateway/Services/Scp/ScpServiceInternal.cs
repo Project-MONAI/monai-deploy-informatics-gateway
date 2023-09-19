@@ -148,6 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             if (_associationDataProvider is null)
             {
+                _associationInfo.Errors = $"Internal error: association data provider not found.";
                 throw new ServiceException($"{nameof(UserState)} must be an instance of IAssociationDataProvider");
             }
 
@@ -165,7 +166,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             if (!await IsValidSourceAeAsync(association.CallingAE, association.RemoteHost).ConfigureAwait(false))
             {
-                _associationInfo.Errors = "Invalid source";
+                _associationInfo.Errors = $"Invalid source. Called AE: {association.CalledAE}. Calling AE: {association.CallingAE}. IP: {association.RemoteHost}.";
 
                 await SendAssociationRejectAsync(
                     DicomRejectResult.Permanent,
@@ -175,7 +176,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             if (!await IsValidCalledAeAsync(association.CalledAE).ConfigureAwait(false))
             {
-                _associationInfo.Errors = "Invalid MONAI AE Title";
+                _associationInfo.Errors = "Invalid MONAI AE Title. Called AE: {association.CalledAE}. Calling AE: {association.CallingAE}. IP: {association.RemoteHost}.";
 
                 await SendAssociationRejectAsync(
                     DicomRejectResult.Permanent,
@@ -189,6 +190,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 {
                     if (!_associationDataProvider.Configuration.Value.Dicom.Scp.EnableVerification)
                     {
+                        _associationInfo.Errors = "Verification service disabled. Called AE: {association.CalledAE}. Calling AE: {association.CallingAE}. IP: {association.RemoteHost}.";
                         _logger?.VerificationServiceDisabled();
                         await SendAssociationRejectAsync(
                             DicomRejectResult.Permanent,
@@ -202,6 +204,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 {
                     if (!_associationDataProvider.CanStore)
                     {
+                        _associationInfo.Errors = "Disk pressure. Called AE: {association.CalledAE}. Calling AE: {association.CallingAE}. IP: {association.RemoteHost}.";
                         await SendAssociationRejectAsync(
                             DicomRejectResult.Permanent,
                             DicomRejectSource.ServiceUser,

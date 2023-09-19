@@ -394,7 +394,7 @@ jobs:
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         run: |
           mkdir ~/nupkg
-          dotnet pack --no-build -c ${{ env.BUILD_CONFIG }} -o ~/nupkg -p:PackageVersion=${{ env.NUGETVER }}
+          dotnet pack -c ${{ env.BUILD_CONFIG }} -o ~/nupkg -p:PackageVersion=${{ env.NUGETVER }}
           ls -lR ~/nupkg
         working-directory: ./src/Api
           
