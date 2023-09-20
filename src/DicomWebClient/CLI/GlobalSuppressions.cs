@@ -22,4 +22,3 @@
 using System.Diagnostics.CodeAnalysis;
 
 [assembly: SuppressMessage("Design", "CA1054:URI-like parameters should not be strings", Justification = "User input from CLI", Scope = "module")]
-[assembly: SuppressMessage("Sonar Code Smell", "S2094: Remove this empty class, write its code or make it an \"interface\"", Justification = "placeholder code")]

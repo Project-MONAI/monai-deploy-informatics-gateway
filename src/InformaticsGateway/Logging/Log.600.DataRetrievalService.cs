@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void RestoredFile(this ILogger logger, string file);
 
         [LoggerMessage(EventId = 604, Level = LogLevel.Error, Message = "Error retrieving FHIR resource {type}/{id}.")]
-        public static partial void ErrorRetrievingFhirResource(this ILogger logger, string? type, string? id, Exception ex);
+        public static partial void ErrorRetrievingFhirResource(this ILogger logger, string type, string id, Exception ex);
 
         [LoggerMessage(EventId = 605, Level = LogLevel.Error, Message = "Failed to retrieve resource {type}/{id} with status code {statusCode}, retry count={retryCount}.")]
         public static partial void ErrorRetrievingFhirResourceWithRetry(this ILogger logger, string type, string id, HttpStatusCode statusCode, int retryCount, Exception ex);

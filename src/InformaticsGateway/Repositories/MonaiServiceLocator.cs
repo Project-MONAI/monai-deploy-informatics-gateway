@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             return _runningServices.ToDictionary(k => k.ServiceName, v => v.Status);
         }
 
-        private IMonaiService? GetService(Type type)
+        private IMonaiService GetService(Type type)
         {
             Guard.Against.Null(type, nameof(type));
 
@@ -63,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
                     serviceType.IsAssignableFrom(p) &&
                     p != serviceType &&
                     !p.IsAbstract &&
-                    p.FullName!.StartsWith("Monai", StringComparison.InvariantCulture));
+                    p.FullName.StartsWith("Monai", StringComparison.InvariantCulture));
             return services.Distinct().ToList();
         }
 

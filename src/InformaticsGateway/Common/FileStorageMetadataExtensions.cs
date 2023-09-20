@@ -31,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
             DicomFile dicomFile,
             string dicomJson,
             TemporaryDataStorageLocation storageLocation,
-            IFileSystem? fileSystem = null,
+            IFileSystem fileSystem = null,
             string temporaryStoragePath = "")
         {
             Guard.Against.Null(dicomFile, nameof(dicomFile));
@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
             this FhirFileStorageMetadata fhirFileStorageMetadata,
             string json,
             TemporaryDataStorageLocation storageLocation,
-            IFileSystem? fileSystem = null,
+            IFileSystem fileSystem = null,
             string temporaryStoragePath = "")
             => await SetTextStream(fhirFileStorageMetadata.File, json, storageLocation, fileSystem, temporaryStoragePath).ConfigureAwait(false);
 
@@ -70,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
             this Hl7FileStorageMetadata hl7FileStorageMetadata,
              string message,
              TemporaryDataStorageLocation storageLocation,
-            IFileSystem? fileSystem = null,
+            IFileSystem fileSystem = null,
              string temporaryStoragePath = "")
             => await SetTextStream(hl7FileStorageMetadata.File, message, storageLocation, fileSystem, temporaryStoragePath).ConfigureAwait(false);
 
@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
             StorageObjectMetadata storageObjectMetadata,
             string message,
             TemporaryDataStorageLocation storageLocation,
-            IFileSystem? fileSystem = null,
+            IFileSystem fileSystem = null,
             string temporaryStoragePath = "")
         {
             Guard.Against.Null(message, nameof(message)); // allow empty here

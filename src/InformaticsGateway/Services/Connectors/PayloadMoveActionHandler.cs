@@ -31,6 +31,7 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.Storage.API;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
@@ -46,6 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
 
         private readonly IServiceScope _scope;
+        private readonly IStorageService _storageService;
         private bool _disposedValue;
 
         public PayloadMoveActionHandler(IServiceScopeFactory serviceScopeFactory,
@@ -57,6 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _options = options ?? throw new ArgumentNullException(nameof(options));
 
             _scope = _serviceScopeFactory.CreateScope();
+            _storageService = _scope.ServiceProvider.GetService<IStorageService>() ?? throw new ServiceNotFoundException(nameof(IStorageService));
         }
 
         public async Task MoveFilesAsync(Payload payload, ActionBlock<Payload> moveQueue, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
@@ -81,11 +84,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 payload.RetryCount++;
                 var action = await UpdatePayloadState(payload, ex, cancellationToken).ConfigureAwait(false);
-                if (action == PayloadAction.Updated &&
-                    !await moveQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false))
+                if (action == PayloadAction.Updated)
                 {
-
-                    throw new PostPayloadException(Payload.PayloadState.Move, payload);
+                    if (!await moveQueue.Post(payload, _options.Value.Storage.Retries.RetryDelays.ElementAt(payload.RetryCount - 1)).ConfigureAwait(false))
+                    {
+                        throw new PostPayloadException(Payload.PayloadState.Move, payload);
+                    }
                 }
             }
             finally

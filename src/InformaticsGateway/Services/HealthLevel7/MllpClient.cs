@@ -30,7 +30,7 @@ using Monai.Deploy.InformaticsGateway.Services.Common;
 
 namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
-    internal sealed class MllpClient : IMllpClient
+    internal sealed class MllpClient : IDisposable, IMllpClient
     {
         private readonly ITcpClientAdapter _client;
         private readonly Hl7Configuration _configurations;
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         public string ClientIp
         {
-            get { return _client.RemoteEndPoint.ToString() ?? string.Empty; }
+            get { return _client.RemoteEndPoint.ToString(); }
         }
 
         public MllpClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger)
@@ -218,7 +218,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             }
             catch (Exception ex)
             {
-                message = new();
+                message = null;
                 _logger.ErrorParsingHl7Message(ex);
                 _exceptions.Add(ex);
                 return false;

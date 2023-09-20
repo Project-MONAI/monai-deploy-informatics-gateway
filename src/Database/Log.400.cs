@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-using System;
+using Microsoft.Extensions.Logging;
 
-namespace Monai.Deploy.InformaticsGateway.Common
+namespace Monai.Deploy.InformaticsGateway.Database
 {
-    public class PlugInLoadingException : Exception
+    public static partial class Log
     {
-        public PlugInLoadingException(string message) : base(message)
-        {
-        }
+        [LoggerMessage(EventId = 400, Level = LogLevel.Information, Message = "Configuring database using {databaseType}.")]
+        public static partial void UsingDatabaseType(this ILogger logger, string databaseType);
 
-        public PlugInLoadingException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
+        [LoggerMessage(EventId = 401, Level = LogLevel.Information, Message = "Configuring database for plug-in {plugIn}.")]
+        public static partial void ConfigurePlugInDatabase(this ILogger logger, string plugIn);
+
     }
 }

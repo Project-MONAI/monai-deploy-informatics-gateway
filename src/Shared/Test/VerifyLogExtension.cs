@@ -28,10 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
         {
             times ??= Times.Once();
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-#pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             Func<object, Type, bool> state = (v, t) => v.ToString().EndsWith(expectedMessage);
-
 
             logger.Verify(
                 x => x.Log(
@@ -126,7 +123,6 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
         {
             times ??= Times.Once();
 
-
             logger.Verify(
                 x => x.Log(
                     It.Is<LogLevel>(l => l == expectedLogLevel),
@@ -134,10 +130,8 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
                     It.Is<It.IsAnyType>((v, t) => true),
                     It.IsAny<Exception>(),
                     It.Is<Func<It.IsAnyType, Exception, string>>((v, t) => true)), (Times)times);
-#pragma warning restore CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
 
             return logger;
         }
     }
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 }

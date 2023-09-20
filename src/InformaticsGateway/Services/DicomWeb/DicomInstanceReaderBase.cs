@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
             Guard.Against.Null(contentType, nameof(contentType));
 
             if (MediaTypeHeaderValue.TryParse(contentType, out var mediaType) &&
-                contentTypes.ToList().Exists(p => p.Equals(mediaType.MediaType.ToString(), StringComparison.OrdinalIgnoreCase)))
+                contentTypes.Any(p => p.Equals(mediaType.MediaType.ToString(), StringComparison.OrdinalIgnoreCase)))
             {
                 mediaTypeHeaderValue = mediaType;
                 return;

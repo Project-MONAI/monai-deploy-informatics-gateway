@@ -39,6 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IServiceScope _serviceScope;
         private readonly ILogger<ApplicationEntityManager> _logger;
         private readonly IDicomToolkit _dicomToolkit;
+        private readonly ILoggerFactory _loggerFactory;
         private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly ConcurrentDictionary<string, IApplicationEntityHandler> _aeTitles;
         private readonly IDisposable _unsubscriberForMonaiAeChangedNotificationService;
@@ -71,8 +72,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _serviceScope = serviceScopeFactory.CreateScope();
             var serviceProvider = _serviceScope.ServiceProvider;
 
-            var loggerFactory = serviceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
-            _logger = loggerFactory.CreateLogger<ApplicationEntityManager>();
+            _loggerFactory = serviceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
+            _logger = _loggerFactory.CreateLogger<ApplicationEntityManager>();
 
             _dicomToolkit = serviceProvider.GetService<IDicomToolkit>() ?? throw new ServiceNotFoundException(nameof(IDicomToolkit));
             _storageInfoProvider = serviceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
@@ -132,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         public T GetService<T>()
         {
-            return (T)_serviceScope.ServiceProvider.GetService(typeof(T))!;
+            return (T)_serviceScope.ServiceProvider.GetService(typeof(T));
         }
 
         private async Task InitializeMonaiAeTitlesAsync()

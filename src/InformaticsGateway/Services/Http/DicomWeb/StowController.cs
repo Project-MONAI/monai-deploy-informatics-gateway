@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         [ProducesResponseType(typeof(string), StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status507InsufficientStorage)]
-        public async Task<IActionResult> StoreInstances(string? aet = "", string? workflowName = "")
+        public async Task<IActionResult> StoreInstances(string aet = "", string workflowName = "")
         {
             return await StoreInstances(string.Empty, aet, workflowName).ConfigureAwait(false);
         }
@@ -84,15 +84,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
         [ProducesResponseType(typeof(string), StatusCodes.Status415UnsupportedMediaType)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status500InternalServerError)]
         [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status507InsufficientStorage)]
-        public async Task<IActionResult> StoreInstancesToStudy(string? studyInstanceUid, string? aet = "", string? workflowName = "")
+        public async Task<IActionResult> StoreInstancesToStudy(string studyInstanceUid, string aet = "", string workflowName = "")
         {
             return await StoreInstances(studyInstanceUid, aet, workflowName).ConfigureAwait(false);
         }
 
-        private async Task<IActionResult> StoreInstances(string? studyInstanceUid, string? aet, string? workflowName)
+        private async Task<IActionResult> StoreInstances(string studyInstanceUid, string aet, string workflowName)
         {
             var correlationId = Guid.NewGuid().ToString();
-            using var logger = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", correlationId }, { "StudyInstanceUID", studyInstanceUid ?? string.Empty }, { "Workflow", workflowName ?? string.Empty } });
+            using var logger = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", correlationId }, { "StudyInstanceUID", studyInstanceUid }, { "Workflow", workflowName } });
 
             if (!_storageInfoProvider.HasSpaceAvailableToStore)
             {
@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
             }
             catch (DicomValidationException ex)
             {
-                _logger.ErrorDicomWebStowInvalidStudyInstanceUid(studyInstanceUid?.Replace(Environment.NewLine, ""), ex);
+                _logger.ErrorDicomWebStowInvalidStudyInstanceUid(studyInstanceUid, ex);
                 return StatusCode(
                     StatusCodes.Status400BadRequest,
                     Problem(title: $"Invalid StudyInstanceUID provided '{studyInstanceUid}'.", statusCode: StatusCodes.Status400BadRequest, detail: ex.Message));
@@ -123,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
             }
             catch (Exception ex)
             {
-                _logger.ErrorDicomWebStow(studyInstanceUid?.Replace(Environment.NewLine, ""), workflowName?.Replace(Environment.NewLine, ""), ex);
+                _logger.ErrorDicomWebStow(studyInstanceUid, workflowName, ex);
                 return StatusCode(
                     StatusCodes.Status500InternalServerError,
                     Problem(title: "Error.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message));

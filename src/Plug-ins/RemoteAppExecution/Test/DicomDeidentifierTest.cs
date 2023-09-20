@@ -63,13 +63,11 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
         [Fact]
         public void GivenDicomDeidentifier_TestConstructors()
         {
-#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
             Assert.Throws<ArgumentNullException>(() => new DicomDeidentifier(null, null, null));
-
             Assert.Throws<ArgumentNullException>(() => new DicomDeidentifier(_logger.Object, null, null));
             Assert.Throws<ArgumentNullException>(() => new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, null));
             Assert.Throws<ArgumentNullException>(() => new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, _options));
-#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+
             _options.Value.RemoteAppConfigurations.Add(SR.ConfigKey_ReplaceTags, "tag1, tag2");
             var app = new DicomDeidentifier(_logger.Object, _serviceScopeFactory.Object, _options);
 

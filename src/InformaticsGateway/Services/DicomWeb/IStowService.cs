@@ -22,6 +22,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal interface IStowService
     {
-        Task<StowResult> StoreAsync(HttpRequest request, string? studyInstanceUid, string? aet, string? workflowName, string correlationId, CancellationToken cancellationToken);
+        Task<StowResult> StoreAsync(HttpRequest request, string studyInstanceUid, string aet, string workflowName, string correlationId, CancellationToken cancellationToken);
     }
 }

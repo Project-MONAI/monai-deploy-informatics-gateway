@@ -15,6 +15,8 @@
  */
 
 using System;
+using Microsoft.Extensions.Logging;
+using Moq;
 using xRetry;
 using Xunit;
 
@@ -25,8 +27,9 @@ namespace Monai.Deploy.InformaticsGateway.Test
         [RetryFact(maxRetries: 10, delayBetweenRetriesMs: 500, DisplayName = "Program - runs properly")]
         public void Startup_RunsProperly()
         {
+            var logger = new Mock<ILogger<Program>>();
             var workingDirectory = Environment.CurrentDirectory;
-            var host = Program.CreateHostBuilder(System.Array.Empty<string>()).Build();
+            var host = Program.CreateHostBuilder(System.Array.Empty<string>(), logger.Object).Build();
 
             Assert.NotNull(host);
         }

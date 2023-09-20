@@ -28,6 +28,7 @@ using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.Messaging.RabbitMQ;
+using Moq;
 using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
@@ -197,7 +198,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
         private static void SetupInformaticsGateway()
         {
-            s_informaticsGatewayHost = Program.CreateHostBuilder(Array.Empty<string>()).Build();
+            var logger = new Mock<ILogger<Program>>();
+            s_informaticsGatewayHost = Program.CreateHostBuilder(Array.Empty<string>(), logger.Object).Build();
             s_informaticsGatewayHost.MigrateDatabase();
         }
     }

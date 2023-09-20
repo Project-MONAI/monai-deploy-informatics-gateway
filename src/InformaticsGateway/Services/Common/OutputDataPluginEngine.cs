@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<OutputDataPlugInEngine> _logger;
         private readonly IDicomToolkit _dicomToolkit;
-        private IReadOnlyList<IOutputDataPlugIn>? _plugsins;
+        private IReadOnlyList<IOutputDataPlugIn> _plugsins;
 
         public OutputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<OutputDataPlugInEngine> logger, IDicomToolkit dicomToolkit)
         {

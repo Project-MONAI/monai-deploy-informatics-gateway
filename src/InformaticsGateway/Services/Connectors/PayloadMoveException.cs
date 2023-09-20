@@ -47,17 +47,5 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             throw new NotImplementedException();
         }
-
-        public PayloadNotifyException()
-        {
-        }
-
-        public PayloadNotifyException(string message) : base(message)
-        {
-        }
-
-        public PayloadNotifyException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
     }
 }

@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.IO.Abstractions;
 using System.Linq;
 using System.Reflection;
@@ -31,11 +30,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
     public interface IDataPlugInEngineFactory<T>
     {
         IReadOnlyDictionary<string, string> RegisteredPlugIns();
-    }
-
-    public static class DataPlugInEngineFactoryStatic
-    {
-        public static readonly object SyncLock = new();
     }
 
     public abstract class DataPlugInEngineFactoryBase<T> : IDataPlugInEngineFactory<T>
@@ -65,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             LoadAssembliesFromPlugInsDirectory();
 
             var types = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(p => !p.FullName!.Contains("DynamicProxyGenAssembly2"))
+                .Where(p => !p.FullName.Contains("DynamicProxyGenAssembly2"))
                 .SelectMany(s => s.GetTypes())
                 .Where(p => _type.IsAssignableFrom(p) && p != _type).ToList();
 
@@ -96,14 +90,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
         private void LoadAssembliesFromPlugInsDirectory()
         {
-            lock (DataPlugInEngineFactoryStatic.SyncLock)
+            lock (SyncLock)
             {
                 var files = _fileSystem.Directory.GetFiles(SR.PlugInDirectoryPath, "*.dll", System.IO.SearchOption.TopDirectoryOnly);
 
                 foreach (var file in files)
                 {
                     _logger.LoadingAssembly(file);
-                    var assembly = Assembly.Load(File.ReadAllBytes(file));
+                    var assembly = Assembly.Load(_fileSystem.File.ReadAllBytes(file));
                     var matchingTypes = assembly.GetTypes().Where(p => _type.IsAssignableFrom(p) && p != _type).ToList();
 
                     AddToCache(matchingTypes);

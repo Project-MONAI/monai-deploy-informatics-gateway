@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             xmlDocument.LoadXml(result.RawData);
             var rootNode = xmlDocument.DocumentElement;
 
-            if (!rootNode!.NamespaceURI.Equals(Resources.FhirXmlNamespace, StringComparison.OrdinalIgnoreCase))
+            if (!rootNode.NamespaceURI.Equals(Resources.FhirXmlNamespace, StringComparison.OrdinalIgnoreCase))
             {
                 throw new FhirStoreException(correlationId, $"XML content is not a valid FHIR resource.", IssueType.Invalid);
             }
@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             result.RawData = sb.ToString();
             result.InternalResourceType = rootNode.Name;
 
-            var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, resourceId, Api.Rest.FhirStorageFormat.Xml, DataService.FHIR, request.HttpContext.Connection.RemoteIpAddress!.ToString());
+            var fileMetadata = new FhirFileStorageMetadata(correlationId, result.InternalResourceType, resourceId, Api.Rest.FhirStorageFormat.Xml, DataService.FHIR, request.HttpContext.Connection.RemoteIpAddress.ToString());
             await fileMetadata.SetDataStream(result.RawData, _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath);
 
             result.Metadata = fileMetadata;
@@ -107,14 +107,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
                 rootNode.PrependChild(idNode);
             }
 
-            if (string.IsNullOrWhiteSpace(idNode.Attributes![Resources.AttributeValue]?.Value))
+            if (string.IsNullOrWhiteSpace(idNode.Attributes[Resources.AttributeValue]?.Value))
             {
-                var value = idNode.OwnerDocument!.CreateAttribute(Resources.AttributeValue);
+                var value = idNode.OwnerDocument.CreateAttribute(Resources.AttributeValue);
                 value.Value = correlationId;
                 idNode.Attributes.Append(value);
             }
 
-            return idNode.Attributes[Resources.AttributeValue]!.Value;
+            return idNode.Attributes[Resources.AttributeValue].Value;
         }
     }
 }

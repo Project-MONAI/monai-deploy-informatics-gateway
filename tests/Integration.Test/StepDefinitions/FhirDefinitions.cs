@@ -58,6 +58,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             Guard.Against.NullOrWhiteSpace(version, nameof(version));
             Guard.Against.NullOrWhiteSpace(format, nameof(format));
 
+            _dataProvider.Workflows = null;
             await _dataProvider.GenerateFhirMessages(version, format);
             _receivedMessages.ClearMessages();
         }

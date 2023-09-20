@@ -46,6 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IPayloadAssembler _payloadAssembler;
         private readonly IFileSystem _fileSystem;
+        private readonly IServiceScope _serviceScope;
         private readonly ILoggerFactory _logginFactory;
         private readonly ILogger<MllpService> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
@@ -74,16 +75,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
-            var serviceScope = serviceScopeFactory.CreateScope();
-            _logginFactory = serviceScope.ServiceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
+            _serviceScope = serviceScopeFactory.CreateScope();
+            _logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
             _logger = _logginFactory.CreateLogger<MllpService>();
-            var tcpListenerFactory = serviceScope.ServiceProvider.GetService<ITcpListenerFactory>() ?? throw new ServiceNotFoundException(nameof(ITcpListenerFactory));
+            var tcpListenerFactory = _serviceScope.ServiceProvider.GetService<ITcpListenerFactory>() ?? throw new ServiceNotFoundException(nameof(ITcpListenerFactory));
             _tcpListener = tcpListenerFactory.CreateTcpListener(System.Net.IPAddress.Any, _configuration.Value.Hl7.Port);
-            _mllpClientFactory = serviceScope.ServiceProvider.GetService<IMllpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IMllpClientFactory));
-            _uploadQueue = serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
-            _payloadAssembler = serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
-            _fileSystem = serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
-            _storageInfoProvider = serviceScope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
+            _mllpClientFactory = _serviceScope.ServiceProvider.GetService<IMllpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IMllpClientFactory));
+            _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
+            _payloadAssembler = _serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
+            _fileSystem = _serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
+            _storageInfoProvider = _serviceScope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
             _activeTasks = new ConcurrentDictionary<Guid, IMllpClient>();
         }
 
@@ -116,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                IMllpClient? mllpClient = null;
+                IMllpClient mllpClient = null;
                 try
                 {
                     WaitUntilAvailable(_configuration.Value.Hl7.MaximumNumberOfConnections);

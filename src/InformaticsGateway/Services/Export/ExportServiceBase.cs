@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     {
         private static readonly object SyncRoot = new();
 
-        internal event EventHandler? ReportActionCompleted;
+        internal event EventHandler ReportActionCompleted;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly ILogger _logger;
@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     async (exportDataRequest) =>
                     {
                         if (exportDataRequest.IsFailed) return exportDataRequest;
-                        return await ExecuteOutputDataEngineCallback(exportDataRequest).ConfigureAwait(false);
+                        return await ExecuteOutputDataEngineCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
                     },
                     executionOptions);
 
@@ -255,7 +255,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                        .ExecuteAsync(async () =>
                        {
                            _logger.DownloadingFile(file);
-                           var stream = (await storageService.GetObjectAsync(_configuration.Storage.StorageServiceBucketName, file, cancellationToken).ConfigureAwait(false) as MemoryStream)!;
+                           var stream = await storageService.GetObjectAsync(_configuration.Storage.StorageServiceBucketName, file, cancellationToken).ConfigureAwait(false) as MemoryStream;
                            exportRequestData.SetData(stream.ToArray());
                            _logger.FileReadyForExport(file);
                        });
@@ -273,7 +273,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest)
+        private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest, CancellationToken token)
         {
             var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPlugInEngine));
 

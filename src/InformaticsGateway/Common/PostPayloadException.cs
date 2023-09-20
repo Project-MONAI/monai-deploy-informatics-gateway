@@ -20,10 +20,10 @@ using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    public class PostPayloadException : Exception
+    internal class PostPayloadException : Exception
     {
         public Payload.PayloadState TargetQueue { get; }
-        public Payload? Payload { get; }
+        public Payload Payload { get; }
 
         public PostPayloadException()
         {

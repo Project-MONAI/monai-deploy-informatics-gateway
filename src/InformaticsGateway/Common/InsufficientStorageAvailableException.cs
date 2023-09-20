@@ -40,6 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
         public InsufficientStorageAvailableException(string message) : base(message)
         {
         }
+
         public InsufficientStorageAvailableException(string message, Exception innerException) : base(message, innerException)
         {
         }

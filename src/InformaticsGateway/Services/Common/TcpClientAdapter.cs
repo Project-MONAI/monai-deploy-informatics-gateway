@@ -28,7 +28,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
         {
             get
             {
-                return _tcpClient.Client!.RemoteEndPoint!;
+                return _tcpClient.Client.RemoteEndPoint;
             }
         }
 

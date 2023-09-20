@@ -93,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
 
         private async Task Process(ScuWorkRequest request, CancellationToken cancellationToken)
         {
-            ScuWorkResponse? response = null;
+            ScuWorkResponse response = null;
             try
             {
                 response = request.RequestType switch
@@ -108,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             }
             finally
             {
-                request.Complete(response!);
+                request.Complete(response);
             }
         }
 

@@ -21,6 +21,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
     public class StowResult
     {
         public int StatusCode { get; internal set; }
-        public DicomDataset? Data { get; internal set; }
+        public DicomDataset Data { get; internal set; }
     }
 }

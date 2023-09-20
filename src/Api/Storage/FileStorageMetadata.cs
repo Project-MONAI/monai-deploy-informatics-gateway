@@ -69,7 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or sets the data origin of this file.
         /// </summary>
         [JsonPropertyName("dataOrigin"), JsonInclude]
-        public DataOrigin DataOrigin { get; private set; } = new();
+        public DataOrigin DataOrigin { get; private set; } = default!;
 
         /// <summary>
         /// Gets a list of workflows designated for the file.

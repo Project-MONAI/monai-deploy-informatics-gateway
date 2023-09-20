@@ -69,6 +69,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _timer.Enabled = true;
         }
 
+
         private async Task RemovePendingPayloads()
         {
             _logger.RemovingPendingPayloads();
@@ -120,7 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             return _workItems.Take(cancellationToken);
         }
 
-        private async void OnTimedEvent(Object? source, System.Timers.ElapsedEventArgs e)
+        private async void OnTimedEvent(object? source, System.Timers.ElapsedEventArgs e)
         {
             try
             {
@@ -137,13 +138,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
 
                     _logger.BucketElapsedTime(key, payload.Timeout, payload.ElapsedTime().TotalSeconds, payload.Files.Count, payload.FilesUploaded, payload.FilesFailedToUpload);
-
                     // Wait for timer window closes before sending payload for processing
                     if (payload.HasTimedOut)
                     {
                         if (payload.IsUploadCompleted())
                         {
-                            _logger.ReceievedAPayload(payload.Elapsed.TotalSeconds, payload.Files.Count, payload.FilesFailedToUpload);
                             if (_payloads.TryRemove(key, out _))
                             {
                                 await QueueBucketForNotification(key, payload).ConfigureAwait(false);

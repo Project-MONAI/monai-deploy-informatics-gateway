@@ -38,7 +38,6 @@ namespace Monai.Deploy.InformaticsGateway.Database
         public const string DbType_Sqlite = "sqlite";
         public const string DbType_MongoDb = "mongodb";
 
-
         public static IHealthChecksBuilder AddDatabaseHealthCheck(this IHealthChecksBuilder healthChecksBuilder, IConfigurationSection? connectionStringConfigurationSection)
         {
             if (connectionStringConfigurationSection is null)
@@ -64,9 +63,9 @@ namespace Monai.Deploy.InformaticsGateway.Database
         }
 
         public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, ILogger logger)
-            => services.ConfigureDatabase(connectionStringConfigurationSection, new FileSystem(), logger);
+            => services.ConfigureDatabase(connectionStringConfigurationSection, logger, new FileSystem());
 
-        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IFileSystem fileSystem, ILogger logger)
+        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, ILogger logger, IFileSystem fileSystem)
         {
             if (connectionStringConfigurationSection is null)
             {
@@ -74,6 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
             }
 
             var databaseType = connectionStringConfigurationSection["Type"].ToLowerInvariant();
+            logger.UsingDatabaseType(databaseType);
             switch (databaseType)
             {
                 case DbType_Sqlite:
@@ -108,7 +108,6 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(MongoDB.Repositories.VirtualApplicationEntityRepository));
 
                     services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection, logger);
-
                     return services;
 
                 default:
@@ -133,7 +132,9 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 {
                     throw new ConfigurationException($"Error activating database registration from type '{type.FullName}'.");
                 }
-                registrar.Configure(services, databaseType, connectionStringConfigurationSection?[SR.DatabaseConnectionStringKey], logger);
+
+                logger.ConfigurePlugInDatabase(type.Name);
+                registrar.Configure(services, databaseType, connectionStringConfigurationSection?[SR.DatabaseConnectionStringKey]);
             }
             return services;
         }

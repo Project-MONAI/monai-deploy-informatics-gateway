@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly ILogger<ScpServiceInternal> _scpServiceInternalLogger;
         private readonly IHostApplicationLifetime _appLifetime;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
-        private FoDicomNetwork.IDicomServer? _server;
+        private FoDicomNetwork.IDicomServer _server;
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
         public string ServiceName => "DICOM SCP Service";
 
@@ -65,8 +65,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             var logginFactory = _serviceScope.ServiceProvider.GetService<ILoggerFactory>();
 
-            _logger = logginFactory!.CreateLogger<ScpService>();
-            _scpServiceInternalLogger = logginFactory!.CreateLogger<ScpServiceInternal>();
+            _logger = logginFactory.CreateLogger<ScpService>();
+            _scpServiceInternalLogger = logginFactory.CreateLogger<ScpServiceInternal>();
             _appLifetime = appLifetime;
             _configuration = configuration;
             _ = DicomDictionary.Default;

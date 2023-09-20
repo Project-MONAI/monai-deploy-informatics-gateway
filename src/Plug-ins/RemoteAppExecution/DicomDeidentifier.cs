@@ -88,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
                 {
                     newRecord.OriginalValues.Add(tag.ToString(), value);
                     var newValue = Utilities.GetTagProxyValue<string>(tag);
-                    if (newValue != null)
+                    if (newValue is not null)
                     {
                         dicomFile.Dataset.AddOrUpdate(tag, newValue);
                         _logger.ValueChanged(tag.ToString(), value, newValue);

@@ -23,9 +23,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
     internal class MllpClientResult
     {
         public IList<Message> Messages { get; }
-        public AggregateException? AggregateException { get; }
+        public AggregateException AggregateException { get; }
 
-        public MllpClientResult(IList<Message> messages, AggregateException? aggregateException)
+        public MllpClientResult(IList<Message> messages, AggregateException aggregateException)
         {
             Messages = messages ?? new List<Message>();
             AggregateException = aggregateException;

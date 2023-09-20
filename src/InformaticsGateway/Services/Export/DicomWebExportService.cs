@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 return;
             }
 
-            var destinations = inferenceRequest.OutputResources!.Where(p => p.Interface == InputInterfaceType.DicomWeb);
+            var destinations = inferenceRequest.OutputResources.Where(p => p.Interface == InputInterfaceType.DicomWeb);
 
             if (!destinations.Any())
             {
@@ -115,12 +115,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             foreach (var destination in destinations)
             {
-                var authenticationHeader = AuthenticationHeaderValueExtensions.ConvertFrom(destination.ConnectionDetails.AuthType, destination.ConnectionDetails.AuthId!);
+                var authenticationHeader = AuthenticationHeaderValueExtensions.ConvertFrom(destination.ConnectionDetails.AuthType, destination.ConnectionDetails.AuthId);
                 var dicomWebClient = new DicomWebClient(_httpClientFactory.CreateClient("dicomweb"), _loggerFactory.CreateLogger<DicomWebClient>());
-                dicomWebClient.ConfigureServiceUris(new Uri(destination.ConnectionDetails.Uri!, UriKind.Absolute));
+                dicomWebClient.ConfigureServiceUris(new Uri(destination.ConnectionDetails.Uri, UriKind.Absolute));
                 dicomWebClient.ConfigureAuthentication(authenticationHeader);
 
-                _logger.ExportToDicomWeb(destination.ConnectionDetails.Uri!);
+                _logger.ExportToDicomWeb(destination.ConnectionDetails.Uri);
                 await ExportToDicomWebDestination(dicomWebClient, exportRequestData, destination, cancellationToken).ConfigureAwait(false);
             }
         }
@@ -148,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                        _configuration.Value.Export.Retries.RetryDelays,
                        (exception, timeSpan, retryCount, context) =>
                        {
-                           _logger.ErrorExportingDicomWebWithRetry(destination.ConnectionDetails.Uri!, timeSpan, retryCount, exception);
+                           _logger.ErrorExportingDicomWebWithRetry(destination.ConnectionDetails.Uri, timeSpan, retryCount, exception);
                        })
                    .ExecuteAsync(async () =>
                        {

@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IFileSystem _fileSystem;
         private readonly IInputDataPlugInEngine _pluginEngine;
-        private MonaiApplicationEntity? _configuration;
+        private MonaiApplicationEntity _configuration;
         private DicomJsonOptions _dicomJsonOptions;
         private bool _validateDicomValueOnJsonSerialization;
         private bool _disposedValue;
@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
 
-            dicomInfo = (result.Item2 as DicomFileStorageMetadata)!;
+            dicomInfo = result.Item2 as DicomFileStorageMetadata;
             var dicomFile = result.Item1;
             await dicomInfo.SetDataStreams(dicomFile, dicomFile.ToJson(_dicomJsonOptions, _validateDicomValueOnJsonSerialization), _options.Value.Storage.TemporaryDataStorage, _fileSystem, _options.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
 
@@ -134,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             Guard.Against.NullOrWhiteSpace(sopClassUid, nameof(sopClassUid));
 
-            if (_configuration!.IgnoredSopClasses.Any())
+            if (_configuration.IgnoredSopClasses.Any())
             {
                 return !_configuration.IgnoredSopClasses.Contains(sopClassUid);
             }

@@ -26,16 +26,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
     public class OperationOutcome
     {
         [DataMember]
-        public string ResourceType { get; set; } = string.Empty;
+        public string ResourceType { get; set; }
 
         [DataMember]
-        public string Id { get; set; } = string.Empty;
+        public string Id { get; set; }
 
         [XmlIgnore, JsonPropertyName("issue")]
         public IList<Issue> Issues { get; set; }
 
         [DataMember, JsonIgnore]
-        public Issue? Issue
+        public Issue Issue
         {
             get
             {
@@ -44,10 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             set
             {
                 Issues.Clear();
-                if (value is not null)
-                {
-                    Issues.Add(value);
-                }
+                Issues.Add(value);
             }
         }
 
@@ -79,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
     public class IssueDetails
     {
         [DataMember]
-        public string Text { get; set; } = string.Empty;
+        public string Text { get; set; }
     }
 
     [DataContract(Namespace = Resources.FhirXmlNamespace)]

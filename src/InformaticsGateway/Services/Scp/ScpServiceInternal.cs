@@ -41,8 +41,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
     {
         private readonly DicomAssociationInfo _associationInfo;
         private readonly ILogger _logger;
-        private IApplicationEntityManager? _associationDataProvider;
-        private IDisposable? _loggerScope;
+        private IApplicationEntityManager _associationDataProvider;
+        private IDisposable _loggerScope;
         private Guid _associationId;
         private DateTimeOffset? _associationReceived;
 
@@ -71,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
             try
             {
-                var repo = _associationDataProvider!.GetService<IDicomAssociationInfoRepository>();
+                var repo = _associationDataProvider.GetService<IDicomAssociationInfoRepository>();
                 _associationInfo.Disconnect();
                 repo?.AddAsync(_associationInfo).Wait();
                 _logger.ConnectionClosed(_associationInfo.CorrelationId, _associationInfo.CallingAeTitle, _associationInfo.CalledAeTitle, _associationInfo.Duration.TotalSeconds);
@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             try
             {
                 _logger?.TransferSyntaxUsed(request.TransferSyntax);
-                var payloadId = await _associationDataProvider!.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId).ConfigureAwait(false);
+                var payloadId = await _associationDataProvider.HandleCStoreRequest(request, Association.CalledAE, Association.CallingAE, _associationId).ConfigureAwait(false);
                 _associationInfo.FileReceived(payloadId);
                 return new DicomCStoreResponse(request, DicomStatus.Success);
             }
@@ -144,7 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             Interlocked.Increment(ref ScpService.ActiveConnections);
             _associationReceived = DateTimeOffset.UtcNow;
-            _associationDataProvider = (UserState as IApplicationEntityManager)!;
+            _associationDataProvider = UserState as IApplicationEntityManager;
 
             if (_associationDataProvider is null)
             {
@@ -155,8 +155,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _associationId = Guid.NewGuid();
             var associationIdStr = $"#{_associationId} {association.RemoteHost}:{association.RemotePort}";
 
-            _loggerScope = _logger!.BeginScope(new LoggingDataDictionary<string, object> { { "Association", associationIdStr } });
-            _logger.CStoreAssociationReceived(association.RemoteHost, association.RemotePort);
+            _loggerScope = _logger?.BeginScope(new LoggingDataDictionary<string, object> { { "Association", associationIdStr } });
+            _logger?.CStoreAssociationReceived(association.RemoteHost, association.RemotePort);
 
             _associationInfo.CallingAeTitle = association.CallingAE;
             _associationInfo.CalledAeTitle = association.CalledAE;
@@ -220,12 +220,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
 
         private async Task<bool> IsValidCalledAeAsync(string calledAe)
         {
-            return await _associationDataProvider!.IsAeTitleConfiguredAsync(calledAe).ConfigureAwait(false);
+            return await _associationDataProvider.IsAeTitleConfiguredAsync(calledAe).ConfigureAwait(false);
         }
 
         private async Task<bool> IsValidSourceAeAsync(string callingAe, string host)
         {
-            if (!_associationDataProvider!.Configuration.Value.Dicom.Scp.RejectUnknownSources) return true;
+            if (!_associationDataProvider.Configuration.Value.Dicom.Scp.RejectUnknownSources) return true;
 
             return await _associationDataProvider.IsValidSourceAsync(callingAe, host).ConfigureAwait(false);
         }
