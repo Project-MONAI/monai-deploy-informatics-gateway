@@ -82,6 +82,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("plugins")]
         public PlugInConfiguration PlugInConfigurations { get; set; }
 
+        /// <summary>
+        /// Represents the <c>endpointSettings</c> section of the configuration file.
+        /// </summary>
+        [ConfigurationKeyName("endpointSettings")]
+        public EndpointSettings EndpointSettings { get; set; }
+
         public InformaticsGatewayConfiguration()
         {
             Dicom = new DicomConfiguration();
@@ -93,6 +99,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             Database = new DatabaseConfiguration();
             Hl7 = new Hl7Configuration();
             PlugInConfigurations = new PlugInConfiguration();
+            EndpointSettings = new EndpointSettings();
         }
     }
 }

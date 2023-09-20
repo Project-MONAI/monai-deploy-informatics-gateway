@@ -59,5 +59,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 13, Level = LogLevel.Critical, Message = "Failed to start {ServiceName}.")]
         public static partial void ServiceFailedToStart(this ILogger logger, string serviceName, Exception ex);
+
+        [LoggerMessage(EventId = 14, Level = LogLevel.Error, Message = "Unexpected error occurred in GET /dai API..")]
+        public static partial void DAIControllerGetAllAsyncError(this ILogger logger, Exception ex);
     }
 }
