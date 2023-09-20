@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-using System.Linq.Expressions;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -24,55 +23,12 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using MongoDB.Bson;
 using MongoDB.Driver;
 using Polly;
 using Polly.Retry;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 {
-    public abstract class MongoDBRepositoryBase
-    {
-        /// <summary>
-        /// Get All T that match filters provided.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="collection">Collection to run against.</param>
-        /// <param name="filterFunction">Filter function you can filter on properties of T.</param>
-        /// <param name="sortFunction">Function used to sort data.</param>
-        /// <param name="skip">Items to skip.</param>
-        /// <param name="limit">Items to limit results by.</param>
-        /// <returns></returns>
-        protected static async Task<IList<T>> GetAllAsync<T>(IMongoCollection<T> collection,
-            Expression<Func<T, bool>>? filterFunction,
-            SortDefinition<T> sortFunction,
-            int? skip = null,
-            int? limit = null)
-        {
-            return await collection
-                .Find(filterFunction)
-                .Skip(skip)
-                .Limit(limit)
-                .Sort(sortFunction)
-                .ToListAsync().ConfigureAwait(false);
-        }
-
-        protected static async Task<IList<T>> GetAllAsync<T>(IMongoCollection<T> collection,
-            FilterDefinition<T> filterFunction,
-            SortDefinition<T> sortFunction,
-            int? skip = null,
-            int? limit = null)
-        {
-            var result = await collection
-                .Find(filterFunction)
-                .Skip(skip)
-                .Limit(limit)
-                .Sort(sortFunction)
-                .ToListAsync().ConfigureAwait(false);
-            return result;
-        }
-    }
-
     public class DicomAssociationInfoRepository : MongoDBRepositoryBase, IDicomAssociationInfoRepository, IDisposable
     {
         private readonly ILogger<DicomAssociationInfoRepository> _logger;
