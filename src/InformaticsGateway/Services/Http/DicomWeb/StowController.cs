@@ -91,6 +91,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http.DicomWeb
 
         private async Task<IActionResult> StoreInstances(string studyInstanceUid, string aet, string workflowName)
         {
+            studyInstanceUid = studyInstanceUid.Replace(Environment.NewLine, string.Empty);
+            aet = aet.Replace(Environment.NewLine, string.Empty);
+            workflowName = workflowName.Replace(Environment.NewLine, string.Empty);
+
             var correlationId = Guid.NewGuid().ToString();
             using var logger = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", correlationId }, { "StudyInstanceUID", studyInstanceUid }, { "Workflow", workflowName } });
 
