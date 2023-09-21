@@ -32,16 +32,16 @@ using Monai.Deploy.InformaticsGateway.Services.UriService;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
-    [Route("dai")]
+    [Route("dicom-associations")]
     public class DicomAssociationInfoController : PagedApiControllerBase
     {
-        private const string Endpoint = "/dai";
+        private const string Endpoint = "/dicom-associations";
         private readonly ILogger<DicomAssociationInfoController> _logger;
         private readonly IDicomAssociationInfoRepository _dicomRepo;
         private readonly IUriService _uriService;
 
         public DicomAssociationInfoController(ILogger<DicomAssociationInfoController> logger,
-            IOptions<InformaticsGatewayConfiguration> options,
+            IOptions<HttpEndpointSettings> options,
             IDicomAssociationInfoRepository dicomRepo,
             IUriService uriService) : base(options)
         {
@@ -63,13 +63,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             try
             {
                 var route = Request?.Path.Value ?? string.Empty;
-                var pageSize = filter.PageSize ?? EndpointOptions.Value.EndpointSettings.DefaultPageSize;
+                var pageSize = filter.PageSize ?? EndpointOptions.Value.DefaultPageSize;
                 var validFilter = new TimeFilter(
                     filter.StartTime,
                     filter.EndTime,
                     filter.PageNumber ?? 0,
                     pageSize,
-                    EndpointOptions.Value.EndpointSettings.MaxPageSize);
+                    EndpointOptions.Value.MaxPageSize);
 
                 var pagedData = await _dicomRepo.GetAllAsync(
                     validFilter.GetSkip(),
@@ -83,7 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception e)
             {
-                _logger.DAIControllerGetAllAsyncError(e);
+                _logger.DicomAssociationsControllerGetError(e);
                 return Problem($"Unexpected error occurred: {e.Message}", Endpoint, InternalServerError);
             }
         }

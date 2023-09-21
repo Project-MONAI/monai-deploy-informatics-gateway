@@ -16,10 +16,10 @@
 
 # DICOM Association information
 
-The `/dai' endpoint is for retrieving a list of information regarding dicom
+The `/dicom-associations' endpoint is for retrieving a list of information regarding dicom
 associations.
 
-## GET /dai/
+## GET /dicom-associations/
 
 #### Query Parameters
 

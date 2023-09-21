@@ -19,7 +19,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
-    public class EndpointSettings
+    public class HttpEndpointSettings
     {
         [ConfigurationKeyName("defaultPageSize")]
         public int DefaultPageSize { get; set; } = 10;

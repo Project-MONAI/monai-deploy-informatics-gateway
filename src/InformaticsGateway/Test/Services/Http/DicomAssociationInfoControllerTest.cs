@@ -38,7 +38,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
         private readonly Mock<ILogger<DicomAssociationInfoController>> _logger;
         private Mock<ILoggerFactory> _loggerFactory;
         private readonly DicomAssociationInfoController _controller;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<HttpEndpointSettings> _options;
         private readonly Mock<IDicomAssociationInfoRepository> _repo;
         private readonly UriService _uriService;
 
@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             _logger = new Mock<ILogger<DicomAssociationInfoController>>();
             _repo = new Mock<IDicomAssociationInfoRepository>();
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_logger.Object);
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Options.Create(new HttpEndpointSettings());
             _uriService = new UriService(new Uri("https://test.com/"));
 
             _controller = new DicomAssociationInfoController(_logger.Object, _options, _repo.Object, _uriService);

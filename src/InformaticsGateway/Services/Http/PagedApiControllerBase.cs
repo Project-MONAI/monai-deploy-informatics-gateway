@@ -27,9 +27,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     public class PagedApiControllerBase : ApiControllerBase
     {
-        protected readonly IOptions<InformaticsGatewayConfiguration> EndpointOptions;
+        protected readonly IOptions<HttpEndpointSettings> EndpointOptions;
 
-        public PagedApiControllerBase(IOptions<InformaticsGatewayConfiguration> options)
+        public PagedApiControllerBase(IOptions<HttpEndpointSettings> options)
         {
             EndpointOptions = options ?? throw new ArgumentNullException(nameof(options));
         }
@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             Guard.Against.Null(route, nameof(route));
             Guard.Against.Null(uriService, nameof(uriService));
 
-            var pageSize = validFilter.PageSize ?? EndpointOptions.Value.EndpointSettings.DefaultPageSize;
+            var pageSize = validFilter.PageSize ?? EndpointOptions.Value.DefaultPageSize;
             var response = new PagedResponse<IEnumerable<T>>(pagedData, validFilter.PageNumber ?? 0, pageSize);
 
             response.SetUp(validFilter, totalRecords, uriService, route);

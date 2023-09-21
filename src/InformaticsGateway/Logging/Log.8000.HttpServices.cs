@@ -173,5 +173,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8204, Level = LogLevel.Error, Message = "Failed to store FHIR resource.")]
         public static partial void ErrorStoringFhirResource(this ILogger logger, Exception ex);
+
+        //
+        // Dicom Associations Controller.
+        //
+        [LoggerMessage(EventId = 8300, Level = LogLevel.Error, Message = "Unexpected error occurred in GET /dicom-associations API..")]
+        public static partial void DicomAssociationsControllerGetError(this ILogger logger, Exception ex);
     }
 }
