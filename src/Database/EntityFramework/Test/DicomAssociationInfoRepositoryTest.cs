@@ -60,6 +60,27 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         }
 
         [Fact]
+        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenGetAllAsyncCalled_ExpectLimitedEntitiesToBeReturned()
+        {
+            var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
+            var startTime = DateTime.Now;
+            var endTime = DateTime.MinValue;
+            var filter = new Func<DicomAssociationInfo, bool>(t =>
+                t.DateTimeDisconnected >= startTime.ToUniversalTime() &&
+                t.DateTimeDisconnected <= endTime.ToUniversalTime());
+
+            var expected = _databaseFixture.DatabaseContext.Set<DicomAssociationInfo>()
+                .Where(filter)
+                .Skip(0)
+                .Take(1)
+                .ToList();
+            var actual = await store.GetAllAsync(0, 1, startTime, endTime, default).ConfigureAwait(false);
+
+            Assert.NotNull(actual);
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
         public async Task GivenADicomAssociationInfo_WhenAddingToDatabase_ExpectItToBeSaved()
         {
             var association = new DicomAssociationInfo { CalledAeTitle = "called", CallingAeTitle = "calling", CorrelationId = Guid.NewGuid().ToString(), DateTimeCreated = DateTime.UtcNow, RemoteHost = "host", RemotePort = 100 };
