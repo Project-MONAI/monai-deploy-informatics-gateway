@@ -90,6 +90,25 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         }
 
         [Fact]
+        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenGetAllAsyncCalled_ExpectLimitedEntitiesToBeReturned()
+        {
+            var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+
+            var collection = _databaseFixture.Database.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
+            var startTime = DateTime.Now;
+            var endTime = DateTime.MinValue;
+            var builder = Builders<DicomAssociationInfo>.Filter;
+            var filter = builder.Empty;
+            filter &= builder.Where(t => t.DateTimeDisconnected >= startTime.ToUniversalTime());
+            filter &= builder.Where(t => t.DateTimeDisconnected <= endTime.ToUniversalTime());
+            var expected = await collection.Find(filter).ToListAsync().ConfigureAwait(false);
+            var actual = await store.GetAllAsync(0, 1, startTime, endTime, default).ConfigureAwait(false);
+
+            actual.Should().NotBeNull();
+            actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
+        }
+
+        [Fact]
         public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
         {
             var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);

@@ -29,7 +29,7 @@ using Polly.Retry;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 {
-    public class DicomAssociationInfoRepository : IDicomAssociationInfoRepository, IDisposable
+    public class DicomAssociationInfoRepository : MongoDBRepositoryBase, IDicomAssociationInfoRepository, IDisposable
     {
         private readonly ILogger<DicomAssociationInfoRepository> _logger;
         private readonly IServiceScope _scope;
@@ -76,6 +76,29 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             {
                 return await _collection.Find(Builders<DicomAssociationInfo>.Filter.Empty).ToListAsync(cancellationToken).ConfigureAwait(false);
             }).ConfigureAwait(false);
+        }
+
+        public Task<IList<DicomAssociationInfo>> GetAllAsync(int skip,
+            int? limit,
+            DateTime startTime,
+            DateTime endTime,
+            CancellationToken cancellationToken)
+        {
+            var builder = Builders<DicomAssociationInfo>.Filter;
+            var filter = builder.Empty;
+            filter &= builder.Where(t => t.DateTimeDisconnected >= startTime.ToUniversalTime());
+            filter &= builder.Where(t => t.DateTimeDisconnected <= endTime.ToUniversalTime());
+
+            return GetAllAsync(_collection,
+                filter,
+                Builders<DicomAssociationInfo>.Sort.Descending(x => x.DateTimeDisconnected),
+                skip,
+                limit);
+        }
+
+        public Task<long> CountAsync()
+        {
+            return _collection.CountDocumentsAsync(Builders<DicomAssociationInfo>.Filter.Empty);
         }
 
         protected virtual void Dispose(bool disposing)

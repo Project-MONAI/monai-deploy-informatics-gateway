@@ -97,6 +97,7 @@ namespace Monai.Deploy.InformaticsGateway
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<InformaticsGatewayConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway"));
+                    services.AddOptions<HttpEndpointSettings>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:httpEndpointSettings"));
                     services.AddOptions<MessageBrokerServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"));
                     services.AddOptions<StorageServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"));
                     services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));

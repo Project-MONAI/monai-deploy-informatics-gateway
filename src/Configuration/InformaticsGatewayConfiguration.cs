@@ -82,6 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         [ConfigurationKeyName("plugins")]
         public PlugInConfiguration PlugInConfigurations { get; set; }
 
+
         public InformaticsGatewayConfiguration()
         {
             Dicom = new DicomConfiguration();

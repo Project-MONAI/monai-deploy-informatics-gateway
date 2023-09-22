@@ -67,6 +67,24 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             }).ConfigureAwait(false);
         }
 
+        public async Task<IList<DicomAssociationInfo>> GetAllAsync(int skip,
+            int? limit,
+            DateTime startTime,
+            DateTime endTime,
+            CancellationToken cancellationToken)
+        {
+            return await _dataset
+                .Where(t =>
+                    t.DateTimeDisconnected >= startTime.ToUniversalTime() &&
+                    t.DateTimeDisconnected <= endTime.ToUniversalTime())
+                .Skip(skip)
+                .Take(limit!.Value)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public Task<long> CountAsync() => _dataset.LongCountAsync();
+
         public async Task<List<DicomAssociationInfo>> ToListAsync(CancellationToken cancellationToken = default)
         {
             return await _retryPolicy.ExecuteAsync(async () =>
