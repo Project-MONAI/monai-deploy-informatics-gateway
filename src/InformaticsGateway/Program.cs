@@ -29,7 +29,6 @@ using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database;
-using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
@@ -97,12 +96,13 @@ namespace Monai.Deploy.InformaticsGateway
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddOptions<InformaticsGatewayConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway"));
+                    services.AddOptions<HttpEndpointSettings>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:httpEndpointSettings"));
                     services.AddOptions<MessageBrokerServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:messaging"));
                     services.AddOptions<StorageServiceConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:storage"));
                     services.AddOptions<AuthenticationOptions>().Bind(hostContext.Configuration.GetSection("MonaiDeployAuthentication"));
-                    services.AddOptions<PlugInConfiguration>().Bind(hostContext.Configuration.GetSection("InformaticsGateway:plugins"));
+                    services.AddOptions<PlugInConfiguration>().Bind(hostContext.Configuration.GetSection("plugins"));
                     services.TryAddEnumerable(ServiceDescriptor.Singleton<IValidateOptions<InformaticsGatewayConfiguration>, ConfigurationValidator>());
-                    services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"), services.BuildServiceProvider().GetService<ILogger<DatabaseRegistrar>>()!);
+                    services.ConfigureDatabase(hostContext.Configuration?.GetSection("ConnectionStrings"), hostContext.Configuration?.GetSection("plugins"), services.BuildServiceProvider().GetService<ILoggerFactory>()!);
 
                     services.AddTransient<IFileSystem, FileSystem>();
                     services.AddTransient<IDicomToolkit, DicomToolkit>();
@@ -168,6 +168,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddHostedService<PayloadNotificationService>(p => p.GetService<PayloadNotificationService>());
                     services.AddHostedService<MllpService>(p => p.GetService<MllpService>());
 #pragma warning restore CS8603 // Possible null reference return.
+
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

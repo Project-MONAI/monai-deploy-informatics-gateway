@@ -53,52 +53,59 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
 
         public async Task<(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)> ExecuteAsync(DicomFile dicomFile, ExportRequestDataMessage exportRequestDataMessage)
         {
-            Guard.Against.Null(dicomFile, nameof(dicomFile));
-            Guard.Against.Null(exportRequestDataMessage, nameof(exportRequestDataMessage));
-
-            var tags = Utilities.GetTagArrayFromStringArray(_options.RemoteAppConfigurations[SR.ConfigKey_ReplaceTags]);
-            var studyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
-            var seriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
-
-            var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IRemoteAppExecutionRepository>();
-
-            var existing = await repository.GetAsync(exportRequestDataMessage.WorkflowInstanceId, exportRequestDataMessage.ExportTaskId, studyInstanceUid, seriesInstanceUid).ConfigureAwait(false);
-
-            var newRecord = new RemoteAppExecution(exportRequestDataMessage, existing?.StudyInstanceUid, existing?.SeriesInstanceUid);
-
-            newRecord.OriginalValues.Add(DicomTag.StudyInstanceUID.ToString(), studyInstanceUid);
-            newRecord.OriginalValues.Add(DicomTag.SeriesInstanceUID.ToString(), seriesInstanceUid);
-            newRecord.OriginalValues.Add(DicomTag.SOPInstanceUID.ToString(), dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID));
-
-            dicomFile.Dataset.AddOrUpdate(DicomTag.StudyInstanceUID, newRecord.StudyInstanceUid);
-            dicomFile.Dataset.AddOrUpdate(DicomTag.SeriesInstanceUID, newRecord.SeriesInstanceUid);
-            dicomFile.Dataset.AddOrUpdate(DicomTag.SOPInstanceUID, newRecord.SopInstanceUid);
-
-            foreach (var tag in tags)
+            try
             {
-                if (tag.Equals(DicomTag.StudyInstanceUID) ||
-                    tag.Equals(DicomTag.SeriesInstanceUID) ||
-                    tag.Equals(DicomTag.SOPInstanceUID))
-                {
-                    continue;
-                }
+                Guard.Against.Null(dicomFile, nameof(dicomFile));
+                Guard.Against.Null(exportRequestDataMessage, nameof(exportRequestDataMessage));
 
-                if (dicomFile.Dataset.TryGetString(tag, out var value))
+                var tags = Utilities.GetTagArrayFromStringArray(_options.RemoteAppConfigurations[SR.ConfigKey_ReplaceTags]);
+                var studyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
+                var seriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
+
+                var scope = _serviceScopeFactory.CreateScope();
+                var repository = scope.ServiceProvider.GetRequiredService<IRemoteAppExecutionRepository>();
+
+                var existing = await repository.GetAsync(exportRequestDataMessage.WorkflowInstanceId, exportRequestDataMessage.ExportTaskId, studyInstanceUid, seriesInstanceUid).ConfigureAwait(false);
+
+                var newRecord = new RemoteAppExecution(exportRequestDataMessage, existing?.StudyInstanceUid, existing?.SeriesInstanceUid);
+
+                newRecord.OriginalValues.Add(DicomTag.StudyInstanceUID.ToString(), studyInstanceUid);
+                newRecord.OriginalValues.Add(DicomTag.SeriesInstanceUID.ToString(), seriesInstanceUid);
+                newRecord.OriginalValues.Add(DicomTag.SOPInstanceUID.ToString(), dicomFile.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID));
+
+                dicomFile.Dataset.AddOrUpdate(DicomTag.StudyInstanceUID, newRecord.StudyInstanceUid);
+                dicomFile.Dataset.AddOrUpdate(DicomTag.SeriesInstanceUID, newRecord.SeriesInstanceUid);
+                dicomFile.Dataset.AddOrUpdate(DicomTag.SOPInstanceUID, newRecord.SopInstanceUid);
+
+                foreach (var tag in tags)
                 {
-                    newRecord.OriginalValues.Add(tag.ToString(), value);
-                    var newValue = Utilities.GetTagProxyValue<string>(tag);
-                    if (newValue != null)
+                    if (tag.Equals(DicomTag.StudyInstanceUID) ||
+                        tag.Equals(DicomTag.SeriesInstanceUID) ||
+                        tag.Equals(DicomTag.SOPInstanceUID))
                     {
-                        dicomFile.Dataset.AddOrUpdate(tag, newValue);
-                        _logger.ValueChanged(tag.ToString(), value, newValue);
+                        continue;
+                    }
+
+                    if (dicomFile.Dataset.TryGetString(tag, out var value))
+                    {
+                        newRecord.OriginalValues.Add(tag.ToString(), value);
+                        var newValue = Utilities.GetTagProxyValue<string>(tag);
+                        if (newValue != null)
+                        {
+                            dicomFile.Dataset.AddOrUpdate(tag, newValue);
+                            _logger.ValueChanged(tag.ToString(), value, newValue);
+                        }
                     }
                 }
+
+                await repository.AddAsync(newRecord).ConfigureAwait(false);
+
+                return (dicomFile, exportRequestDataMessage);
             }
-
-            await repository.AddAsync(newRecord).ConfigureAwait(false);
-
-            return (dicomFile, exportRequestDataMessage);
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

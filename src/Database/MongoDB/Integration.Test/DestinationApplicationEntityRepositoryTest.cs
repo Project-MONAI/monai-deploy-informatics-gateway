@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories;
 using MongoDB.Driver;
@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<DestinationApplicationEntityRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<DestinationApplicationEntityRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Options.Create(new DatabaseOptions());
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 

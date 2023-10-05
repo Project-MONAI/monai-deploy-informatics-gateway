@@ -21,7 +21,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -44,19 +43,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         public InferenceRequestRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<InferenceRequestRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options,
-            IOptions<DatabaseOptions> mongoDbOptions) : base(logger, options)
+            IOptions<DatabaseOptions> options) : base(logger, options)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _scope = serviceScopeFactory.CreateScope();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
-            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DatabaseName);
+            var mongoDatabase = mongoDbClient.GetDatabase(options.Value.DatabaseName);
             _collection = mongoDatabase.GetCollection<InferenceRequest>(nameof(InferenceRequest));
             CreateIndexes();
         }

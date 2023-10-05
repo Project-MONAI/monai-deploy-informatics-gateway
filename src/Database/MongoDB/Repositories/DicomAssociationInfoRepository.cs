@@ -19,7 +19,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -29,7 +28,7 @@ using Polly.Retry;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 {
-    public class DicomAssociationInfoRepository : IDicomAssociationInfoRepository, IDisposable
+    public class DicomAssociationInfoRepository : MongoDBRepositoryBase, IDicomAssociationInfoRepository, IDisposable
     {
         private readonly ILogger<DicomAssociationInfoRepository> _logger;
         private readonly IServiceScope _scope;
@@ -40,22 +39,20 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         public DicomAssociationInfoRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DicomAssociationInfoRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options,
-            IOptions<DatabaseOptions> mongoDbOptions)
+            IOptions<DatabaseOptions> options)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             Guard.Against.Null(options, nameof(options));
-            Guard.Against.Null(mongoDbOptions, nameof(mongoDbOptions));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             _scope = serviceScopeFactory.CreateScope();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
-            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DatabaseName);
+            var mongoDatabase = mongoDbClient.GetDatabase(options.Value.DatabaseName);
             _collection = mongoDatabase.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
         }
 
@@ -76,6 +73,29 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             {
                 return await _collection.Find(Builders<DicomAssociationInfo>.Filter.Empty).ToListAsync(cancellationToken).ConfigureAwait(false);
             }).ConfigureAwait(false);
+        }
+
+        public Task<IList<DicomAssociationInfo>> GetAllAsync(int skip,
+            int? limit,
+            DateTime startTime,
+            DateTime endTime,
+            CancellationToken cancellationToken)
+        {
+            var builder = Builders<DicomAssociationInfo>.Filter;
+            var filter = builder.Empty;
+            filter &= builder.Where(t => t.DateTimeDisconnected >= startTime.ToUniversalTime());
+            filter &= builder.Where(t => t.DateTimeDisconnected <= endTime.ToUniversalTime());
+
+            return GetAllAsync(_collection,
+                filter,
+                Builders<DicomAssociationInfo>.Sort.Descending(x => x.DateTimeDisconnected),
+                skip,
+                limit);
+        }
+
+        public Task<long> CountAsync()
+        {
+            return _collection.CountDocumentsAsync(Builders<DicomAssociationInfo>.Filter.Empty);
         }
 
         protected virtual void Dispose(bool disposing)

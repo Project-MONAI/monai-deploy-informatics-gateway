@@ -19,7 +19,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Polly;
 using Polly.Retry;
@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database.En
         public RemoteAppExecutionRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<RemoteAppExecutionRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options)
+            IOptions<DatabaseOptions> options)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             Guard.Against.Null(options, nameof(options));
@@ -51,7 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database.En
             _scope = serviceScopeFactory.CreateScope();
             _dbContext = _scope.ServiceProvider.GetRequiredService<RemoteAppExecutionDbContext>();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
             _dataset = _dbContext.Set<RemoteAppExecution>();
         }

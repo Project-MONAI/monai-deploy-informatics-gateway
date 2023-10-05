@@ -70,6 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
             _options.Value.Storage.TemporaryStorageBucket = "bucket";
+            _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1 };
 
             _storageService.Setup(p => p.VerifyObjectExistsAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(true);
         }

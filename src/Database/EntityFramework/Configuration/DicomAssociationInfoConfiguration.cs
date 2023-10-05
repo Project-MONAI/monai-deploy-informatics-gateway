@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
         public void Configure(EntityTypeBuilder<DicomAssociationInfo> builder)
         {
             var comparer = new ValueComparer<HashSet<string>>(
-                (c1, c2) => c1.SequenceEqual(c2),
+                (c1, c2) => c1!.SequenceEqual(c2!),
                 c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
                 c => c.ToHashSet());
 
@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.PayloadIds).IsRequired()
                 .HasConversion(
                         v => JsonSerializer.Serialize(v, jsonSerializerSettings),
-                        v => JsonSerializer.Deserialize<HashSet<string>>(v, jsonSerializerSettings))
+                        v => JsonSerializer.Deserialize<HashSet<string>>(v, jsonSerializerSettings) ?? new HashSet<string>())
                 .Metadata.SetValueComparer(comparer);
         }
     }

@@ -22,7 +22,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -43,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         public StorageMetadataWrapperRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<StorageMetadataWrapperRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options) : base(logger)
+            IOptions<DatabaseOptions> options) : base(logger)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             Guard.Against.Null(options, nameof(options));
@@ -53,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             _scope = serviceScopeFactory.CreateScope();
             _informaticsGatewayContext = _scope.ServiceProvider.GetRequiredService<InformaticsGatewayContext>();
             _retryPolicy = Policy.Handle<Exception>(p => p is not ArgumentException).WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
             _dataset = _informaticsGatewayContext.Set<StorageMetadataWrapper>();
         }

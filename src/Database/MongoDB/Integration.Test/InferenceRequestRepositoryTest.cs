@@ -18,7 +18,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories;
 using MongoDB.Driver;
@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<InferenceRequestRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<InferenceRequestRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = databaseFixture.Options;
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var inferenceRequest = CreateInferenceRequest();
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequest).ConfigureAwait(false);
 
             var collection = _databaseFixture.Database.GetCollection<InferenceRequest>(nameof(InferenceRequest));
@@ -88,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                 TryCount = 3
             };
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequest).ConfigureAwait(false);
             await store.UpdateAsync(inferenceRequest, InferenceRequestStatus.Fail).ConfigureAwait(false);
 
@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                 TryCount = 1
             };
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequest).ConfigureAwait(false);
             await store.UpdateAsync(inferenceRequest, InferenceRequestStatus.Fail).ConfigureAwait(false);
 
@@ -129,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                 TransactionId = Guid.NewGuid().ToString()
             };
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             await store.AddAsync(inferenceRequest).ConfigureAwait(false);
             await store.UpdateAsync(inferenceRequest, InferenceRequestStatus.Success).ConfigureAwait(false);
@@ -152,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var inferenceRequestCompleted = CreateInferenceRequest(InferenceRequestState.Completed);
             var inferenceRequestQueued = CreateInferenceRequest();
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequestInProcess).ConfigureAwait(false);
             await store.AddAsync(inferenceRequestCompleted).ConfigureAwait(false);
             await store.AddAsync(inferenceRequestQueued).ConfigureAwait(false);
@@ -176,7 +176,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var inferenceRequestInProcess = CreateInferenceRequest(InferenceRequestState.InProcess);
             var inferenceRequestCompleted = CreateInferenceRequest(InferenceRequestState.Completed);
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequestInProcess).ConfigureAwait(false);
             await store.AddAsync(inferenceRequestCompleted).ConfigureAwait(false);
 
@@ -191,7 +191,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var inferenceRequest2 = CreateInferenceRequest();
             var inferenceRequest3 = CreateInferenceRequest();
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequest1).ConfigureAwait(false);
             await store.AddAsync(inferenceRequest2).ConfigureAwait(false);
             await store.AddAsync(inferenceRequest3).ConfigureAwait(false);
@@ -222,7 +222,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var inferenceRequest = CreateInferenceRequest();
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequest).ConfigureAwait(false);
 
             var result = await store.ExistsAsync(inferenceRequest.TransactionId).ConfigureAwait(false);
@@ -237,7 +237,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var inferenceRequest = CreateInferenceRequest();
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequest).ConfigureAwait(false);
 
             var result = await store.GetStatusAsync(inferenceRequest.TransactionId).ConfigureAwait(false);
@@ -251,7 +251,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var inferenceRequest = CreateInferenceRequest();
 
-            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new InferenceRequestRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(inferenceRequest).ConfigureAwait(false);
 
             var result = await store.GetStatusAsync("bogus").ConfigureAwait(false);

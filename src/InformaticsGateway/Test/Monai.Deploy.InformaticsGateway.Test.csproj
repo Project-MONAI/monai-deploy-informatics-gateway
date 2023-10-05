@@ -1,4 +1,4 @@
-﻿<!--
+<!--
   ~ Copyright 2021-2023 MONAI Consortium
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,6 +28,7 @@
     <Compile Include="..\..\Shared\Test\InstanceGenerator.cs" Link="Shared\InstanceGenerator.cs" />
     <Compile Include="..\..\Shared\Test\TestStorageInfo.cs" Link="Shared\TestStorageInfo.cs" />
     <Compile Include="..\..\Shared\Test\VerifyLogExtension.cs" Link="Shared\VerifyLogExtension.cs" />
+    <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>
@@ -52,6 +53,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\..\Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
+    <ProjectReference Include="..\..\Plug-ins\RemoteAppExecution\Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.csproj" />
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.csproj" />
     <ProjectReference Include="Plug-ins\Monai.Deploy.InformaticsGateway.Test.PlugIns.csproj" />
   </ItemGroup>

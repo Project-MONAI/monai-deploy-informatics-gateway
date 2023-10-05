@@ -105,6 +105,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _outputDataPlugInEngine.Setup(p => p.ExecutePlugInsAsync(It.IsAny<ExportRequestDataMessage>()))
                 .Returns<ExportRequestDataMessage>((ExportRequestDataMessage message) => Task.FromResult(message));
 
+            _configuration.Value.Export.Retries = new RetryConfiguration { DelaysMilliseconds = new[] { 5 } };
+
             _loggerFactory.Setup(p => p.CreateLogger(It.IsAny<string>())).Returns(_loggerDicomWebClient.Object);
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
