@@ -16,7 +16,7 @@
 
 using FellowOakDicom;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database.MongoDb;
 using MongoDB.Driver;
 using Xunit;

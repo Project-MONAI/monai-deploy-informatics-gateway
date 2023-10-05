@@ -21,7 +21,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text.Json;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.TestPlatform.Utilities;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution;
@@ -62,7 +61,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInAddWorkflow)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInModifyDicomFile)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInResumeWorkflow)),
-               
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInVirtualAE)));
 
             _logger.VerifyLogging($"{typeof(IInputDataPlugIn).Name} data plug-in found {typeof(TestInputDataPlugInAddWorkflow).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(TestInputDataPlugInAddWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());

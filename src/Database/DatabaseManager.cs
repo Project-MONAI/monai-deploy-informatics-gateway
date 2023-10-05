@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
@@ -68,7 +69,6 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
         public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IConfigurationSection? pluginsConfigurationSection, IFileSystem fileSystem, ILoggerFactory loggerFactory)
         {
-            var logger = loggerFactory.CreateLogger("DatabaseManager");
 
             if (connectionStringConfigurationSection is null)
             {
@@ -96,7 +96,6 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     return services;
 
                 case DbType_MongoDb:
-                    var terst = connectionStringConfigurationSection[SR.DatabaseConnectionStringKey];
                     services.AddSingleton<IMongoClient, MongoClient>(s => new MongoClient(connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]));
                     services.AddScoped<IDatabaseMigrationManager, MongoDatabaseMigrationManager>();
                     services.AddScoped(typeof(IDestinationApplicationEntityRepository), typeof(MongoDB.Repositories.DestinationApplicationEntityRepository));
@@ -155,6 +154,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
             return matchingTypes.ToArray();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SonarLint", "S3885", Justification = "assembly.Load does not full register the contents, but assembly.LoadFrom does, this is need to load .dlls from the plug-ins folder that plugins use")]
         internal static Assembly[] LoadAssemblyFromPlugInsDirectory(IFileSystem fileSystem)
         {
             Guard.Against.Null(fileSystem, nameof(fileSystem));
@@ -169,6 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
             foreach (var plugin in plugins)
             {
+
                 assemblies.Add(Assembly.LoadFrom(plugin));
             }
             return assemblies.ToArray();
