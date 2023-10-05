@@ -57,13 +57,12 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 
             _output.WriteLine($"result now = {JsonSerializer.Serialize(result)}");
 
-            Assert.Equal(3, result.Length);
-
             Assert.Collection(result,
                 p => VerifyPlugIn(p, typeof(DicomReidentifier)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInAddWorkflow)),
-                p => VerifyPlugIn(p, typeof(TestInputDataPlugInResumeWorkflow)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInModifyDicomFile)),
+                p => VerifyPlugIn(p, typeof(TestInputDataPlugInResumeWorkflow)),
+               
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInVirtualAE)));
 
             _logger.VerifyLogging($"{typeof(IInputDataPlugIn).Name} data plug-in found {typeof(TestInputDataPlugInAddWorkflow).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(TestInputDataPlugInAddWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());
