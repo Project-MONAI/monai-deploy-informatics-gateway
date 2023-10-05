@@ -21,7 +21,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
@@ -42,22 +41,21 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         public StorageMetadataWrapperRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<StorageMetadataWrapperRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options,
-            IOptions<DatabaseOptions> mongoDbOptions) : base(logger)
+            IOptions<DatabaseOptions> options
+            ) : base(logger)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             Guard.Against.Null(options, nameof(options));
-            Guard.Against.Null(mongoDbOptions, nameof(mongoDbOptions));
 
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             _scope = serviceScopeFactory.CreateScope();
             _retryPolicy = Policy.Handle<Exception>(p => p is not ArgumentException).WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
-            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DatabaseName);
+            var mongoDatabase = mongoDbClient.GetDatabase(options.Value.DatabaseName);
             _collection = mongoDatabase.GetCollection<StorageMetadataWrapper>(nameof(StorageMetadataWrapper));
             CreateIndexes();
         }

@@ -23,5 +23,20 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
         Task<List<DicomAssociationInfo>> ToListAsync(CancellationToken cancellationToken = default);
 
         Task<DicomAssociationInfo> AddAsync(DicomAssociationInfo item, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        /// Retrieves a list of DicomAssociationInfo in the database.
+        /// </summary>
+        Task<IList<DicomAssociationInfo>> GetAllAsync(int skip,
+            int? limit,
+            DateTime startTime,
+            DateTime endTime,
+            CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Gets count of objects
+        /// </summary>
+        /// <returns>Count of objects.</returns>
+        Task<long> CountAsync();
     }
 }

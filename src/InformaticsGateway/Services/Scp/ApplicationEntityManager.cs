@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Concurrent;
+using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
@@ -114,7 +115,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         {
             var uids = _dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
 
-            using (_logger.BeginScope(new LoggingDataDictionary<string, object>() { { "SOPInstanceUID", uids.SopInstanceUid }, { "CorrelationId", associationId } }))
+            using (_logger.BeginScope(new LoggingDataDictionary<string, object>() {
+                { "SOPInstanceUID", uids.SopInstanceUid },
+                { "CorrelationId", associationId },
+                { "calledAeTitle", calledAeTitle},
+                { "callingAeTitle",callingAeTitle},
+                { "ThreadId", Environment.CurrentManagedThreadId}
+            }))
             {
                 _logger.InstanceInformation(uids.StudyInstanceUid, uids.SeriesInstanceUid);
 

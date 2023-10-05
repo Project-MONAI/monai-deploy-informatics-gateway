@@ -15,6 +15,7 @@
  */
 
 using Microsoft.Extensions.Configuration;
+using Monai.Deploy.InformaticsGateway.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
@@ -22,5 +23,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
     {
         [ConfigurationKeyName("DatabaseName")]
         public string DatabaseName { get; set; } = string.Empty;
+
+        /// <summary>
+        /// Gets or sets retry options relate to reading/writing to the database.
+        /// </summary>
+        [ConfigurationKeyName("retries")]
+        public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
     }
 }

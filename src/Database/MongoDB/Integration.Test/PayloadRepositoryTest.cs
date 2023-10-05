@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories;
 using Monai.Deploy.Messaging.Events;
@@ -35,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<PayloadRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<PayloadRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = _databaseFixture.Options;
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
@@ -70,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "calling2", "called2"));
             payload.State = Payload.PayloadState.Move;
 
-            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(payload).ConfigureAwait(false);
 
             var collection = _databaseFixture.Database.GetCollection<Payload>(nameof(Payload));
@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "calling", "called"));
             payload.State = Payload.PayloadState.Move;
 
-            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             var added = await store.AddAsync(payload).ConfigureAwait(false);
 
             var removed = await store.RemoveAsync(added!).ConfigureAwait(false);
@@ -117,7 +117,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         [Fact]
         public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
         {
-            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var collection = _databaseFixture.Database.GetCollection<Payload>(nameof(Payload));
             var expected = await collection.Find(Builders<Payload>.Filter.Empty).ToListAsync().ConfigureAwait(false);
@@ -132,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var payload = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = DataService.DIMSE, Destination = "dest", Source = "source" }, 5);
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "source", "dest"));
 
-            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             var added = await store.AddAsync(payload).ConfigureAwait(false);
 
             added.State = Payload.PayloadState.Notify;
@@ -175,7 +175,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var payload4 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
             var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
 
-            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             _ = await store.AddAsync(payload1).ConfigureAwait(false);
             _ = await store.AddAsync(payload2).ConfigureAwait(false);
             _ = await store.AddAsync(payload3).ConfigureAwait(false);
@@ -206,7 +206,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var payload4 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
             var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
 
-            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             _ = await store.AddAsync(payload1).ConfigureAwait(false);
             _ = await store.AddAsync(payload2).ConfigureAwait(false);
             _ = await store.AddAsync(payload3).ConfigureAwait(false);

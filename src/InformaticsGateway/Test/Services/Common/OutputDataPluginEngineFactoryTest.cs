@@ -17,7 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -27,6 +29,7 @@ using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 {
@@ -34,13 +37,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
     {
         private readonly Mock<ILogger<OutputDataPlugInEngineFactory>> _logger;
         private readonly FileSystem _fileSystem;
+        private readonly ITestOutputHelper _output;
 
-        public OutputDataPlugInEngineFactoryTest()
+        public OutputDataPlugInEngineFactoryTest(ITestOutputHelper output)
         {
             _logger = new Mock<ILogger<OutputDataPlugInEngineFactory>>();
             _fileSystem = new FileSystem();
-
+            _output = output;
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+
         }
 
         [Fact]
@@ -48,7 +53,16 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
         {
             var factory = new OutputDataPlugInEngineFactory(_fileSystem, _logger.Object);
 
-            var result = factory.RegisteredPlugIns();
+            var result = factory.RegisteredPlugIns().OrderBy(r => r.Value).ToArray();
+
+            _output.WriteLine($"result now = {JsonSerializer.Serialize(result)}");
+
+            Assert.Equal(3, result.Length);
+
+            Assert.Equal(typeof(DicomDeidentifier).GetCustomAttribute<PlugInNameAttribute>().Name, result[0].Key);
+            Assert.Equal(typeof(TestOutputDataPlugInAddMessage).GetCustomAttribute<PlugInNameAttribute>().Name, result[1].Key);
+            Assert.Equal(typeof(TestOutputDataPlugInModifyDicomFile).GetCustomAttribute<PlugInNameAttribute>().Name, result[2].Key);
+
 
             Assert.Collection(result,
                 p => VerifyPlugIn(p, typeof(DicomDeidentifier)),

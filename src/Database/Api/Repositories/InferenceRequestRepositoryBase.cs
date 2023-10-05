@@ -19,7 +19,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
@@ -27,11 +26,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
     public abstract class InferenceRequestRepositoryBase : IInferenceRequestRepository
     {
         private readonly ILogger _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         protected InferenceRequestRepositoryBase(
             ILogger logger,
-            IOptions<InformaticsGatewayConfiguration> options)
+            IOptions<DatabaseOptions> options)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _options = options ?? throw new ArgumentNullException(nameof(options));
@@ -72,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
             }
             else
             {
-                if (++inferenceRequest.TryCount > _options.Value.Database.Retries.DelaysMilliseconds.Length)
+                if (++inferenceRequest.TryCount > _options.Value.Retries.DelaysMilliseconds.Length)
                 {
                     _logger.InferenceRequestUpdateExceededMaximumRetries();
                     inferenceRequest.State = InferenceRequestState.Completed;

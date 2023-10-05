@@ -1,5 +1,6 @@
 /*
- * Copyright 2021-2022 MONAI Consortium
+ * Copyright 2021-2023 MONAI Consortium
+ * Copyright 2019-2021 NVIDIA Corporation
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +15,21 @@
  * limitations under the License.
  */
 
-using Microsoft.Extensions.Configuration;
+using Monai.Deploy.InformaticsGateway.Services.Common.Pagination;
 
-namespace Monai.Deploy.InformaticsGateway.Configuration
+namespace Monai.Deploy.InformaticsGateway.Services.UriService
 {
-    public class DatabaseConfiguration
+    /// <summary>
+    /// Uri Service.
+    /// </summary>
+    public interface IUriService
     {
         /// <summary>
-        /// Gets or sets retry options relate to reading/writing to the database.
+        /// Gets Relative Uri path with filters as a string.
         /// </summary>
-        [ConfigurationKeyName("retries")]
-        public RetryConfiguration Retries { get; set; } = new RetryConfiguration();
+        /// <param name="filter">Filters.</param>
+        /// <param name="route">Route.</param>
+        /// <returns>Relative Uri string.</returns>
+        public string GetPageUriString(PaginationFilter filter, string route);
     }
 }

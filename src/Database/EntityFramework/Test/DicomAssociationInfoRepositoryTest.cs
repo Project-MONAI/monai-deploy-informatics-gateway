@@ -19,7 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 using Moq;
 
@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<DicomAssociationInfoRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<DicomAssociationInfoRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Options.Create(new DatabaseOptions());
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -55,8 +55,29 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+        }
+
+        [Fact]
+        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenGetAllAsyncCalled_ExpectLimitedEntitiesToBeReturned()
+        {
+            var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
+            var startTime = DateTime.Now;
+            var endTime = DateTime.MinValue;
+            var filter = new Func<DicomAssociationInfo, bool>(t =>
+                t.DateTimeDisconnected >= startTime.ToUniversalTime() &&
+                t.DateTimeDisconnected <= endTime.ToUniversalTime());
+
+            var expected = _databaseFixture.DatabaseContext.Set<DicomAssociationInfo>()
+                .Where(filter)
+                .Skip(0)
+                .Take(1)
+                .ToList();
+            var actual = await store.GetAllAsync(0, 1, startTime, endTime, default).ConfigureAwait(false);
+
+            Assert.NotNull(actual);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]

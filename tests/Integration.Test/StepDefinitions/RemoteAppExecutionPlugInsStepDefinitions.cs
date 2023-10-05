@@ -28,6 +28,8 @@ using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Messaging.RabbitMQ;
+using Polly;
+using Polly.Timeout;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -139,6 +141,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [When(@"the study is received and sent back to Informatics Gateway")]
         public async Task TheStudyIsReceivedAndSentBackToInformaticsGateway()
         {
+
             // setup DICOM Source
             try
             {
@@ -190,6 +193,24 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 }
             }
 
+            var timeoutPolicy = Policy.TimeoutAsync(30, TimeoutStrategy.Pessimistic);
+            await timeoutPolicy
+                .ExecuteAsync(
+                    async () => { await SendRequest(); }
+                  );
+
+            // Clear workflow request messages
+            _receivedWorkflowRequestMessages.ClearMessages();
+
+            _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
+
+            // Wait for workflow request events
+            (await _receivedWorkflowRequestMessages.WaitforAsync(1, MessageWaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, DataService.DIMSE, _receivedWorkflowRequestMessages.Messages, 1);
+        }
+
+        private async Task SendRequest()
+        {
             // Wait for export completed event
             (await _receivedExportCompletedMessages.WaitforAsync(1, DicomScpWaitTimeSpan)).Should().BeTrue();
 
@@ -215,15 +236,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 host,
                 port,
                 MonaiAeTitle);
-
-            // Clear workflow request messages
-            _receivedWorkflowRequestMessages.ClearMessages();
-
-            _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
-
-            // Wait for workflow request events
-            (await _receivedWorkflowRequestMessages.WaitforAsync(1, MessageWaitTimeSpan)).Should().BeTrue();
-            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, DataService.DIMSE, _receivedWorkflowRequestMessages.Messages, 1);
         }
 
         [Then(@"ensure the original study and the received study are the same")]

@@ -24,6 +24,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.SharedTest;
@@ -40,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<PayloadNotificationService>> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
-
+        private readonly IOptions<DatabaseOptions> _dbOptions;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IMessageBrokerPublisherService> _messageBrokerPublisherService;
         private readonly Mock<IPayloadNotificationActionHandler> _payloadNotificationActionHandler;
@@ -56,6 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<PayloadNotificationService>>();
             _options = Options.Create(new InformaticsGatewayConfiguration());
+            _dbOptions = Options.Create(new DatabaseOptions());
 
             _payloadAssembler = new Mock<IPayloadAssembler>();
             _messageBrokerPublisherService = new Mock<IMessageBrokerPublisherService>();
@@ -77,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1 };
+            _dbOptions.Value.Retries.DelaysMilliseconds = new[] { 1 };
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 1 };
             _options.Value.Storage.StorageServiceBucketName = "bucket";
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);

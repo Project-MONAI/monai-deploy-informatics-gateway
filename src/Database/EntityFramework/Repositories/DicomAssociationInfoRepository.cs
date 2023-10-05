@@ -20,7 +20,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Polly;
@@ -40,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         public DicomAssociationInfoRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DicomAssociationInfoRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options)
+            IOptions<DatabaseOptions> options)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             Guard.Against.Null(options, nameof(options));
@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             _scope = serviceScopeFactory.CreateScope();
             _informaticsGatewayContext = _scope.ServiceProvider.GetRequiredService<InformaticsGatewayContext>();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
             _dataset = _informaticsGatewayContext.Set<DicomAssociationInfo>();
         }
@@ -66,6 +66,24 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
                 return result.Entity;
             }).ConfigureAwait(false);
         }
+
+        public async Task<IList<DicomAssociationInfo>> GetAllAsync(int skip,
+            int? limit,
+            DateTime startTime,
+            DateTime endTime,
+            CancellationToken cancellationToken)
+        {
+            return await _dataset
+                .Where(t =>
+                    t.DateTimeDisconnected >= startTime.ToUniversalTime() &&
+                    t.DateTimeDisconnected <= endTime.ToUniversalTime())
+                .Skip(skip)
+                .Take(limit!.Value)
+                .ToListAsync(cancellationToken)
+                .ConfigureAwait(false);
+        }
+
+        public Task<long> CountAsync() => _dataset.LongCountAsync();
 
         public async Task<List<DicomAssociationInfo>> ToListAsync(CancellationToken cancellationToken = default)
         {

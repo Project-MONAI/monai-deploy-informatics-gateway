@@ -22,7 +22,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
-using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Polly;
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         public InferenceRequestRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<InferenceRequestRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options) : base(logger, options)
+            IOptions<DatabaseOptions> options) : base(logger, options)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
 
@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             _scope = serviceScopeFactory.CreateScope();
             _informaticsGatewayContext = _scope.ServiceProvider.GetRequiredService<InformaticsGatewayContext>();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
             _dataset = _informaticsGatewayContext.Set<InferenceRequest>();
         }

@@ -74,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 var repo = _associationDataProvider!.GetService<IDicomAssociationInfoRepository>();
                 _associationInfo.Disconnect();
                 repo?.AddAsync(_associationInfo).Wait();
-                _logger.ConnectionClosed(_associationInfo.CorrelationId, _associationInfo.CallingAeTitle, _associationInfo.CalledAeTitle, _associationInfo.Duration.TotalSeconds);
+                _logger?.ConnectionClosed(_associationInfo.CorrelationId, _associationInfo.CallingAeTitle, _associationInfo.CalledAeTitle, _associationInfo.Duration.TotalSeconds);
             }
             catch (Exception ex)
             {

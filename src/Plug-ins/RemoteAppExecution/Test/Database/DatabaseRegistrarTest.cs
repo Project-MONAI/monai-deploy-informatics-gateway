@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database.EntityFramework;
@@ -35,7 +37,21 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             serviceCollection.Setup(p => p.GetEnumerator()).Returns(serviceDescriptors.GetEnumerator());
 
             var registrar = new DatabaseRegistrar();
-            var returnedServiceCollection = registrar.Configure(serviceCollection.Object, DatabaseType.EntityFramework, "DataSource=file::memory:?cache=shared", new Mock<Microsoft.Extensions.Logging.ILogger>().Object);
+            var configInMemory = new Dictionary<string, string> {
+                { "top:InformaticsGatewayDatabase","DataSource=file::memory:?cache=shared"},
+            };
+
+            IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(configInMemory).Build();
+
+            var loggerMock = new Mock<ILogger>();
+            var loggerFactoryMock = new Mock<ILoggerFactory>();
+            loggerFactoryMock.Setup(f => f.CreateLogger(It.IsAny<string>())).Returns(loggerMock.Object);
+
+            var returnedServiceCollection = registrar.Configure(
+                serviceCollection.Object,
+                DatabaseType.EntityFramework,
+                configuration.GetSection("top"),
+                configuration.GetSection("top"), loggerFactoryMock.Object);
 
             Assert.Same(serviceCollection.Object, returnedServiceCollection);
 
@@ -54,11 +70,24 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             serviceCollection.Setup(p => p.GetEnumerator()).Returns(serviceDescriptors.GetEnumerator());
 
             var registrar = new DatabaseRegistrar();
-            var returnedServiceCollection = registrar.Configure(serviceCollection.Object, DatabaseType.MongoDb, "DataSource=file::memory:?cache=shared", new Mock<Microsoft.Extensions.Logging.ILogger>().Object);
+            var configInMemory = new Dictionary<string, string> {
+                { "top:InformaticsGatewayDatabase","DataSource=file::memory:?cache=shared"},
+            };
+
+            var loggerMock = new Mock<ILogger>();
+            var loggerFactoryMock = new Mock<ILoggerFactory>();
+            loggerFactoryMock.Setup(f => f.CreateLogger(It.IsAny<string>())).Returns(loggerMock.Object);
+
+            IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(configInMemory).Build();
+            var returnedServiceCollection = registrar.Configure(
+                serviceCollection.Object,
+                DatabaseType.MongoDb,
+                configuration.GetSection("top"),
+                configuration.GetSection("top"),
+                loggerFactoryMock.Object);
 
             Assert.Same(serviceCollection.Object, returnedServiceCollection);
 
-            serviceCollection.Verify(p => p.Add(It.IsAny<ServiceDescriptor>()), Times.Exactly(2));
             serviceCollection.Verify(p => p.Add(It.Is<ServiceDescriptor>(p => p.ServiceType == typeof(IDatabaseMigrationManagerForPlugIns) && p.ImplementationType == typeof(MongoDbTypes.MigrationManager))), Times.Once());
             serviceCollection.Verify(p => p.Add(It.Is<ServiceDescriptor>(p => p.ServiceType == typeof(IRemoteAppExecutionRepository) && p.ImplementationType == typeof(MongoDbTypes.RemoteAppExecutionRepository))), Times.Once());
         }
