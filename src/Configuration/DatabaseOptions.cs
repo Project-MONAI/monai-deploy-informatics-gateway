@@ -15,9 +15,8 @@
  */
 
 using Microsoft.Extensions.Configuration;
-using Monai.Deploy.InformaticsGateway.Configuration;
 
-namespace Monai.Deploy.InformaticsGateway.Database.Api
+namespace Monai.Deploy.InformaticsGateway.Configuration
 {
     public class DatabaseOptions
     {
