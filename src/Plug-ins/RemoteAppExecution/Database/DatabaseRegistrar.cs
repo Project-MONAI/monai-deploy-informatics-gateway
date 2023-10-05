@@ -16,33 +16,45 @@
 
 using Ardalis.GuardClauses;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 
 namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database
 {
     public class DatabaseRegistrar : DatabaseRegistrationBase
     {
-        public override IServiceCollection Configure(IServiceCollection services, DatabaseType databaseType, string? connectionString, ILogger logger)
+        public override IServiceCollection Configure(
+            IServiceCollection services,
+            DatabaseType databaseType,
+            IConfigurationSection? connectionstringConfigurationSection,
+            IConfigurationSection? pluginsConfigurationSection,
+            ILoggerFactory loggerFactory)
         {
             Guard.Against.Null(services, nameof(services));
+            Guard.Against.Null(connectionstringConfigurationSection, nameof(connectionstringConfigurationSection));
+
+            var logger = loggerFactory.CreateLogger<DatabaseRegistrar>();
 
             switch (databaseType)
             {
                 case DatabaseType.EntityFramework:
-                    Guard.Against.Null(connectionString, nameof(connectionString));
-                    services.AddDbContext<EntityFramework.RemoteAppExecutionDbContext>(options => options.UseSqlite(connectionString), ServiceLifetime.Transient);
+
+                    services.AddDbContext<EntityFramework.RemoteAppExecutionDbContext>(options => options.UseSqlite(connectionstringConfigurationSection[SR.DatabaseConnectionStringKey]), ServiceLifetime.Transient);
                     services.AddScoped<IDatabaseMigrationManagerForPlugIns, EntityFramework.MigrationManager>();
                     logger.AddedDbScope("IDatabaseMigrationManagerForPlugIns", "EntityFramework");
-                    services.AddScoped(typeof(IRemoteAppExecutionRepository), typeof(EntityFramework.RemoteAppExecutionRepository));
+                    services.AddScoped<IRemoteAppExecutionRepository, EntityFramework.RemoteAppExecutionRepository>();
                     logger.AddedDbScope("IRemoteAppExecutionRepository", "EntityFramework");
                     break;
 
                 case DatabaseType.MongoDb:
+                    Guard.Against.Null(pluginsConfigurationSection, nameof(pluginsConfigurationSection));
+                    services.Configure<DatabaseOptions>(connectionstringConfigurationSection.GetSection("DatabaseOptions"));
                     services.AddScoped<IDatabaseMigrationManagerForPlugIns, MongoDb.MigrationManager>();
                     logger.AddedDbScope("IDatabaseMigrationManagerForPlugIns", "MongoDb");
-                    services.AddScoped(typeof(IRemoteAppExecutionRepository), typeof(MongoDb.RemoteAppExecutionRepository));
+                    services.AddScoped<IRemoteAppExecutionRepository, MongoDb.RemoteAppExecutionRepository>();
                     logger.AddedDbScope("IRemoteAppExecutionRepository", "MongoDb");
                     break;
             }

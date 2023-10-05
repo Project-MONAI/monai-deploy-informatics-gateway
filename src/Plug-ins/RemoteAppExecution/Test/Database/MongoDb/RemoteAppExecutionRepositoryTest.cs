@@ -33,8 +33,8 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
         private readonly MongoDatabaseFixture _databaseFixture;
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
-        private readonly Mock<ILogger<RemoteAppExecutionRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly Mock<ILoggerFactory> _logger;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -45,8 +45,8 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             _databaseFixture.InitDatabaseWithRemoteAppExecutions();
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
-            _logger = new Mock<ILogger<RemoteAppExecutionRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _logger = new Mock<ILoggerFactory>();
+            _options = _databaseFixture.Options;
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -57,8 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
-            _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
         }
 
         [Fact]
@@ -82,7 +81,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             record.OriginalValues.Add(DicomTag.AccessionNumber.ToString(), Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16));
             record.OriginalValues.Add(DicomTag.StudyDescription.ToString(), Guid.NewGuid().ToString().Replace("-", "").Substring(0, 16));
 
-            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(record).ConfigureAwait(false);
 
             var collection = _databaseFixture.Database.GetCollection<RemoteAppExecution>(nameof(RemoteAppExecution));
@@ -99,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
         [Fact]
         public async Task GivenARemoteAppExecution_WhenRemoveIsCalled_ExpectItToDeleted()
         {
-            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var record = _databaseFixture.RemoteAppExecutions.First();
             var expected = await store.GetAsync(record.SopInstanceUid).ConfigureAwait(false);
@@ -116,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
         [Fact]
         public async Task GivenARemoteAppExecution_WhenGetAsyncIsCalledWithSopInstanceUid_ExpectItToBeReturned()
         {
-            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var expected = _databaseFixture.RemoteAppExecutions.First();
             var actual = await store.GetAsync(expected.SopInstanceUid).ConfigureAwait(false);
@@ -135,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
         [Fact]
         public async Task GivenARemoteAppExecution_WhenGetAsyncIsCalledWithStudyAndSeriesUids_ExpectItToBeReturned()
         {
-            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var expected = _databaseFixture.RemoteAppExecutions.First();
             var actual = await store.GetAsync(expected.WorkflowInstanceId, expected.ExportTaskId, expected.StudyInstanceUid, expected.SeriesInstanceUid).ConfigureAwait(false);
@@ -154,7 +153,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
         [Fact]
         public async Task GivenARemoteAppExecution_WhenGetAsyncIsCalledWithRandomSeries_ExpectItToBeReturned()
         {
-            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new RemoteAppExecutionRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var expected = _databaseFixture.RemoteAppExecutions.First();
             var actual = await store.GetAsync(expected.WorkflowInstanceId, expected.ExportTaskId, expected.StudyInstanceUid, DicomUIDGenerator.GenerateDerivedFromUUID().UID).ConfigureAwait(false);

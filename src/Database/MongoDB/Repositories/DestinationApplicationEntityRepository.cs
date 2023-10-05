@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         public DestinationApplicationEntityRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DestinationApplicationEntityRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options,
+            IOptions<DatabaseOptions> options,
             IOptions<DatabaseOptions> mongoDbOptions)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
             _scope = serviceScopeFactory.CreateScope();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();

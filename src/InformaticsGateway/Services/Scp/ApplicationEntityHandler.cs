@@ -103,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             if (!AcceptsSopClass(uids.SopClassUid))
             {
                 _logger.InstanceIgnoredWIthMatchingSopClassUid(request.SOPClassUID.UID);
-                return null;
+                return string.Empty;
             }
 
             var dicomInfo = new DicomFileStorageMetadata(associationId.ToString(), uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid, DataService.DIMSE, callingAeTitle, calledAeTitle);
@@ -114,6 +114,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
 
             var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
+
+            using var scope = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "CorrelationId", dicomInfo.CorrelationId } });
 
             dicomInfo = (result.Item2 as DicomFileStorageMetadata)!;
             var dicomFile = result.Item1;

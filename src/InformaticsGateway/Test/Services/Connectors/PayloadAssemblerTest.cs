@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 {
     public class PayloadAssemblerTest
     {
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
         private readonly Mock<ILogger<PayloadAssembler>> _logger;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
 
@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _repository = new Mock<IPayloadRepository>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Options.Create(new DatabaseOptions());
             _logger = new Mock<ILogger<PayloadAssembler>>();
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
         }
 
         [Fact]

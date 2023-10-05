@@ -82,7 +82,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             s_storescu = new DicomCStoreDataClient(Configurations.Instance, s_options.Value, outputHelper);
             s_informaticsGatewayClient = new InformaticsGatewayClient(HttpClientFactory.Create(), scope.ServiceProvider.GetRequiredService<ILogger<InformaticsGatewayClient>>());
             s_informaticsGatewayClient.ConfigureServiceUris(new Uri(Configurations.Instance.InformaticsGatewayOptions.ApiEndpoint));
-
+            s_options.Value.Dicom.Scu.MaximumNumberOfAssociations = 1;
+            s_options.Value.DicomWeb.MaximumNumberOfConnection = 1;
             var serviceLocator = scope.ServiceProvider.GetRequiredService<IMonaiServiceLocator>();
             s_informaticsGatewayHost.Start();
 
@@ -146,7 +147,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             else if (dbType == DatabaseManager.DbType_MongoDb)
             {
                 var connectionString = config.GetSection("ConnectionStrings:InformaticsGatewayDatabase").Value;
-                var databaseName = config.GetSection("ConnectionStrings:DatabaseName").Value;
+                var databaseName = config.GetSection("ConnectionStrings:DatabaseOptions:DatabaseName").Value;
                 return new MongoDBDataProvider(outputHelper, Configurations.Instance, connectionString, databaseName);
             }
 

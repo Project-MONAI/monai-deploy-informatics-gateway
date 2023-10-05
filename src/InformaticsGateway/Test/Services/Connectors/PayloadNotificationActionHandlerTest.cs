@@ -67,6 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _cancellationTokenSource = new CancellationTokenSource();
 
+            _options.Value.Messaging.Retries.DelaysMilliseconds = new[] { 5, 5, 5 };
             _options.Value.Storage.Retries.DelaysMilliseconds = new[] { 5, 5, 5 };
             _options.Value.Storage.StorageServiceBucketName = "bucket";
         }

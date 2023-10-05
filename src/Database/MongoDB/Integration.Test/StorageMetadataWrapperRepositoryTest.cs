@@ -20,8 +20,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
-using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories;
 using Monai.Deploy.Messaging.Events;
@@ -37,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<StorageMetadataWrapperRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -48,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<StorageMetadataWrapperRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = _databaseFixture.Options;
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -59,19 +59,18 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact]
         public void GivenStorageMetadataWrapperRepositoryType_WhenInitialized_TheConstructorShallGuardAllParameters()
         {
-            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(null!, null!, null!, null!));
-            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, null!, null!, null!));
-            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, null!, null!));
-            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, null!));
+            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(null!, null!, null!));
+            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, null!, null!));
+            Assert.Throws<ArgumentNullException>(() => new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, null!));
 
-            _ = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            _ = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
         }
 
         [Fact]
@@ -79,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var metadata = CreateMetadataObject();
 
-            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(metadata).ConfigureAwait(false);
 
             var collection = _databaseFixture.Database.GetCollection<StorageMetadataWrapper>(nameof(StorageMetadataWrapper));
@@ -98,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var metadata1 = CreateMetadataObject();
             var metadata2 = CreateMetadataObject();
 
-            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             await store.AddOrUpdateAsync(metadata1).ConfigureAwait(false);
             await Assert.ThrowsAsync<ArgumentException>(async () => await store.UpdateAsync(metadata2).ConfigureAwait(false)).ConfigureAwait(false);
@@ -109,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var metadata = CreateMetadataObject();
 
-            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(metadata).ConfigureAwait(false);
             metadata.SetWorkflows("A", "B", "C");
             metadata.File.SetUploaded("bucket");
@@ -156,7 +155,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         "origin"),
             };
 
-            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             foreach (var item in list)
             {
@@ -188,7 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         "calling",
                         "called");
 
-            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddOrUpdateAsync(expected).ConfigureAwait(false);
 
             var match = await store.GetFileStorageMetdadataAsync(correlationId, identifier).ConfigureAwait(false);
@@ -213,7 +212,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         "calling",
                         "called");
 
-            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(expected).ConfigureAwait(false);
             var result = await store.DeleteAsync(correlationId, identifier).ConfigureAwait(false);
             Assert.True(result);
@@ -231,7 +230,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var identifier = Guid.NewGuid().ToString();
             var pending = CreateMetadataObject();
 
-            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(pending).ConfigureAwait(false);
 
             var result = await store.DeleteAsync(correlationId, identifier).ConfigureAwait(false);
@@ -254,7 +253,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             uploaded.File.SetUploaded("bucket");
             uploaded.JsonFile.SetUploaded("bucket");
 
-            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(pending).ConfigureAwait(false);
             await store.AddAsync(uploaded).ConfigureAwait(false);
 

@@ -17,7 +17,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -27,6 +29,7 @@ using Monai.Deploy.InformaticsGateway.SharedTest;
 using Monai.Deploy.InformaticsGateway.Test.PlugIns;
 using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 {
@@ -34,11 +37,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
     {
         private readonly Mock<ILogger<InputDataPlugInEngineFactory>> _logger;
         private readonly FileSystem _fileSystem;
+        private readonly ITestOutputHelper _output;
 
-        public InputDataPlugInEngineFactoryTest()
+        public InputDataPlugInEngineFactoryTest(ITestOutputHelper output)
         {
             _logger = new Mock<ILogger<InputDataPlugInEngineFactory>>();
             _fileSystem = new FileSystem();
+            _output = output;
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
@@ -47,14 +52,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
         public void RegisteredPlugIns_WhenCalled_ReturnsListOfPlugIns()
         {
             var factory = new InputDataPlugInEngineFactory(_fileSystem, _logger.Object);
+            var result = factory.RegisteredPlugIns().OrderBy(p => p.Value).ToArray();
 
-            var result = factory.RegisteredPlugIns();
+            _output.WriteLine($"result now = {JsonSerializer.Serialize(result)}");
 
             Assert.Collection(result,
                 p => VerifyPlugIn(p, typeof(DicomReidentifier)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInAddWorkflow)),
-                p => VerifyPlugIn(p, typeof(TestInputDataPlugInResumeWorkflow)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInModifyDicomFile)),
+                p => VerifyPlugIn(p, typeof(TestInputDataPlugInResumeWorkflow)),
                 p => VerifyPlugIn(p, typeof(TestInputDataPlugInVirtualAE)));
 
             _logger.VerifyLogging($"{typeof(IInputDataPlugIn).Name} data plug-in found {typeof(TestInputDataPlugInAddWorkflow).GetCustomAttribute<PlugInNameAttribute>()?.Name}: {typeof(TestInputDataPlugInAddWorkflow).GetShortTypeAssemblyName()}.", LogLevel.Information, Times.Once());

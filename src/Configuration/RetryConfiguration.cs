@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// Default is 250, 500, 1000.
         /// </summary>
         [ConfigurationKeyName("delays")]
-        public int[] DelaysMilliseconds { get; set; } = new[] { 750, 1200, 2500 };
+        public int[] DelaysMilliseconds { get; set; }
 
         // Gets the delays in TimeSpan objects
         public IEnumerable<TimeSpan> RetryDelays
@@ -40,6 +40,13 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
                 {
                     yield return TimeSpan.FromMilliseconds(retry);
                 }
+            }
+        }
+        public RetryConfiguration()
+        {
+            if (DelaysMilliseconds is null || DelaysMilliseconds.Length == 0)
+            {
+                DelaysMilliseconds = new[] { 250, 500, 1000 };
             }
         }
     }

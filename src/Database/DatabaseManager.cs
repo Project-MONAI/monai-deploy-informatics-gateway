@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
@@ -63,16 +64,17 @@ namespace Monai.Deploy.InformaticsGateway.Database
             }
         }
 
-        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, ILogger logger)
-            => services.ConfigureDatabase(connectionStringConfigurationSection, new FileSystem(), logger);
+        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IConfigurationSection? pluginsConfigurationSection, ILoggerFactory loggerFactory)
+            => services.ConfigureDatabase(connectionStringConfigurationSection, pluginsConfigurationSection, new FileSystem(), loggerFactory);
 
-        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IFileSystem fileSystem, ILogger logger)
+        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IConfigurationSection? pluginsConfigurationSection, IFileSystem fileSystem, ILoggerFactory loggerFactory)
         {
+
             if (connectionStringConfigurationSection is null)
             {
                 throw new ConfigurationException("No database connections found in configuration section 'ConnectionStrings'.");
             }
-
+            services.Configure<DatabaseOptions>(connectionStringConfigurationSection.GetSection("DatabaseOptions"));
             var databaseType = connectionStringConfigurationSection["Type"].ToLowerInvariant();
             switch (databaseType)
             {
@@ -90,13 +92,11 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(EntityFramework.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(EntityFramework.Repositories.VirtualApplicationEntityRepository));
 
-                    services.ConfigureDatabaseFromPlugIns(DatabaseType.EntityFramework, fileSystem, connectionStringConfigurationSection, logger);
+                    services.ConfigureDatabaseFromPlugIns(DatabaseType.EntityFramework, fileSystem, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
                     return services;
 
                 case DbType_MongoDb:
                     services.AddSingleton<IMongoClient, MongoClient>(s => new MongoClient(connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]));
-                    services.Configure<DatabaseOptions>(connectionStringConfigurationSection);
-
                     services.AddScoped<IDatabaseMigrationManager, MongoDatabaseMigrationManager>();
                     services.AddScoped(typeof(IDestinationApplicationEntityRepository), typeof(MongoDB.Repositories.DestinationApplicationEntityRepository));
                     services.AddScoped(typeof(IInferenceRequestRepository), typeof(MongoDB.Repositories.InferenceRequestRepository));
@@ -107,7 +107,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(MongoDB.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(MongoDB.Repositories.VirtualApplicationEntityRepository));
 
-                    services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection, logger);
+                    services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
 
                     return services;
 
@@ -120,7 +120,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
             DatabaseType databaseType,
             IFileSystem fileSystem,
             IConfigurationSection? connectionStringConfigurationSection,
-            ILogger logger)
+            IConfigurationSection? pluginsConfigurationSection,
+            ILoggerFactory loggerFactory)
         {
             Guard.Against.Null(fileSystem, nameof(fileSystem));
 
@@ -133,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 {
                     throw new ConfigurationException($"Error activating database registration from type '{type.FullName}'.");
                 }
-                registrar.Configure(services, databaseType, connectionStringConfigurationSection?[SR.DatabaseConnectionStringKey], logger);
+                registrar.Configure(services, databaseType, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
             }
             return services;
         }
@@ -153,6 +154,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
             return matchingTypes.ToArray();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SonarLint", "S3885", Justification = "assembly.Load does not full register the contents, but assembly.LoadFrom does, this is need to load .dlls from the plug-ins folder that plugins use")]
         internal static Assembly[] LoadAssemblyFromPlugInsDirectory(IFileSystem fileSystem)
         {
             Guard.Against.Null(fileSystem, nameof(fileSystem));
@@ -167,8 +169,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
             foreach (var plugin in plugins)
             {
-                var asesmblyeData = fileSystem.File.ReadAllBytes(plugin);
-                assemblies.Add(Assembly.Load(asesmblyeData));
+
+                assemblies.Add(Assembly.LoadFrom(plugin));
             }
             return assemblies.ToArray();
         }

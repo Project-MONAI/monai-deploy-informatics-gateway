@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -21,6 +22,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
     public abstract class DatabaseRegistrationBase
     {
-        public abstract IServiceCollection Configure(IServiceCollection services, DatabaseType databaseType, string? connectionString, ILogger logger);
+        public abstract IServiceCollection Configure(IServiceCollection services, DatabaseType databaseType, IConfigurationSection? connectionstringConfigurationSection, IConfigurationSection? pluginsConfigurationSection, ILoggerFactory loggerFactory);
     }
 }

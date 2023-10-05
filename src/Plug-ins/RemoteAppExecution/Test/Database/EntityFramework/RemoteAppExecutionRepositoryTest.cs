@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<RemoteAppExecutionRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -45,7 +45,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<RemoteAppExecutionRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Options.Create(new DatabaseOptions());
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 

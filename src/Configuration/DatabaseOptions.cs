@@ -1,5 +1,5 @@
-/*
- * Copyright 2021-2022 MONAI Consortium
+﻿/*
+ * Copyright 2022 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,8 +18,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
-    public class DatabaseConfiguration
+    public class DatabaseOptions
     {
+        [ConfigurationKeyName("DatabaseName")]
+        public string DatabaseName { get; set; } = string.Empty;
+
         /// <summary>
         /// Gets or sets retry options relate to reading/writing to the database.
         /// </summary>

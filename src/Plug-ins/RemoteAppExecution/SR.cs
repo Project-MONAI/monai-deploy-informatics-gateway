@@ -19,5 +19,9 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
     internal static class SR
     {
         public const string ConfigKey_ReplaceTags = "ReplaceTags";
+
+        public const string DatabaseConnectionStringKey = "InformaticsGatewayDatabase";
+
+        public const string DatabaseNameKey = "DatabaseName";
     }
 }

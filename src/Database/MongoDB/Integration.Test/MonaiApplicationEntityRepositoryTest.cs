@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<MonaiApplicationEntityRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<MonaiApplicationEntityRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = _databaseFixture.Options;
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                 IgnoredSopClasses = new List<string> { "4", "5" }
             };
 
-            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(aet).ConfigureAwait(false);
 
             var collection = _databaseFixture.Database.GetCollection<MonaiApplicationEntity>(nameof(MonaiApplicationEntity));
@@ -94,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         [Fact]
         public async Task GivenAExpressionFilter_WhenContainsAsyncIsCalled_ExpectItToReturnMatchingObjects()
         {
-            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var result = await store.ContainsAsync(p => p.AeTitle == "AET1").ConfigureAwait(false);
             Assert.True(result);
@@ -109,7 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         [Fact]
         public async Task GivenAAETitleName_WhenFindByNameAsyncIsCalled_ExpectItToReturnMatchingEntity()
         {
-            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var actual = await store.FindByNameAsync("AET1").ConfigureAwait(false);
             Assert.NotNull(actual);
@@ -123,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         [Fact]
         public async Task GivenAMonaiApplicationEntity_WhenRemoveIsCalled_ExpectItToDeleted()
         {
-            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var expected = await store.FindByNameAsync("AET5").ConfigureAwait(false);
             Assert.NotNull(expected);
@@ -139,7 +139,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         [Fact]
         public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
         {
-            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var collection = _databaseFixture.Database.GetCollection<MonaiApplicationEntity>(nameof(MonaiApplicationEntity));
             var expected = await collection.Find(Builders<MonaiApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(false);
@@ -151,7 +151,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         [Fact]
         public async Task GivenAMonaiApplicationEntity_WhenUpdatedIsCalled_ExpectItToSaved()
         {
-            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new MonaiApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var expected = await store.FindByNameAsync("AET3").ConfigureAwait(false);
             Assert.NotNull(expected);

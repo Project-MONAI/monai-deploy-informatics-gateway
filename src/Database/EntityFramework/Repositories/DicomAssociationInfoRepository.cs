@@ -40,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         public DicomAssociationInfoRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DicomAssociationInfoRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options)
+            IOptions<DatabaseOptions> options)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             Guard.Against.Null(options, nameof(options));
@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             _scope = serviceScopeFactory.CreateScope();
             _informaticsGatewayContext = _scope.ServiceProvider.GetRequiredService<InformaticsGatewayContext>();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
             _dataset = _informaticsGatewayContext.Set<DicomAssociationInfo>();
         }

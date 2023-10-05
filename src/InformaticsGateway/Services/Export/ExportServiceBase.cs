@@ -131,6 +131,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private async Task OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
         {
+            using var loggerScope = _logger.BeginScope(new Messaging.Common.LoggingDataDictionary<string, object> {
+                { "ThreadId", Environment.CurrentManagedThreadId },
+            });
+
             if (!_storageInfoProvider.HasSpaceAvailableForExport)
             {
                 _logger.ExportServiceStoppedDueToLowStorageSpace(_storageInfoProvider.AvailableFreeSpace);
@@ -275,6 +279,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest)
         {
+            using var loggerScope = _logger.BeginScope(new Messaging.Common.LoggingDataDictionary<string, object> {
+                { "WorkflowInstanceId", exportDataRequest.WorkflowInstanceId },
+                { "TaskId", exportDataRequest.ExportTaskId }
+            });
             var outputDataEngine = _scope.ServiceProvider.GetService<IOutputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IOutputDataPlugInEngine));
 
             outputDataEngine.Configure(exportDataRequest.PlugInAssemblies);
