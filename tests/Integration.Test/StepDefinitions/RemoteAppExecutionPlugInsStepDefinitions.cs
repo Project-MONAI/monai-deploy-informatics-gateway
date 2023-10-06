@@ -138,6 +138,72 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             await _messagePublisher.Publish("md.export.request.monaiscu", message.ToMessage());
         }
 
+        [Given(@"a study that is exported to the test host with a bad plugin")]
+        public async Task AStudyThatIsExportedToTheTestHostBadPlugin()
+        {
+            // Register a new DICOM destination
+            DestinationApplicationEntity destination;
+            try
+            {
+                destination = await _informaticsGatewayClient.DicomDestinations.Create(new DestinationApplicationEntity
+                {
+                    Name = _dicomServer.FeatureScpAeTitle,
+                    AeTitle = _dicomServer.FeatureScpAeTitle,
+                    HostIp = _configuration.InformaticsGatewayOptions.Host,
+                    Port = _dicomServer.FeatureScpPort
+                }, CancellationToken.None);
+            }
+            catch (ProblemException ex)
+            {
+                if (ex.ProblemDetails.Status == (int)HttpStatusCode.Conflict && ex.ProblemDetails.Detail.Contains("already exists"))
+                {
+                    destination = await _informaticsGatewayClient.DicomDestinations.GetAeTitle(_dicomServer.FeatureScpAeTitle, CancellationToken.None);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            _dicomDestination = destination.Name;
+
+            // Generate a study with multiple series
+            //_dataProvider.GenerateDicomData("MG", 1, 1);
+            _dataProvider.GenerateDicomData("CT", 1);
+            _dataProvider.InjectRandomData(DicomTags);
+            _originalDicomFiles = new Dictionary<string, DicomFile>(_dataProvider.DicomSpecs.Files);
+
+            await _dataSinkMinio.SendAsync(_dataProvider);
+
+            // send 2 messagees the first on should fail, teh second one should not
+            string pluginName = typeof(DicomDeidentifier).AssemblyQualifiedName;
+            pluginName = pluginName.Replace("DicomDeidentifier", "fail");
+
+            for (int i = 0; i < 2; ++i)
+            {
+
+                // Emit a export request event
+                _exportRequestEvent = new ExportRequestEvent
+                {
+                    CorrelationId = Guid.NewGuid().ToString(),
+                    Destinations = new[] { _dicomDestination },
+                    ExportTaskId = Guid.NewGuid().ToString(),
+                    Files = _dataProvider.DicomSpecs.Files.Keys.ToList(),
+                    MessageId = Guid.NewGuid().ToString(),
+                    WorkflowInstanceId = Guid.NewGuid().ToString(),
+                };
+                _exportRequestEvent.PluginAssemblies.Add(pluginName);
+                var message = new JsonMessage<ExportRequestEvent>(
+                    _exportRequestEvent,
+                    MessageBrokerConfiguration.InformaticsGatewayApplicationId,
+                    _exportRequestEvent.CorrelationId,
+                    string.Empty);
+
+                _receivedExportCompletedMessages.ClearMessages();
+                await _messagePublisher.Publish("md.export.request.monaiscu", message.ToMessage());
+                pluginName = typeof(DicomDeidentifier).AssemblyQualifiedName;
+            }
+        }
+
         [When(@"the study is received and sent back to Informatics Gateway")]
         public async Task TheStudyIsReceivedAndSentBackToInformaticsGateway()
         {
@@ -193,10 +259,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 }
             }
 
-            var timeoutPolicy = Policy.TimeoutAsync(30, TimeoutStrategy.Pessimistic);
+            var timeoutPolicy = Policy.TimeoutAsync(40, TimeoutStrategy.Pessimistic);
             await timeoutPolicy
                 .ExecuteAsync(
-                    async () => { await SendRequest(); }
+                    async () => { await SendRequest(2); }
                   );
 
             // Clear workflow request messages
@@ -209,10 +275,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, DataService.DIMSE, _receivedWorkflowRequestMessages.Messages, 1);
         }
 
-        private async Task SendRequest()
+        private async Task SendRequest(int exportCount = 1)
         {
             // Wait for export completed event
-            (await _receivedExportCompletedMessages.WaitforAsync(1, DicomScpWaitTimeSpan)).Should().BeTrue();
+            (await _receivedExportCompletedMessages.WaitforAsync(exportCount, DicomScpWaitTimeSpan)).Should().BeTrue();
 
             foreach (var key in _dataProvider.DicomSpecs.FileHashes.Keys)
             {
