@@ -145,6 +145,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             if (Interlocked.Read(ref _activeWorkers) >= Concurrency)
             {
                 _logger.ExceededMaxmimumNumberOfWorkers(ServiceName, _activeWorkers);
+                await Task.Delay(200).ConfigureAwait(false); // small delay to stop instantly dead lettering the next message.
                 _messageSubscriber.Reject(eventArgs.Message);
                 return;
             }
@@ -166,16 +167,34 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 var outputDataEngineBLock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
                     async (exportDataRequest) =>
                     {
-                        if (exportDataRequest.IsFailed) return exportDataRequest;
-                        return await ExecuteOutputDataEngineCallback(exportDataRequest).ConfigureAwait(false);
+                        try
+                        {
+                            if (exportDataRequest.IsFailed) return exportDataRequest;
+                            return await ExecuteOutputDataEngineCallback(exportDataRequest).ConfigureAwait(false);
+                        }
+                        catch (Exception e)
+                        {
+                            exportDataRequest.SetFailed(FileExportStatus.ServiceError, $"failed to execute plugin {e.Message}");
+                            return exportDataRequest;
+                        }
                     },
                     executionOptions);
 
                 var exportActionBlock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
                     async (exportDataRequest) =>
                     {
-                        if (exportDataRequest.IsFailed) return exportDataRequest;
-                        return await ExportDataBlockCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
+                        try
+                        {
+                            if (exportDataRequest.IsFailed) return exportDataRequest;
+                            return await ExportDataBlockCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
+                        }
+                        catch (Exception e)
+                        {
+
+                            exportDataRequest.SetFailed(FileExportStatus.ServiceError, $"Failed during export {e.Message}");
+                            return exportDataRequest;
+                        }
+
                     },
                     executionOptions);
 
@@ -328,12 +347,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    _configuration.Export.Retries.RetryDelays,
                    (exception, timeSpan, retryCount, context) =>
                    {
-                       _logger.ErrorAcknowledgingMessageWithRetry(exception, timeSpan, retryCount);
+                       _logger.ErrorPublishingExportCompleteEventWithRetry(exception, timeSpan, retryCount);
                    })
                .Execute(() =>
                {
-                   _logger.SendingAcknowledgement();
-                   _messageSubscriber.Acknowledge(jsonMessage);
+                   _logger.PublishingExportCompleteEvent();
+                   _messagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
                });
 
             Policy
@@ -342,12 +361,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                    _configuration.Export.Retries.RetryDelays,
                    (exception, timeSpan, retryCount, context) =>
                    {
-                       _logger.ErrorPublishingExportCompleteEventWithRetry(exception, timeSpan, retryCount);
+                       _logger.ErrorAcknowledgingMessageWithRetry(exception, timeSpan, retryCount);
                    })
                .Execute(() =>
                {
-                   _logger.PublishingExportCompleteEvent();
-                   _messagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
+                   _logger.SendingAcknowledgement();
+                   _messageSubscriber.Acknowledge(jsonMessage);
                });
 
             lock (SyncRoot)
