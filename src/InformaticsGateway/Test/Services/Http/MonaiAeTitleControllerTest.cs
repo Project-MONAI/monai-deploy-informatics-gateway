@@ -488,7 +488,43 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: MonaiApplicationEntity).", problem.Detail);
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
+        [RetryFact(5, 250, DisplayName = "Update - Shall return problem on validation failure")]
+        public async Task Update_Shall_Update_FromExternalApp()
+        {
+            var aeTitle = "LONG";
+            var entity = new MonaiApplicationEntity
+            {
+                AeTitle = aeTitle,
+                Name = "AET",
+                Grouping = "0020,000E",
+                Timeout = 100,
+                Workflows = new List<string> { "1", "2", "3" },
+                AllowedSopClasses = new List<string> { "1.2.3" },
+                IgnoredSopClasses = new List<string> { "a.b.c" },
+                FromExternalApp = false
+            };
 
+            var entityEdited = new MonaiApplicationEntity
+            {
+                AeTitle = aeTitle,
+                Name = "AET",
+                Grouping = "0020,000E",
+                Timeout = 100,
+                Workflows = new List<string> { "1", "2", "3" },
+                AllowedSopClasses = new List<string> { "1.2.3" },
+                IgnoredSopClasses = new List<string> { "a.b.c" },
+                FromExternalApp = true
+            };
+
+            _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).Returns(Task.FromResult(entity));
+            var result = await _controller.Edit(entityEdited);
+
+            var objectResult = result.Result as ObjectResult;
+            Assert.NotNull(objectResult);
+            var entityFormController = objectResult.Value as MonaiApplicationEntity;
+            Assert.NotNull(entityFormController);
+            Assert.Equal(entity.FromExternalApp, entityFormController.FromExternalApp);
+        }
         #endregion Update
 
         #region Delete

@@ -19,6 +19,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -31,6 +32,7 @@ using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
@@ -113,9 +115,17 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
 
+            var modality = request.File.Dataset.GetSingleValue<string>(DicomTag.Modality);
+
+            if (ArtifactTypes.Validate(modality) && Enum.TryParse(modality, out ArtifactType parsedArtifactType))
+            {
+                dicomInfo.DataOrigin.ArtifactType = parsedArtifactType;
+            }
+            dicomInfo.DataOrigin.FromExternalApp = _configuration.FromExternalApp;
+
             var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
 
-            using var scope = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "CorrelationId", dicomInfo.CorrelationId } });
+            using var scope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object>() { { "CorrelationId", dicomInfo.CorrelationId } });
 
             dicomInfo = (result.Item2 as DicomFileStorageMetadata)!;
             var dicomFile = result.Item1;

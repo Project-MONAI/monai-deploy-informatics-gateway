@@ -196,5 +196,61 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _messageBrokerPublisherService.Verify(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()), Times.AtLeastOnce());
             _repository.Verify(p => p.RemoveAsync(payload, _cancellationTokenSource.Token), Times.AtLeastOnce());
         }
+
+        [Fact]
+        public async Task GivenAPayload_ExpectMessageIsPublished()
+        {
+            var notifyAction = new ActionBlock<Payload>(payload =>
+            {
+            });
+
+            var correlationId = Guid.NewGuid();
+            var payload = new Payload("key", correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 0)
+            {
+                RetryCount = 3,
+                State = Payload.PayloadState.Notify,
+                Files = new List<FileStorageMetadata>
+                 {
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
+                     new FhirFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Api.Rest.FhirStorageFormat.Json, Messaging.Events.DataService.FHIR, "origin"),
+                 },
+            };
+
+            var handler = new PayloadNotificationActionHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            var defaultKeys = new MessageBrokerConfigurationKeys();
+
+            await handler.NotifyAsync(payload, notifyAction, _cancellationTokenSource.Token);
+
+            _messageBrokerPublisherService.Verify(p => p.Publish(defaultKeys.WorkflowRequest, It.IsAny<Message>()), Times.AtLeastOnce());
+        }
+
+        [Fact]
+        public async Task GivenAPayload_WithExternalAppSet_ExpectMessageIsPublished()
+        {
+            var notifyAction = new ActionBlock<Payload>(payload =>
+            {
+            });
+
+            var correlationId = Guid.NewGuid();
+            var payload = new Payload("key", correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 0)
+            {
+                RetryCount = 3,
+                State = Payload.PayloadState.Notify,
+                Files = new List<FileStorageMetadata>
+                 {
+                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
+                     new FhirFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Api.Rest.FhirStorageFormat.Json, Messaging.Events.DataService.FHIR, "origin"),
+                 }
+            };
+
+            payload.DataTrigger.FromExternalApp = true;
+
+            var handler = new PayloadNotificationActionHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            var defaultKeys = new MessageBrokerConfigurationKeys();
+
+            await handler.NotifyAsync(payload, notifyAction, _cancellationTokenSource.Token);
+
+            _messageBrokerPublisherService.Verify(p => p.Publish(defaultKeys.ArtifactRecieved, It.IsAny<Message>()), Times.AtLeastOnce());
+        }
     }
 }
