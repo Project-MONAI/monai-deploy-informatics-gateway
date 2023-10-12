@@ -114,13 +114,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             {
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
-
-            var modality = request.File.Dataset.GetSingleValue<string>(DicomTag.Modality);
-
-            if (ArtifactTypes.Validate(modality) && Enum.TryParse(modality, out ArtifactType parsedArtifactType))
+            if (request.File.Dataset.Contains(DicomTag.Modality))
             {
-                dicomInfo.DataOrigin.ArtifactType = parsedArtifactType;
+                var modality = request.File.Dataset.GetSingleValue<string>(DicomTag.Modality);
+
+                if (ArtifactTypes.Validate(modality) && Enum.TryParse(modality, out ArtifactType parsedArtifactType))
+                {
+                    dicomInfo.DataOrigin.ArtifactType = parsedArtifactType;
+                }
             }
+
             dicomInfo.DataOrigin.FromExternalApp = _configuration.FromExternalApp;
 
             var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
@@ -135,7 +138,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = dicomFile.Dataset.GetSingleValue<string>(dicomTag);
 
-            var payloadId = await _payloadAssembler.Queue(key, dicomInfo, new DataOrigin { DataService = DataService.DIMSE, Source = callingAeTitle, Destination = calledAeTitle }, _configuration.Timeout).ConfigureAwait(false);
+            var payloadId = await _payloadAssembler.Queue(key, dicomInfo, dicomInfo.DataOrigin, _configuration.Timeout).ConfigureAwait(false);
             dicomInfo.PayloadId = payloadId.ToString();
             _uploadQueue.Queue(dicomInfo);
 

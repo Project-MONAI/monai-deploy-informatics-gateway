@@ -64,7 +64,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
             return this;
         }
 
-        public DicomFile GenerateNewInstance(long size, string sopClassUid = "1.2.840.10008.5.1.4.1.1.11.1")
+        public DicomFile GenerateNewInstance(long size, string modality, string sopClassUid = "1.2.840.10008.5.1.4.1.1.11.1")
         {
             var dataset = new DicomDataset();
             _baseDataset.CopyTo(dataset);
@@ -78,7 +78,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                    .AddOrUpdate<ushort>(DicomTag.BitsAllocated, 8)
                    .AddOrUpdate<ushort>(DicomTag.BitsStored, 8)
                    .AddOrUpdate<ushort>(DicomTag.HighBit, 7)
-                   .AddOrUpdate<ushort>(DicomTag.SamplesPerPixel, 1);
+                   .AddOrUpdate<ushort>(DicomTag.SamplesPerPixel, 1)
+                   .AddOrUpdate(DicomTag.Modality, modality);
 
             var frames = Math.Max(1, size / Rows / Columns);
             var pixelData = DicomPixelData.Create(dataset, true);
@@ -119,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                     for (var instance = 0; instance < instancesPerSeries; instance++)
                     {
                         var size = _random.NextLong(studySpec.SizeMinBytes, studySpec.SizeMaxBytes);
-                        dicomFile = generator.GenerateNewInstance(size);
+                        dicomFile = generator.GenerateNewInstance(size, modality);
                         files.Add(dicomFile.GenerateFileName(), dicomFile);
                     }
                 }
