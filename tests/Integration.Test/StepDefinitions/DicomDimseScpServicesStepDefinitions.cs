@@ -154,7 +154,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Timeout = groupingTimeout,
                     Workflows = new List<string>(DummyWorkflows),
                     PlugInAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.PlugIns.TestInputDataPlugInModifyDicomFile).AssemblyQualifiedName },
-                    FromExternalApp = true
                 }, CancellationToken.None);
 
                 _dataProvider.Workflows = DummyWorkflows;

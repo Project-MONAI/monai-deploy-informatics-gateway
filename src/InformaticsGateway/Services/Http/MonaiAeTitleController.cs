@@ -163,7 +163,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 applicationEntity.Workflows = item.Workflows ?? new List<string>();
                 applicationEntity.PlugInAssemblies = item.PlugInAssemblies ?? new List<string>();
                 applicationEntity.SetAuthor(User, EditMode.Update);
-                applicationEntity.FromExternalApp = item.FromExternalApp;
 
                 await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
 

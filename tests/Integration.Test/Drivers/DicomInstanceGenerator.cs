@@ -78,8 +78,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Drivers
                    .AddOrUpdate<ushort>(DicomTag.BitsAllocated, 8)
                    .AddOrUpdate<ushort>(DicomTag.BitsStored, 8)
                    .AddOrUpdate<ushort>(DicomTag.HighBit, 7)
-                   .AddOrUpdate<ushort>(DicomTag.SamplesPerPixel, 1)
-                   .AddOrUpdate(DicomTag.Modality, modality);
+                   .AddOrUpdate<ushort>(DicomTag.SamplesPerPixel, 1);
+
+
+            if (modality.Any(char.IsLower) is false)
+            {
+                dataset.AddOrUpdate(DicomTag.Modality, modality);
+            }
 
             var frames = Math.Max(1, size / Rows / Columns);
             var pixelData = DicomPixelData.Create(dataset, true);

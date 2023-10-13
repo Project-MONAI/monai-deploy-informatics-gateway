@@ -205,7 +205,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             });
 
             var correlationId = Guid.NewGuid();
-            var payload = new Payload("key", correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 0)
+            var payload = new Payload("key", correlationId.ToString(), Guid.NewGuid().ToString(), null, new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 0)
             {
                 RetryCount = 3,
                 State = Payload.PayloadState.Notify,
@@ -237,13 +237,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
                 RetryCount = 3,
                 State = Payload.PayloadState.Notify,
                 Files = new List<FileStorageMetadata>
-                 {
-                     new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
-                     new FhirFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Api.Rest.FhirStorageFormat.Json, Messaging.Events.DataService.FHIR, "origin"),
-                 }
+                {
+                    new DicomFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Messaging.Events.DataService.DIMSE, "calling", "called"),
+                    new FhirFileStorageMetadata(correlationId.ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Api.Rest.FhirStorageFormat.Json, Messaging.Events.DataService.FHIR, "origin"),
+                },
+                WorkflowInstanceId = "WorkflowInstanceId",
+                TaskId = "TaskId"
             };
 
-            payload.DataTrigger.FromExternalApp = true;
 
             var handler = new PayloadNotificationActionHandler(_serviceScopeFactory.Object, _logger.Object, _options);
             var defaultKeys = new MessageBrokerConfigurationKeys();
