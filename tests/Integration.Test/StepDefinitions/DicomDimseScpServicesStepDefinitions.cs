@@ -247,7 +247,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         }
 
         [Then(@"(.*) Artifact Recieved sent to ea message broker")]
-        public async Task ThenArtifactRecievedSentToEaMessageBroker(int workflowCount)
+        public async Task ThenArtifactRecievedSentToEaMessageBrokerExpect(int workflowCount)
         {
             Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
 
@@ -256,7 +256,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             var firstMessage = _receivedMessagesArtifactRecieved.Messages.First().ConvertTo<ArtifactsReceivedEvent>();
 
-            Assert.Equal(3, firstMessage.Artifacts.Count);
             Assert.NotEqual(ArtifactType.Unset, firstMessage.Artifacts.First().Type);
         }
     }

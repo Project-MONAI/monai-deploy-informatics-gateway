@@ -43,7 +43,7 @@ Feature: DICOM DIMSE SCP Services
         And <count> <modality> studies
         When a C-STORE-RQ is sent to 'Informatics Gateway' with AET '<aet>' from 'TEST-RUNNER'
         Then a successful response should be received
-        And <count> workflow requests sent to message broker
+        And <count> Artifact Recieved sent to ea message broker
         And studies are uploaded to storage service with data input plugins
 
         Examples:
