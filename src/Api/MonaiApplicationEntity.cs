@@ -112,11 +112,6 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// </summary>
         public DateTime? DateTimeUpdated { get; set; }
 
-        /// <summary>
-        /// Gets or set if this AeTitle is for data from an external app.
-        /// </summary>
-        public bool FromExternalApp { get; set; } = false;
-
         public MonaiApplicationEntity()
         {
             SetDefaultValues();

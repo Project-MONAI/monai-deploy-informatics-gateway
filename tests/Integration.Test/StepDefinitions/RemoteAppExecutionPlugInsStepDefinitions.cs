@@ -53,6 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         private readonly DataProvider _dataProvider;
         private readonly RabbitMqConsumer _receivedExportCompletedMessages;
         private readonly RabbitMqConsumer _receivedWorkflowRequestMessages;
+        private readonly RabbitMqConsumer _receivedArtifactRecievedMessages;
         private readonly RabbitMQMessagePublisherService _messagePublisher;
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private Dictionary<string, DicomFile> _originalDicomFiles;
@@ -71,6 +72,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
             _receivedExportCompletedMessages = objectContainer.Resolve<RabbitMqConsumer>("ExportCompleteSubscriber");
             _receivedWorkflowRequestMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _receivedArtifactRecievedMessages = objectContainer.Resolve<RabbitMqConsumer>("ArtifactRecievedSubscriber");
             _messagePublisher = objectContainer.Resolve<RabbitMQMessagePublisherService>("MessagingPublisher");
             _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _assertions = objectContainer.Resolve<Assertions>("Assertions");
@@ -204,8 +206,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             }
         }
 
-        [When(@"the study is received and sent back to Informatics Gateway")]
-        public async Task TheStudyIsReceivedAndSentBackToInformaticsGateway()
+        [When(@"the study is received and sent back to Informatics Gateway with (.*) messages")]
+        public async Task TheStudyIsReceivedAndSentBackToInformaticsGateway(int exportCount = 1)
         {
 
             // setup DICOM Source
@@ -262,17 +264,18 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             var timeoutPolicy = Policy.TimeoutAsync(40, TimeoutStrategy.Pessimistic);
             await timeoutPolicy
                 .ExecuteAsync(
-                    async () => { await SendRequest(2); }
+                    async () => { await SendRequest(exportCount); }
                   );
 
             // Clear workflow request messages
             _receivedWorkflowRequestMessages.ClearMessages();
+            _receivedArtifactRecievedMessages.ClearMessages();
 
             _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
 
             // Wait for workflow request events
-            (await _receivedWorkflowRequestMessages.WaitforAsync(1, MessageWaitTimeSpan)).Should().BeTrue();
-            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, DataService.DIMSE, _receivedWorkflowRequestMessages.Messages, 1);
+            (await _receivedArtifactRecievedMessages.WaitforAsync(1, MessageWaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, DataService.DIMSE, _receivedArtifactRecievedMessages.Messages, 1);
         }
 
         private async Task SendRequest(int exportCount = 1)
@@ -307,12 +310,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         [Then(@"ensure the original study and the received study are the same")]
         public async Task EnsureTheOriginalStudyAndTheReceivedStudyAreTheSameAsync()
         {
-            var workflowRequestEvent = _receivedWorkflowRequestMessages.Messages[0].ConvertTo<WorkflowRequestEvent>();
-            _exportRequestEvent.CorrelationId.Should().Be(_receivedWorkflowRequestMessages.Messages[0].CorrelationId);
+            var workflowRequestEvent = _receivedArtifactRecievedMessages.Messages[0].ConvertTo<WorkflowRequestEvent>();
+            _exportRequestEvent.CorrelationId.Should().Be(_receivedArtifactRecievedMessages.Messages[0].CorrelationId);
             _exportRequestEvent.CorrelationId.Should().Be(workflowRequestEvent.CorrelationId);
             _exportRequestEvent.WorkflowInstanceId.Should().Be(workflowRequestEvent.WorkflowInstanceId);
             _exportRequestEvent.ExportTaskId.Should().Be(workflowRequestEvent.TaskId);
-            await _assertions.ShouldRestoreAllDicomMetaata(_receivedWorkflowRequestMessages.Messages, _originalDicomFiles, DefaultDicomTags.ToArray()).ConfigureAwait(false);
+            await _assertions.ShouldRestoreAllDicomMetaata(_receivedArtifactRecievedMessages.Messages, _originalDicomFiles, DefaultDicomTags.ToArray()).ConfigureAwait(false);
         }
     }
 }

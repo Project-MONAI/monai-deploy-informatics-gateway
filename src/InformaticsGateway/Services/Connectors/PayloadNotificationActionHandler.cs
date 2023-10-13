@@ -104,7 +104,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
-            if (payload.DataTrigger.FromExternalApp)
+            if (payload.WorkflowInstanceId.IsNullOrEmpty() is false && payload.TaskId.IsNullOrEmpty() is false)
             {
                 await SendArtifactRecievedEvent(payload).ConfigureAwait(false);
             }
