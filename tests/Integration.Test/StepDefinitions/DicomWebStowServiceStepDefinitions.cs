@@ -101,6 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider.GenerateDicomData(modality, studyCount);
             _dataProvider.StudyGrouping = grouping;
             _receivedMessages.ClearMessages();
+            _artifactReceivedMessages.ClearMessages();
         }
 
         [Given(@"a workflow named '(.*)'")]
