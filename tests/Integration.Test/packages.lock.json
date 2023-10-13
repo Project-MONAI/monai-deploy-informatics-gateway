@@ -132,11 +132,11 @@
       },
       "Monai.Deploy.Messaging.RabbitMQ": {
         "type": "Direct",
-        "requested": "[1.0.1, )",
-        "resolved": "1.0.1",
-        "contentHash": "zBVO6HOqyTfDj6YcITy1XtEiqRurFKUrIgLdJYVahhXlUnymn6/WmCuqkX1Z+3IKxy91D4LeF0KahH/rM8u6+w==",
+        "requested": "[1.0.3, )",
+        "resolved": "1.0.3",
+        "contentHash": "UVD42tVcx4o9d+6pXlKwc6qv642wYVvXgnEI63ueu5Fi4+fPJwUyf1FRb1S6plzWj5YA7XE+jd1aGsCb97mwkg==",
         "dependencies": {
-          "Monai.Deploy.Messaging": "1.0.1",
+          "Monai.Deploy.Messaging": "1.0.3",
           "Polly": "7.2.4",
           "RabbitMQ.Client": "6.5.0"
         }
@@ -666,8 +666,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "1.1.0-ai-230-0014",
-        "contentHash": "dEDesjzmELbMTqejYB+grvWwqzAdO6rm2KtfaKvk8nnUumP5g387NzC2TxoGZ0CQK1NXPT2Kj0Mf3v6XrrknkQ==",
+        "resolved": "1.0.3",
+        "contentHash": "DoQrTyztAGmOafiPNhxZ44D50Qcbqv4W94N9LxofyhW2NgSqMOKMbS+6FcomMsCKlLC1E3dyoYdZF8GFunwKUw==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
@@ -1954,7 +1954,7 @@
           "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.DicomWeb.Client": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution": "[1.0.0, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[1.0.1, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[1.0.3, )",
           "Monai.Deploy.Security": "[0.1.3, )",
           "Monai.Deploy.Storage.MinIO": "[0.2.18, )",
           "NLog.Web.AspNetCore": "[5.3.4, )",
@@ -1967,7 +1967,7 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.22, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[1.1.0-ai-230-0014, )",
+          "Monai.Deploy.Messaging": "[1.0.3, )",
           "Monai.Deploy.Storage": "[0.2.18, )",
           "fo-dicom": "[5.1.1, )"
         }
