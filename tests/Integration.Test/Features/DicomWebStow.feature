@@ -24,7 +24,7 @@ Feature: DICOMweb STOW-RS Service
     Scenario: Triggers a new workflow request via DICOMWeb STOW-RS
         Given <count> <modality> studies with 'stow_none' grouping
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/'
-        Then 1 workflow requests received from message broker
+        Then 1 workflow requests received from receieved artifact message broker
         And studies are uploaded to storage service with data input plugins
         Examples:
             | modality | count |
@@ -35,7 +35,7 @@ Feature: DICOMweb STOW-RS Service
     Scenario: Triggers a new workflow with given study instance UID request via DICOMWeb STOW-RS
         Given <count> <modality> studies with 'stow_study' grouping
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/' with StudyInstanceUid
-        Then 1 workflow requests received from message broker
+        Then 1 workflow requests received from receieved artifact message broker
         And studies are uploaded to storage service with data input plugins
         Examples:
             | modality | count |
@@ -47,7 +47,7 @@ Feature: DICOMweb STOW-RS Service
         Given <count> <modality> studies with 'stow_none' grouping
         And a workflow named 'MyWorkflow'
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/'
-        Then 1 workflow requests received from message broker
+        Then 1 workflow requests received from receieved artifact message broker
         And studies are uploaded to storage service with data input plugins
         Examples:
             | modality | count |
@@ -59,7 +59,7 @@ Feature: DICOMweb STOW-RS Service
         Given <count> <modality> studies with 'stow_study' grouping
         And a workflow named 'MyWorkflow'
         When the studies are uploaded to the DICOMWeb STOW-RS service at '/dicomweb/' with StudyInstanceUid
-        Then 1 workflow requests received from message broker
+        Then 1 workflow requests received from receieved artifact message broker
         And studies are uploaded to storage service with data input plugins
         Examples:
             | modality | count |
