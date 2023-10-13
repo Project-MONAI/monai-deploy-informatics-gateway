@@ -137,6 +137,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 string.Empty);
 
             _receivedExportCompletedMessages.ClearMessages();
+            _receivedArtifactRecievedMessages.ClearMessages();
             await _messagePublisher.Publish("md.export.request.monaiscu", message.ToMessage());
         }
 
