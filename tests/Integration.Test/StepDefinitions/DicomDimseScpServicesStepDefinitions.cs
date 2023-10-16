@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomDimseScpServicesStepDefinitions
     {
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromSeconds(120);
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly ObjectContainer _objectContainer;
@@ -98,11 +98,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider.GenerateDicomData(modality, studyCount, seriesPerStudy);
 
             _receivedMessages.ClearMessages();
+            _receivedMessagesArtifactRecieved.ClearMessages();
         }
 
         [Given(@"a called AE Title named '([^']*)' that groups by '([^']*)' for (.*) seconds")]
         public async Task GivenACalledAETitleNamedThatGroupsByForSeconds(string calledAeTitle, string grouping, uint groupingTimeout)
         {
+            _receivedMessages.ClearMessages();
+            _receivedMessagesArtifactRecieved.ClearMessages();
+
             Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
             Guard.Against.NullOrWhiteSpace(grouping, nameof(grouping));
             Guard.Against.NegativeOrZero(groupingTimeout, nameof(groupingTimeout));
