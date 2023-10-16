@@ -61,7 +61,7 @@ Feature: DICOM DIMSE SCP Services
         And <study_count> <modality> studies with <series_count> series per study
         When a C-STORE-RQ is sent to 'Informatics Gateway' with AET '<aet>' from 'TEST-RUNNER'
         Then a successful response should be received
-        And <series_count> workflow requests sent to message broker
+        And <series_count> Artifact Recieved sent to ea message broker
         And studies are uploaded to storage service
 
         Examples:
@@ -79,7 +79,7 @@ Feature: DICOM DIMSE SCP Services
         And <study_count> <modality> studies with <series_count> series per study
         When C-STORE-RQ are sent to 'Informatics Gateway' with AET 'C-STORE-MA' from 'TEST-RUNNER'
         Then a successful response should be received
-        And <workflow_requests> workflow requests sent to message broker
+        And <workflow_requests> Artifact Recieved sent to ea message broker
         And studies are uploaded to storage service
 
         Examples:
