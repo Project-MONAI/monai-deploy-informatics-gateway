@@ -43,6 +43,8 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
         /// </summary>
         public string ExportTaskId { get; set; } = string.Empty;
 
+        public string? PayloadId { get; set; }
+
         /// <summary>
         /// Gets or sets the correlation ID of the original request.
         /// </summary>

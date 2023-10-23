@@ -259,6 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
                 CorrelationId = Guid.NewGuid().ToString(),
                 ExportTaskId = Guid.NewGuid().ToString(),
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
+                PayloadId = null
             };
     }
 }

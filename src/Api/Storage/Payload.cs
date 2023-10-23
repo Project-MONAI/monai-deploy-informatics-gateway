@@ -89,7 +89,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
-
             Files = new List<FileStorageMetadata>();
             DataOrigins = new HashSet<DataOrigin>();
             _lastReceived = new Stopwatch();
@@ -105,6 +104,21 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             RetryCount = 0;
             Timeout = timeout;
             DataTrigger = dataTrigger;
+        }
+
+        public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout, string? payloadId = null) :
+            this(key, correlationId, workflowInstanceId, taskId, dataTrigger, timeout)
+        {
+            Guard.Against.NullOrWhiteSpace(key, nameof(key));
+
+            if (payloadId is null)
+            {
+                PayloadId = Guid.NewGuid();
+            }
+            else
+            {
+                PayloadId = Guid.Parse(payloadId);
+            }
         }
 
         public void Add(FileStorageMetadata value)

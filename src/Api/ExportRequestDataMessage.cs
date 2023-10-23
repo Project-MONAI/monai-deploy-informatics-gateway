@@ -58,6 +58,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
             get { return _exportRequest.CorrelationId; }
         }
 
+        public string? FilePayloadId
+        {
+            get { return _exportRequest.PayloadId; }
+        }
+
         public string[] Destinations
         {
             get { return _exportRequest.Destinations; }

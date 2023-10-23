@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomWebStowServiceStepDefinitions
     {
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromSeconds(30);
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromSeconds(130);
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;

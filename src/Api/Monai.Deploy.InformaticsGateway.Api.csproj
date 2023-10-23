@@ -55,7 +55,7 @@
     <PackageReference Include="fo-dicom" Version="5.1.1" />
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.22" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="1.0.3" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="1.0.4-rc0004" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.18" />
   </ItemGroup>
 

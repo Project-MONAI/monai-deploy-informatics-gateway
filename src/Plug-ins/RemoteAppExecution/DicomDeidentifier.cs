@@ -61,12 +61,16 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
             var studyInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
             var seriesInstanceUid = dicomFile.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID);
 
+
+
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IRemoteAppExecutionRepository>();
 
             var existing = await repository.GetAsync(exportRequestDataMessage.WorkflowInstanceId, exportRequestDataMessage.ExportTaskId, studyInstanceUid, seriesInstanceUid).ConfigureAwait(false);
 
-            var newRecord = new RemoteAppExecution(exportRequestDataMessage, existing?.StudyInstanceUid, existing?.SeriesInstanceUid);
+            var newRecord = new RemoteAppExecution(exportRequestDataMessage, existing?.StudyInstanceUid, existing?.SeriesInstanceUid)
+            { PayloadId = exportRequestDataMessage.FilePayloadId };
+
 
             newRecord.OriginalValues.Add(DicomTag.StudyInstanceUID.ToString(), studyInstanceUid);
             newRecord.OriginalValues.Add(DicomTag.SeriesInstanceUID.ToString(), seriesInstanceUid);
