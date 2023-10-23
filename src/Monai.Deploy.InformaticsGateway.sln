@@ -62,6 +62,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.InformaticsGateway.Test.PlugIns", "InformaticsGateway\Test\Plug-ins\Monai.Deploy.InformaticsGateway.Test.PlugIns.csproj", "{6C83469B-4B8A-416E-ACA7-09454D721352}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Monai.Deploy.Messaging", "..\..\monai-deploy-messaging\src\Messaging\Monai.Deploy.Messaging.csproj", "{32A3AB42-5770-443C-A3C1-802575C4C08B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -408,6 +410,18 @@ Global
 		{6C83469B-4B8A-416E-ACA7-09454D721352}.Release|x64.Build.0 = Release|Any CPU
 		{6C83469B-4B8A-416E-ACA7-09454D721352}.Release|x86.ActiveCfg = Release|Any CPU
 		{6C83469B-4B8A-416E-ACA7-09454D721352}.Release|x86.Build.0 = Release|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Debug|x64.Build.0 = Debug|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Debug|x86.Build.0 = Debug|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Release|x64.ActiveCfg = Release|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Release|x64.Build.0 = Release|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Release|x86.ActiveCfg = Release|Any CPU
+		{32A3AB42-5770-443C-A3C1-802575C4C08B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

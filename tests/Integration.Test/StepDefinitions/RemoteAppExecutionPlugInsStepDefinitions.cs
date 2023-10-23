@@ -126,6 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 Files = _dataProvider.DicomSpecs.Files.Keys.ToList(),
                 MessageId = Guid.NewGuid().ToString(),
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
+                PayloadId = Guid.NewGuid().ToString(),
             };
 
             _exportRequestEvent.PluginAssemblies.Add(typeof(DicomDeidentifier).AssemblyQualifiedName);
@@ -193,6 +194,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Files = _dataProvider.DicomSpecs.Files.Keys.ToList(),
                     MessageId = Guid.NewGuid().ToString(),
                     WorkflowInstanceId = Guid.NewGuid().ToString(),
+                    PayloadId = Guid.NewGuid().ToString(),
                 };
                 _exportRequestEvent.PluginAssemblies.Add(pluginName);
                 var message = new JsonMessage<ExportRequestEvent>(
@@ -262,7 +264,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 }
             }
 
-            var timeoutPolicy = Policy.TimeoutAsync(40, TimeoutStrategy.Pessimistic);
+            var timeoutPolicy = Policy.TimeoutAsync(240, TimeoutStrategy.Pessimistic);
             await timeoutPolicy
                 .ExecuteAsync(
                     async () => { await SendRequest(exportCount); }

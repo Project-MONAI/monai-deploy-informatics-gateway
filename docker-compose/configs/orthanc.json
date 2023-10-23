@@ -198,9 +198,9 @@
       1104
     ],
 
-    "mig-local-ip-1104": [
-      "STORESCP",
-      "192.168.0.230",
+    "mig-local-1104StartMWMExtApp": [
+      "StartMWMExtApp",
+      "host.docker.internal",
       1104
     ]
 
