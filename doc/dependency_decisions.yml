@@ -775,6 +775,7 @@
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
     - 1.0.3
+    - 1.0.4
     :when: 2023-10-13 18:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
@@ -782,6 +783,7 @@
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
     - 1.0.3
+    - 1.0.4
     :when: 2023-10-13 18:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage
