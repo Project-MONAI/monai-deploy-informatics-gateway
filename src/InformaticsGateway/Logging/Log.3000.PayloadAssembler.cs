@@ -27,8 +27,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 3002, Level = LogLevel.Information, Message = "[Startup] {count} pending payloads removed from database.")]
         public static partial void TotalNumberOfPayloadsRemoved(this ILogger logger, int count);
 
-        [LoggerMessage(EventId = 3003, Level = LogLevel.Information, Message = "File added to bucket {key}. Queue size: {count}")]
-        public static partial void FileAddedToBucket(this ILogger logger, string key, int count);
+        [LoggerMessage(EventId = 3003, Level = LogLevel.Information, Message = "File added to bucket {key}. Queue size: {count}. PayloadId {PayloadId}")]
+        public static partial void FileAddedToBucket(this ILogger logger, string key, int count, string PayloadId);
 
         [LoggerMessage(EventId = 3004, Level = LogLevel.Trace, Message = "Number of incomplete payloads waiting for processing: {count}.")]
         public static partial void BucketsActive(this ILogger logger, int count);

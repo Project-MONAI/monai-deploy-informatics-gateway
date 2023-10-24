@@ -105,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             var payload = await CreateOrGetPayload(bucket, file.CorrelationId, file.WorkflowInstanceId, file.TaskId, dataOrigin, timeout, file.PayloadId).ConfigureAwait(false);
             payload.Add(file);
-            _logger.FileAddedToBucket(payload.Key, payload.Count);
+            _logger.FileAddedToBucket(payload.Key, payload.Count, file.PayloadId ?? "null");
             return payload.PayloadId;
         }
 
