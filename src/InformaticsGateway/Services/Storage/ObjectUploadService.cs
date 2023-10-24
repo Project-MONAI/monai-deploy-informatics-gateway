@@ -256,7 +256,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                        metadata,
                        cancellationToken).ConfigureAwait(false);
                    storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket); // deletes local file and sets uploaded to true
-                   _logger.UploadedFileToStoreage(storageObjectMetadata.TemporaryPath);
+                   _logger.UploadedFileToStoreage(path);
                    storageObjectMetadata.SetMoved(_configuration.Value.Storage.StorageServiceBucketName); // set bucket, date moved, and move complete
                })
                .ConfigureAwait(false);
