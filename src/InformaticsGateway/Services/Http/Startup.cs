@@ -90,6 +90,28 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MONAI Deploy Informatics Gateway", Version = "v1" });
+                c.DescribeAllParametersInCamelCase();
+                c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+                {
+                    Scheme = "basic",
+                    Name = "basic",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "basic",
+                                },
+                            },
+                        System.Array.Empty<string>()
+                    },
+                });
             });
 
             services.Configure<ApiBehaviorOptions>(options =>
