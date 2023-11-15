@@ -24,6 +24,7 @@ using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
+using Monai.Deploy.InformaticsGateway.PlugIns.Pseudonymisation;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
@@ -129,7 +130,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 PayloadId = Guid.NewGuid().ToString(),
             };
 
-            _exportRequestEvent.PluginAssemblies.Add(typeof(DicomDeidentifier).AssemblyQualifiedName);
+            _exportRequestEvent.PluginAssemblies.Add(typeof(Pseudonymise).AssemblyQualifiedName);
 
             var message = new JsonMessage<ExportRequestEvent>(
                 _exportRequestEvent,
@@ -178,8 +179,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             await _dataSinkMinio.SendAsync(_dataProvider);
 
-            // send 2 messagees the first on should fail, teh second one should not
-            string pluginName = typeof(DicomDeidentifier).AssemblyQualifiedName;
+            // send 2 messagees the first on should fail, the second one should not
+            string pluginName = typeof(Pseudonymis_Rehydrate).AssemblyQualifiedName;
             pluginName = pluginName.Replace("DicomDeidentifier", "fail");
 
             for (int i = 0; i < 2; ++i)
@@ -205,7 +206,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
                 _receivedExportCompletedMessages.ClearMessages();
                 await _messagePublisher.Publish("md.export.request.monaiscu", message.ToMessage());
-                pluginName = typeof(DicomDeidentifier).AssemblyQualifiedName;
+                pluginName = typeof(Pseudonymise).AssemblyQualifiedName;
             }
         }
 
@@ -247,7 +248,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Name = MonaiAeTitle,
                     Grouping = _dataProvider.StudyGrouping,
                     Timeout = 3,
-                    PlugInAssemblies = new List<string>() { typeof(DicomReidentifier).AssemblyQualifiedName }
+                    PlugInAssemblies = new List<string>() { typeof(Pseudonymis_Rehydrate).AssemblyQualifiedName }
                 }, CancellationToken.None);
                 _dataProvider.Destination = MonaiAeTitle;
             }

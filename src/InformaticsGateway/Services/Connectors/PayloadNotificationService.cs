@@ -155,6 +155,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             try
             {
+                using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> {
+                    { "Payload", payload.PayloadId },
+                    { "WorkflowInstanceId", payload.WorkflowInstanceId ?? "NotSet" },
+                    { "TaskId", payload.TaskId ?? "NotSet" },
+                });
                 await _payloadNotificationActionHandler.NotifyAsync(payload, _publishQueue!, _cancellationTokenSource.Token).ConfigureAwait(false);
             }
             catch (PostPayloadException ex)

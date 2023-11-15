@@ -174,6 +174,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                         }
                         catch (Exception e)
                         {
+                            _logger.OutputDataEngineBlockException(e);
                             exportDataRequest.SetFailed(FileExportStatus.ServiceError, $"failed to execute plugin {e.Message}");
                             return exportDataRequest;
                         }

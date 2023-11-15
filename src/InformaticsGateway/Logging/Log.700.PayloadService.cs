@@ -157,5 +157,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 750, Level = LogLevel.Information, Message = "Artifact recieved published to {queue}, message ID={messageId}. Payload took {durationSeconds} seconds to complete.")]
         public static partial void ArtifactRecievedPublished(this ILogger logger, string queue, string messageId, double durationSeconds);
+
+        [LoggerMessage(EventId = 751, Level = LogLevel.Debug, Message = "NotifyAsync for payload {payloadId}.")]
+        public static partial void PayloadNotifyAsync(this ILogger logger, Guid payloadId);
     }
 }
