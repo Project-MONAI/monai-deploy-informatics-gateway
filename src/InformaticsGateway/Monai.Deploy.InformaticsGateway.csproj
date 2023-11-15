@@ -66,6 +66,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\monai-deploy-informatics-gateway-pseudonymisation\monai-deploy-informatics-gateway-pseudonymisation.csproj" />
     <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
     <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />

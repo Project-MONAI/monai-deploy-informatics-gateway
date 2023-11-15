@@ -62,6 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public async Task NotifyAsync(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
+            _logger.PayloadNotifyAsync(payload.PayloadId);
             Guard.Against.Null(payload, nameof(payload));
             Guard.Against.Null(notificationQueue, nameof(notificationQueue));
 
