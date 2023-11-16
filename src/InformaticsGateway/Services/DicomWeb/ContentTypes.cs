@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-
 namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
     internal static class ContentTypes

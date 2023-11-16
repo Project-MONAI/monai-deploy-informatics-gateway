@@ -18,7 +18,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using FellowOakDicom;
+using Monai.Deploy.InformaticsGateway.Common;
 using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Api
@@ -36,14 +38,14 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// Value is either PatientId or StudyInstanceUid
         /// </summary>
         [JsonProperty("data_link")]
-        public KeyValuePair<string, string> DataLink { get; set; }
+        public KeyValuePair<string, DataLinkType> DataLink { get; set; }
 
         /// <summary>
         /// Gets or sets the data mapping.
         /// Value is a DICOM Tag
         /// </summary>
         [JsonProperty("data_mapping")]
-        public KeyValuePair<string, string> DataMapping { get; set; }
+        public Dictionary<string, string> DataMapping { get; set; } = new();
 
         public IEnumerable<string> Validate()
         {
@@ -54,26 +56,32 @@ namespace Monai.Deploy.InformaticsGateway.Api
                 errors.Add($"{nameof(SendingId.Value)} is missing.");
             if (string.IsNullOrWhiteSpace(DataLink.Key))
                 errors.Add($"{nameof(DataLink.Key)} is missing.");
-            if (string.IsNullOrWhiteSpace(DataLink.Value))
-                errors.Add($"{nameof(DataLink.Value)} is missing.");
-            if (string.IsNullOrWhiteSpace(DataMapping.Key))
-                errors.Add($"{nameof(DataMapping.Key)} is missing.");
-            if (string.IsNullOrWhiteSpace(DataMapping.Value))
-                errors.Add($"{nameof(DataMapping.Value)} is missing.");
+            if (DataMapping.IsNullOrEmpty())
+                errors.Add($"{nameof(DataMapping)} is missing values.");
 
-            if (DataMapping.Value.Length < 8)
+            for (var idx = 0; idx < DataMapping.Count; idx++)
             {
-                errors.Add($"{nameof(DataMapping.Value)} is not a valid DICOM Tag.");
-                return errors;
-            }
+                var dataMapKvp = DataMapping.ElementAt(idx);
 
-            try
-            {
-                DicomTag.Parse(DataMapping.Value);
-            }
-            catch (Exception e)
-            {
-                errors.Add($"DataMapping.Value is not a valid DICOM Tag. {e.Message}");
+                if (string.IsNullOrWhiteSpace(dataMapKvp.Key) || dataMapKvp.Value.Length < 8)
+                {
+                    if (string.IsNullOrWhiteSpace(dataMapKvp.Key))
+                        errors.Add($"{nameof(DataMapping)} is missing a name at index {idx}.");
+
+                    if (dataMapKvp.Value.Length < 8)
+                        errors.Add($"{nameof(DataMapping)} ({dataMapKvp.Key}) @ index {idx} is not a valid DICOM Tag.");
+
+                    continue;
+                }
+
+                try
+                {
+                    DicomTag.Parse(dataMapKvp.Value);
+                }
+                catch (Exception e)
+                {
+                    errors.Add($"DataMapping.Value is not a valid DICOM Tag. {e.Message}");
+                }
             }
 
             return errors;
@@ -83,5 +91,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
         {
             return JsonConvert.SerializeObject(this);
         }
+    }
+
+    public enum DataLinkType
+    {
+        PatientId,
+        StudyInstanceUid
     }
 }
