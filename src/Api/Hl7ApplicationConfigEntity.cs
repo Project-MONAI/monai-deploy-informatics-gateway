@@ -74,7 +74,6 @@ namespace Monai.Deploy.InformaticsGateway.Api
             catch (Exception e)
             {
                 errors.Add($"DataMapping.Value is not a valid DICOM Tag. {e.Message}");
-                throw;
             }
 
             return errors;
