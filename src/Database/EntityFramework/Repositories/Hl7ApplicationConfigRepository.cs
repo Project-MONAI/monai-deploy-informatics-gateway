@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Polly;
@@ -63,6 +64,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
             return _retryPolicy.ExecuteAsync(async () =>
             {
                 var entity = await GetByIdAsync(id).ConfigureAwait(false);
+                if (entity is null)
+                {
+                    throw new DatabaseException("Failed to delete entity.");
+                }
                 var result = _dataset.Remove(entity);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 return result.Entity;
