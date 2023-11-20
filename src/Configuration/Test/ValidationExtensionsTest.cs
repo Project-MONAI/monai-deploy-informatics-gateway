@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration.Test

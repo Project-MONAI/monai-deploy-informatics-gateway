@@ -132,5 +132,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 536, Level = LogLevel.Error, Message = "Error executing data plug-ins.")]
         public static partial void ErrorExecutingDataPlugIns(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 537, Level = LogLevel.Error, Message = "Error executing OutputDataEngine plug-in.")]
+        public static partial void OutputDataEngineBlockException(this ILogger logger, Exception ex);
     }
 }

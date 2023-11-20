@@ -16,7 +16,7 @@
 
 using System.Text.Json.Serialization;
 using FellowOakDicom;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
 {
@@ -42,6 +42,8 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
         /// Gets or sets the export task ID of the original request.
         /// </summary>
         public string ExportTaskId { get; set; } = string.Empty;
+
+        public string? PayloadId { get; set; }
 
         /// <summary>
         /// Gets or sets the correlation ID of the original request.

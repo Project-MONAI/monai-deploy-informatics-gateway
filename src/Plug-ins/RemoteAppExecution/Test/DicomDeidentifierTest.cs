@@ -19,7 +19,7 @@ using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database;
@@ -259,6 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
                 CorrelationId = Guid.NewGuid().ToString(),
                 ExportTaskId = Guid.NewGuid().ToString(),
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
+                PayloadId = null
             };
     }
 }

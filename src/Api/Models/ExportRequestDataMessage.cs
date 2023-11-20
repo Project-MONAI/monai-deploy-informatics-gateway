@@ -20,7 +20,7 @@ using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.Messaging.Events;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Models
 {
     public class ExportRequestDataMessage
     {
@@ -56,6 +56,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public string CorrelationId
         {
             get { return _exportRequest.CorrelationId; }
+        }
+
+        public string? FilePayloadId
+        {
+            get { return _exportRequest.PayloadId; }
         }
 
         public string[] Destinations

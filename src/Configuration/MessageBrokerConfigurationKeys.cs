@@ -28,17 +28,32 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public string WorkflowRequest { get; set; } = "md.workflow.request";
 
         /// <summary>
-        /// Gets or sets the topic for publishing workflow requests.
-        /// Defaults to `md_workflow_request`.
+        /// Gets or sets the topic for publishing export complete requests.
+        /// Defaults to `md_export_complete`.
         /// </summary>
         [ConfigurationKeyName("exportComplete")]
         public string ExportComplete { get; set; } = "md.export.complete";
 
         /// <summary>
-        /// Gets or sets the topic for publishing workflow requests.
-        /// Defaults to `md_workflow_request`.
+        /// Gets or sets the topic for publishing export requests.
+        /// Defaults to `md_export_request`.
         /// </summary>
         [ConfigurationKeyName("exportRequestPrefix")]
         public string ExportRequestPrefix { get; set; } = "md.export.request";
+
+        /// <summary>
+        /// Gets or sets the topic for publishing artifact recieved events.
+        /// Defaults to `md_workflow_artifactrecieved`.
+        /// </summary>
+        [ConfigurationKeyName("artifactrecieved")]
+        public string ArtifactRecieved { get; set; } = "md.workflow.artifactrecieved";
+
+
+        /// <summary>
+        /// Gets or sets the topic for publishing export requests.
+        /// Defaults to `md_export_request`.
+        /// </summary>
+        [ConfigurationKeyName("externalAppRequest")]
+        public string ExternalAppRequest { get; set; } = "md.externalapp.request";
     }
 }

@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Concurrent;
-using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom.Network;
@@ -26,10 +25,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
@@ -92,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _unsubscriberForMonaiAeChangedNotificationService.Dispose();
         }
 
-        public async Task<string> HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+        public async Task<string> HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, ScpInputTypeEnum type)
         {
             Guard.Against.Null(request, nameof(request));
 
@@ -108,10 +109,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 throw new InsufficientStorageAvailableException($"Insufficient storage available.  Available storage space: {_storageInfoProvider.AvailableFreeSpace:D}");
             }
 
-            return await HandleInstance(request, calledAeTitle, callingAeTitle, associationId).ConfigureAwait(false);
+            return await HandleInstance(request, calledAeTitle, callingAeTitle, associationId, type).ConfigureAwait(false);
         }
 
-        private async Task<string> HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId)
+        private async Task<string> HandleInstance(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, ScpInputTypeEnum type)
         {
             var uids = _dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
 
@@ -125,7 +126,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             {
                 _logger.InstanceInformation(uids.StudyInstanceUid, uids.SeriesInstanceUid);
 
-                return await _aeTitles[calledAeTitle].HandleInstanceAsync(request, calledAeTitle, callingAeTitle, associationId, uids).ConfigureAwait(false);
+                return await _aeTitles[calledAeTitle].HandleInstanceAsync(request, calledAeTitle, callingAeTitle, associationId, uids, type).ConfigureAwait(false);
             }
         }
 

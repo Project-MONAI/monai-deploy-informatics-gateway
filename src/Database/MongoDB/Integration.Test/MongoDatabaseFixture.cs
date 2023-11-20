@@ -16,6 +16,7 @@
 
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB;
@@ -113,6 +114,17 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             collection.InsertOne(aet3);
             collection.InsertOne(aet4);
             collection.InsertOne(aet5);
+        }
+        public void InitDatabaseWithExternalAppEntities()
+        {
+            var collection = Database.GetCollection<ExternalAppDetails>(nameof(ExternalAppDetails));
+            Clear(collection);
+
+            var ea1 = new ExternalAppDetails { StudyInstanceUid = "1", ExportTaskID = "ExportTaskID", CorrelationId = "CorrelationId", WorkflowInstanceId = "WorkflowInstanceId", PatientIdOutBound = "pat1out1", StudyInstanceUidOutBound = "sudIdOut1" };
+            var ea2 = new ExternalAppDetails { StudyInstanceUid = "2", ExportTaskID = "ExportTaskID2", CorrelationId = "CorrelationId2", WorkflowInstanceId = "WorkflowInstanceId2", PatientIdOutBound = "pat1out2", StudyInstanceUidOutBound = "sudIdOut2" };
+
+            collection.InsertOne(ea1);
+            collection.InsertOne(ea2);
         }
 
         public void InitDatabaseWithInferenceRequests()

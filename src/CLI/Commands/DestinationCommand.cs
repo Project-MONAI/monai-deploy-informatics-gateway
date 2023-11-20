@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Common;

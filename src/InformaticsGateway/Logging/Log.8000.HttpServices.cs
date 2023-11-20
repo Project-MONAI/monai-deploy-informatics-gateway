@@ -179,5 +179,12 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         //
         [LoggerMessage(EventId = 8300, Level = LogLevel.Error, Message = "Unexpected error occurred in GET /dicom-associations API..")]
         public static partial void DicomAssociationsControllerGetError(this ILogger logger, Exception ex);
+
+        ///
+        /// HL7 Application Configuration controller
+        ///
+        [LoggerMessage(EventId = 8400, Level = LogLevel.Error, Message = "Unexpected error occurred in PUT {endpoint} API.")]
+        public static partial void PutHl7ApplicationConfigException(this ILogger logger, string endpoint, Exception ex);
+
     }
 }

@@ -16,7 +16,7 @@
 
 using System;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Moq;
 using xRetry;

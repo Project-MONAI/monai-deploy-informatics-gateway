@@ -17,8 +17,9 @@
 
 using System;
 using System.Security.Claims;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Models
 {
     /// <summary>
     /// DICOM Application Entity or AE.

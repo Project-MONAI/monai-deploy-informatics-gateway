@@ -21,8 +21,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Models
 {
     /// <summary>
     /// MONAI Application Entity

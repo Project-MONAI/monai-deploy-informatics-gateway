@@ -399,13 +399,23 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "1.0.1",
-        "contentHash": "w0+37sCMzhZg4vhYFG+9TKmDW+Dks5DOiTrJzdnT8xJCfH1MK6xkRnIf+dBfxes0wFwPiKueaUWDcUsg1RnadQ==",
+        "resolved": "1.0.5-rc0006",
+        "contentHash": "Yr6Ix8AeKdciz7t9aeteYuDAiNpmv3FmpF9bvdvjVh46gBazf+HBdvXdbWWXgzNTd3yevsQGBKazQXN9ecqwog==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
           "Newtonsoft.Json": "13.0.3",
           "System.IO.Abstractions": "17.2.3"
+        }
+      },
+      "Monai.Deploy.Messaging.RabbitMQ": {
+        "type": "Transitive",
+        "resolved": "1.0.5-rc0006",
+        "contentHash": "luSfBhU4hFwyGk7SS05sfKHwxcCYjXimfmaTjNDjFKKjIYbd3IPm8lYDPSiszbZB53jpgNvYDy+aWJY8YlVXZg==",
+        "dependencies": {
+          "Monai.Deploy.Messaging": "1.0.5-rc0006",
+          "Polly": "7.2.4",
+          "RabbitMQ.Client": "6.5.0"
         }
       },
       "Monai.Deploy.Storage": {
@@ -432,6 +442,20 @@
         "type": "Transitive",
         "resolved": "13.0.3",
         "contentHash": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ=="
+      },
+      "Polly": {
+        "type": "Transitive",
+        "resolved": "7.2.4",
+        "contentHash": "bw00Ck5sh6ekduDE3mnCo1ohzuad946uslCDEENu3091+6UKnBuKLo4e+yaNcCzXxOZCXWY2gV4a35+K1d4LDA=="
+      },
+      "RabbitMQ.Client": {
+        "type": "Transitive",
+        "resolved": "6.5.0",
+        "contentHash": "9hY5HiWPtCla1/l0WmXmLnqoX7iKE3neBQUWnetIJrRpOvTbO//XQfQDh++xgHCshL40Kv/6bR0HDkmJz46twg==",
+        "dependencies": {
+          "System.Memory": "4.5.5",
+          "System.Threading.Channels": "7.0.0"
+        }
       },
       "System.Buffers": {
         "type": "Transitive",
@@ -469,6 +493,11 @@
         "resolved": "17.2.3",
         "contentHash": "VcozGeE4SxIo0cnXrDHhbrh/Gb8KQnZ3BvMelvh+iw0PrIKtuuA46U2Xm4e4pgnaWFgT4RdZfTpWl/WPRdw0WQ=="
       },
+      "System.Memory": {
+        "type": "Transitive",
+        "resolved": "4.5.5",
+        "contentHash": "XIWiDvKPXaTveaB7HVganDlOCRoj03l+jrwNvcge/t8vhGYKvqV+dMv6G4SAX2NoNmN0wZfVPTAlFwZcZvVOUw=="
+      },
       "System.Runtime.CompilerServices.Unsafe": {
         "type": "Transitive",
         "resolved": "6.0.0",
@@ -501,8 +530,8 @@
       },
       "System.Threading.Channels": {
         "type": "Transitive",
-        "resolved": "6.0.0",
-        "contentHash": "TY8/9+tI0mNaUMgntOxxaq2ndTkdXqLSxvPmas7XEqOlv9lQtB7wLjYGd756lOaO7Dvb5r/WXhluM+0Xe87v5Q=="
+        "resolved": "7.0.0",
+        "contentHash": "qmeeYNROMsONF6ndEZcIQ+VxR4Q/TX/7uIVLJqtwIWL7dDWeh0l1UIqgo4wYyjG//5lUNhwkLDSFl+pAWO6oiA=="
       },
       "System.Threading.Tasks.Extensions": {
         "type": "Transitive",
@@ -515,7 +544,8 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.22, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[1.0.1, )",
+          "Monai.Deploy.Messaging": "[1.0.5-rc0006, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[1.0.5-rc0006, )",
           "Monai.Deploy.Storage": "[0.2.18, )",
           "fo-dicom": "[5.1.1, )"
         }
@@ -523,7 +553,7 @@
       "monai.deploy.informaticsgateway.client": {
         "type": "Project",
         "dependencies": {
-          "Monai.Deploy.InformaticsGateway.Api": "[1.0.0, )",
+          "Monai.Deploy.InformaticsGateway.Api": "[0.4.1, )",
           "Monai.Deploy.InformaticsGateway.Client.Common": "[1.0.0, )"
         }
       },

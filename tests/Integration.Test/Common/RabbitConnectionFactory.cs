@@ -68,10 +68,12 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         {
             DeleteQueue(configuration.Messaging, configuration.Messaging.Topics.WorkflowRequest);
             DeleteQueue(configuration.Messaging, configuration.Messaging.Topics.ExportComplete);
+            DeleteQueue(configuration.Messaging, configuration.Messaging.Topics.ArtifactRecieved);
             DeleteQueue(configuration.Messaging, $"{configuration.Messaging.Topics.ExportRequestPrefix}.{configuration.Dicom.Scu.AgentName}");
             DeleteQueue(configuration.Messaging, $"{configuration.Messaging.Topics.ExportRequestPrefix}.{configuration.DicomWeb.AgentName}");
             DeleteQueue(configuration.Messaging, $"{configuration.Messaging.Topics.WorkflowRequest}-dead-letter");
             DeleteQueue(configuration.Messaging, $"{configuration.Messaging.Topics.ExportComplete}-dead-letter");
+            DeleteQueue(configuration.Messaging, $"{configuration.Messaging.Topics.ArtifactRecieved}-dead-letter");
             DeleteQueue(configuration.Messaging, $"{configuration.Messaging.Topics.ExportRequestPrefix}.{configuration.Dicom.Scu.AgentName}-dead-letter");
             DeleteQueue(configuration.Messaging, $"{configuration.Messaging.Topics.ExportRequestPrefix}.{configuration.DicomWeb.AgentName}-dead-letter");
         }
@@ -81,9 +83,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             PurgeQueue(configuration, configuration.Topics.WorkflowRequest);
             PurgeQueue(configuration, configuration.Topics.ExportComplete);
             PurgeQueue(configuration, configuration.Topics.ExportRequestPrefix);
+            PurgeQueue(configuration, configuration.Topics.ArtifactRecieved);
             PurgeQueue(configuration, $"{configuration.Topics.WorkflowRequest}-dead-letter");
             PurgeQueue(configuration, $"{configuration.Topics.ExportComplete}-dead-letter");
             PurgeQueue(configuration, $"{configuration.Topics.ExportRequestPrefix}-dead-letter");
+            PurgeQueue(configuration, $"{configuration.Topics.ArtifactRecieved}-dead-letter");
         }
     }
 }

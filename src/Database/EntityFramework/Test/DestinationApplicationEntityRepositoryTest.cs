@@ -19,9 +19,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 using Moq;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {

@@ -15,9 +15,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.21");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.22");
 
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity", b =>
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Models.DestinationApplicationEntity", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.ToTable("DestinationApplicationEntities");
                 });
 
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DicomAssociationInfo", b =>
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Models.DicomAssociationInfo", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -106,7 +106,52 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.ToTable("DicomAssociationHistories");
                 });
 
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity", b =>
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Models.ExternalAppDetails", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CorrelationId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DestinationFolder")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ExportTaskID")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PatientId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PatientIdOutBound")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StudyInstanceUid")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("StudyInstanceUidOutBound")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("WorkflowInstanceId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExternalAppDetails");
+                });
+
+            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity", b =>
                 {
                     b.Property<string>("Name")
                         .HasColumnType("TEXT")
@@ -266,6 +311,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTimeCreated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DestinationFolder")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Files")
