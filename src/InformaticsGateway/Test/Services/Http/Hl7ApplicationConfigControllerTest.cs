@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
     public class Hl7ApplicationConfigControllerTest
     {
         private readonly Mock<ILogger<Hl7ApplicationConfigController>> _logger;
-        private Mock<ILoggerFactory> _loggerFactory;
+        private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly Hl7ApplicationConfigController _controller;
         private readonly Mock<IHl7ApplicationConfigRepository> _repo;
 
@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             {
                 Id = Guid.Empty,
                 DataLink = KeyValuePair.Create("testKey", DataLinkType.PatientId),
-                DataMapping = new() { { "datamapkey", dicomStr } },
+                DataMapping = new() { KeyValuePair.Create("datamapkey", dicomStr) },
                 SendingId = KeyValuePair.Create("sendingidkey", "sendingidvalue"),
                 DateTimeCreated = DateTime.UtcNow
             };
@@ -240,7 +240,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             {
                 Id = Guid.Empty,
                 DataLink = KeyValuePair.Create("testKey", DataLinkType.PatientId),
-                DataMapping = new() { { "datamapkey", dicomStr } },
+                DataMapping = new() { KeyValuePair.Create("datamapkey", dicomStr) },
                 SendingId = KeyValuePair.Create("sendingidkey", "sendingidvalue"),
                 DateTimeCreated = DateTime.UtcNow
             };
