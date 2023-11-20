@@ -46,7 +46,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 
         public virtual DbSet<Hl7ApplicationConfigEntity> Hl7ApplicationConfig { get; set; }
 
-
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -59,8 +58,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
             modelBuilder.ApplyConfiguration(new StorageMetadataWrapperEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DicomAssociationInfoConfiguration());
             modelBuilder.ApplyConfiguration(new VirtualApplicationEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new ExternalAppDetailsConfiguration());
-            modelBuilder.ApplyConfiguration(new Hl7ApplicationConfigConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

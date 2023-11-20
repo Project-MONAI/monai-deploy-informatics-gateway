@@ -73,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             try
             {
-                using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
+                using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
                 await NotifyPayloadReady(payload).ConfigureAwait(false);
                 await DeletePayload(payload, cancellationToken).ConfigureAwait(false);
             }
