@@ -142,12 +142,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 }
             }
 
-                if (ArtifactTypes.Validate(modality) && Enum.TryParse(modality, out ArtifactType parsedArtifactType))
-                {
-                    dicomInfo.DataOrigin.ArtifactType = parsedArtifactType;
-                }
-            }
-
             var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
 
             using var scope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object>() { { "CorrelationId", dicomInfo.CorrelationId } });
