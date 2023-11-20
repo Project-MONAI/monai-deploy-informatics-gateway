@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using Newtonsoft.Json;
 using Xunit;
 
@@ -32,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>(string.Empty, "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { "DataMappingKey", "DataMappingValue" } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { "DataMappingKey", "DataMappingValue" } })
             };
 
             var errors = entity.Validate();
@@ -48,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", string.Empty),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { "DataMappingKey", "DataMappingValue" } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { "DataMappingKey", "DataMappingValue" } })
             };
 
             var errors = entity.Validate();
@@ -64,7 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>(string.Empty, DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { "DataMappingKey", "DataMappingValue" } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { "DataMappingKey", "DataMappingValue" } })
             };
 
             var errors = entity.Validate();
@@ -80,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string>()
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string>())
             };
 
             var errors = entity.Validate();
@@ -96,7 +95,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { string.Empty, "DataMappingValue" } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { string.Empty, "DataMappingValue" } })
             };
 
             var errors = entity.Validate();
@@ -112,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { "DataMappingKey", string.Empty } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { "DataMappingKey", string.Empty } })
             };
 
             var errors = entity.Validate();
@@ -128,7 +127,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { "DataMappingKey", "DataMappingValue" } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { "DataMappingKey", "DataMappingValue" } })
             };
 
             var errors = entity.Validate();
@@ -144,7 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { "DataMappingKey", "0020,000D" } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { "DataMappingKey", "0020,000D" } })
             };
 
             var errors = entity.Validate();
@@ -159,7 +158,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             {
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { "DataMappingKey", "" } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { "DataMappingKey", "" } })
             };
 
             var errors = entity.Validate();
@@ -179,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
                 DateTimeCreated = dt,
                 SendingId = new KeyValuePair<string, string>("SendingIdKey", "SendingIdValue"),
                 DataLink = new KeyValuePair<string, DataLinkType>("DataLinkKey", DataLinkType.PatientId),
-                DataMapping = new Dictionary<string, string> { { "DataMappingKey", "0020,000D" } }
+                DataMapping = StringKeyValuePair.FromDictionary(new Dictionary<string, string> { { "DataMappingKey", "0020,000D" } })
             };
 
             var result = entity.ToString();

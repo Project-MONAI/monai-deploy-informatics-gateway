@@ -16,12 +16,13 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Common;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
@@ -101,6 +102,21 @@ namespace Monai.Deploy.InformaticsGateway.Api
         [Key]
         public string Key { get; set; } = string.Empty;
         public string Value { get; set; } = string.Empty;
+
+        public static implicit operator StringKeyValuePair(KeyValuePair<string, string> kvp)
+        {
+            return new StringKeyValuePair { Key = kvp.Key, Value = kvp.Value };
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void Deconstruct(out string key, out string value)
+        {
+            key = Key;
+            value = Value;
+        }
+        public static List<StringKeyValuePair> FromDictionary(Dictionary<string, string> dictionary) =>
+            dictionary.Select(kvp => new StringKeyValuePair { Key = kvp.Key, Value = kvp.Value }).ToList();
+
     }
 
     public class DataKeyValuePair : IKeyValuePair<string, DataLinkType>
@@ -108,6 +124,14 @@ namespace Monai.Deploy.InformaticsGateway.Api
         [Key]
         public string Key { get; set; } = string.Empty;
         public DataLinkType Value { get; set; }
+
+        public static implicit operator DataKeyValuePair(KeyValuePair<string, DataLinkType> kvp)
+        {
+            return new DataKeyValuePair { Key = kvp.Key, Value = kvp.Value };
+        }
+
+        public static List<DataKeyValuePair> FromDictionary(Dictionary<string, DataLinkType> dictionary) =>
+            dictionary.Select(kvp => new DataKeyValuePair { Key = kvp.Key, Value = kvp.Value }).ToList();
     }
 
     public interface IKeyValuePair<TKey, TValue>
