@@ -9,7 +9,8 @@
         "InformaticsGateway__messaging__publisherSettings__username": "rabbitmq",
         "InformaticsGateway__messaging__publisherSettings__password": "rabbitmq",
         "InformaticsGateway__messaging__subscriberSettings__username": "rabbitmq",
-        "InformaticsGateway__messaging__subscriberSettings__password": "rabbitmq"
+        "InformaticsGateway__messaging__subscriberSettings__password": "rabbitmq",
+        "Kestrel__EndPoints__Http__Url": "http://+:5000"
       }
     }
   }

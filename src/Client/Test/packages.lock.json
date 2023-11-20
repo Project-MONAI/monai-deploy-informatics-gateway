@@ -559,8 +559,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "1.0.1",
-        "contentHash": "w0+37sCMzhZg4vhYFG+9TKmDW+Dks5DOiTrJzdnT8xJCfH1MK6xkRnIf+dBfxes0wFwPiKueaUWDcUsg1RnadQ==",
+        "resolved": "1.0.4",
+        "contentHash": "K6RrbDh7upokvt+sKuKEhQ+B1Xj46DF4sHxqwE6ymZazwmRULzsD0u/1IeDDJCGuRs3iG64QWwCt32j30PSZLg==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
@@ -570,10 +570,10 @@
       },
       "Monai.Deploy.Messaging.RabbitMQ": {
         "type": "Transitive",
-        "resolved": "1.0.1",
-        "contentHash": "zBVO6HOqyTfDj6YcITy1XtEiqRurFKUrIgLdJYVahhXlUnymn6/WmCuqkX1Z+3IKxy91D4LeF0KahH/rM8u6+w==",
+        "resolved": "1.0.4",
+        "contentHash": "2llZ4XbE91Km2Q+JEKSSeTyhZLWRq3lN5xQ6+Klqow3V8SXBAlOQQ+b5//BEm6x0QdoycFberMOVAsZYYM0j7g==",
         "dependencies": {
-          "Monai.Deploy.Messaging": "1.0.1",
+          "Monai.Deploy.Messaging": "1.0.4",
           "Polly": "7.2.4",
           "RabbitMQ.Client": "6.5.0"
         }
@@ -1816,7 +1816,7 @@
           "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.DicomWeb.Client": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution": "[1.0.0, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[1.0.1, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[1.0.4, )",
           "Monai.Deploy.Security": "[0.1.3, )",
           "Monai.Deploy.Storage.MinIO": "[0.2.18, )",
           "NLog.Web.AspNetCore": "[5.3.4, )",
@@ -1829,7 +1829,8 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.22, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[1.0.1, )",
+          "Monai.Deploy.Messaging": "[1.0.4, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[1.0.4, )",
           "Monai.Deploy.Storage": "[0.2.18, )",
           "fo-dicom": "[5.1.1, )"
         }

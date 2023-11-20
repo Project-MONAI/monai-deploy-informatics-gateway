@@ -488,7 +488,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             Assert.Equal($"'{aeTitle}' is not a valid AE Title (source: MonaiApplicationEntity).", problem.Detail);
             Assert.Equal((int)HttpStatusCode.BadRequest, problem.Status);
         }
-
         #endregion Update
 
         #region Delete

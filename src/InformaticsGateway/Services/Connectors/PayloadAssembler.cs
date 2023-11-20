@@ -103,9 +103,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "CorrelationId", file.CorrelationId } });
 
-            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, file.WorkflowInstanceId, file.TaskId, dataOrigin, timeout).ConfigureAwait(false);
+            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, file.WorkflowInstanceId, file.TaskId, dataOrigin, timeout, file.PayloadId).ConfigureAwait(false);
             payload.Add(file);
-            _logger.FileAddedToBucket(payload.Key, payload.Count);
+            _logger.FileAddedToBucket(payload.Key, payload.Count, file.PayloadId ?? "null");
             return payload.PayloadId;
         }
 
@@ -200,13 +200,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task<Payload> CreateOrGetPayload(string key, string correlationId, string? workflowInstanceId, string? taskId, Messaging.Events.DataOrigin dataOrigin, uint timeout)
+        private async Task<Payload> CreateOrGetPayload(string key, string correlationId, string? workflowInstanceId, string? taskId, Messaging.Events.DataOrigin dataOrigin, uint timeout, string? payloadId = null)
         {
             return await _payloads.GetOrAdd(key, x => new AsyncLazy<Payload>(async () =>
             {
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
-                var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout);
+                var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout, payloadId);
                 await repository.AddAsync(newPayload).ConfigureAwait(false);
                 _logger.BucketCreated(key, timeout);
                 return newPayload;

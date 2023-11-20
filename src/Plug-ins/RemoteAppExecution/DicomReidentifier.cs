@@ -62,6 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
             fileMetadata.WorkflowInstanceId = remoteAppExecution.WorkflowInstanceId;
             fileMetadata.TaskId = remoteAppExecution.ExportTaskId;
             fileMetadata.ChangeCorrelationId(_logger, remoteAppExecution.CorrelationId);
+            fileMetadata.PayloadId = remoteAppExecution.PayloadId;
 
             return (dicomFile, fileMetadata);
         }

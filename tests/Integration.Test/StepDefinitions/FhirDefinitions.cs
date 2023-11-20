@@ -29,9 +29,10 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         internal enum FileFormat
         { Xml, Json };
 
-        internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromMinutes(3);
+        internal static readonly TimeSpan WaitTimeSpan = TimeSpan.FromSeconds(120);
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly RabbitMqConsumer _receivedMessages;
+        private readonly RabbitMqConsumer _artifactReceivedMessages;
         private readonly DataProvider _dataProvider;
         private readonly Assertions _assertions;
         private readonly IDataClient _dataSink;
@@ -45,6 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _artifactReceivedMessages = objectContainer.Resolve<RabbitMqConsumer>("ArtifactRecievedSubscriber");
             _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
             _assertions = objectContainer.Resolve<Assertions>("Assertions");
             _dataSink = objectContainer.Resolve<IDataClient>("FhirClient");

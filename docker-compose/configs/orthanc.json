@@ -191,7 +191,21 @@
       "STORESCP",
       "127.0.0.1",
       104
+    ],
+    "mig-local-1104": [
+      "STORESCP",
+      "host.docker.internal",
+      1104
+    ],
+
+    "mig-local-1104StartMWMExtApp": [
+      "StartMWMExtApp",
+      "host.docker.internal",
+      1104
     ]
+
+
+
     /**
      * By default, the Orthanc SCP accepts all DICOM commands (C-ECHO,
      * C-STORE, C-FIND, C-MOVE) issued by the registered remote SCU

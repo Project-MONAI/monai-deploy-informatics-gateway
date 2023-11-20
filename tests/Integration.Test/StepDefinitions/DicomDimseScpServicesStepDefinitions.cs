@@ -24,6 +24,8 @@ using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
+using Monai.Deploy.Messaging.Common;
+using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -31,13 +33,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomDimseScpServicesStepDefinitions
     {
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromSeconds(120);
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly ObjectContainer _objectContainer;
         private readonly Configurations _configuration;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
         private readonly RabbitMqConsumer _receivedMessages;
+        private readonly RabbitMqConsumer _receivedMessagesArtifactRecieved;
         private readonly DataProvider _dataProvider;
         private readonly Assertions _assertions;
 
@@ -50,6 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _receivedMessagesArtifactRecieved = objectContainer.Resolve<RabbitMqConsumer>("ArtifactRecievedSubscriber");
             _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
             _assertions = objectContainer.Resolve<Assertions>("Assertions");
             _informaticsGatewayClient = objectContainer.Resolve<InformaticsGatewayClient>("InformaticsGatewayClient");
@@ -94,11 +98,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider.GenerateDicomData(modality, studyCount, seriesPerStudy);
 
             _receivedMessages.ClearMessages();
+            _receivedMessagesArtifactRecieved.ClearMessages();
         }
 
         [Given(@"a called AE Title named '([^']*)' that groups by '([^']*)' for (.*) seconds")]
         public async Task GivenACalledAETitleNamedThatGroupsByForSeconds(string calledAeTitle, string grouping, uint groupingTimeout)
         {
+            _receivedMessages.ClearMessages();
+            _receivedMessagesArtifactRecieved.ClearMessages();
+
             Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
             Guard.Against.NullOrWhiteSpace(grouping, nameof(grouping));
             Guard.Against.NegativeOrZero(groupingTimeout, nameof(groupingTimeout));
@@ -114,6 +122,42 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                     Timeout = groupingTimeout,
                     Workflows = new List<string>(DummyWorkflows),
                     PlugInAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.PlugIns.TestInputDataPlugInModifyDicomFile).AssemblyQualifiedName }
+                }, CancellationToken.None);
+
+                _dataProvider.Workflows = DummyWorkflows;
+                _dataProvider.Destination = calledAeTitle;
+            }
+            catch (ProblemException ex)
+            {
+                if (ex.ProblemDetails.Status == (int)HttpStatusCode.Conflict &&
+                    ex.ProblemDetails.Detail.Contains("already exists"))
+                {
+                    await _informaticsGatewayClient.MonaiScpAeTitle.GetAeTitle(calledAeTitle, CancellationToken.None);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+        [Given(@"a called AE Title named '([^']*)' that groups by '([^']*)' for (.*) seconds from external app")]
+        public async Task GivenACalledAETitleNamedThatGroupsByForSecondsFromExternalApp(string calledAeTitle, string grouping, uint groupingTimeout)
+        {
+            Guard.Against.NullOrWhiteSpace(calledAeTitle, nameof(calledAeTitle));
+            Guard.Against.NullOrWhiteSpace(grouping, nameof(grouping));
+            Guard.Against.NegativeOrZero(groupingTimeout, nameof(groupingTimeout));
+
+            _dataProvider.StudyGrouping = grouping;
+            try
+            {
+                await _informaticsGatewayClient.MonaiScpAeTitle.Create(new MonaiApplicationEntity
+                {
+                    AeTitle = calledAeTitle,
+                    Name = calledAeTitle,
+                    Grouping = grouping,
+                    Timeout = groupingTimeout,
+                    Workflows = new List<string>(DummyWorkflows),
+                    PlugInAssemblies = new List<string>() { typeof(Monai.Deploy.InformaticsGateway.Test.PlugIns.TestInputDataPlugInModifyDicomFile).AssemblyQualifiedName },
                 }, CancellationToken.None);
 
                 _dataProvider.Workflows = DummyWorkflows;
@@ -204,6 +248,19 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
             _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, Messaging.Events.DataService.DIMSE, _receivedMessages.Messages, workflowCount);
+        }
+
+        [Then(@"(.*) Artifact Recieved sent to ea message broker")]
+        public async Task ThenArtifactRecievedSentToEaMessageBrokerExpect(int workflowCount)
+        {
+            Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
+
+            (await _receivedMessagesArtifactRecieved.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, Messaging.Events.DataService.DIMSE, _receivedMessagesArtifactRecieved.Messages, workflowCount);
+
+            var firstMessage = _receivedMessagesArtifactRecieved.Messages.First().ConvertTo<ArtifactsReceivedEvent>();
+
+            Assert.NotEqual(ArtifactType.Unset, firstMessage.Artifacts.First().Type);
         }
     }
 }

@@ -23,13 +23,13 @@ using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.Messaging.API;
+using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 
@@ -62,6 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         public async Task NotifyAsync(Payload payload, ActionBlock<Payload> notificationQueue, CancellationToken cancellationToken = default)
         {
+            _logger.PayloadNotifyAsync(payload.PayloadId);
             Guard.Against.Null(payload, nameof(payload));
             Guard.Against.Null(notificationQueue, nameof(notificationQueue));
 
@@ -72,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             try
             {
-                using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
+                using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "Payload", payload.PayloadId }, { "CorrelationId", payload.CorrelationId } });
                 await NotifyPayloadReady(payload).ConfigureAwait(false);
                 await DeletePayload(payload, cancellationToken).ConfigureAwait(false);
             }
@@ -104,6 +105,18 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             Guard.Against.Null(payload, nameof(payload));
 
+            if (payload.WorkflowInstanceId.IsNullOrEmpty() is false && payload.TaskId.IsNullOrEmpty() is false)
+            {
+                await SendArtifactRecievedEvent(payload).ConfigureAwait(false);
+            }
+            else
+            {
+                await SendWorkflowRequestEvent(payload).ConfigureAwait(false);
+            }
+        }
+
+        private async Task SendWorkflowRequestEvent(Payload payload)
+        {
             _logger.GenerateWorkflowRequest(payload.PayloadId);
 
             var workflowRequest = new WorkflowRequestEvent
@@ -136,6 +149,42 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 message.ToMessage()).ConfigureAwait(false);
 
             _logger.WorkflowRequestPublished(_options.Value.Messaging.Topics.WorkflowRequest, message.MessageId, payload.Elapsed.TotalSeconds);
+        }
+
+        private async Task SendArtifactRecievedEvent(Payload payload)
+        {
+            _logger.GenerateArtifactReceievedRequest(payload.PayloadId);
+
+            var artifiactRecievedEvent = new ArtifactsReceivedEvent
+            {
+                Bucket = _options.Value.Storage.StorageServiceBucketName,
+                PayloadId = payload.PayloadId,
+                Workflows = payload.GetWorkflows(),
+                FileCount = payload.Count,
+                CorrelationId = payload.CorrelationId,
+                Timestamp = payload.DateTimeCreated,
+                DataTrigger = payload.DataTrigger,
+                WorkflowInstanceId = payload.WorkflowInstanceId,
+                TaskId = payload.TaskId,
+            };
+            artifiactRecievedEvent.DataOrigins.AddRange(payload.DataOrigins);
+
+            artifiactRecievedEvent.Artifacts = payload.Files.Select(f => new Artifact { Type = f.DataOrigin.ArtifactType, Path = f.File.UploadPath }).ToList();
+
+            var message = new JsonMessage<ArtifactsReceivedEvent>(
+                artifiactRecievedEvent,
+                MessageBrokerConfiguration.InformaticsGatewayApplicationId,
+                payload.CorrelationId,
+                string.Empty);
+
+            _logger.PublishingArtifactRecievedRequest(message.MessageId);
+
+            var messageBrokerPublisherService = _scope.ServiceProvider.GetService<IMessageBrokerPublisherService>() ?? throw new ServiceNotFoundException(nameof(IMessageBrokerPublisherService));
+            await messageBrokerPublisherService.Publish(
+                _options.Value.Messaging.Topics.ArtifactRecieved,
+                message.ToMessage()).ConfigureAwait(false);
+
+            _logger.ArtifactRecievedPublished(_options.Value.Messaging.Topics.ArtifactRecieved, message.MessageId, payload.Elapsed.TotalSeconds);
         }
 
         private async Task<PayloadAction> UpdatePayloadState(Payload payload, CancellationToken cancellationToken = default)

@@ -62,6 +62,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.PlugIns
         public Task<(DicomFile dicomFile, FileStorageMetadata fileMetadata)> ExecuteAsync(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {
             dicomFile.Dataset.Add(ExpectedTag, ExpectedValue);
+            fileMetadata.WorkflowInstanceId = "WorkflowInstanceId";
+            fileMetadata.TaskId = "TaskId";
             return Task.FromResult((dicomFile, fileMetadata));
         }
     }
