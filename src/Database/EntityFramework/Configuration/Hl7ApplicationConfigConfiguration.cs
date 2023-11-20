@@ -27,8 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.HasKey(j => j.Id);
             builder.Property(j => j.DataLink.Key).IsRequired();
             builder.Property(j => j.DataLink.Value).IsRequired();
-            builder.Property(j => j.DataMapping.Key).IsRequired();
-            builder.Property(j => j.DataMapping.Value).IsRequired();
+            builder.Property(j => j.DataMapping).IsRequired();
             builder.Property(j => j.SendingId.Key).IsRequired();
             builder.Property(j => j.SendingId.Value).IsRequired();
 

@@ -28,5 +28,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
 
         Task<Hl7ApplicationConfigEntity> CreateAsync(Hl7ApplicationConfigEntity configEntity,
             CancellationToken cancellationToken = default);
+
+        Task<Hl7ApplicationConfigEntity?> UpdateAsync(Hl7ApplicationConfigEntity configEntity,
+            CancellationToken cancellationToken = default);
     }
 }

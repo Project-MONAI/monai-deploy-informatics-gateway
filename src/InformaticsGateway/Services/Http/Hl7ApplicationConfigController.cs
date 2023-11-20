@@ -38,7 +38,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         private readonly ILogger<Hl7ApplicationConfigController> _logger;
         private readonly IHl7ApplicationConfigRepository _repository;
 
-        public Hl7ApplicationConfigController(ILogger<Hl7ApplicationConfigController> logger, IHl7ApplicationConfigRepository repository)
+        public Hl7ApplicationConfigController(ILogger<Hl7ApplicationConfigController> logger,
+            IHl7ApplicationConfigRepository repository)
         {
             _logger = logger;
             _repository = repository;
@@ -86,11 +87,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (DatabaseException ex)
             {
-                return Problem(title: "Database error removing HL7 Application Configuration.", statusCode: BadRequest, detail: ex.Message);
+                return Problem(title: "Database error removing HL7 Application Configuration.", statusCode: BadRequest,
+                    detail: ex.Message);
             }
             catch (Exception ex)
             {
-                return Problem(title: "Unknown error removing HL7 Application Configuration.", statusCode: InternalServerError, detail: ex.Message);
+                return Problem(title: "Unknown error removing HL7 Application Configuration.",
+                    statusCode: InternalServerError, detail: ex.Message);
             }
         }
 
@@ -102,7 +105,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         {
             if (configEntity == null)
             {
-                return BadRequest("Hl7ApplicationConfigEntity is null.");
+                return Problem(title: "Hl7ApplicationConfigEntity is null.", statusCode: BadRequest, detail: "Hl7ApplicationConfigEntity is null.");
             }
 
             var errorMessages = configEntity.Validate().ToList();
@@ -120,8 +123,49 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             }
             catch (Exception ex)
             {
-                _logger.PutHl7ApplicationConfigException(Endpoint, configEntity.ToString(), ex);
-                return Problem(title: "Error adding new HL7 Application Configuration.", statusCode: InternalServerError, detail: ex.Message);
+                _logger.PutHl7ApplicationConfigException(Endpoint, ex);
+                return Problem(title: "Error adding new HL7 Application Configuration.",
+                    statusCode: InternalServerError, detail: ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Consumes(ContentTypes.ApplicationJson)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Post([FromBody] Hl7ApplicationConfigEntity configEntity)
+        {
+            if (configEntity == null)
+            {
+                return Problem(title: "Hl7ApplicationConfigEntity is null.", statusCode: BadRequest, detail: "Hl7ApplicationConfigEntity is null.");
+            }
+
+            var errorMessages = configEntity.Validate().ToList();
+            if (errorMessages.Any())
+            {
+                var message = "Hl7ApplicationConfigEntity is invalid. " + string.Join(", ", errorMessages);
+                return Problem(title: "Validation Failure.", statusCode: BadRequest, detail: message);
+            }
+
+            try
+            {
+                var result = await _repository.UpdateAsync(configEntity).ConfigureAwait(false);
+                if (result is null)
+                {
+                    return Problem(title: "Database error updating HL7 Application Configuration.", statusCode: BadRequest,
+                        detail: "configEntity not found.");
+                }
+                return Ok(result);
+            }
+            catch (DatabaseException ex)
+            {
+                return Problem(title: "Database error updating HL7 Application Configuration.", statusCode: BadRequest,
+                    detail: ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return Problem(title: "Unknown error updating HL7 Application Configuration.",
+                    statusCode: InternalServerError, detail: ex.Message);
             }
         }
     }

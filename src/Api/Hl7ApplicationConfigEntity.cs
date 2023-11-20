@@ -54,8 +54,10 @@ namespace Monai.Deploy.InformaticsGateway.Api
                 errors.Add($"{nameof(SendingId.Key)} is missing.");
             if (string.IsNullOrWhiteSpace(SendingId.Value))
                 errors.Add($"{nameof(SendingId.Value)} is missing.");
+
             if (string.IsNullOrWhiteSpace(DataLink.Key))
                 errors.Add($"{nameof(DataLink.Key)} is missing.");
+
             if (DataMapping.IsNullOrEmpty())
                 errors.Add($"{nameof(DataMapping)} is missing values.");
 
@@ -68,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
                     if (string.IsNullOrWhiteSpace(dataMapKvp.Key))
                         errors.Add($"{nameof(DataMapping)} is missing a name at index {idx}.");
 
-                    if (dataMapKvp.Value.Length < 8)
+                    if (string.IsNullOrWhiteSpace(dataMapKvp.Value) || dataMapKvp.Value.Length < 8)
                         errors.Add($"{nameof(DataMapping)} ({dataMapKvp.Key}) @ index {idx} is not a valid DICOM Tag.");
 
                     continue;

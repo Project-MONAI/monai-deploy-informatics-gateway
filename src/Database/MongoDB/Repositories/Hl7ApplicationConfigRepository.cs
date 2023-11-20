@@ -109,6 +109,23 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             });
         }
 
+        public Task<Hl7ApplicationConfigEntity?> UpdateAsync(Hl7ApplicationConfigEntity configEntity,
+            CancellationToken cancellationToken = default)
+        {
+            return _retryPolicy.ExecuteAsync(async () =>
+            {
+                var result = await _collection
+                    .ReplaceOneAsync(Builders<Hl7ApplicationConfigEntity>.Filter.Where(p => p.Id.Equals(configEntity.Id)),
+                        configEntity, cancellationToken: cancellationToken).ConfigureAwait(false);
+                if (result.ModifiedCount == 0)
+                {
+                    throw new DatabaseException("Failed to update entity");
+                }
+
+                return configEntity;
+            })!;
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!_disposedValue)

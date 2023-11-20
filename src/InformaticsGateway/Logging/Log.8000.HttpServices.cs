@@ -183,8 +183,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         ///
         /// HL7 Application Configuration controller
         ///
-        [LoggerMessage(EventId = 8400, Level = LogLevel.Error, Message = "Unexpected error occurred in PUT {endpoint} API with the config: {config}.")]
-        public static partial void PutHl7ApplicationConfigException(this ILogger logger, string endpoint, string config, Exception ex);
+        [LoggerMessage(EventId = 8400, Level = LogLevel.Error, Message = "Unexpected error occurred in PUT {endpoint} API.")]
+        public static partial void PutHl7ApplicationConfigException(this ILogger logger, string endpoint, Exception ex);
 
     }
 }

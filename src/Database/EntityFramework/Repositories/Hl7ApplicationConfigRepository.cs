@@ -84,5 +84,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
                 return result.Entity;
             });
         }
+
+        public Task<Hl7ApplicationConfigEntity?> UpdateAsync(Hl7ApplicationConfigEntity configEntity,
+            CancellationToken cancellationToken = default)
+        {
+            return _retryPolicy.ExecuteAsync(async () =>
+            {
+                var result = _dataset.Update(configEntity);
+                await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
+                return result.Entity;
+            })!;
+        }
     }
 }
