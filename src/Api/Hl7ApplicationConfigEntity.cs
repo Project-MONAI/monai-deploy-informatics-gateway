@@ -61,9 +61,16 @@ namespace Monai.Deploy.InformaticsGateway.Api
             if (DataMapping.IsNullOrEmpty())
                 errors.Add($"{nameof(DataMapping)} is missing values.");
 
+            ValidateDataMapping(errors);
+
+            return errors;
+        }
+
+        private void ValidateDataMapping(List<string> errors)
+        {
             for (var idx = 0; idx < DataMapping.Count; idx++)
             {
-                var dataMapKvp = DataMapping.ElementAt(idx);
+                var dataMapKvp = DataMapping[idx];
 
                 if (string.IsNullOrWhiteSpace(dataMapKvp.Key) || dataMapKvp.Value.Length < 8)
                 {
@@ -85,8 +92,6 @@ namespace Monai.Deploy.InformaticsGateway.Api
                     errors.Add($"DataMapping.Value is not a valid DICOM Tag. {e.Message}");
                 }
             }
-
-            return errors;
         }
 
         public override string ToString()
@@ -107,12 +112,6 @@ namespace Monai.Deploy.InformaticsGateway.Api
             return new StringKeyValuePair { Key = kvp.Key, Value = kvp.Value };
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void Deconstruct(out string key, out string value)
-        {
-            key = Key;
-            value = Value;
-        }
         public static List<StringKeyValuePair> FromDictionary(Dictionary<string, string> dictionary) =>
             dictionary.Select(kvp => new StringKeyValuePair { Key = kvp.Key, Value = kvp.Value }).ToList();
 
@@ -128,9 +127,6 @@ namespace Monai.Deploy.InformaticsGateway.Api
         {
             return new DataKeyValuePair { Key = kvp.Key, Value = kvp.Value };
         }
-
-        public static List<DataKeyValuePair> FromDictionary(Dictionary<string, DataLinkType> dictionary) =>
-            dictionary.Select(kvp => new DataKeyValuePair { Key = kvp.Key, Value = kvp.Value }).ToList();
     }
 
     public interface IKeyValuePair<TKey, TValue>
