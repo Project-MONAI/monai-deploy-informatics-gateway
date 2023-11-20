@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         }
 
         public Task<List<Hl7ApplicationConfigEntity>> GetAllAsync(CancellationToken cancellationToken = default) =>
-            _retryPolicy.ExecuteAsync(() => { return _dataset.ToListAsync(cancellationToken); });
+            _retryPolicy.ExecuteAsync(() => _dataset.ToListAsync(cancellationToken));
 
         public Task<Hl7ApplicationConfigEntity?> GetByIdAsync(string id) =>
             _retryPolicy.ExecuteAsync(() => _dataset.FirstOrDefaultAsync(x => x.Id.Equals(id)));

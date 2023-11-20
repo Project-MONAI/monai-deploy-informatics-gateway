@@ -25,11 +25,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
         public void Configure(EntityTypeBuilder<Hl7ApplicationConfigEntity> builder)
         {
             builder.HasKey(j => j.Id);
-            builder.Property(j => j.DataLink).IsRequired();
-            builder.Property(j => j.DataMapping).IsRequired();
-            builder.Property(j => j.SendingId).IsRequired();
-
-            builder.Ignore(p => p.Id);
         }
     }
 }

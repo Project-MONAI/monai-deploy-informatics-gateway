@@ -31,21 +31,21 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// Gets or sets the sending identifier.
         /// </summary>
         [JsonProperty("sending_identifier")]
-        public KeyValuePair<string, string> SendingId { get; set; }
+        public StringKeyValuePair SendingId { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the data link.
         /// Value is either PatientId or StudyInstanceUid
         /// </summary>
         [JsonProperty("data_link")]
-        public KeyValuePair<string, DataLinkType> DataLink { get; set; }
+        public DataKeyValuePair DataLink { get; set; } = new();
 
         /// <summary>
         /// Gets or sets the data mapping.
         /// Value is a DICOM Tag
         /// </summary>
         [JsonProperty("data_mapping")]
-        public Dictionary<string, string> DataMapping { get; set; } = new();
+        public List<StringKeyValuePair> DataMapping { get; set; } = new();
 
         public IEnumerable<string> Validate()
         {
@@ -93,6 +93,27 @@ namespace Monai.Deploy.InformaticsGateway.Api
         {
             return JsonConvert.SerializeObject(this);
         }
+    }
+
+    //string key, string value
+    public class StringKeyValuePair : IKeyValuePair<string, string>
+    {
+        [Key]
+        public string Key { get; set; } = string.Empty;
+        public string Value { get; set; } = string.Empty;
+    }
+
+    public class DataKeyValuePair : IKeyValuePair<string, DataLinkType>
+    {
+        [Key]
+        public string Key { get; set; } = string.Empty;
+        public DataLinkType Value { get; set; }
+    }
+
+    public interface IKeyValuePair<TKey, TValue>
+    {
+        public TKey Key { get; set; }
+        public TValue Value { get; set; }
     }
 
     public enum DataLinkType
