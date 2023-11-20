@@ -47,6 +47,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
 
         public virtual DbSet<Hl7ApplicationConfigEntity> Hl7ApplicationConfig { get; set; }
 
+        public virtual DbSet<Hl7ApplicationConfigEntity> Hl7ApplicationConfig { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
