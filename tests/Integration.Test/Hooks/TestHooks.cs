@@ -145,7 +145,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
                 s_rabbitMqConnectionFactory);
 
             s_rabbitMqConsumer_ArtifactRecieved = new RabbitMqConsumer(rabbitMqSubscriber_ArtifactRecieved, s_options.Value.Messaging.Topics.ArtifactRecieved, outputHelper);
-
         }
 
         private static IDatabaseDataProvider GetDatabase(IServiceProvider serviceProvider, ISpecFlowOutputHelper outputHelper)
