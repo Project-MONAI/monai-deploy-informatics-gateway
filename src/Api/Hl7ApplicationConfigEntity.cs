@@ -22,7 +22,6 @@ using System.Linq;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Common;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
