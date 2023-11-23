@@ -66,7 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 if (string.IsNullOrEmpty(details.DestinationFolder) is false)
                 {
                     meta.File.DestinationFolderOverride = true;
-                    meta.File.UploadPath = $"{details.DestinationFolder}/{meta.Id}{Hl7FileStorageMetadata.FileExtension}";
+                    meta.File.UploadPath = $"{details.DestinationFolder}/{meta.DataTypeDirectoryName}/{meta.Id}{Hl7FileStorageMetadata.FileExtension}";
                 }
                 message = RepopulateMessage(configItem, details, message);
             }
