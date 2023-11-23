@@ -54,6 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             DataOrigin.DataService = dataType;
             DataOrigin.Source = dataOrigin;
             DataOrigin.Destination = IpAddress();
+            DataOrigin.ArtifactType = Messaging.Common.ArtifactType.HL7;
 
             File = new StorageObjectMetadata(FileExtension)
             {

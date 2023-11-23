@@ -70,23 +70,22 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             _retryPolicy.ExecuteAsync(() =>
                 _collection.Find(Builders<Hl7ApplicationConfigEntity>.Filter.Empty).ToListAsync(cancellationToken));
 
-        public Task<Hl7ApplicationConfigEntity?> GetByIdAsync(string id) =>
-            _retryPolicy.ExecuteAsync(() => _collection
-                .Find(x => x.Id.Equals(id))
-                .FirstOrDefaultAsync())!;
+        public Task<Hl7ApplicationConfigEntity?> GetByIdAsync(string id)
+        {
+            var GuidId = Guid.Parse(id);
+            return _retryPolicy.ExecuteAsync(() => _collection
+                   .Find(x => x.Id == GuidId)
+                   .FirstOrDefaultAsync())!;
+        }
 
         public Task<Hl7ApplicationConfigEntity> DeleteAsync(string id, CancellationToken cancellationToken = default)
         {
             return _retryPolicy.ExecuteAsync(async () =>
             {
-                var entity = await GetByIdAsync(id).ConfigureAwait(false);
-                if (entity is null)
-                {
-                    throw new DatabaseException("Failed to delete entity.");
-                }
+                var entity = await GetByIdAsync(id).ConfigureAwait(false) ?? throw new DatabaseException("Failed to delete entity.");
 
                 var result = await _collection
-                    .DeleteOneAsync(Builders<Hl7ApplicationConfigEntity>.Filter.Where(p => p.Id.Equals(id)),
+                    .DeleteOneAsync(Builders<Hl7ApplicationConfigEntity>.Filter.Where(p => p.Id == entity.Id),
                         cancellationToken: cancellationToken).ConfigureAwait(false);
 
                 if (result.DeletedCount == 0)
@@ -112,10 +111,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         public Task<Hl7ApplicationConfigEntity?> UpdateAsync(Hl7ApplicationConfigEntity configEntity,
             CancellationToken cancellationToken = default)
         {
+
             return _retryPolicy.ExecuteAsync(async () =>
             {
                 var result = await _collection
-                    .ReplaceOneAsync(Builders<Hl7ApplicationConfigEntity>.Filter.Where(p => p.Id.Equals(configEntity.Id)),
+                    .ReplaceOneAsync(Builders<Hl7ApplicationConfigEntity>.Filter.Where(p => p.Id == configEntity.Id),
                         configEntity, cancellationToken: cancellationToken).ConfigureAwait(false);
                 if (result.ModifiedCount == 0)
                 {

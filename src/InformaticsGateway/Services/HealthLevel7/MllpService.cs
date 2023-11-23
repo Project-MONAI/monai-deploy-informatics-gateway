@@ -51,6 +51,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly ConcurrentDictionary<Guid, IMllpClient> _activeTasks;
+        private readonly IMllpExtract _mIIpExtract;
 
         public int ActiveConnections
         {
@@ -84,6 +85,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _payloadAssembler = serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _fileSystem = serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
             _storageInfoProvider = serviceScope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
+            _mIIpExtract = serviceScope.ServiceProvider.GetService<IMllpExtract>() ?? throw new ServiceNotFoundException(nameof(IMllpExtract));
             _activeTasks = new ConcurrentDictionary<Guid, IMllpClient>();
         }
 
@@ -131,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                         continue;
                     }
 
-                    mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
+                    mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _mIIpExtract, _logginFactory.CreateLogger<MllpClient>());
                     _ = mllpClient.Start(OnDisconnect, cancellationToken);
                     _activeTasks.TryAdd(mllpClient.ClientId, mllpClient);
                 }
@@ -168,11 +170,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             {
                 foreach (var message in result.Messages)
                 {
-                    var hl7Fileetadata = new Hl7FileStorageMetadata(client.ClientId.ToString(), DataService.HL7, client.ClientIp);
-                    await hl7Fileetadata.SetDataStream(message.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
-                    var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata, new DataOrigin { DataService = DataService.HL7, Source = client.ClientIp, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
-                    hl7Fileetadata.PayloadId = payloadId.ToString();
-                    _uploadQueue.Queue(hl7Fileetadata);
+                    var hl7Filemetadata = new Hl7FileStorageMetadata(client.ClientId.ToString(), DataService.HL7, client.ClientIp);
+                    var newMessage = await _mIIpExtract.ExtractInfo(hl7Filemetadata, message).ConfigureAwait(false);
+                    await hl7Filemetadata.SetDataStream(newMessage.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
+                    var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Filemetadata, new DataOrigin { DataService = DataService.HL7, Source = client.ClientIp, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
+                    hl7Filemetadata.PayloadId ??= payloadId.ToString();
+                    _uploadQueue.Queue(hl7Filemetadata);
                 }
             }
             catch (Exception ex)

@@ -115,10 +115,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 return Problem(title: "Validation Failure.", statusCode: BadRequest, detail: message);
             }
 
-            configEntity.Id = Guid.NewGuid();
             try
             {
-                await _repository.CreateAsync(configEntity).ConfigureAwait(false);
+                await _repository.UpdateAsync(configEntity).ConfigureAwait(false);
                 return Ok(configEntity.Id);
             }
             catch (Exception ex)
@@ -149,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
             try
             {
-                var result = await _repository.UpdateAsync(configEntity).ConfigureAwait(false);
+                var result = await _repository.CreateAsync(configEntity).ConfigureAwait(false);
                 if (result is null)
                 {
                     return Problem(title: "Database error updating HL7 Application Configuration.", statusCode: BadRequest,
