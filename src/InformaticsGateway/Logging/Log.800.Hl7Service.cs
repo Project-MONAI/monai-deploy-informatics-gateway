@@ -68,5 +68,27 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 815, Level = LogLevel.Information, Message = "HL7 client {clientId} disconnected.")]
         public static partial void Hl7ClientRemoved(this ILogger logger, Guid clientId);
+
+        [LoggerMessage(EventId = 816, Level = LogLevel.Debug, Message = "HL7 config loaded. {config}")]
+        public static partial void Hl7ConfigLoaded(this ILogger logger, string config);
+
+        [LoggerMessage(EventId = 817, Level = LogLevel.Information, Message = "No HL7 config found")]
+        public static partial void Hl7NoConfig(this ILogger logger);
+
+        [LoggerMessage(EventId = 818, Level = LogLevel.Debug, Message = "HL7 no matching config found for message {message}")]
+        public static partial void Hl7NoMatchingConfig(this ILogger logger, string message);
+
+        [LoggerMessage(EventId = 819, Level = LogLevel.Debug, Message = "HL7 found matching config found for. {Id} config: {config}")]
+        public static partial void Hl7FoundMatchingConfig(this ILogger logger, string Id, string config);
+
+        [LoggerMessage(EventId = 820, Level = LogLevel.Warning, Message = "HL7 exception thrown extracting Hl7 Info")]
+        public static partial void Hl7ExceptionThrow(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 821, Level = LogLevel.Warning, Message = "HL7 external App Details not found")]
+        public static partial void Hl7ExtAppDetailsNotFound(this ILogger logger);
+
+        [LoggerMessage(EventId = 822, Level = LogLevel.Debug, Message = "HL7 changing value {hl7Tag} from {oldValue} to {newValue}")]
+        public static partial void ChangingHl7Values(this ILogger logger, string hl7Tag, string oldValue, string newValue);
+
     }
 }

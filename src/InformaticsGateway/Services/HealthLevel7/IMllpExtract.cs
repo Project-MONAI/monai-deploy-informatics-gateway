@@ -1,5 +1,5 @@
-/*
- * Copyright 2021-2022 MONAI Consortium
+﻿/*
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("Monai.Deploy.InformaticsGateway.Test")]
-[assembly: InternalsVisibleTo("Monai.Deploy.InformaticsGateway.Integration.Test")]
+using System.Threading.Tasks;
+using HL7.Dotnetcore;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-// ILogger<ApplicationEntityManager>
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+{
+    internal interface IMllpExtract
+    {
+        Task<Message> ExtractInfo(Hl7FileStorageMetadata meta, Message message);
+    }
+}

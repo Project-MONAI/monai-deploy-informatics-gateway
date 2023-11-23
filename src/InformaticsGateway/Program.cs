@@ -110,6 +110,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddTransient<IFhirService, FhirService>();
                     services.AddTransient<IStreamsWriter, StreamsWriter>();
                     services.AddTransient<IApplicationEntityHandler, ApplicationEntityHandler>();
+                    services.AddTransient<IMllpExtract, MllpExtract>();
 
                     services.AddScoped<IPayloadMoveActionHandler, PayloadMoveActionHandler>();
                     services.AddScoped<IPayloadNotificationActionHandler, PayloadNotificationActionHandler>();

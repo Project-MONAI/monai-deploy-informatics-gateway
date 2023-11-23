@@ -164,8 +164,8 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.22",
-        "contentHash": "3ycEYrtWoa4kv5mUECU2LNBbWiYh345b1uQLvg4pHCEICXoJZ8Sfu/2yGloKiMNgMdDc02gFYCRHxsqQNZpnWA=="
+        "resolved": "6.0.25",
+        "contentHash": "DalO25C96LsIfAPlyizyun9y1XrIquRugPEGXC8+z7dFo+GyU0LRd0R11JDd3rJWjR18NOFYwqNenjyDpNRO3A=="
       },
       "Microsoft.Extensions.Configuration": {
         "type": "Transitive",
@@ -497,8 +497,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "1.0.5-rc0006",
-        "contentHash": "Yr6Ix8AeKdciz7t9aeteYuDAiNpmv3FmpF9bvdvjVh46gBazf+HBdvXdbWWXgzNTd3yevsQGBKazQXN9ecqwog==",
+        "resolved": "1.0.5",
+        "contentHash": "J8Lskfy8PSVQLDE2uLqh53uaPpqpRJuSGVHpR2jrw+GYnTTDv21j/2gxwG8Hq2NgNOkWLNVi+fFnyWd6WFiUTA==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.1.1",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.21",
@@ -508,10 +508,10 @@
       },
       "Monai.Deploy.Messaging.RabbitMQ": {
         "type": "Transitive",
-        "resolved": "1.0.5-rc0006",
-        "contentHash": "luSfBhU4hFwyGk7SS05sfKHwxcCYjXimfmaTjNDjFKKjIYbd3IPm8lYDPSiszbZB53jpgNvYDy+aWJY8YlVXZg==",
+        "resolved": "1.0.5",
+        "contentHash": "L+BWU5Xq1ARjFRcpnefDJGuG52Zw4Iz3qql1tn8lYfqoC4B37fAUVz6k7Ar7v1OUwPo/JR8q4OP2IIMpqpKRRA==",
         "dependencies": {
-          "Monai.Deploy.Messaging": "1.0.5-rc0006",
+          "Monai.Deploy.Messaging": "1.0.5",
           "Polly": "7.2.4",
           "RabbitMQ.Client": "6.5.0"
         }
@@ -1561,10 +1561,10 @@
         "type": "Project",
         "dependencies": {
           "Macross.Json.Extensions": "[3.0.0, )",
-          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.22, )",
+          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.25, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[1.0.5-rc0006, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[1.0.5-rc0006, )",
+          "Monai.Deploy.Messaging": "[1.0.5, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[1.0.5, )",
           "Monai.Deploy.Storage": "[0.2.18, )",
           "fo-dicom": "[5.1.1, )"
         }
