@@ -277,6 +277,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         {
             var checkEvent = new ManualResetEventSlim();
             var client = new Mock<IMllpClient>();
+            _mIIpExtract.Setup(e => e.ExtractInfo(It.IsAny<Hl7FileStorageMetadata>(), It.IsAny<Message>()))
+                .ReturnsAsync((Hl7FileStorageMetadata meta, Message Msg) => Msg);
             _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<IMllpExtract>(), It.IsAny<ILogger<MllpClient>>()))
                 .Returns(() =>
                 {
@@ -317,6 +319,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         {
             var checkEvent = new ManualResetEventSlim();
             var client = new Mock<IMllpClient>();
+
+            _mIIpExtract.Setup(e => e.ExtractInfo(It.IsAny<Hl7FileStorageMetadata>(), It.IsAny<Message>()))
+                .ReturnsAsync((Hl7FileStorageMetadata meta, Message Msg) => Msg);
+
             _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<IMllpExtract>(), It.IsAny<ILogger<MllpClient>>()))
                 .Returns(() =>
                 {

@@ -196,7 +196,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var validApplicationEntity = ValidApplicationEntity("0001,0001");
             _repo.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(validApplicationEntity);
-            _repo.Setup(r => r.CreateAsync(It.IsAny<Hl7ApplicationConfigEntity>(), It.IsAny<CancellationToken>()))
+            _repo.Setup(r => r.UpdateAsync(It.IsAny<Hl7ApplicationConfigEntity>(), It.IsAny<CancellationToken>()))
                 .Throws(new DatabaseException());
             var result = await _controller.Put(validApplicationEntity);
 
@@ -219,7 +219,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             _repo.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(validApplicationEntity);
-            _repo.Setup(r => r.UpdateAsync(It.IsAny<Hl7ApplicationConfigEntity>(), It.IsAny<CancellationToken>()))
+            _repo.Setup(r => r.CreateAsync(It.IsAny<Hl7ApplicationConfigEntity>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(validApplicationEntity);
             var result = await _controller.Post(validApplicationEntity);
 
@@ -309,7 +309,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
             var validApplicationEntity = ValidApplicationEntity("0001,0001");
             _repo.Setup(r => r.GetByIdAsync(It.IsAny<string>()))
                 .ReturnsAsync(validApplicationEntity);
-            _repo.Setup(r => r.UpdateAsync(It.IsAny<Hl7ApplicationConfigEntity>(), It.IsAny<CancellationToken>()))
+            _repo.Setup(r => r.CreateAsync(It.IsAny<Hl7ApplicationConfigEntity>(), It.IsAny<CancellationToken>()))
                 .Throws(new Exception());
             var result = await _controller.Post(validApplicationEntity);
 

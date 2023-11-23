@@ -97,14 +97,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var message = new Message(AzMedMessage);
             var isParsed = message.ParseMessage();
 
-            var meatData = new Hl7FileStorageMetadata();
+            var meatData = new Hl7FileStorageMetadata { Id = "metaId", File = new StorageObjectMetadata("txt") };
 
             await _sut.ExtractInfo(meatData, message);
 
             Assert.Equal("WorkflowInstanceId2", meatData.WorkflowInstanceId);
             Assert.Equal("ExportTaskID2", meatData.TaskId);
             Assert.Equal("CorrelationId2", meatData.CorrelationId);
-            Assert.Equal("DestinationFolder2", meatData.PayloadId);
+            Assert.StartsWith("DestinationFolder2", meatData.File.UploadPath);
         }
 
         [Fact(DisplayName = "Should Set Original Patient And Study Uid")]
@@ -146,7 +146,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
             var te = message.GetValue("OBR.1");
 
-            var meatData = new Hl7FileStorageMetadata();
+            var meatData = new Hl7FileStorageMetadata { Id = "metaId", File = new StorageObjectMetadata("txt") };
+
 
             message = await _sut.ExtractInfo(meatData, message);
 
