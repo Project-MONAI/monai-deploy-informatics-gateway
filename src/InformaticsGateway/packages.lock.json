@@ -196,8 +196,8 @@
       },
       "Microsoft.Data.Sqlite.Core": {
         "type": "Transitive",
-        "resolved": "6.0.22",
-        "contentHash": "gtIGHbGnRq/h4mFSJYr9BdMObvJV/a67nBubs50VjPDusQARtWJzeVTirDWsbL1qTvGzbbZCD7VE7+s2ixZfow==",
+        "resolved": "6.0.25",
+        "contentHash": "rbXNoMg/ylGyJxLcyetojuXFzvDG85M31DfFbqL8veN4P8oG6wmnPwWNn3/bDIEDVvdw15R092dxpobQeQcjGg==",
         "dependencies": {
           "SQLitePCLRaw.core": "2.1.2"
         }
@@ -237,20 +237,20 @@
       },
       "Microsoft.EntityFrameworkCore.Sqlite": {
         "type": "Transitive",
-        "resolved": "6.0.22",
-        "contentHash": "EDKnYZtxq7P131xxLsEokda86WnFRiVAveLVAYR8kzyWl/UwTpf/RS2m2FrbH/U8vX3A+IQNpabtxcjtCUrY0g==",
+        "resolved": "6.0.25",
+        "contentHash": "vaQNuXgUN0nIzFXQiPSb9iAaJqLvZA164Sx9mjF5rFQS5cwQ/AiymF0e4J0QH3P07Mf3zEVZE5u2fTO0NacuMQ==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Sqlite.Core": "6.0.22",
+          "Microsoft.EntityFrameworkCore.Sqlite.Core": "6.0.25",
           "SQLitePCLRaw.bundle_e_sqlite3": "2.1.2"
         }
       },
       "Microsoft.EntityFrameworkCore.Sqlite.Core": {
         "type": "Transitive",
-        "resolved": "6.0.22",
-        "contentHash": "xSU77ORQgwlD+s5Cmlk9DzoSCu5oxlHLuQl+v5zAZ0Uv5yH17hp02TBfz3x9nBA+CrIsqaLjGEuyZmLDf/5ATw==",
+        "resolved": "6.0.25",
+        "contentHash": "IU4E8I9FS2sUVxJJ0w/4jogLQ8C0zvu/SO6b1tRmiiCtTrHhjUB0tqhxjrFnDXZ/mpCJOElw50+qhbcElm0CYw==",
         "dependencies": {
-          "Microsoft.Data.Sqlite.Core": "6.0.22",
-          "Microsoft.EntityFrameworkCore.Relational": "6.0.22",
+          "Microsoft.Data.Sqlite.Core": "6.0.25",
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.25",
           "Microsoft.Extensions.DependencyModel": "6.0.0"
         }
       },
@@ -1749,7 +1749,7 @@
         "type": "Project",
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "[6.0.22, )",
-          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.22, )",
+          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.25, )",
           "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
           "Monai.Deploy.InformaticsGateway.Api": "[0.4.1, )",
@@ -1778,9 +1778,9 @@
       "monai.deploy.informaticsgateway.plugins.remoteappexecution": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "[6.0.22, )",
-          "Microsoft.EntityFrameworkCore.Relational": "[6.0.22, )",
-          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.22, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.25, )",
+          "Microsoft.EntityFrameworkCore.Relational": "[6.0.25, )",
+          "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.25, )",
           "Microsoft.Extensions.Configuration": "[6.0.1, )",
           "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
