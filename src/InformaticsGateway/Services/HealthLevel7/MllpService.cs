@@ -146,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                         continue;
                     }
 
-                    mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
+                    mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _mIIpExtract, _logginFactory.CreateLogger<MllpClient>());
                     _ = mllpClient.Start(OnDisconnect, cancellationToken);
                     _activeTasks.TryAdd(mllpClient.ClientId, mllpClient);
                 }
