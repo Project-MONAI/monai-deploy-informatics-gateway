@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 
@@ -10,48 +11,13 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    partial class InformaticsGatewayContextModelSnapshot : ModelSnapshot
+    [Migration("20231123141944_addHl7Config")]
+    partial class addHl7Config
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.25");
-
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Hl7ApplicationConfigEntity", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasColumnOrder(0);
-
-                    b.Property<string>("DataLink")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DataMapping")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateTimeCreated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("LastModified")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PlugInAssemblies")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SendingId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Name");
-
-                    b.HasIndex(new[] { "Name" }, "idx_hl7_name")
-                        .IsUnique();
-
-                    b.ToTable("Hl7ApplicationConfig");
-                });
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.22");
 
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DataKeyValuePair", b =>
                 {
@@ -226,47 +192,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.ToTable("ExternalAppDetails");
                 });
 
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Models.HL7DestinationEntity", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("AeTitle")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateTimeCreated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime?>("DateTimeUpdated")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("HostIp")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Port")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UpdatedBy")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Name");
-
-                    b.HasIndex(new[] { "Name" }, "idx_destination_name")
-                        .IsUnique()
-                        .HasDatabaseName("idx_destination_name1");
-
-                    b.HasIndex(new[] { "Name", "AeTitle", "HostIp", "Port" }, "idx_source_all")
-                        .IsUnique()
-                        .HasDatabaseName("idx_source_all1");
-
-                    b.ToTable("HL7DestinationEntities");
-                });
-
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity", b =>
                 {
                     b.Property<string>("Name")
@@ -400,7 +325,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 
                     b.HasIndex(new[] { "Name", "AeTitle", "HostIp" }, "idx_source_all")
                         .IsUnique()
-                        .HasDatabaseName("idx_source_all2");
+                        .HasDatabaseName("idx_source_all1");
 
                     b.HasIndex(new[] { "Name" }, "idx_source_name")
                         .IsUnique();

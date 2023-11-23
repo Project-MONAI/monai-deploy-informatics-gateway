@@ -160,6 +160,15 @@
           "Microsoft.EntityFrameworkCore.Relational": "6.0.25"
         }
       },
+      "Microsoft.EntityFrameworkCore.Design": {
+        "type": "Transitive",
+        "resolved": "6.0.0",
+        "contentHash": "RFdomymyuPNffl+VPk7osdxCJQ0xlGuxr28ifdfFFNUaMK0OYiJOjr6w9z3kscOM2p2gdPWNI1IFUXllEyphow==",
+        "dependencies": {
+          "Humanizer.Core": "2.8.26",
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.0"
+        }
+      },
       "Microsoft.EntityFrameworkCore.Relational": {
         "type": "Transitive",
         "resolved": "6.0.25",
@@ -627,23 +636,23 @@
       "monai.deploy.informaticsgateway.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "[4.1.1, )",
-          "System.IO.Abstractions": "[17.2.3, )"
+          "Ardalis.GuardClauses": "4.1.1",
+          "System.IO.Abstractions": "17.2.3"
         }
       },
       "monai.deploy.informaticsgateway.configuration": {
         "type": "Project",
         "dependencies": {
-          "Monai.Deploy.InformaticsGateway.Api": "[0.4.1, )",
-          "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )"
+          "Monai.Deploy.InformaticsGateway.Api": "0.4.1",
+          "Monai.Deploy.InformaticsGateway.Common": "1.0.0"
         }
       },
       "monai.deploy.informaticsgateway.database.api": {
         "type": "Project",
         "dependencies": {
-          "Monai.Deploy.InformaticsGateway.Api": "[0.4.1, )",
-          "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
-          "NLog": "[5.2.4, )"
+          "Monai.Deploy.InformaticsGateway.Api": "0.4.1",
+          "Monai.Deploy.InformaticsGateway.Configuration": "1.0.0",
+          "NLog": "5.2.4"
         }
       },
       "monai.deploy.informaticsgateway.database.entityframework": {
@@ -662,9 +671,9 @@
       "monai.deploy.informaticsgateway.database.mongodb": {
         "type": "Project",
         "dependencies": {
-          "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
-          "MongoDB.Driver": "[2.21.0, )",
-          "Polly": "[7.2.4, )"
+          "Monai.Deploy.InformaticsGateway.Database.Api": "1.0.0",
+          "MongoDB.Driver": "2.21.0",
+          "Polly": "7.2.4"
         }
       }
     }
