@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
     public class MllPExtractTests
     {
         private const string SampleMessage = "MSH|^~\\&|MD|MD HOSPITAL|MD Test|MONAI Deploy|202207130000|SECURITY|MD^A01^ADT_A01|MSG00001|P|2.8|||<ACK>|\r\n";
-        private const string AzMedMessage = "MSH|^~\\&|Rayvolve|AZMED|RIS|{InstitutionName}|{YYYYMMDDHHMMSS}||ORU^R01|{UniqueIdentifier}|P|2.5\r\nPID|{StudyInstanceUID}|{AccessionNumber}\r\nOBR|{StudyInstanceUID}||{AccessionNumber}|Rayvolve^{AlgorithmUsed}||||||||||||{AccessionNumber}|||||||F||{PriorityValues, ex: A^ASAP^HL70078}\r\nTQ1|||||||||{PriorityValues, ex: A^ASAP^HL70078}\r\nOBX|1|ST|113014^DICOM Study^DCM||{StudyInstanceUID}||||||O\r\nOBX|2|TX|59776-5^Procedure Findings^LN||{Textual findingsm, ex:\"Fracture detected\")}|||{Abnormal flag, ex : A^Abnormal^HL70078}|||F||||{ACR flag, ex : RID49482^Category 3 Non critical Actionable Finding^RadLex}\r\n";
+        private const string ABCDEMessage = "MSH|^~\\&|Rayvolve|ABCDE|RIS|{InstitutionName}|{YYYYMMDDHHMMSS}||ORU^R01|{UniqueIdentifier}|P|2.5\r\nPID|{StudyInstanceUID}|{AccessionNumber}\r\nOBR|{StudyInstanceUID}||{AccessionNumber}|Rayvolve^{AlgorithmUsed}||||||||||||{AccessionNumber}|||||||F||{PriorityValues, ex: A^ASAP^HL70078}\r\nTQ1|||||||||{PriorityValues, ex: A^ASAP^HL70078}\r\nOBX|1|ST|113014^DICOM Study^DCM||{StudyInstanceUID}||||||O\r\nOBX|2|TX|59776-5^Procedure Findings^LN||{Textual findingsm, ex:\"Fracture detected\")}|||{Abnormal flag, ex : A^Abnormal^HL70078}|||F||||{ACR flag, ex : RID49482^Category 3 Non critical Actionable Finding^RadLex}\r\n";
 
         private readonly Mock<ILogger<MllpExtract>> _logger;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -67,7 +67,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var correctid = new Guid("00000000-0000-0000-0000-000000000002");
             var azCorrectid = new Guid("00000000-0000-0000-0000-000000000001");
             var configs = new List<Hl7ApplicationConfigEntity> {
-                new Hl7ApplicationConfigEntity{ Id= new Guid("00000000-0000-0000-0000-000000000001"), SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "AZMED" } },
+                new Hl7ApplicationConfigEntity{ Id= new Guid("00000000-0000-0000-0000-000000000001"), SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "ABCDE" } },
                 new Hl7ApplicationConfigEntity{ Id= correctid, SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "MD HOSPITAL"  } },
             };
 
@@ -77,7 +77,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var config = MllpExtract.GetConfig(configs, message);
             Assert.Equal(correctid, config?.Id);
 
-            message = new Message(AzMedMessage);
+            message = new Message(ABCDEMessage);
             isParsed = message.ParseMessage();
 
             config = MllpExtract.GetConfig(configs, message);
@@ -92,7 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var configs = new List<Hl7ApplicationConfigEntity> {
                 new Hl7ApplicationConfigEntity{
                     Id= new Guid("00000000-0000-0000-0000-000000000001"),
-                    SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "AZMED" }
+                    SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "ABCDE" }
                     ,DataLink = new DataKeyValuePair{ Key = "PID.1", Value = DataLinkType.StudyInstanceUid }
                 },
                 new Hl7ApplicationConfigEntity{ Id= correctid, SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "MD HOSPITAL"  } },
@@ -111,7 +111,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                     DestinationFolder = "DestinationFolder2"
                 });
 
-            var message = new Message(AzMedMessage);
+            var message = new Message(ABCDEMessage);
             var isParsed = message.ParseMessage();
 
             var meatData = new Hl7FileStorageMetadata { Id = "metaId", File = new StorageObjectMetadata("txt") };
@@ -132,7 +132,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var configs = new List<Hl7ApplicationConfigEntity> {
                 new Hl7ApplicationConfigEntity{
                     Id= new Guid("00000000-0000-0000-0000-000000000001"),
-                    SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "AZMED" }
+                    SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "ABCDE" }
                     ,DataLink = new DataKeyValuePair{ Key = "PID.1", Value = DataLinkType.StudyInstanceUid },
                     DataMapping = new List<StringKeyValuePair>{
                         new StringKeyValuePair { Key = "PID.1", Value = DicomTag.StudyInstanceUID.ToString() },
@@ -158,7 +158,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                     StudyInstanceUid = "StudyInstanceId"
                 });
 
-            var message = new Message(AzMedMessage);
+            var message = new Message(ABCDEMessage);
             var isParsed = message.ParseMessage();
 
             var te = message.GetValue("OBR.1");
