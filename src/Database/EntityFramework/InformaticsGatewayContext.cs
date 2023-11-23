@@ -37,6 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
         public virtual DbSet<MonaiApplicationEntity> MonaiApplicationEntities { get; set; }
         public virtual DbSet<SourceApplicationEntity> SourceApplicationEntities { get; set; }
         public virtual DbSet<DestinationApplicationEntity> DestinationApplicationEntities { get; set; }
+        public virtual DbSet<HL7DestinationEntity> HL7DestinationEntities { get; set; }
         public virtual DbSet<InferenceRequest> InferenceRequests { get; set; }
         public virtual DbSet<Payload> Payloads { get; set; }
         public virtual DbSet<StorageMetadataWrapper> StorageMetadataWrapperEntities { get; set; }
@@ -53,6 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
             modelBuilder.ApplyConfiguration(new MonaiApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new SourceApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DestinationApplicationEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new HL7DestinationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new InferenceRequestConfiguration());
             modelBuilder.ApplyConfiguration(new PayloadConfiguration());
             modelBuilder.ApplyConfiguration(new StorageMetadataWrapperEntityConfiguration());
