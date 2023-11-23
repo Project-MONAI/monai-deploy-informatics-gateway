@@ -23,15 +23,18 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
 using Ardalis.GuardClauses;
+using FellowOakDicom.Network;
+using FellowOakDicom;
+using FellowOakDicom.Network.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -41,12 +44,14 @@ using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Storage.API;
 using Polly;
+using System.Net.Sockets;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
     public abstract class ExportServiceBase : IHostedService, IMonaiService, IDisposable
     {
-        private static readonly object SyncRoot = new();
+        protected static readonly object SyncRoot = new();
 
         internal event EventHandler? ReportActionCompleted;
 
@@ -54,13 +59,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         private readonly ILogger _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly InformaticsGatewayConfiguration _configuration;
-        private readonly IMessageBrokerSubscriberService _messageSubscriber;
-        private readonly IMessageBrokerPublisherService _messagePublisher;
+        protected readonly IMessageBrokerSubscriberService MessageSubscriber;
+        protected readonly IMessageBrokerPublisherService MessagePublisher;
         private readonly IServiceScope _scope;
-        private readonly Dictionary<string, ExportRequestEventDetails> _exportRequests;
+        protected readonly Dictionary<string, ExportRequestEventDetails> ExportRequests;
         private readonly IStorageInfoProvider _storageInfoProvider;
         private bool _disposedValue;
         private ulong _activeWorkers = 0;
+        private readonly IDicomToolkit _dicomToolkit;
 
         public abstract string RoutingKey { get; }
         protected abstract ushort Concurrency { get; }
@@ -76,15 +82,19 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         /// <returns></returns>
         protected abstract Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken);
 
+        protected abstract Task ProcessMessage(MessageReceivedEventArgs eventArgs);
+
         protected ExportServiceBase(
             ILogger logger,
             IOptions<InformaticsGatewayConfiguration> configuration,
-            IServiceScopeFactory serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            IDicomToolkit dicomToolkit)
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _scope = _serviceScopeFactory.CreateScope();
+            _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
 
             if (configuration is null)
             {
@@ -93,13 +103,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _configuration = configuration.Value;
 
-            _messageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
-            _messagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
+            MessageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
+            MessagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
             _storageInfoProvider = _scope.ServiceProvider.GetRequiredService<IStorageInfoProvider>();
 
-            _exportRequests = new Dictionary<string, ExportRequestEventDetails>();
+            ExportRequests = new Dictionary<string, ExportRequestEventDetails>();
 
-            _messageSubscriber.OnConnectionError += (sender, args) =>
+            MessageSubscriber.OnConnectionError += (sender, args) =>
             {
                 _logger.MessagingServiceErrorRecover(args.ErrorMessage);
                 SetupPolling();
@@ -125,11 +135,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void SetupPolling()
         {
-            _messageSubscriber.SubscribeAsync(RoutingKey, RoutingKey, OnMessageReceivedCallback, prefetchCount: Concurrency);
+            MessageSubscriber.SubscribeAsync(RoutingKey, RoutingKey, OnMessageReceivedCallback, prefetchCount: Concurrency);
             _logger.ExportEventSubscription(ServiceName, RoutingKey);
         }
 
-        private async Task OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
+        protected async Task OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
         {
             using var loggerScope = _logger.BeginScope(new Messaging.Common.LoggingDataDictionary<string, object> {
                 { "ThreadId", Environment.CurrentManagedThreadId },
@@ -138,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             if (!_storageInfoProvider.HasSpaceAvailableForExport)
             {
                 _logger.ExportServiceStoppedDueToLowStorageSpace(_storageInfoProvider.AvailableFreeSpace);
-                _messageSubscriber.Reject(eventArgs.Message);
+                MessageSubscriber.Reject(eventArgs.Message);
                 return;
             }
 
@@ -146,95 +156,14 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 _logger.ExceededMaxmimumNumberOfWorkers(ServiceName, _activeWorkers);
                 await Task.Delay(200).ConfigureAwait(false); // small delay to stop instantly dead lettering the next message.
-                _messageSubscriber.Reject(eventArgs.Message);
+                MessageSubscriber.Reject(eventArgs.Message);
                 return;
             }
 
             Interlocked.Increment(ref _activeWorkers);
             try
             {
-                var executionOptions = new ExecutionDataflowBlockOptions
-                {
-                    MaxDegreeOfParallelism = Concurrency,
-                    MaxMessagesPerTask = 1,
-                    CancellationToken = _cancellationTokenSource.Token
-                };
-
-                var exportFlow = new TransformManyBlock<ExportRequestEventDetails, ExportRequestDataMessage>(
-                    exportRequest => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
-                    executionOptions);
-
-                var outputDataEngineBLock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
-                    async (exportDataRequest) =>
-                    {
-                        try
-                        {
-                            if (exportDataRequest.IsFailed) return exportDataRequest;
-                            return await ExecuteOutputDataEngineCallback(exportDataRequest).ConfigureAwait(false);
-                        }
-                        catch (Exception e)
-                        {
-                            _logger.OutputDataEngineBlockException(e);
-                            exportDataRequest.SetFailed(FileExportStatus.ServiceError, $"failed to execute plugin {e.Message}");
-                            return exportDataRequest;
-                        }
-                    },
-                    executionOptions);
-
-                var exportActionBlock = new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
-                    async (exportDataRequest) =>
-                    {
-                        try
-                        {
-                            if (exportDataRequest.IsFailed) return exportDataRequest;
-                            return await ExportDataBlockCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
-                        }
-                        catch (Exception e)
-                        {
-
-                            exportDataRequest.SetFailed(FileExportStatus.ServiceError, $"Failed during export {e.Message}");
-                            return exportDataRequest;
-                        }
-
-                    },
-                    executionOptions);
-
-                var reportingActionBlock = new ActionBlock<ExportRequestDataMessage>(ReportingActionBlock, executionOptions);
-
-                var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
-
-                exportFlow.LinkTo(outputDataEngineBLock, linkOptions);
-                outputDataEngineBLock.LinkTo(exportActionBlock, linkOptions);
-                exportActionBlock.LinkTo(reportingActionBlock, linkOptions);
-
-                lock (SyncRoot)
-                {
-                    var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
-                    if (_exportRequests.ContainsKey(exportRequest.ExportTaskId))
-                    {
-                        _logger.ExportRequestAlreadyQueued(exportRequest.CorrelationId, exportRequest.ExportTaskId);
-                        return;
-                    }
-
-                    exportRequest.MessageId = eventArgs.Message.MessageId;
-                    exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
-
-                    var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
-
-                    _exportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
-                    if (!exportFlow.Post(exportRequestWithDetails))
-                    {
-                        _logger.ErrorPostingExportJobToQueue(exportRequest.CorrelationId, exportRequest.ExportTaskId);
-                        _messageSubscriber.Reject(eventArgs.Message);
-                    }
-                    else
-                    {
-                        _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.MessageId, exportRequest.ExportTaskId);
-                    }
-                }
-
-                exportFlow.Complete();
-                await reportingActionBlock.Completion.ConfigureAwait(false);
+                await ProcessMessage(eventArgs).ConfigureAwait(false);
             }
             catch (AggregateException ex)
             {
@@ -251,6 +180,110 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             {
                 Interlocked.Decrement(ref _activeWorkers);
             }
+        }
+
+        TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage> GetoutputDataEngineBlock(ExecutionDataflowBlockOptions executionOptions)
+        {
+            return new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
+                async (exportDataRequest) =>
+                {
+                    try
+                    {
+                        if (exportDataRequest.IsFailed) return exportDataRequest;
+                        return await ExecuteOutputDataEngineCallback(exportDataRequest).ConfigureAwait(false);
+                    }
+                    catch (Exception e)
+                    {
+                        exportDataRequest.SetFailed(FileExportStatus.ServiceError, $"failed to execute plugin {e.Message}");
+                        return exportDataRequest;
+                    }
+                },
+                executionOptions);
+        }
+
+        TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage> GetxportActionBlock(ExecutionDataflowBlockOptions executionOptions)
+        {
+            return new TransformBlock<ExportRequestDataMessage, ExportRequestDataMessage>(
+                async (exportDataRequest) =>
+                {
+                    try
+                    {
+                        if (exportDataRequest.IsFailed) return exportDataRequest;
+                        return await ExportDataBlockCallback(exportDataRequest, _cancellationTokenSource.Token).ConfigureAwait(false);
+                    }
+                    catch (Exception e)
+                    {
+
+                        exportDataRequest.SetFailed(FileExportStatus.ServiceError, $"Failed during export {e.Message}");
+                        return exportDataRequest;
+                    }
+
+                },
+                executionOptions);
+        }
+
+        protected (TransformManyBlock<ExportRequestEventDetails, ExportRequestDataMessage>, ActionBlock<ExportRequestDataMessage>) SetupActionBlocks()
+        {
+            var executionOptions = new ExecutionDataflowBlockOptions
+            {
+                MaxDegreeOfParallelism = Concurrency,
+                MaxMessagesPerTask = 1,
+                CancellationToken = _cancellationTokenSource.Token
+            };
+
+            var exportFlow = new TransformManyBlock<ExportRequestEventDetails, ExportRequestDataMessage>(
+                exportRequest => DownloadPayloadActionCallback(exportRequest, _cancellationTokenSource.Token),
+                executionOptions);
+
+            var outputDataEngineBLock = GetoutputDataEngineBlock(executionOptions);
+
+            var exportActionBlock = GetxportActionBlock(executionOptions);
+
+            var reportingActionBlock = new ActionBlock<ExportRequestDataMessage>(ReportingActionBlock, executionOptions);
+
+            var linkOptions = new DataflowLinkOptions { PropagateCompletion = true };
+
+            exportFlow.LinkTo(outputDataEngineBLock, linkOptions);
+            outputDataEngineBLock.LinkTo(exportActionBlock, linkOptions);
+            exportActionBlock.LinkTo(reportingActionBlock, linkOptions);
+
+            return (exportFlow, reportingActionBlock);
+        }
+
+        protected void HandleCStoreException(Exception ex, ExportRequestDataMessage exportRequestData)
+        {
+            var exception = ex;
+            var fillStatus = FileExportStatus.ServiceError;
+
+            if (exception is AggregateException)
+            {
+                exception = exception.InnerException!;
+            }
+
+            var errorMessage = $"Job failed with error: {exception.Message}.";
+
+            switch (exception)
+            {
+                case DicomAssociationAbortedException abortEx:
+                    errorMessage = $"Association aborted with reason {abortEx.AbortReason}.";
+                    break;
+                case DicomAssociationRejectedException rejectEx:
+                    errorMessage = $"Association rejected with reason {rejectEx.RejectReason}.";
+                    break;
+                case SocketException socketException:
+                    errorMessage = $"Association aborted with error {socketException.Message}.";
+                    break;
+                case ConfigurationException configException:
+                    errorMessage = $"{configException.Message}";
+                    fillStatus = FileExportStatus.ConfigurationError;
+                    break;
+                case ExternalAppExeception appException:
+                    errorMessage = $"{appException.Message}";
+                    break;
+            }
+
+            _logger.ExportException(errorMessage, ex);
+            exportRequestData.SetFailed(fillStatus, errorMessage);
         }
 
         // TPL doesn't yet support IAsyncEnumerable
@@ -282,6 +315,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            var stream = (await storageService.GetObjectAsync(_configuration.Storage.StorageServiceBucketName, file, cancellationToken).ConfigureAwait(false) as MemoryStream)!;
                            exportRequestData.SetData(stream.ToArray());
                            _logger.FileReadyForExport(file);
+                           ExportCompleteCallback(exportRequestData).GetAwaiter().GetResult();
                        });
 
                     task.Wait(cancellationToken);
@@ -309,9 +343,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             return await outputDataEngine.ExecutePlugInsAsync(exportDataRequest).ConfigureAwait(false);
         }
 
-        private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)
+        private static void HandleStatus(ExportRequestDataMessage exportRequestData, ExportRequestEventDetails exportRequest)
         {
-            var exportRequest = _exportRequests[exportRequestData.ExportTaskId];
             lock (SyncRoot)
             {
                 exportRequest.FileStatuses.Add(exportRequestData.Filename, exportRequestData.ExportStatus);
@@ -328,11 +361,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 {
                     exportRequest.AddErrorMessages(exportRequestData.Messages);
                 }
+            }
+        }
 
-                if (!exportRequest.IsCompleted)
-                {
-                    return;
-                }
+        private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)
+        {
+            var exportRequest = ExportRequests[exportRequestData.ExportTaskId];
+            HandleStatus(exportRequestData, exportRequest);
+            if (!exportRequest.IsCompleted)
+            {
+                return;
             }
 
             using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId } });
@@ -342,6 +380,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             var jsonMessage = new JsonMessage<ExportCompleteEvent>(exportCompleteEvent, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequest.CorrelationId, exportRequest.DeliveryTag);
 
+            FinaliseMessage(jsonMessage);
+
+            lock (SyncRoot)
+            {
+                ExportRequests.Remove(exportRequestData.ExportTaskId);
+            }
+
+            if (ReportActionCompleted != null)
+            {
+                _logger.CallingReportActionCompletedCallback();
+                ReportActionCompleted(this, EventArgs.Empty);
+            }
+        }
+
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+        protected virtual async Task ExportCompleteCallback(ExportRequestDataMessage exportRequestData) { }
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+
+        private void FinaliseMessage(JsonMessage<ExportCompleteEvent> jsonMessage)
+        {
             Policy
                .Handle<Exception>()
                .WaitAndRetry(
@@ -353,7 +411,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                .Execute(() =>
                {
                    _logger.PublishingExportCompleteEvent();
-                   _messagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
+                   MessagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
                });
 
             Policy
@@ -367,19 +425,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                .Execute(() =>
                {
                    _logger.SendingAcknowledgement();
-                   _messageSubscriber.Acknowledge(jsonMessage);
+                   MessageSubscriber.Acknowledge(jsonMessage);
                });
-
-            lock (SyncRoot)
-            {
-                _exportRequests.Remove(exportRequestData.ExportTaskId);
-            }
-
-            if (ReportActionCompleted != null)
-            {
-                _logger.CallingReportActionCompletedCallback();
-                ReportActionCompleted(this, EventArgs.Empty);
-            }
         }
 
         protected virtual void Dispose(bool disposing)
@@ -394,6 +441,141 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 _disposedValue = true;
             }
         }
+
+        private async Task<DestinationApplicationEntity> LookupDestinationAsync(string destinationName, CancellationToken cancellationToken)
+        {
+            if (string.IsNullOrWhiteSpace(destinationName))
+            {
+                throw new ConfigurationException("Export task does not have destination set.");
+            }
+
+            using var scope = _serviceScopeFactory.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<IDestinationApplicationEntityRepository>();
+            var destination = await repository.FindByNameAsync(destinationName, cancellationToken).ConfigureAwait(false);
+
+            if (destination is null)
+            {
+                throw new ConfigurationException($"Specified destination '{destinationName}' does not exist.");
+            }
+
+            return destination;
+        }
+
+        protected async Task<DestinationApplicationEntity?> GetDestination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
+        {
+            try
+            {
+                return await LookupDestinationAsync(destinationName, cancellationToken).ConfigureAwait(false);
+            }
+            catch (ConfigurationException ex)
+            {
+                HandleCStoreException(ex, exportRequestData);
+                return null;
+            }
+        }
+
+        protected async Task HandleDesination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
+        {
+            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
+
+            var manualResetEvent = new ManualResetEvent(false);
+            var destination = await GetDestination(exportRequestData, destinationName, cancellationToken).ConfigureAwait(false);
+            if (destination is null)
+            {
+                return;
+            }
+
+            try
+            {
+                await ExecuteExport(exportRequestData, manualResetEvent, destination!, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                HandleCStoreException(ex, exportRequestData);
+            }
+        }
+
+        private async Task<bool> GenerateRequestsAsync(
+            ExportRequestDataMessage exportRequestData,
+            IDicomClient client,
+            ManualResetEvent manualResetEvent)
+        {
+            DicomFile dicomFile;
+            try
+            {
+                dicomFile = _dicomToolkit.Load(exportRequestData.FileContent);
+            }
+            catch (Exception ex)
+            {
+                var errorMessage = $"Error reading DICOM file: {ex.Message}";
+                _logger.ExportException(errorMessage, ex);
+                exportRequestData.SetFailed(FileExportStatus.UnsupportedDataType, errorMessage);
+                return false;
+            }
+
+            try
+            {
+                var request = new DicomCStoreRequest(dicomFile);
+
+                request.OnResponseReceived += (req, response) =>
+                {
+                    if (response.Status == DicomStatus.Success)
+                    {
+                        _logger.DimseExportInstanceComplete();
+                    }
+                    else
+                    {
+                        var errorMessage = $"Failed to export with error {response.Status}";
+                        _logger.DimseExportInstanceError(response.Status);
+                        exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
+                    }
+                    manualResetEvent.Set();
+                };
+
+                await client.AddRequestAsync(request).ConfigureAwait(false);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                var errorMessage = $"Error while adding DICOM C-STORE request: {exception.Message}";
+                _logger.DimseExportErrorAddingInstance(exception.Message, exception);
+                exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
+                return false;
+            }
+        }
+
+        protected async Task ExecuteExport(ExportRequestDataMessage exportRequestData, ManualResetEvent manualResetEvent, DestinationApplicationEntity destination, CancellationToken cancellationToken) => await Policy
+                   .Handle<Exception>()
+                   .WaitAndRetryAsync(
+                       _configuration.Export.Retries.RetryDelays,
+                       (exception, timeSpan, retryCount, context) =>
+                       {
+                           _logger.DimseExportErrorWithRetry(timeSpan, retryCount, exception);
+                       })
+                   .ExecuteAsync(async () =>
+                   {
+                       var client = DicomClientFactory.Create(
+                               destination.HostIp,
+                               destination.Port,
+                               false,
+                               _configuration.Dicom.Scu.AeTitle,
+                               destination.AeTitle);
+
+                       client.AssociationAccepted += (sender, args) => _logger.ExportAssociationAccepted();
+                       client.AssociationRejected += (sender, args) => _logger.ExportAssociationRejected();
+                       client.AssociationReleased += (sender, args) => _logger.ExportAssociationReleased();
+                       client.ServiceOptions.LogDataPDUs = _configuration.Dicom.Scu.LogDataPdus;
+                       client.ServiceOptions.LogDimseDatasets = _configuration.Dicom.Scu.LogDimseDatasets;
+
+                       client.NegotiateAsyncOps();
+                       if (await GenerateRequestsAsync(exportRequestData, client, manualResetEvent).ConfigureAwait(false))
+                       {
+                           _logger.DimseExporting(destination.AeTitle, destination.HostIp, destination.Port);
+                           await client.SendAsync(cancellationToken).ConfigureAwait(false);
+                           manualResetEvent.WaitOne();
+                           _logger.DimseExportComplete(destination.AeTitle);
+                       }
+                   }).ConfigureAwait(false);
 
         public void Dispose()
         {

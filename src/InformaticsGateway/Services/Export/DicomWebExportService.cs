@@ -21,12 +21,13 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -35,6 +36,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 using Polly;
 
@@ -60,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             ILogger<DicomWebExportService> logger,
             IOptions<InformaticsGatewayConfiguration> configuration,
             IDicomToolkit dicomToolkit)
-            : base(logger, configuration, serviceScopeFactory)
+            : base(logger, configuration, serviceScopeFactory, dicomToolkit)
         {
             _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
@@ -73,9 +75,42 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             Concurrency = configuration.Value.DicomWeb.MaximumNumberOfConnection;
         }
 
+        protected override async Task ProcessMessage(MessageReceivedEventArgs eventArgs)
+        {
+            var (exportFlow, reportingActionBlock) = SetupActionBlocks();
+
+            lock (SyncRoot)
+            {
+                var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
+                if (ExportRequests.ContainsKey(exportRequest.ExportTaskId))
+                {
+                    _logger.ExportRequestAlreadyQueued(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                    return;
+                }
+
+                exportRequest.MessageId = eventArgs.Message.MessageId;
+                exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
+
+                var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
+
+                ExportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
+                if (!exportFlow.Post(exportRequestWithDetails))
+                {
+                    _logger.ErrorPostingExportJobToQueue(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                    MessageSubscriber.Reject(eventArgs.Message);
+                }
+                else
+                {
+                    _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.MessageId, exportRequest.ExportTaskId);
+                }
+            }
+
+            exportFlow.Complete();
+            await reportingActionBlock.Completion.ConfigureAwait(false);
+        }
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
+            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
 
             using var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
@@ -174,7 +209,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     break;
 
                 default:
-                    throw new ServiceException("Failed to export to destination.");
+                    throw new InformaticsGateway.Common.ServiceException("Failed to export to destination.");
             }
         }
     }

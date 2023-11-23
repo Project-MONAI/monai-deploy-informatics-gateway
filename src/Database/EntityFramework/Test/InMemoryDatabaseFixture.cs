@@ -16,6 +16,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {

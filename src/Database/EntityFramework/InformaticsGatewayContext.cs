@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Database.Api;
@@ -41,9 +42,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
         public virtual DbSet<StorageMetadataWrapper> StorageMetadataWrapperEntities { get; set; }
         public virtual DbSet<DicomAssociationInfo> DicomAssociationHistories { get; set; }
         public virtual DbSet<VirtualApplicationEntity> VirtualApplicationEntities { get; set; }
+        public virtual DbSet<ExternalAppDetails> ExternalAppDetails { get; set; }
 
         public virtual DbSet<Hl7ApplicationConfigEntity> Hl7ApplicationConfig { get; set; }
-
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -57,7 +58,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
             modelBuilder.ApplyConfiguration(new StorageMetadataWrapperEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DicomAssociationInfoConfiguration());
             modelBuilder.ApplyConfiguration(new VirtualApplicationEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new Hl7ApplicationConfigConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

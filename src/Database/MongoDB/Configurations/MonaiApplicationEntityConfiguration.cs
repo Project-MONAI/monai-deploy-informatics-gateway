@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using MongoDB.Bson.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Configurations

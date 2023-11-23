@@ -205,7 +205,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
             }, CancellationToken.None);
 
             Status = ServiceStatus.Running;
-            _logger.ServiceRunning(ServiceName);
             if (task.IsCompleted)
                 return task;
             return Task.CompletedTask;

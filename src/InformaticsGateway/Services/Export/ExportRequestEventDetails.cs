@@ -29,7 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             ExportTaskId = exportRequest.ExportTaskId;
             Files = new List<string>(exportRequest.Files);
             Destinations = new string[exportRequest.Destinations.Length];
-            Array.Copy(exportRequest.Destinations, Destinations, exportRequest.Destinations.Length);
+            //Array.Copy(exportRequest.Destinations, Destinations, exportRequest.Destinations.Length);
             exportRequest.Destinations.CopyTo(Destinations, 0);
             DeliveryTag = exportRequest.DeliveryTag;
             MessageId = exportRequest.MessageId;
@@ -38,6 +38,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             PluginAssemblies.AddRange(exportRequest.PluginAssemblies);
             ErrorMessages.AddRange(exportRequest.ErrorMessages);
+
+            StartTime = DateTimeOffset.UtcNow;
+        }
+
+        public ExportRequestEventDetails(ExternalAppRequestEvent externalAppRequest)
+        {
+            CorrelationId = externalAppRequest.CorrelationId;
+            ExportTaskId = externalAppRequest.ExportTaskId;
+            Files = new List<string>(externalAppRequest.Files);
+            Destinations = externalAppRequest.Targets.Select(t => t.Destination).ToArray();
+            DeliveryTag = externalAppRequest.DeliveryTag;
+            MessageId = externalAppRequest.MessageId;
+            WorkflowInstanceId = externalAppRequest.WorkflowInstanceId;
+            PayloadId = externalAppRequest.DestinationFolder;
+
+            PluginAssemblies.AddRange(externalAppRequest.PluginAssemblies);
+            ErrorMessages.AddRange(externalAppRequest.ErrorMessages);
 
             StartTime = DateTimeOffset.UtcNow;
         }

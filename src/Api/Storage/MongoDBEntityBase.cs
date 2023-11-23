@@ -1,6 +1,5 @@
-/*
- * Copyright 2021-2022 MONAI Consortium
- * Copyright 2019-2020 NVIDIA Corporation
+﻿/*
+ * Copyright 2022 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,26 +14,26 @@
  * limitations under the License.
  */
 
-namespace Monai.Deploy.InformaticsGateway.Api
+using System;
+
+namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
-    /// <summary>
-    /// Destination Application Entity
-    /// </summary>
-    /// <example>
-    /// <code>
-    /// {
-    ///     "name": "MYPACS",
-    ///     "hostIp": "10.20.100.200",
-    ///     "aeTitle": "MONAIPACS",
-    ///     "port": 1104
-    /// }
-    /// </code>
-    /// </example>
-    public class DestinationApplicationEntity : BaseApplicationEntity
+    public abstract class MongoDBEntityBase
     {
         /// <summary>
-        /// Gets or sets the port to connect to.
+        /// Gets or set the MongoDB associated identifier.
         /// </summary>
-        public int Port { get; set; }
+        public Guid Id { get; set; }
+
+        /// <summary>
+        /// Gets or set the date and time the objects first created.
+        /// </summary>
+        public DateTime DateTimeCreated { get; set; }
+
+        protected MongoDBEntityBase()
+        {
+            Id = Guid.NewGuid();
+            DateTimeCreated = DateTime.UtcNow;
+        }
     }
 }

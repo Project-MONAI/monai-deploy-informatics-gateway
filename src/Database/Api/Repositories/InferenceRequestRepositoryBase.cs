@@ -17,7 +17,6 @@
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
@@ -63,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api.Repositories
         {
             Guard.Against.Null(inferenceRequest, nameof(inferenceRequest));
 
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
+            using var loggerScope = _logger.BeginScope(new InformaticsGateway.Api.LoggingDataDictionary<string, object> { { "TransactionId", inferenceRequest.TransactionId } });
 
             if (status == InferenceRequestStatus.Success)
             {

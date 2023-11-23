@@ -28,6 +28,7 @@ using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.SharedTest;
 using Moq;
@@ -234,7 +235,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new InsufficientStorageAvailableException());
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ScpInputTypeEnum>())).Throws(new InsufficientStorageAvailableException());
 
             var countdownEvent = new CountdownEvent(3);
             var service = await CreateService();
@@ -266,7 +267,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new IOException { HResult = Constants.ERROR_HANDLE_DISK_FULL });
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ScpInputTypeEnum>())).Throws(new IOException { HResult = Constants.ERROR_HANDLE_DISK_FULL });
             var countdownEvent = new CountdownEvent(3);
             var service = await CreateService();
 
@@ -297,7 +298,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>())).Throws(new Exception());
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ScpInputTypeEnum>())).Throws(new Exception());
 
             var countdownEvent = new CountdownEvent(3);
             var service = await CreateService();
@@ -329,7 +330,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ScpInputTypeEnum>()));
 
             var countdownEvent = new CountdownEvent(3);
             var service = await CreateService();
@@ -361,7 +362,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
             _associationDataProvider.Setup(p => p.CanStore).Returns(true);
-            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>()));
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ScpInputTypeEnum>()));
 
             var countdownEvent = new CountdownEvent(1);
             var service = await CreateService();
@@ -380,6 +381,41 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _logger.VerifyLogging($"Aborted {DicomAbortSource.ServiceUser} with reason {DicomAbortReason.NotSpecified}.", LogLevel.Warning, Times.Once());
         }
 
+        [RetryFact(5, 250, DisplayName = "C-STORE - ExternalApp OnCStoreRequest - SendType")]
+        public async Task CStore_OnCStoreRequest_SendsType()
+        {
+            ScpInputTypeEnum savedType = ScpInputTypeEnum.WorkflowTrigger;
+            _associationDataProvider.Setup(p => p.IsValidSourceAsync(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.IsAeTitleConfiguredAsync(It.IsAny<string>())).ReturnsAsync(true);
+            _associationDataProvider.Setup(p => p.CanStore).Returns(true);
+            _associationDataProvider.Setup(p => p.HandleCStoreRequest(It.IsAny<DicomCStoreRequest>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<Guid>(), It.IsAny<ScpInputTypeEnum>()))
+                .Callback((DicomCStoreRequest request, string b, string c, Guid d, ScpInputTypeEnum type) => savedType = type);
+
+            var countdownEvent = new CountdownEvent(3);
+            var service = await CreateExternalAppService();
+
+            var client = DicomClientFactory.Create("localhost", _configuration.Value.Dicom.Scp.ExternalAppPort, false, "STORESCU", "STORESCP");
+            var request = new DicomCStoreRequest(InstanceGenerator.GenerateDicomFile());
+            await client.AddRequestAsync(request);
+            client.AssociationAccepted += (sender, e) =>
+            {
+                countdownEvent.Signal();
+            };
+            client.AssociationReleased += (sender, e) =>
+            {
+                countdownEvent.Signal();
+            };
+            request.OnResponseReceived += (DicomCStoreRequest request, DicomCStoreResponse response) =>
+            {
+                Assert.Equal(DicomStatus.Success, response.Status);
+                countdownEvent.Signal();
+            };
+
+            await client.SendAsync();
+            Assert.True(countdownEvent.Wait(2000));
+            Assert.Equal(ScpInputTypeEnum.ExternalAppReturn, savedType);
+        }
+
         private async Task<ScpService> CreateService()
         {
             var tryCount = 0;
@@ -394,6 +430,27 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     await Task.Delay(100);
                 }
                 service = new ScpService(_serviceScopeFactory.Object, _associationDataProvider.Object, _appLifetime.Object, _configuration);
+                _ = service.StartAsync(_cancellationTokenSource.Token);
+            } while (service.Status != ServiceStatus.Running && tryCount++ < 5);
+
+            Assert.Equal(ServiceStatus.Running, service.Status);
+            return service;
+        }
+
+        private async Task<ExternalAppScpService> CreateExternalAppService()
+        {
+            var tryCount = 0;
+            ExternalAppScpService service = null;
+
+            do
+            {
+                _configuration.Value.Dicom.Scp.ExternalAppPort = Interlocked.Increment(ref s_nextPort);
+                if (service != null)
+                {
+                    service.Dispose();
+                    await Task.Delay(100);
+                }
+                service = new ExternalAppScpService(_serviceScopeFactory.Object, _associationDataProvider.Object, _appLifetime.Object, _configuration);
                 _ = service.StartAsync(_cancellationTokenSource.Token);
             } while (service.Status != ServiceStatus.Running && tryCount++ < 5);
 

@@ -20,7 +20,7 @@ using Ardalis.GuardClauses;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.Messaging.Events;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Models
 {
     public class ExportRequestDataMessage
     {

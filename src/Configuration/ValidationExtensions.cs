@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {

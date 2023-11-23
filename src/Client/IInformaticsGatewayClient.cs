@@ -17,6 +17,7 @@
 using System;
 using System.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Client.Services;
 
 namespace Monai.Deploy.InformaticsGateway.Client

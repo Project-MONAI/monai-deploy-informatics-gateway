@@ -40,6 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB
             StorageMetadataWrapperEntityConfiguration.Configure();
             DicomAssociationInfoConfiguration.Configure();
             VirtualApplicationEntityConfiguration.Configure();
+            ExternalAppDetailsConfiguration.Configure();
             return host;
         }
     }

@@ -16,6 +16,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {
@@ -131,6 +132,17 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             set.Add(da3);
             set.Add(da4);
             set.Add(da5);
+
+            DatabaseContext.SaveChanges();
+        }
+        internal void InitDatabaseWithExternalAppDetailsEntries()
+        {
+            var ea1 = new ExternalAppDetails { StudyInstanceUid = "1", PatientId = "11", PatientIdOutBound = "1" };
+            var ea2 = new ExternalAppDetails { StudyInstanceUid = "2", PatientId = "22", PatientIdOutBound = "2" };
+            var set = DatabaseContext.Set<ExternalAppDetails>();
+            set.RemoveRange(set.ToList());
+            set.Add(ea1);
+            set.Add(ea2);
 
             DatabaseContext.SaveChanges();
         }

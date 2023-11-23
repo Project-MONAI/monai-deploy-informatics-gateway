@@ -27,7 +27,7 @@ using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -156,7 +156,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<string>(),
                                                               It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
-            _logger.VerifyLogging("SCU Export configuration error: Export task does not have destination set.", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging("Export task does not have destination set.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(10, 250, DisplayName = "When destination is not configured")]
@@ -202,7 +202,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
                                                               It.IsAny<ushort>()), Times.Once());
 
-            _logger.VerifyLogging($"SCU Export configuration error: Specified destination 'pacs' does not exist.", LogLevel.Error, Times.Once());
+            _logger.VerifyLogging($"Specified destination 'pacs' does not exist.", LogLevel.Error, Times.Once());
         }
 
         [RetryFact(1, 250, DisplayName = "Association rejected")]

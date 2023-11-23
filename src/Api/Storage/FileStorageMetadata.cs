@@ -104,6 +104,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         [JsonPropertyName("payloadId")]
         public string? PayloadId { get; set; }
 
+       // [JsonPropertyName("destinationFolder")]
+       //public string? DestinationFolderNeil { get; set; }
+
         /// <summary>
         /// DO NOT USE
         /// This constructor is intended for JSON serializer.

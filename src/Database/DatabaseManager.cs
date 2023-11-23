@@ -92,6 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(EntityFramework.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(EntityFramework.Repositories.VirtualApplicationEntityRepository));
                     services.AddScoped(typeof(IHl7ApplicationConfigRepository), typeof(EntityFramework.Repositories.Hl7ApplicationConfigRepository));
+                    services.AddSingleton(typeof(IExternalAppDetailsRepository), typeof(EntityFramework.Repositories.ExternalAppDetailsRepository));
 
                     services.ConfigureDatabaseFromPlugIns(DatabaseType.EntityFramework, fileSystem, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
                     return services;
@@ -108,6 +109,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(MongoDB.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(MongoDB.Repositories.VirtualApplicationEntityRepository));
                     services.AddScoped(typeof(IHl7ApplicationConfigRepository), typeof(MongoDB.Repositories.Hl7ApplicationConfigRepository));
+                    services.AddSingleton(typeof(IExternalAppDetailsRepository), typeof(MongoDB.Repositories.ExternalAppDetailsRepository));
 
                     services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
 

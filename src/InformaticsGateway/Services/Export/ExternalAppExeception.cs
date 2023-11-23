@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,26 @@
  */
 
 using System;
+using System.Runtime.Serialization;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
-    public abstract class MongoDBEntityBase
+    public class ExternalAppExeception : Exception
     {
-        /// <summary>
-        /// Gets or set the MongoDB associated identifier.
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// Gets or set the date and time the objects first created.
-        /// </summary>
-        public DateTime DateTimeCreated { get; set; }
-
-        protected MongoDBEntityBase()
+        public ExternalAppExeception()
         {
-            Id = Guid.NewGuid();
-            DateTimeCreated = DateTime.UtcNow;
+        }
+
+        public ExternalAppExeception(string message) : base(message)
+        {
+        }
+
+        public ExternalAppExeception(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+
+        protected ExternalAppExeception(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
         }
     }
 }
