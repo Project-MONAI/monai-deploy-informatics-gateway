@@ -29,9 +29,9 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Direct",
-        "requested": "[6.0.22, )",
-        "resolved": "6.0.22",
-        "contentHash": "3ycEYrtWoa4kv5mUECU2LNBbWiYh345b1uQLvg4pHCEICXoJZ8Sfu/2yGloKiMNgMdDc02gFYCRHxsqQNZpnWA=="
+        "requested": "[6.0.25, )",
+        "resolved": "6.0.25",
+        "contentHash": "DalO25C96LsIfAPlyizyun9y1XrIquRugPEGXC8+z7dFo+GyU0LRd0R11JDd3rJWjR18NOFYwqNenjyDpNRO3A=="
       },
       "Monai.Deploy.Messaging": {
         "type": "Direct",

@@ -382,6 +382,7 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
+    - 6.0.25
     :when: 2022-08-16 23:05:53.706997823 Z
 - - :approve
   - Microsoft.Extensions.ApiDescription.Server

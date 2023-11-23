@@ -98,8 +98,8 @@
       },
       "Microsoft.EntityFrameworkCore.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.22",
-        "contentHash": "3ycEYrtWoa4kv5mUECU2LNBbWiYh345b1uQLvg4pHCEICXoJZ8Sfu/2yGloKiMNgMdDc02gFYCRHxsqQNZpnWA=="
+        "resolved": "6.0.25",
+        "contentHash": "DalO25C96LsIfAPlyizyun9y1XrIquRugPEGXC8+z7dFo+GyU0LRd0R11JDd3rJWjR18NOFYwqNenjyDpNRO3A=="
       },
       "Microsoft.Extensions.Configuration.Abstractions": {
         "type": "Transitive",
@@ -1265,7 +1265,7 @@
         "type": "Project",
         "dependencies": {
           "Macross.Json.Extensions": "[3.0.0, )",
-          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.22, )",
+          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.25, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
           "Monai.Deploy.Messaging": "[1.0.5, )",
           "Monai.Deploy.Messaging.RabbitMQ": "[1.0.5, )",

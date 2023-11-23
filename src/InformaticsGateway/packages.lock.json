@@ -356,10 +356,10 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks": {
         "type": "Transitive",
-        "resolved": "6.0.22",
-        "contentHash": "HB1Zp1NY9m+HwYKLZBgUfNIt0xXzm4APARDuAIPODl8pT4g10oOiEDN8asOzx/sfL9xM+Sse5Zne9L+6qYi/iA==",
+        "resolved": "6.0.25",
+        "contentHash": "9vz47iGkzqhh0bGqomOTxaJNEEajeNcbSTSWwhh9Soo9lWm0UdPbw04CxXCQJPhc0aw9OaMnOxx7sCcde8/adA==",
         "dependencies": {
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.22",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.25",
           "Microsoft.Extensions.Hosting.Abstractions": "6.0.0",
           "Microsoft.Extensions.Logging.Abstractions": "6.0.4",
           "Microsoft.Extensions.Options": "6.0.0"
@@ -367,17 +367,17 @@
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": {
         "type": "Transitive",
-        "resolved": "6.0.22",
-        "contentHash": "yvz+0r3qAt6gNEKlGSBO1BXMhtD3Tt8yzU59dHASolpwlSHvgqy0tEP6KXn3MPoKlPr0CiAHUdzOwYSoljzRSg=="
+        "resolved": "6.0.25",
+        "contentHash": "9sd1K/rp/vlxrBWNa0i8fgHCBPg94cocGMsJr7z9e2zQGQxMHNGpspdcy/FRGPAh2CINQet/RrM6Ef196xI20w=="
       },
       "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": {
         "type": "Transitive",
-        "resolved": "6.0.22",
-        "contentHash": "PNj+/e/GCJh3ZNzxEGhkMpKJgmmbuGar6Uk/R3mPFZacTx6lBdLs4Ev7uf4XQWqTdJe56rK+2P3oF/9jIGbxgw==",
+        "resolved": "6.0.25",
+        "contentHash": "Cmhq0sgb53+dh9xHOlBEQUhi13vsZeQ4fcYC9JYO4med7pabj9x3100opCdUv+7UX+tUC1GPm/nco+1skJdLFA==",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore.Relational": "6.0.22",
-          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.22",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.22"
+          "Microsoft.EntityFrameworkCore.Relational": "6.0.25",
+          "Microsoft.Extensions.Diagnostics.HealthChecks": "6.0.25",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions": "6.0.25"
         }
       },
       "Microsoft.Extensions.FileProviders.Abstractions": {
@@ -1696,7 +1696,7 @@
         "type": "Project",
         "dependencies": {
           "Macross.Json.Extensions": "[3.0.0, )",
-          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.22, )",
+          "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.25, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
           "Monai.Deploy.Messaging": "[1.0.5, )",
           "Monai.Deploy.Messaging.RabbitMQ": "[1.0.5, )",
@@ -1728,7 +1728,7 @@
         "type": "Project",
         "dependencies": {
           "AspNetCore.HealthChecks.MongoDb": "[6.0.2, )",
-          "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "[6.0.22, )",
+          "Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore": "[6.0.25, )",
           "Microsoft.Extensions.Options.ConfigurationExtensions": "[6.0.0, )",
           "Monai.Deploy.InformaticsGateway.Api": "[0.4.1, )",
           "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
@@ -1748,7 +1748,7 @@
       "monai.deploy.informaticsgateway.database.entityframework": {
         "type": "Project",
         "dependencies": {
-          "Microsoft.EntityFrameworkCore": "[6.0.22, )",
+          "Microsoft.EntityFrameworkCore": "[6.0.25, )",
           "Microsoft.EntityFrameworkCore.Sqlite": "[6.0.25, )",
           "Microsoft.Extensions.Configuration.FileExtensions": "[6.0.0, )",
           "Microsoft.Extensions.Configuration.Json": "[6.0.0, )",
