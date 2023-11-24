@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Models
 {
     /// <summary>
     /// HL7 Destination Entity
