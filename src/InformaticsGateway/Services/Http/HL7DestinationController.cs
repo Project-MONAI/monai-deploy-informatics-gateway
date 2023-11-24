@@ -24,13 +24,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Models;
-using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Services.Common;
-using Monai.Deploy.InformaticsGateway.Services.Scu;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
@@ -40,19 +37,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     {
         private readonly ILogger<HL7DestinationController> _logger;
         private readonly IHL7DestinationEntityRepository _repository;
-        private readonly IDataPlugInEngineFactory<IOutputDataPlugIn> _outputDataPlugInEngineFactory;
-        private readonly IScuQueue _scuQueue;
 
         public HL7DestinationController(
             ILogger<HL7DestinationController> logger,
-            IHL7DestinationEntityRepository repository,
-            IScuQueue scuQueue,
-            IDataPlugInEngineFactory<IOutputDataPlugIn> outputDataPlugInEngineFactory)
+            IHL7DestinationEntityRepository repository)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _scuQueue = scuQueue ?? throw new ArgumentNullException(nameof(scuQueue));
-            _outputDataPlugInEngineFactory = outputDataPlugInEngineFactory ?? throw new ArgumentNullException(nameof(outputDataPlugInEngineFactory));
         }
 
         [HttpGet]
@@ -106,51 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         [ActionName(nameof(GetAeTitle))]
         public async Task<IActionResult> CEcho(string name)
         {
-            var traceId = HttpContext?.TraceIdentifier ?? Guid.NewGuid().ToString();
-            try
-            {
-                if (string.IsNullOrWhiteSpace(name))
-                {
-                    return NotFound();
-                }
-
-                var hl7DestinationEntity = await _repository.FindByNameAsync(name, HttpContext!.RequestAborted).ConfigureAwait(false);
-
-                if (hl7DestinationEntity is null)
-                {
-                    return NotFound();
-                }
-
-                var request = new ScuWorkRequest(
-                    traceId,
-                    RequestType.CEcho,
-                    hl7DestinationEntity.HostIp,
-                    hl7DestinationEntity.Port,
-                    hl7DestinationEntity.AeTitle,
-                    HttpContext.RequestAborted
-                );
-                var response = await _scuQueue.Queue(request, HttpContext.RequestAborted).ConfigureAwait(false);
-
-                if (response.Status != ResponseStatus.Success)
-                {
-                    return Problem(
-                        title: "C-ECHO Failure",
-                        instance: traceId,
-                        detail: response.Message,
-                        statusCode: StatusCodes.Status502BadGateway);
-                }
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.ErrorCEechoHL7DestinationEntity(name, ex);
-                return Problem(
-                    title: $"Error performing C-ECHO",
-                    instance: traceId,
-                    statusCode: StatusCodes.Status500InternalServerError,
-                    detail: ex.Message);
-            }
+            throw new NotImplementedException();
         }
 
         [HttpPost]
@@ -249,30 +196,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 await _repository.RemoveAsync(hl7DestinationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
 
-                _logger.HL7DestinationEntityDeleted(name);
+                _logger.HL7DestinationEntityDeleted(name.Substring(0, 10));
                 return Ok(hl7DestinationEntity);
             }
             catch (Exception ex)
             {
                 _logger.ErrorDeletingHL7DestinationEntity(ex);
                 return Problem(title: "Error deleting HL7 destination.", statusCode: StatusCodes.Status500InternalServerError, detail: ex.Message);
-            }
-        }
-
-        [HttpGet("plug-ins")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<MonaiApplicationEntity> GetPlugIns()
-        {
-            try
-            {
-                return Ok(_outputDataPlugInEngineFactory.RegisteredPlugIns());
-            }
-            catch (Exception ex)
-            {
-                _logger.ErrorReadingDataInputPlugIns(ex);
-                return Problem(title: "Error reading data input plug-ins.", statusCode: (int)System.Net.HttpStatusCode.InternalServerError, detail: ex.Message);
             }
         }
 
