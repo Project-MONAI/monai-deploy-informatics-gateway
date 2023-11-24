@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Test
