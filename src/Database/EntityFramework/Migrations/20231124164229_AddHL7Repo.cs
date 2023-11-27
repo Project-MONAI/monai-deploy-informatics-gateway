@@ -8,11 +8,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.RenameIndex(
-                name: "idx_source_all1",
-                table: "SourceApplicationEntities",
-                newName: "idx_source_all2");
-
             migrationBuilder.CreateTable(
                 name: "HL7DestinationEntities",
                 columns: table => new
@@ -48,11 +43,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
         {
             migrationBuilder.DropTable(
                 name: "HL7DestinationEntities");
-
-            migrationBuilder.RenameIndex(
-                name: "idx_source_all2",
-                table: "SourceApplicationEntities",
-                newName: "idx_source_all1");
         }
     }
 }
