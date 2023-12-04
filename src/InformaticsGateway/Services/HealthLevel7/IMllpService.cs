@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,14 @@
  * limitations under the License.
  */
 
-namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
-{
-    internal interface IDataClient
-    {
-        Task SendAsync(DataProvider dataProvider, params object[] args);
+using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
 
-        Task SaveHl7Async(DataProvider dataProvider, params object[] args);
+namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+{
+    public interface IMllpService
+    {
+        Task SendMllp(IPAddress address, int port, string hl7Message, CancellationToken cancellationToken);
     }
 }

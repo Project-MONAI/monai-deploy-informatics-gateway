@@ -80,6 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 }
                 catch (Exception ex)
                 {
+                    _logger.ErrorAddingOutputDataPlugIn(ex, plugin);
                     exceptions.Add(new PlugInLoadingException($"Error loading plug-in '{plugin}'.", ex));
                 }
             }

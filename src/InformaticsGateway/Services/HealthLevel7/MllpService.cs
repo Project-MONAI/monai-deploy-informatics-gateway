@@ -18,9 +18,13 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using HL7.Dotnetcore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -37,7 +41,7 @@ using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
-    internal sealed class MllpService : IHostedService, IDisposable, IMonaiService
+    internal sealed class MllpService : IMllpService, IHostedService, IDisposable, IMonaiService
     {
         private const int SOCKET_OPERATION_CANCELLED = 125;
         private bool _disposedValue;
@@ -133,7 +137,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                         continue;
                     }
 
-                    mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _mIIpExtract, _logginFactory.CreateLogger<MllpClient>());
+                    mllpClient = _mllpClientFactory.CreateClient(client, _configuration.Value.Hl7, _logginFactory.CreateLogger<MllpClient>());
                     _ = mllpClient.Start(OnDisconnect, cancellationToken);
                     _activeTasks.TryAdd(mllpClient.ClientId, mllpClient);
                 }
@@ -217,6 +221,87 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
                 _disposedValue = true;
             }
+        }
+
+        public async Task SendMllp(IPAddress address, int port, string hl7Message, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var body = $"{Resources.AsciiVT}{hl7Message}{Resources.AsciiFS}{Resources.AcsiiCR}";
+                var sendMessageByteBuffer = Encoding.UTF8.GetBytes(body);
+                await WriteMessage(sendMessageByteBuffer, address, port).ConfigureAwait(false);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                _logger.Hl7AckMissingStartOrEndCharacters();
+                throw new Hl7SendException("ACK missing start or end characters");
+            }
+            catch (Exception ex)
+            {
+                _logger.Hl7SendException(ex);
+                throw new Hl7SendException("Send exception");
+            }
+        }
+
+        private async Task WriteMessage(byte[] sendMessageByteBuffer, IPAddress address, int port)
+        {
+
+            using var tcpClient = new TcpClient();
+
+            tcpClient.Connect(address, port);
+
+            var networkStream = new NetworkStream(tcpClient.Client);
+
+            if (networkStream.CanWrite)
+            {
+                networkStream.Write(sendMessageByteBuffer, 0, sendMessageByteBuffer.Length);
+                networkStream.Flush();
+            }
+            else
+            {
+                _logger.Hl7ClientStreamNotWritable();
+                throw new Hl7SendException("Client stream not writable");
+            }
+
+            _logger.Hl7MessageSent(Encoding.UTF8.GetString(sendMessageByteBuffer));
+
+            await EnsureAck(networkStream).ConfigureAwait(false);
+        }
+
+        private async Task EnsureAck(NetworkStream networkStream)
+        {
+            using var s_cts = new CancellationTokenSource();
+            s_cts.CancelAfter(_configuration.Value.Hl7.ClientTimeoutMilliseconds);
+            var buffer = new byte[2048];
+
+            // get the SentHl7Message
+            networkStream.ReadTimeout = 5000;
+            networkStream.WriteTimeout = 5000;
+
+            // wait for responce
+            while (!s_cts.IsCancellationRequested && networkStream.DataAvailable == false)
+            {
+                await Task.Delay(20).ConfigureAwait(false);
+            }
+
+            var bytesRead = await networkStream.ReadAsync(buffer).ConfigureAwait(false);
+
+            if (bytesRead == 0 || s_cts.IsCancellationRequested)
+            {
+                throw new Hl7SendException("ACK message contains no ACK!");
+            }
+
+            var _rawHl7Messages = MessageHelper.ExtractMessages(Encoding.UTF8.GetString(buffer));
+            foreach (var message in _rawHl7Messages)
+            {
+                var hl7Message = new Message(message);
+                hl7Message.ParseMessage();
+                if (hl7Message.MessageStructure == "ACK")
+                {
+                    return;
+                }
+            }
+            throw new Hl7SendException("ACK message contains no ACK!");
         }
 
         public void Dispose()

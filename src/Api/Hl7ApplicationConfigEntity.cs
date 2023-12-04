@@ -16,8 +16,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
@@ -28,6 +28,13 @@ namespace Monai.Deploy.InformaticsGateway.Api
 {
     public class Hl7ApplicationConfigEntity : MongoDBEntityBase
     {
+        /// <summary>
+        /// Gets or sets the name of a Hl7 application entity.
+        /// This value must be unique.
+        /// </summary>
+        [Key, Column(Order = 0)]
+        public string Name { get; set; } = default!;
+
         /// <summary>
         /// Gets or sets the sending identifier.
         /// </summary>
@@ -47,6 +54,11 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// </summary>
         [JsonProperty("data_mapping")]
         public List<StringKeyValuePair> DataMapping { get; set; } = new();
+
+        /// <summary>
+        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputHL7DataPlugInEngine"/>.
+        /// </summary>
+        public List<string> PlugInAssemblies { get; set; } = default!;
 
         public IEnumerable<string> Validate()
         {
@@ -116,6 +128,12 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public static List<StringKeyValuePair> FromDictionary(Dictionary<string, string> dictionary) =>
             dictionary.Select(kvp => new StringKeyValuePair { Key = kvp.Key, Value = kvp.Value }).ToList();
 
+        public override bool Equals(object? obj) => Equals(obj as StringKeyValuePair);
+
+        public bool Equals(StringKeyValuePair? other) => other != null && Key == other.Key && Value == other.Value;
+
+        public override int GetHashCode() => HashCode.Combine(Key, Value);
+
     }
 
     public class DataKeyValuePair : IKeyValuePair<string, DataLinkType>
@@ -128,6 +146,12 @@ namespace Monai.Deploy.InformaticsGateway.Api
         {
             return new DataKeyValuePair { Key = kvp.Key, Value = kvp.Value };
         }
+
+        public override bool Equals(object? obj) => Equals(obj as DataKeyValuePair);
+
+        public bool Equals(DataKeyValuePair? other) => other != null && Key == other.Key && Value == other.Value;
+
+        public override int GetHashCode() => HashCode.Combine(Key, Value);
     }
 
     public interface IKeyValuePair<TKey, TValue>

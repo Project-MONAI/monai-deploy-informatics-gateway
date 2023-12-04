@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Net;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using HL7.Dotnetcore;
@@ -137,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var actions = new Dictionary<IMllpClient, Func<IMllpClient, MllpClientResult, Task>>();
             var mllpClients = new List<Mock<IMllpClient>>();
             var checkEvent = new CountdownEvent(5);
-            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<IMllpExtract>(), It.IsAny<ILogger<MllpClient>>()))
+            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<ILogger<MllpClient>>()))
                 .Returns(() =>
                 {
                     var client = new Mock<IMllpClient>();
@@ -185,7 +184,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         {
             var checkEvent = new CountdownEvent(_options.Value.Hl7.MaximumNumberOfConnections);
             var mllpClients = new List<Mock<IMllpClient>>();
-            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<IMllpExtract>(), It.IsAny<ILogger<MllpClient>>()))
+            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<ILogger<MllpClient>>()))
                .Returns(() =>
                {
                    var client = new Mock<IMllpClient>();
@@ -219,7 +218,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var checkEvent = new ManualResetEventSlim();
             var client = new Mock<IMllpClient>();
             var callCount = 0;
-            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<IMllpExtract>(), It.IsAny<ILogger<MllpClient>>()))
+            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<ILogger<MllpClient>>()))
                 .Returns(() =>
                 {
                     client.Setup(p => p.Start(It.IsAny<Func<IMllpClient, MllpClientResult, Task>>(), It.IsAny<CancellationToken>()))
@@ -279,7 +278,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var client = new Mock<IMllpClient>();
             _mIIpExtract.Setup(e => e.ExtractInfo(It.IsAny<Hl7FileStorageMetadata>(), It.IsAny<Message>()))
                 .ReturnsAsync((Hl7FileStorageMetadata meta, Message Msg) => Msg);
-            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<IMllpExtract>(), It.IsAny<ILogger<MllpClient>>()))
+            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<ILogger<MllpClient>>()))
                 .Returns(() =>
                 {
                     client.Setup(p => p.Start(It.IsAny<Func<IMllpClient, MllpClientResult, Task>>(), It.IsAny<CancellationToken>()))
@@ -323,7 +322,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _mIIpExtract.Setup(e => e.ExtractInfo(It.IsAny<Hl7FileStorageMetadata>(), It.IsAny<Message>()))
                 .ReturnsAsync((Hl7FileStorageMetadata meta, Message Msg) => Msg);
 
-            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<IMllpExtract>(), It.IsAny<ILogger<MllpClient>>()))
+            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<ILogger<MllpClient>>()))
                 .Returns(() =>
                 {
                     client.Setup(p => p.Start(It.IsAny<Func<IMllpClient, MllpClientResult, Task>>(), It.IsAny<CancellationToken>()))

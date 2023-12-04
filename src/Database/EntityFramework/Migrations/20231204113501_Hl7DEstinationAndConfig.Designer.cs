@@ -11,49 +11,43 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    [Migration("20231124164229_AddHL7Repo")]
-    partial class AddHL7Repo
+    [Migration("20231204113501_Hl7DEstinationAndConfig")]
+    partial class Hl7DEstinationAndConfig
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.25");
 
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DataKeyValuePair", b =>
-                {
-                    b.Property<string>("Key")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Key");
-
-                    b.ToTable("DataKeyValuePair");
-                });
-
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Hl7ApplicationConfigEntity", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<string>("Name")
+                        .HasColumnType("TEXT")
+                        .HasColumnOrder(0);
+
+                    b.Property<string>("DataLink")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("DataLinkKey")
+                    b.Property<string>("DataMapping")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("SendingIdKey")
+                    b.Property<string>("PlugInAssemblies")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<string>("SendingId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("DataLinkKey");
+                    b.HasKey("Name");
 
-                    b.HasIndex("SendingIdKey");
+                    b.HasIndex(new[] { "Name" }, "idx_hl7_name")
+                        .IsUnique();
 
                     b.ToTable("Hl7ApplicationConfig");
                 });
@@ -435,25 +429,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.ToTable("Payloads");
                 });
 
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.StringKeyValuePair", b =>
-                {
-                    b.Property<string>("Key")
-                        .HasColumnType("TEXT");
-
-                    b.Property<Guid?>("Hl7ApplicationConfigEntityId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Value")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Key");
-
-                    b.HasIndex("Hl7ApplicationConfigEntityId");
-
-                    b.ToTable("StringKeyValuePair");
-                });
-
             modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity", b =>
                 {
                     b.Property<string>("Name")
@@ -523,37 +498,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.HasIndex(new[] { "IsUploaded" }, "idx_storagemetadata_uploaded");
 
                     b.ToTable("StorageMetadataWrapperEntities");
-                });
-
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Hl7ApplicationConfigEntity", b =>
-                {
-                    b.HasOne("Monai.Deploy.InformaticsGateway.Api.DataKeyValuePair", "DataLink")
-                        .WithMany()
-                        .HasForeignKey("DataLinkKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Monai.Deploy.InformaticsGateway.Api.StringKeyValuePair", "SendingId")
-                        .WithMany()
-                        .HasForeignKey("SendingIdKey")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("DataLink");
-
-                    b.Navigation("SendingId");
-                });
-
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.StringKeyValuePair", b =>
-                {
-                    b.HasOne("Monai.Deploy.InformaticsGateway.Api.Hl7ApplicationConfigEntity", null)
-                        .WithMany("DataMapping")
-                        .HasForeignKey("Hl7ApplicationConfigEntityId");
-                });
-
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Hl7ApplicationConfigEntity", b =>
-                {
-                    b.Navigation("DataMapping");
                 });
 #pragma warning restore 612, 618
         }

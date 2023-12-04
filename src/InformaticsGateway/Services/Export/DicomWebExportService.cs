@@ -21,7 +21,6 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Threading.Tasks.Dataflow;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
@@ -46,7 +45,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     {
         private readonly ILoggerFactory _loggerFactory;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<DicomWebExportService> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IDicomToolkit _dicomToolkit;
@@ -66,7 +64,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
@@ -77,42 +74,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         protected override async Task ProcessMessage(MessageReceivedEventArgs eventArgs)
         {
-            var (exportFlow, reportingActionBlock) = SetupActionBlocks();
-
-            lock (SyncRoot)
-            {
-                var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
-                if (ExportRequests.ContainsKey(exportRequest.ExportTaskId))
-                {
-                    _logger.ExportRequestAlreadyQueued(exportRequest.CorrelationId, exportRequest.ExportTaskId);
-                    return;
-                }
-
-                exportRequest.MessageId = eventArgs.Message.MessageId;
-                exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
-
-                var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
-
-                ExportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
-                if (!exportFlow.Post(exportRequestWithDetails))
-                {
-                    _logger.ErrorPostingExportJobToQueue(exportRequest.CorrelationId, exportRequest.ExportTaskId);
-                    MessageSubscriber.Reject(eventArgs.Message);
-                }
-                else
-                {
-                    _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.MessageId, exportRequest.ExportTaskId);
-                }
-            }
-
-            exportFlow.Complete();
-            await reportingActionBlock.Completion.ConfigureAwait(false);
+            await BaseProcessMessage(eventArgs);
         }
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
         {
             using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
 
-            using var scope = _serviceScopeFactory.CreateScope();
+            using var scope = ServiceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
 
             foreach (var transaction in exportRequestData.Destinations)

@@ -60,6 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
             modelBuilder.ApplyConfiguration(new StorageMetadataWrapperEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DicomAssociationInfoConfiguration());
             modelBuilder.ApplyConfiguration(new VirtualApplicationEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new Hl7ApplicationConfigConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

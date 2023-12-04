@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly ILogger _logger;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
+        protected readonly IServiceScopeFactory ServiceScopeFactory;
         private readonly InformaticsGatewayConfiguration _configuration;
         protected readonly IMessageBrokerSubscriberService MessageSubscriber;
         protected readonly IMessageBrokerPublisherService MessagePublisher;
@@ -72,6 +72,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         protected abstract ushort Concurrency { get; }
         public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
         public abstract string ServiceName { get; }
+
+        protected string ExportCompleteTopic { get; set; }
 
         /// <summary>
         /// Override the <c>ExportDataBlockCallback</c> method to customize export logic.
@@ -92,9 +94,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             _cancellationTokenSource = new CancellationTokenSource();
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
-            _scope = _serviceScopeFactory.CreateScope();
+            ServiceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+            _scope = ServiceScopeFactory.CreateScope();
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
+
 
             if (configuration is null)
             {
@@ -103,6 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             _configuration = configuration.Value;
 
+            ExportCompleteTopic = _configuration.Messaging.Topics.ExportComplete;
             MessageSubscriber = _scope.ServiceProvider.GetRequiredService<IMessageBrokerSubscriberService>();
             MessagePublisher = _scope.ServiceProvider.GetRequiredService<IMessageBrokerPublisherService>();
             _storageInfoProvider = _scope.ServiceProvider.GetRequiredService<IStorageInfoProvider>();
@@ -125,12 +129,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             return Task.CompletedTask;
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
             _cancellationTokenSource.Cancel();
             _logger.ServiceStopping(ServiceName);
             Status = ServiceStatus.Stopped;
-            return Task.CompletedTask;
+#pragma warning disable CA2016 // Forward the 'CancellationToken' parameter to methods
+            await Task.Delay(250).ConfigureAwait(false);
+#pragma warning restore CA2016 // Forward the 'CancellationToken' parameter to methods
+            _cancellationTokenSource.Dispose();
+            return;
         }
 
         private void SetupPolling()
@@ -292,7 +300,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             Guard.Against.Null(exportRequest, nameof(exportRequest));
             using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequest.ExportTaskId }, { "CorrelationId", exportRequest.CorrelationId } });
-            var scope = _serviceScopeFactory.CreateScope();
+            var scope = ServiceScopeFactory.CreateScope();
             var storageService = scope.ServiceProvider.GetRequiredService<IStorageService>();
 
             foreach (var file in exportRequest.Files)
@@ -331,7 +339,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        private async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest)
+        protected virtual async Task<ExportRequestDataMessage> ExecuteOutputDataEngineCallback(ExportRequestDataMessage exportDataRequest)
         {
             using var loggerScope = _logger.BeginScope(new Messaging.Common.LoggingDataDictionary<string, object> {
                 { "WorkflowInstanceId", exportDataRequest.WorkflowInstanceId },
@@ -411,7 +419,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                .Execute(() =>
                {
                    _logger.PublishingExportCompleteEvent();
-                   MessagePublisher.Publish(_configuration.Messaging.Topics.ExportComplete, jsonMessage.ToMessage());
+                   MessagePublisher.Publish(ExportCompleteTopic, jsonMessage.ToMessage());
                });
 
             Policy
@@ -449,19 +457,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                 throw new ConfigurationException("Export task does not have destination set.");
             }
 
-            using var scope = _serviceScopeFactory.CreateScope();
+            using var scope = ServiceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IDestinationApplicationEntityRepository>();
             var destination = await repository.FindByNameAsync(destinationName, cancellationToken).ConfigureAwait(false);
 
-            if (destination is null)
-            {
-                throw new ConfigurationException($"Specified destination '{destinationName}' does not exist.");
-            }
-
-            return destination;
+            return destination is null
+                ? throw new ConfigurationException($"Specified destination '{destinationName}' does not exist.")
+                : destination;
         }
 
-        protected async Task<DestinationApplicationEntity?> GetDestination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
+        protected virtual async Task<DestinationApplicationEntity?> GetDestination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
         {
             try
             {
@@ -474,7 +479,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
         }
 
-        protected async Task HandleDesination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
+        protected virtual async Task HandleDesination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
         {
             Guard.Against.Null(exportRequestData, nameof(exportRequestData));
 
@@ -576,6 +581,41 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                            _logger.DimseExportComplete(destination.AeTitle);
                        }
                    }).ConfigureAwait(false);
+
+        protected async Task BaseProcessMessage(MessageReceivedEventArgs eventArgs)
+        {
+            var (exportFlow, reportingActionBlock) = SetupActionBlocks();
+
+            lock (SyncRoot)
+            {
+                var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
+                if (ExportRequests.ContainsKey(exportRequest.ExportTaskId))
+                {
+                    _logger.ExportRequestAlreadyQueued(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                    return;
+                }
+
+                exportRequest.MessageId = eventArgs.Message.MessageId;
+                exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
+
+                var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
+
+                ExportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
+                if (!exportFlow.Post(exportRequestWithDetails))
+                {
+                    _logger.ErrorPostingExportJobToQueue(exportRequest.CorrelationId, exportRequest.ExportTaskId);
+                    MessageSubscriber.Reject(eventArgs.Message);
+                }
+                else
+                {
+                    _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.MessageId, exportRequest.ExportTaskId);
+                }
+            }
+
+            exportFlow.Complete();
+            await reportingActionBlock.Completion.ConfigureAwait(false);
+
+        }
 
         public void Dispose()
         {

@@ -34,9 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     internal class ScuExportService : ExportServiceBase
     {
         private readonly ILogger<ScuExportService> _logger;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
-        private readonly IDicomToolkit _dicomToolkit;
 
         protected override ushort Concurrency { get; }
         public override string RoutingKey { get; }
@@ -50,9 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             : base(logger, configuration, serviceScopeFactory, dicomToolkit)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
 
             RoutingKey = $"{configuration.Value.Messaging.Topics.ExportRequestPrefix}.{_configuration.Value.Dicom.Scu.AgentName}";
             Concurrency = _configuration.Value.Dicom.Scu.MaximumNumberOfAssociations;
@@ -60,36 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         protected override async Task ProcessMessage(MessageReceivedEventArgs eventArgs)
         {
-            var (exportFlow, reportingActionBlock) = SetupActionBlocks();
-
-            lock (SyncRoot)
-            {
-                var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
-                if (ExportRequests.ContainsKey(exportRequest.ExportTaskId))
-                {
-                    _logger.ExportRequestAlreadyQueued(exportRequest.CorrelationId, exportRequest.ExportTaskId);
-                    return;
-                }
-
-                exportRequest.MessageId = eventArgs.Message.MessageId;
-                exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
-
-                var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
-
-                ExportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
-                if (!exportFlow.Post(exportRequestWithDetails))
-                {
-                    _logger.ErrorPostingExportJobToQueue(exportRequest.CorrelationId, exportRequest.ExportTaskId);
-                    MessageSubscriber.Reject(eventArgs.Message);
-                }
-                else
-                {
-                    _logger.ExportRequestQueuedForProcessing(exportRequest.CorrelationId, exportRequest.MessageId, exportRequest.ExportTaskId);
-                }
-            }
-
-            exportFlow.Complete();
-            await reportingActionBlock.Completion.ConfigureAwait(false);
+            await BaseProcessMessage(eventArgs);
         }
 
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)

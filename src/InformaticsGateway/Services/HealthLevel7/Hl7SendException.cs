@@ -1,5 +1,5 @@
-/*
- * Copyright 2022 MONAI Consortium
+﻿/*
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
+using System;
+using System.Runtime.Serialization;
+
 namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
-    internal static class Resources
+    internal class Hl7SendException : Exception
     {
-        public const int AcceptAcknowledgementType = 15;
+        public Hl7SendException()
+        {
+        }
 
-        public const char AsciiVT = (char)0x0B;
-        public const char AsciiFS = (char)0x1C;
-        public const char AcsiiCR = (char)13;
+        public Hl7SendException(string message) : base(message)
+        {
+        }
 
-        public const string AcknowledgmentTypeNever = "NE";
-        public const string AcknowledgmentTypeError = "ER";
-        public const string AcknowledgmentTypeSuccessful = "SU";
+        public Hl7SendException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
 
-        public const string MessageHeaderSegment = "MSH";
+        protected Hl7SendException(SerializationInfo info, StreamingContext context) : base(info, context)
+        {
+        }
     }
 }

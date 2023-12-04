@@ -133,16 +133,9 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<ITcpListenerFactory, TcpListenerFactory>();
                     services.AddSingleton<IMllpClientFactory, MllpClientFactory>();
                     services.AddSingleton<IApplicationEntityManager, ApplicationEntityManager>();
-                    //services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();
                     services.AddSingleton<IScuQueue, ScuQueue>();
-                    //services.AddSingleton<ScpService>();
-                    //services.AddSingleton<ScuService>();
-                    //services.AddSingleton<ScuExportService>();
-                    //services.AddSingleton<DicomWebExportService>();
-                    //services.AddSingleton<DataRetrievalService>();
-                    //services.AddSingleton<PayloadNotificationService>();
-                    //services.AddSingleton<MllpService>();
-                    //services.AddSingleton<ObjectUploadService>();
+                    services.AddSingleton<IMllpService, MllpService>();
+
 
                     var timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:dicomWeb:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
@@ -160,16 +153,17 @@ namespace Monai.Deploy.InformaticsGateway
                         .SetHandlerLifetime(timeout);
 
 #pragma warning disable CS8603 // Possible null reference return.
-                    services.AddHostedService<ObjectUploadService>(/*p => p.GetService<ObjectUploadService>()*/);
-                    services.AddHostedService<DataRetrievalService>(/*p => p.GetService<DataRetrievalService>()*/);
-                    services.AddHostedService<ScpService>(/*p => p.GetService<ScpService>()*/);
+                    services.AddHostedService<ObjectUploadService>();
+                    services.AddHostedService<DataRetrievalService>();
+                    services.AddHostedService<ScpService>();
                     services.AddHostedService<ExternalAppScpService>();
-                    services.AddHostedService<ScuService>(/*p => p.GetService<ScuService>()*/);
+                    services.AddHostedService<ScuService>();
                     services.AddHostedService<ExtAppScuExportService>();
-                    services.AddHostedService<ScuExportService>(/*p => p.GetService<ScuExportService>()*/);
-                    services.AddHostedService<DicomWebExportService>(/*p => p.GetService<DicomWebExportService>()*/);
-                    services.AddHostedService<PayloadNotificationService>(/*p => p.GetService<PayloadNotificationService>()*/);
-                    services.AddHostedService<MllpService>(/*p => p.GetService<MllpService>()*/);
+                    services.AddHostedService<ScuExportService>();
+                    services.AddHostedService<DicomWebExportService>();
+                    services.AddHostedService<PayloadNotificationService>();
+                    services.AddHostedService<MllpService>();
+                    services.AddHostedService<Hl7ExportService>();
 #pragma warning restore CS8603 // Possible null reference return.
 
                 })

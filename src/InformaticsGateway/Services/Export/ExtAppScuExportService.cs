@@ -37,13 +37,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     public class ExtAppScuExportService : ExportServiceBase
     {
         private readonly ILogger<ExtAppScuExportService> _logger;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IExternalAppDetailsRepository _repository;
         private readonly IDicomToolkit _dicomToolkit;
         protected override ushort Concurrency { get; }
         public override string RoutingKey { get; }
-        public override string ServiceName => "DICOM Export Service";
+        public override string ServiceName => "External App Export Service";
 
         public ExtAppScuExportService(
             ILogger<ExtAppScuExportService> logger,
@@ -54,7 +53,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             : base(logger, configuration, serviceScopeFactory, dicomToolkit)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
