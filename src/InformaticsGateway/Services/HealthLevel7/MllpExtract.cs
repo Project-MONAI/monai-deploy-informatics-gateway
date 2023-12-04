@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 }
                 // extract data for the given fields
                 // Use Id to get record from Db
-                var details = await GetExtAppDetails(configItem, message);
+                var details = await GetExtAppDetails(configItem, message).ConfigureAwait(false);
 
                 if (details is null)
                 {
@@ -101,9 +101,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             switch (type)
             {
                 case DataLinkType.PatientId:
-                    return await _externalAppDetailsRepository.GetByPatientIdOutboundAsync(tagId, new CancellationToken());
+                    return await _externalAppDetailsRepository.GetByPatientIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false); ;
                 case DataLinkType.StudyInstanceUid:
-                    return await _externalAppDetailsRepository.GetByStudyIdOutboundAsync(tagId, new CancellationToken());
+                    return await _externalAppDetailsRepository.GetByStudyIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false); ;
                 default:
                     break;
             }
@@ -115,7 +115,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         {
             foreach (var item in config)
             {
-                var t = message.GetValue(item.SendingId.Key);
                 if (item.SendingId.Value == message.GetValue(item.SendingId.Key))
                 {
                     return item;

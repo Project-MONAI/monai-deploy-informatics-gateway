@@ -81,5 +81,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             stopwatch.Stop();
             _outputHelper.WriteLine($"Time to upload to DICOMWeb={0}s...", stopwatch.Elapsed.TotalSeconds);
         }
+        public Task SaveHl7Async(DataProvider dataProvider, params object[] args) => throw new NotImplementedException();
     }
 }

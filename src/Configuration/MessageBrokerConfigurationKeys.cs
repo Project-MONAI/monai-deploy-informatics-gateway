@@ -55,5 +55,19 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         /// </summary>
         [ConfigurationKeyName("externalAppRequest")]
         public string ExternalAppRequest { get; set; } = "md.externalapp.request";
+
+        /// <summary>
+        /// Gets or sets the topic for publishing workflow requests.
+        /// Defaults to `md.export.request`.
+        /// </summary>
+        [ConfigurationKeyName("exportHl7")]
+        public string ExportHL7 { get; set; } = "md.export.hl7";
+
+        /// <summary>
+        /// Gets or sets the topic for publishing export complete requests.
+        /// Defaults to `md_export_complete`.
+        /// </summary>
+        [ConfigurationKeyName("exportHl7Complete")]
+        public string ExportHl7Complete { get; set; } = "md.export.hl7complete";
     }
 }

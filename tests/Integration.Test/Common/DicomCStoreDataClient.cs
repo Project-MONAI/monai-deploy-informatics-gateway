@@ -115,5 +115,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             await dicomClient.SendAsync();
             countdownEvent.Wait(timeout);
         }
+        public Task SaveHl7Async(DataProvider dataProvider, params object[] args) => throw new NotImplementedException();
     }
 }

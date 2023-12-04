@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+using System.Text.Json.Serialization;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Monai.Deploy.InformaticsGateway.Api;
 
@@ -24,7 +27,60 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
     {
         public void Configure(EntityTypeBuilder<Hl7ApplicationConfigEntity> builder)
         {
-            builder.HasKey(j => j.Id);
+            var valueComparer = new ValueComparer<List<string>>(
+                (c1, c2) => c1!.SequenceEqual(c2!),
+                c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                c => c.ToList());
+
+            var jsonSerializerSettings = new JsonSerializerOptions
+            {
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+            };
+
+            builder.HasKey(j => j.Name);
+            builder.Property(j => j.SendingId).HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<StringKeyValuePair>(v, jsonSerializerSettings)!)
+                .IsRequired()
+                .Metadata
+                .SetValueComparer(
+                    new ValueComparer<StringKeyValuePair>(
+                        (c1, c2) => c1 == c2,
+                        c => c.GetHashCode(),
+                        c => c));
+
+            builder.Property(j => j.DataLink).HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<DataKeyValuePair>(v, jsonSerializerSettings)!)
+                .IsRequired()
+                .Metadata
+                .SetValueComparer(
+                    new ValueComparer<DataKeyValuePair>(
+                        (c1, c2) => c1 == c2,
+                        c => c.GetHashCode(),
+                        c => c));
+
+            builder.Property(j => j.DateTimeCreated).IsRequired();
+            builder.Property(j => j.PlugInAssemblies)
+                .HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<List<string>>(v, jsonSerializerSettings)!)
+                .Metadata.SetValueComparer(valueComparer);
+
+            builder.Property(j => j.DataMapping)
+                .HasConversion(
+                        v => JsonSerializer.Serialize(v, jsonSerializerSettings),
+                        v => JsonSerializer.Deserialize<List<StringKeyValuePair>>(v, jsonSerializerSettings)!)
+                .Metadata
+                .SetValueComparer(
+                    new ValueComparer<List<StringKeyValuePair>>(
+                        (c1, c2) => c1!.SequenceEqual(c2!),
+                        c => c.Aggregate(0, (a, v) => HashCode.Combine(a, v.GetHashCode())),
+                        c => c.ToList()));
+
+            builder.HasIndex(p => p.Name, "idx_hl7_name").IsUnique();
+
+            builder.Ignore(p => p.Id);
         }
     }
 }

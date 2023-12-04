@@ -34,7 +34,7 @@ using TechTalk.SpecFlow.Infrastructure;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
 {
-    internal class Assertions
+    public class Assertions
     {
         private readonly Configurations _configurations;
         private readonly InformaticsGatewayConfiguration _options;
@@ -400,6 +400,11 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             {
                 left.Dataset.GetString(tag).Should().Be(right.Dataset.GetString(tag));
             }
+        }
+
+        public static void ShouldBeInMessageDictionary(Dictionary<string, HL7.Dotnetcore.Message> messages, HL7.Dotnetcore.Message message)
+        {
+            messages.Values.FirstOrDefault(m => m.HL7Message == message.HL7Message).Should().NotBeNull();
         }
     }
 }

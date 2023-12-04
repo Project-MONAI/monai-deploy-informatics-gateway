@@ -55,6 +55,11 @@ namespace Monai.Deploy.InformaticsGateway.Client
         IAeTitleService<VirtualApplicationEntity> VirtualAeTitle { get; }
 
         /// <summary>
+        /// Provides APIs to list, create, delete Virtual AE Titles.
+        /// </summary>
+        IAeTitleService<HL7DestinationEntity> HL7Destinations { get; }
+
+        /// <summary>
         /// Configures the service URI of the DICOMweb service.
         /// </summary>
         /// <param name="uriRoot">Base URL of the DICOMweb server.</param>

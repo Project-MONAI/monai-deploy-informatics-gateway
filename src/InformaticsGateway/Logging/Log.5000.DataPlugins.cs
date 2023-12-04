@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using System;
 using Microsoft.Extensions.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Logging
@@ -40,5 +41,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 5006, Level = LogLevel.Debug, Message = "Adding SCP Listener {serviceName} on port {port}")]
         public static partial void AddingScpListener(this ILogger logger, string serviceName, int port);
+
+        [LoggerMessage(EventId = 5007, Level = LogLevel.Error, Message = "Error executing plug-in: {plugin}.")]
+        public static partial void ErrorAddingOutputDataPlugIn(this ILogger logger, Exception d, string plugin);
     }
 }

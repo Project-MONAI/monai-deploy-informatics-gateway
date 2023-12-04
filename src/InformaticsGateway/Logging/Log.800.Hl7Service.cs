@@ -90,5 +90,16 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 822, Level = LogLevel.Debug, Message = "HL7 changing value {hl7Tag} from {oldValue} to {newValue}")]
         public static partial void ChangingHl7Values(this ILogger logger, string hl7Tag, string oldValue, string newValue);
 
+        [LoggerMessage(EventId = 823, Level = LogLevel.Error, Message = "HL7 destination stream not writable")]
+        public static partial void Hl7ClientStreamNotWritable(this ILogger logger);
+
+        [LoggerMessage(EventId = 824, Level = LogLevel.Error, Message = "HL7 Ack missing start or end characters")]
+        public static partial void Hl7AckMissingStartOrEndCharacters(this ILogger logger);
+
+        [LoggerMessage(EventId = 825, Level = LogLevel.Error, Message = "HL7 Execption sending Hl7 meassage")]
+        public static partial void Hl7SendException(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 826, Level = LogLevel.Debug, Message = "HL7 meassage sent received {ack}")]
+        public static partial void Hl7MessageSent(this ILogger logger, string ack);
     }
 }

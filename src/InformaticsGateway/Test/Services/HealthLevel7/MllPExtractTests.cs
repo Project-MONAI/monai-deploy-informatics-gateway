@@ -37,6 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
     {
         private const string SampleMessage = "MSH|^~\\&|MD|MD HOSPITAL|MD Test|MONAI Deploy|202207130000|SECURITY|MD^A01^ADT_A01|MSG00001|P|2.8|||<ACK>|\r\n";
         private const string ABCDEMessage = "MSH|^~\\&|Rayvolve|ABCDE|RIS|{InstitutionName}|{YYYYMMDDHHMMSS}||ORU^R01|{UniqueIdentifier}|P|2.5\r\nPID|{StudyInstanceUID}|{AccessionNumber}\r\nOBR|{StudyInstanceUID}||{AccessionNumber}|Rayvolve^{AlgorithmUsed}||||||||||||{AccessionNumber}|||||||F||{PriorityValues, ex: A^ASAP^HL70078}\r\nTQ1|||||||||{PriorityValues, ex: A^ASAP^HL70078}\r\nOBX|1|ST|113014^DICOM Study^DCM||{StudyInstanceUID}||||||O\r\nOBX|2|TX|59776-5^Procedure Findings^LN||{Textual findingsm, ex:\"Fracture detected\")}|||{Abnormal flag, ex : A^Abnormal^HL70078}|||F||||{ACR flag, ex : RID49482^Category 3 Non critical Actionable Finding^RadLex}\r\n";
+        private const string VendorMessage = "MSH|^~\\&|Vendor INSIGHT CXR |Vendor Inc.|||20231130091315||ORU^R01|ORU20231130091315834|P|2.4||||||UNICODE UTF-8\r\nPID|1||2.25.82866891564990604580806081805518233357\r\nPV1|1|O\r\nORC|RE||||SC\r\nOBR|1|||CXR0001^Chest X-ray Report|||20230418142212.134||||||||||||||||||P|||||||Vendor\r\nNTE|1||Bilateral lungs are clear without remarkable opacity.\\X0A\\Cardiomediastinal contour appears normal.\\X0A\\Pneumothorax is not seen.\\X0A\\Pleural Effusion is present on the bilateral sides.\\X0A\\\\X0A\\Threshold value\\X0A\\Atelectasis: 15\\X0A\\Calcification: 15\\X0A\\Cardiomegaly: 15\\X0A\\Consolidation: 15\\X0A\\Fibrosis: 15\\X0A\\Mediastinal Widening: 15\\X0A\\Nodule: 15\\X0A\\Pleural Effusion: 15\\X0A\\Pneumoperitoneum: 15\\X0A\\Pneumothorax: 15\\X0A\\\r\nZDS|2.25.97606619386020057921123852316852071139||2.25.337759261491022538565548360794987622189|Vendor INSIGHT CXR|v3.1.5.3\r\nOBX|1|NM|RAB0001^Abnormality Score||50.82||||||P|||20230418142212.134||Vendor";
 
         private readonly Mock<ILogger<MllpExtract>> _logger;
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -173,6 +174,30 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Equal("StudyInstanceId", message.GetValue("PID.1"));
             Assert.Equal("StudyInstanceId", message.GetValue("OBR.1"));
 
+        }
+
+        [Fact(DisplayName = "ParseConfig Should Return Correct Item for vendor")]
+        public void ParseConfig_Should_Return_Correct_Item_For_Vendor()
+        {
+            var correctid = new Guid("00000000-0000-0000-0000-000000000002");
+            var azCorrectid = new Guid("00000000-0000-0000-0000-000000000001");
+
+            var configs = new List<Hl7ApplicationConfigEntity> {
+                new Hl7ApplicationConfigEntity{ Id= new Guid("00000000-0000-0000-0000-000000000001"), SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "ABCDE" } },
+                new Hl7ApplicationConfigEntity{ Id= correctid, SendingId = new StringKeyValuePair{ Key = "MSH.4", Value = "Vendor Inc."  } },
+            };
+
+            var message = new Message(VendorMessage);
+            var isParsed = message.ParseMessage();
+
+            var config = MllpExtract.GetConfig(configs, message);
+            Assert.Equal(correctid, config?.Id);
+
+            message = new Message(ABCDEMessage);
+            isParsed = message.ParseMessage();
+
+            config = MllpExtract.GetConfig(configs, message);
+            Assert.Equal(azCorrectid, config?.Id);
         }
     }
 }

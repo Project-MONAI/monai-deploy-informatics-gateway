@@ -22,12 +22,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
     internal interface IMllpClientFactory
     {
-        IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, IMllpExtract mIIpExtract, ILogger<MllpClient> logger);
+        IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger);
     }
 
     internal class MllpClientFactory : IMllpClientFactory
     {
-        public IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, IMllpExtract mIIpExtract, ILogger<MllpClient> logger)
-            => new MllpClient(client, configurations, mIIpExtract, logger);
+        public IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger)
+            => new MllpClient(client, configurations, logger);
     }
 }

@@ -38,7 +38,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         private readonly List<Exception> _exceptions;
         private readonly List<Message> _messages;
         private readonly IDisposable _loggerScope;
-        private readonly IMllpExtract _mIIpExtract;
         private bool _disposedValue;
 
         public Guid ClientId { get; }
@@ -48,12 +47,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             get { return _client.RemoteEndPoint.ToString() ?? string.Empty; }
         }
 
-        public MllpClient(ITcpClientAdapter client, Hl7Configuration configurations, IMllpExtract mIIpExtract, ILogger<MllpClient> logger)
+        public MllpClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger)
         {
             _client = client ?? throw new ArgumentNullException(nameof(client));
             _configurations = configurations ?? throw new ArgumentNullException(nameof(configurations));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _mIIpExtract = mIIpExtract ?? throw new ArgumentNullException(nameof(_mIIpExtract));
 
             ClientId = Guid.NewGuid();
             _exceptions = new List<Exception>();
@@ -145,6 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                     }
                 } while (true);
             }
+            linkedCancellationTokenSource.Dispose();
             return messages;
         }
 
