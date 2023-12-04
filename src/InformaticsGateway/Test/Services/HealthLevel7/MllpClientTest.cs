@@ -20,7 +20,6 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using FellowOakDicom;
 using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Mllp;
@@ -60,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             Assert.Throws<ArgumentNullException>(() => new MllpClient(_tcpClient.Object, _config, null));
             Assert.Throws<ArgumentNullException>(() => new MllpClient(_tcpClient.Object, _config, null));
 
-            new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            new MllpClient(_tcpClient.Object, _config, _logger.Object);
         }
 
         [Fact(DisplayName = "ReceiveData - records exception thrown by network stream")]
@@ -71,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 .ThrowsAsync(new Exception("error"));
 
             _tcpClient.Setup(p => p.GetStream()).Returns(stream.Object);
-            var client = new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            var client = new MllpClient(_tcpClient.Object, _config, _logger.Object);
 
             var action = new Func<IMllpClient, MllpClientResult, Task>(async (client, results) =>
             {
@@ -94,7 +93,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 .ReturnsAsync(0);
 
             _tcpClient.Setup(p => p.GetStream()).Returns(stream.Object);
-            var client = new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            var client = new MllpClient(_tcpClient.Object, _config, _logger.Object);
 
             var action = new Func<IMllpClient, MllpClientResult, Task>(async (client, results) =>
             {
@@ -129,7 +128,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 });
 
             _tcpClient.Setup(p => p.GetStream()).Returns(stream.Object);
-            var client = new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            var client = new MllpClient(_tcpClient.Object, _config, _logger.Object);
 
             var action = new Func<IMllpClient, MllpClientResult, Task>(async (client, results) =>
             {
@@ -170,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 });
 
             _tcpClient.Setup(p => p.GetStream()).Returns(stream.Object);
-            var client = new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            var client = new MllpClient(_tcpClient.Object, _config, _logger.Object);
 
             var action = new Func<IMllpClient, MllpClientResult, Task>(async (client, results) =>
             {
@@ -211,7 +210,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 });
 
             _tcpClient.Setup(p => p.GetStream()).Returns(stream.Object);
-            var client = new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            var client = new MllpClient(_tcpClient.Object, _config, _logger.Object);
 
             var action = new Func<IMllpClient, MllpClientResult, Task>(async (client, results) =>
             {
@@ -252,7 +251,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 });
 
             _tcpClient.Setup(p => p.GetStream()).Returns(stream.Object);
-            var client = new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            var client = new MllpClient(_tcpClient.Object, _config, _logger.Object);
 
             var action = new Func<IMllpClient, MllpClientResult, Task>(async (client, results) =>
             {
@@ -292,7 +291,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 });
 
             _tcpClient.Setup(p => p.GetStream()).Returns(stream.Object);
-            var client = new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            var client = new MllpClient(_tcpClient.Object, _config, _logger.Object);
 
             var action = new Func<IMllpClient, MllpClientResult, Task>(async (client, results) =>
             {
@@ -338,7 +337,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 });
 
             _tcpClient.Setup(p => p.GetStream()).Returns(stream.Object);
-            var client = new MllpClient(_tcpClient.Object, _config, _mIIpExtract.Object, _logger.Object);
+            var client = new MllpClient(_tcpClient.Object, _config, _logger.Object);
 
             var action = new Func<IMllpClient, MllpClientResult, Task>(async (client, results) =>
             {

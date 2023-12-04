@@ -119,7 +119,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
         {
             foreach (var item in config)
             {
-                var t = message.GetValue(item.SendingId.Key);
                 if (item.SendingId.Value == message.GetValue(item.SendingId.Key))
                 {
                     return item;

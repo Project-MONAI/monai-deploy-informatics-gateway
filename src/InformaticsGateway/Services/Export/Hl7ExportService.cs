@@ -159,6 +159,5 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             return Task.FromResult(exportDataRequest);
         }
-
     }
 }

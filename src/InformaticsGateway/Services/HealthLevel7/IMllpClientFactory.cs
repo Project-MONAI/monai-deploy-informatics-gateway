@@ -22,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
     internal interface IMllpClientFactory
     {
-        IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, IMllpExtract mIIpExtract, ILogger<MllpClient> logger);
+        IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger);
     }
 
     internal class MllpClientFactory : IMllpClientFactory
