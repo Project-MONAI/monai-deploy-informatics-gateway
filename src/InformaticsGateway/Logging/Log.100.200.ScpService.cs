@@ -62,14 +62,12 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         public static partial void FailedToUpdateAppliationEntityHandlerWithUpdatedAEChange(this ILogger logger, string aeTitle, Exception? ex = null);
 
         // SCP Service
-        [LoggerMessage(EventId = 200, Level = LogLevel.Information, Message = "Initializing SCP Service at port {port}...")]
-        public static partial void ScpServiceLoading(this ILogger logger, int port);
 
         [LoggerMessage(EventId = 201, Level = LogLevel.Critical, Message = "Failed to initialize SCP listener.")]
         public static partial void ScpListenerInitializationFailure(this ILogger logger);
 
-        [LoggerMessage(EventId = 202, Level = LogLevel.Information, Message = "SCP listening on port: {port}.")]
-        public static partial void ScpListeningOnPort(this ILogger logger, int port);
+        [LoggerMessage(EventId = 202, Level = LogLevel.Information, Message = "{serviceName} listening on port: {port}.")]
+        public static partial void ScpListeningOnPort(this ILogger logger, string serviceName, int port);
 
         [LoggerMessage(EventId = 203, Level = LogLevel.Information, Message = "C-ECHO request received.")]
         public static partial void CEchoReceived(this ILogger logger);
@@ -106,5 +104,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 214, Level = LogLevel.Information, Message = "Connection closed. Correlation ID={correlationId}. Calling AE Title={callingAeTitle}. Called AE Title={calledAeTitle}. Duration={durationSeconds} seconds.")]
         public static partial void ConnectionClosed(this ILogger logger, string correlationId, string callingAeTitle, string calledAeTitle, double durationSeconds);
+
+        [LoggerMessage(EventId = 215, Level = LogLevel.Warning, Message = "Failed to find stored external app details for studyInstance Uid {studyInstanceUid}.")]
+        public static partial void FailedToFindStoredExtAppDetails(this ILogger logger, string studyInstanceUid);
     }
 }

@@ -19,12 +19,12 @@ using BoDi;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Common;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
-//using Monai.Deploy.InformaticsGateway.PlugIns.Pseudonymisation;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
@@ -211,7 +211,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         }
 
         [When(@"the study is received and sent back to Informatics Gateway with (.*) messages")]
-        public async Task TheStudyIsReceivedAndSentBackToInformaticsGateway(int exportCount = 1)
+        public async Task WhenTheStudyIsReceivedAndSentBackToInformaticsGatewayWith(int exportCount)
         {
 
             // setup DICOM Source

@@ -167,7 +167,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             catch (Exception ex)
             {
                 blob.SetFailed();
-                _logger.FailedToUploadFile(blob.Id, ex);
+                _logger.FailedToUploadFile(blob.Id, blob.File.UploadPath, ex);
             }
             finally
             {

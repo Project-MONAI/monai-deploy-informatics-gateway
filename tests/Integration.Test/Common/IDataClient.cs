@@ -19,5 +19,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
     internal interface IDataClient
     {
         Task SendAsync(DataProvider dataProvider, params object[] args);
+
+        Task SaveHl7Async(DataProvider dataProvider, params object[] args);
     }
 }

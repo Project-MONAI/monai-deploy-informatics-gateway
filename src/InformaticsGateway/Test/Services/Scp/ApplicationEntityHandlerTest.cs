@@ -24,11 +24,12 @@ using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -49,6 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
         private readonly Mock<IInputDataPlugInEngine> _inputDataPlugInEngine;
         private readonly Mock<IPayloadAssembler> _payloadAssembler;
         private readonly Mock<IObjectUploadQueue> _uploadQueue;
+        private readonly Mock<IExternalAppDetailsRepository> _extAppDetailsRepo = new Mock<IExternalAppDetailsRepository>();
         private readonly IOptions<InformaticsGatewayConfiguration> _options;
         private readonly IFileSystem _fileSystem;
         private readonly IServiceProvider _serviceProvider;
@@ -81,14 +83,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _options.Value.Storage.TemporaryDataStorage = TemporaryDataStorageLocation.Memory;
         }
 
-        [RetryFact(5, 250)]
+        [RetryFact(1, 250)]
         public void GivenAApplicationEntityHandler_WhenInitialized_ExpectParametersToBeValidated()
         {
-            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(_serviceScopeFactory.Object, null, null));
-            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(_serviceScopeFactory.Object, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, null, null));
+            Assert.Throws<ServiceNotFoundException>(() => new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options, null));
 
-            _ = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            _ = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options, _extAppDetailsRepo.Object);
         }
 
         [RetryFact(5, 250)]
@@ -102,13 +105,18 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 IgnoredSopClasses = new List<string> { DicomUID.SecondaryCaptureImageStorage.UID }
             };
 
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options, _extAppDetailsRepo.Object);
 
             var request = GenerateRequest();
             var dicomToolkit = new DicomToolkit();
             var uids = dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
 
-            await Assert.ThrowsAsync<NotSupportedException>(async () => await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids));
+            await Assert.ThrowsAsync<NotSupportedException>(async
+                () => await handler.HandleInstanceAsync(request,
+                    aet.AeTitle,
+                    "CALLING",
+                    Guid.NewGuid(),
+                    uids, InformaticsGateway.Services.Common.ScpInputTypeEnum.WorkflowTrigger));
         }
 
         [RetryFact(5, 250)]
@@ -122,14 +130,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 IgnoredSopClasses = new List<string> { DicomUID.SecondaryCaptureImageStorage.UID }
             };
 
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options, _extAppDetailsRepo.Object);
             handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();
             var dicomToolkit = new DicomToolkit();
             var uids = dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
 
-            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
+            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids, InformaticsGateway.Services.Common.ScpInputTypeEnum.WorkflowTrigger);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
@@ -146,14 +154,14 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 AllowedSopClasses = new List<string> { DicomUID.UltrasoundImageStorage.UID }
             };
 
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options, _extAppDetailsRepo.Object);
             handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();
             var dicomToolkit = new DicomToolkit();
             var uids = dicomToolkit.GetStudySeriesSopInstanceUids(request.File);
 
-            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
+            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids, InformaticsGateway.Services.Common.ScpInputTypeEnum.WorkflowTrigger);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Never());
@@ -170,7 +178,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 PlugInAssemblies = new List<string>() { typeof(TestInputDataPlugInAddWorkflow).AssemblyQualifiedName }
             };
 
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options, _extAppDetailsRepo.Object);
             handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             var request = GenerateRequest();
@@ -179,7 +187,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _inputDataPlugInEngine.Setup(p => p.ExecutePlugInsAsync(It.IsAny<DicomFile>(), It.IsAny<FileStorageMetadata>()))
                 .Returns((DicomFile dicomFile, FileStorageMetadata fileMetadata) => Task.FromResult(new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata)));
 
-            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids);
+            await handler.HandleInstanceAsync(request, aet.AeTitle, "CALLING", Guid.NewGuid(), uids, InformaticsGateway.Services.Common.ScpInputTypeEnum.WorkflowTrigger);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Once());
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>(), It.IsAny<uint>()), Times.Once());
@@ -203,7 +211,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 Name = "TESTAET",
                 Workflows = new List<string>() { "AppA", "AppB", Guid.NewGuid().ToString() }
             };
-            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options);
+            var handler = new ApplicationEntityHandler(_serviceScopeFactory.Object, _logger.Object, _options, _extAppDetailsRepo.Object);
             handler.Configure(aet, Configuration.DicomJsonOptions.Complete, true);
 
             newAet.AeTitle = "NewAETitle";

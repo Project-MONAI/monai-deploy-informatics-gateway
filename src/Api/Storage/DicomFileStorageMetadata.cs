@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         /// Gets or set the Study Instance UID of the DICOM instance.
         /// </summary>
         [JsonPropertyName("studyInstanceUid")]
-        public string StudyInstanceUid { get; init; } = default!;
+        public string StudyInstanceUid { get; set; } = default!;
 
         /// <summary>
         /// Gets or set the Series Instance UID of the DICOM instance.
@@ -93,6 +93,15 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             StudyInstanceUid = studyInstanceUid;
             SeriesInstanceUid = seriesInstanceUid;
             SopInstanceUid = sopInstanceUid;
+            SetupFilePaths(associationId);
+
+            DataOrigin.DataService = dataService;
+            DataOrigin.Source = callingAeTitle;
+            DataOrigin.Destination = calledAeTitle;
+        }
+
+        private void SetupFilePaths(string associationId)
+        {
             File = new StorageObjectMetadata(FileExtension)
             {
                 TemporaryPath = string.Join(PathSeparator, associationId, DataTypeDirectoryName, $"{Guid.NewGuid()}{FileExtension}"),
@@ -106,11 +115,40 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
                 UploadPath = $"{File.UploadPath}{DicomJsonFileExtension}",
                 ContentType = DicomJsonContentType,
             };
-
-            DataOrigin.DataService = dataService;
-            DataOrigin.Source = callingAeTitle;
-            DataOrigin.Destination = calledAeTitle;
         }
+
+        public void SetupGivenFilePaths(string? DestinationFolder)
+        {
+            if (DestinationFolder is null)
+            {
+                return;
+            }
+
+            if (DestinationFolder.EndsWith('/'))
+            {
+                DestinationFolder = DestinationFolder.Remove(DestinationFolder.Length - 1);
+            }
+
+            File = new StorageObjectMetadata(FileExtension)
+            {
+                TemporaryPath = string.Join(PathSeparator, DestinationFolder, $"Temp{PathSeparator}{Guid.NewGuid()}{FileExtension}"),
+                UploadPath = string.Join(PathSeparator, DestinationFolder, $"{SopInstanceUid}{FileExtension}"),
+                ContentType = DicomContentType,
+                DestinationFolderOverride = true,
+            };
+
+            JsonFile = new StorageObjectMetadata(DicomJsonFileExtension)
+            {
+                TemporaryPath = $"{File.TemporaryPath}{DicomJsonFileExtension}",
+                UploadPath = $"{File.UploadPath}{DicomJsonFileExtension}",
+                ContentType = DicomJsonContentType,
+                DestinationFolderOverride = true,
+            };
+
+            //DestinationFolderNeil = DestinationFolder;
+        }
+
+        public void SetStudyInstanceUid(string newStudyInstanceUid) => StudyInstanceUid = newStudyInstanceUid;
 
         public override void SetFailed()
         {

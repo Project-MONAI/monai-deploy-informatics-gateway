@@ -35,6 +35,12 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
         public int Port { get; set; } = 104;
 
         /// <summary>
+        /// Gets or sets Port number to be used for SCP service.
+        /// </summary>
+        [ConfigurationKeyName("externalAppPort")]
+        public int ExternalAppPort { get; set; } = 105;
+
+        /// <summary>
         /// Gets or sets maximum number of simultaneous DICOM associations for the SCP service.
         /// </summary>
         [ConfigurationKeyName("maximumNumberOfAssociations")]

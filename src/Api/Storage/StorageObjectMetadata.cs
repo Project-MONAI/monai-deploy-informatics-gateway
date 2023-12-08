@@ -88,6 +88,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         [JsonPropertyName("isMoveCompleted"), JsonInclude]
         public bool IsMoveCompleted { get; private set; } = default!;
 
+        [JsonPropertyName("destinationFolderOverride")]
+        public bool DestinationFolderOverride { get; set; } = false;
+
         public StorageObjectMetadata(string fileExtension)
         {
             Guard.Against.NullOrWhiteSpace(fileExtension, nameof(fileExtension));
@@ -111,7 +114,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
         {
             Guard.Against.Null(payloadId, nameof(payloadId));
 
-            return $"{payloadId}{FileStorageMetadata.PathSeparator}{UploadPath}";
+            if (DestinationFolderOverride is false)
+            {
+                return $"{payloadId}{FileStorageMetadata.PathSeparator}{UploadPath}";
+            }
+            return $"{UploadPath}";
         }
 
         public void SetUploaded(string bucketName)

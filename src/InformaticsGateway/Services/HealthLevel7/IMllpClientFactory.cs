@@ -18,7 +18,7 @@ using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
     internal interface IMllpClientFactory
     {
@@ -27,6 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
     internal class MllpClientFactory : IMllpClientFactory
     {
-        public IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger) => new MllpClient(client, configurations, logger);
+        public IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger)
+            => new MllpClient(client, configurations, logger);
     }
 }

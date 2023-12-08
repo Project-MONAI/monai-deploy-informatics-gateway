@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+using Monai.Deploy.InformaticsGateway.Api.Models;
+
 namespace Monai.Deploy.InformaticsGateway.Api
 {
     /// <summary>

@@ -314,13 +314,15 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
-    :when: 2022-08-16 23:05:49.698463427 Z
+    - 6.0.25
+    - :when: 2022-08-16 23:05:49.698463427 Z
 - - :approve
   - Microsoft.EntityFrameworkCore
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
+    - 6.0.25
     :when: 2022-08-16 23:05:50.137694970 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Abstractions
@@ -328,41 +330,53 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
-    :when: 2022-08-16 23:05:51.008105271 Z
+    - 6.0.25
+    - :when: 2022-08-16 23:05:51.008105271 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Analyzers
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
-    :when: 2022-08-16 23:05:51.445711308 Z
+    - 6.0.25
+    - :when: 2022-08-16 23:05:51.445711308 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Design
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
-    :when: 2022-08-16 23:05:51.922790944 Z
+    - 6.0.25
+    - :when: 2022-08-16 23:05:51.922790944 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.InMemory
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
-    :when: 2022-08-16 23:05:52.375150938 Z
+    - 6.0.25
+    - :when: 2022-08-16 23:05:52.375150938 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Relational
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
-    :when: 2022-08-16 23:05:52.828879230 Z
+    - 6.0.25
+    - :when: 2022-08-16 23:05:52.828879230 Z
+- - :approve
+  - Microsoft.EntityFrameworkCore.Tools
+  - :who: ndsouth
+    :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+    :versions:
+    - 6.0.25
+    - :when: 2022-08-16 23:05:52.828879230 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite
   - :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
-    - 6.0.22
+    - 6.0.25
     :when: 2022-08-16 23:05:53.270526921 Z
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite.Core
@@ -370,6 +384,7 @@
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
     :versions:
     - 6.0.22
+    - 6.0.25
     :when: 2022-08-16 23:05:53.706997823 Z
 - - :approve
   - Microsoft.Extensions.ApiDescription.Server
@@ -512,7 +527,8 @@
     :versions:
     - 6.0.21
     - 6.0.22
-    :when: 2022-08-29 18:11:22.090772006 Z
+    - 6.0.25
+    - :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
   - :who: mocsharp
@@ -520,14 +536,16 @@
     :versions:
     - 6.0.21
     - 6.0.22
-    :when: 2022-08-29 18:11:22.090772006 Z
+    - 6.0.25
+    - :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
   - :who: mocsharp
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
     :versions:
     - 6.0.22
-    :when: 2022-08-29 18:11:22.090772006 Z
+    - 6.0.25
+    - :when: 2022-08-29 18:11:22.090772006 Z
 - - :approve
   - Microsoft.Extensions.FileProviders.Abstractions
   - :who: mocsharp
@@ -774,16 +792,16 @@
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 1.0.3
-    - 1.0.4
+    - 1.0.5-rc0006
+    - 1.0.5
     :when: 2023-10-13 18:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
     :versions:
-    - 1.0.3
-    - 1.0.4
+    - 1.0.5-rc0006
+    - 1.0.5
     :when: 2023-10-13 18:06:21.511789690 Z
 - - :approve
   - Monai.Deploy.Storage

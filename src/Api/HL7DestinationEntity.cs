@@ -1,4 +1,4 @@
-/*
+﻿/*
  * Copyright 2021-2022 MONAI Consortium
  * Copyright 2019-2020 NVIDIA Corporation
  *
@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Models
 {
     /// <summary>
-    /// Destination Application Entity
+    /// HL7 Destination Entity
     /// </summary>
     /// <example>
     /// <code>
@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// }
     /// </code>
     /// </example>
-    public class DestinationApplicationEntity : BaseApplicationEntity
+    public class HL7DestinationEntity : BaseApplicationEntity
     {
         /// <summary>
         /// Gets or sets the port to connect to.

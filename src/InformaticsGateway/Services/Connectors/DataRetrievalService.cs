@@ -29,7 +29,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -124,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 try
                 {
                     request = await repository.TakeAsync(cancellationToken).ConfigureAwait(false);
-                    using (_logger.BeginScope(new LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } }))
+                    using (_logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "TransactionId", request.TransactionId } }))
                     {
                         _logger.ProcessingInferenceRequest();
                         await ProcessRequest(request, cancellationToken).ConfigureAwait(false);

@@ -16,8 +16,9 @@
 
 using System;
 using System.Collections.Generic;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Models
 {
     public class DicomAssociationInfo : MongoDBEntityBase
     {

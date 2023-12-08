@@ -16,7 +16,7 @@
 
 using System.Text.Json.Serialization;
 using FellowOakDicom;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution
 {

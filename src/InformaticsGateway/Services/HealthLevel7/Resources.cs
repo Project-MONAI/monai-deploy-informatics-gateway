@@ -22,6 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         public const char AsciiVT = (char)0x0B;
         public const char AsciiFS = (char)0x1C;
+        public const char AcsiiCR = (char)13;
 
         public const string AcknowledgmentTypeNever = "NE";
         public const string AcknowledgmentTypeError = "ER";

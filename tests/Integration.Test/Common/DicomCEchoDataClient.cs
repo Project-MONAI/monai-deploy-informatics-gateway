@@ -71,5 +71,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 dataProvider.DimseRsponse = DicomStatus.Cancel;
             }
         }
+        public Task SaveHl7Async(DataProvider dataProvider, params object[] args) => throw new NotImplementedException();
     }
 }
