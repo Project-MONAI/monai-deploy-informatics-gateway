@@ -133,7 +133,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
 
             var message = new HL7.Dotnetcore.Message(SampleMessage);
             message.ParseMessage();
-            var configItem = new Hl7ApplicationConfigEntity { PlugInAssemblies = new List<string> { { "TestInputHL7DataPlugInAddWorkflow" } } };
+            var configItem = new Hl7ApplicationConfigEntity { PlugInAssemblies = new List<string> { { "Monai.Deploy.InformaticsGateway.Test.PlugIns.TestInputHL7DataPlugInAddWorkflow" } } };
 
             var (Hl7Message, resultDicomInfo) = await pluginEngine.ExecutePlugInsAsync(message, dicomInfo, configItem);
 

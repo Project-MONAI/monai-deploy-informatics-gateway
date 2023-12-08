@@ -143,7 +143,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                     }
                 } while (true);
             }
-            linkedCancellationTokenSource.Dispose();
+            // linkedCancellationTokenSource.Dispose();
             return messages;
         }
 
