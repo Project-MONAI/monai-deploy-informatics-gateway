@@ -215,7 +215,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
         private async Task ConfigurePlugInEngine()
         {
             var configs = await _hl7ApplicationConfigRepository.GetAllAsync().ConfigureAwait(false);
-            if (configs is not null && configs.Max(c => c.LastModified) > _lastConfigRead)
+            if (configs is not null && configs.Any() && configs.Max(c => c.LastModified) > _lastConfigRead)
             {
                 var pluginAssemblies = new List<string>();
                 foreach (var config in configs.Where(p => p.PlugInAssemblies is not null && p.PlugInAssemblies.Count > 0))
