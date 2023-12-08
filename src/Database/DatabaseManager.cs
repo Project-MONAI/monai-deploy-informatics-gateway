@@ -84,6 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                         ServiceLifetime.Transient);
                     services.AddScoped<IDatabaseMigrationManager, EfDatabaseMigrationManager>();
                     services.AddScoped(typeof(IDestinationApplicationEntityRepository), typeof(EntityFramework.Repositories.DestinationApplicationEntityRepository));
+                    services.AddScoped(typeof(IHL7DestinationEntityRepository), typeof(EntityFramework.Repositories.HL7DestinationEntityRepository));
                     services.AddScoped(typeof(IInferenceRequestRepository), typeof(EntityFramework.Repositories.InferenceRequestRepository));
                     services.AddScoped(typeof(IMonaiApplicationEntityRepository), typeof(EntityFramework.Repositories.MonaiApplicationEntityRepository));
                     services.AddScoped(typeof(ISourceApplicationEntityRepository), typeof(EntityFramework.Repositories.SourceApplicationEntityRepository));
@@ -91,6 +92,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IPayloadRepository), typeof(EntityFramework.Repositories.PayloadRepository));
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(EntityFramework.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(EntityFramework.Repositories.VirtualApplicationEntityRepository));
+                    services.AddScoped(typeof(IHl7ApplicationConfigRepository), typeof(EntityFramework.Repositories.Hl7ApplicationConfigRepository));
+                    services.AddSingleton(typeof(IExternalAppDetailsRepository), typeof(EntityFramework.Repositories.ExternalAppDetailsRepository));
 
                     services.ConfigureDatabaseFromPlugIns(DatabaseType.EntityFramework, fileSystem, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
                     return services;
@@ -99,6 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddSingleton<IMongoClient, MongoClient>(s => new MongoClient(connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]));
                     services.AddScoped<IDatabaseMigrationManager, MongoDatabaseMigrationManager>();
                     services.AddScoped(typeof(IDestinationApplicationEntityRepository), typeof(MongoDB.Repositories.DestinationApplicationEntityRepository));
+                    services.AddScoped(typeof(IHL7DestinationEntityRepository), typeof(MongoDB.Repositories.HL7DestinationEntityRepository));
                     services.AddScoped(typeof(IInferenceRequestRepository), typeof(MongoDB.Repositories.InferenceRequestRepository));
                     services.AddScoped(typeof(IMonaiApplicationEntityRepository), typeof(MongoDB.Repositories.MonaiApplicationEntityRepository));
                     services.AddScoped(typeof(ISourceApplicationEntityRepository), typeof(MongoDB.Repositories.SourceApplicationEntityRepository));
@@ -106,6 +110,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IPayloadRepository), typeof(MongoDB.Repositories.PayloadRepository));
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(MongoDB.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(MongoDB.Repositories.VirtualApplicationEntityRepository));
+                    services.AddScoped(typeof(IHl7ApplicationConfigRepository), typeof(MongoDB.Repositories.Hl7ApplicationConfigRepository));
+                    services.AddSingleton(typeof(IExternalAppDetailsRepository), typeof(MongoDB.Repositories.ExternalAppDetailsRepository));
 
                     services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
 

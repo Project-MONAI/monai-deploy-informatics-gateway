@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Configuration
 {
@@ -53,6 +54,21 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             valid &= IsAeTitleValid(destinationApplicationEntity.GetType().Name, destinationApplicationEntity.AeTitle, validationErrors);
             valid &= IsValidHostNameIp(destinationApplicationEntity.AeTitle, destinationApplicationEntity.HostIp, validationErrors);
             valid &= IsPortValid(destinationApplicationEntity.GetType().Name, destinationApplicationEntity.Port, validationErrors);
+
+            return valid;
+        }
+
+        public static bool IsValid(this HL7DestinationEntity hl7destinationEntity, out IList<string> validationErrors)
+        {
+            Guard.Against.Null(hl7destinationEntity, nameof(hl7destinationEntity));
+
+            validationErrors = new List<string>();
+
+            var valid = true;
+            valid &= !string.IsNullOrWhiteSpace(hl7destinationEntity.Name);
+            valid &= IsAeTitleValid(hl7destinationEntity.GetType().Name, hl7destinationEntity.AeTitle, validationErrors);
+            valid &= IsValidHostNameIp(hl7destinationEntity.AeTitle, hl7destinationEntity.HostIp, validationErrors);
+            valid &= IsPortValid(hl7destinationEntity.GetType().Name, hl7destinationEntity.Port, validationErrors);
 
             return valid;
         }

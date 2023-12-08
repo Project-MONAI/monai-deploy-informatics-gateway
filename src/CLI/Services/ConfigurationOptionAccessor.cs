@@ -31,6 +31,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         int DicomListeningPort { get; set; }
 
         /// <summary>
+        /// Gets or sets the ExternalApp DICOM SCP listening port from appsettings.json.
+        /// </summary>
+        int ExternalAppDicomListeningPort { get; set; }
+
+        /// <summary>
         /// Gets or sets the HL7 listening port from appsettings.json.
         /// </summary>
         int Hl7ListeningPort { get; set; }
@@ -108,6 +113,21 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
                 Guard.Against.OutOfRangePort(value, nameof(DicomListeningPort));
                 var jObject = ReadConfigurationFile();
                 jObject["InformaticsGateway"]["dicom"]["scp"]["port"] = value;
+                SaveConfigurationFile(jObject);
+            }
+        }
+
+        public int ExternalAppDicomListeningPort
+        {
+            get
+            {
+                return GetValueFromJsonPath<int>("InformaticsGateway.dicom.scp.externalAppPort");
+            }
+            set
+            {
+                Guard.Against.OutOfRangePort(value, nameof(ExternalAppDicomListeningPort));
+                var jObject = ReadConfigurationFile();
+                jObject["InformaticsGateway"]["dicom"]["scp"]["externalAppPort"] = value;
                 SaveConfigurationFile(jObject);
             }
         }

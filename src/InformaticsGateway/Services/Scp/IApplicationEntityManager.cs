@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -35,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// <param name="calledAeTitle">Called AE Title to be associated with the call.</param>
         /// <param name="calledAeTitle">Calling AE Title to be associated with the call.</param>
         /// <param name="associationId">Unique association ID.</param>
-        Task<string> HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId);
+        Task<string> HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, ScpInputTypeEnum type = ScpInputTypeEnum.WorkflowTrigger);
 
         /// <summary>
         /// Checks if a MONAI AET is configured.

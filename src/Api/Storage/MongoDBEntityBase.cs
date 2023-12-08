@@ -16,7 +16,7 @@
 
 using System;
 
-namespace Monai.Deploy.InformaticsGateway.Api
+namespace Monai.Deploy.InformaticsGateway.Api.Storage
 {
     public abstract class MongoDBEntityBase
     {

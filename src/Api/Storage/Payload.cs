@@ -86,6 +86,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public int FilesFailedToUpload { get => Files.Count(p => p.IsUploadFailed); }
 
+        public string DestinationFolder { get; set; } = string.Empty;
+
         public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
@@ -106,7 +108,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             DataTrigger = dataTrigger;
         }
 
-        public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout, string? payloadId = null) :
+        public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout, string? payloadId = null, string? DestinationFolder = null) :
             this(key, correlationId, workflowInstanceId, taskId, dataTrigger, timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
@@ -119,6 +121,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             {
                 PayloadId = Guid.Parse(payloadId);
             }
+            DestinationFolder ??= string.Empty;
         }
 
         public void Add(FileStorageMetadata value)
@@ -131,6 +134,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             {
                 DataOrigins.Add(value.DataOrigin);
             }
+
+            //if (string.IsNullOrWhiteSpace(value.DestinationFolderNeil) is false)
+            //{
+            //    DestinationFolder = value.DestinationFolderNeil;
+            //}
 
             _lastReceived.Reset();
             _lastReceived.Start();

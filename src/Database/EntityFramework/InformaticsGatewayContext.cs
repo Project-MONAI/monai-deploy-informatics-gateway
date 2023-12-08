@@ -18,6 +18,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Database.Api;
@@ -36,11 +37,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
         public virtual DbSet<MonaiApplicationEntity> MonaiApplicationEntities { get; set; }
         public virtual DbSet<SourceApplicationEntity> SourceApplicationEntities { get; set; }
         public virtual DbSet<DestinationApplicationEntity> DestinationApplicationEntities { get; set; }
+        public virtual DbSet<HL7DestinationEntity> HL7DestinationEntities { get; set; }
         public virtual DbSet<InferenceRequest> InferenceRequests { get; set; }
         public virtual DbSet<Payload> Payloads { get; set; }
         public virtual DbSet<StorageMetadataWrapper> StorageMetadataWrapperEntities { get; set; }
         public virtual DbSet<DicomAssociationInfo> DicomAssociationHistories { get; set; }
         public virtual DbSet<VirtualApplicationEntity> VirtualApplicationEntities { get; set; }
+        public virtual DbSet<ExternalAppDetails> ExternalAppDetails { get; set; }
+
+        public virtual DbSet<Hl7ApplicationConfigEntity> Hl7ApplicationConfig { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -49,11 +54,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
             modelBuilder.ApplyConfiguration(new MonaiApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new SourceApplicationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DestinationApplicationEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new HL7DestinationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new InferenceRequestConfiguration());
             modelBuilder.ApplyConfiguration(new PayloadConfiguration());
             modelBuilder.ApplyConfiguration(new StorageMetadataWrapperEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DicomAssociationInfoConfiguration());
             modelBuilder.ApplyConfiguration(new VirtualApplicationEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new Hl7ApplicationConfigConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

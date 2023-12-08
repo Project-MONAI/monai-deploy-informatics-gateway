@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Test
@@ -21,7 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
     public class MonaiApplicationEntityTest
     {
         [Fact]
-        public void GivenAMonaiApplicationEntity_WhenNameIsNotSet_ExepectSetDefaultValuesToBeUsed()
+        public void GivenAMonaiApplicationEntity_WhenNameIsNotSet_ExpectSetDefaultValuesToBeUsed()
         {
             var entity = new MonaiApplicationEntity
             {
@@ -41,7 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         }
 
         [Fact]
-        public void GivenAMonaiApplicationEntity_WhenNameIsSet_ExepectSetDefaultValuesToNotOverwrite()
+        public void GivenAMonaiApplicationEntity_WhenNameIsSet_ExpectSetDefaultValuesToNotOverwrite()
         {
             var entity = new MonaiApplicationEntity
             {

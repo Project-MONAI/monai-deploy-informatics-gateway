@@ -42,6 +42,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
         private static RabbitMqConsumer s_rabbitMqConsumer_WorkflowRequest;
         private static RabbitMqConsumer s_rabbitMqConsumer_ArtifactRecieved;
         private static RabbitMqConsumer s_rabbitMqConsumer_ExportComplete;
+        private static RabbitMqConsumer s_rabbitMqConsumer_ExportHL7Complete;
         private static IDatabaseDataProvider s_database;
         private static DicomScp s_dicomServer;
         private static DataProvider s_dataProvider;
@@ -131,12 +132,20 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
             s_rabbitMqConsumer_ExportComplete = new RabbitMqConsumer(rabbitMqSubscriber_ExportComplete, s_options.Value.Messaging.Topics.ExportComplete, outputHelper);
 
+            var rabbitMqSubscriber_ExportHL7Complete = new RabbitMQMessageSubscriberService(
+                Options.Create(s_options.Value.Messaging),
+                scope.ServiceProvider.GetRequiredService<ILogger<RabbitMQMessageSubscriberService>>(),
+                s_rabbitMqConnectionFactory);
+
+            s_rabbitMqConsumer_ExportHL7Complete = new RabbitMqConsumer(rabbitMqSubscriber_ExportComplete, s_options.Value.Messaging.Topics.ExportHl7Complete, outputHelper);
+
             var rabbitMqSubscriber_ArtifactRecieved = new RabbitMQMessageSubscriberService(
                 Options.Create(s_options.Value.Messaging),
                 scope.ServiceProvider.GetRequiredService<ILogger<RabbitMQMessageSubscriberService>>(),
                 s_rabbitMqConnectionFactory);
 
             s_rabbitMqConsumer_ArtifactRecieved = new RabbitMqConsumer(rabbitMqSubscriber_ArtifactRecieved, s_options.Value.Messaging.Topics.ArtifactRecieved, outputHelper);
+
         }
 
         private static IDatabaseDataProvider GetDatabase(IServiceProvider serviceProvider, ISpecFlowOutputHelper outputHelper)
@@ -173,6 +182,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             _objectContainer.RegisterInstanceAs(s_rabbitMqConsumer_WorkflowRequest, "WorkflowRequestSubscriber");
             _objectContainer.RegisterInstanceAs(s_rabbitMqConsumer_ExportComplete, "ExportCompleteSubscriber");
             _objectContainer.RegisterInstanceAs(s_rabbitMqConsumer_ArtifactRecieved, "ArtifactRecievedSubscriber");
+            _objectContainer.RegisterInstanceAs(s_rabbitMqConsumer_ExportHL7Complete, "ExportHL7CompleteSubscriber");
             _objectContainer.RegisterInstanceAs(s_dataProvider, "DataProvider");
             _objectContainer.RegisterInstanceAs(s_assertions, "Assertions");
             _objectContainer.RegisterInstanceAs<IDataClient>(s_storescu, "StoreSCU");
@@ -192,6 +202,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
 
             s_rabbitMqConsumer_WorkflowRequest.Dispose();
             s_rabbitMqConsumer_ExportComplete.Dispose();
+            s_rabbitMqConsumer_ExportHL7Complete.Dispose();
             s_rabbitMqConsumer_ArtifactRecieved.Dispose();
             s_rabbitMqConnectionFactory.Dispose();
         }

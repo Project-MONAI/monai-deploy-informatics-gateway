@@ -20,6 +20,7 @@ using System.Net.Http.Headers;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Client.Services;
 
@@ -48,6 +49,9 @@ namespace Monai.Deploy.InformaticsGateway.Client
         /// <inheritdoc/>
         public IAeTitleService<VirtualApplicationEntity> VirtualAeTitle { get; }
 
+        /// <inheritdoc/>
+        public IAeTitleService<HL7DestinationEntity> HL7Destinations { get; }
+
         /// <summary>
         /// Initializes a new instance of the InformaticsGatewayClient class that connects to the specified URI using the credentials provided.
         /// </summary>
@@ -66,6 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.Client
             DicomSources = new AeTitleService<SourceApplicationEntity>("config/source", _httpClient, _logger);
             DicomDestinations = new AeTitleService<DestinationApplicationEntity>("config/destination", _httpClient, _logger);
             VirtualAeTitle = new AeTitleService<VirtualApplicationEntity>("config/vae", _httpClient, _logger);
+            HL7Destinations = new AeTitleService<HL7DestinationEntity>("config/hl7-destination", _httpClient, _logger);
         }
 
         /// <inheritdoc/>

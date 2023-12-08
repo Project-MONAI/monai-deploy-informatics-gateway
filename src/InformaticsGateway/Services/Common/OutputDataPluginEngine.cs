@@ -20,7 +20,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;
@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 (dicomFile, exportRequestDataMessage) = await plugin.ExecuteAsync(dicomFile, exportRequestDataMessage).ConfigureAwait(false);
             }
             using var ms = new MemoryStream();
-            await dicomFile.SaveAsync(ms);
+            await dicomFile.SaveAsync(ms).ConfigureAwait(false);
             exportRequestDataMessage.SetData(ms.ToArray());
 
             return exportRequestDataMessage;
@@ -80,6 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 }
                 catch (Exception ex)
                 {
+                    _logger.ErrorAddingOutputDataPlugIn(ex, plugin);
                     exceptions.Add(new PlugInLoadingException($"Error loading plug-in '{plugin}'.", ex));
                 }
             }

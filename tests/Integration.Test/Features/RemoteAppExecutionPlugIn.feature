@@ -31,3 +31,4 @@ re-identifying data sent and received by the MIG respectively.
         Given a study that is exported to the test host with a bad plugin
         When the study is received and sent back to Informatics Gateway with 2 messages
         Then ensure the original study and the received study are the same
+

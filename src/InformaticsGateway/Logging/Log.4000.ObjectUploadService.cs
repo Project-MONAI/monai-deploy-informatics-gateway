@@ -21,8 +21,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 {
     public static partial class Log
     {
-        [LoggerMessage(EventId = 4000, Level = LogLevel.Warning, Message = "Failed to upload file {identifier}; added back to queue for retry.")]
-        public static partial void FailedToUploadFile(this ILogger logger, string identifier, Exception ex);
+        [LoggerMessage(EventId = 4000, Level = LogLevel.Warning, Message = "Failed to upload file {identifier}; path: {path} added back to queue for retry.")]
+        public static partial void FailedToUploadFile(this ILogger logger, string identifier, string path, Exception ex);
 
         [LoggerMessage(EventId = 4001, Level = LogLevel.Debug, Message = "Upload statistics: {threads} threads, {seconds} seconds.")]
         public static partial void UploadStats(this ILogger logger, int threads, double seconds);

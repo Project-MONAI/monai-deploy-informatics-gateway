@@ -16,7 +16,7 @@
 
 using System.Reflection;
 using FellowOakDicom;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 
 namespace Monai.Deploy.InformaticsGateway.Test.PlugIns

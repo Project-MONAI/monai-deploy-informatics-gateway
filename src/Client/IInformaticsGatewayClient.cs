@@ -17,6 +17,7 @@
 using System;
 using System.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Client.Services;
 
 namespace Monai.Deploy.InformaticsGateway.Client
@@ -52,6 +53,11 @@ namespace Monai.Deploy.InformaticsGateway.Client
         /// Provides APIs to list, create, delete Virtual AE Titles.
         /// </summary>
         IAeTitleService<VirtualApplicationEntity> VirtualAeTitle { get; }
+
+        /// <summary>
+        /// Provides APIs to list, create, delete Virtual AE Titles.
+        /// </summary>
+        IAeTitleService<HL7DestinationEntity> HL7Destinations { get; }
 
         /// <summary>
         /// Configures the service URI of the DICOMweb service.

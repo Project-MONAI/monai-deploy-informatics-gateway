@@ -140,5 +140,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             stopwatch.Stop();
             _outputHelper.WriteLine($"Took {stopwatch.Elapsed.TotalSeconds}s to send {messages.Count} messages.");
         }
+        public Task SaveHl7Async(DataProvider dataProvider, params object[] args) => throw new NotImplementedException();
     }
 }

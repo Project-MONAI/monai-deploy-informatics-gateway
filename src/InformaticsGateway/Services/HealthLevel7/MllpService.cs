@@ -18,26 +18,34 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Linq;
+using System.Net;
+using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using HL7.Dotnetcore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
+using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.Messaging.Events;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
-    internal sealed class MllpService : IHostedService, IDisposable, IMonaiService
+    internal sealed class MllpService : IMllpService, IHostedService, IDisposable, IMonaiService
     {
         private const int SOCKET_OPERATION_CANCELLED = 125;
         private bool _disposedValue;
@@ -51,6 +59,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IStorageInfoProvider _storageInfoProvider;
         private readonly ConcurrentDictionary<Guid, IMllpClient> _activeTasks;
+        private readonly IMllpExtract _mIIpExtract;
+        private readonly IInputHL7DataPlugInEngine _inputHL7DataPlugInEngine;
+        private readonly IHl7ApplicationConfigRepository _hl7ApplicationConfigRepository;
+        private DateTime _lastConfigRead = new(2000, 1, 1);
 
         public int ActiveConnections
         {
@@ -84,7 +96,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _payloadAssembler = serviceScope.ServiceProvider.GetService<IPayloadAssembler>() ?? throw new ServiceNotFoundException(nameof(IPayloadAssembler));
             _fileSystem = serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
             _storageInfoProvider = serviceScope.ServiceProvider.GetService<IStorageInfoProvider>() ?? throw new ServiceNotFoundException(nameof(IStorageInfoProvider));
+            _mIIpExtract = serviceScope.ServiceProvider.GetService<IMllpExtract>() ?? throw new ServiceNotFoundException(nameof(IMllpExtract));
             _activeTasks = new ConcurrentDictionary<Guid, IMllpClient>();
+            _inputHL7DataPlugInEngine = serviceScope.ServiceProvider.GetService<IInputHL7DataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IInputHL7DataPlugInEngine));
+            _hl7ApplicationConfigRepository = serviceScope.ServiceProvider.GetService<IHl7ApplicationConfigRepository>() ?? throw new ServiceNotFoundException(nameof(IHl7ApplicationConfigRepository));
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -164,15 +179,25 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             Guard.Against.Null(client, nameof(client));
             Guard.Against.Null(result, nameof(result));
 
+            await ConfigurePlugInEngine().ConfigureAwait(false);
+
             try
             {
                 foreach (var message in result.Messages)
                 {
-                    var hl7Fileetadata = new Hl7FileStorageMetadata(client.ClientId.ToString(), DataService.HL7, client.ClientIp);
-                    await hl7Fileetadata.SetDataStream(message.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
-                    var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Fileetadata, new DataOrigin { DataService = DataService.HL7, Source = client.ClientIp, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
-                    hl7Fileetadata.PayloadId = payloadId.ToString();
-                    _uploadQueue.Queue(hl7Fileetadata);
+                    var newMessage = message;
+                    var hl7Filemetadata = new Hl7FileStorageMetadata(client.ClientId.ToString(), DataService.HL7, client.ClientIp);
+                    var configItem = await _mIIpExtract.GetConfigItem(message).ConfigureAwait(false);
+                    if (configItem is not null)
+                    {
+                        await _inputHL7DataPlugInEngine.ExecutePlugInsAsync(message, hl7Filemetadata, configItem).ConfigureAwait(false);
+                        newMessage = await _mIIpExtract.ExtractInfo(hl7Filemetadata, message, configItem).ConfigureAwait(false);
+                    }
+
+                    await hl7Filemetadata.SetDataStream(newMessage.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
+                    var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Filemetadata, new DataOrigin { DataService = DataService.HL7, Source = client.ClientIp, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
+                    hl7Filemetadata.PayloadId ??= payloadId.ToString();
+                    _uploadQueue.Queue(hl7Filemetadata);
                 }
             }
             catch (Exception ex)
@@ -185,6 +210,32 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 _logger.Hl7ClientRemoved(client.ClientId);
                 client.Dispose();
             }
+        }
+
+        private async Task ConfigurePlugInEngine()
+        {
+            var configs = await _hl7ApplicationConfigRepository.GetAllAsync().ConfigureAwait(false);
+            if (configs is not null && configs.Max(c => c.LastModified) > _lastConfigRead)
+            {
+                var pluginAssemblies = new List<string>();
+                foreach (var config in configs.Where(p => p.PlugInAssemblies is not null && p.PlugInAssemblies.Count > 0))
+                {
+                    try
+                    {
+                        var addMe = config.PlugInAssemblies.Where(p => pluginAssemblies.Any(a => a == p) is false);
+                        pluginAssemblies.AddRange(config.PlugInAssemblies.Where(p => pluginAssemblies.Any(a => a == p) is false));
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.HL7PluginLoadingExceptions(ex);
+                    }
+                }
+                if (pluginAssemblies.Any())
+                {
+                    _inputHL7DataPlugInEngine.Configure(pluginAssemblies);
+                }
+            }
+            _lastConfigRead = DateTime.UtcNow;
         }
 
         private void WaitUntilAvailable(int maximumNumberOfConnections)
@@ -214,6 +265,87 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
                 _disposedValue = true;
             }
+        }
+
+        public async Task SendMllp(IPAddress address, int port, string hl7Message, CancellationToken cancellationToken)
+        {
+            try
+            {
+                var body = $"{Resources.AsciiVT}{hl7Message}{Resources.AsciiFS}{Resources.AcsiiCR}";
+                var sendMessageByteBuffer = Encoding.UTF8.GetBytes(body);
+                await WriteMessage(sendMessageByteBuffer, address, port).ConfigureAwait(false);
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                _logger.Hl7AckMissingStartOrEndCharacters();
+                throw new Hl7SendException("ACK missing start or end characters");
+            }
+            catch (Exception ex)
+            {
+                _logger.Hl7SendException(ex);
+                throw new Hl7SendException("Send exception");
+            }
+        }
+
+        private async Task WriteMessage(byte[] sendMessageByteBuffer, IPAddress address, int port)
+        {
+
+            using var tcpClient = new TcpClient();
+
+            tcpClient.Connect(address, port);
+
+            var networkStream = new NetworkStream(tcpClient.Client);
+
+            if (networkStream.CanWrite)
+            {
+                networkStream.Write(sendMessageByteBuffer, 0, sendMessageByteBuffer.Length);
+                networkStream.Flush();
+            }
+            else
+            {
+                _logger.Hl7ClientStreamNotWritable();
+                throw new Hl7SendException("Client stream not writable");
+            }
+
+            _logger.Hl7MessageSent(Encoding.UTF8.GetString(sendMessageByteBuffer));
+
+            await EnsureAck(networkStream).ConfigureAwait(false);
+        }
+
+        private async Task EnsureAck(NetworkStream networkStream)
+        {
+            using var s_cts = new CancellationTokenSource();
+            s_cts.CancelAfter(_configuration.Value.Hl7.ClientTimeoutMilliseconds);
+            var buffer = new byte[2048];
+
+            // get the SentHl7Message
+            networkStream.ReadTimeout = 5000;
+            networkStream.WriteTimeout = 5000;
+
+            // wait for responce
+            while (!s_cts.IsCancellationRequested && networkStream.DataAvailable == false)
+            {
+                await Task.Delay(20).ConfigureAwait(false);
+            }
+
+            var bytesRead = await networkStream.ReadAsync(buffer).ConfigureAwait(false);
+
+            if (bytesRead == 0 || s_cts.IsCancellationRequested)
+            {
+                throw new Hl7SendException("ACK message contains no ACK!");
+            }
+
+            var _rawHl7Messages = MessageHelper.ExtractMessages(Encoding.UTF8.GetString(buffer));
+            foreach (var message in _rawHl7Messages)
+            {
+                var hl7Message = new Message(message);
+                hl7Message.ParseMessage();
+                if (hl7Message.MessageStructure == "ACK")
+                {
+                    return;
+                }
+            }
+            throw new Hl7SendException("ACK message contains no ACK!");
         }
 
         public void Dispose()

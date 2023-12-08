@@ -17,7 +17,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api

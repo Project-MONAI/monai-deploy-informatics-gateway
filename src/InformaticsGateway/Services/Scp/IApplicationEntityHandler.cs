@@ -17,9 +17,10 @@
 using System;
 using System.Threading.Tasks;
 using FellowOakDicom.Network;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
 {
@@ -27,6 +28,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
     {
         void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions, bool validateDicomValuesOnJsonSerialization);
 
-        Task<string> HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids);
+        Task<string> HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids, ScpInputTypeEnum type);
     }
 }
