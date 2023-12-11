@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
         private readonly IMllpExtract _mIIpExtract;
         private readonly IInputHL7DataPlugInEngine _inputHL7DataPlugInEngine;
         private readonly IHl7ApplicationConfigRepository _hl7ApplicationConfigRepository;
-        private DateTime _lastConfigRead = new DateTime(2000, 1, 1);
+        private DateTime _lastConfigRead = new(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public int ActiveConnections
         {
