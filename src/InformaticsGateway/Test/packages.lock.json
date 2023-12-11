@@ -2085,6 +2085,7 @@
       "monai.deploy.informaticsgateway.api": {
         "type": "Project",
         "dependencies": {
+          "HL7-dotnetcore": "[2.36.0, )",
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.25, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",

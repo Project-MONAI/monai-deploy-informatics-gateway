@@ -125,4 +125,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
         {
         }
     }
+
+    public class InputHL7DataPlugInEngineFactory : DataPlugInEngineFactoryBase<IInputHL7DataPlugIn>
+    {
+        public InputHL7DataPlugInEngineFactory(IFileSystem fileSystem, ILogger<DataPlugInEngineFactoryBase<IInputHL7DataPlugIn>> logger) : base(fileSystem, logger)
+        {
+        }
+    }
 }

@@ -22,15 +22,14 @@ using System.Threading.Tasks;
 using FellowOakDicom;
 using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
-    internal sealed class MllpExtract : IMllpExtract
+    public sealed class MllpExtract : IMllpExtract
     {
         private readonly ILogger<MllpExtract> _logger;
         private readonly IHl7ApplicationConfigRepository _hl7ApplicationConfigRepository;
@@ -44,25 +43,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         }
 
 
-        public async Task<Message> ExtractInfo(Hl7FileStorageMetadata meta, Message message)
+        public async Task<Message> ExtractInfo(Hl7FileStorageMetadata meta, Message message, Hl7ApplicationConfigEntity configItem)
         {
             try
             {
-                // load the config
-                var config = await _hl7ApplicationConfigRepository.GetAllAsync().ConfigureAwait(false);
-                if (config == null)
-                {
-                    _logger.Hl7NoConfig();
-                    return message;
-                }
-                _logger.Hl7ConfigLoaded($"Config: {config}");
-                // get config for vendorId
-                var configItem = GetConfig(config, message);
-                if (configItem == null)
-                {
-                    _logger.Hl7NoMatchingConfig(message.HL7Message);
-                    return message;
-                }
                 // extract data for the given fields
                 // Use Id to get record from Db
                 var details = await GetExtAppDetails(configItem, message).ConfigureAwait(false);
@@ -94,6 +78,26 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             return message;
         }
 
+        public async Task<Hl7ApplicationConfigEntity?> GetConfigItem(Message message)
+        {
+            // load the config
+            var config = await _hl7ApplicationConfigRepository.GetAllAsync().ConfigureAwait(false);
+            if (config == null)
+            {
+                _logger.Hl7NoConfig();
+                return null;
+            }
+            _logger.Hl7ConfigLoaded($"Config: {config}");
+            // get config for vendorId
+            var configItem = GetConfig(config, message);
+            if (configItem == null)
+            {
+                _logger.Hl7NoMatchingConfig(message.HL7Message);
+                return null;
+            }
+            return configItem;
+        }
+
         private async Task<ExternalAppDetails?> GetExtAppDetails(Hl7ApplicationConfigEntity hl7ApplicationConfigEntity, Message message)
         {
             var tagId = message.GetValue(hl7ApplicationConfigEntity.DataLink.Key);
@@ -101,9 +105,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             switch (type)
             {
                 case DataLinkType.PatientId:
-                    return await _externalAppDetailsRepository.GetByPatientIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false); ;
+                    return await _externalAppDetailsRepository.GetByPatientIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false);
                 case DataLinkType.StudyInstanceUid:
-                    return await _externalAppDetailsRepository.GetByStudyIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false); ;
+                    return await _externalAppDetailsRepository.GetByStudyIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false);
                 default:
                     break;
             }
@@ -115,6 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         {
             foreach (var item in config)
             {
+                var t = message.GetValue(item.SendingId.Key);
                 if (item.SendingId.Value == message.GetValue(item.SendingId.Key))
                 {
                     return item;

@@ -101,5 +101,9 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 826, Level = LogLevel.Debug, Message = "HL7 meassage sent received {ack}")]
         public static partial void Hl7MessageSent(this ILogger logger, string ack);
+
+        [LoggerMessage(EventId = 827, Level = LogLevel.Warning, Message = "HL7 plugin loading exceptions")]
+        public static partial void HL7PluginLoadingExceptions(this ILogger logger, Exception ex);
+
     }
 }

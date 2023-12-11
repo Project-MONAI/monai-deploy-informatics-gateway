@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
-    public class Hl7ApplicationConfigEntity : MongoDBEntityBase
+    public sealed class Hl7ApplicationConfigEntity : MongoDBEntityBase
     {
         /// <summary>
         /// Gets or sets the name of a Hl7 application entity.
@@ -59,6 +59,8 @@ namespace Monai.Deploy.InformaticsGateway.Api
         /// Optional list of data input plug-in type names to be executed by the <see cref="IInputHL7DataPlugInEngine"/>.
         /// </summary>
         public List<string> PlugInAssemblies { get; set; } = default!;
+
+        public DateTime LastModified { get; set; } = DateTime.UtcNow;
 
         public IEnumerable<string> Validate()
         {
@@ -114,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
     }
 
     //string key, string value
-    public class StringKeyValuePair : IKeyValuePair<string, string>
+    public sealed class StringKeyValuePair : IKeyValuePair<string, string>, IEquatable<StringKeyValuePair>
     {
         [Key]
         public string Key { get; set; } = string.Empty;
@@ -136,7 +138,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
 
     }
 
-    public class DataKeyValuePair : IKeyValuePair<string, DataLinkType>
+    public sealed class DataKeyValuePair : IKeyValuePair<string, DataLinkType>, IEquatable<DataKeyValuePair>
     {
         [Key]
         public string Key { get; set; } = string.Empty;

@@ -1,5 +1,5 @@
-/*
- * Copyright 2022 MONAI Consortium
+﻿/*
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,21 +14,17 @@
  * limitations under the License.
  */
 
-using System;
-using System.Collections.Generic;
+
+using System.Threading.Tasks;
 using HL7.Dotnetcore;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
-    internal class MllpClientResult
+    public interface IMllpExtract
     {
-        public IList<Message> Messages { get; }
-        public AggregateException? AggregateException { get; }
+        Task<Message> ExtractInfo(Hl7FileStorageMetadata meta, Message message, Hl7ApplicationConfigEntity configItem);
 
-        public MllpClientResult(IList<Message> messages, AggregateException? aggregateException)
-        {
-            Messages = messages ?? new List<Message>();
-            AggregateException = aggregateException;
-        }
+        Task<Hl7ApplicationConfigEntity?> GetConfigItem(Message message);
     }
 }

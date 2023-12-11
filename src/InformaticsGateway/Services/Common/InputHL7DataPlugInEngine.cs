@@ -16,30 +16,28 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api.Models;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Logging;
 
-
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
-    internal class OutputDataPlugInEngine : IOutputDataPlugInEngine
+    public class InputHL7DataPlugInEngine : IInputHL7DataPlugInEngine
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<OutputDataPlugInEngine> _logger;
-        private readonly IDicomToolkit _dicomToolkit;
-        private IReadOnlyList<IOutputDataPlugIn>? _plugsins;
+        private readonly ILogger<InputHL7DataPlugInEngine> _logger;
+        private IReadOnlyList<IInputHL7DataPlugIn>? _plugsins;
 
-        public OutputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<OutputDataPlugInEngine> logger, IDicomToolkit dicomToolkit)
+        public InputHL7DataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputHL7DataPlugInEngine> logger)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
         }
 
         public void Configure(IReadOnlyList<string> pluginAssemblies)
@@ -47,40 +45,38 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             _plugsins = LoadPlugIns(_serviceProvider, pluginAssemblies);
         }
 
-        public async Task<ExportRequestDataMessage> ExecutePlugInsAsync(ExportRequestDataMessage exportRequestDataMessage)
+        public async Task<Tuple<Message, FileStorageMetadata>> ExecutePlugInsAsync(Message hl7File, FileStorageMetadata fileMetadata, Hl7ApplicationConfigEntity? configItem)
         {
             if (_plugsins == null)
             {
-                throw new PlugInInitializationException("InputDataPlugInEngine not configured, please call Configure() first.");
+                throw new PlugInInitializationException("InputHL7DataPlugInEngine not configured, please call Configure() first.");
             }
 
-            var dicomFile = _dicomToolkit.Load(exportRequestDataMessage.FileContent);
             foreach (var plugin in _plugsins)
             {
-                _logger.ExecutingOutputDataPlugIn(plugin.Name);
-                (dicomFile, exportRequestDataMessage) = await plugin.ExecuteAsync(dicomFile, exportRequestDataMessage).ConfigureAwait(false);
+                if (configItem is not null && configItem.PlugInAssemblies.Exists(a => a.StartsWith(plugin.ToString()!)))
+                {
+                    _logger.ExecutingInputDataPlugIn(plugin.Name);
+                    (hl7File, fileMetadata) = await plugin.ExecuteAsync(hl7File, fileMetadata).ConfigureAwait(false);
+                }
             }
-            using var ms = new MemoryStream();
-            await dicomFile.SaveAsync(ms).ConfigureAwait(false);
-            exportRequestDataMessage.SetData(ms.ToArray());
 
-            return exportRequestDataMessage;
+            return new Tuple<Message, FileStorageMetadata>(hl7File, fileMetadata);
         }
 
-        private IReadOnlyList<IOutputDataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
+        private IReadOnlyList<IInputHL7DataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
         {
             var exceptions = new List<Exception>();
-            var list = new List<IOutputDataPlugIn>();
+            var list = new List<IInputHL7DataPlugIn>();
             foreach (var plugin in pluginAssemblies)
             {
                 try
                 {
-                    _logger.AddingOutputDataPlugIn(plugin);
-                    list.Add(typeof(IOutputDataPlugIn).CreateInstance<IOutputDataPlugIn>(serviceProvider, typeString: plugin));
+                    _logger.AddingInputDataPlugIn(plugin);
+                    list.Add(typeof(IInputHL7DataPlugIn).CreateInstance<IInputHL7DataPlugIn>(serviceProvider, typeString: plugin));
                 }
                 catch (Exception ex)
                 {
-                    _logger.ErrorAddingOutputDataPlugIn(ex, plugin);
                     exceptions.Add(new PlugInLoadingException($"Error loading plug-in '{plugin}'.", ex));
                 }
             }

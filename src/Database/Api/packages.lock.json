@@ -49,6 +49,11 @@
           "System.Threading.Channels": "6.0.0"
         }
       },
+      "HL7-dotnetcore": {
+        "type": "Transitive",
+        "resolved": "2.36.0",
+        "contentHash": "N1HLMeIqYuY+4O69ItgZJoDBnnpNkK5N2pClceTJ2nFJxsP48iCsA4iz3tm43Yszi4r/vaThoc3UoLBfGP3vKw=="
+      },
       "Macross.Json.Extensions": {
         "type": "Transitive",
         "resolved": "3.0.0",
@@ -280,6 +285,7 @@
       "monai.deploy.informaticsgateway.api": {
         "type": "Project",
         "dependencies": {
+          "HL7-dotnetcore": "[2.36.0, )",
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[6.0.25, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",

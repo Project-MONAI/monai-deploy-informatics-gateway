@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Services.Common;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
-    internal interface IMllpClientFactory
+    public interface IMllpClient : IDisposable
     {
-        IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger);
-    }
+        Guid ClientId { get; }
 
-    internal class MllpClientFactory : IMllpClientFactory
-    {
-        public IMllpClient CreateClient(ITcpClientAdapter client, Hl7Configuration configurations, ILogger<MllpClient> logger)
-            => new MllpClient(client, configurations, logger);
+        string ClientIp { get; }
+
+        Task Start(Func<IMllpClient, MllpClientResult, Task> onDisconnect, CancellationToken cancellationToken);
     }
 }

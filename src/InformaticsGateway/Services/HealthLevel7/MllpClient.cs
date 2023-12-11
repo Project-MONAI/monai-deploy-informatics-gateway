@@ -23,12 +23,12 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
     internal sealed class MllpClient : IMllpClient
     {

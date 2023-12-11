@@ -1,5 +1,5 @@
-/*
- * Copyright 2022-2023 MONAI Consortium
+﻿/*
+ * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
-    internal interface IMllpClient : IDisposable
+    public interface IMllpService
     {
-        Guid ClientId { get; }
-
-        string ClientIp { get; }
-
-        Task Start(Func<IMllpClient, MllpClientResult, Task> onDisconnect, CancellationToken cancellationToken);
+        Task SendMllp(IPAddress address, int port, string hl7Message, CancellationToken cancellationToken);
     }
 }
