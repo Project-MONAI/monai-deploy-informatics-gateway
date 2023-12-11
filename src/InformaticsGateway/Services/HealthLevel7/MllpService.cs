@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
         private readonly IMllpExtract _mIIpExtract;
         private readonly IInputHL7DataPlugInEngine _inputHL7DataPlugInEngine;
         private readonly IHl7ApplicationConfigRepository _hl7ApplicationConfigRepository;
-        private DateTime _lastConfigRead = new(2000, 1, 1);
+        private DateTime _lastConfigRead = new DateTime(2000, 1, 1);
 
         public int ActiveConnections
         {
@@ -218,12 +218,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             if (configs is not null && configs.Any() && configs.Max(c => c.LastModified) > _lastConfigRead)
             {
                 var pluginAssemblies = new List<string>();
-                foreach (var config in configs.Where(p => p.PlugInAssemblies is not null && p.PlugInAssemblies.Count > 0))
+                foreach (var config in configs.Where(p => p.PlugInAssemblies?.Count > 0))
                 {
                     try
                     {
-                        var addMe = config.PlugInAssemblies.Where(p => pluginAssemblies.Any(a => a == p) is false);
-                        pluginAssemblies.AddRange(config.PlugInAssemblies.Where(p => pluginAssemblies.Any(a => a == p) is false));
+                        pluginAssemblies.AddRange(config.PlugInAssemblies.Where(p => pluginAssemblies.Contains(p) is false));
                     }
                     catch (Exception ex)
                     {

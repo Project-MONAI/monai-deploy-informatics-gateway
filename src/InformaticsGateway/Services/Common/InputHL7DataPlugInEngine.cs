@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             foreach (var plugin in _plugsins)
             {
                 var nm = plugin.ToString();
-                if (configItem is not null && configItem.PlugInAssemblies.Any(a => a.StartsWith(plugin.ToString()!)))
+                if (configItem is not null && configItem.PlugInAssemblies.Exists(a => a.StartsWith(plugin.ToString()!)))
                 {
                     _logger.ExecutingInputDataPlugIn(plugin.Name);
                     (hl7File, fileMetadata) = await plugin.ExecuteAsync(hl7File, fileMetadata).ConfigureAwait(false);
