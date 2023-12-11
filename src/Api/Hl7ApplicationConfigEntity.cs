@@ -116,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
     }
 
     //string key, string value
-    public sealed class StringKeyValuePair : IKeyValuePair<string, string>
+    public sealed class StringKeyValuePair : IKeyValuePair<string, string>, IEquatable<StringKeyValuePair>
     {
         [Key]
         public string Key { get; set; } = string.Empty;
@@ -138,7 +138,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
 
     }
 
-    public sealed class DataKeyValuePair : IKeyValuePair<string, DataLinkType>
+    public sealed class DataKeyValuePair : IKeyValuePair<string, DataLinkType>, IEquatable<DataKeyValuePair>
     {
         [Key]
         public string Key { get; set; } = string.Empty;
