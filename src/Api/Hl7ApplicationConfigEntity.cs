@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
-    public class Hl7ApplicationConfigEntity : MongoDBEntityBase
+    public sealed class Hl7ApplicationConfigEntity : MongoDBEntityBase
     {
         /// <summary>
         /// Gets or sets the name of a Hl7 application entity.

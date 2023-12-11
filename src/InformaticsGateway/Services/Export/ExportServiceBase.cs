@@ -138,7 +138,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             await Task.Delay(250).ConfigureAwait(false);
 #pragma warning restore CA2016 // Forward the 'CancellationToken' parameter to methods
             _cancellationTokenSource.Dispose();
-            return;
         }
 
         private void SetupPolling()

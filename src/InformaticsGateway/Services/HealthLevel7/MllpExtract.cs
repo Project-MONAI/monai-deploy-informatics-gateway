@@ -105,9 +105,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             switch (type)
             {
                 case DataLinkType.PatientId:
-                    return await _externalAppDetailsRepository.GetByPatientIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false); ;
+                    return await _externalAppDetailsRepository.GetByPatientIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false);
                 case DataLinkType.StudyInstanceUid:
-                    return await _externalAppDetailsRepository.GetByStudyIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false); ;
+                    return await _externalAppDetailsRepository.GetByStudyIdOutboundAsync(tagId, new CancellationToken()).ConfigureAwait(false);
                 default:
                     break;
             }
