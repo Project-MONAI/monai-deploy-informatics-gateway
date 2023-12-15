@@ -48,7 +48,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "8.0.x"
 
       - name: Install GitVersion
         run: dotnet tool install --global GitVersion.Tool
@@ -88,7 +88,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: "6.0.x"
+        dotnet-version: "8.0.x"
 
     - name: Enable NuGet cache
       uses: actions/cache@v3.3.1
@@ -129,7 +129,7 @@ jobs:
 
     - uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: "6.0.x"
+        dotnet-version: "8.0.x"
 
     - name: Enable Homebrew
       run: echo "/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin" >> $GITHUB_PATH
@@ -191,7 +191,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
         uses: actions/cache@v3.3.1
@@ -270,7 +270,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
         uses: actions/cache@v3.3.1
@@ -335,7 +335,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
         uses: actions/cache@v3.3.1
@@ -474,7 +474,7 @@ jobs:
 
       - uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
         uses: actions/cache@v3.3.1
@@ -539,7 +539,7 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "8.0.x"
           source-url: https://nuget.pkg.github.com/Project-MONAI/index.json
 
       - name: Publish to GitHub
@@ -572,7 +572,7 @@ jobs:
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          dotnet-version: "6.0.x"
+          dotnet-version: "8.0.x"
           source-url: https://nuget.pkg.github.com/Project-MONAI/index.json
 
       - name: Publish to GitHub
