@@ -13,21 +13,17 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Monai.Deploy.InformaticsGateway.CLI.Test</RootNamespace>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsPackable>false</IsPackable>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\Shared\Test\VerifyLogExtension.cs" Link="Shared\VerifyLogExtension.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -44,14 +40,11 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.CLI.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="Shared\" />
   </ItemGroup>
-
 </Project>

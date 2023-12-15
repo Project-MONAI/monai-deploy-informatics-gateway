@@ -13,19 +13,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <RootNamespace>Monai.Deploy.InformaticsGateway.Test.PlugIns</RootNamespace>
     <AssemblyName>Monai.Deploy.InformaticsGateway.Test.PlugIns</AssemblyName>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
   </ItemGroup>
-
 </Project>

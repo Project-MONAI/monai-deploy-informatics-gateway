@@ -13,14 +13,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
-
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsTrimmable>true</IsTrimmable>
@@ -28,35 +26,28 @@
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Remove="Test\**" />
     <EmbeddedResource Remove="Test\**" />
     <None Remove="Test\**" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="CLI\**" />
     <EmbeddedResource Remove="CLI\**" />
     <None Remove="CLI\**" />
   </ItemGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="fo-dicom" Version="5.1.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
     <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Client.Common\Monai.Deploy.InformaticsGateway.Client.Common.csproj" />
   </ItemGroup>
-
 </Project>

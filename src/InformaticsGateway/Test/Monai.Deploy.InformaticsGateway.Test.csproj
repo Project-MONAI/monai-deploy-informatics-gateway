@@ -13,24 +13,20 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Monai.Deploy.InformaticsGateway.Test</RootNamespace>
     <IsPackable>false</IsPackable>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="..\..\Shared\Test\InstanceGenerator.cs" Link="Shared\InstanceGenerator.cs" />
     <Compile Include="..\..\Shared\Test\TestStorageInfo.cs" Link="Shared\TestStorageInfo.cs" />
     <Compile Include="..\..\Shared\Test\VerifyLogExtension.cs" Link="Shared\VerifyLogExtension.cs" />
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.0">
       <PrivateAssets>all</PrivateAssets>
@@ -38,7 +34,6 @@
     </PackageReference>
     <PackageReference Include="FluentAssertions" Version="6.11.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.WebApiCompatShim" Version="2.2.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="6.0.25" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.7.2" />
     <PackageReference Include="Moq" Version="4.20.69" />
     <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="17.2.3" />
@@ -49,8 +44,8 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\..\Database\EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
@@ -58,19 +53,16 @@
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.csproj" />
     <ProjectReference Include="Plug-ins\Monai.Deploy.InformaticsGateway.Test.PlugIns.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="Plug-ins\**" />
     <EmbeddedResource Remove="Plug-ins\**" />
     <None Remove="Plug-ins\**" />
   </ItemGroup>
-
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
       <PluginDlls Include="$(OutDir)Monai.Deploy.InformaticsGateway.Test.PlugIns.dll;$(OutDir)Monai.Deploy.InformaticsGateway.Test.dll;$(OutDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll;" />

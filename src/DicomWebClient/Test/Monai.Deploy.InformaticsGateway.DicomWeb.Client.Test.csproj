@@ -13,18 +13,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
-
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <RootNamespace>Monai.Deploy.InformaticsGateway.DicomWeb.Client.Test</RootNamespace>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsPackable>false</IsPackable>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Ardalis.GuardClauses" Version="4.1.1" />
     <PackageReference Include="coverlet.collector" Version="6.0.0">
@@ -40,9 +36,7 @@
     </PackageReference>
     <PackageReference Include="Moq" Version="4.20.69" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Monai.Deploy.InformaticsGateway.DicomWeb.Client.csproj" />
   </ItemGroup>
-
 </Project>

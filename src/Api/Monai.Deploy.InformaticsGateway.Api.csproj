@@ -13,11 +13,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <RootNamespace>Monai.Deploy.InformaticsGateway.Api</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>9.0</LangVersion>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <IsTrimmable>true</IsTrimmable>
@@ -27,7 +26,6 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AllowedOutputExtensionsInPackageBuildOutputFolder>$(AllowedOutputExtensionsInPackageBuildOutputFolder);.pdb</AllowedOutputExtensionsInPackageBuildOutputFolder>
   </PropertyGroup>
-  
   <PropertyGroup>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
   </PropertyGroup>
@@ -36,7 +34,6 @@
       <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
-  
   <PropertyGroup>
     <PackageId>Monai.Deploy.InformaticsGateway.Api</PackageId>
     <Version>0.4.1</Version>
@@ -50,35 +47,29 @@
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="fo-dicom" Version="5.1.1" />
     <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.25" />
     <PackageReference Include="Monai.Deploy.Messaging" Version="1.0.5" />
     <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="1.0.5" />
     <PackageReference Include="Monai.Deploy.Storage" Version="0.2.18" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="Test\**" />
     <EmbeddedResource Remove="Test\**" />
     <None Remove="Test\**" />
   </ItemGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Common\Monai.Deploy.InformaticsGateway.Common.csproj" />
   </ItemGroup>
-
   <ItemGroup>
     <Folder Include="MessageBroker\" />
   </ItemGroup>
