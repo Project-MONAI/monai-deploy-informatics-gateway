@@ -21,7 +21,7 @@ using Ardalis.GuardClauses;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Common
 {
-    [Serializable]
+    
     public class ProblemException : Exception
     {
         public ProblemDetails ProblemDetails { get; private set; }
@@ -36,18 +36,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
         protected ProblemException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
             ProblemDetails = (ProblemDetails)info.GetValue(nameof(ProblemDetails), typeof(ProblemDetails));
-        }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-            {
-                throw new ArgumentNullException(nameof(info));
-            }
-
-            info.AddValue(nameof(ProblemDetails), ProblemDetails, typeof(ProblemDetails));
-
-            base.GetObjectData(info, context);
         }
 
         public override string Message => ToString();

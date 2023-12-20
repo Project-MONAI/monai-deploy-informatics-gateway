@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Ardalis.GuardClauses;
@@ -35,12 +34,12 @@ namespace Monai.Deploy.InformaticsGateway.Common
         /// </summary>
         /// <param name="uids">list of SOP Class UIDs</param>
         /// <returns>Array of DicomTransferSyntax or <c>null</c> if <c>uids</c> is null or empty.</returns>
-        /// <exception cref="Dicom.DicomDataException">Thrown in the specified UID is not a transfer syntax type.</exception>
+        /// <exception cref="DicomDataException">Thrown in the specified UID is not a transfer syntax type.</exception>
         public static DicomTransferSyntax[] ToDicomTransferSyntaxArray(this IEnumerable<string> uids)
         {
             if (uids.IsNullOrEmpty())
             {
-                return Array.Empty<DicomTransferSyntax>();
+                return [];
             }
 
             var dicomTransferSyntaxes = new List<DicomTransferSyntax>();
@@ -49,7 +48,7 @@ namespace Monai.Deploy.InformaticsGateway.Common
             {
                 dicomTransferSyntaxes.Add(DicomTransferSyntax.Lookup(DicomUID.Parse(uid)));
             }
-            return dicomTransferSyntaxes.ToArray();
+            return [.. dicomTransferSyntaxes];
         }
 
         public static string ToJson(this DicomFile dicomFile, DicomJsonOptions dicomJsonOptions, bool validateDicom)

@@ -21,7 +21,7 @@ using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 {
-    [Serializable]
+    
     public class DicomWebClientException : Exception
     {
         public HttpStatusCode? StatusCode { get; }
@@ -38,19 +38,6 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
         {
             StatusCode = (HttpStatusCode?)info.GetValue(nameof(StatusCode), typeof(HttpStatusCode?));
             ResponseMessage = info.GetString(nameof(ResponseMessage));
-        }
-
-        public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        {
-            if (info == null)
-            {
-                throw new ArgumentNullException(nameof(info));
-            }
-
-            info.AddValue(nameof(StatusCode), StatusCode, typeof(HttpStatusCode?));
-            info.AddValue(nameof(ResponseMessage), ResponseMessage);
-
-            base.GetObjectData(info, context);
         }
     }
 }

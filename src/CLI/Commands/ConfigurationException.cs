@@ -19,7 +19,7 @@ using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    [Serializable]
+    
     public class ConfigurationException : Exception
     {
         private ConfigurationException()

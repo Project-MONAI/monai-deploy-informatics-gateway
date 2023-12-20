@@ -23,7 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
     /// <summary>
     /// Inference request exception.
     /// </summary>
-    [Serializable]
+    
     public class InferenceRequestException : Exception
     {
         public InferenceRequestException()

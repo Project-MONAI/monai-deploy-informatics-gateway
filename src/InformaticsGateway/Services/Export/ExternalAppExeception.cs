@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
@@ -30,10 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         }
 
         public ExternalAppExeception(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ExternalAppExeception(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

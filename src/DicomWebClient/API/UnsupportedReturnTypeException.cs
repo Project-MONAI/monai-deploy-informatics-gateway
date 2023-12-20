@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 {
-    [Serializable]
+    
     public class UnsupportedReturnTypeException : Exception
     {
         public UnsupportedReturnTypeException(string message) : base(message)

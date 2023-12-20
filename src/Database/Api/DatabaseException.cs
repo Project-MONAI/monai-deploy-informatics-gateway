@@ -18,7 +18,7 @@ using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
-    [Serializable]
+    
     public class DatabaseException : Exception
     {
         public DatabaseException()

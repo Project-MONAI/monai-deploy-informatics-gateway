@@ -44,8 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="fo-dicom" Version="5.1.1" />
-    <PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
-    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Client.Common\Monai.Deploy.InformaticsGateway.Client.Common.csproj" />

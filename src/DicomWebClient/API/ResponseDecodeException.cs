@@ -20,7 +20,7 @@ using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 {
-    [Serializable]
+    
     public class ResponseDecodeException : Exception
     {
         public ResponseDecodeException(string message) : base(message)

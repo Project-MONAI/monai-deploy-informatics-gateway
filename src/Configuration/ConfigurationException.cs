@@ -23,7 +23,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
     /// <summary>
     /// Represnets an exception based upon invalid configuration.
     /// </summary>
-    [Serializable]
+    
     public class ConfigurationException : Exception
     {
         public ConfigurationException()
