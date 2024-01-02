@@ -97,7 +97,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="file">Instance to be queued</param>
         /// <param name="dataOrigin">The service that triggered this queue request</param>
         /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
-        public async Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout) => await Queue(bucket, file, dataOrigin, DEFAULT_TIMEOUT, CancellationToken.None).ConfigureAwait(false);
+        public async Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout) => await Queue(bucket, file, dataOrigin, timeout, CancellationToken.None).ConfigureAwait(false);
         /// <summary>
         /// Queues a new instance of <see cref="FileStorageMetadata"/>.
         /// </summary>
