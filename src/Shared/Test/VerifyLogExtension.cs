@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+#pragma warning disable IDE0005 // Using directive is unnecessary.
 using System;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Moq;

@@ -16,12 +16,10 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 using Ardalis.GuardClauses;
 
 namespace Monai.Deploy.InformaticsGateway.Client.Common
 {
-    
     public class ProblemException : Exception
     {
         public ProblemDetails ProblemDetails { get; private set; }
@@ -31,11 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Client.Common
             Guard.Against.Null(problemDetails, nameof(problemDetails));
 
             ProblemDetails = problemDetails;
-        }
-
-        protected ProblemException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-            ProblemDetails = (ProblemDetails)info.GetValue(nameof(ProblemDetails), typeof(ProblemDetails));
         }
 
         public override string Message => ToString();

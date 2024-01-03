@@ -15,11 +15,9 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    
     public class ConfigurationException : Exception
     {
         private ConfigurationException()
@@ -31,10 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         }
 
         public ConfigurationException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ConfigurationException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

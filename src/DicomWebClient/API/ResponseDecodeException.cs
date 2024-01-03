@@ -16,18 +16,12 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.API
 {
-    
     public class ResponseDecodeException : Exception
     {
         public ResponseDecodeException(string message) : base(message)
-        {
-        }
-
-        protected ResponseDecodeException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

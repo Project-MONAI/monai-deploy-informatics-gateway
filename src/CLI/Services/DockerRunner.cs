@@ -67,10 +67,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             return new RunnerState { IsRunning = true, Id = matches[0].ID };
         }
 
-        public async Task<ImageVersion> GetLatestApplicationVersion(CancellationToken cancellationToken = default)
+        public async Task<ImageVersion?> GetLatestApplicationVersion(CancellationToken cancellationToken = default)
             => await GetLatestApplicationVersion(_configurationService.Configurations.DockerImagePrefix, cancellationToken).ConfigureAwait(false);
 
-        public async Task<ImageVersion> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default)
+        public async Task<ImageVersion?> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(version, nameof(version));
 
@@ -98,7 +98,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             };
             _logger.RetrievingImagesFromDocker();
             var images = await _dockerClient.Images.ListImagesAsync(parameters, cancellationToken).ConfigureAwait(false);
-            return images?.Select(p => new ImageVersion { Version = p.RepoTags[0], Id = p.ID, Created = p.Created }).ToList();
+            return images.Select(p => new ImageVersion { Version = p.RepoTags[0], Id = p.ID, Created = p.Created }).ToList();
         }
 
         public async Task<bool> StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default)

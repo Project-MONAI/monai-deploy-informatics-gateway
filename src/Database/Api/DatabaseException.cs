@@ -14,11 +14,8 @@
  * limitations under the License.
  */
 
-using System.Runtime.Serialization;
-
 namespace Monai.Deploy.InformaticsGateway.Database.Api
 {
-    
     public class DatabaseException : Exception
     {
         public DatabaseException()
@@ -30,10 +27,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
         }
 
         public DatabaseException(string? message, Exception? innerException) : base(message, innerException)
-        {
-        }
-
-        protected DatabaseException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

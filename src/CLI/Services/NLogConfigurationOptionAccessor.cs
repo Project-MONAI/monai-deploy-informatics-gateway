@@ -52,9 +52,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                var value = _xmlDocument.SelectSingleNode("//ns:variable[@name='logDir']/@value", _namespaceManager).InnerText;
-                value = value.Replace("${basedir}", Common.ContainerApplicationRootPath);
-                return value;
+                var value = _xmlDocument.SelectSingleNode("//ns:variable[@name='logDir']/@value", _namespaceManager)?.InnerText;
+                value = value?.Replace("${basedir}", Common.ContainerApplicationRootPath);
+                return value ?? string.Empty;
             }
         }
     }

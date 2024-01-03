@@ -18,7 +18,6 @@ using System;
 
 namespace Monai.Deploy.InformaticsGateway.CLI
 {
-    
     public class ControlException : Exception
     {
         public int ErrorCode { get; }

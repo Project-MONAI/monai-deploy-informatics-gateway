@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         /// <summary>
         /// ID of the running application provided by the orchestration engine.
         /// </summary>
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         /// <summary>
         /// Shorter version of the ID, with 12 characters.
@@ -56,13 +56,13 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         /// <summary>
         /// Version or label of the application/image detected.
         /// </summary>
-        public string Version { get; set; }
+        public string Version { get; set; } = string.Empty;
 
         /// <summary>
         /// Unique ID provided by the orchestration engine.
         /// </summary>
         /// <value></value>
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         /// <summary>
         /// Shorter version of the ID, with 12 characters.
@@ -86,9 +86,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
     {
         Task<RunnerState> IsApplicationRunning(ImageVersion imageVersion, CancellationToken cancellationToken = default);
 
-        Task<ImageVersion> GetLatestApplicationVersion(CancellationToken cancellationToken = default);
+        Task<ImageVersion?> GetLatestApplicationVersion(CancellationToken cancellationToken = default);
 
-        Task<ImageVersion> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default);
+        Task<ImageVersion?> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default);
 
         Task<IList<ImageVersion>> GetApplicationVersions(CancellationToken cancellationToken = default);
 

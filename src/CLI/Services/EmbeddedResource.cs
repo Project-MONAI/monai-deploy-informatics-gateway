@@ -21,12 +21,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     public interface IEmbeddedResource
     {
-        Stream GetManifestResourceStream(string name);
+        Stream? GetManifestResourceStream(string name);
     }
 
     public class EmbeddedResource : IEmbeddedResource
     {
-        public Stream GetManifestResourceStream(string name)
+        public Stream? GetManifestResourceStream(string name)
         {
             Guard.Against.NullOrWhiteSpace(name, nameof(name));
 

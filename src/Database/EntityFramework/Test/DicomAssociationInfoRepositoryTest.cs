@@ -74,7 +74,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
                 .Skip(0)
                 .Take(1)
                 .ToList();
-            var actual = await store.GetAllAsync(0, 1, startTime, endTime, default).ConfigureAwait(false);
+            var actual = await store.GetAllAsync(0, 1, startTime, endTime, default).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(expected, actual);
@@ -93,8 +93,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             association.Disconnect();
 
             var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(association).ConfigureAwait(false);
-            var actual = await _databaseFixture.DatabaseContext.Set<DicomAssociationInfo>().FirstOrDefaultAsync(p => p.Id.Equals(association.Id)).ConfigureAwait(false);
+            await store.AddAsync(association).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await _databaseFixture.DatabaseContext.Set<DicomAssociationInfo>().FirstOrDefaultAsync(p => p.Id.Equals(association.Id)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(association.DateTimeCreated, actual!.DateTimeCreated);
@@ -112,8 +112,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await _databaseFixture.DatabaseContext.Set<DicomAssociationInfo>().ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var expected = await _databaseFixture.DatabaseContext.Set<DicomAssociationInfo>().ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.Equal(expected, actual);
         }
