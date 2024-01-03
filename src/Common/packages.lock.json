@@ -4,9 +4,9 @@
     "net8.0": {
       "Ardalis.GuardClauses": {
         "type": "Direct",
-        "requested": "[4.2.0, )",
-        "resolved": "4.2.0",
-        "contentHash": "2mDznNQkPRNpTVGrThEVhBTtxBUsCMobLnfOXnhehznwIEDjT0PG+1cedYzVhHHPfzU1OGc/2ubEkFAyoBi4LQ=="
+        "requested": "[4.3.0, )",
+        "resolved": "4.3.0",
+        "contentHash": "5KQ6zQDNRduora6L8lGQcRikLNLj0s4XjctGuUX24uBRzHMMKv6BatVDSBWRs96riz7PJj7Efn3yOFhfYXgnWg=="
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
@@ -16,9 +16,26 @@
       },
       "System.IO.Abstractions": {
         "type": "Direct",
-        "requested": "[17.2.3, )",
-        "resolved": "17.2.3",
-        "contentHash": "VcozGeE4SxIo0cnXrDHhbrh/Gb8KQnZ3BvMelvh+iw0PrIKtuuA46U2Xm4e4pgnaWFgT4RdZfTpWl/WPRdw0WQ=="
+        "requested": "[20.0.4, )",
+        "resolved": "20.0.4",
+        "contentHash": "Vv3DffYCM/DEQ7+9Dn7ydq852WSVtdeoLNlztIqaMAl4o6aALyAJQRTQ30d/3D7BVf5pALsGm22HYb4Y6h8xvw==",
+        "dependencies": {
+          "TestableIO.System.IO.Abstractions": "20.0.4",
+          "TestableIO.System.IO.Abstractions.Wrappers": "20.0.4"
+        }
+      },
+      "TestableIO.System.IO.Abstractions": {
+        "type": "Transitive",
+        "resolved": "20.0.4",
+        "contentHash": "zvuE3an8qmEjlz72ZKyW/gBZprR0TMTDxuw77i1OXi5wEagXRhHwP4lOaLvHIXNlwyCAmdmei6iLHsfsZcuUAA=="
+      },
+      "TestableIO.System.IO.Abstractions.Wrappers": {
+        "type": "Transitive",
+        "resolved": "20.0.4",
+        "contentHash": "LbVaZauZfCkcGmHyPhQ2yiKv5GQqTvMViPYd3NjU1tGxp0N2p7Oc6Q/2trN6ZNIZCr42ujJdYUB63hE4mtsHRQ==",
+        "dependencies": {
+          "TestableIO.System.IO.Abstractions": "20.0.4"
+        }
       }
     }
   }

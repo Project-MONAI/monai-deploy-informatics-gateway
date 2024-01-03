@@ -4,11 +4,11 @@
     "net8.0": {
       "fo-dicom": {
         "type": "Direct",
-        "requested": "[5.1.1, )",
-        "resolved": "5.1.1",
-        "contentHash": "YraR81u9XuTN7l+pt6HzT0KvuhgWVZ9LCuHMH3zgFfAtv4peT1y+nYMSGwF9YqNP+oZnzh0s0PJ+vJMsTDpGIw==",
+        "requested": "[5.1.2, )",
+        "resolved": "5.1.2",
+        "contentHash": "2lM76Vq+GRdwyY3BQiUJ+V6yxdFiOG4ysLJC7qNTxLsq/1pr5ZTTXiIzWQa+uJ0MuKnzzFogV5+meDflsyjs2g==",
         "dependencies": {
-          "CommunityToolkit.HighPerformance": "8.2.0",
+          "CommunityToolkit.HighPerformance": "8.2.2",
           "Microsoft.Bcl.AsyncInterfaces": "6.0.0",
           "Microsoft.Bcl.HashCode": "1.1.1",
           "Microsoft.Extensions.DependencyInjection": "6.0.1",
@@ -17,7 +17,7 @@
           "System.Buffers": "4.5.1",
           "System.Text.Encoding.CodePages": "6.0.0",
           "System.Text.Encodings.Web": "6.0.0",
-          "System.Text.Json": "6.0.7",
+          "System.Text.Json": "6.0.9",
           "System.Threading.Channels": "6.0.0"
         }
       },
@@ -29,13 +29,13 @@
       },
       "Ardalis.GuardClauses": {
         "type": "Transitive",
-        "resolved": "4.2.0",
-        "contentHash": "2mDznNQkPRNpTVGrThEVhBTtxBUsCMobLnfOXnhehznwIEDjT0PG+1cedYzVhHHPfzU1OGc/2ubEkFAyoBi4LQ=="
+        "resolved": "4.3.0",
+        "contentHash": "5KQ6zQDNRduora6L8lGQcRikLNLj0s4XjctGuUX24uBRzHMMKv6BatVDSBWRs96riz7PJj7Efn3yOFhfYXgnWg=="
       },
       "CommunityToolkit.HighPerformance": {
         "type": "Transitive",
-        "resolved": "8.2.0",
-        "contentHash": "iKzsPiSnXoQUN5AoApYmdfnLn9osNb+YCLWRr5PFmrDEQVIu7OeOyf4DPvNBvbqbYLZCfvHozPkulyv6zBQsFw=="
+        "resolved": "8.2.2",
+        "contentHash": "+zIp8d3sbtYaRbM6hqDs4Ui/z34j7DcUmleruZlYLE4CVxXq+MO8XJyIs42vzeTYFX+k0Iq1dEbBUnQ4z/Gnrw=="
       },
       "Microsoft.Bcl.AsyncInterfaces": {
         "type": "Transitive",
@@ -131,8 +131,8 @@
       },
       "System.Text.Json": {
         "type": "Transitive",
-        "resolved": "6.0.7",
-        "contentHash": "/Tf/9XjprpHolbcDOrxsKVYy/mUG/FS7aGd9YUgBVEiHeQH4kAE0T1sMbde7q6B5xcrNUsJ5iW7D1RvHudQNqA==",
+        "resolved": "6.0.9",
+        "contentHash": "2j16oUgtIzl7Xtk7demG0i/v5aU/ZvULcAnJvPb63U3ZhXJ494UYcxuEj5Fs49i3XDrk5kU/8I+6l9zRCw3cJw==",
         "dependencies": {
           "System.Runtime.CompilerServices.Unsafe": "6.0.0",
           "System.Text.Encodings.Web": "6.0.0"
@@ -146,7 +146,7 @@
       "monai.deploy.informaticsgateway.client.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "[4.2.0, )"
+          "Ardalis.GuardClauses": "[4.3.0, )"
         }
       }
     }
