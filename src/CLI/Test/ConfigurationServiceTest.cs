@@ -130,10 +130,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             _embeddedResource.Verify(p => p.GetManifestResourceStream(Common.AppSettingsResourceName), Times.Once());
             _embeddedResource.Verify(p => p.GetManifestResourceStream(Common.NLogConfigResourceName), Times.Once());
 
-            var bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.ConfigFilePath).ConfigureAwait(false);
+            var bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.ConfigFilePath).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
 
-            bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.NLogConfigFilePath).ConfigureAwait(false);
+            bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.NLogConfigFilePath).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
         }
     }

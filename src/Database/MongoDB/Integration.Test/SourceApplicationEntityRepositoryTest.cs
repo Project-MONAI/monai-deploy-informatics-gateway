@@ -72,10 +72,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             };
 
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(aet).ConfigureAwait(false);
+            await store.AddAsync(aet).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var collection = _databaseFixture.Database.GetCollection<SourceApplicationEntity>(nameof(SourceApplicationEntity));
-            var actual = await collection.Find(p => p.Name == aet.Name).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.Name == aet.Name).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(aet.AeTitle, actual!.AeTitle);
@@ -88,13 +88,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var result = await store.ContainsAsync(p => p.AeTitle == "AET1").ConfigureAwait(false);
+            var result = await store.ContainsAsync(p => p.AeTitle == "AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.AeTitle.Equals("AET1")).ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.AeTitle.Equals("AET1")).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Name != "AET2").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Name != "AET2").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.False(result);
         }
 
@@ -103,12 +103,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var actual = await store.FindByNameAsync("AET1").ConfigureAwait(false);
+            var actual = await store.FindByNameAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
             Assert.Equal("AET1", actual!.AeTitle);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByNameAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByNameAsync("AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(actual);
         }
 
@@ -117,12 +117,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var actual = await store.FindByAETAsync("AET1").ConfigureAwait(false);
+            var actual = await store.FindByAETAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
             Assert.Equal("AET1", actual.FirstOrDefault()!.AeTitle);
             Assert.Equal("AET1", actual.FirstOrDefault()!.Name);
 
-            actual = await store.FindByAETAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByAETAsync("AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
             Assert.Empty(actual);
         }
@@ -132,14 +132,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await store.FindByNameAsync("AET5").ConfigureAwait(false);
+            var expected = await store.FindByNameAsync("AET5").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
-            var actual = await store.RemoveAsync(expected!).ConfigureAwait(false);
+            var actual = await store.RemoveAsync(expected!).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Same(expected, actual);
 
             var collection = _databaseFixture.Database.GetCollection<SourceApplicationEntity>(nameof(SourceApplicationEntity));
-            var dbResult = await collection.Find(p => p.Name == "AET5").FirstOrDefaultAsync().ConfigureAwait(false);
+            var dbResult = await collection.Find(p => p.Name == "AET5").FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(dbResult);
         }
 
@@ -149,8 +149,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var collection = _databaseFixture.Database.GetCollection<SourceApplicationEntity>(nameof(SourceApplicationEntity));
-            var expected = await collection.Find(Builders<SourceApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var expected = await collection.Find(Builders<SourceApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
         }
@@ -160,15 +160,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new SourceApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await store.FindByNameAsync("AET3").ConfigureAwait(false);
+            var expected = await store.FindByNameAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
             expected!.AeTitle = "AET100";
 
-            var actual = await store.UpdateAsync(expected).ConfigureAwait(false);
+            var actual = await store.UpdateAsync(expected).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(expected, actual);
 
-            var dbResult = await store.FindByNameAsync("AET3").ConfigureAwait(false);
+            var dbResult = await store.FindByNameAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(dbResult);
             Assert.Equal(expected.AeTitle, dbResult!.AeTitle);
         }

@@ -103,7 +103,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             await dicomFile.SaveAsync(filename).ConfigureAwait(false);
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         internal static async Task SaveJson(ILogger logger, string outputDir, string item, DicomTag filenameSourceTag)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             Guard.Against.Null(logger, nameof(logger));
             Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
@@ -138,7 +140,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             await File.WriteAllTextAsync(outputFilename, token.ToString(), Encoding.UTF8).ConfigureAwait(false);
         }
 
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         private static string GetTagValueFromJson(JsonObject? token, DicomTag dicomTag, string defaultValue = "unknown")
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         {
             Guard.Against.Null(dicomTag, nameof(dicomTag));
 

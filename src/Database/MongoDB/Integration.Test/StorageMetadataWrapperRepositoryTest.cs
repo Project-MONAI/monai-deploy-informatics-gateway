@@ -79,10 +79,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var metadata = CreateMetadataObject();
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(metadata).ConfigureAwait(false);
+            await store.AddAsync(metadata).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var collection = _databaseFixture.Database.GetCollection<StorageMetadataWrapper>(nameof(StorageMetadataWrapper));
-            var actual = await collection.Find(p => p.Identity == metadata.Id).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.Identity == metadata.Id).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(metadata.CorrelationId, actual!.CorrelationId);
@@ -99,8 +99,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            await store.AddOrUpdateAsync(metadata1).ConfigureAwait(false);
-            await Assert.ThrowsAsync<ArgumentException>(async () => await store.UpdateAsync(metadata2).ConfigureAwait(false)).ConfigureAwait(false);
+            await store.AddOrUpdateAsync(metadata1).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            await Assert.ThrowsAsync<ArgumentException>(async () => await store.UpdateAsync(metadata2).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
         }
 
         [Fact]
@@ -109,14 +109,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var metadata = CreateMetadataObject();
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(metadata).ConfigureAwait(false);
+            await store.AddAsync(metadata).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             metadata.SetWorkflows("A", "B", "C");
             metadata.File.SetUploaded("bucket");
 
-            await store.AddOrUpdateAsync(metadata).ConfigureAwait(false);
+            await store.AddOrUpdateAsync(metadata).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var collection = _databaseFixture.Database.GetCollection<StorageMetadataWrapper>(nameof(StorageMetadataWrapper));
-            var actual = await collection.Find(p => p.Identity == metadata.Id).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.Identity == metadata.Id).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(metadata.CorrelationId, actual!.CorrelationId);
@@ -159,10 +159,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             foreach (var item in list)
             {
-                await store.AddOrUpdateAsync(item).ConfigureAwait(false);
+                await store.AddOrUpdateAsync(item).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             }
 
-            var results = await store.GetFileStorageMetdadataAsync(correlationId.ToString()).ConfigureAwait(false);
+            var results = await store.GetFileStorageMetdadataAsync(correlationId.ToString()).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.Equal(3, results.Count);
 
@@ -188,9 +188,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         "called");
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddOrUpdateAsync(expected).ConfigureAwait(false);
+            await store.AddOrUpdateAsync(expected).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var match = await store.GetFileStorageMetdadataAsync(correlationId, identifier).ConfigureAwait(false);
+            var match = await store.GetFileStorageMetdadataAsync(correlationId, identifier).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(match);
             Assert.Equal(expected.Id, match!.Id);
@@ -213,12 +213,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
                         "called");
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(expected).ConfigureAwait(false);
-            var result = await store.DeleteAsync(correlationId, identifier).ConfigureAwait(false);
+            await store.AddAsync(expected).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var result = await store.DeleteAsync(correlationId, identifier).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
 
             var collection = _databaseFixture.Database.GetCollection<StorageMetadataWrapper>(nameof(StorageMetadataWrapper));
-            var stored = await collection.Find(p => p.Identity == identifier).FirstOrDefaultAsync().ConfigureAwait(false);
+            var stored = await collection.Find(p => p.Identity == identifier).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.Null(stored);
         }
@@ -231,13 +231,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var pending = CreateMetadataObject();
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(pending).ConfigureAwait(false);
+            await store.AddAsync(pending).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var result = await store.DeleteAsync(correlationId, identifier).ConfigureAwait(false);
+            var result = await store.DeleteAsync(correlationId, identifier).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.False(result);
 
             var collection = _databaseFixture.Database.GetCollection<StorageMetadataWrapper>(nameof(StorageMetadataWrapper));
-            var stored = await collection.Find(p => p.Identity == pending.Id).FirstOrDefaultAsync().ConfigureAwait(false);
+            var stored = await collection.Find(p => p.Identity == pending.Id).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(stored);
         }
@@ -254,12 +254,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             uploaded.JsonFile.SetUploaded("bucket");
 
             var store = new StorageMetadataWrapperRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(pending).ConfigureAwait(false);
-            await store.AddAsync(uploaded).ConfigureAwait(false);
+            await store.AddAsync(pending).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            await store.AddAsync(uploaded).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            await store.DeletePendingUploadsAsync().ConfigureAwait(false);
+            await store.DeletePendingUploadsAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var result = await collection.Find(Builders<StorageMetadataWrapper>.Filter.Empty).ToListAsync().ConfigureAwait(false);
+            var result = await collection.Find(Builders<StorageMetadataWrapper>.Filter.Empty).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Single(result);
             Assert.Equal(uploaded.Id, result[0].Identity);
         }

@@ -48,13 +48,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
 
             var dicom = InstanceGenerator.GenerateDicomFile();
             var json = dicom.ToJson(DicomJsonOptions.Complete, false);
-            await metadata.SetDataStreams(dicom, json, TemporaryDataStorageLocation.Memory).ConfigureAwait(false);
+            await metadata.SetDataStreams(dicom, json, TemporaryDataStorageLocation.Memory).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(metadata.File.Data);
             Assert.NotNull(metadata.JsonFile.Data);
 
             var ms = new MemoryStream();
-            await dicom.SaveAsync(ms).ConfigureAwait(false);
+            await dicom.SaveAsync(ms).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(ms.ToArray(), (metadata.File.Data as MemoryStream).ToArray());
 
             var jsonFromStream = Encoding.UTF8.GetString((metadata.JsonFile.Data as MemoryStream).ToArray());
@@ -82,13 +82,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
 
             var dicom = InstanceGenerator.GenerateDicomFile();
             var json = dicom.ToJson(DicomJsonOptions.Complete, false);
-            await metadata.SetDataStreams(dicom, json, TemporaryDataStorageLocation.Disk, fileSystem, "/temp").ConfigureAwait(false);
+            await metadata.SetDataStreams(dicom, json, TemporaryDataStorageLocation.Disk, fileSystem, "/temp").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(metadata.File.Data);
             Assert.NotNull(metadata.JsonFile.Data);
 
             var ms = new MemoryStream();
-            await dicom.SaveAsync(ms).ConfigureAwait(false);
+            await dicom.SaveAsync(ms).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             using var temporaryDataAsMemoryStream = new MemoryStream();
             metadata.File.Data.CopyTo(temporaryDataAsMemoryStream);
 
@@ -146,13 +146,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Common
             dicom.Dataset.Add(DicomTag.PixelSpacing, "0.68300002813334234392234", "0.2354257587243524352345");
 
             var json = dicom.ToJson(DicomJsonOptions.Complete, false);
-            await metadata.SetDataStreams(dicom, json, TemporaryDataStorageLocation.Memory).ConfigureAwait(false);
+            await metadata.SetDataStreams(dicom, json, TemporaryDataStorageLocation.Memory).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(metadata.File.Data);
             Assert.NotNull(metadata.JsonFile.Data);
 
             var ms = new MemoryStream();
-            await dicom.SaveAsync(ms).ConfigureAwait(false);
+            await dicom.SaveAsync(ms).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(ms.ToArray(), (metadata.File.Data as MemoryStream).ToArray());
 
             var jsonFromStream = Encoding.UTF8.GetString((metadata.JsonFile.Data as MemoryStream).ToArray());

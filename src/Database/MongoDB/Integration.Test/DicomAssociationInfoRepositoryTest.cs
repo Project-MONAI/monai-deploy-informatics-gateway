@@ -73,10 +73,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             association.Disconnect();
 
             var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(association).ConfigureAwait(false);
+            await store.AddAsync(association).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var collection = _databaseFixture.Database.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
-            var actual = await collection.Find(p => p.Id == association.Id).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.Id == association.Id).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(association.FileCount, actual!.FileCount);
@@ -101,8 +101,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var filter = builder.Empty;
             filter &= builder.Where(t => t.DateTimeDisconnected >= startTime.ToUniversalTime());
             filter &= builder.Where(t => t.DateTimeDisconnected <= endTime.ToUniversalTime());
-            var expected = await collection.Find(filter).ToListAsync().ConfigureAwait(false);
-            var actual = await store.GetAllAsync(0, 1, startTime, endTime, default).ConfigureAwait(false);
+            var expected = await collection.Find(filter).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.GetAllAsync(0, 1, startTime, endTime, default).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             actual.Should().NotBeNull();
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
@@ -114,8 +114,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var collection = _databaseFixture.Database.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
-            var expected = await collection.Find(Builders<DicomAssociationInfo>.Filter.Empty).ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var expected = await collection.Find(Builders<DicomAssociationInfo>.Filter.Empty).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
         }
