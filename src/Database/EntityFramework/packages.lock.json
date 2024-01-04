@@ -378,8 +378,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "2.0.0-rc0002",
-        "contentHash": "+PwlZv7rYd9MWuBSp69kTTCaWPYAIl8HVPh791NoGgVm4ay7AGyBH+X+kfvRaGTdqyLhbds+1sCvWXOGMBMWrA==",
+        "resolved": "2.0.0-rc0003",
+        "contentHash": "QQTS329g2OUk+3CQYQit6bi3Mhof2nMXd3gCQK5mGJYVjSCBFPCYhGKJ81vaBpeNRSjBh4IMWf5Bnxpd4TEtQQ==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.3.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
@@ -389,10 +389,10 @@
       },
       "Monai.Deploy.Messaging.RabbitMQ": {
         "type": "Transitive",
-        "resolved": "2.0.0-rc0002",
-        "contentHash": "46LsQyJhQw1kYXxCvXtL/am9Z92fl+iJDP+jsxmxEU84xikYfVcuHW3lGFoLnF3j1/d3nXILiPPXHH7PVqhffw==",
+        "resolved": "2.0.0-rc0003",
+        "contentHash": "mQUNjp9p0ORstFdt1dxvrGFNv10YiYMksW1+zrTeQ3sVS7uVYqseVHE45NJHxRXGUTRSCaFqlxtJ4hoEttLRpA==",
         "dependencies": {
-          "Monai.Deploy.Messaging": "2.0.0-rc0002",
+          "Monai.Deploy.Messaging": "2.0.0-rc0003",
           "Polly": "8.2.0",
           "RabbitMQ.Client": "6.8.1"
         }
@@ -628,8 +628,8 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[8.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[2.0.0-rc0002, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0002, )",
+          "Monai.Deploy.Messaging": "[2.0.0-rc0003, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0003, )",
           "Monai.Deploy.Storage": "[1.0.0-rc0006, )",
           "fo-dicom": "[5.1.2, )"
         }

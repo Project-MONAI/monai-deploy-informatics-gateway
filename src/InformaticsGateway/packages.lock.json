@@ -971,8 +971,8 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[8.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[2.0.0-rc0002, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0002, )",
+          "Monai.Deploy.Messaging": "[2.0.0-rc0003, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0003, )",
           "Monai.Deploy.Storage": "[1.0.0-rc0006, )",
           "fo-dicom": "[5.1.2, )"
         }

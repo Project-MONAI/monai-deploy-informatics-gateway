@@ -751,8 +751,8 @@
       },
       "Monai.Deploy.Security": {
         "type": "Transitive",
-        "resolved": "1.0.0-rc0016",
-        "contentHash": "wLSE5WKSLreABOjV7XVVPgWCYOYNPef7ZiLk3+K/ozlfs6+kgbEYwfy4InOkEcA5JJ8j77QiF4H7Uv06UxPiAw==",
+        "resolved": "1.0.0-rc0017",
+        "contentHash": "1mbo++n4QmYfwx9TqAS8qYWRBex8/PLfZv1jfMWid5ensRGCYLxkn9BB0BuEHNkUtpuut69Gk2EsHluYCVfflw==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.3.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.0",
@@ -2110,8 +2110,8 @@
           "Monai.Deploy.InformaticsGateway.Database.EntityFramework": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.DicomWeb.Client": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution": "[1.0.0, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0002, )",
-          "Monai.Deploy.Security": "[1.0.0-rc0016, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0003, )",
+          "Monai.Deploy.Security": "[1.0.0-rc0017, )",
           "Monai.Deploy.Storage.MinIO": "[1.0.0-rc0006, )",
           "NLog.Web.AspNetCore": "[5.3.8, )",
           "Swashbuckle.AspNetCore": "[6.5.0, )"
@@ -2124,8 +2124,8 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[8.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[2.0.0-rc0002, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0002, )",
+          "Monai.Deploy.Messaging": "[2.0.0-rc0003, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0003, )",
           "Monai.Deploy.Storage": "[1.0.0-rc0006, )",
           "fo-dicom": "[5.1.2, )"
         }
