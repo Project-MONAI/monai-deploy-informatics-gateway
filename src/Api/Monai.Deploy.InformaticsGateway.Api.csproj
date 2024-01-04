@@ -51,9 +51,9 @@
     <PackageReference Include="fo-dicom" Version="5.1.2" />
     <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="2.0.0-rc0001" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.0-rc0001" />
-    <PackageReference Include="Monai.Deploy.Storage" Version="1.0.0-rc0004" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="2.0.0-rc0003" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.0-rc0003" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="1.0.0-rc0006" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.0" />
   </ItemGroup>
   <ItemGroup>

@@ -42,15 +42,15 @@
       },
       "AWSSDK.Core": {
         "type": "Transitive",
-        "resolved": "3.7.300.22",
-        "contentHash": "NrQzYMCw++c0GQvRWoMkEduSOiCCrhMaqa74cBf5UTS6wPcuSoL5jm76yRNcz4iQkA6G46LUzcCpPVDlpB1HZQ=="
+        "resolved": "3.7.300.29",
+        "contentHash": "BMvjbKNzA7Y1eFbhnRbexaUKZ6FwR/hAdvmPYYYA35kw0Ig5E12shMiCEqtRL1EQYVpAqmLdSPZNxV4hu5Ncng=="
       },
       "AWSSDK.SecurityToken": {
         "type": "Transitive",
-        "resolved": "3.7.300.23",
-        "contentHash": "QYAyjQ1t6I/YQHHrF+ILa+OcQSV9FZDz8rcO3O4E8rWlKJjp+iW8CeNWQz0frtU8v+0u9bZ+VFZGHYnMQrdySw==",
+        "resolved": "3.7.300.30",
+        "contentHash": "hsCHGNTf1UeNEVBrjuFsWQfylcqzrBn27bfidgr0VVCKc82dz/PEFIrSFzXuEOjvRSiO5wji/V7x9bGyf1aJ6A==",
         "dependencies": {
-          "AWSSDK.Core": "[3.7.300.22, 4.0.0)"
+          "AWSSDK.Core": "[3.7.300.29, 4.0.0)"
         }
       },
       "CommunityToolkit.HighPerformance": {
@@ -248,10 +248,10 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "2.0.0-rc0001",
-        "contentHash": "XBYAmntb+x0mhqIAH+/IprxlA6Vf5B2CbbW9WXbQ5hEo2HRiQu990VUCNPac0fGhM+XzWpuTTMlphnmQqTVdPg==",
+        "resolved": "2.0.0-rc0002",
+        "contentHash": "+PwlZv7rYd9MWuBSp69kTTCaWPYAIl8HVPh791NoGgVm4ay7AGyBH+X+kfvRaGTdqyLhbds+1sCvWXOGMBMWrA==",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.2.0",
+          "Ardalis.GuardClauses": "4.3.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
           "Newtonsoft.Json": "13.0.3",
           "System.IO.Abstractions": "20.0.4"
@@ -259,31 +259,31 @@
       },
       "Monai.Deploy.Messaging.RabbitMQ": {
         "type": "Transitive",
-        "resolved": "2.0.0-rc0001",
-        "contentHash": "jHrUXK4NHQFxjdRt3hOj2b8VZq9IsFI8iUD4egcP6SgSlrzb5YibmBES0zP9jbdpwnDlswTEA+1wBnh3/QlEWw==",
+        "resolved": "2.0.0-rc0002",
+        "contentHash": "46LsQyJhQw1kYXxCvXtL/am9Z92fl+iJDP+jsxmxEU84xikYfVcuHW3lGFoLnF3j1/d3nXILiPPXHH7PVqhffw==",
         "dependencies": {
-          "Monai.Deploy.Messaging": "2.0.0-rc0001",
+          "Monai.Deploy.Messaging": "2.0.0-rc0002",
           "Polly": "8.2.0",
           "RabbitMQ.Client": "6.8.1"
         }
       },
       "Monai.Deploy.Storage": {
         "type": "Transitive",
-        "resolved": "1.0.0-rc0004",
-        "contentHash": "DHU90A+KPpP6qn63IOzNUlsQKN+NDn2ytTYV/vbofEu6NuZ2Agv0MbWEvjaz35bUjLNfqJLQx5uLFxuCbZghvw==",
+        "resolved": "1.0.0-rc0006",
+        "contentHash": "uYoGYO5FsppqXttLjJ0YYgWq4bRQhIXBfmwp546f7+LhSmGjrpwqo4agJnQcSCL9ERBp7Y8POCU6Gtf3+nDYqw==",
         "dependencies": {
-          "AWSSDK.SecurityToken": "3.7.300.23",
+          "AWSSDK.SecurityToken": "3.7.300.30",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
-          "Monai.Deploy.Storage.S3Policy": "1.0.0-rc0004",
+          "Monai.Deploy.Storage.S3Policy": "1.0.0-rc0006",
           "System.IO.Abstractions": "20.0.4"
         }
       },
       "Monai.Deploy.Storage.S3Policy": {
         "type": "Transitive",
-        "resolved": "1.0.0-rc0004",
-        "contentHash": "YcEn8kCCefTPXUN/XGR4HTyCAyx1EfWk/y/SpveERi23bZHcBXulq3ZUdMmkPZOm7cCgQ6BBcs8b5Q5OWae/Ug==",
+        "resolved": "1.0.0-rc0006",
+        "contentHash": "UprsQkdIwvlhiQzWxB4rU2Q+vggJJrMsadOXrD7ybf/ZoLqi3oQyMZyNsk8heMTd4pwQikOGpIOUfF7JZYMP1w==",
         "dependencies": {
-          "Ardalis.GuardClauses": "4.2.0",
+          "Ardalis.GuardClauses": "4.3.0",
           "Newtonsoft.Json": "13.0.3"
         }
       },
@@ -1304,9 +1304,9 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[8.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[2.0.0-rc0001, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0001, )",
-          "Monai.Deploy.Storage": "[1.0.0-rc0004, )",
+          "Monai.Deploy.Messaging": "[2.0.0-rc0002, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0002, )",
+          "Monai.Deploy.Storage": "[1.0.0-rc0006, )",
           "fo-dicom": "[5.1.2, )"
         }
       },

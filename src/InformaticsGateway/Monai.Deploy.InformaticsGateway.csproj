@@ -35,9 +35,9 @@
   <ItemGroup>
     <PackageReference Include="DotNext.Threading" Version="4.15.2" />
     <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.0-rc0001" />
-    <PackageReference Include="Monai.Deploy.Security" Version="1.0.0-rc0015" />
-    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="1.0.0-rc0004" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.0-rc0003" />
+    <PackageReference Include="Monai.Deploy.Security" Version="1.0.0-rc0017" />
+    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="1.0.0-rc0006" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0" />
