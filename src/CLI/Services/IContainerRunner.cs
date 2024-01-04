@@ -90,9 +90,9 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
         Task<ImageVersion?> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default);
 
-        Task<IList<ImageVersion>> GetApplicationVersions(CancellationToken cancellationToken = default);
+        Task<IList<ImageVersion>?> GetApplicationVersions(CancellationToken cancellationToken = default);
 
-        Task<IList<ImageVersion>> GetApplicationVersions(string version, CancellationToken cancellationToken = default);
+        Task<IList<ImageVersion>?> GetApplicationVersions(string version, CancellationToken cancellationToken = default);
 
         Task<bool> StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default);
 
