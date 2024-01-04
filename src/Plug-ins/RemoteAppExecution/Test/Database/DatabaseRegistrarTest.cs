@@ -37,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             serviceCollection.Setup(p => p.GetEnumerator()).Returns(serviceDescriptors.GetEnumerator());
 
             var registrar = new DatabaseRegistrar();
-            var configInMemory = new List<KeyValuePair<string, string>> {
+            var configInMemory = new List<KeyValuePair<string, string?>> {
                 new("top:InformaticsGatewayDatabase","DataSource=file::memory:?cache=shared"),
             };
 
@@ -70,7 +70,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             serviceCollection.Setup(p => p.GetEnumerator()).Returns(serviceDescriptors.GetEnumerator());
 
             var registrar = new DatabaseRegistrar();
-            var configInMemory = new List<KeyValuePair<string, string>> {
+            var configInMemory = new List<KeyValuePair<string, string?>> {
                 new("top:InformaticsGatewayDatabase","DataSource=file::memory:?cache=shared"),
             };
 
