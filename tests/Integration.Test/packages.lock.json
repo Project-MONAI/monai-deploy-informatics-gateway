@@ -2190,7 +2190,7 @@
           "Monai.Deploy.InformaticsGateway.Api": "[0.4.1, )",
           "Monai.Deploy.InformaticsGateway.Configuration": "[1.0.0, )",
           "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
-          "Polly": "[8.2.0, )"
+          "Polly": "[8.2.1, )"
         }
       },
       "monai.deploy.informaticsgateway.database.mongodb": {
@@ -2198,7 +2198,7 @@
         "dependencies": {
           "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
           "MongoDB.Driver": "[2.23.1, )",
-          "Polly": "[8.2.0, )"
+          "Polly": "[8.2.1, )"
         }
       },
       "monai.deploy.informaticsgateway.dicomweb.client": {
@@ -2224,7 +2224,7 @@
           "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
           "MongoDB.Driver": "[2.23.1, )",
           "NLog": "[5.2.8, )",
-          "Polly": "[8.2.0, )"
+          "Polly": "[8.2.1, )"
         }
       },
       "monai.deploy.informaticsgateway.test.plugins": {

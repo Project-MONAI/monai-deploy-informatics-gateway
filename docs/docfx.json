@@ -24,7 +24,7 @@
             "dest": "obj/api/dotnet",
             "filter": "filterConfig.yml",
             "properties": {
-                "TargetFramework": "net6.0"
+                "TargetFramework": "net8.0"
             }
         }
     ],

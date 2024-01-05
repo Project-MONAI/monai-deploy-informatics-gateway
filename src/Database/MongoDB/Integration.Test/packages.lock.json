@@ -439,16 +439,16 @@
       },
       "Polly": {
         "type": "Transitive",
-        "resolved": "8.2.0",
-        "contentHash": "KZm8iG29y6Mse7YntYYJSf5fGWuhYLliWgZaG/8NcuXS4gN7SPdtPYpjCxQlHqxvMGubkWVrGp3MvUaI7SkyKA==",
+        "resolved": "8.2.1",
+        "contentHash": "tVHvP5Z0fNoZCE9mpKAsh0IaValwsTGPrqjlWqkWR/Gpl5jL05HWC/AVGSL+jkAqkl1Jn7uBUOArnRD+dK5PfQ==",
         "dependencies": {
-          "Polly.Core": "8.2.0"
+          "Polly.Core": "8.2.1"
         }
       },
       "Polly.Core": {
         "type": "Transitive",
-        "resolved": "8.2.0",
-        "contentHash": "gnKp3+mxGFmkFs4eHcD9aex0JOF8zS1Y18c2A5ckXXTVqbs6XLcDyLKgSa/mUFqAnH3mn9+uVIM0RhAec/d3kA=="
+        "resolved": "8.2.1",
+        "contentHash": "/Z3EspfWBdTla4I9IAcQn32/7kB5WS3rSnOYloz8YlVyClu8h7uuYf4pfUvffOYVbxmDX/mFRfxwzqW2Zs96ZA=="
       },
       "RabbitMQ.Client": {
         "type": "Transitive",
@@ -1468,7 +1468,7 @@
         "dependencies": {
           "Monai.Deploy.InformaticsGateway.Database.Api": "[1.0.0, )",
           "MongoDB.Driver": "[2.23.1, )",
-          "Polly": "[8.2.0, )"
+          "Polly": "[8.2.1, )"
         }
       }
     }
