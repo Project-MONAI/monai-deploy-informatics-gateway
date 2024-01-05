@@ -33,20 +33,20 @@
       },
       "Monai.Deploy.Messaging.RabbitMQ": {
         "type": "Direct",
-        "requested": "[2.0.0-rc0003, )",
-        "resolved": "2.0.0-rc0003",
-        "contentHash": "mQUNjp9p0ORstFdt1dxvrGFNv10YiYMksW1+zrTeQ3sVS7uVYqseVHE45NJHxRXGUTRSCaFqlxtJ4hoEttLRpA==",
+        "requested": "[2.0.0, )",
+        "resolved": "2.0.0",
+        "contentHash": "J5dXjOBqA59irTcFbfwxIQnLxUXGcMCA/cuk1+TJgscMeb2WTVks3esZmcs3pOY2OIBmOROvBl/6KaL9cYFPmg==",
         "dependencies": {
-          "Monai.Deploy.Messaging": "2.0.0-rc0003",
+          "Monai.Deploy.Messaging": "2.0.0",
           "Polly": "8.2.0",
           "RabbitMQ.Client": "6.8.1"
         }
       },
       "Monai.Deploy.Security": {
         "type": "Direct",
-        "requested": "[1.0.0-rc0017, )",
-        "resolved": "1.0.0-rc0017",
-        "contentHash": "1mbo++n4QmYfwx9TqAS8qYWRBex8/PLfZv1jfMWid5ensRGCYLxkn9BB0BuEHNkUtpuut69Gk2EsHluYCVfflw==",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "q0dQiOpOoHX4a3XkueqFRx51WOrQpW1Lwj7e4oqI6aOBeUlA9CPMdZ4+4BlemXc/1A5IClrPugp/owZ1NJ2Wxg==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.3.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.0",
@@ -59,13 +59,13 @@
       },
       "Monai.Deploy.Storage.MinIO": {
         "type": "Direct",
-        "requested": "[1.0.0-rc0006, )",
-        "resolved": "1.0.0-rc0006",
-        "contentHash": "cOv5EVtMHtomw+bLf5R3A4lGTfMZB5/4rorrKxpL1Psmz4s33ZheCndDGIGGjicJFnzCg+aa57XaxRvY21GcXw==",
+        "requested": "[1.0.0, )",
+        "resolved": "1.0.0",
+        "contentHash": "o6Lq9rshOJ3sxz4lIfl14Zn7+YXvXXg2Jpndtnnx4Ez1RDSTDu2Zf08lEgFHTmwAML1e4fsVVm16LaXv3h3L3A==",
         "dependencies": {
           "Minio": "6.0.1",
-          "Monai.Deploy.Storage": "1.0.0-rc0006",
-          "Monai.Deploy.Storage.S3Policy": "1.0.0-rc0006"
+          "Monai.Deploy.Storage": "1.0.0",
+          "Monai.Deploy.Storage.S3Policy": "1.0.0"
         }
       },
       "NLog.Web.AspNetCore": {
@@ -603,8 +603,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "2.0.0-rc0003",
-        "contentHash": "QQTS329g2OUk+3CQYQit6bi3Mhof2nMXd3gCQK5mGJYVjSCBFPCYhGKJ81vaBpeNRSjBh4IMWf5Bnxpd4TEtQQ==",
+        "resolved": "2.0.0",
+        "contentHash": "LcerCeHWDSB3Q1Vw0La9pYvXdNNDu4nGUie2bvVlL8lCkxbVNx+rtDorV5cA8KSKW9GZd/RD6SAsIzcjMXqP6Q==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.3.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
@@ -614,19 +614,19 @@
       },
       "Monai.Deploy.Storage": {
         "type": "Transitive",
-        "resolved": "1.0.0-rc0006",
-        "contentHash": "uYoGYO5FsppqXttLjJ0YYgWq4bRQhIXBfmwp546f7+LhSmGjrpwqo4agJnQcSCL9ERBp7Y8POCU6Gtf3+nDYqw==",
+        "resolved": "1.0.0",
+        "contentHash": "YN087swDoJJCj+UgPVWzsraxL730ajg8OJdEahgPvZFe4quFlfhWIGLweVKRNhSvrN/CV87/m+noLJu7jSEaww==",
         "dependencies": {
           "AWSSDK.SecurityToken": "3.7.300.30",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
-          "Monai.Deploy.Storage.S3Policy": "1.0.0-rc0006",
+          "Monai.Deploy.Storage.S3Policy": "1.0.0",
           "System.IO.Abstractions": "20.0.4"
         }
       },
       "Monai.Deploy.Storage.S3Policy": {
         "type": "Transitive",
-        "resolved": "1.0.0-rc0006",
-        "contentHash": "UprsQkdIwvlhiQzWxB4rU2Q+vggJJrMsadOXrD7ybf/ZoLqi3oQyMZyNsk8heMTd4pwQikOGpIOUfF7JZYMP1w==",
+        "resolved": "1.0.0",
+        "contentHash": "I8My4nZEt1vA2wDvti84CfhK+TnyW60E/50Cb+xyhzdrlqWpWr/Xbwhl1ocELAPDeRsakECK4cikrNYLbpp+pQ==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.3.0",
           "Newtonsoft.Json": "13.0.3"
@@ -971,9 +971,9 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[8.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[2.0.0-rc0003, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0003, )",
-          "Monai.Deploy.Storage": "[1.0.0-rc0006, )",
+          "Monai.Deploy.Messaging": "[2.0.0, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0, )",
+          "Monai.Deploy.Storage": "[1.0.0, )",
           "fo-dicom": "[5.1.2, )"
         }
       },

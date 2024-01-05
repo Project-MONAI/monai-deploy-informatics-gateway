@@ -77,13 +77,13 @@
       },
       "xunit": {
         "type": "Direct",
-        "requested": "[2.6.4, )",
-        "resolved": "2.6.4",
-        "contentHash": "N7kgaWrx32hTy4140XsAlTYKgs/NQgMwnjPLSvAp/Qk+WAiniRBiY+Y6XGB+T7lx2UZSEDeDeK5x06HTz6LejA==",
+        "requested": "[2.6.5, )",
+        "resolved": "2.6.5",
+        "contentHash": "iPSL63kw21BdSsdA79bvbVNvyn17DWI4D6VbgNxYtvzgViKrmbRLr8sWPxSlc4AvnofEuFfAi/rrLSzSRomwCg==",
         "dependencies": {
-          "xunit.analyzers": "1.8.0",
-          "xunit.assert": "2.6.4",
-          "xunit.core": "[2.6.4]"
+          "xunit.analyzers": "1.9.0",
+          "xunit.assert": "2.6.5",
+          "xunit.core": "[2.6.5]"
         }
       },
       "xunit.runner.visualstudio": {
@@ -523,8 +523,8 @@
       },
       "Monai.Deploy.Messaging": {
         "type": "Transitive",
-        "resolved": "2.0.0-rc0003",
-        "contentHash": "QQTS329g2OUk+3CQYQit6bi3Mhof2nMXd3gCQK5mGJYVjSCBFPCYhGKJ81vaBpeNRSjBh4IMWf5Bnxpd4TEtQQ==",
+        "resolved": "2.0.0",
+        "contentHash": "LcerCeHWDSB3Q1Vw0La9pYvXdNNDu4nGUie2bvVlL8lCkxbVNx+rtDorV5cA8KSKW9GZd/RD6SAsIzcjMXqP6Q==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.3.0",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
@@ -534,29 +534,29 @@
       },
       "Monai.Deploy.Messaging.RabbitMQ": {
         "type": "Transitive",
-        "resolved": "2.0.0-rc0003",
-        "contentHash": "mQUNjp9p0ORstFdt1dxvrGFNv10YiYMksW1+zrTeQ3sVS7uVYqseVHE45NJHxRXGUTRSCaFqlxtJ4hoEttLRpA==",
+        "resolved": "2.0.0",
+        "contentHash": "J5dXjOBqA59irTcFbfwxIQnLxUXGcMCA/cuk1+TJgscMeb2WTVks3esZmcs3pOY2OIBmOROvBl/6KaL9cYFPmg==",
         "dependencies": {
-          "Monai.Deploy.Messaging": "2.0.0-rc0003",
+          "Monai.Deploy.Messaging": "2.0.0",
           "Polly": "8.2.0",
           "RabbitMQ.Client": "6.8.1"
         }
       },
       "Monai.Deploy.Storage": {
         "type": "Transitive",
-        "resolved": "1.0.0-rc0006",
-        "contentHash": "uYoGYO5FsppqXttLjJ0YYgWq4bRQhIXBfmwp546f7+LhSmGjrpwqo4agJnQcSCL9ERBp7Y8POCU6Gtf3+nDYqw==",
+        "resolved": "1.0.0",
+        "contentHash": "YN087swDoJJCj+UgPVWzsraxL730ajg8OJdEahgPvZFe4quFlfhWIGLweVKRNhSvrN/CV87/m+noLJu7jSEaww==",
         "dependencies": {
           "AWSSDK.SecurityToken": "3.7.300.30",
           "Microsoft.Extensions.Diagnostics.HealthChecks": "8.0.0",
-          "Monai.Deploy.Storage.S3Policy": "1.0.0-rc0006",
+          "Monai.Deploy.Storage.S3Policy": "1.0.0",
           "System.IO.Abstractions": "20.0.4"
         }
       },
       "Monai.Deploy.Storage.S3Policy": {
         "type": "Transitive",
-        "resolved": "1.0.0-rc0006",
-        "contentHash": "UprsQkdIwvlhiQzWxB4rU2Q+vggJJrMsadOXrD7ybf/ZoLqi3oQyMZyNsk8heMTd4pwQikOGpIOUfF7JZYMP1w==",
+        "resolved": "1.0.0",
+        "contentHash": "I8My4nZEt1vA2wDvti84CfhK+TnyW60E/50Cb+xyhzdrlqWpWr/Xbwhl1ocELAPDeRsakECK4cikrNYLbpp+pQ==",
         "dependencies": {
           "Ardalis.GuardClauses": "4.3.0",
           "Newtonsoft.Json": "13.0.3"
@@ -1719,27 +1719,27 @@
       },
       "xunit.analyzers": {
         "type": "Transitive",
-        "resolved": "1.8.0",
-        "contentHash": "ORSFwaO6HCB9/7UbXc6+kg6Ax2gu/CIdGlAVCsDbhkliB9Z3U8EvIfZuZehFVwfXolqa5cCTvskGgLmU9uJFMw=="
+        "resolved": "1.9.0",
+        "contentHash": "02ucFDty6Y9BBT5c35YueFfbM3uEzeFdRvlNtAPhZVUkGUlhl3jsV2XesgTj986/PZXIjpVoc2D8ee6p1ha/Fw=="
       },
       "xunit.assert": {
         "type": "Transitive",
-        "resolved": "2.6.4",
-        "contentHash": "kM/TuJl7903/9RvqdMaFwpaDZyxb+2S4g7SXSyYmNBm97H+t425xh6xSZjnxijiTAEkgo4t7sgKlKKnWmaj/HQ=="
+        "resolved": "2.6.5",
+        "contentHash": "gb5uv7vjBFz7nhEa6aXK5sVJwsG/88xf8DN5wqK0ejCDsDybqICyNJIj+eoD43xbmdPZryNDPpeWDCfiKI/bnA=="
       },
       "xunit.core": {
         "type": "Transitive",
-        "resolved": "2.6.4",
-        "contentHash": "pQ0fAusP+PbaaLIhO55zCPrncFRxrjzPV3OlKxDdS4K9azyXd1mShS0J1rG3DK2/zBwmDnZ9wyZlZy9gX9dHEg==",
+        "resolved": "2.6.5",
+        "contentHash": "hpdMnSNlx4ejaxpaIAFaqHt4q9ZCnzZLnURrSa5CzYXxHhIQbV8/0yXLjRdublhreonGXVMmsQ1KHlS9WbfpCw==",
         "dependencies": {
-          "xunit.extensibility.core": "[2.6.4]",
-          "xunit.extensibility.execution": "[2.6.4]"
+          "xunit.extensibility.core": "[2.6.5]",
+          "xunit.extensibility.execution": "[2.6.5]"
         }
       },
       "xunit.extensibility.core": {
         "type": "Transitive",
-        "resolved": "2.6.4",
-        "contentHash": "bThauxbB80/pxakJQ5z94MXhsnmHOdhMKXyTPJtzQ+tXrTLua7v+e84JorguQtgNFclmMQ02wh/eshobNmG3aQ==",
+        "resolved": "2.6.5",
+        "contentHash": "dSGRkVxzH27XaL83+Z9kNPllqgsmsiPayXw+0weCGsrZQxfSCBNNkSb9nYUpkVoEBCUviXOmo1tfApqhgqTjog==",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
           "xunit.abstractions": "2.0.3"
@@ -1747,11 +1747,11 @@
       },
       "xunit.extensibility.execution": {
         "type": "Transitive",
-        "resolved": "2.6.4",
-        "contentHash": "fqyq9RBYdsQDNzrhTGlTP3iL3XTboGvD62IxK2cXQcWEgl++6zsHoEr6NDKs1Jn9hiUGT3F6x8IUcc635uuloA==",
+        "resolved": "2.6.5",
+        "contentHash": "jUMr88e0lSqDq8Vut0XVqx7plFg91QsKW/rX6gaVnJL6Z19LmNSDmyqd7cg6HQGfboAmyoFZyydA4Kcgouu1BA==",
         "dependencies": {
           "NETStandard.Library": "1.6.1",
-          "xunit.extensibility.core": "[2.6.4]"
+          "xunit.extensibility.core": "[2.6.5]"
         }
       },
       "ZstdSharp.Port": {
@@ -1766,9 +1766,9 @@
           "Macross.Json.Extensions": "[3.0.0, )",
           "Microsoft.EntityFrameworkCore.Abstractions": "[8.0.0, )",
           "Monai.Deploy.InformaticsGateway.Common": "[1.0.0, )",
-          "Monai.Deploy.Messaging": "[2.0.0-rc0003, )",
-          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0-rc0003, )",
-          "Monai.Deploy.Storage": "[1.0.0-rc0006, )",
+          "Monai.Deploy.Messaging": "[2.0.0, )",
+          "Monai.Deploy.Messaging.RabbitMQ": "[2.0.0, )",
+          "Monai.Deploy.Storage": "[1.0.0, )",
           "fo-dicom": "[5.1.2, )"
         }
       },

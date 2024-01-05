@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MongoDB.Driver" Version="2.23.1" />
-    <PackageReference Include="Polly" Version="8.2.0" />
+    <PackageReference Include="Polly" Version="8.2.1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Database.Api.csproj" />
