@@ -60,6 +60,225 @@ SOFTWARE.
 
 
 <details>
+<summary>AWSSDK.Core 3.7.300.29</summary>
+
+## AWSSDK.Core
+
+- Version: 3.7.300.29
+- Authors: Amazon Web Services
+- Owners: Amazon Web Services
+- Project URL: https://github.com/aws/aws-sdk-net/
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.Core/3.7.300.29)
+- License: [Apache-2.0](https://github.com/aws/aws-sdk-net/raw/master/License.txt)
+
+
+```
+Apache License
+
+Version 2.0, January 2004
+
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+1. Definitions.
+
+“License” shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.
+
+“Licensor” shall mean the copyright owner or entity authorized by the copyright owner that is granting the License.
+
+“Legal Entity” shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, “control” means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity.
+
+“You” (or “Your”) shall mean an individual or Legal Entity exercising permissions granted by this License.
+
+“Source” form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.
+
+“Object” form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.
+
+“Work” shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below).
+
+“Derivative Works” shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof.
+
+“Contribution” shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, “submitted” means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as “Not a Contribution.”
+
+“Contributor” shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.
+
+2. Grant of Copyright License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works of, publicly display, publicly perform, sublicense, and distribute the Work and such Derivative Works in Source or Object form.
+
+3. Grant of Patent License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by such Contributor that are necessarily infringed by their Contribution(s) alone or by combination of their Contribution(s) with the Work to which such Contribution(s) was submitted. If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Work or a Contribution incorporated within the Work constitutes direct or contributory patent infringement, then any patent licenses granted to You under this License for that Work shall terminate as of the date such litigation is filed.
+
+4. Redistribution. You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
+
+You must give any other recipients of the Work or Derivative Works a copy of this License; and 
+
+You must cause any modified files to carry prominent notices stating that You changed the files; and 
+
+You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and 
+
+If the Work includes a “NOTICE” text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License.
+You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
+
+5. Submission of Contributions. Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
+
+6. Trademarks. This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the NOTICE file.
+
+7. Disclaimer of Warranty. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.
+
+8. Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.
+
+9. Accepting Warranty or Additional Liability. While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability.
+
+END OF TERMS AND CONDITIONS
+```
+
+</details>
+
+
+<details>
+<summary>AWSSDK.S3 3.7.305.4</summary>
+
+## AWSSDK.S3
+
+- Version: 3.7.305.4
+- Authors: Amazon Web Services
+- Owners: Amazon Web Services
+- Project URL: https://github.com/aws/aws-sdk-net/
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.S3/3.7.305.4)
+- License: [Apache-2.0](https://github.com/aws/aws-sdk-net/raw/master/License.txt)
+
+
+```
+Apache License
+
+Version 2.0, January 2004
+
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+1. Definitions.
+
+“License” shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.
+
+“Licensor” shall mean the copyright owner or entity authorized by the copyright owner that is granting the License.
+
+“Legal Entity” shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, “control” means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity.
+
+“You” (or “Your”) shall mean an individual or Legal Entity exercising permissions granted by this License.
+
+“Source” form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.
+
+“Object” form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.
+
+“Work” shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below).
+
+“Derivative Works” shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof.
+
+“Contribution” shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, “submitted” means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as “Not a Contribution.”
+
+“Contributor” shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.
+
+2. Grant of Copyright License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works of, publicly display, publicly perform, sublicense, and distribute the Work and such Derivative Works in Source or Object form.
+
+3. Grant of Patent License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by such Contributor that are necessarily infringed by their Contribution(s) alone or by combination of their Contribution(s) with the Work to which such Contribution(s) was submitted. If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Work or a Contribution incorporated within the Work constitutes direct or contributory patent infringement, then any patent licenses granted to You under this License for that Work shall terminate as of the date such litigation is filed.
+
+4. Redistribution. You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
+
+You must give any other recipients of the Work or Derivative Works a copy of this License; and 
+
+You must cause any modified files to carry prominent notices stating that You changed the files; and 
+
+You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and 
+
+If the Work includes a “NOTICE” text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License.
+You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
+
+5. Submission of Contributions. Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
+
+6. Trademarks. This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the NOTICE file.
+
+7. Disclaimer of Warranty. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.
+
+8. Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.
+
+9. Accepting Warranty or Additional Liability. While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability.
+
+END OF TERMS AND CONDITIONS
+```
+
+</details>
+
+
+<details>
+<summary>AWSSDK.SecurityToken 3.7.300.30</summary>
+
+## AWSSDK.SecurityToken
+
+- Version: 3.7.300.30
+- Authors: Amazon Web Services
+- Owners: Amazon Web Services
+- Project URL: https://github.com/aws/aws-sdk-net/
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.SecurityToken/3.7.300.30)
+- License: [Apache-2.0](https://github.com/aws/aws-sdk-net/raw/master/License.txt)
+
+
+```
+Apache License
+
+Version 2.0, January 2004
+
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+1. Definitions.
+
+“License” shall mean the terms and conditions for use, reproduction, and distribution as defined by Sections 1 through 9 of this document.
+
+“Licensor” shall mean the copyright owner or entity authorized by the copyright owner that is granting the License.
+
+“Legal Entity” shall mean the union of the acting entity and all other entities that control, are controlled by, or are under common control with that entity. For the purposes of this definition, “control” means (i) the power, direct or indirect, to cause the direction or management of such entity, whether by contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the outstanding shares, or (iii) beneficial ownership of such entity.
+
+“You” (or “Your”) shall mean an individual or Legal Entity exercising permissions granted by this License.
+
+“Source” form shall mean the preferred form for making modifications, including but not limited to software source code, documentation source, and configuration files.
+
+“Object” form shall mean any form resulting from mechanical transformation or translation of a Source form, including but not limited to compiled object code, generated documentation, and conversions to other media types.
+
+“Work” shall mean the work of authorship, whether in Source or Object form, made available under the License, as indicated by a copyright notice that is included in or attached to the work (an example is provided in the Appendix below).
+
+“Derivative Works” shall mean any work, whether in Source or Object form, that is based on (or derived from) the Work and for which the editorial revisions, annotations, elaborations, or other modifications represent, as a whole, an original work of authorship. For the purposes of this License, Derivative Works shall not include works that remain separable from, or merely link (or bind by name) to the interfaces of, the Work and Derivative Works thereof.
+
+“Contribution” shall mean any work of authorship, including the original version of the Work and any modifications or additions to that Work or Derivative Works thereof, that is intentionally submitted to Licensor for inclusion in the Work by the copyright owner or by an individual or Legal Entity authorized to submit on behalf of the copyright owner. For the purposes of this definition, “submitted” means any form of electronic, verbal, or written communication sent to the Licensor or its representatives, including but not limited to communication on electronic mailing lists, source code control systems, and issue tracking systems that are managed by, or on behalf of, the Licensor for the purpose of discussing and improving the Work, but excluding communication that is conspicuously marked or otherwise designated in writing by the copyright owner as “Not a Contribution.”
+
+“Contributor” shall mean Licensor and any individual or Legal Entity on behalf of whom a Contribution has been received by Licensor and subsequently incorporated within the Work.
+
+2. Grant of Copyright License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable copyright license to reproduce, prepare Derivative Works of, publicly display, publicly perform, sublicense, and distribute the Work and such Derivative Works in Source or Object form.
+
+3. Grant of Patent License. Subject to the terms and conditions of this License, each Contributor hereby grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free, irrevocable (except as stated in this section) patent license to make, have made, use, offer to sell, sell, import, and otherwise transfer the Work, where such license applies only to those patent claims licensable by such Contributor that are necessarily infringed by their Contribution(s) alone or by combination of their Contribution(s) with the Work to which such Contribution(s) was submitted. If You institute patent litigation against any entity (including a cross-claim or counterclaim in a lawsuit) alleging that the Work or a Contribution incorporated within the Work constitutes direct or contributory patent infringement, then any patent licenses granted to You under this License for that Work shall terminate as of the date such litigation is filed.
+
+4. Redistribution. You may reproduce and distribute copies of the Work or Derivative Works thereof in any medium, with or without modifications, and in Source or Object form, provided that You meet the following conditions:
+
+You must give any other recipients of the Work or Derivative Works a copy of this License; and 
+
+You must cause any modified files to carry prominent notices stating that You changed the files; and 
+
+You must retain, in the Source form of any Derivative Works that You distribute, all copyright, patent, trademark, and attribution notices from the Source form of the Work, excluding those notices that do not pertain to any part of the Derivative Works; and 
+
+If the Work includes a “NOTICE” text file as part of its distribution, then any Derivative Works that You distribute must include a readable copy of the attribution notices contained within such NOTICE file, excluding those notices that do not pertain to any part of the Derivative Works, in at least one of the following places: within a NOTICE text file distributed as part of the Derivative Works; within the Source form or documentation, if provided along with the Derivative Works; or, within a display generated by the Derivative Works, if and wherever such third-party notices normally appear. The contents of the NOTICE file are for informational purposes only and do not modify the License. You may add Your own attribution notices within Derivative Works that You distribute, alongside or as an addendum to the NOTICE text from the Work, provided that such additional attribution notices cannot be construed as modifying the License.
+You may add Your own copyright statement to Your modifications and may provide additional or different license terms and conditions for use, reproduction, or distribution of Your modifications, or for any such Derivative Works as a whole, provided Your use, reproduction, and distribution of the Work otherwise complies with the conditions stated in this License.
+
+5. Submission of Contributions. Unless You explicitly state otherwise, any Contribution intentionally submitted for inclusion in the Work by You to the Licensor shall be under the terms and conditions of this License, without any additional terms or conditions. Notwithstanding the above, nothing herein shall supersede or modify the terms of any separate license agreement you may have executed with Licensor regarding such Contributions.
+
+6. Trademarks. This License does not grant permission to use the trade names, trademarks, service marks, or product names of the Licensor, except as required for reasonable and customary use in describing the origin of the Work and reproducing the content of the NOTICE file.
+
+7. Disclaimer of Warranty. Unless required by applicable law or agreed to in writing, Licensor provides the Work (and each Contributor provides its Contributions) on an “AS IS” BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied, including, without limitation, any warranties or conditions of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are solely responsible for determining the appropriateness of using or redistributing the Work and assume any risks associated with Your exercise of permissions under this License.
+
+8. Limitation of Liability. In no event and under no legal theory, whether in tort (including negligence), contract, or otherwise, unless required by applicable law (such as deliberate and grossly negligent acts) or agreed to in writing, shall any Contributor be liable to You for damages, including any direct, indirect, special, incidental, or consequential damages of any character arising as a result of this License or out of the use or inability to use the Work (including but not limited to damages for loss of goodwill, work stoppage, computer failure or malfunction, or any and all other commercial damages or losses), even if such Contributor has been advised of the possibility of such damages.
+
+9. Accepting Warranty or Additional Liability. While redistributing the Work or Derivative Works thereof, You may choose to offer, and charge a fee for, acceptance of support, warranty, indemnity, or other liability obligations and/or rights consistent with this License. However, in accepting such obligations, You may act only on Your own behalf and on Your sole responsibility, not on behalf of any other Contributor, and only if You agree to indemnify, defend, and hold each Contributor harmless for any liability incurred by, or claims asserted against, such Contributor by reason of your accepting any such warranty or additional liability.
+
+END OF TERMS AND CONDITIONS
+```
+
+</details>
+
+
+<details>
 <summary>Ardalis.GuardClauses 4.3.0</summary>
 
 ## Ardalis.GuardClauses
@@ -75,6 +294,1289 @@ SOFTWARE.
 MIT License
 
 Copyright (c) 2019 Steve Smith
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>AspNetCore.HealthChecks.MongoDb 8.0.0</summary>
+
+## AspNetCore.HealthChecks.MongoDb
+
+- Version: 8.0.0
+- Authors: Xabaril Contributors
+- Project URL: https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
+- Source: [NuGet](https://www.nuget.org/packages/AspNetCore.HealthChecks.MongoDb/8.0.0)
+- License: [Apache-2.0](https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/raw/master/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>BoDi 1.5.0</summary>
+
+## BoDi
+
+- Version: 1.5.0
+- Authors: Gaspar Nagy
+- Owners: Gaspar Nagy
+- Project URL: https://github.com/gasparnagy/BoDi
+- Source: [NuGet](https://www.nuget.org/packages/BoDi/1.5.0)
+- License: [Apache-2.0](https://raw.githubusercontent.com/SpecFlowOSS/BoDi/master/LICENSE.txt)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   Copyright 2014 Gaspar Nagy (http://gasparnagy.com)
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>Castle.Core 5.1.1</summary>
+
+## Castle.Core
+
+- Version: 5.1.1
+- Authors: Castle Project Contributors
+- Project URL: http://www.castleproject.org/
+- Source: [NuGet](https://www.nuget.org/packages/Castle.Core/5.1.1)
+- License: [Apache-2.0](https://github.com/castleproject/Core/raw/master/LICENSE)
+
+
+```
+Copyright 2004-2021 Castle Project - http://www.castleproject.org/
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>CommunityToolkit.HighPerformance 8.2.2</summary>
+
+## CommunityToolkit.HighPerformance
+
+- Version: 8.2.2
+- Authors: Microsoft
+- Project URL: https://github.com/CommunityToolkit/dotnet
+- Source: [NuGet](https://www.nuget.org/packages/CommunityToolkit.HighPerformance/8.2.2)
+- License: [MIT](https://raw.githubusercontent.com/CommunityToolkit/dotnet/main/License.md)
+
+
+```
+# .NET Community Toolkit
+
+Copyright © .NET Foundation and Contributors
+
+All rights reserved.
+
+## MIT License (MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>ConsoleAppFramework 4.2.4</summary>
+
+## ConsoleAppFramework
+
+- Version: 4.2.4
+- Authors: Cysharp
+- Project URL: https://github.com/Cysharp/ConsoleAppFramework
+- Source: [NuGet](https://www.nuget.org/packages/ConsoleAppFramework/4.2.4)
+- License: [MIT](https://github.com/Cysharp/ConsoleAppFramework/raw/master/LICENSE)
+
+
+```
+MIT License
+
+Copyright (c) 2020 Cysharp, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Crayon 2.0.69</summary>
+
+## Crayon
+
+- Version: 2.0.69
+- Authors: Manuel Riezebosch
+- Source: [NuGet](https://www.nuget.org/packages/Crayon/2.0.69)
+- License: [MIT](https://github.com/riezebosch/crayon/raw/master/LICENSE)
+
+
+```
+MIT License
+
+Copyright (c) 2019 Manuel Riezebosch
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>DnsClient 1.6.1</summary>
+
+## DnsClient
+
+- Version: 1.6.1
+- Authors: MichaCo
+- Project URL: http://dnsclient.michaco.net/
+- Source: [NuGet](https://www.nuget.org/packages/DnsClient/1.6.1)
+- License: [Apache-2.0](https://github.com/MichaCo/DnsClient.NET/raw/dev/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "{}"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright {yyyy} {name of copyright owner}
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>Docker.DotNet 3.125.15</summary>
+
+## Docker.DotNet
+
+- Version: 3.125.15
+- Authors: Docker.DotNet
+- Source: [NuGet](https://www.nuget.org/packages/Docker.DotNet/3.125.15)
+- License: [MIT](https://github.com/dotnet/Docker.DotNet/raw/master/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>DotNext 4.15.2</summary>
+
+## DotNext
+
+- Version: 4.15.2
+- Authors: .NET Foundation and Contributors
+- Project URL: https://dotnet.github.io/dotNext/
+- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.15.2)
+- License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
+
+
+```
+MIT License
+
+Copyright © .NET Foundation and Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>DotNext.Threading 4.15.2</summary>
+
+## DotNext.Threading
+
+- Version: 4.15.2
+- Authors: .NET Foundation and Contributors
+- Project URL: https://dotnet.github.io/dotNext/
+- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.15.2)
+- License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
+
+
+```
+MIT License
+
+Copyright © .NET Foundation and Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>FluentAssertions 6.12.0</summary>
+
+## FluentAssertions
+
+- Version: 6.12.0
+- Authors: Dennis Doomen,Jonas Nyrup
+- Project URL: https://www.fluentassertions.com/
+- Source: [NuGet](https://www.nuget.org/packages/FluentAssertions/6.12.0)
+- License: [Apache-2.0](https://github.com/fluentassertions/fluentassertions/raw/develop/LICENSE)
+
+
+```
+Apache License
+Version 2.0, January 2004
+http://www.apache.org/licenses/
+
+TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+1. Definitions.
+
+"License" shall mean the terms and conditions for use, reproduction, and
+distribution as defined by Sections 1 through 9 of this document.
+
+"Licensor" shall mean the copyright owner or entity authorized by the copyright
+owner that is granting the License.
+
+"Legal Entity" shall mean the union of the acting entity and all other entities
+that control, are controlled by, or are under common control with that entity.
+For the purposes of this definition, "control" means (i) the power, direct or
+indirect, to cause the direction or management of such entity, whether by
+contract or otherwise, or (ii) ownership of fifty percent (50%) or more of the
+outstanding shares, or (iii) beneficial ownership of such entity.
+
+"You" (or "Your") shall mean an individual or Legal Entity exercising
+permissions granted by this License.
+
+"Source" form shall mean the preferred form for making modifications, including
+but not limited to software source code, documentation source, and configuration
+files.
+
+"Object" form shall mean any form resulting from mechanical transformation or
+translation of a Source form, including but not limited to compiled object code,
+generated documentation, and conversions to other media types.
+
+"Work" shall mean the work of authorship, whether in Source or Object form, made
+available under the License, as indicated by a copyright notice that is included
+in or attached to the work (an example is provided in the Appendix below).
+
+"Derivative Works" shall mean any work, whether in Source or Object form, that
+is based on (or derived from) the Work and for which the editorial revisions,
+annotations, elaborations, or other modifications represent, as a whole, an
+original work of authorship. For the purposes of this License, Derivative Works
+shall not include works that remain separable from, or merely link (or bind by
+name) to the interfaces of, the Work and Derivative Works thereof.
+
+"Contribution" shall mean any work of authorship, including the original version
+of the Work and any modifications or additions to that Work or Derivative Works
+thereof, that is intentionally submitted to Licensor for inclusion in the Work
+by the copyright owner or by an individual or Legal Entity authorized to submit
+on behalf of the copyright owner. For the purposes of this definition,
+"submitted" means any form of electronic, verbal, or written communication sent
+to the Licensor or its representatives, including but not limited to
+communication on electronic mailing lists, source code control systems, and
+issue tracking systems that are managed by, or on behalf of, the Licensor for
+the purpose of discussing and improving the Work, but excluding communication
+that is conspicuously marked or otherwise designated in writing by the copyright
+owner as "Not a Contribution."
+
+"Contributor" shall mean Licensor and any individual or Legal Entity on behalf
+of whom a Contribution has been received by Licensor and subsequently
+incorporated within the Work.
+
+2. Grant of Copyright License.
+
+Subject to the terms and conditions of this License, each Contributor hereby
+grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free,
+irrevocable copyright license to reproduce, prepare Derivative Works of,
+publicly display, publicly perform, sublicense, and distribute the Work and such
+Derivative Works in Source or Object form.
+
+3. Grant of Patent License.
+
+Subject to the terms and conditions of this License, each Contributor hereby
+grants to You a perpetual, worldwide, non-exclusive, no-charge, royalty-free,
+irrevocable (except as stated in this section) patent license to make, have
+made, use, offer to sell, sell, import, and otherwise transfer the Work, where
+such license applies only to those patent claims licensable by such Contributor
+that are necessarily infringed by their Contribution(s) alone or by combination
+of their Contribution(s) with the Work to which such Contribution(s) was
+submitted. If You institute patent litigation against any entity (including a
+cross-claim or counterclaim in a lawsuit) alleging that the Work or a
+Contribution incorporated within the Work constitutes direct or contributory
+patent infringement, then any patent licenses granted to You under this License
+for that Work shall terminate as of the date such litigation is filed.
+
+4. Redistribution.
+
+You may reproduce and distribute copies of the Work or Derivative Works thereof
+in any medium, with or without modifications, and in Source or Object form,
+provided that You meet the following conditions:
+
+You must give any other recipients of the Work or Derivative Works a copy of
+this License; and
+You must cause any modified files to carry prominent notices stating that You
+changed the files; and
+You must retain, in the Source form of any Derivative Works that You distribute,
+all copyright, patent, trademark, and attribution notices from the Source form
+of the Work, excluding those notices that do not pertain to any part of the
+Derivative Works; and
+If the Work includes a "NOTICE" text file as part of its distribution, then any
+Derivative Works that You distribute must include a readable copy of the
+attribution notices contained within such NOTICE file, excluding those notices
+that do not pertain to any part of the Derivative Works, in at least one of the
+following places: within a NOTICE text file distributed as part of the
+Derivative Works; within the Source form or documentation, if provided along
+with the Derivative Works; or, within a display generated by the Derivative
+Works, if and wherever such third-party notices normally appear. The contents of
+the NOTICE file are for informational purposes only and do not modify the
+License. You may add Your own attribution notices within Derivative Works that
+You distribute, alongside or as an addendum to the NOTICE text from the Work,
+provided that such additional attribution notices cannot be construed as
+modifying the License.
+You may add Your own copyright statement to Your modifications and may provide
+additional or different license terms and conditions for use, reproduction, or
+distribution of Your modifications, or for any such Derivative Works as a whole,
+provided Your use, reproduction, and distribution of the Work otherwise complies
+with the conditions stated in this License.
+
+5. Submission of Contributions.
+
+Unless You explicitly state otherwise, any Contribution intentionally submitted
+for inclusion in the Work by You to the Licensor shall be under the terms and
+conditions of this License, without any additional terms or conditions.
+Notwithstanding the above, nothing herein shall supersede or modify the terms of
+any separate license agreement you may have executed with Licensor regarding
+such Contributions.
+
+6. Trademarks.
+
+This License does not grant permission to use the trade names, trademarks,
+service marks, or product names of the Licensor, except as required for
+reasonable and customary use in describing the origin of the Work and
+reproducing the content of the NOTICE file.
+
+7. Disclaimer of Warranty.
+
+Unless required by applicable law or agreed to in writing, Licensor provides the
+Work (and each Contributor provides its Contributions) on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied,
+including, without limitation, any warranties or conditions of TITLE,
+NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A PARTICULAR PURPOSE. You are
+solely responsible for determining the appropriateness of using or
+redistributing the Work and assume any risks associated with Your exercise of
+permissions under this License.
+
+8. Limitation of Liability.
+
+In no event and under no legal theory, whether in tort (including negligence),
+contract, or otherwise, unless required by applicable law (such as deliberate
+and grossly negligent acts) or agreed to in writing, shall any Contributor be
+liable to You for damages, including any direct, indirect, special, incidental,
+or consequential damages of any character arising as a result of this License or
+out of the use or inability to use the Work (including but not limited to
+damages for loss of goodwill, work stoppage, computer failure or malfunction, or
+any and all other commercial damages or losses), even if such Contributor has
+been advised of the possibility of such damages.
+
+9. Accepting Warranty or Additional Liability.
+
+While redistributing the Work or Derivative Works thereof, You may choose to
+offer, and charge a fee for, acceptance of support, warranty, indemnity, or
+other liability obligations and/or rights consistent with this License. However,
+in accepting such obligations, You may act only on Your own behalf and on Your
+sole responsibility, not on behalf of any other Contributor, and only if You
+agree to indemnify, defend, and hold each Contributor harmless for any liability
+incurred by, or claims asserted against, such Contributor by reason of your
+accepting any such warranty or additional liability.
+
+END OF TERMS AND CONDITIONS
+
+APPENDIX: How to apply the Apache License to your work
+
+To apply the Apache License to your work, attach the following boilerplate
+notice, with the fields enclosed by brackets "[]" replaced with your own
+identifying information. (Don't include the brackets!) The text should be
+enclosed in the appropriate comment syntax for the file format. We also
+recommend that a file or class name and description of purpose be included on
+the same "printed page" as the copyright notice for easier identification within
+third-party archives.
+
+   Copyright [2010-2021] [Dennis Doomen]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>Gherkin 19.0.3</summary>
+
+## Gherkin
+
+- Version: 19.0.3
+- Authors: Cucumber Ltd, Gaspar Nagy
+- Project URL: https://github.com/cucumber/common/tree/main/gherkin
+- Source: [NuGet](https://www.nuget.org/packages/Gherkin/19.0.3)
+- License: [MIT](https://github.com/cucumber/gherkin/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Cucumber Ltd, Gaspar Nagy, Björn Rasmusson, Peter Sergeant
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>HL7-dotnetcore 2.36.0</summary>
+
+## HL7-dotnetcore
+
+- Version: 2.36.0
+- Authors: HL7-dotnetcore
+- Project URL: https://github.com/Efferent-Health/HL7-dotnetcore
+- Source: [NuGet](https://www.nuget.org/packages/HL7-dotnetcore/2.36.0)
+- License: [MIT](https://github.com/Efferent-Health/HL7-dotnetcore/raw/master/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2013 Jayant Singh - www.j4jayant.com
+Copyright (c) 2021 Efferent Health, LLC
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Humanizer.Core 2.14.1</summary>
+
+## Humanizer.Core
+
+- Version: 2.14.1
+- Authors: Mehdi Khalili, Claire Novotny
+- Project URL: https://github.com/Humanizr/Humanizer
+- Source: [NuGet](https://www.nuget.org/packages/Humanizer.Core/2.14.1)
+- License: [MIT](https://github.com/Humanizr/Humanizer/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+==============================================================================
+
+Inflector (https://github.com/srkirkland/Inflector)
+The MIT License (MIT)
+Copyright (c) 2013 Scott Kirkland
+
+==============================================================================
+
+ByteSize (https://github.com/omar/ByteSize)
+The MIT License (MIT)
+Copyright (c) 2013-2014 Omar Khudeira (http://omar.io)
+
+==============================================================================
+```
+
+</details>
+
+
+<details>
+<summary>Macross.Json.Extensions 3.0.0</summary>
+
+## Macross.Json.Extensions
+
+- Version: 3.0.0
+- Authors: Macross.Json.Extensions
+- Project URL: https://github.com/Macross-Software/core/tree/develop/ClassLibraries/Macross.Json.Extensions
+- Source: [NuGet](https://www.nuget.org/packages/Macross.Json.Extensions/3.0.0)
+- License: [MIT](https://github.com/Macross-Software/core/raw/develop/LICENSE.txt)
+
+
+```
+MIT License
+
+Copyright (c) 2020 Macross Software
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -181,6 +1683,351 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Bcl.AsyncInterfaces 6.0.0</summary>
+
+## Microsoft.Bcl.AsyncInterfaces
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Bcl.HashCode 1.1.1</summary>
+
+## Microsoft.Bcl.HashCode
+
+- Version: 1.1.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Bcl.HashCode/1.1.1)
+- License: [MIT](https://licenses.nuget.org/MIT)
+
+
+```
+'MIT' reference
+
+
+
+MIT License
+SPDX identifier
+MIT
+License text
+
+MIT License
+
+
+Copyright (c) <year> <copyright holders>
+         
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
+         associated documentation files (the "Software"), to deal in the Software without restriction,
+         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+         subject to the following conditions:
+The above copyright notice and this permission notice
+          (including the next paragraph)
+         shall be included in all copies or substantial
+         portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+SPDX web page
+
+https://spdx.org/licenses/MIT.html
+
+Notice
+This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
+
+Data pulled from spdx/license-list-data on February 9, 2023.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.CSharp 4.7.0</summary>
+
+## Microsoft.CSharp
+
+- Version: 4.7.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/corefx
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CSharp/4.7.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.CodeAnalysis.Analyzers 3.3.3</summary>
+
+## Microsoft.CodeAnalysis.Analyzers
+
+- Version: 3.3.3
+- Authors: Microsoft
+- Owners: Microsoft
+- Project URL: https://github.com/dotnet/roslyn-analyzers
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Analyzers/3.3.3)
+- License: [MIT](https://github.com/dotnet/roslyn-analyzers/raw/main/License.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.CodeAnalysis.CSharp 4.5.0</summary>
+
+## Microsoft.CodeAnalysis.CSharp
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/roslyn
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp/4.5.0)
+- License: [MIT](https://github.com/dotnet/roslyn/raw/main/License.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.CodeAnalysis.CSharp.Workspaces 4.5.0</summary>
+
+## Microsoft.CodeAnalysis.CSharp.Workspaces
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/roslyn
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces/4.5.0)
+- License: [MIT](https://github.com/dotnet/roslyn/raw/main/License.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.CodeAnalysis.Common 4.5.0</summary>
+
+## Microsoft.CodeAnalysis.Common
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/roslyn
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Common/4.5.0)
+- License: [MIT](https://github.com/dotnet/roslyn/raw/main/License.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.CodeAnalysis.Workspaces.Common 4.5.0</summary>
+
+## Microsoft.CodeAnalysis.Workspaces.Common
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/roslyn
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeAnalysis.Workspaces.Common/4.5.0)
+- License: [MIT](https://github.com/dotnet/roslyn/raw/main/License.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.CodeCoverage 17.8.0</summary>
 
 ## Microsoft.CodeCoverage
@@ -189,13 +2036,624 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.8.0)
-- License: [MIT](https://github.com/microsoft/vstest/raw/main/LICENSE)
+- License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
+
+
+```
+Copyright (c) 2020 Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Data.Sqlite.Core 8.0.0</summary>
+
+## Microsoft.Data.Sqlite.Core
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/dotnet/standard/data/sqlite/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
 ```
 The MIT License (MIT)
 
-Copyright (c) Microsoft Corporation
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore.Abstractions 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore.Abstractions
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore.Analyzers 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore.Analyzers
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore.Design 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore.Design
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore.InMemory 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore.InMemory
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore.Relational 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore.Relational
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore.Sqlite 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore.Sqlite
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore.Sqlite.Core
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.EntityFrameworkCore.Tools 8.0.0</summary>
+
+## Microsoft.EntityFrameworkCore.Tools
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://docs.microsoft.com/ef/core/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Tools/8.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.ApiDescription.Server 6.0.5</summary>
+
+## Microsoft.Extensions.ApiDescription.Server
+
+- Version: 6.0.5
+- Authors: Microsoft
+- Project URL: https://asp.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.ApiDescription.Server/6.0.5)
+- License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.ApiDescription.Server 8.0.0</summary>
+
+## Microsoft.Extensions.ApiDescription.Server
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://asp.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.ApiDescription.Server/8.0.0)
+- License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Caching.Abstractions 8.0.0</summary>
+
+## Microsoft.Extensions.Caching.Abstractions
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Caching.Abstractions/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Caching.Memory 8.0.0</summary>
+
+## Microsoft.Extensions.Caching.Memory
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Caching.Memory/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Configuration 6.0.0</summary>
+
+## Microsoft.Extensions.Configuration
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
 
 All rights reserved.
 
@@ -230,6 +2688,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Configuration.Abstractions 6.0.0</summary>
+
+## Microsoft.Extensions.Configuration.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Abstractions/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -304,6 +2803,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.Configuration.Binder 6.0.0</summary>
+
+## Microsoft.Extensions.Configuration.Binder
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Binder/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Configuration.Binder 8.0.0</summary>
 
 ## Microsoft.Extensions.Configuration.Binder
@@ -345,14 +2885,55 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Configuration.CommandLine 8.0.0</summary>
+<summary>Microsoft.Extensions.Configuration.CommandLine 6.0.0</summary>
 
 ## Microsoft.Extensions.Configuration.CommandLine
 
-- Version: 8.0.0
+- Version: 6.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.CommandLine/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.CommandLine/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Configuration.EnvironmentVariables 6.0.0</summary>
+
+## Microsoft.Extensions.Configuration.EnvironmentVariables
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.EnvironmentVariables/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -427,6 +3008,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.Configuration.FileExtensions 6.0.0</summary>
+
+## Microsoft.Extensions.Configuration.FileExtensions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.FileExtensions/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Configuration.FileExtensions 8.0.0</summary>
 
 ## Microsoft.Extensions.Configuration.FileExtensions
@@ -435,6 +3057,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.FileExtensions/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Configuration.Json 6.0.0</summary>
+
+## Microsoft.Extensions.Configuration.Json
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Json/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -509,6 +3172,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.Configuration.UserSecrets 6.0.0</summary>
+
+## Microsoft.Extensions.Configuration.UserSecrets
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.UserSecrets/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Configuration.UserSecrets 8.0.0</summary>
 
 ## Microsoft.Extensions.Configuration.UserSecrets
@@ -517,6 +3221,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.UserSecrets/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.DependencyInjection 6.0.1</summary>
+
+## Microsoft.Extensions.DependencyInjection
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/6.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -591,6 +3336,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.DependencyInjection.Abstractions 6.0.0</summary>
+
+## Microsoft.Extensions.DependencyInjection.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection.Abstractions/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.DependencyInjection.Abstractions 8.0.0</summary>
 
 ## Microsoft.Extensions.DependencyInjection.Abstractions
@@ -632,6 +3418,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.DependencyModel 8.0.0</summary>
+
+## Microsoft.Extensions.DependencyModel
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyModel/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Diagnostics 8.0.0</summary>
 
 ## Microsoft.Extensions.Diagnostics
@@ -640,7 +3467,7 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics/8.0.0)
-- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+- License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
 ```
@@ -681,6 +3508,170 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.Abstractions/8.0.0)
+- License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks 8.0.0</summary>
+
+## Microsoft.Extensions.Diagnostics.HealthChecks
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://asp.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks/8.0.0)
+- License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions 8.0.0</summary>
+
+## Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://asp.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions/8.0.0)
+- License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore 8.0.0</summary>
+
+## Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://asp.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore/8.0.0)
+- License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.FileProviders.Abstractions 6.0.0</summary>
+
+## Microsoft.Extensions.FileProviders.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.FileProviders.Abstractions/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -755,6 +3746,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.FileProviders.Physical 6.0.0</summary>
+
+## Microsoft.Extensions.FileProviders.Physical
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.FileProviders.Physical/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.FileProviders.Physical 8.0.0</summary>
 
 ## Microsoft.Extensions.FileProviders.Physical
@@ -763,6 +3795,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.FileProviders.Physical/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.FileSystemGlobbing 6.0.0</summary>
+
+## Microsoft.Extensions.FileSystemGlobbing
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.FileSystemGlobbing/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -837,6 +3910,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.Hosting 6.0.0</summary>
+
+## Microsoft.Extensions.Hosting
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Hosting/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Hosting 8.0.0</summary>
 
 ## Microsoft.Extensions.Hosting
@@ -845,6 +3959,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Hosting/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Hosting.Abstractions 6.0.0</summary>
+
+## Microsoft.Extensions.Hosting.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Hosting.Abstractions/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -919,6 +4074,88 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.Http 8.0.0</summary>
+
+## Microsoft.Extensions.Http
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Http/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Logging 6.0.0</summary>
+
+## Microsoft.Extensions.Logging
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Logging 8.0.0</summary>
 
 ## Microsoft.Extensions.Logging
@@ -927,6 +4164,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Logging.Abstractions 6.0.0</summary>
+
+## Microsoft.Extensions.Logging.Abstractions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -1001,6 +4279,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.Logging.Configuration 6.0.0</summary>
+
+## Microsoft.Extensions.Logging.Configuration
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Configuration/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Logging.Configuration 8.0.0</summary>
 
 ## Microsoft.Extensions.Logging.Configuration
@@ -1042,14 +4361,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Logging.Console 8.0.0</summary>
+<summary>Microsoft.Extensions.Logging.Console 6.0.0</summary>
 
 ## Microsoft.Extensions.Logging.Console
 
-- Version: 8.0.0
+- Version: 6.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Console/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Console/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -1083,14 +4402,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Logging.Debug 8.0.0</summary>
+<summary>Microsoft.Extensions.Logging.Debug 6.0.0</summary>
 
 ## Microsoft.Extensions.Logging.Debug
 
-- Version: 8.0.0
+- Version: 6.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Debug/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Debug/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -1124,14 +4443,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Logging.EventLog 8.0.0</summary>
+<summary>Microsoft.Extensions.Logging.EventLog 6.0.0</summary>
 
 ## Microsoft.Extensions.Logging.EventLog
 
-- Version: 8.0.0
+- Version: 6.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.EventLog/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.EventLog/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -1165,14 +4484,55 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Logging.EventSource 8.0.0</summary>
+<summary>Microsoft.Extensions.Logging.EventSource 6.0.0</summary>
 
 ## Microsoft.Extensions.Logging.EventSource
 
-- Version: 8.0.0
+- Version: 6.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.EventSource/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.EventSource/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Options 6.0.0</summary>
+
+## Microsoft.Extensions.Options
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Options/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -1247,6 +4607,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.Options.ConfigurationExtensions 6.0.0</summary>
+
+## Microsoft.Extensions.Options.ConfigurationExtensions
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Options.ConfigurationExtensions/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Options.ConfigurationExtensions 8.0.0</summary>
 
 ## Microsoft.Extensions.Options.ConfigurationExtensions
@@ -1255,6 +4656,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Options.ConfigurationExtensions/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Primitives 6.0.0</summary>
+
+## Microsoft.Extensions.Primitives
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Primitives/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -1563,6 +5005,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.NET.ILLink.Tasks 8.0.0</summary>
+
+## Microsoft.NET.ILLink.Tasks
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.NET.Test.Sdk 17.8.0</summary>
 
 ## Microsoft.NET.Test.Sdk
@@ -1571,15 +5054,11 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.8.0)
-- License: [MIT](https://raw.githubusercontent.com/microsoft/vstest/main/LICENSE)
+- License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
 ```
-The MIT License (MIT)
-
-Copyright (c) Microsoft Corporation
-
-All rights reserved.
+Copyright (c) 2020 Microsoft Corporation
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1613,7 +5092,7 @@ SOFTWARE.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.NETCore.Platforms/1.1.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -1803,6 +5282,48 @@ also applies even if Microsoft knew or should have known about the possibility
 of the damages. The above limitation or exclusion may not apply to you because
 your state or country may not allow the exclusion or limitation of incidental,
 consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.NETCore.Platforms 5.0.0</summary>
+
+## Microsoft.NETCore.Platforms
+
+- Version: 5.0.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/runtime
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NETCore.Platforms/5.0.0)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -1818,7 +5339,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.NETCore.Targets/1.1.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -2014,6 +5535,45 @@ consequential or other damages.
 
 
 <details>
+<summary>Microsoft.OpenApi 1.2.3</summary>
+
+## Microsoft.OpenApi
+
+- Version: 1.2.3
+- Authors: Microsoft
+- Project URL: https://github.com/Microsoft/OpenAPI.NET
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.OpenApi/1.2.3)
+- License: [MIT]( https://raw.githubusercontent.com/Microsoft/OpenAPI.NET/master/LICENSE)
+
+
+```
+Copyright (c) Microsoft Corporation. All rights reserved.
+
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.TestPlatform.ObjectModel 17.8.0</summary>
 
 ## Microsoft.TestPlatform.ObjectModel
@@ -2022,7 +5582,7 @@ consequential or other damages.
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.8.0)
-- License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
+- License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
 ```
@@ -2059,7 +5619,7 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.8.0)
-- License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.0/LICENSE)
+- License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
 ```
@@ -2097,7 +5657,7 @@ SOFTWARE.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Win32.Primitives/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -2287,6 +5847,2600 @@ also applies even if Microsoft knew or should have known about the possibility
 of the damages. The above limitation or exclusion may not apply to you because
 your state or country may not allow the exclusion or limitation of incidental,
 consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Win32.Registry 5.0.0</summary>
+
+## Microsoft.Win32.Registry
+
+- Version: 5.0.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/runtime
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Win32.Registry/5.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Minio 6.0.1</summary>
+
+## Minio
+
+- Version: 6.0.1
+- Authors: MinIO, Inc.
+- Project URL: https://github.com/minio/minio-dotnet
+- Source: [NuGet](https://www.nuget.org/packages/Minio/6.0.1)
+- License: [Apache-2.0](https://github.com/minio/minio-dotnet/raw/master/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "{}"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright {yyyy} {name of copyright owner}
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>Monai.Deploy.Messaging 2.0.0</summary>
+
+## Monai.Deploy.Messaging
+
+- Version: 2.0.0
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/2.0.0)
+- License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+---
+
+Copyright (c) MONAI Consortium. All rights reserved.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
+
+By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](third-party-licenses.md) page.
+```
+
+</details>
+
+
+<details>
+<summary>Monai.Deploy.Messaging.RabbitMQ 2.0.0</summary>
+
+## Monai.Deploy.Messaging.RabbitMQ
+
+- Version: 2.0.0
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/2.0.0)
+- License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+---
+
+Copyright (c) MONAI Consortium. All rights reserved.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
+
+By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](third-party-licenses.md) page.
+```
+
+</details>
+
+
+<details>
+<summary>Monai.Deploy.Security 1.0.0</summary>
+
+## Monai.Deploy.Security
+
+- Version: 1.0.0
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-security
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Security/1.0.0)
+- License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-security/raw/develop/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+---
+
+Copyright (c) MONAI Consortium. All rights reserved.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
+
+By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](third-party-licenses.md) page.
+```
+
+</details>
+
+
+<details>
+<summary>Monai.Deploy.Storage 1.0.0</summary>
+
+## Monai.Deploy.Storage
+
+- Version: 1.0.0
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/1.0.0)
+- License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+---
+
+Copyright (c) MONAI Consortium. All rights reserved.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
+
+By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](third-party-licenses.md) page.
+```
+
+</details>
+
+
+<details>
+<summary>Monai.Deploy.Storage.MinIO 1.0.0</summary>
+
+## Monai.Deploy.Storage.MinIO
+
+- Version: 1.0.0
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/1.0.0)
+- License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+---
+
+Copyright (c) MONAI Consortium. All rights reserved.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
+
+By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](third-party-licenses.md) page.
+```
+
+</details>
+
+
+<details>
+<summary>Monai.Deploy.Storage.S3Policy 1.0.0</summary>
+
+## Monai.Deploy.Storage.S3Policy
+
+- Version: 1.0.0
+- Authors: MONAI Consortium
+- Project URL: https://github.com/Project-MONAI/monai-deploy-storage
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/1.0.0)
+- License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
+---
+
+Copyright (c) MONAI Consortium. All rights reserved.
+Licensed under the [Apache-2.0](LICENSE) license.
+
+This software uses the Microsoft .NET 6.0 library, and the use of this software is subject to the [Microsoft software license terms](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm).
+
+By downloading this software, you agree to the license terms & all licenses listed on the [third-party licenses](third-party-licenses.md) page.
+```
+
+</details>
+
+
+<details>
+<summary>MongoDB.Bson 2.23.1</summary>
+
+## MongoDB.Bson
+
+- Version: 2.23.1
+- Authors: MongoDB Inc.
+- Project URL: https://www.mongodb.com/docs/drivers/csharp/
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Bson/2.23.1)
+- License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "{}"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright {yyyy} {name of copyright owner}
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>MongoDB.Driver 2.23.1</summary>
+
+## MongoDB.Driver
+
+- Version: 2.23.1
+- Authors: MongoDB Inc.
+- Project URL: https://www.mongodb.com/docs/drivers/csharp/
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver/2.23.1)
+- License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "{}"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright {yyyy} {name of copyright owner}
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>MongoDB.Driver.Core 2.23.1</summary>
+
+## MongoDB.Driver.Core
+
+- Version: 2.23.1
+- Authors: MongoDB Inc.
+- Project URL: https://www.mongodb.com/docs/drivers/csharp/
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver.Core/2.23.1)
+- License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "{}"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright {yyyy} {name of copyright owner}
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>MongoDB.Libmongocrypt 1.8.0</summary>
+
+## MongoDB.Libmongocrypt
+
+- Version: 1.8.0
+- Authors: MongoDB Inc.
+- Project URL: http://www.mongodb.org/display/DOCS/CSharp+Language+Center
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Libmongocrypt/1.8.0)
+- License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "{}"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright {yyyy} {name of copyright owner}
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>Mono.TextTemplating 2.2.1</summary>
+
+## Mono.TextTemplating
+
+- Version: 2.2.1
+- Authors: mhutch
+- Project URL: https://github.com/mono/t4
+- Source: [NuGet](https://www.nuget.org/packages/Mono.TextTemplating/2.2.1)
+- License: [MIT](https://github.com/mono/t4/raw/main/LICENSE)
+
+
+```
+Mono.TextTemplating is licensed under the MIT license:
+
+Copyright (c) 2009-2011 Novell, Inc. (http://www.novell.com)
+Copyright (c) 2011-2016 Xamarin Inc. (http://www.xamarin.com)
+Copyright (c) Microsoft Corp. (http://www.microsoft.com)
+Copyright (c) The contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Moq 4.20.70</summary>
+
+## Moq
+
+- Version: 4.20.70
+- Authors: Daniel Cazzulino, kzu
+- Project URL: https://github.com/moq/moq
+- Source: [NuGet](https://www.nuget.org/packages/Moq/4.20.70)
+- License: [BSD 3-Clause License]( https://raw.githubusercontent.com/moq/moq4/main/License.txt)
+
+
+```
+BSD 3-Clause License
+
+Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD,
+and Contributors. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+    this list of conditions and the following disclaimer.
+
+    * Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+    * Neither the names of the copyright holders nor the names of its
+    contributors may be used to endorse or promote products derived from this
+    software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
 </details>
@@ -2302,7 +8456,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/NETStandard.Library/1.6.1)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -2498,6 +8652,142 @@ consequential or other damages.
 
 
 <details>
+<summary>NLog 5.2.8</summary>
+
+## NLog
+
+- Version: 5.2.8
+- Authors: Jarek Kowalski,Kim Christensen,Julian Verdurmen
+- Project URL: https://nlog-project.org/
+- Source: [NuGet](https://www.nuget.org/packages/NLog/5.2.8)
+- License: [BSD 3-Clause License](https://github.com/NLog/NLog/raw/dev/LICENSE.txt)
+
+
+```
+Copyright (c) 2004-2021 Jaroslaw Kowalski , Kim Christensen, Julian Verdurmen
+
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without 
+modification, are permitted provided that the following conditions 
+are met:
+
+* Redistributions of source code must retain the above copyright notice, 
+  this list of conditions and the following disclaimer. 
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution. 
+
+* Neither the name of Jaroslaw Kowalski nor the names of its 
+  contributors may be used to endorse or promote products derived from this
+  software without specific prior written permission. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+</details>
+
+
+<details>
+<summary>NLog.Extensions.Logging 5.3.8</summary>
+
+## NLog.Extensions.Logging
+
+- Version: 5.3.8
+- Authors: Microsoft,Julian Verdurmen
+- Project URL: https://github.com/NLog/NLog.Extensions.Logging
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.3.8)
+- License: [BSD 2-Clause Simplified License](https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
+
+
+```
+Copyright (c) 2016, NLog
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+</details>
+
+
+<details>
+<summary>NLog.Web.AspNetCore 5.3.8</summary>
+
+## NLog.Web.AspNetCore
+
+- Version: 5.3.8
+- Authors: Julian Verdurmen
+- Project URL: https://github.com/NLog/NLog.Web
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.3.8)
+- License: [BSD 3-Clause License](https://github.com/NLog/NLog.Web/raw/master/LICENSE)
+
+
+```
+BSD 3-Clause License
+
+Copyright (c) 2015-2020, Jaroslaw Kowalski , Kim Christensen, Julian Verdurmen
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of NLog nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+</details>
+
+
+<details>
 <summary>Newtonsoft.Json 13.0.1</summary>
 
 ## Newtonsoft.Json
@@ -2506,6 +8796,44 @@ consequential or other damages.
 - Authors: James Newton-King
 - Project URL: https://www.newtonsoft.com/json
 - Source: [NuGet](https://www.nuget.org/packages/Newtonsoft.Json/13.0.1)
+- License: [MIT](https://github.com/JamesNK/Newtonsoft.Json/raw/master/LICENSE.md)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2007 James Newton-King
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Newtonsoft.Json 13.0.3</summary>
+
+## Newtonsoft.Json
+
+- Version: 13.0.3
+- Authors: James Newton-King
+- Project URL: https://www.newtonsoft.com/json
+- Source: [NuGet](https://www.nuget.org/packages/Newtonsoft.Json/13.0.3)
 - License: [MIT](https://github.com/JamesNK/Newtonsoft.Json/raw/master/LICENSE.md)
 
 
@@ -2569,6 +8897,1704 @@ specific language governing permissions and limitations under the License.
 
 
 <details>
+<summary>Polly 8.2.1</summary>
+
+## Polly
+
+- Version: 8.2.1
+- Authors: Michael Wolfenden, App vNext
+- Project URL: https://github.com/App-vNext/Polly
+- Source: [NuGet](https://www.nuget.org/packages/Polly/8.2.1)
+- License: [MIT]( https://licenses.nuget.org/MIT)
+
+
+```
+'MIT' reference
+
+
+
+MIT License
+SPDX identifier
+MIT
+License text
+
+MIT License
+
+
+Copyright (c) <year> <copyright holders>
+         
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
+         associated documentation files (the "Software"), to deal in the Software without restriction,
+         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+         subject to the following conditions:
+The above copyright notice and this permission notice
+          (including the next paragraph)
+         shall be included in all copies or substantial
+         portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+SPDX web page
+
+https://spdx.org/licenses/MIT.html
+
+Notice
+This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
+
+Data pulled from spdx/license-list-data on February 9, 2023.
+```
+
+</details>
+
+
+<details>
+<summary>Polly.Core 8.2.1</summary>
+
+## Polly.Core
+
+- Version: 8.2.1
+- Authors: Michael Wolfenden, App vNext
+- Project URL: https://github.com/App-vNext/Polly
+- Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.2.1)
+- License: [MIT]( https://licenses.nuget.org/MIT)
+
+
+```
+'MIT' reference
+
+
+
+MIT License
+SPDX identifier
+MIT
+License text
+
+MIT License
+
+
+Copyright (c) <year> <copyright holders>
+         
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
+         associated documentation files (the "Software"), to deal in the Software without restriction,
+         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+         subject to the following conditions:
+The above copyright notice and this permission notice
+          (including the next paragraph)
+         shall be included in all copies or substantial
+         portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+SPDX web page
+
+https://spdx.org/licenses/MIT.html
+
+Notice
+This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
+
+Data pulled from spdx/license-list-data on February 9, 2023.
+```
+
+</details>
+
+
+<details>
+<summary>RabbitMQ.Client 6.8.1</summary>
+
+## RabbitMQ.Client
+
+- Version: 6.8.1
+- Authors: VMware
+- Project URL: https://www.rabbitmq.com/dotnet.html
+- Source: [NuGet](https://www.nuget.org/packages/RabbitMQ.Client/6.8.1)
+- License: [Apache-2.0](https://github.com/rabbitmq/rabbitmq-dotnet-client/raw/main/LICENSE-APACHE2)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        https://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       https://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>SQLitePCLRaw.bundle_e_sqlite3 2.1.6</summary>
+
+## SQLitePCLRaw.bundle_e_sqlite3
+
+- Version: 2.1.6
+- Authors: Eric Sink
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.bundle_e_sqlite3/2.1.6)
+- License: [Apache-2.0](https://github.com/ericsink/SQLitePCL.raw/raw/master/LICENSE.TXT)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>SQLitePCLRaw.core 2.1.6</summary>
+
+## SQLitePCLRaw.core
+
+- Version: 2.1.6
+- Authors: Eric Sink
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.core/2.1.6)
+- License: [Apache-2.0](https://github.com/ericsink/SQLitePCL.raw/raw/master/LICENSE.TXT)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>SQLitePCLRaw.lib.e_sqlite3 2.1.6</summary>
+
+## SQLitePCLRaw.lib.e_sqlite3
+
+- Version: 2.1.6
+- Authors: Eric Sink
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.lib.e_sqlite3/2.1.6)
+- License: [Apache-2.0](https://github.com/ericsink/SQLitePCL.raw/raw/master/LICENSE.TXT)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>SQLitePCLRaw.provider.e_sqlite3 2.1.6</summary>
+
+## SQLitePCLRaw.provider.e_sqlite3
+
+- Version: 2.1.6
+- Authors: Eric Sink
+- Source: [NuGet](https://www.nuget.org/packages/SQLitePCLRaw.provider.e_sqlite3/2.1.6)
+- License: [Apache-2.0](https://github.com/ericsink/SQLitePCL.raw/raw/master/LICENSE.TXT)
+
+
+```
+Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+</details>
+
+
+<details>
+<summary>SharpCompress 0.30.1</summary>
+
+## SharpCompress
+
+- Version: 0.30.1
+- Authors: Adam Hathcock
+- Project URL: https://github.com/adamhathcock/sharpcompress
+- Source: [NuGet](https://www.nuget.org/packages/SharpCompress/0.30.1)
+- License: [MIT](https://github.com/adamhathcock/sharpcompress/raw/master/LICENSE.txt)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2014  Adam Hathcock
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Snappier 1.0.0</summary>
+
+## Snappier
+
+- Version: 1.0.0
+- Authors: btburnett3
+- Source: [NuGet](https://www.nuget.org/packages/Snappier/1.0.0)
+- License: [BSD-3-Clause](https://github.com/brantburnett/Snappier/raw/main/COPYING.txt)
+
+
+```
+Copyright 2011-2020, Google, Inc. and Snappier Authors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:
+
+    * Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.
+    * Neither the name of Google, Inc., any Snappier authors, nor the 
+names of its contributors may be used to endorse or promote products 
+derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+===
+
+Some of the benchmark data in testdata/ is licensed differently:
+
+ - fireworks.jpeg is Copyright 2013 Steinar H. Gunderson, and
+   is licensed under the Creative Commons Attribution 3.0 license
+   (CC-BY-3.0). See https://creativecommons.org/licenses/by/3.0/
+   for more information.
+
+ - kppkn.gtb is taken from the Gaviota chess tablebase set, and
+   is licensed under the MIT License. See
+   https://sites.google.com/site/gaviotachessengine/Home/endgame-tablebases-1
+   for more information.
+
+ - paper-100k.pdf is an excerpt (bytes 92160 to 194560) from the paper
+   “Combinatorial Modeling of Chromatin Features Quantitatively Predicts DNA
+   Replication Timing in _Drosophila_” by Federico Comoglio and Renato Paro,
+   which is licensed under the CC-BY license. See
+   http://www.ploscompbiol.org/static/license for more information.
+
+ - alice29.txt, asyoulik.txt, plrabn12.txt and lcet10.txt are from Project
+   Gutenberg. The first three have expired copyrights and are in the public
+   domain; the latter does not have expired copyright, but is still in the
+   public domain according to the license information
+   (http://www.gutenberg.org/ebooks/53).
+```
+
+</details>
+
+
+<details>
+<summary>SpecFlow 3.9.74</summary>
+
+## SpecFlow
+
+- Version: 3.9.74
+- Authors: SpecFlow Team
+- Owners: SpecFlow Team
+- Project URL: https://www.specflow.org/
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow/3.9.74)
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/raw/master/LICENSE.txt)
+
+
+```
+SpecFlow License (New BSD License)
+
+Copyright (c) 2020, Tricentis GmbH
+
+Disclaimer:
+* No code of customer projects was used to create this project.
+ * Tricentis has the full rights to publish the initial codebase.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of the SpecFlow project nor the
+   names of its contributors may be used to endorse or promote products
+   derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL TRICENTIS OR CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+</details>
+
+
+<details>
+<summary>SpecFlow.Internal.Json 1.0.8</summary>
+
+## SpecFlow.Internal.Json
+
+- Version: 1.0.8
+- Authors: SpecFlow Team
+- Project URL: https://specflow.org/
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Internal.Json/1.0.8)
+- License: [MIT](https://github.com/SpecFlowOSS/SpecFlow.Internal.Json/raw/master/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2018 Alex Parker
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>SpecFlow.Plus.LivingDocPlugin 3.9.57</summary>
+
+## SpecFlow.Plus.LivingDocPlugin
+
+- Version: 3.9.57
+- Authors: SpecFlow Team
+- Owners: SpecFlow Team
+- Project URL: https://docs.specflow.org/projects/specflow-livingdoc
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Plus.LivingDocPlugin/3.9.57)
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/raw/master/LICENSE.txt)
+
+
+```
+SpecFlow License (New BSD License)
+
+Copyright (c) 2020, Tricentis GmbH
+
+Disclaimer:
+* No code of customer projects was used to create this project.
+ * Tricentis has the full rights to publish the initial codebase.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of the SpecFlow project nor the
+   names of its contributors may be used to endorse or promote products
+   derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL TRICENTIS OR CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+</details>
+
+
+<details>
+<summary>SpecFlow.Tools.MsBuild.Generation 3.9.74</summary>
+
+## SpecFlow.Tools.MsBuild.Generation
+
+- Version: 3.9.74
+- Authors: SpecFlow Team
+- Owners: SpecFlow Team
+- Project URL: https://www.specflow.org/
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Tools.MsBuild.Generation/3.9.74)
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/raw/master/LICENSE.txt)
+
+
+```
+SpecFlow License (New BSD License)
+
+Copyright (c) 2020, Tricentis GmbH
+
+Disclaimer:
+* No code of customer projects was used to create this project.
+ * Tricentis has the full rights to publish the initial codebase.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of the SpecFlow project nor the
+   names of its contributors may be used to endorse or promote products
+   derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL TRICENTIS OR CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+</details>
+
+
+<details>
+<summary>SpecFlow.xUnit 3.9.74</summary>
+
+## SpecFlow.xUnit
+
+- Version: 3.9.74
+- Authors: SpecFlow Team
+- Owners: SpecFlow Team
+- Project URL: https://www.specflow.org/
+- Source: [NuGet](https://www.nuget.org/packages/SpecFlow.xUnit/3.9.74)
+- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/raw/master/LICENSE.txt)
+
+
+```
+SpecFlow License (New BSD License)
+
+Copyright (c) 2020, Tricentis GmbH
+
+Disclaimer:
+* No code of customer projects was used to create this project.
+ * Tricentis has the full rights to publish the initial codebase.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+ * Redistributions of source code must retain the above copyright
+   notice, this list of conditions and the following disclaimer.
+ * Redistributions in binary form must reproduce the above copyright
+   notice, this list of conditions and the following disclaimer in the
+   documentation and/or other materials provided with the distribution.
+ * Neither the name of the SpecFlow project nor the
+   names of its contributors may be used to endorse or promote products
+   derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL TRICENTIS OR CONTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+```
+
+</details>
+
+
+<details>
+<summary>Swashbuckle.AspNetCore 6.5.0</summary>
+
+## Swashbuckle.AspNetCore
+
+- Version: 6.5.0
+- Authors: Swashbuckle.AspNetCore
+- Owners: Swashbuckle.AspNetCore
+- Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore/6.5.0)
+- License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2016 Richard Morris
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Swashbuckle.AspNetCore.Swagger 6.5.0</summary>
+
+## Swashbuckle.AspNetCore.Swagger
+
+- Version: 6.5.0
+- Authors: Swashbuckle.AspNetCore.Swagger
+- Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.Swagger/6.5.0)
+- License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2016 Richard Morris
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Swashbuckle.AspNetCore.SwaggerGen 6.5.0</summary>
+
+## Swashbuckle.AspNetCore.SwaggerGen
+
+- Version: 6.5.0
+- Authors: Swashbuckle.AspNetCore.SwaggerGen
+- Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen/6.5.0)
+- License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2016 Richard Morris
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Swashbuckle.AspNetCore.SwaggerUI 6.5.0</summary>
+
+## Swashbuckle.AspNetCore.SwaggerUI
+
+- Version: 6.5.0
+- Authors: Swashbuckle.AspNetCore.SwaggerUI
+- Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerUI/6.5.0)
+- License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) 2016 Richard Morris
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.AppContext 4.3.0</summary>
 
 ## System.AppContext
@@ -2578,7 +10604,7 @@ specific language governing permissions and limitations under the License.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.AppContext/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -2783,7 +10809,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Buffers/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -2979,6 +11005,253 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Buffers 4.5.1</summary>
+
+## System.Buffers
+
+- Version: 4.5.1
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Buffers/4.5.1)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.CodeDom 4.4.0</summary>
+
+## System.CodeDom
+
+- Version: 4.4.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.CodeDom/4.4.0)
+- License: [MIT]( https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.Collections 4.3.0</summary>
 
 ## System.Collections
@@ -2988,7 +11261,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Collections/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -3193,7 +11466,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Collections.Concurrent/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -3389,6 +11662,541 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Collections.Immutable 6.0.0</summary>
+
+## System.Collections.Immutable
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Collections.Immutable/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.CommandLine 2.0.0-beta4.22272.1</summary>
+
+## System.CommandLine
+
+- Version: 2.0.0-beta4.22272.1
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/command-line-api
+- Source: [NuGet](https://www.nuget.org/packages/System.CommandLine/2.0.0-beta4.22272.1)
+- License: [MIT](https://github.com/dotnet/command-line-api/raw/main/LICENSE.md)
+
+
+```
+The MIT License (MIT)
+
+Copyright © .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.CommandLine.Hosting 0.4.0-alpha.22272.1</summary>
+
+## System.CommandLine.Hosting
+
+- Version: 0.4.0-alpha.22272.1
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/command-line-api
+- Source: [NuGet](https://www.nuget.org/packages/System.CommandLine.Hosting/0.4.0-alpha.22272.1)
+- License: [MIT](https://github.com/dotnet/command-line-api/raw/main/LICENSE.md)
+
+
+```
+The MIT License (MIT)
+
+Copyright © .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.CommandLine.NamingConventionBinder 2.0.0-beta4.22272.1</summary>
+
+## System.CommandLine.NamingConventionBinder
+
+- Version: 2.0.0-beta4.22272.1
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/command-line-api
+- Source: [NuGet](https://www.nuget.org/packages/System.CommandLine.NamingConventionBinder/2.0.0-beta4.22272.1)
+- License: [MIT](https://github.com/dotnet/command-line-api/raw/main/LICENSE.md)
+
+
+```
+The MIT License (MIT)
+
+Copyright © .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.CommandLine.Rendering 0.4.0-alpha.22272.1</summary>
+
+## System.CommandLine.Rendering
+
+- Version: 0.4.0-alpha.22272.1
+- Authors: Microsoft
+- Project URL: https://github.com/dotnet/command-line-api
+- Source: [NuGet](https://www.nuget.org/packages/System.CommandLine.Rendering/0.4.0-alpha.22272.1)
+- License: [MIT](https://github.com/dotnet/command-line-api/raw/main/LICENSE.md)
+
+
+```
+The MIT License (MIT)
+
+Copyright © .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Composition 6.0.0</summary>
+
+## System.Composition
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Composition/6.0.0)
+- License: [MICROSOFT .NET LIBRARY License](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Composition.AttributedModel 6.0.0</summary>
+
+## System.Composition.AttributedModel
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Composition.AttributedModel/6.0.0)
+- License: [MICROSOFT .NET LIBRARY License](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Composition.Convention 6.0.0</summary>
+
+## System.Composition.Convention
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Composition.Convention/6.0.0)
+- License: [MICROSOFT .NET LIBRARY License](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Composition.Hosting 6.0.0</summary>
+
+## System.Composition.Hosting
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Composition.Hosting/6.0.0)
+- License: [MICROSOFT .NET LIBRARY License](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Composition.Runtime 6.0.0</summary>
+
+## System.Composition.Runtime
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Composition.Runtime/6.0.0)
+- License: [MICROSOFT .NET LIBRARY License](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Composition.TypedParts 6.0.0</summary>
+
+## System.Composition.TypedParts
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Composition.TypedParts/6.0.0)
+- License: [MICROSOFT .NET LIBRARY License](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Configuration.ConfigurationManager 4.4.0</summary>
+
+## System.Configuration.ConfigurationManager
+
+- Version: 4.4.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Configuration.ConfigurationManager/4.4.0)
+- License: [MIT]( https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Configuration.ConfigurationManager 4.5.0</summary>
+
+## System.Configuration.ConfigurationManager
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Configuration.ConfigurationManager/4.5.0)
+- License: [MIT]( https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.Console 4.3.0</summary>
 
 ## System.Console
@@ -3398,7 +12206,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Console/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -3603,7 +12411,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.Debug/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -3793,6 +12601,89 @@ also applies even if Microsoft knew or should have known about the possibility
 of the damages. The above limitation or exclusion may not apply to you because
 your state or country may not allow the exclusion or limitation of incidental,
 consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.Diagnostics.DiagnosticSource 4.3.0</summary>
+
+## System.Diagnostics.DiagnosticSource
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.DiagnosticSource/4.3.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Diagnostics.DiagnosticSource 6.0.0</summary>
+
+## System.Diagnostics.DiagnosticSource
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.DiagnosticSource/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -3807,210 +12698,47 @@ consequential or other damages.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.DiagnosticSource/8.0.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
 ```
-.NET Library License Terms | .NET
+The MIT License (MIT)
 
+Copyright (c) .NET Foundation and Contributors
 
+All rights reserved.
 
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-MICROSOFT .NET
-LIBRARY
-
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
-
-If
-you comply with these license terms, you have the rights below.
-
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
-
-2.   
-THIRD PARTY COMPONENTS. The software may include third party components with
-separate legal notices or governed by other agreements, as may be described in
-the ThirdPartyNotices file(s) accompanying the software.
-3.   
-ADDITIONAL LICENSING
-REQUIREMENTS AND/OR USE RIGHTS.
-a.    
-DISTRIBUTABLE
-CODE.  The software is
-comprised of Distributable Code. “Distributable Code” is code that you are
-permitted to distribute in applications you develop if you comply with the
-terms below.
-i.      Right to Use and Distribute. 
-·       
-You may copy and distribute the object code form of the software.
-·       
-Third Party Distribution. You may permit distributors of your applications
-to copy and distribute the Distributable Code as part of those applications.
-ii.     Distribution Requirements. For any
-Distributable Code you distribute, you must
-·       
-use the Distributable Code in your applications and not as a
-standalone distribution;
-·       
-require distributors and external end users to agree to terms that
-protect it at least as much as this agreement; and
-·       
-indemnify, defend, and hold harmless Microsoft from any claims,
-including attorneys’ fees, related to the distribution or use of your applications,
-except to the extent that any claim is based solely on the unmodified Distributable
-Code.
-iii.   Distribution Restrictions. You may not
-·       
-use Microsoft’s trademarks in your applications’ names or in a way
-that suggests your applications come from or are endorsed by Microsoft; or
-·       
-modify or distribute the source code of any Distributable Code so
-that any part of it becomes subject to an Excluded License. An “Excluded
-License” is one that requires, as a condition of use, modification or
-distribution of code, that (i) it be disclosed or distributed in source code
-form; or (ii) others have the right to modify it.
-4.   
-DATA.
-a.    
-Data Collection. The software may collect
-information about you and your use of the software, and send that to Microsoft.
-Microsoft may use this information to provide services and improve our products
-and services.  You may opt-out of many of these scenarios, but not all, as
-described in the software documentation.  There are also some features in the software that may enable you and
-Microsoft to collect data from users of your applications. If you use
-these features, you must comply with applicable law, including providing
-appropriate notices to users of your applications together with Microsoft’s
-privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
-collection and its use from the software documentation and our privacy
-statement. Your use of the software operates as your consent to these
-practices.
-b.   
-Processing of Personal Data. To the extent Microsoft is a
-processor or subprocessor of personal data in connection with the software,
-Microsoft makes the commitments in the European Union General Data Protection
-Regulation Terms of the Online Services Terms to all customers effective May
-25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
-5.   
-Scope of
-License. The software is licensed, not sold. This agreement
-only gives you some rights to use the software. Microsoft reserves all other
-rights. Unless applicable law gives you more rights despite this limitation,
-you may use the software only as expressly permitted in this agreement. In
-doing so, you must comply with any technical limitations in the software that
-only allow you to use it in certain ways. You may not
-·       
-work around any technical
-limitations in the software;
-·       
-reverse engineer, decompile or
-disassemble the software, or otherwise attempt to derive the source code for
-the software, except and to the extent required by third party licensing terms
-governing use of certain open source components that may be included in the
-software;
-·       
-remove, minimize, block or modify
-any notices of Microsoft or its suppliers in the software; 
-·       
-use the software in any way that
-is against the law; or
-·       
-share, publish, rent or lease the
-software, provide the software as a stand-alone offering for others to use, or
-transfer the software or this agreement to any third party.
-6.   
-Export
-Restrictions. You must comply with all domestic and international
-export laws and regulations that apply to the software, which include
-restrictions on destinations, end users, and end use. For further information
-on export restrictions, visit www.microsoft.com/exporting.
-7.   
-SUPPORT
-SERVICES. Because this software is “as is,” we may not provide
-support services for it.
-8.   
-Entire
-Agreement. This
-agreement, and the terms for supplements, updates, Internet-based services and
-support services that you use, are the entire agreement for the software and
-support services.
-9.    Applicable Law.  If you acquired the software in the United States, Washington law
-applies to interpretation of and claims for breach of this agreement, and the
-laws of the state where you live apply to all other claims. If you acquired the
-software in any other country, its laws apply.
-10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
-may have other rights, including consumer rights, under the laws of your state
-or country. Separate and apart from your relationship with Microsoft, you may
-also have rights with respect to the party from which you acquired the
-software. This agreement does not change those other rights if the laws of your
-state or country do not permit it to do so. For example, if you acquired the
-software in one of the below regions, or mandatory country law applies, then
-the following provisions apply to you:
-a)    Australia. You have statutory guarantees under the Australian Consumer
-Law and nothing in this agreement is intended to affect those rights.
-b)    Canada. If you acquired this software in Canada, you may stop
-receiving updates by turning off the automatic update feature, disconnecting
-your device from the Internet (if and when you re-connect to the Internet,
-however, the software will resume checking for and installing updates), or uninstalling
-the software. The product documentation, if any, may also specify how to turn
-off updates for your specific device or software.
-c)    Germany and Austria.
-(i)        Warranty. The software will perform
-substantially as described in any Microsoft materials that accompany it.
-However, Microsoft gives no contractual guarantee in relation to the software.
-(ii)       Limitation of Liability. In case of
-intentional conduct, gross negligence, claims based on the Product Liability
-Act, as well as in case of death or personal or physical injury, Microsoft is
-liable according to the statutory law.
-Subject to the foregoing clause (ii), Microsoft will only
-be liable for slight negligence if Microsoft is in breach of such material
-contractual obligations, the fulfillment of which facilitate the due
-performance of this agreement, the breach of which would endanger the purpose
-of this agreement and the compliance with which a party may constantly trust in
-(so-called "cardinal obligations"). In other cases of slight negligence,
-Microsoft will not be liable for slight negligence
-11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
-OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
-TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NON-INFRINGEMENT. 
-12.
-Limitation
-on and Exclusion of Remedies and Damages. YOU
-CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
-$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
-PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
-This limitation applies to (a)
-anything related to the software, services, content (including code) on third
-party Internet sites, or third party applications; and (b) claims for breach of
-contract, breach of warranty, guarantee or condition, strict liability,
-negligence, or other tort to the extent permitted by applicable law.
-It
-also applies even if Microsoft knew or should have known about the possibility
-of the damages. The above limitation or exclusion may not apply to you because
-your state or country may not allow the exclusion or limitation of incidental,
-consequential or other damages.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
 
 
 <details>
-<summary>System.Diagnostics.EventLog 8.0.0</summary>
+<summary>System.Diagnostics.EventLog 6.0.0</summary>
 
 ## System.Diagnostics.EventLog
 
-- Version: 8.0.0
+- Version: 6.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.EventLog/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.EventLog/6.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -4053,7 +12781,7 @@ SOFTWARE.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.Tools/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -4258,7 +12986,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Diagnostics.Tracing/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -4463,7 +13191,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Globalization/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -4668,7 +13396,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Globalization.Calendars/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -4873,7 +13601,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Globalization.Extensions/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -5078,7 +13806,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.IO/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -5274,6 +14002,88 @@ consequential or other damages.
 
 
 <details>
+<summary>System.IO.Abstractions 20.0.4</summary>
+
+## System.IO.Abstractions
+
+- Version: 20.0.4
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/20.0.4)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.IO.Abstractions.TestingHelpers 20.0.4</summary>
+
+## System.IO.Abstractions.TestingHelpers
+
+- Version: 20.0.4
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/20.0.4)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.IO.Compression 4.3.0</summary>
 
 ## System.IO.Compression
@@ -5283,7 +14093,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.IO.Compression/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -5488,7 +14298,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.IO.Compression.ZipFile/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -5693,7 +14503,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.IO.FileSystem/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -5898,7 +14708,7 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.IO.FileSystem.Primitives/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -6094,15 +14904,15 @@ consequential or other damages.
 
 
 <details>
-<summary>System.IO.Pipelines 8.0.0</summary>
+<summary>System.IO.Hashing 7.0.0</summary>
 
-## System.IO.Pipelines
+## System.IO.Hashing
 
-- Version: 8.0.0
+- Version: 7.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/System.IO.Pipelines/8.0.0)
-- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Hashing/7.0.0)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/runtime/main/LICENSE.TXT)
 
 
 ```
@@ -6143,6 +14953,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.IO.Pipelines/6.0.3)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.IO.Pipelines 8.0.0</summary>
+
+## System.IO.Pipelines
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Pipelines/8.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -6420,6 +15271,47 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Linq.Async 6.0.1</summary>
+
+## System.Linq.Async
+
+- Version: 6.0.1
+- Authors: .NET Foundation and Contributors
+- Project URL: https://github.com/dotnet/reactive
+- Source: [NuGet](https://www.nuget.org/packages/System.Linq.Async/6.0.1)
+- License: [MIT](https://github.com/dotnet/reactive/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.Linq.Expressions 4.3.0</summary>
 
 ## System.Linq.Expressions
@@ -6625,6 +15517,48 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Memory 4.5.5</summary>
+
+## System.Memory
+
+- Version: 4.5.5
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Memory/4.5.5)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.Net.Http 4.3.0</summary>
 
 ## System.Net.Http
@@ -6634,6 +15568,211 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Net.Http/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.Net.Http 4.3.4</summary>
+
+## System.Net.Http
+
+- Version: 4.3.4
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Net.Http/4.3.4)
 - License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
@@ -7439,6 +16578,47 @@ also applies even if Microsoft knew or should have known about the possibility
 of the damages. The above limitation or exclusion may not apply to you because
 your state or country may not allow the exclusion or limitation of incidental,
 consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.Reactive 6.0.0</summary>
+
+## System.Reactive
+
+- Version: 6.0.0
+- Authors: .NET Foundation and Contributors
+- Project URL: https://github.com/dotnet/reactive
+- Source: [NuGet](https://www.nuget.org/packages/System.Reactive/6.0.0)
+- License: [MIT](https://github.com/dotnet/reactive/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -8512,6 +17692,47 @@ SOFTWARE.
 
 
 <details>
+<summary>System.Reflection.Metadata 6.0.1</summary>
+
+## System.Reflection.Metadata
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Reflection.Metadata/6.0.1)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.Reflection.Primitives 4.3.0</summary>
 
 ## System.Reflection.Primitives
@@ -9326,6 +18547,47 @@ also applies even if Microsoft knew or should have known about the possibility
 of the damages. The above limitation or exclusion may not apply to you because
 your state or country may not allow the exclusion or limitation of incidental,
 consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.Runtime.CompilerServices.Unsafe 6.0.0</summary>
+
+## System.Runtime.CompilerServices.Unsafe
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.CompilerServices.Unsafe/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -10152,6 +19414,211 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Runtime.Loader 4.3.0</summary>
+
+## System.Runtime.Loader
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Runtime.Loader/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
 <summary>System.Runtime.Numerics 4.3.0</summary>
 
 ## System.Runtime.Numerics
@@ -10351,6 +19818,48 @@ also applies even if Microsoft knew or should have known about the possibility
 of the damages. The above limitation or exclusion may not apply to you because
 your state or country may not allow the exclusion or limitation of incidental,
 consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.Security.AccessControl 5.0.0</summary>
+
+## System.Security.AccessControl
+
+- Version: 5.0.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/runtime
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.AccessControl/5.0.0)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -11587,6 +21096,90 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Security.Cryptography.ProtectedData 4.4.0</summary>
+
+## System.Security.Cryptography.ProtectedData
+
+- Version: 4.4.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.ProtectedData/4.4.0)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Security.Cryptography.ProtectedData 4.5.0</summary>
+
+## System.Security.Cryptography.ProtectedData
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Cryptography.ProtectedData/4.5.0)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.Security.Cryptography.X509Certificates 4.3.0</summary>
 
 ## System.Security.Cryptography.X509Certificates
@@ -11786,6 +21379,90 @@ also applies even if Microsoft knew or should have known about the possibility
 of the damages. The above limitation or exclusion may not apply to you because
 your state or country may not allow the exclusion or limitation of incidental,
 consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.Security.Permissions 4.5.0</summary>
+
+## System.Security.Permissions
+
+- Version: 4.5.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Permissions/4.5.0)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Security.Principal.Windows 5.0.0</summary>
+
+## System.Security.Principal.Windows
+
+- Version: 5.0.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://github.com/dotnet/runtime
+- Source: [NuGet](https://www.nuget.org/packages/System.Security.Principal.Windows/5.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -11997,6 +21674,47 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Text.Encoding.CodePages 6.0.0</summary>
+
+## System.Text.Encoding.CodePages
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encoding.CodePages/6.0.0)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.Text.Encoding.Extensions 4.3.0</summary>
 
 ## System.Text.Encoding.Extensions
@@ -12202,6 +21920,47 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Text.Encodings.Web 6.0.0</summary>
+
+## System.Text.Encodings.Web
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encodings.Web/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>System.Text.Encodings.Web 8.0.0</summary>
 
 ## System.Text.Encodings.Web
@@ -12210,6 +21969,47 @@ consequential or other damages.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Text.Encodings.Web/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Text.Json 6.0.9</summary>
+
+## System.Text.Json
+
+- Version: 6.0.9
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Json/6.0.9)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -12694,6 +22494,1656 @@ consequential or other damages.
 
 
 <details>
+<summary>System.Threading.Channels 6.0.0</summary>
+
+## System.Threading.Channels
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Channels/6.0.0)
+- License: [MIT]( https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+
+
+```
+corefx/LICENSE.TXT at master · dotnet/corefx · GitHub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+
+Toggle navigation
+
+
+
+
+
+
+
+
+
+
+          Sign in
+        
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Packages
+        Host and manage packages
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Code review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+For
+
+
+
+      Enterprise
+
+    
+
+
+
+      Teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Education
+
+    
+
+
+
+
+
+
+By Solution
+
+
+
+      CI/CD & Automation
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+
+
+      DevSecOps
+
+    
+
+
+
+
+
+
+Resources
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      White papers, Ebooks, Webinars
+
+    
+
+
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+              Search syntax tips
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+              Sign in
+            
+
+
+              Sign up
+            
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+
+
+    This repository has been archived by the owner on Jan 23, 2023. It is now read-only.
+  
+
+
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+corefx
+
+Public archive
+
+
+
+
+
+ 
+
+Notifications
+
+
+
+ 
+
+Fork
+    5.1k
+
+
+
+
+ 
+
+
+          Star
+ 17.8k
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Pull requests
+0
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2024 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
+```
+
+</details>
+
+
+<details>
+<summary>System.Threading.Channels 7.0.0</summary>
+
+## System.Threading.Channels
+
+- Version: 7.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Channels/7.0.0)
+- License: [MIT]( https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+
+
+```
+corefx/LICENSE.TXT at master · dotnet/corefx · GitHub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+
+Toggle navigation
+
+
+
+
+
+
+
+
+
+
+          Sign in
+        
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Packages
+        Host and manage packages
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Code review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+For
+
+
+
+      Enterprise
+
+    
+
+
+
+      Teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Education
+
+    
+
+
+
+
+
+
+By Solution
+
+
+
+      CI/CD & Automation
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+
+
+      DevSecOps
+
+    
+
+
+
+
+
+
+Resources
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      White papers, Ebooks, Webinars
+
+    
+
+
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+              Search syntax tips
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+              Sign in
+            
+
+
+              Sign up
+            
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+
+
+    This repository has been archived by the owner on Jan 23, 2023. It is now read-only.
+  
+
+
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+corefx
+
+Public archive
+
+
+
+
+
+ 
+
+Notifications
+
+
+
+ 
+
+Fork
+    5.1k
+
+
+
+
+ 
+
+
+          Star
+ 17.8k
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Pull requests
+0
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2024 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
+```
+
+</details>
+
+
+<details>
 <summary>System.Threading.Tasks 4.3.0</summary>
 
 ## System.Threading.Tasks
@@ -12908,7 +24358,212 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/System.Threading.Tasks.Extensions/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+- License: [MIT](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>System.Threading.Tasks.Extensions 4.5.4</summary>
+
+## System.Threading.Tasks.Extensions
+
+- Version: 4.5.4
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Tasks.Extensions/4.5.4)
+- License: [MIT](https://dotnet.microsoft.com/en-us/dotnet_library_license.htm)
 
 
 ```
@@ -13719,6 +25374,250 @@ consequential or other damages.
 
 
 <details>
+<summary>TestableIO.System.IO.Abstractions 20.0.4</summary>
+
+## TestableIO.System.IO.Abstractions
+
+- Version: 20.0.4
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/20.0.4)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>TestableIO.System.IO.Abstractions.TestingHelpers 20.0.4</summary>
+
+## TestableIO.System.IO.Abstractions.TestingHelpers
+
+- Version: 20.0.4
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.TestingHelpers/20.0.4)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>TestableIO.System.IO.Abstractions.Wrappers 20.0.4</summary>
+
+## TestableIO.System.IO.Abstractions.Wrappers
+
+- Version: 20.0.4
+- Authors: Tatham Oddie & friends
+- Project URL: https://github.com/TestableIO/System.IO.Abstractions
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions.Wrappers/20.0.4)
+- License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) Tatham Oddie and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Validation 2.4.18</summary>
+
+## Validation
+
+- Version: 2.4.18
+- Authors: Andrew Arnott
+- Owners: Andrew Arnott
+- Project URL: http://github.com/aarnott/Validation
+- Source: [NuGet](https://www.nuget.org/packages/Validation/2.4.18)
+- License: [Microsoft Public License]( https://raw.githubusercontent.com/AArnott/Validation/69e6a2c4f3/LICENSE.txt)
+
+
+```
+Microsoft Public License (MS-PL)
+This license governs use of the accompanying software. If you use the software, you
+accept this license. If you do not accept the license, do not use the software.
+
+1. Definitions
+The terms "reproduce," "reproduction," "derivative works," and "distribution" have the
+same meaning here as under U.S. copyright law.
+A "contribution" is the original software, or any additions or changes to the software.
+A "contributor" is any person that distributes its contribution under this license.
+"Licensed patents" are a contributor's patent claims that read directly on its contribution.
+
+2. Grant of Rights
+(A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
+(B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
+
+3. Conditions and Limitations
+(A) No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
+(B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software, your patent license from such contributor to the software ends automatically.
+(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution notices that are present in the software.
+(D) If you distribute any portion of the software in source code form, you may do so only under this license by including a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object code form, you may only do so under a license that complies with this license.
+(E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
+```
+
+</details>
+
+
+<details>
+<summary>Xunit.SkippableFact 1.3.12</summary>
+
+## Xunit.SkippableFact
+
+- Version: 1.3.12
+- Authors: Andrew Arnott
+- Owners: Andrew Arnott
+- Project URL: https://github.com/AArnott/Xunit.SkippableFact
+- Source: [NuGet](https://www.nuget.org/packages/Xunit.SkippableFact/1.3.12)
+- License: [Microsoft Public License](https://raw.githubusercontent.com/AArnott/Xunit.SkippableFact/c7f20eaa78/LICENSE.txt)
+
+
+```
+This software is licensed under the Microsoft Public License
+http://opensource.org/licenses/ms-pl
+
+This license governs use of the accompanying software. If you use the software, you
+accept this license. If you do not accept the license, do not use the software.
+
+1. Definitions
+ The terms "reproduce," "reproduction," "derivative works," and "distribution" have the
+ same meaning here as under U.S. copyright law.
+ A "contribution" is the original software, or any additions or changes to the software.
+ A "contributor" is any person that distributes its contribution under this license.
+ "Licensed patents" are a contributor's patent claims that read directly on its contribution.
+
+2. Grant of Rights
+ (A) Copyright Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free copyright license to reproduce its contribution, prepare derivative works of its contribution, and distribute its contribution or any derivative works that you create.
+ (B) Patent Grant- Subject to the terms of this license, including the license conditions and limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free license under its licensed patents to make, have made, use, sell, offer for sale, import, and/or otherwise dispose of its contribution in the software or derivative works of the contribution in the software.
+
+3. Conditions and Limitations
+ (A) No Trademark License- This license does not grant you rights to use any contributors' name, logo, or trademarks.
+ (B) If you bring a patent claim against any contributor over patents that you claim are infringed by the software, your patent license from such contributor to the software ends automatically.
+ (C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, and attribution notices that are present in the software.
+ (D) If you distribute any portion of the software in source code form, you may do so only under this license by including a complete copy of this license with your distribution. If you distribute any portion of the software in compiled or object code form, you may only do so under a license that complies with this license.
+ (E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express warranties, guarantees or conditions. You may have additional consumer rights under your local laws which this license cannot change. To the extent permitted under your local laws, the contributors exclude the implied warranties of merchantability, fitness for a particular purpose and non-infringement.
+```
+
+</details>
+
+
+<details>
+<summary>ZstdSharp.Port 0.7.3</summary>
+
+## ZstdSharp.Port
+
+- Version: 0.7.3
+- Authors: Oleg Stepanischev
+- Project URL: https://github.com/oleg-st/ZstdSharp
+- Source: [NuGet](https://www.nuget.org/packages/ZstdSharp.Port/0.7.3)
+- License: [MIT](https://github.com/oleg-st/ZstdSharp/raw/master/LICENSE)
+
+
+```
+MIT License
+
+Copyright (c) 2021 Oleg Stepanischev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>coverlet.collector 6.0.0</summary>
 
 ## coverlet.collector
@@ -13758,6 +25657,311 @@ SOFTWARE.
 
 
 <details>
+<summary>fo-dicom 5.1.2</summary>
+
+## fo-dicom
+
+- Version: 5.1.2
+- Authors: fo-dicom contributors
+- Project URL: https://github.com/fo-dicom/fo-dicom
+- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.1.2)
+- License: [Microsoft Public License](https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
+
+
+```
+Fellow Oak DICOM
+
+Copyright (c) 2012-2021 fo-dicom contributors
+
+This software is licensed under the Microsoft Public License (MS-PL)
+
+Microsoft Public License (MS-PL)
+
+This license governs use of the accompanying software. If you use the software, you
+accept this license. If you do not accept the license, do not use the software.
+
+1. Definitions
+The terms "reproduce," "reproduction," "derivative works," and "distribution" have the
+same meaning here as under U.S. copyright law.
+A "contribution" is the original software, or any additions or changes to the software.
+A "contributor" is any person that distributes its contribution under this license.
+"Licensed patents" are a contributor's patent claims that read directly on its contribution.
+
+2. Grant of Rights
+(A) Copyright Grant- Subject to the terms of this license, including the license conditions 
+    and limitations in section 3, each contributor grants you a non-exclusive, worldwide, 
+	royalty-free copyright license to reproduce its contribution, prepare derivative works 
+	of its contribution, and distribute its contribution or any derivative works that you create.
+(B) Patent Grant- Subject to the terms of this license, including the license conditions and 
+    limitations in section 3, each contributor grants you a non-exclusive, worldwide, royalty-free 
+	license under its licensed patents to make, have made, use, sell, offer for sale, import, 
+	and/or otherwise dispose of its contribution in the software or derivative works of the 
+	contribution in the software.
+
+3. Conditions and Limitations
+(A) No Trademark License- This license does not grant you rights to use any contributors' name, 
+    logo, or trademarks.
+(B) If you bring a patent claim against any contributor over patents that you claim are infringed 
+    by the software, your patent license from such contributor to the software ends automatically.
+(C) If you distribute any portion of the software, you must retain all copyright, patent, trademark, 
+    and attribution notices that are present in the software.
+(D) If you distribute any portion of the software in source code form, you may do so only under this 
+    license by including a complete copy of this license with your distribution. If you distribute 
+	any portion of the software in compiled or object code form, you may only do so under a license 
+	that complies with this license.
+(E) The software is licensed "as-is." You bear the risk of using it. The contributors give no express 
+    warranties, guarantees or conditions. You may have additional consumer rights under your local 
+	laws which this license cannot change. To the extent permitted under your local laws, the 
+	contributors exclude the implied warranties of merchantability, fitness for a particular purpose 
+	and non-infringement.
+
+
+
+---- libijg (from DCMTK 3.5.4 COPYRIGHT) ----
+
+Unless otherwise specified, the DCMTK software package has the
+following copyright:
+
+/*
+ *  Copyright (C) 1994-2004, OFFIS
+ *
+ *  This software and supporting documentation were developed by
+ *
+ *    Kuratorium OFFIS e.V.
+ *    Healthcare Information and Communication Systems
+ *    Escherweg 2
+ *    D-26121 Oldenburg, Germany
+ *
+ *  THIS SOFTWARE IS MADE AVAILABLE,  AS IS,  AND OFFIS MAKES NO  WARRANTY
+ *  REGARDING  THE  SOFTWARE,  ITS  PERFORMANCE,  ITS  MERCHANTABILITY  OR
+ *  FITNESS FOR ANY PARTICULAR USE, FREEDOM FROM ANY COMPUTER DISEASES  OR
+ *  ITS CONFORMITY TO ANY SPECIFICATION. THE ENTIRE RISK AS TO QUALITY AND
+ *  PERFORMANCE OF THE SOFTWARE IS WITH THE USER.
+ *
+ *  Copyright of the software  and  supporting  documentation  is,  unless
+ *  otherwise stated, owned by OFFIS, and free access is hereby granted as
+ *  a license to  use  this  software,  copy  this  software  and  prepare
+ *  derivative works based upon this software.  However, any  distribution
+ *  of this software source code or supporting documentation or derivative
+ *  works  (source code and  supporting documentation)  must  include  the
+ *  three paragraphs of this copyright notice.
+ *
+ */
+
+The dcmjpeg sub-package includes an adapted version of the Independent JPEG
+Group Toolkit Version 6b, which is contained in dcmjpeg/libijg8,
+dcmjpeg/libijg12 and dcmjpeg/libijg16.  This toolkit is covered by the
+following copyright.  The original README file for the Independent JPEG
+Group Toolkit is located in dcmjpeg/docs/ijg_readme.txt.
+
+/*
+ *  The authors make NO WARRANTY or representation, either express or implied,
+ *  with respect to this software, its quality, accuracy, merchantability, or
+ *  fitness for a particular purpose.  This software is provided "AS IS", and you,
+ *  its user, assume the entire risk as to its quality and accuracy.
+ *
+ *  This software is copyright (C) 1991-1998, Thomas G. Lane.
+ *  All Rights Reserved except as specified below.
+ *
+ *  Permission is hereby granted to use, copy, modify, and distribute this
+ *  software (or portions thereof) for any purpose, without fee, subject to these
+ *  conditions:
+ *  (1) If any part of the source code for this software is distributed, then this
+ *  README file must be included, with this copyright and no-warranty notice
+ *  unaltered; and any additions, deletions, or changes to the original files
+ *  must be clearly indicated in accompanying documentation.
+ *  (2) If only executable code is distributed, then the accompanying
+ *  documentation must state that "this software is based in part on the work of
+ *  the Independent JPEG Group".
+ *  (3) Permission for use of this software is granted only if the user accepts
+ *  full responsibility for any undesirable consequences; the authors accept
+ *  NO LIABILITY for damages of any kind.
+ *
+ *  These conditions apply to any software derived from or based on the IJG code,
+ *  not just to the unmodified library.  If you use our work, you ought to
+ *  acknowledge us.
+ *
+ *  Permission is NOT granted for the use of any IJG author's name or company name
+ *  in advertising or publicity relating to this software or products derived from
+ *  it.  This software may be referred to only as "the Independent JPEG Group's
+ *  software".
+ *
+ *  We specifically permit and encourage the use of this software as the basis of
+ *  commercial products, provided that all warranty or liability claims are
+ *  assumed by the product vendor.
+ */
+
+
+
+---- OpenJPEG JPEG 2000 codec (from license.txt) ----
+
+/*
+ * Copyright (c) 2002-2007, Communications and Remote Sensing Laboratory, Universite catholique de Louvain (UCL), Belgium
+ * Copyright (c) 2002-2007, Professor Benoit Macq
+ * Copyright (c) 2001-2003, David Janssens
+ * Copyright (c) 2002-2003, Yannick Verschueren
+ * Copyright (c) 2003-2007, Francois-Olivier Devaux and Antonin Descampe
+ * Copyright (c) 2005, Herve Drolon, FreeImage Team
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ * 1. Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS `AS IS'
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ * ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+ * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+ * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
+
+---- CharLS JPEG-LS codec (from License.txt) ----
+
+Copyright (c) 2007-2009, Jan de Vaan
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without 
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this 
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice, 
+  this list of conditions and the following disclaimer in the documentation 
+  and/or other materials provided with the distribution.
+
+* Neither the name of my employer, nor the names of its contributors may be 
+  used to endorse or promote products derived from this software without 
+  specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE 
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES 
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; 
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON 
+ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT 
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+
+
+
+---- Unity.IO.Compression (from LICENSE.TXT and PATENTS.TXT) ----
+
+The MIT License (MIT)
+
+Copyright (c) Microsoft Corporation
+
+Permission is hereby granted, free of charge, to any person obtaining a copy 
+of this software and associated documentation files (the "Software"), to deal 
+in the Software without restriction, including without limitation the rights 
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell 
+copies of the Software, and to permit persons to whom the Software is 
+furnished to do so, subject to the following conditions: 
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software. 
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER 
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+SOFTWARE.
+
+Microsoft Patent Promise for .NET Libraries and Runtime Components 
+
+Microsoft Corporation and its affiliates ("Microsoft") promise not to assert 
+any .NET Patents against you for making, using, selling, offering for sale, 
+importing, or distributing Covered Code, as part of either a .NET Runtime or 
+as part of any application designed to run on a .NET Runtime. 
+
+If you file, maintain, or voluntarily participate in any claim in a lawsuit 
+alleging direct or contributory patent infringement by any Covered Code, or 
+inducement of patent infringement by any Covered Code, then your rights under 
+this promise will automatically terminate. 
+
+This promise is not an assurance that (i) any .NET Patents are valid or 
+enforceable, or (ii) Covered Code does not infringe patents or other 
+intellectual property rights of any third party. No rights except those 
+expressly stated in this promise are granted, waived, or received by 
+Microsoft, whether by implication, exhaustion, estoppel, or otherwise. 
+This is a personal promise directly from Microsoft to you, and you agree as a 
+condition of benefiting from it that no Microsoft rights are received from 
+suppliers, distributors, or otherwise from any other person in connection with 
+this promise. 
+
+Definitions: 
+
+"Covered Code" means those Microsoft .NET libraries and runtime components as 
+made available by Microsoft at https://github.com/Microsoft/referencesource. 
+
+".NET Patents" are those patent claims, both currently owned by Microsoft and 
+acquired in the future, that are necessarily infringed by Covered Code. .NET 
+Patents do not include any patent claims that are infringed by any Enabling 
+Technology, that are infringed only as a consequence of modification of 
+Covered Code, or that are infringed only by the combination of Covered Code 
+with third party code. 
+
+".NET Runtime" means any compliant implementation in software of (a) all of 
+the required parts of the mandatory provisions of Standard ECMA-335 – Common 
+Language Infrastructure (CLI); and (b) if implemented, any additional 
+functionality in Microsoft's .NET Framework, as described in Microsoft's API 
+documentation on its MSDN website. For example, .NET Runtimes include 
+Microsoft's .NET Framework and those portions of the Mono Project compliant 
+with (a) and (b). 
+
+"Enabling Technology" means underlying or enabling technology that may be 
+used, combined, or distributed in connection with Microsoft's .NET Framework 
+or other .NET Runtimes, such as hardware, operating systems, and applications 
+that run on .NET Framework or other .NET Runtimes. 
+
+
+
+---- Nito.AsyncEx (from LICENSE.TXT) ----
+
+The MIT License (MIT)
+
+Copyright (c) 2014 StephenCleary
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.0</summary>
 
 ## runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl
@@ -13767,6 +25971,211 @@ SOFTWARE.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
 - License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
@@ -14168,6 +26577,211 @@ consequential or other damages.
 
 
 <details>
+<summary>runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
 <summary>runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.0</summary>
 
 ## runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl
@@ -14177,6 +26791,211 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
 - License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
@@ -14783,16 +27602,16 @@ consequential or other damages.
 
 
 <details>
-<summary>runtime.native.System.Net.Http 4.3.0</summary>
+<summary>runtime.native.System.IO.Compression 4.3.2</summary>
 
-## runtime.native.System.Net.Http
+## runtime.native.System.IO.Compression
 
-- Version: 4.3.0
+- Version: 4.3.2
 - Authors: Microsoft
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System.Net.Http/4.3.0)
-- License: [MICROSOFT .NET LIBRARY License](http://go.microsoft.com/fwlink/?LinkId=329770)
+- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System.IO.Compression/4.3.2)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
 ```
@@ -15603,6 +28422,211 @@ consequential or other damages.
 
 
 <details>
+<summary>runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
 <summary>runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.0</summary>
 
 ## runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl
@@ -15808,6 +28832,211 @@ consequential or other damages.
 
 
 <details>
+<summary>runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
 <summary>runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.0</summary>
 
 ## runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl
@@ -15817,6 +29046,211 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
 - License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
@@ -16423,6 +29857,211 @@ consequential or other damages.
 
 
 <details>
+<summary>runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
 <summary>runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.0</summary>
 
 ## runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl
@@ -16432,6 +30071,211 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
 - License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
@@ -16833,6 +30677,211 @@ consequential or other damages.
 
 
 <details>
+<summary>runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
 <summary>runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.0</summary>
 
 ## runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl
@@ -16842,6 +30891,211 @@ consequential or other damages.
 - Owners: microsoft,dotnetframework
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
 - License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
 
 
@@ -17243,13 +31497,258 @@ consequential or other damages.
 
 
 <details>
-<summary>xunit 2.6.4</summary>
+<summary>runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl 4.3.2</summary>
+
+## runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl
+
+- Version: 4.3.2
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl/4.3.2)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+.NET Library License Terms | .NET
+
+
+
+
+MICROSOFT SOFTWARE LICENSE
+TERMS
+
+MICROSOFT .NET
+LIBRARY
+
+These
+license terms are an agreement between you and Microsoft Corporation (or based
+on where you live, one of its affiliates). They apply to the software named
+above. The terms also apply to any Microsoft services or updates for the
+software, except to the extent those have different terms.
+
+If
+you comply with these license terms, you have the rights below.
+
+1.    INSTALLATION AND USE RIGHTS. 
+You may
+install and use any number of copies of the software to develop and test your applications. 
+
+2.   
+THIRD PARTY COMPONENTS. The software may include third party components with
+separate legal notices or governed by other agreements, as may be described in
+the ThirdPartyNotices file(s) accompanying the software.
+3.   
+ADDITIONAL LICENSING
+REQUIREMENTS AND/OR USE RIGHTS.
+a.    
+DISTRIBUTABLE
+CODE.  The software is
+comprised of Distributable Code. “Distributable Code” is code that you are
+permitted to distribute in applications you develop if you comply with the
+terms below.
+i.      Right to Use and Distribute. 
+·       
+You may copy and distribute the object code form of the software.
+·       
+Third Party Distribution. You may permit distributors of your applications
+to copy and distribute the Distributable Code as part of those applications.
+ii.     Distribution Requirements. For any
+Distributable Code you distribute, you must
+·       
+use the Distributable Code in your applications and not as a
+standalone distribution;
+·       
+require distributors and external end users to agree to terms that
+protect it at least as much as this agreement; and
+·       
+indemnify, defend, and hold harmless Microsoft from any claims,
+including attorneys’ fees, related to the distribution or use of your applications,
+except to the extent that any claim is based solely on the unmodified Distributable
+Code.
+iii.   Distribution Restrictions. You may not
+·       
+use Microsoft’s trademarks in your applications’ names or in a way
+that suggests your applications come from or are endorsed by Microsoft; or
+·       
+modify or distribute the source code of any Distributable Code so
+that any part of it becomes subject to an Excluded License. An “Excluded
+License” is one that requires, as a condition of use, modification or
+distribution of code, that (i) it be disclosed or distributed in source code
+form; or (ii) others have the right to modify it.
+4.   
+DATA.
+a.    
+Data Collection. The software may collect
+information about you and your use of the software, and send that to Microsoft.
+Microsoft may use this information to provide services and improve our products
+and services.  You may opt-out of many of these scenarios, but not all, as
+described in the software documentation.  There are also some features in the software that may enable you and
+Microsoft to collect data from users of your applications. If you use
+these features, you must comply with applicable law, including providing
+appropriate notices to users of your applications together with Microsoft’s
+privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
+collection and its use from the software documentation and our privacy
+statement. Your use of the software operates as your consent to these
+practices.
+b.   
+Processing of Personal Data. To the extent Microsoft is a
+processor or subprocessor of personal data in connection with the software,
+Microsoft makes the commitments in the European Union General Data Protection
+Regulation Terms of the Online Services Terms to all customers effective May
+25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
+5.   
+Scope of
+License. The software is licensed, not sold. This agreement
+only gives you some rights to use the software. Microsoft reserves all other
+rights. Unless applicable law gives you more rights despite this limitation,
+you may use the software only as expressly permitted in this agreement. In
+doing so, you must comply with any technical limitations in the software that
+only allow you to use it in certain ways. You may not
+·       
+work around any technical
+limitations in the software;
+·       
+reverse engineer, decompile or
+disassemble the software, or otherwise attempt to derive the source code for
+the software, except and to the extent required by third party licensing terms
+governing use of certain open source components that may be included in the
+software;
+·       
+remove, minimize, block or modify
+any notices of Microsoft or its suppliers in the software; 
+·       
+use the software in any way that
+is against the law; or
+·       
+share, publish, rent or lease the
+software, provide the software as a stand-alone offering for others to use, or
+transfer the software or this agreement to any third party.
+6.   
+Export
+Restrictions. You must comply with all domestic and international
+export laws and regulations that apply to the software, which include
+restrictions on destinations, end users, and end use. For further information
+on export restrictions, visit www.microsoft.com/exporting.
+7.   
+SUPPORT
+SERVICES. Because this software is “as is,” we may not provide
+support services for it.
+8.   
+Entire
+Agreement. This
+agreement, and the terms for supplements, updates, Internet-based services and
+support services that you use, are the entire agreement for the software and
+support services.
+9.    Applicable Law.  If you acquired the software in the United States, Washington law
+applies to interpretation of and claims for breach of this agreement, and the
+laws of the state where you live apply to all other claims. If you acquired the
+software in any other country, its laws apply.
+10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
+may have other rights, including consumer rights, under the laws of your state
+or country. Separate and apart from your relationship with Microsoft, you may
+also have rights with respect to the party from which you acquired the
+software. This agreement does not change those other rights if the laws of your
+state or country do not permit it to do so. For example, if you acquired the
+software in one of the below regions, or mandatory country law applies, then
+the following provisions apply to you:
+a)    Australia. You have statutory guarantees under the Australian Consumer
+Law and nothing in this agreement is intended to affect those rights.
+b)    Canada. If you acquired this software in Canada, you may stop
+receiving updates by turning off the automatic update feature, disconnecting
+your device from the Internet (if and when you re-connect to the Internet,
+however, the software will resume checking for and installing updates), or uninstalling
+the software. The product documentation, if any, may also specify how to turn
+off updates for your specific device or software.
+c)    Germany and Austria.
+(i)        Warranty. The software will perform
+substantially as described in any Microsoft materials that accompany it.
+However, Microsoft gives no contractual guarantee in relation to the software.
+(ii)       Limitation of Liability. In case of
+intentional conduct, gross negligence, claims based on the Product Liability
+Act, as well as in case of death or personal or physical injury, Microsoft is
+liable according to the statutory law.
+Subject to the foregoing clause (ii), Microsoft will only
+be liable for slight negligence if Microsoft is in breach of such material
+contractual obligations, the fulfillment of which facilitate the due
+performance of this agreement, the breach of which would endanger the purpose
+of this agreement and the compliance with which a party may constantly trust in
+(so-called "cardinal obligations"). In other cases of slight negligence,
+Microsoft will not be liable for slight negligence
+11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
+OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
+TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
+WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NON-INFRINGEMENT. 
+12.
+Limitation
+on and Exclusion of Remedies and Damages. YOU
+CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
+$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
+PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
+This limitation applies to (a)
+anything related to the software, services, content (including code) on third
+party Internet sites, or third party applications; and (b) claims for breach of
+contract, breach of warranty, guarantee or condition, strict liability,
+negligence, or other tort to the extent permitted by applicable law.
+It
+also applies even if Microsoft knew or should have known about the possibility
+of the damages. The above limitation or exclusion may not apply to you because
+your state or country may not allow the exclusion or limitation of incidental,
+consequential or other damages.
+```
+
+</details>
+
+
+<details>
+<summary>xRetry 1.9.0</summary>
+
+## xRetry
+
+- Version: 1.9.0
+- Authors: Josh Keegan
+- Owners: Josh Keegan
+- Project URL: https://github.com/JoshKeegan/xRetry
+- Source: [NuGet](https://www.nuget.org/packages/xRetry/1.9.0)
+- License: [MIT](https://github.com/JoshKeegan/xRetry/raw/master/LICENSE)
+
+
+```
+MIT License
+
+Copyright (c) 2019-2023 Josh Keegan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>xunit 2.6.5</summary>
 
 ## xunit
 
-- Version: 2.6.4
+- Version: 2.6.5
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit/2.6.4)
+- Source: [NuGet](https://www.nuget.org/packages/xunit/2.6.5)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -17375,13 +31874,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.analyzers 1.8.0</summary>
+<summary>xunit.analyzers 1.9.0</summary>
 
 ## xunit.analyzers
 
-- Version: 1.8.0
+- Version: 1.9.0
 - Authors: jnewkirk,bradwilson,marcind
-- Source: [NuGet](https://www.nuget.org/packages/xunit.analyzers/1.8.0)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.analyzers/1.9.0)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit.analyzers/master/LICENSE)
 
 
@@ -17406,13 +31905,13 @@ limitations under the License.
 
 
 <details>
-<summary>xunit.assert 2.6.4</summary>
+<summary>xunit.assert 2.6.5</summary>
 
 ## xunit.assert
 
-- Version: 2.6.4
+- Version: 2.6.5
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.assert/2.6.4)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.assert/2.6.5)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -17471,13 +31970,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.core 2.6.4</summary>
+<summary>xunit.core 2.6.5</summary>
 
 ## xunit.core
 
-- Version: 2.6.4
+- Version: 2.6.5
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.core/2.6.4)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.core/2.6.5)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -17536,13 +32035,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.extensibility.core 2.6.4</summary>
+<summary>xunit.extensibility.core 2.6.5</summary>
 
 ## xunit.extensibility.core
 
-- Version: 2.6.4
+- Version: 2.6.5
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.core/2.6.4)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.core/2.6.5)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -17601,13 +32100,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.extensibility.execution 2.6.4</summary>
+<summary>xunit.extensibility.execution 2.6.5</summary>
 
 ## xunit.extensibility.execution
 
-- Version: 2.6.4
+- Version: 2.6.5
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.execution/2.6.4)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.execution/2.6.5)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 

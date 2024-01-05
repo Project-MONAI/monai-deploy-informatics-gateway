@@ -213,7 +213,7 @@
   - Microsoft.Data.Sqlite.Core
   - :versions:
       - 8.0.0
-      - :when: 2022-08-16T23:05:49.698Z
+    :when: 2022-08-16T23:05:49.698Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
@@ -227,42 +227,42 @@
   - Microsoft.EntityFrameworkCore.Abstractions
   - :versions:
       - 8.0.0
-      - :when: 2022-08-16T23:05:51.008Z
+    :when: 2022-08-16T23:05:51.008Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Analyzers
   - :versions:
       - 8.0.0
-      - :when: 2022-08-16T23:05:51.445Z
+    :when: 2022-08-16T23:05:51.445Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Design
   - :versions:
       - 8.0.0
-      - :when: 2022-08-16T23:05:51.922Z
+    :when: 2022-08-16T23:05:51.922Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.InMemory
   - :versions:
       - 8.0.0
-      - :when: 2022-08-16T23:05:52.375Z
+    :when: 2022-08-16T23:05:52.375Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Relational
   - :versions:
       - 8.0.0
-      - :when: 2022-08-16T23:05:52.828Z
+    :when: 2022-08-16T23:05:52.828Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Tools
   - :versions:
       - 8.0.0
-      - :when: 2022-08-16T23:05:52.828Z
+    :when: 2022-08-16T23:05:52.828Z
     :who: ndsouth
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
@@ -419,7 +419,7 @@
   - Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
   - :versions:
       - 8.0.0
-      - :when: 2022-08-29T18:11:22.090Z
+    :when: 2022-08-29T18:11:22.090Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 - - :approve
@@ -900,6 +900,7 @@
   - Polly
   - :versions:
       - 8.2.0
+      - 8.2.1
     :when: 2022-11-09T18:57:32.294Z
     :who: mocsharp
     :why: MIT ( https://licenses.nuget.org/MIT)
@@ -907,6 +908,7 @@
   - Polly.Core
   - :versions:
       - 8.2.0
+      - 8.2.1
     :when: 2022-11-09T18:57:32.294Z
     :who: mocsharp
     :why: MIT ( https://licenses.nuget.org/MIT)
@@ -1551,7 +1553,6 @@
   - runtime.native.System
   - :versions:
       - 4.3.0
-      - 4.3.2
     :when: 2022-08-16T21:40:23.578Z
     :who: mocsharp
     :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
@@ -1567,7 +1568,6 @@
   - runtime.native.System.Net.Http
   - :versions:
       - 4.3.0
-      - 4.3.2
     :when: 2022-08-16T21:40:24.434Z
     :who: mocsharp
     :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
@@ -1606,7 +1606,6 @@
   - runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple
   - :versions:
       - 4.3.0
-      - 4.3.2
     :when: 2022-08-16T21:40:26.579Z
     :who: mocsharp
     :why: MICROSOFT .NET LIBRARY License ( http://go.microsoft.com/fwlink/?LinkId=329770)
@@ -1660,7 +1659,7 @@
 - - :approve
   - xunit
   - :versions:
-      - 2.6.4
+      - 2.6.5
     :when: 2022-08-16T21:40:29.166Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
@@ -1674,35 +1673,35 @@
 - - :approve
   - xunit.analyzers
   - :versions:
-      - 1.8.0
+      - 1.9.0
     :when: 2022-08-16T21:40:30.047Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit.analyzers/master/LICENSE)
 - - :approve
   - xunit.assert
   - :versions:
-      - 2.6.4
+      - 2.6.5
     :when: 2022-08-16T21:40:30.526Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 - - :approve
   - xunit.core
   - :versions:
-      - 2.6.4
+      - 2.6.5
     :when: 2022-08-16T21:40:30.973Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 - - :approve
   - xunit.extensibility.core
   - :versions:
-      - 2.6.4
+      - 2.6.5
     :when: 2022-08-16T21:40:31.401Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 - - :approve
   - xunit.extensibility.execution
   - :versions:
-      - 2.6.4
+      - 2.6.5
     :when: 2022-08-16T21:40:31.845Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
