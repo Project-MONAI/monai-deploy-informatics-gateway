@@ -213,7 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                    })
                .ExecuteAsync(async () =>
                {
-                   var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                   using var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                    internalCancellationTokenSource.CancelAfter(_configuration.Value.Storage.StorageServiceListTimeout);
                    var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.StorageServiceBucketName, path).ConfigureAwait(false);
                    _logger.VerifyFileExists(path, exists);
@@ -268,6 +268,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 if (disposing)
                 {
+                    _cancellationTokenSource.Dispose();
                     _scope.Dispose();
                 }
 

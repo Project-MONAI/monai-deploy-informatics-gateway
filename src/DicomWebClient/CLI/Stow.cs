@@ -29,7 +29,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 {
     [Command("stow", "Use stow to store DICOM instances to a remote DICOMweb server.")]
-    public class Stow : ConsoleAppBase
+    public class Stow : ConsoleAppBase, IDisposable
     {
         private readonly IDicomWebClient _dicomWebClient;
         private readonly ILogger<Stow> _logger;
@@ -137,6 +137,11 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             _logger.LogInformation("Checking arguments...");
             rootUri = new Uri(rootUrl);
             rootUri = rootUri.EnsureUriEndsWithSlash();
+        }
+
+        public void Dispose()
+        {
+            _cancellationTokeSource.Dispose();
         }
     }
 }
