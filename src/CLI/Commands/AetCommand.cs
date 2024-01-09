@@ -173,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
-            IReadOnlyList<MonaiApplicationEntity> items = null;
+            IReadOnlyList<MonaiApplicationEntity>? items = null;
             try
             {
                 CheckConfiguration(configService);
@@ -390,7 +390,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
-            IDictionary<string, string> items = null;
+            IDictionary<string, string>? items = null;
             try
             {
                 CheckConfiguration(configService);

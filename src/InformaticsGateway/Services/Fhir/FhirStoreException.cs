@@ -15,11 +15,9 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Fhir
 {
-    [Serializable]
     public class FhirStoreException : Exception
     {
         public OperationOutcome OperationOutcome { get; } = new();
@@ -46,10 +44,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             {
                 Text = message
             });
-        }
-
-        protected FhirStoreException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
         }
     }
 }

@@ -17,6 +17,7 @@
 using System.Diagnostics;
 using System.Text;
 using Minio;
+using Minio.DataModel.Args;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Polly;
@@ -102,7 +103,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             });
         }
 
-        private MinioClient CreateMinioClient() => new MinioClient()
+        private MinioClient CreateMinioClient() => (MinioClient)new MinioClient()
                         .WithEndpoint(_options.Storage.Settings["endpoint"])
                         .WithCredentials(_options.Storage.Settings["accessKey"], _options.Storage.Settings["accessToken"])
                     .Build();

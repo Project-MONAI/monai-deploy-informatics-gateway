@@ -18,6 +18,7 @@ using System.Linq;
 using System.Net.Mime;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Text.Json.Serialization.Metadata;
 using FellowOakDicom.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -48,6 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddHttpContextAccessor();
+            services.AddHttpLogging(o => { });
             services.AddControllers(opts =>
             {
                 opts.RespectBrowserAcceptHeader = true;
@@ -61,6 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                     WriteIndented = false
                 };
 
+                jsonSerializerOptions.TypeInfoResolver ??= JsonTypeInfoResolver.Combine();
                 jsonSerializerOptions.Converters.Add(new JsonStringEnumMemberConverter(JsonNamingPolicy.CamelCase, false));
                 jsonSerializerOptions.Converters.Add(new DicomJsonConverter(writeTagsAsKeywords: false, autoValidate: false));
                 opts.OutputFormatters.Add(new FhirJsonFormatters(jsonSerializerOptions));

@@ -16,11 +16,9 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    [Serializable]
     public class ObjectExistsException : Exception
     {
         public ObjectExistsException()
@@ -32,10 +30,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
         }
 
         public ObjectExistsException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ObjectExistsException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

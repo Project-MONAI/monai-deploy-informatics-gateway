@@ -73,10 +73,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             };
 
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(aet).ConfigureAwait(false);
+            await store.AddAsync(aet).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var collection = _databaseFixture.Database.GetCollection<VirtualApplicationEntity>(nameof(VirtualApplicationEntity));
-            var actual = await collection.Find(p => p.Name == aet.Name).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.Name == aet.Name).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(aet.VirtualAeTitle, actual!.VirtualAeTitle);
@@ -90,13 +90,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var result = await store.ContainsAsync(p => p.VirtualAeTitle == "AET1").ConfigureAwait(false);
+            var result = await store.ContainsAsync(p => p.VirtualAeTitle == "AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.VirtualAeTitle.Equals("AET1")).ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.VirtualAeTitle.Equals("AET1")).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Name != "AET2").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Name != "AET2").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.False(result);
         }
 
@@ -105,12 +105,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var actual = await store.FindByNameAsync("AET1").ConfigureAwait(false);
+            var actual = await store.FindByNameAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
             Assert.Equal("AET1", actual!.VirtualAeTitle);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByNameAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByNameAsync("AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(actual);
         }
 
@@ -119,12 +119,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var actual = await store.FindByAeTitleAsync("AET1").ConfigureAwait(false);
+            var actual = await store.FindByAeTitleAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
             Assert.Equal("AET1", actual!.VirtualAeTitle);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByAeTitleAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByAeTitleAsync("AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(actual);
         }
 
@@ -133,14 +133,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await store.FindByAeTitleAsync("AET5").ConfigureAwait(false);
+            var expected = await store.FindByAeTitleAsync("AET5").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
-            var actual = await store.RemoveAsync(expected!).ConfigureAwait(false);
+            var actual = await store.RemoveAsync(expected!).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Same(expected, actual);
 
             var collection = _databaseFixture.Database.GetCollection<VirtualApplicationEntity>(nameof(VirtualApplicationEntity));
-            var dbResult = await collection.Find(p => p.Name == "AET5").FirstOrDefaultAsync().ConfigureAwait(false);
+            var dbResult = await collection.Find(p => p.Name == "AET5").FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(dbResult);
         }
 
@@ -150,8 +150,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var collection = _databaseFixture.Database.GetCollection<VirtualApplicationEntity>(nameof(VirtualApplicationEntity));
-            var expected = await collection.Find(Builders<VirtualApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var expected = await collection.Find(Builders<VirtualApplicationEntity>.Filter.Empty).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
         }
@@ -161,15 +161,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await store.FindByAeTitleAsync("AET3").ConfigureAwait(false);
+            var expected = await store.FindByAeTitleAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
             expected!.VirtualAeTitle = "AET100";
 
-            var actual = await store.UpdateAsync(expected).ConfigureAwait(false);
+            var actual = await store.UpdateAsync(expected).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(expected, actual);
 
-            var dbResult = await store.FindByAeTitleAsync("AET100").ConfigureAwait(false);
+            var dbResult = await store.FindByAeTitleAsync("AET100").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(dbResult);
             Assert.Equal(expected.VirtualAeTitle, dbResult!.VirtualAeTitle);
         }

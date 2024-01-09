@@ -121,10 +121,10 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddScoped<IDataPlugInEngineFactory<IOutputDataPlugIn>, OutputDataPlugInEngineFactory>();
                     services.AddScoped<IDataPlugInEngineFactory<IInputHL7DataPlugIn>, InputHL7DataPlugInEngineFactory>();
 
-                    services.AddMonaiDeployStorageService(hostContext.Configuration!.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
+                    services.AddMonaiDeployStorageService(hostContext.Configuration!.GetSection("InformaticsGateway:storage:serviceAssemblyName").Value!, Monai.Deploy.Storage.HealthCheckOptions.ServiceHealthCheck);
 
-                    services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value, true);
-                    services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value, true);
+                    services.AddMonaiDeployMessageBrokerPublisherService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:publisherServiceAssemblyName").Value!, true);
+                    services.AddMonaiDeployMessageBrokerSubscriberService(hostContext.Configuration.GetSection("InformaticsGateway:messaging:subscriberServiceAssemblyName").Value!, true);
 
                     services.AddSingleton<ConfigurationValidator>();
                     services.AddSingleton<IObjectUploadQueue, ObjectUploadQueue>();

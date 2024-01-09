@@ -18,6 +18,7 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json.Nodes;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
@@ -25,8 +26,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 {
@@ -79,12 +78,12 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
             response.EnsureSuccessStatusCode();
 
             var json = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-            var jsonArray = JArray.Parse(json);
-            foreach (var item in jsonArray.Children())
+            var jsonArray = JsonNode.Parse(json);
+            foreach (var item in jsonArray.AsArray())
             {
                 if (typeof(T) == typeof(string))
                 {
-                    yield return (T)(object)item.ToString(Formatting.Indented);
+                    yield return (T)(object)item.ToString();
                 }
                 else if (typeof(T) == typeof(DicomDataset))
                 {

@@ -94,19 +94,19 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             try
             {
                 CheckConfiguration(configService);
-                logger.ConfigInformaticsGatewayApiEndpoint(configService.Configurations.InformaticsGatewayServerEndpoint);
-                logger.ConfigDicomScpPort(configService.Configurations.DicomListeningPort);
-                logger.ConfigContainerRunner(configService.Configurations.Runner);
-                logger.ConfigHostInfo(configService.Configurations.HostDatabaseStorageMount, configService.Configurations.HostDataStorageMount, configService.Configurations.HostLogsStorageMount);
+                logger?.ConfigInformaticsGatewayApiEndpoint(configService.Configurations.InformaticsGatewayServerEndpoint);
+                logger?.ConfigDicomScpPort(configService.Configurations.DicomListeningPort);
+                logger?.ConfigContainerRunner(configService.Configurations.Runner);
+                logger?.ConfigHostInfo(configService.Configurations.HostDatabaseStorageMount, configService.Configurations.HostDataStorageMount, configService.Configurations.HostLogsStorageMount);
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.CriticalException(ex.Message);
+                logger?.CriticalException(ex.Message);
                 return ExitCodes.Config_ErrorShowing;
             }
             return ExitCodes.Success;
@@ -126,16 +126,16 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             {
                 CheckConfiguration(config);
                 updater(config);
-                logger.ConfigurationUpdated();
+                logger?.ConfigurationUpdated();
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.CriticalException(ex.Message);
+                logger?.CriticalException(ex.Message);
                 return ExitCodes.Config_ErrorSaving;
             }
             return ExitCodes.Success;
@@ -153,7 +153,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
 
             if (!yes && configService.IsConfigExists && !confirmation.ShowConfirmationPrompt($"Existing application configuration file already exists. Do you want to overwrite it?"))
             {
-                logger.ActionCancelled();
+                logger?.ActionCancelled();
                 return ExitCodes.Stop_Cancelled;
             }
 
@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (Exception ex)
             {
-                logger.CriticalException(ex.Message);
+                logger?.CriticalException(ex.Message);
                 return ExitCodes.Config_ErrorInitializing;
             }
             return ExitCodes.Success;

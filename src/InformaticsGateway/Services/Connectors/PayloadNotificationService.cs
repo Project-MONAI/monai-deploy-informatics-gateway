@@ -321,6 +321,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             {
                 if (disposing)
                 {
+                    _cancellationTokenSource.Dispose();
                     _scope.Dispose();
                 }
 

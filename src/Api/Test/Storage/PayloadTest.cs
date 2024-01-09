@@ -30,10 +30,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new Messaging.Events.DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1);
             payload.Add(new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new Messaging.Events.DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "souce" }));
-            await Task.Delay(450).ConfigureAwait(false);
+            await Task.Delay(450).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.False(payload.HasTimedOut);
             payload.Add(new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file2", ".txt", new Messaging.Events.DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "souce" }));
-            await Task.Delay(450).ConfigureAwait(false);
+            await Task.Delay(450).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.False(payload.HasTimedOut);
             Assert.Equal("key", payload.Key);
         }
@@ -43,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         {
             var payload = new Payload("key", Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new Messaging.Events.DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 1);
             payload.Add(new TestStorageInfo(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), "file1", ".txt", new Messaging.Events.DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "souce" }));
-            await Task.Delay(1001).ConfigureAwait(false);
+            await Task.Delay(1001).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(payload.HasTimedOut);
         }
 

@@ -16,14 +16,12 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Rest
 {
     /// <summary>
     /// Inference request exception.
     /// </summary>
-    [Serializable]
     public class InferenceRequestException : Exception
     {
         public InferenceRequestException()
@@ -35,10 +33,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Rest
         }
 
         public InferenceRequestException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected InferenceRequestException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

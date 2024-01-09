@@ -16,11 +16,9 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    [Serializable]
     public class FileUploadException : Exception
     {
         public FileUploadException()
@@ -32,10 +30,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
         }
 
         public FileUploadException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected FileUploadException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

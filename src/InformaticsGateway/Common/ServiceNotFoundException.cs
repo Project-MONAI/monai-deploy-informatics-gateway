@@ -16,11 +16,9 @@
 
 using System;
 using System.Globalization;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    [Serializable]
     public class ServiceNotFoundException : Exception
     {
         private static readonly string MessageFormat = "Required service '{0}' cannot be found or cannot be initialized.";
@@ -36,10 +34,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
         }
 
         private ServiceNotFoundException()
-        {
-        }
-
-        protected ServiceNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

@@ -102,7 +102,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             }
 
             exportFlow.Complete();
-            await reportingActionBlock.Completion.ConfigureAwait(false);
+            await reportingActionBlock.Completion.ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
         }
     }

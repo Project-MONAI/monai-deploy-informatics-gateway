@@ -45,6 +45,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout);
 
         /// <summary>
+        /// Queue a new file for the specified payload bucket.
+        /// </summary>
+        /// <param name="bucket">The bucket group the file belongs to.</param>
+        /// <param name="file">Path to the file to be added to the payload bucket.</param>
+        /// <param name="dataOrigin">The service that triggered this queue request</param>
+        /// <param name="timeout">Number of seconds to wait for additional files.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout, CancellationToken cancellationToken);
+
+        /// <summary>
         /// Dequeue a payload from the queue for the message broker to notify subscribers.
         /// The default implementation blocks the call until a file is available from the queue.
         /// </summary>

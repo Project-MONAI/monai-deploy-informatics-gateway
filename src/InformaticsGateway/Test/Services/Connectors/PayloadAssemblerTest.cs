@@ -122,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [RetryFact(10, 200)]
-        public async Task GivenAPayloadThatHasNotCompleteUploads_WhenProcessedByTimedEvent_ExpectToBeRemovedFromQueue()
+        public async Task GivenAPayloadThatHasIncompleteUploads_WhenProcessedByTimedEvent_ExpectToBeRemovedFromQueue()
         {
             var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
 

@@ -54,7 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
         {
             get
             {
-                var driveInfo = _fileSystem.DriveInfo.FromDriveName(_localTemporaryStoragePath);
+                var driveInfo = _fileSystem.DriveInfo.New(_localTemporaryStoragePath);
                 return driveInfo.AvailableFreeSpace;
             }
         }
@@ -79,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private void Initialize()
         {
-            var driveInfo = _fileSystem.DriveInfo.FromDriveName(_localTemporaryStoragePath);
+            var driveInfo = _fileSystem.DriveInfo.New(_localTemporaryStoragePath);
             _reservedSpace = (long)(driveInfo.TotalSize * (1 - (_storageConfiguration.Watermark / 100.0)));
             _reservedSpace = Math.Max(_reservedSpace, _storageConfiguration.ReserveSpaceGB * OneGB);
             _logger.StorageInfoProviderStartup(_localTemporaryStoragePath, driveInfo.TotalSize, _reservedSpace);
@@ -87,7 +87,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
 
         private bool IsSpaceAvailable()
         {
-            var driveInfo = _fileSystem.DriveInfo.FromDriveName(_localTemporaryStoragePath);
+            var driveInfo = _fileSystem.DriveInfo.New(_localTemporaryStoragePath);
 
             var freeSpace = driveInfo.AvailableFreeSpace;
 

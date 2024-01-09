@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
     public class InputDataPlugInEngineFactoryTest
     {
         private readonly Mock<ILogger<InputDataPlugInEngineFactory>> _logger;
-        private readonly FileSystem _fileSystem;
+        private readonly IFileSystem _fileSystem;
         private readonly ITestOutputHelper _output;
 
         public InputDataPlugInEngineFactoryTest(ITestOutputHelper output)

@@ -32,10 +32,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// <summary>
         /// Handles the C-Store request.
         /// </summary>
-        /// <param name="request">Instance of <see cref="Dicom.Network.DicomCStoreRequest" />.</param>
+        /// <param name="request">Instance of <see cref="DicomCStoreRequest" />.</param>
         /// <param name="calledAeTitle">Called AE Title to be associated with the call.</param>
-        /// <param name="calledAeTitle">Calling AE Title to be associated with the call.</param>
+        /// <param name="callingAeTitle">Calling AE Title to be associated with the call.</param>
         /// <param name="associationId">Unique association ID.</param>
+        /// <param name="type">SCP input type.</param>
         Task<string> HandleCStoreRequest(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, ScpInputTypeEnum type = ScpInputTypeEnum.WorkflowTrigger);
 
         /// <summary>
@@ -55,6 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         /// Checks if source AE Title is configured.
         /// </summary>
         /// <param name="callingAe"></param>
+        /// <param name="host"></param>
         /// <returns></returns>
         Task<bool> IsValidSourceAsync(string callingAe, string host);
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 MONAI Consortium
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,9 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    [Serializable]
     public class ServiceException : Exception
     {
         public ServiceException(string message) : base(message)
@@ -31,10 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
         }
 
         public ServiceException()
-        {
-        }
-
-        protected ServiceException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

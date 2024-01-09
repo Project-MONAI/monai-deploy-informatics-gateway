@@ -15,11 +15,9 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    [Serializable]
     public class FileMoveException : Exception
     {
         public FileMoveException()
@@ -36,10 +34,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
 
         public FileMoveException(string source, string destination, Exception ex)
             : this($"Exception moving file from {source} to {destination}.", ex)
-        {
-        }
-
-        protected FileMoveException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

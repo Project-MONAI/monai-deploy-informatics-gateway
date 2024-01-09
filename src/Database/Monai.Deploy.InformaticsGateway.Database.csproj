@@ -13,19 +13,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <RootNamespace>Monai.Deploy.InformaticsGateway.Database</RootNamespace>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <CodeAnalysisRuleSet>..\.sonarlint\project-monai_monai-deploy-informatics-gatewaycsharp.ruleset</CodeAnalysisRuleSet>
     <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
     <Nullable>enable</Nullable>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\Configuration\Monai.Deploy.InformaticsGateway.Configuration.csproj" />
@@ -33,46 +30,36 @@
     <ProjectReference Include="EntityFramework\Monai.Deploy.InformaticsGateway.Database.EntityFramework.csproj" />
     <ProjectReference Include="MongoDB\Monai.Deploy.InformaticsGateway.Database.MongoDB.csproj" />
   </ItemGroup>
-  
   <ItemGroup>
     <Compile Remove="EntityFramework\**" />
     <EmbeddedResource Remove="EntityFramework\**" />
     <None Remove="EntityFramework\**" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="MongoDB\**" />
     <EmbeddedResource Remove="MongoDB\**" />
     <None Remove="MongoDB\**" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="Api\**" />
     <EmbeddedResource Remove="Api\**" />
     <None Remove="Api\**" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Remove="Test\**" />
     <EmbeddedResource Remove="Test\**" />
     <None Remove="Test\**" />
   </ItemGroup>
-
   <ItemGroup>
     <AdditionalFiles Include="..\.sonarlint\project-monai_monai-deploy-informatics-gateway\CSharp\SonarLint.xml" Link="SonarLint.xml" />
   </ItemGroup>
-
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
-    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="6.0.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.25">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="6.0.25" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+    <PackageReference Include="AspNetCore.HealthChecks.MongoDb" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="8.0.0" />
   </ItemGroup>
 </Project>
