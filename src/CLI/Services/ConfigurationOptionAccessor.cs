@@ -79,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         /// <summary>
         /// Gets the endpoint of the Informatics Gateway as Uri object.
         /// </summary>
-        Uri InformaticsGatewayServerUri { get; }
+        Uri? InformaticsGatewayServerUri { get; }
 
         /// <summary>
         /// Gets or set the type of container runner from appsettings.json.
@@ -92,6 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         string TempStoragePath { get; }
     }
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
     public class ConfigurationOptionAccessor : IConfigurationOptionAccessor
     {
         private static readonly Object SyncLock = new();
@@ -151,7 +152,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                return GetValueFromJsonPath<string>("Cli.DockerImagePrefix");
+                return GetValueFromJsonPath<string>("Cli.DockerImagePrefix") ?? string.Empty;
             }
         }
 
@@ -159,7 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                var path = GetValueFromJsonPath<string>("Cli.HostDatabaseStorageMount");
+                var path = GetValueFromJsonPath<string>("Cli.HostDatabaseStorageMount") ?? string.Empty;
                 if (path.StartsWith("~/"))
                 {
                     path = path.Replace("~/", $"{Common.HomeDir}/");
@@ -172,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                var path = GetValueFromJsonPath<string>("Cli.HostDataStorageMount");
+                var path = GetValueFromJsonPath<string>("Cli.HostDataStorageMount") ?? string.Empty;
                 if (path.StartsWith("~/"))
                 {
                     path = path.Replace("~/", $"{Common.HomeDir}/");
@@ -185,7 +186,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                var path = GetValueFromJsonPath<string>("Cli.HostPlugInsStorageMount");
+                var path = GetValueFromJsonPath<string>("Cli.HostPlugInsStorageMount") ?? string.Empty;
                 if (path.StartsWith("~/"))
                 {
                     path = path.Replace("~/", $"{Common.HomeDir}/");
@@ -198,7 +199,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                var path = GetValueFromJsonPath<string>("Cli.HostLogsStorageMount");
+                var path = GetValueFromJsonPath<string>("Cli.HostLogsStorageMount") ?? string.Empty;
                 if (path.StartsWith("~/"))
                 {
                     path = path.Replace("~/", $"{Common.HomeDir}/");
@@ -211,7 +212,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                return GetValueFromJsonPath<string>("Cli.InformaticsGatewayServerEndpoint");
+                return GetValueFromJsonPath<string>("Cli.InformaticsGatewayServerEndpoint") ?? string.Empty;
             }
             set
             {
@@ -226,15 +227,20 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                return InformaticsGatewayServerUri.Port;
+                return InformaticsGatewayServerUri?.Port ?? 0;
             }
         }
 
-        public Uri InformaticsGatewayServerUri
+        public Uri? InformaticsGatewayServerUri
         {
             get
             {
-                return new Uri(InformaticsGatewayServerEndpoint);
+                if (InformaticsGatewayServerEndpoint is not null)
+                {
+                    return new Uri(InformaticsGatewayServerEndpoint);
+                }
+
+                return null;
             }
         }
 
@@ -243,7 +249,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             get
             {
                 var runner = GetValueFromJsonPath<string>("Cli.Runner");
-                return (Runner)Enum.Parse(typeof(Runner), runner);
+                if (runner is not null)
+                {
+                    return (Runner)Enum.Parse(typeof(Runner), runner);
+                }
+                return Runner.Unknown;
             }
             set
             {
@@ -257,13 +267,18 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         {
             get
             {
-                return GetValueFromJsonPath<string>("InformaticsGateway.storage.localTemporaryStoragePath");
+                return GetValueFromJsonPath<string>("InformaticsGateway.storage.localTemporaryStoragePath") ?? string.Empty;
             }
         }
 
-        private T GetValueFromJsonPath<T>(string jsonPath)
+        private T? GetValueFromJsonPath<T>(string jsonPath)
         {
-            return ReadConfigurationFile().SelectToken(jsonPath).Value<T>();
+            var token = ReadConfigurationFile().SelectToken(jsonPath);
+
+            if (token is not null)
+                return token.Value<T>();
+
+            return default;
         }
 
         private JObject ReadConfigurationFile()
@@ -286,3 +301,4 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
         }
     }
 }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.

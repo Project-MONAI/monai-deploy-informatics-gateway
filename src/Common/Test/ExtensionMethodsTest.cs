@@ -90,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Common.Test
             });
 
             stopwatch.Start();
-            await actionBlock.Post(input, delay).ConfigureAwait(false);
+            await actionBlock.Post(input, delay).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
         }
     }
 }

@@ -15,11 +15,9 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
 {
-    [Serializable]
     public class ConvertStreamException : Exception
     {
         public ConvertStreamException()
@@ -31,10 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         }
 
         public ConvertStreamException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ConvertStreamException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

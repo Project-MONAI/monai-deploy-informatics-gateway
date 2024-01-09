@@ -30,7 +30,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common.Pagination
         {
             var filter = new PaginationFilter();
             var data = new List<string> { "orange", "apple", "donkey" };
-            var pagedResponse = new PagedResponse<List<string>>(data,0, 3);
+            var pagedResponse = new PagedResponse<List<string>>(data, 0, 3);
             var uriService = new UriService(new Uri("https://test.com"));
             pagedResponse.SetUp(filter, 9, uriService, "test");
 
@@ -38,7 +38,6 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common.Pagination
             Assert.Equal(pagedResponse.LastPage, "/test?pageNumber=3&pageSize=3");
             Assert.Equal(pagedResponse.NextPage, "/test?pageNumber=2&pageSize=3");
             Assert.Null(pagedResponse.PreviousPage);
-
         }
     }
 }

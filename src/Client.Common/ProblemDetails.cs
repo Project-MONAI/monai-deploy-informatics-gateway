@@ -15,11 +15,8 @@
  * limitations under the License.
  */
 
-using System;
-
 namespace Monai.Deploy.InformaticsGateway.Client.Common
 {
-    [Serializable]
     public class ProblemDetails
     {
         public string Title { get; set; }

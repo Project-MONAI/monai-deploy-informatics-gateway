@@ -18,7 +18,6 @@ using System;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 {
-    [Serializable]
     public class PayloadNotifyException : Exception
     {
         public FailureReason Reason { get; }

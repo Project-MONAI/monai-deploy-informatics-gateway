@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+#pragma warning disable IDE0005 // Using directive is unnecessary.
 using System;
+#pragma warning restore IDE0005 // Using directive is unnecessary.
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -31,7 +33,6 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
 #pragma warning disable CS8620 // Argument cannot be used for parameter due to differences in the nullability of reference types.
             Func<object, Type, bool> state = (v, t) => v.ToString().EndsWith(expectedMessage);
-
 
             logger.Verify(
                 x => x.Log(
@@ -126,7 +127,6 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
         {
             times ??= Times.Once();
 
-
             logger.Verify(
                 x => x.Log(
                     It.Is<LogLevel>(l => l == expectedLogLevel),
@@ -139,5 +139,6 @@ namespace Monai.Deploy.InformaticsGateway.SharedTest
             return logger;
         }
     }
+
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 }

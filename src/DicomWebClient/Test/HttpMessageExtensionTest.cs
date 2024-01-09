@@ -172,7 +172,7 @@ namespace Monai.Deploy.InformaticsGateway.DicomWebClient.Test
             AddByteArrayContent(multipartContent);
             message.Content = multipartContent;
 
-            var result = await message.ToBinaryData().ConfigureAwait(false);
+            var result = await message.ToBinaryData().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.Equal(_byteData, result);
         }

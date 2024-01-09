@@ -37,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Storage
             _configuration = Options.Create(new InformaticsGatewayConfiguration());
             _driveInfo = new Mock<IDriveInfo>();
 
-            _fileSystem.Setup(p => p.DriveInfo.FromDriveName(It.IsAny<string>()))
+            _fileSystem.Setup(p => p.DriveInfo.New(It.IsAny<string>()))
                     .Returns(_driveInfo.Object);
             _fileSystem.Setup(p => p.Directory.CreateDirectory(It.IsAny<string>()));
             _fileSystem.Setup(p => p.Path.GetFullPath(It.IsAny<string>())).Returns((string path) => System.IO.Path.GetFullPath(path));

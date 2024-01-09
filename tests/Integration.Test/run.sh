@@ -21,7 +21,7 @@ export SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" >/dev/null && pwd)"
 DOCKER_COMPOSE_DIR="$SCRIPT_DIR/../../docker-compose"
 TEST_DIR="$SCRIPT_DIR/"
 LOG_DIR="${GITHUB_WORKSPACE:-$SCRIPT_DIR}"
-BIN_DIR="$TEST_DIR/bin/Release/net6.0"
+BIN_DIR="$TEST_DIR/bin/Release/net8.0"
 FEATURE=
 export STUDYJSON="study.json"
 

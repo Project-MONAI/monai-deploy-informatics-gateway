@@ -105,11 +105,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                     NetworkManager.IPv4Any,
                     ScpPort,
                     logger: _scpServiceInternalLogger,
-                    userState: _associationDataProvider);
+                    userState: _associationDataProvider,
+                    configure: configure => configure.MaxClientsAllowed = _configuration.Value.Dicom.Scp.MaximumNumberOfAssociations);
 
                 Server.Options.IgnoreUnsupportedTransferSyntaxChange = true;
                 Server.Options.LogDimseDatasets = _configuration.Value.Dicom.Scp.LogDimseDatasets;
-                Server.Options.MaxClientsAllowed = _configuration.Value.Dicom.Scp.MaximumNumberOfAssociations;
 
                 if (Server.Exception != null)
                 {

@@ -69,8 +69,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             var collection = _databaseFixture.Database.GetCollection<ExternalAppDetails>(nameof(ExternalAppDetails));
 
-            var expected = (await collection.FindAsync(e => e.StudyInstanceUid == "2").ConfigureAwait(false)).First();
-            var actual = (await store.GetAsync("2", new CancellationToken()).ConfigureAwait(false)).FirstOrDefault();
+            var expected = (await collection.FindAsync(e => e.StudyInstanceUid == "2").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext)).First();
+            var actual = (await store.GetAsync("2", new CancellationToken()).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext)).FirstOrDefault();
 
             actual.Should().NotBeNull();
             Assert.Equal(expected.StudyInstanceUid, actual!.StudyInstanceUid);
@@ -85,10 +85,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var app = new ExternalAppDetails { StudyInstanceUid = "3", ExportTaskID = "ExportTaskID3", CorrelationId = "CorrelationId3", WorkflowInstanceId = "WorkflowInstanceId3" };
 
             var store = new ExternalAppDetailsRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(app, new CancellationToken()).ConfigureAwait(false);
+            await store.AddAsync(app, new CancellationToken()).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var collection = _databaseFixture.Database.GetCollection<ExternalAppDetails>(nameof(ExternalAppDetails));
-            var actual = await collection.Find(p => p.Id == app.Id).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.Id == app.Id).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(app.StudyInstanceUid, actual!.StudyInstanceUid);
@@ -106,8 +106,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             var collection = _databaseFixture.Database.GetCollection<ExternalAppDetails>(nameof(ExternalAppDetails));
 
-            var expected = (await collection.FindAsync(e => e.PatientIdOutBound == "pat1out1").ConfigureAwait(false)).First();
-            var actual = (await store.GetByPatientIdOutboundAsync("pat1out1", new CancellationToken()).ConfigureAwait(false));
+            var expected = (await collection.FindAsync(e => e.PatientIdOutBound == "pat1out1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext)).First();
+            var actual = (await store.GetByPatientIdOutboundAsync("pat1out1", new CancellationToken()).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             actual.Should().NotBeNull();
             Assert.Equal(expected.StudyInstanceUid, actual!.StudyInstanceUid);
@@ -123,8 +123,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             var collection = _databaseFixture.Database.GetCollection<ExternalAppDetails>(nameof(ExternalAppDetails));
 
-            var expected = (await collection.FindAsync(e => e.StudyInstanceUidOutBound == "sudIdOut2").ConfigureAwait(false)).First();
-            var actual = (await store.GetByStudyIdOutboundAsync("sudIdOut2", new CancellationToken()).ConfigureAwait(false));
+            var expected = (await collection.FindAsync(e => e.StudyInstanceUidOutBound == "sudIdOut2").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext)).First();
+            var actual = (await store.GetByStudyIdOutboundAsync("sudIdOut2", new CancellationToken()).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             actual.Should().NotBeNull();
             Assert.Equal(expected.StudyInstanceUid, actual!.StudyInstanceUid);

@@ -37,8 +37,8 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             serviceCollection.Setup(p => p.GetEnumerator()).Returns(serviceDescriptors.GetEnumerator());
 
             var registrar = new DatabaseRegistrar();
-            var configInMemory = new Dictionary<string, string> {
-                { "top:InformaticsGatewayDatabase","DataSource=file::memory:?cache=shared"},
+            var configInMemory = new List<KeyValuePair<string, string?>> {
+                new("top:InformaticsGatewayDatabase","DataSource=file::memory:?cache=shared"),
             };
 
             IConfiguration configuration = new ConfigurationBuilder().AddInMemoryCollection(configInMemory).Build();
@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
 
             Assert.Same(serviceCollection.Object, returnedServiceCollection);
 
-            serviceCollection.Verify(p => p.Add(It.IsAny<ServiceDescriptor>()), Times.Exactly(5));
+            serviceCollection.Verify(p => p.Add(It.IsAny<ServiceDescriptor>()), Times.Exactly(6));
             serviceCollection.Verify(p => p.Add(It.Is<ServiceDescriptor>(p => p.ServiceType == typeof(RemoteAppExecutionDbContext))), Times.Once());
             serviceCollection.Verify(p => p.Add(It.Is<ServiceDescriptor>(p => p.ServiceType == typeof(IDatabaseMigrationManagerForPlugIns) && p.ImplementationType == typeof(MigrationManager))), Times.Once());
             serviceCollection.Verify(p => p.Add(It.Is<ServiceDescriptor>(p => p.ServiceType == typeof(IRemoteAppExecutionRepository) && p.ImplementationType == typeof(RemoteAppExecutionRepository))), Times.Once());
@@ -70,8 +70,8 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test.Databa
             serviceCollection.Setup(p => p.GetEnumerator()).Returns(serviceDescriptors.GetEnumerator());
 
             var registrar = new DatabaseRegistrar();
-            var configInMemory = new Dictionary<string, string> {
-                { "top:InformaticsGatewayDatabase","DataSource=file::memory:?cache=shared"},
+            var configInMemory = new List<KeyValuePair<string, string?>> {
+                new("top:InformaticsGatewayDatabase","DataSource=file::memory:?cache=shared"),
             };
 
             var loggerMock = new Mock<ILogger>();

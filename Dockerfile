@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-focal as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy as build
 
 # Install the tools
 RUN dotnet tool install --tool-path /tools dotnet-trace
@@ -26,7 +26,7 @@ RUN echo "Building MONAI Deploy Informatics Gateway..."
 RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-focal
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy
 
 # Enable elastic client compatibility mode
 ENV ELASTIC_CLIENT_APIVERSIONING=true

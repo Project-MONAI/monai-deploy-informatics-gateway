@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
@@ -30,10 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
         }
 
         public ApplicationEntityNotFoundException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected ApplicationEntityNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

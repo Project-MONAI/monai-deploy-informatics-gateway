@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
@@ -30,10 +29,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
         }
 
         public Hl7SendException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected Hl7SendException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

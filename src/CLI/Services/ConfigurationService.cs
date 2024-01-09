@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             CreateConfigDirectoryIfNotExist();
 
             _logger.SaveAppSettings(resourceName, outputPath);
-            using (var fileStream = _fileSystem.FileStream.Create(outputPath, FileMode.Create))
+            using (var fileStream = _fileSystem.FileStream.New(outputPath, FileMode.Create))
             {
                 await stream.CopyToAsync(fileStream, cancellationToken).ConfigureAwait(false);
                 await fileStream.FlushAsync(cancellationToken).ConfigureAwait(false);

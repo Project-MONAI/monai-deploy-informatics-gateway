@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             s_hl7Sink = new Hl7DataClient(Configurations.Instance, s_options.Value, outputHelper);
             s_echoscu = new DicomCEchoDataClient(Configurations.Instance, s_options.Value, outputHelper);
             s_storescu = new DicomCStoreDataClient(Configurations.Instance, s_options.Value, outputHelper);
-            s_informaticsGatewayClient = new InformaticsGatewayClient(HttpClientFactory.Create(), scope.ServiceProvider.GetRequiredService<ILogger<InformaticsGatewayClient>>());
+            s_informaticsGatewayClient = new InformaticsGatewayClient(new HttpClient(), scope.ServiceProvider.GetRequiredService<ILogger<InformaticsGatewayClient>>());
             s_informaticsGatewayClient.ConfigureServiceUris(new Uri(Configurations.Instance.InformaticsGatewayOptions.ApiEndpoint));
             s_options.Value.Dicom.Scu.MaximumNumberOfAssociations = 1;
             s_options.Value.DicomWeb.MaximumNumberOfConnection = 1;

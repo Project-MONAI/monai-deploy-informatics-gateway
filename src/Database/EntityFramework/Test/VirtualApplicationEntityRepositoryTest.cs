@@ -71,8 +71,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             };
 
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(aet).ConfigureAwait(false);
-            var actual = await _databaseFixture.DatabaseContext.Set<VirtualApplicationEntity>().FirstOrDefaultAsync(p => p.Name.Equals(aet.Name)).ConfigureAwait(false);
+            await store.AddAsync(aet).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await _databaseFixture.DatabaseContext.Set<VirtualApplicationEntity>().FirstOrDefaultAsync(p => p.Name.Equals(aet.Name)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(aet.VirtualAeTitle, actual!.VirtualAeTitle);
@@ -86,13 +86,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var result = await store.ContainsAsync(p => p.VirtualAeTitle == "AET1").ConfigureAwait(false);
+            var result = await store.ContainsAsync(p => p.VirtualAeTitle == "AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.VirtualAeTitle.Equals("AET1", StringComparison.Ordinal)).ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.VirtualAeTitle.Equals("AET1", StringComparison.Ordinal)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Name != "AET2").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Name != "AET2").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Name == "AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.False(result);
         }
 
@@ -101,12 +101,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var actual = await store.FindByNameAsync("AET1").ConfigureAwait(false);
+            var actual = await store.FindByNameAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
             Assert.Equal("AET1", actual!.VirtualAeTitle);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByNameAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByNameAsync("AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(actual);
         }
 
@@ -115,12 +115,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var actual = await store.FindByAeTitleAsync("AET1").ConfigureAwait(false);
+            var actual = await store.FindByAeTitleAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
             Assert.Equal("AET1", actual!.VirtualAeTitle);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByAeTitleAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByAeTitleAsync("AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(actual);
         }
 
@@ -129,13 +129,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await store.FindByAeTitleAsync("AET5").ConfigureAwait(false);
+            var expected = await store.FindByAeTitleAsync("AET5").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
-            var actual = await store.RemoveAsync(expected!).ConfigureAwait(false);
+            var actual = await store.RemoveAsync(expected!).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Same(expected, actual);
 
-            var dbResult = await _databaseFixture.DatabaseContext.Set<VirtualApplicationEntity>().FirstOrDefaultAsync(p => p.Name == "AET5").ConfigureAwait(false);
+            var dbResult = await _databaseFixture.DatabaseContext.Set<VirtualApplicationEntity>().FirstOrDefaultAsync(p => p.Name == "AET5").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(dbResult);
         }
 
@@ -144,8 +144,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await _databaseFixture.DatabaseContext.Set<VirtualApplicationEntity>().ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var expected = await _databaseFixture.DatabaseContext.Set<VirtualApplicationEntity>().ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.Equal(expected, actual);
         }
@@ -155,15 +155,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new VirtualApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await store.FindByAeTitleAsync("AET3").ConfigureAwait(false);
+            var expected = await store.FindByAeTitleAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
             expected!.VirtualAeTitle = "AET100";
 
-            var actual = await store.UpdateAsync(expected).ConfigureAwait(false);
+            var actual = await store.UpdateAsync(expected).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(expected, actual);
 
-            var dbResult = await store.FindByAeTitleAsync("AET100").ConfigureAwait(false);
+            var dbResult = await store.FindByAeTitleAsync("AET100").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(dbResult);
             Assert.Equal(expected.VirtualAeTitle, dbResult!.VirtualAeTitle);
         }

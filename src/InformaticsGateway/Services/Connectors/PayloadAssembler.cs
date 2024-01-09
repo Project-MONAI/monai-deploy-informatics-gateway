@@ -44,6 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         private readonly ILogger<PayloadAssembler> _logger;
         private readonly IServiceScopeFactory _serviceScopeFactory;
 
+        private readonly CancellationTokenSource _tokenSource;
         private readonly ConcurrentDictionary<string, AsyncLazy<Payload>> _payloads;
         private readonly Task _intializedTask;
         private readonly BlockingCollection<Payload> _workItems;
@@ -56,7 +57,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
 
-            _workItems = new BlockingCollection<Payload>();
+            _workItems = [];
+            _tokenSource = new CancellationTokenSource();
             _payloads = new ConcurrentDictionary<string, AsyncLazy<Payload>>();
 
             _intializedTask = RemovePendingPayloads();
@@ -95,7 +97,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         /// <param name="file">Instance to be queued</param>
         /// <param name="dataOrigin">The service that triggered this queue request</param>
         /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
-        public async Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout)
+        public async Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout) => await Queue(bucket, file, dataOrigin, timeout, CancellationToken.None).ConfigureAwait(false);
+        /// <summary>
+        /// Queues a new instance of <see cref="FileStorageMetadata"/>.
+        /// </summary>
+        /// <param name="bucket">Name of the bucket where the file would be added to</param>
+        /// <param name="file">Instance to be queued</param>
+        /// <param name="dataOrigin">The service that triggered this queue request</param>
+        /// <param name="timeout">Number of seconds the bucket shall wait before sending the payload to be processed. Note: timeout cannot be modified once the bucket is created.</param>
+        /// <param name="cancellationToken">Cancellation token.</param>
+        public async Task<Guid> Queue(string bucket, FileStorageMetadata file, DataOrigin dataOrigin, uint timeout, CancellationToken cancellationToken)
         {
             Guard.Against.Null(file, nameof(file));
 
@@ -103,7 +114,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
             using var _ = _logger.BeginScope(new LoggingDataDictionary<string, object>() { { "CorrelationId", file.CorrelationId } });
 
-            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, file.WorkflowInstanceId, file.TaskId, dataOrigin, timeout, file.PayloadId).ConfigureAwait(false);
+            var payload = await CreateOrGetPayload(bucket, file.CorrelationId, file.WorkflowInstanceId, file.TaskId, dataOrigin, timeout, file.PayloadId, cancellationToken).ConfigureAwait(false);
             payload.Add(file);
             _logger.FileAddedToBucket(payload.Key, payload.Count, file.PayloadId ?? "null");
             return payload.PayloadId;
@@ -133,7 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 foreach (var key in _payloads.Keys)
                 {
-                    var payload = await _payloads[key].Task.ConfigureAwait(false);
+                    var payload = await _payloads[key].WithCancellation(_tokenSource.Token);
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
 
                     _logger.BucketElapsedTime(key, payload.Timeout, payload.ElapsedTime().TotalSeconds, payload.Files.Count, payload.FilesUploaded, payload.FilesFailedToUpload);
@@ -200,21 +211,25 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             }
         }
 
-        private async Task<Payload> CreateOrGetPayload(string key, string correlationId, string? workflowInstanceId, string? taskId, Messaging.Events.DataOrigin dataOrigin, uint timeout, string? destinationFolder = null)
+        private async Task<Payload> CreateOrGetPayload(string key, string correlationId, string? workflowInstanceId, string? taskId, Messaging.Events.DataOrigin dataOrigin, uint timeout, string? destinationFolder = null, CancellationToken cancellationToken = default)
         {
-            return await _payloads.GetOrAdd(key, x => new AsyncLazy<Payload>(async () =>
-            {
-                var scope = _serviceScopeFactory.CreateScope();
-                var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
-                var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout, null, destinationFolder);
-                await repository.AddAsync(newPayload).ConfigureAwait(false);
-                _logger.BucketCreated(key, timeout);
-                return newPayload;
-            }));
+            var payload = _payloads.GetOrAdd(key, x => new AsyncLazy<Payload>((cancellationToken) => PayloadFactory(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout, destinationFolder, cancellationToken)));
+            return await payload.WithCancellation(cancellationToken).ConfigureAwait(false);
+        }
+
+        private async Task<Payload> PayloadFactory(string key, string correlationId, string? workflowInstanceId, string? taskId, Messaging.Events.DataOrigin dataOrigin, uint timeout, string? destinationFolder, CancellationToken cancellationToken)
+        {
+            var scope = _serviceScopeFactory.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
+            var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout, null, destinationFolder);
+            await repository.AddAsync(newPayload, cancellationToken).ConfigureAwait(false);
+            _logger.BucketCreated(key, timeout);
+            return newPayload;
         }
 
         public void Dispose()
         {
+            _tokenSource.Cancel();
             _payloads.Clear();
             _timer.Stop();
         }

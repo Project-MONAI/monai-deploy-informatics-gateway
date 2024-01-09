@@ -79,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         /// Override the <c>ExportDataBlockCallback</c> method to customize export logic.
         /// Must update <c>State</c> to either <c>Succeeded</c> or <c>Failed</c>.
         /// </summary>
-        /// <param name="outputJob"></param>
+        /// <param name="exportRequestData"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         protected abstract Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken);

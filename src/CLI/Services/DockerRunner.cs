@@ -67,10 +67,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             return new RunnerState { IsRunning = true, Id = matches[0].ID };
         }
 
-        public async Task<ImageVersion> GetLatestApplicationVersion(CancellationToken cancellationToken = default)
+        public async Task<ImageVersion?> GetLatestApplicationVersion(CancellationToken cancellationToken = default)
             => await GetLatestApplicationVersion(_configurationService.Configurations.DockerImagePrefix, cancellationToken).ConfigureAwait(false);
 
-        public async Task<ImageVersion> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default)
+        public async Task<ImageVersion?> GetLatestApplicationVersion(string version, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(version, nameof(version));
 
@@ -78,10 +78,10 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             return results?.OrderByDescending(p => p.Created).FirstOrDefault();
         }
 
-        public async Task<IList<ImageVersion>> GetApplicationVersions(CancellationToken cancellationToken = default)
+        public async Task<IList<ImageVersion>?> GetApplicationVersions(CancellationToken cancellationToken = default)
             => await GetApplicationVersions(_configurationService.Configurations.DockerImagePrefix, cancellationToken).ConfigureAwait(false);
 
-        public async Task<IList<ImageVersion>> GetApplicationVersions(string version, CancellationToken cancellationToken = default)
+        public async Task<IList<ImageVersion>?> GetApplicationVersions(string version, CancellationToken cancellationToken = default)
         {
             Guard.Against.NullOrWhiteSpace(version, nameof(version));
 
@@ -98,7 +98,11 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
             };
             _logger.RetrievingImagesFromDocker();
             var images = await _dockerClient.Images.ListImagesAsync(parameters, cancellationToken).ConfigureAwait(false);
-            return images?.Select(p => new ImageVersion { Version = p.RepoTags[0], Id = p.ID, Created = p.Created }).ToList();
+            if (images is null)
+            {
+                return null;
+            }
+            return images.Select(p => new ImageVersion { Version = p.RepoTags[0], Id = p.ID, Created = p.Created }).ToList();
         }
 
         public async Task<bool> StartApplication(ImageVersion imageVersion, CancellationToken cancellationToken = default)

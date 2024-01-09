@@ -71,10 +71,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             payload.State = Payload.PayloadState.Move;
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(payload).ConfigureAwait(false);
+            await store.AddAsync(payload).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var collection = _databaseFixture.Database.GetCollection<Payload>(nameof(Payload));
-            var actual = await collection.Find(p => p.PayloadId == payload.PayloadId).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.PayloadId == payload.PayloadId).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(payload.Key, actual!.Key);
@@ -104,13 +104,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             payload.State = Payload.PayloadState.Move;
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            var added = await store.AddAsync(payload).ConfigureAwait(false);
+            var added = await store.AddAsync(payload).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var removed = await store.RemoveAsync(added!).ConfigureAwait(false);
+            var removed = await store.RemoveAsync(added!).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Same(removed, added);
 
             var collection = _databaseFixture.Database.GetCollection<Payload>(nameof(Payload));
-            var dbResult = await collection.Find(p => p.PayloadId == payload.PayloadId).FirstOrDefaultAsync().ConfigureAwait(false);
+            var dbResult = await collection.Find(p => p.PayloadId == payload.PayloadId).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(dbResult);
         }
 
@@ -120,8 +120,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
             var collection = _databaseFixture.Database.GetCollection<Payload>(nameof(Payload));
-            var expected = await collection.Find(Builders<Payload>.Filter.Empty).ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var expected = await collection.Find(Builders<Payload>.Filter.Empty).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated).Excluding(p => p.Elapsed).Excluding(p => p.HasTimedOut));
         }
@@ -133,15 +133,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "source", "dest"));
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            var added = await store.AddAsync(payload).ConfigureAwait(false);
+            var added = await store.AddAsync(payload).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             added.State = Payload.PayloadState.Notify;
             added.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.ACR, "calling", "called"));
-            var updated = await store.UpdateAsync(payload).ConfigureAwait(false);
+            var updated = await store.UpdateAsync(payload).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(updated);
 
             var collection = _databaseFixture.Database.GetCollection<Payload>(nameof(Payload));
-            var actual = await collection.Find(p => p.PayloadId == payload.PayloadId).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.PayloadId == payload.PayloadId).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(updated.Key, actual!.Key);
@@ -176,16 +176,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            _ = await store.AddAsync(payload1).ConfigureAwait(false);
-            _ = await store.AddAsync(payload2).ConfigureAwait(false);
-            _ = await store.AddAsync(payload3).ConfigureAwait(false);
-            _ = await store.AddAsync(payload4).ConfigureAwait(false);
-            _ = await store.AddAsync(payload5).ConfigureAwait(false);
+            _ = await store.AddAsync(payload1).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload2).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload3).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload4).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload5).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var result = await store.RemovePendingPayloadsAsync().ConfigureAwait(false);
+            var result = await store.RemovePendingPayloadsAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(2, result);
 
-            var actual = await collection.Find(Builders<Payload>.Filter.Empty).ToListAsync().ConfigureAwait(false);
+            var actual = await collection.Find(Builders<Payload>.Filter.Empty).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(3, actual.Count);
 
             foreach (var payload in actual)
@@ -207,22 +207,22 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            _ = await store.AddAsync(payload1).ConfigureAwait(false);
-            _ = await store.AddAsync(payload2).ConfigureAwait(false);
-            _ = await store.AddAsync(payload3).ConfigureAwait(false);
-            _ = await store.AddAsync(payload4).ConfigureAwait(false);
-            _ = await store.AddAsync(payload5).ConfigureAwait(false);
+            _ = await store.AddAsync(payload1).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload2).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload3).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload4).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload5).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Move).ConfigureAwait(false);
+            var result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Move).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Single(result);
 
-            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Created).ConfigureAwait(false);
+            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Created).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(2, result.Count);
 
-            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Notify).ConfigureAwait(false);
+            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Notify).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(2, result.Count);
 
-            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Notify, Payload.PayloadState.Created).ConfigureAwait(false);
+            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Notify, Payload.PayloadState.Created).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(4, result.Count);
         }
     }

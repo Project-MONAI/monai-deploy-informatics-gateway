@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             var expected = _databaseFixture.DatabaseContext.Set<ExternalAppDetails>()
                 .Where(t => t.StudyInstanceUid == "1");
-            var actual = await store.GetAsync("1").ConfigureAwait(false);
+            var actual = await store.GetAsync("1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(expected, actual);
@@ -84,7 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var expected = _databaseFixture.DatabaseContext.Set<ExternalAppDetails>()
                 .Where(t => t.PatientIdOutBound == "2")
                 .Take(1).First();
-            var actual = await store.GetByPatientIdOutboundAsync("2", new CancellationToken()).ConfigureAwait(false);
+            var actual = await store.GetByPatientIdOutboundAsync("2", new CancellationToken()).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(expected, actual);
@@ -103,8 +103,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             };
 
             var store = new ExternalAppDetailsRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(association).ConfigureAwait(false);
-            var actual = await _databaseFixture.DatabaseContext.Set<ExternalAppDetails>().FirstOrDefaultAsync(p => p.StudyInstanceUid.Equals(association.StudyInstanceUid)).ConfigureAwait(false);
+            await store.AddAsync(association).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await _databaseFixture.DatabaseContext.Set<ExternalAppDetails>().FirstOrDefaultAsync(p => p.StudyInstanceUid.Equals(association.StudyInstanceUid)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(association.DateTimeCreated, actual!.DateTimeCreated);

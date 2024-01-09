@@ -16,11 +16,9 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-
     public class DestinationNotSuppliedException : Exception
     {
         public DestinationNotSuppliedException()
@@ -34,10 +32,5 @@ namespace Monai.Deploy.InformaticsGateway.Common
         public DestinationNotSuppliedException(string message, Exception innerException) : base(message, innerException)
         {
         }
-
-        protected DestinationNotSuppliedException(SerializationInfo info, StreamingContext context) : base(info, context)
-        {
-        }
-
     }
 }

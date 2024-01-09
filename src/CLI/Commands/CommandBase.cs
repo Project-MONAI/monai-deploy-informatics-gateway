@@ -31,7 +31,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
         {
         }
 
-        protected static ILogger CreateLogger<T>(IHost host)
+        protected static ILogger? CreateLogger<T>(IHost host)
         {
             Guard.Against.Null(host, nameof(host));
 

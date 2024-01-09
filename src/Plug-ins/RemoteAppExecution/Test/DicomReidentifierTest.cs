@@ -82,7 +82,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
 
             _repository.Setup(p => p.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(default(RemoteAppExecution));
 
-            _ = await app.ExecuteAsync(dicom, metadata).ConfigureAwait(false);
+            _ = await app.ExecuteAsync(dicom, metadata).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             _repository.Verify(p => p.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
 
@@ -116,7 +116,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
 
             _repository.Setup(p => p.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(record);
 
-            _ = await app.ExecuteAsync(dicom, metadata).ConfigureAwait(false);
+            _ = await app.ExecuteAsync(dicom, metadata).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             _repository.Verify(p => p.GetAsync(It.IsAny<string>(), It.IsAny<CancellationToken>()), Times.Once());
 
