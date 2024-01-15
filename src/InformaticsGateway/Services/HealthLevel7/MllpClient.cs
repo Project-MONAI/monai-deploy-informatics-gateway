@@ -231,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                 var text = data.Substring(messageStartIndex, endIndex - messageStartIndex);
                 _logger.Hl7GenerateMessage(text.Length, text);
                 message = new Message(text);
-                message.ParseMessage(true);
+                message.ParseMessage(false);
                 data = data.Length > endIndex ? data.Substring(messageEndIndex) : string.Empty;
                 return true;
             }
