@@ -120,7 +120,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
         {
             foreach (var item in config)
             {
-                if (item.SendingId.Value == message.GetValue(item.SendingId.Key))
+                var sendingId = message.GetValue(item.SendingId.Key);
+                if (item.SendingId.Value == sendingId)
                 {
                     _logger.Hl7FoundMatchingConfig(sendingId, JsonSerializer.Serialize(item));
                     return item;

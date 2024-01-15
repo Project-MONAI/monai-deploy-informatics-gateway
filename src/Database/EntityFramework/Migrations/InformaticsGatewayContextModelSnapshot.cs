@@ -83,6 +83,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                     b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
+                    b.Property<DateTime>("LastModified")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("PlugInAssemblies")
                         .IsRequired()
                         .HasColumnType("TEXT");
