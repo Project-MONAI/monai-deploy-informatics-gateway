@@ -63,11 +63,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories
         {
             return _retryPolicy.ExecuteAsync(async () =>
             {
-                var entity = await GetByIdAsync(id).ConfigureAwait(false);
-                if (entity is null)
-                {
-                    throw new DatabaseException("Failed to delete entity.");
-                }
+                var entity = await GetByIdAsync(id).ConfigureAwait(false) ?? throw new DatabaseException("Failed to delete entity.");
                 var result = _dataset.Remove(entity);
                 await _informaticsGatewayContext.SaveChangesAsync(cancellationToken).ConfigureAwait(false);
                 return result.Entity;

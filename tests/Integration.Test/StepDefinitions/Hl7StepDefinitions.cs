@@ -219,7 +219,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         private async Task SendAcknowledgment(NetworkStream networkStream, HL7.Dotnetcore.Message message, CancellationToken cancellationToken)
         {
             if (message == null) { return; }
-            var ackMessage = message.GetACK();
+            var ackMessage = message.GetACK(true);
             var ackData = new ReadOnlyMemory<byte>(ackMessage.GetMLLP());
             {
                 try

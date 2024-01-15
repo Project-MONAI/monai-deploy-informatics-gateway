@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
-
 using System.Threading.Tasks;
 using HL7.Dotnetcore;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
 {
-    internal interface IMllpExtract
+    /// <summary>
+    /// <c>IInputDataPlugIn</c> enables lightweight data processing over incoming data received from supported data ingestion
+    /// services.
+    /// Refer to <see cref="IInputHL7DataPlugInEngine" /> for additional details.
+    /// </summary>
+    public interface IInputHL7DataPlugIn
     {
-        Task<Message> ExtractInfo(Hl7FileStorageMetadata meta, Message message);
+        string Name { get; }
+
+        Task<(Message hl7Message, FileStorageMetadata fileMetadata)> ExecuteAsync(Message hl7File, FileStorageMetadata fileMetadata);
     }
+
 }

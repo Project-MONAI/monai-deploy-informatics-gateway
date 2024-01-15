@@ -138,7 +138,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             await Task.Delay(250).ConfigureAwait(false);
 #pragma warning restore CA2016 // Forward the 'CancellationToken' parameter to methods
             _cancellationTokenSource.Dispose();
-            return;
         }
 
         private void SetupPolling()
@@ -147,7 +146,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             _logger.ExportEventSubscription(ServiceName, RoutingKey);
         }
 
-        protected async Task OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
+        protected virtual async Task OnMessageReceivedCallback(MessageReceivedEventArgs eventArgs)
         {
             using var loggerScope = _logger.BeginScope(new Messaging.Common.LoggingDataDictionary<string, object> {
                 { "ThreadId", Environment.CurrentManagedThreadId },

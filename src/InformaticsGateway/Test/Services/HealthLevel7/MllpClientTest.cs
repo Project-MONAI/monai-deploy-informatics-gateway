@@ -22,6 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Api.Mllp;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
@@ -32,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 {
     public class MllpClientTest
     {
-        private const string SampleMessage = "MSH|^~\\&|MD|MD HOSPITAL|MD Test|MONAI Deploy|202207130000|SECURITY|MD^A01^ADT_A01|MSG00001|P|2.8|||<ACK>|\r\n";
+        private const string SampleMessage = "MSH|^~\\&|MD|MD HOSPITAL|MD Test|MONAI Deploy|202207130000|SECURITY|MD^A01^ADT_A01|MSG00001|P|2.8|||<ACK>|\r";
 
         private readonly Mock<ITcpClientAdapter> _tcpClient;
         private readonly Hl7Configuration _config;

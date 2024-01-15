@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
             var matchingTypes = new List<Type>();
             foreach (var assembly in assemblies)
             {
-                var types = assembly.ExportedTypes.Where(p => p.IsAssignableFrom(typeof(IDatabaseMigrationManager)));
+                var types = assembly.ExportedTypes.Where(p => p.IsAssignableFrom(typeof(IDatabaseMigrationManager)) && p.Name != nameof(IDatabaseMigrationManager));
                 if (types.Any())
                 {
                     matchingTypes.AddRange(types);

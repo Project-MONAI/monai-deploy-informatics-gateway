@@ -17,10 +17,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
-using FellowOakDicom;
+using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -28,13 +28,13 @@ using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
-    internal class InputDataPlugInEngine : IInputDataPlugInEngine
+    public class InputHL7DataPlugInEngine : IInputHL7DataPlugInEngine
     {
         private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<InputDataPlugInEngine> _logger;
-        private IReadOnlyList<IInputDataPlugIn>? _plugins;
+        private readonly ILogger<InputHL7DataPlugInEngine> _logger;
+        private IReadOnlyList<IInputHL7DataPlugIn>? _plugsins;
 
-        public InputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputDataPlugInEngine> logger)
+        public InputHL7DataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputHL7DataPlugInEngine> logger)
         {
             _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -42,37 +42,40 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
         public void Configure(IReadOnlyList<string> pluginAssemblies)
         {
-            _plugins = LoadPlugIns(_serviceProvider, pluginAssemblies);
+            _plugsins = LoadPlugIns(_serviceProvider, pluginAssemblies);
         }
 
-        public async Task<Tuple<DicomFile, FileStorageMetadata>> ExecutePlugInsAsync(DicomFile dicomFile, FileStorageMetadata fileMetadata)
+        public async Task<Tuple<Message, FileStorageMetadata>> ExecutePlugInsAsync(Message hl7File, FileStorageMetadata fileMetadata, Hl7ApplicationConfigEntity? configItem)
         {
-            if (_plugins == null)
+            if (configItem?.PlugInAssemblies is not null && configItem.PlugInAssemblies.Any())
             {
-                throw new PlugInInitializationException("InputDataPlugInEngine not configured, please call Configure() first.");
+                if (_plugsins == null)
+                {
+                    throw new PlugInInitializationException("InputHL7DataPlugInEngine not configured, please call Configure() first.");
+                }
+
+                foreach (var plugin in _plugsins)
+                {
+                    if (configItem is not null && configItem.PlugInAssemblies.Exists(a => a.StartsWith(plugin.ToString()!)))
+                    {
+                        _logger.ExecutingInputDataPlugIn(plugin.Name);
+                        (hl7File, fileMetadata) = await plugin.ExecuteAsync(hl7File, fileMetadata).ConfigureAwait(false);
+                    }
+                }
             }
-
-            foreach (var plugin in _plugins)
-            {
-                _logger.ExecutingInputDataPlugIn(plugin.Name);
-                (dicomFile, fileMetadata) = await plugin.ExecuteAsync(dicomFile, fileMetadata).ConfigureAwait(false);
-
-                _logger.InputDataPlugInEngineexecuted(plugin.Name, JsonSerializer.Serialize(fileMetadata));
-            }
-
-            return new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata);
+            return new Tuple<Message, FileStorageMetadata>(hl7File, fileMetadata);
         }
 
-        private IReadOnlyList<IInputDataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
+        private IReadOnlyList<IInputHL7DataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
         {
             var exceptions = new List<Exception>();
-            var list = new List<IInputDataPlugIn>();
+            var list = new List<IInputHL7DataPlugIn>();
             foreach (var plugin in pluginAssemblies)
             {
                 try
                 {
                     _logger.AddingInputDataPlugIn(plugin);
-                    list.Add(typeof(IInputDataPlugIn).CreateInstance<IInputDataPlugIn>(serviceProvider, typeString: plugin));
+                    list.Add(typeof(IInputHL7DataPlugIn).CreateInstance<IInputHL7DataPlugIn>(serviceProvider, typeString: plugin));
                 }
                 catch (Exception ex)
                 {

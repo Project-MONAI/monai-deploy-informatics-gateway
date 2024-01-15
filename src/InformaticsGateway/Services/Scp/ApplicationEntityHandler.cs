@@ -112,7 +112,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
                 _logger.InstanceIgnoredWIthMatchingSopClassUid(request.SOPClassUID.UID);
                 return string.Empty;
             }
-            ExternalAppDetails? storedDetails = null;
+            ExternalAppDetails? storedDetails;
 
 
 

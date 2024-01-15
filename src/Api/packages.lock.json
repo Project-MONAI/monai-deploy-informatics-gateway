@@ -21,6 +21,12 @@
           "System.Threading.Channels": "6.0.0"
         }
       },
+      "HL7-dotnetcore": {
+        "type": "Direct",
+        "requested": "[2.36.0, )",
+        "resolved": "2.36.0",
+        "contentHash": "N1HLMeIqYuY+4O69ItgZJoDBnnpNkK5N2pClceTJ2nFJxsP48iCsA4iz3tm43Yszi4r/vaThoc3UoLBfGP3vKw=="
+      },
       "Macross.Json.Extensions": {
         "type": "Direct",
         "requested": "[3.0.0, )",

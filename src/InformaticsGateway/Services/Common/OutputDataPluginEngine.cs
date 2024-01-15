@@ -61,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 (dicomFile, exportRequestDataMessage) = await plugin.ExecuteAsync(dicomFile, exportRequestDataMessage).ConfigureAwait(false);
             }
             using var ms = new MemoryStream();
-            await dicomFile.SaveAsync(ms);
+            await dicomFile.SaveAsync(ms).ConfigureAwait(false);
             exportRequestDataMessage.SetData(ms.ToArray());
 
             return exportRequestDataMessage;

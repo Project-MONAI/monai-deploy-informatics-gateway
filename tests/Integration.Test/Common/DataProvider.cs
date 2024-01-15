@@ -311,7 +311,8 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
                 var message = new HL7.Dotnetcore.Message(text);
                 message.ParseMessage();
                 message.SetValue("MSH.10", file);
-                HL7Specs.Files[file] = message;
+                HL7Specs.Files[file] = new HL7.Dotnetcore.Message(message.SerializeMessage(false));
+                HL7Specs.Files[file].ParseMessage();
             }
         }
     }

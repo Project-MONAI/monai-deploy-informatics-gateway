@@ -53,6 +53,7 @@
   
   <ItemGroup>
     <PackageReference Include="fo-dicom" Version="5.1.1" />
+    <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="6.0.25" />
     <PackageReference Include="Monai.Deploy.Messaging" Version="1.0.5" />

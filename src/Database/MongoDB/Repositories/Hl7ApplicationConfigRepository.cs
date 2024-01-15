@@ -49,7 +49,10 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
             _scope = serviceScopeFactory.CreateScope();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
                 options.Value.Retries.RetryDelays,
-                (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
+                (exception, timespan, count, context) =>
+                {
+                    _logger.DatabaseErrorRetry(timespan, count, exception);
+                });
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
             var mongoDatabase = mongoDbClient.GetDatabase(options.Value.DatabaseName);

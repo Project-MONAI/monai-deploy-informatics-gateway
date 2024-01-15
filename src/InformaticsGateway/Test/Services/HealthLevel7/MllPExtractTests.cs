@@ -16,7 +16,6 @@
  */
 
 
-using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using System.Threading;
 using Moq;
 using Xunit;
@@ -26,6 +25,7 @@ using Monai.Deploy.InformaticsGateway.Api;
 using System.Collections.Generic;
 using HL7.Dotnetcore;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
+using Monai.Deploy.InformaticsGateway.Api.Mllp;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using System.Threading.Tasks;
 using Monai.Deploy.InformaticsGateway.Api.Models;
@@ -75,13 +75,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var message = new Message(SampleMessage);
             var isParsed = message.ParseMessage();
 
-            var config = MllpExtract.GetConfig(configs, message);
+            var config = _sut.GetConfig(configs, message);
             Assert.Equal(correctid, config?.Id);
 
             message = new Message(ABCDEMessage);
             isParsed = message.ParseMessage();
 
-            config = MllpExtract.GetConfig(configs, message);
+            config = _sut.GetConfig(configs, message);
             Assert.Equal(azCorrectid, config?.Id);
         }
 
@@ -117,7 +117,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
             var meatData = new Hl7FileStorageMetadata { Id = "metaId", File = new StorageObjectMetadata("txt") };
 
-            await _sut.ExtractInfo(meatData, message);
+            var configItem = await _sut.GetConfigItem(message);
+            await _sut.ExtractInfo(meatData, message, configItem);
 
             Assert.Equal("WorkflowInstanceId2", meatData.WorkflowInstanceId);
             Assert.Equal("ExportTaskID2", meatData.TaskId);
@@ -166,8 +167,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
             var meatData = new Hl7FileStorageMetadata { Id = "metaId", File = new StorageObjectMetadata("txt") };
 
-
-            message = await _sut.ExtractInfo(meatData, message);
+            var configItem = await _sut.GetConfigItem(message);
+            message = await _sut.ExtractInfo(meatData, message, configItem);
 
             Assert.Equal("PatentID", message.GetValue("OBR.3"));
             Assert.Equal("PatentID", message.GetValue("PID.2"));
@@ -190,13 +191,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var message = new Message(VendorMessage);
             var isParsed = message.ParseMessage();
 
-            var config = MllpExtract.GetConfig(configs, message);
+            var config = _sut.GetConfig(configs, message);
             Assert.Equal(correctid, config?.Id);
 
             message = new Message(ABCDEMessage);
             isParsed = message.ParseMessage();
 
-            config = MllpExtract.GetConfig(configs, message);
+            config = _sut.GetConfig(configs, message);
             Assert.Equal(azCorrectid, config?.Id);
         }
     }

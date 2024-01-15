@@ -18,6 +18,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -134,6 +135,21 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 foreach (var key in _payloads.Keys)
                 {
                     var payload = await _payloads[key].Task.ConfigureAwait(false);
+
+
+
+
+
+
+                    _logger.LogTrace($"Payload = correlationId {payload.CorrelationId} obj: {JsonSerializer.Serialize(payload)}");
+
+
+
+
+
+
+
+
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
 
                     _logger.BucketElapsedTime(key, payload.Timeout, payload.ElapsedTime().TotalSeconds, payload.Files.Count, payload.FilesUploaded, payload.FilesFailedToUpload);
@@ -204,10 +220,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             return await _payloads.GetOrAdd(key, x => new AsyncLazy<Payload>(async () =>
             {
+
+
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
                 var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout, null, destinationFolder);
                 await repository.AddAsync(newPayload).ConfigureAwait(false);
+
+                _logger.LogTrace($"CreateOrGetPayload = correlationId {correlationId} obj: {JsonSerializer.Serialize(newPayload)}");
+
+
                 _logger.BucketCreated(key, timeout);
                 return newPayload;
             }));

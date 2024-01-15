@@ -51,14 +51,14 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 809, Level = LogLevel.Debug, Message = "Acknowledgment type={value}.")]
         public static partial void AcknowledgmentType(this ILogger logger, string value);
 
-        [LoggerMessage(EventId = 810, Level = LogLevel.Information, Message = "Acknowledgment sent: length={length}.")]
-        public static partial void AcknowledgmentSent(this ILogger logger, int length);
+        [LoggerMessage(EventId = 810, Level = LogLevel.Information, Message = "Acknowledgment sent message:{message} length:{length}.")]
+        public static partial void AcknowledgmentSent(this ILogger logger, string message, int length);
 
         [LoggerMessage(EventId = 811, Level = LogLevel.Debug, Message = "HL7  bytes received: {length}.")]
         public static partial void Hl7MessageBytesRead(this ILogger logger, int length);
 
-        [LoggerMessage(EventId = 812, Level = LogLevel.Debug, Message = "Parsing message with {length} bytes.")]
-        public static partial void Hl7GenerateMessage(this ILogger logger, int length);
+        [LoggerMessage(EventId = 812, Level = LogLevel.Debug, Message = "Parsing message with {length} bytes. {message}")]
+        public static partial void Hl7GenerateMessage(this ILogger logger, int length, string message);
 
         [LoggerMessage(EventId = 813, Level = LogLevel.Debug, Message = "Waiting for HL7 message.")]
         public static partial void HL7ReadingMessage(this ILogger logger);
@@ -101,5 +101,18 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 826, Level = LogLevel.Debug, Message = "HL7 meassage sent received {ack}")]
         public static partial void Hl7MessageSent(this ILogger logger, string ack);
+
+        [LoggerMessage(EventId = 827, Level = LogLevel.Warning, Message = "HL7 plugin loading exceptions")]
+        public static partial void HL7PluginLoadingExceptions(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 828, Level = LogLevel.Information, Message = "HL7 message recieved. {message}")]
+        public static partial void Hl7MessageReceieved(this ILogger logger, string message);
+
+        [LoggerMessage(EventId = 829, Level = LogLevel.Trace, Message = "HL7 config Not matching message Id {senderId}  configId {configID}")]
+        public static partial void Hl7NotMatchingConfig(this ILogger logger, string senderId, string configID);
+
+        [LoggerMessage(EventId = 830, Level = LogLevel.Error, Message = "Error generating HL7 acknowledgment. for message {message}")]
+        public static partial void ErrorGeneratingHl7Acknowledgment(this ILogger logger, Exception ex, string message);
+
     }
 }
