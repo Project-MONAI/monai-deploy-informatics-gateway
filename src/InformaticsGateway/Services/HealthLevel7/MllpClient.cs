@@ -159,10 +159,23 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 
             if (ShouldSendAcknowledgment(message))
             {
-                var ackMessage = message.GetACK(true);
+                Message ackMessage = message;
+                try
+                {
+                    ackMessage = message.GetACK(false);
+                }
+                catch (Exception ex)
+                {
+                    _logger.ErrorGeneratingHl7Acknowledgment(ex, message.HL7Message);
+                    _exceptions.Add(ex);
+                    return;
+                }
+
                 if (ackMessage is null)
                 {
-                    _logger.ErrorGeneratingHl7Acknowledgment(new Exception(), message.HL7Message);
+                    var ex = new Exception("Error generating HL7 acknowledgment.");
+                    _logger.ErrorGeneratingHl7Acknowledgment(ex, message.HL7Message);
+                    _exceptions.Add(ex);
                     return;
                 }
                 var ackData = new ReadOnlyMemory<byte>(ackMessage.GetMLLP());
