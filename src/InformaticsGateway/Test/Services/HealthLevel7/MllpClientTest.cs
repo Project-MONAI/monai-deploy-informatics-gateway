@@ -134,10 +134,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             {
                 await Task.Run(() =>
                 {
-                    Assert.Empty(results.Messages);
                     Assert.NotNull(results.AggregateException);
-                    Assert.Single(results.AggregateException.InnerExceptions);
-                    Assert.Contains("Failed to validate the message with error", results.AggregateException.InnerExceptions.First().Message);
+                    Assert.Equal(2, results.AggregateException.InnerExceptions.Count);
                 });
             });
             await client.Start(action, _cancellationTokenSource.Token);

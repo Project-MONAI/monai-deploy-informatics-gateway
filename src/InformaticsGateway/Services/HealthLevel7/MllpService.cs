@@ -284,7 +284,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             catch (Exception ex)
             {
                 _logger.Hl7SendException(ex);
-                throw new Hl7SendException("Send exception");
+                throw new Hl7SendException($"Send exception: {ex.Message}");
             }
         }
 
@@ -340,7 +340,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             foreach (var message in _rawHl7Messages)
             {
                 var hl7Message = new Message(message);
-                hl7Message.ParseMessage(true);
+                hl7Message.ParseMessage(false);
                 if (hl7Message.MessageStructure == "ACK")
                 {
                     return;
