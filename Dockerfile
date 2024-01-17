@@ -35,8 +35,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
+ && apt install -y libc-dev \                                   # this is a workaround for Mongo encryption library
     curl \
     && rm -rf /var/lib/apt/lists
+
+RUN ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /app/libdl.so    # part 2 of workaround for Mongo encryption library
 
 WORKDIR /opt/monai/ig
 
