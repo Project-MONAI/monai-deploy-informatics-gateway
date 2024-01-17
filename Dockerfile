@@ -40,6 +40,8 @@ RUN rm -rf /var/lib/apt/lists
 
 
 
+RUN ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /app/libdl.so    # part 2 of workaround for Mongo encryption library
+
 WORKDIR /opt/monai/ig
 
 COPY --from=build /app/out .
