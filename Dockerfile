@@ -34,9 +34,11 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get clean \
  && apt-get update \
- && apt-get install -y --no-install-recommends \
-    curl \
-    && rm -rf /var/lib/apt/lists
+ && apt-get install -y --no-install-recommends curl \
+ && apt-get install -y libc-dev                                                  # this is a workaround for Mongo encryption library
+RUN rm -rf /var/lib/apt/lists
+
+
 
 WORKDIR /opt/monai/ig
 
@@ -44,6 +46,8 @@ COPY --from=build /app/out .
 COPY --from=build /tools /opt/dotnetcore-tools
 COPY LICENSE ./
 COPY docs/compliance/third-party-licenses.md ./
+
+RUN ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /opt/monai/ig/libdl.so    # part 2 of workaround for Mongo encryption library
 
 EXPOSE 104
 EXPOSE 2575

@@ -583,6 +583,7 @@
   - Microsoft.NET.ILLink.Tasks
   - :versions:
       - 8.0.0
+      - 8.0.1 
     :when: 2022-10-14T23:37:16.793Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
