@@ -163,5 +163,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 752, Level = LogLevel.Debug, Message = "Payload in Notification handler {payloadId}.")]
         public static partial void PayloadNotifyAsync(this ILogger logger, string payloadId);
+
+        [LoggerMessage(EventId = 753, Level = LogLevel.Trace, Message = "Adding files to ArtifactsReceivedEvent files {payload}")]
+        public static partial void AddingFilesToArtifactsReceivedEvent(this ILogger logger, string payload);
     }
 }

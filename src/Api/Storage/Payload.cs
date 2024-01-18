@@ -106,7 +106,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
             DataTrigger = dataTrigger;
         }
 
-        public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout, string? payloadId = null) :
+        public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout, string? payloadId) :
             this(key, correlationId, workflowInstanceId, taskId, dataTrigger, timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));
