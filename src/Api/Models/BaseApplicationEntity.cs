@@ -35,10 +35,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Models
         /// </summary>
         public string Name { get; set; } = default!;
 
-        /// <summary>
-        ///  Gets or sets the AE Title (AET) used to identify itself in a DICOM association.
-        /// </summary>
-        public string AeTitle { get; set; } = default!;
 
         /// <summary>
         /// Gets or set the host name or IP address of the AE Title.
@@ -65,10 +61,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Models
             SetDefaultValues();
         }
 
-        public void SetDefaultValues()
+        public virtual void SetDefaultValues()
         {
-            if (string.IsNullOrWhiteSpace(Name))
-                Name = AeTitle;
         }
 
         public void SetAuthor(ClaimsPrincipal user, EditMode editMode)
@@ -90,7 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Models
 
         public override string ToString()
         {
-            return $"Name: {Name}/AET: {AeTitle}/Host: {HostIp}";
+            return $"Name: {Name} /Host: {HostIp}";
         }
     }
 }

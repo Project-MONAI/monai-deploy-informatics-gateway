@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-using Monai.Deploy.InformaticsGateway.Api.Models;
 using Xunit;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Test
 {
-    public class BaseApplicationEntityTest
+    public class SourceBaseApplicationEntityTest
     {
         [Fact]
         public void GivenABaseApplicationEntity_WhenNameIsNotSet_ExpectSetDefaultValuesToSetName()
         {
-            var entity = new BaseApplicationEntity
+            var entity = new SourceApplicationEntity
             {
                 AeTitle = "AET",
                 HostIp = "IP"
@@ -38,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
         [Fact]
         public void GivenABaseApplicationEntity_WhenNameIsSet_ExpectSetDefaultValuesToNotSetName()
         {
-            var entity = new BaseApplicationEntity
+            var entity = new SourceApplicationEntity
             {
                 AeTitle = "AET",
                 HostIp = "IP",

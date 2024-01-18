@@ -25,7 +25,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Models
     /// {
     ///     "name": "MYPACS",
     ///     "hostIp": "10.20.100.200",
-    ///     "aeTitle": "MONAIPACS",
     ///     "port": 1104
     /// }
     /// </code>
@@ -36,5 +35,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Models
         /// Gets or sets the port to connect to.
         /// </summary>
         public int Port { get; set; }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}/Host: {HostIp}/Port: {Port}";
+        }
     }
 }

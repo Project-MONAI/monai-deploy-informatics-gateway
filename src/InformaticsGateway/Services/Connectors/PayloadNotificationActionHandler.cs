@@ -16,6 +16,7 @@
 
 using System;
 using System.Linq;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
@@ -168,6 +169,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 TaskId = payload.TaskId,
             };
             artifiactRecievedEvent.DataOrigins.AddRange(payload.DataOrigins);
+
+            _logger.LogTrace($"Adding files to ArtifactsReceivedEvent files {JsonSerializer.Serialize(payload)}");
 
             artifiactRecievedEvent.Artifacts = payload.Files.Select(f => new Artifact { Type = f.DataOrigin.ArtifactType, Path = f.File.UploadPath }).ToList();
 

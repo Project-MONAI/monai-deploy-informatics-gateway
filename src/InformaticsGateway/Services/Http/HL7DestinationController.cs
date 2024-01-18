@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -119,7 +120,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await ValidateCreateAsync(item).ConfigureAwait(false);
 
                 await _repository.AddAsync(item, HttpContext.RequestAborted).ConfigureAwait(false);
-                _logger.HL7DestinationEntityAdded(item.AeTitle, item.HostIp);
+                _logger.HL7DestinationEntityAdded(item.Name, item.HostIp);
                 return CreatedAtAction(nameof(GetAeTitle), new { name = item.Name }, item);
             }
             catch (ObjectExistsException ex)
@@ -159,7 +160,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 item.SetDefaultValues();
 
-                hl7DestinationEntity.AeTitle = item.AeTitle;
                 hl7DestinationEntity.HostIp = item.HostIp;
                 hl7DestinationEntity.Port = item.Port;
                 hl7DestinationEntity.SetAuthor(User, EditMode.Update);
@@ -167,7 +167,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 await ValidateUpdateAsync(hl7DestinationEntity).ConfigureAwait(false);
 
                 _ = _repository.UpdateAsync(hl7DestinationEntity, HttpContext.RequestAborted);
-                _logger.HL7DestinationEntityUpdated(item.Name, item.AeTitle, item.HostIp, item.Port);
+                _logger.HL7DestinationEntityUpdated(item.Name, item.HostIp, item.Port);
                 return Ok(hl7DestinationEntity);
             }
             catch (ConfigurationException ex)
@@ -198,7 +198,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
                 await _repository.RemoveAsync(hl7DestinationEntity, HttpContext.RequestAborted).ConfigureAwait(false);
 
-                _logger.HL7DestinationEntityDeleted(name.Substring(0, 10));
+                _logger.HL7DestinationEntityDeleted(new string(name.Take(5).ToArray()));
                 return Ok(hl7DestinationEntity);
             }
             catch (Exception ex)
@@ -214,9 +214,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 throw new ObjectExistsException($"A HL7 destination with the same name '{item.Name}' already exists.");
             }
-            if (await _repository.ContainsAsync(p => p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port), HttpContext.RequestAborted).ConfigureAwait(false))
+            if (await _repository.ContainsAsync(p => p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port), HttpContext.RequestAborted).ConfigureAwait(false))
             {
-                throw new ObjectExistsException($"A HL7 destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
+                throw new ObjectExistsException($"A HL7 destination with the same, host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
             }
             if (!item.IsValid(out var validationErrors))
             {
@@ -226,9 +226,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
         private async Task ValidateUpdateAsync(HL7DestinationEntity item)
         {
-            if (await _repository.ContainsAsync(p => !p.Name.Equals(item.Name) && p.AeTitle.Equals(item.AeTitle) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port), HttpContext.RequestAborted).ConfigureAwait(false))
+            if (await _repository.ContainsAsync(p => !p.Name.Equals(item.Name) && p.HostIp.Equals(item.HostIp) && p.Port.Equals(item.Port), HttpContext.RequestAborted).ConfigureAwait(false))
             {
-                throw new ObjectExistsException($"A HL7 destination with the same AE Title '{item.AeTitle}', host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
+                throw new ObjectExistsException($"A HL7 destination with the same, host/IP Address '{item.HostIp}' and port '{item.Port}' already exists.");
             }
             if (!item.IsValid(out var validationErrors))
             {

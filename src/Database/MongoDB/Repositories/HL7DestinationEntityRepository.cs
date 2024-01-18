@@ -74,7 +74,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
             var indexDefinitionAll = Builders<HL7DestinationEntity>.IndexKeys.Combine(
                 Builders<HL7DestinationEntity>.IndexKeys.Ascending(_ => _.Name),
-                Builders<HL7DestinationEntity>.IndexKeys.Ascending(_ => _.AeTitle),
                 Builders<HL7DestinationEntity>.IndexKeys.Ascending(_ => _.HostIp),
                 Builders<HL7DestinationEntity>.IndexKeys.Ascending(_ => _.Port));
             _collection.Indexes.CreateOne(new CreateIndexModel<HL7DestinationEntity>(indexDefinitionAll, options));

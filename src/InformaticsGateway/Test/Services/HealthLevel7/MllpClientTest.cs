@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 {
     public class MllpClientTest
     {
-        private const string SampleMessage = "MSH|^~\\&|MD|MD HOSPITAL|MD Test|MONAI Deploy|202207130000|SECURITY|MD^A01^ADT_A01|MSG00001|P|2.8|||<ACK>|\r\n";
+        private const string SampleMessage = "MSH|^~\\&|MD|MD HOSPITAL|MD Test|MONAI Deploy|202207130000|SECURITY|MD^A01^ADT_A01|MSG00001|P|2.8|||<ACK>|\r";
 
         private readonly Mock<ITcpClientAdapter> _tcpClient;
         private readonly Hl7Configuration _config;

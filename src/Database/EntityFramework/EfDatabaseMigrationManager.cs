@@ -37,7 +37,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework
                     catch (Exception ex)
                     {
                         var logger = scope.ServiceProvider.GetService<ILogger>();
-                        logger?.Log(LogLevel.Critical, "Failed to migrate database", ex);
+                        logger?.Log(LogLevel.Critical, message: "Failed to migrate database", exception: ex);
                         throw;
                     }
                 }

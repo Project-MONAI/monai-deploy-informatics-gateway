@@ -55,21 +55,20 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = [1, 1, 1];
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact]
         public async Task GivenAHL7DestinationEntity_WhenAddingToDatabase_ExpectItToBeSaved()
         {
-            var aet = new HL7DestinationEntity { AeTitle = "AET", HostIp = "1.2.3.4", Port = 114, Name = "AET" };
+            var aet = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET" };
 
             var store = new HL7DestinationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
             await store.AddAsync(aet).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             var actual = await _databaseFixture.DatabaseContext.Set<HL7DestinationEntity>().FirstOrDefaultAsync(p => p.Name.Equals(aet.Name)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
-            Assert.Equal(aet.AeTitle, actual!.AeTitle);
             Assert.Equal(aet.HostIp, actual!.HostIp);
             Assert.Equal(aet.Port, actual!.Port);
             Assert.Equal(aet.Name, actual!.Name);
@@ -79,12 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         public async Task GivenAExpressionFilter_WhenContainsAsyncIsCalled_ExpectItToReturnMatchingObjects()
         {
             var store = new HL7DestinationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-
-            var result = await store.ContainsAsync(p => p.AeTitle == "AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
-            Assert.True(result);
-            result = await store.ContainsAsync(p => p.AeTitle.Equals("AET1", StringComparison.Ordinal)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
-            Assert.True(result);
-            result = await store.ContainsAsync(p => p.AeTitle != "AET1" && p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var result = await store.ContainsAsync(p => p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
             result = await store.ContainsAsync(p => p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
@@ -99,7 +93,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             var actual = await store.FindByNameAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
-            Assert.Equal("AET1", actual!.AeTitle);
             Assert.Equal("1.2.3.4", actual!.HostIp);
             Assert.Equal(114, actual!.Port);
             Assert.Equal("AET1", actual!.Name);
@@ -142,7 +135,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var expected = await store.FindByNameAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
-            expected!.AeTitle = "AET100";
             expected!.Port = 1000;
             expected!.HostIp = "loalhost";
 
@@ -151,7 +143,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             var dbResult = await store.FindByNameAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(dbResult);
-            Assert.Equal(expected.AeTitle, dbResult!.AeTitle);
             Assert.Equal(expected.HostIp, dbResult!.HostIp);
             Assert.Equal(expected.Port, dbResult!.Port);
         }

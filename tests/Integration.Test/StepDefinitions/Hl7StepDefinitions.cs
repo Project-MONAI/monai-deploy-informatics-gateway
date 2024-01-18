@@ -90,7 +90,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 destination = await _informaticsGatewayClient.HL7Destinations.Create(new HL7DestinationEntity
                 {
                     Name = _dicomServer.FeatureScpAeTitle,
-                    AeTitle = _dicomServer.FeatureScpAeTitle,
                     HostIp = _hl7SendAddress,
                     Port = _hl7Port
                 }, CancellationToken.None);
@@ -219,7 +218,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         private async Task SendAcknowledgment(NetworkStream networkStream, HL7.Dotnetcore.Message message, CancellationToken cancellationToken)
         {
             if (message == null) { return; }
-            var ackMessage = message.GetACK();
+            var ackMessage = message.GetACK(true);
             var ackData = new ReadOnlyMemory<byte>(ackMessage.GetMLLP());
             {
                 try
