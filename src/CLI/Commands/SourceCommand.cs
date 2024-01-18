@@ -115,7 +115,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
-            IReadOnlyList<SourceApplicationEntity> items = null;
+            IReadOnlyList<SourceApplicationEntity>? items = null;
             try
             {
                 CheckConfiguration(configService);
@@ -126,12 +126,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.ErrorListingDicomSources(ex.Message);
+                logger?.ErrorListingDicomSources(ex.Message);
                 return ExitCodes.SourceAe_ErrorList;
             }
 
@@ -186,7 +186,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
@@ -223,7 +223,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
@@ -260,7 +260,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)

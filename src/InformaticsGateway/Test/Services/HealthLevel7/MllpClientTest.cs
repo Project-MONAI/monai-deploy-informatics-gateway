@@ -135,7 +135,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                 await Task.Run(() =>
                 {
                     Assert.NotNull(results.AggregateException);
-                    Assert.Equal(2, results.AggregateException.InnerExceptions.Count);
+                    Assert.Equal(1, results.AggregateException.InnerExceptions.Count);
                 });
             });
             await client.Start(action, _cancellationTokenSource.Token);

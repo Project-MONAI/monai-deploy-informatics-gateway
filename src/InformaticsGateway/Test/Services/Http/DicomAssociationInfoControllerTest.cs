@@ -36,7 +36,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
     public class DicomAssociationInfoControllerTest
     {
         private readonly Mock<ILogger<DicomAssociationInfoController>> _logger;
-        private Mock<ILoggerFactory> _loggerFactory;
+        private readonly Mock<ILoggerFactory> _loggerFactory;
         private readonly DicomAssociationInfoController _controller;
         private readonly IOptions<HttpEndpointSettings> _options;
         private readonly Mock<IDicomAssociationInfoRepository> _repo;
@@ -73,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
 
             var okResult = Assert.IsType<OkObjectResult>(result);
             var response = Assert.IsType<PagedResponse<IEnumerable<DicomAssociationInfo>>>(okResult.Value);
-            Assert.Equal(0 ,response.TotalRecords);
+            Assert.Equal(0, response.TotalRecords);
             Assert.Empty(response.Data);
         }
     }

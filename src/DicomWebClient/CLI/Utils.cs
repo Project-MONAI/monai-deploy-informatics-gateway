@@ -19,16 +19,18 @@ using System;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using FellowOakDicom;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
 {
     internal static class Utils
     {
+        public static JsonSerializerOptions JsonWriteIndentedOption = new() { WriteIndented = true };
         public static void CheckAndConfirmOverwriteOutputFilename<T>(ILogger<T> logger, string filename)
         {
             Guard.Against.Null(logger, nameof(logger));
@@ -101,13 +103,15 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             await dicomFile.SaveAsync(filename).ConfigureAwait(false);
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         internal static async Task SaveJson(ILogger logger, string outputDir, string item, DicomTag filenameSourceTag)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             Guard.Against.Null(logger, nameof(logger));
             Guard.Against.NullOrWhiteSpace(outputDir, nameof(outputDir));
             Guard.Against.NullOrWhiteSpace(item, nameof(item));
 
-            var token = JToken.Parse(item);
+            var token = JsonObject.Parse(item).AsObject();
             var value = GetTagValueFromJson(token, filenameSourceTag);
             string filename;
             if (!string.IsNullOrWhiteSpace(value))
@@ -120,7 +124,9 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             }
             var path = Path.Combine(outputDir, filename);
             logger.LogInformation($"Saving JSON {path}");
-            await File.WriteAllTextAsync(path, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8).ConfigureAwait(false);
+            using var fileStream = File.Create(path);
+            using var fileWriter = new Utf8JsonWriter(fileStream);
+            token.WriteTo(fileWriter, JsonWriteIndentedOption);
         }
 
         internal static async Task SaveJson(ILogger logger, string outputFilename, string text)
@@ -129,21 +135,22 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI
             Guard.Against.NullOrWhiteSpace(outputFilename, nameof(outputFilename));
             Guard.Against.NullOrWhiteSpace(text, nameof(text));
 
-            var token = JToken.Parse(text);
+            var token = JsonNode.Parse(text);
             logger.LogInformation($"Saving JSON {outputFilename}...");
-            await File.WriteAllTextAsync(outputFilename, token.ToString(Newtonsoft.Json.Formatting.Indented), Encoding.UTF8).ConfigureAwait(false);
+            await File.WriteAllTextAsync(outputFilename, token.ToString(), Encoding.UTF8).ConfigureAwait(false);
         }
 
-        private static string GetTagValueFromJson(JToken token, DicomTag dicomTag, string defaultValue = "unknown")
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
+        private static string GetTagValueFromJson(JsonObject? token, DicomTag dicomTag, string defaultValue = "unknown")
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         {
-            Guard.Against.Null(token, nameof(token));
             Guard.Against.Null(dicomTag, nameof(dicomTag));
 
             var tag = $"{dicomTag.Group:X4}{dicomTag.Element:X4}";
 
-            if (token.HasValues && token[tag].HasValues)
+            if (token is not null && token.ContainsKey(tag))
             {
-                return token[tag]?["Value"]?.First.ToString();
+                return token[tag].AsValue().GetValue<string>();
             }
 
             return defaultValue;

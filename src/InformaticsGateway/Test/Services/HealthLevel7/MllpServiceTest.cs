@@ -246,11 +246,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));
-            await Task.Delay(200).ConfigureAwait(false);
+            await Task.Delay(200).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(service.ActiveConnections > 0);
 
             _cancellationTokenSource.Cancel();
-            await Task.Delay(500).ConfigureAwait(false);
+            await Task.Delay(500).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             service.Dispose();
             client.Verify(p => p.Dispose(), Times.Exactly(callCount));
@@ -271,7 +271,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             _cancellationTokenSource.CancelAfter(400);
-            await Task.Delay(500).ConfigureAwait(false);
+            await Task.Delay(500).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             clientAdapter.Verify(p => p.Close(), Times.AtLeastOnce());
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Never());
@@ -315,7 +315,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));
-            await Task.Delay(500).ConfigureAwait(false);
+            await Task.Delay(500).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             _uploadQueue.Verify(p => p.Queue(It.IsAny<FileStorageMetadata>()), Times.Exactly(3));
             _payloadAssembler.Verify(p => p.Queue(It.IsAny<string>(), It.IsAny<FileStorageMetadata>(), It.IsAny<DataOrigin>()), Times.Exactly(3));
@@ -362,7 +362,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));
-            await Task.Delay(500).ConfigureAwait(false);
+            await Task.Delay(500).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             _mIIpExtract.Verify(p => p.ExtractInfo(It.IsAny<Hl7FileStorageMetadata>(), It.IsAny<Message>(), It.IsAny<Hl7ApplicationConfigEntity>()), Times.Exactly(3));
         }

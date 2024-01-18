@@ -21,7 +21,7 @@ using System.Collections.Generic;
 namespace Monai.Deploy.InformaticsGateway.Common
 {
     /// <summary>
-    /// Unsubscriber<T> class is used with IObserver<T> for unsubscribing from a notification service.
+    /// <see cref="Unsubscriber{T}"/> class is used with <see cref="IObserver{T}" /> for unsubscribing from a notification service.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     internal class Unsubscriber<T> : IDisposable

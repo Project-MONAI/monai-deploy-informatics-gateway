@@ -80,7 +80,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 
             if (!applicationVersions.IsNullOrEmpty())
             {
-                foreach (var applicationVersion in applicationVersions)
+                foreach (var applicationVersion in applicationVersions!)
                 {
                     var runnerState = await runner.IsApplicationRunning(applicationVersion, cancellationToken).ConfigureAwait(false);
 

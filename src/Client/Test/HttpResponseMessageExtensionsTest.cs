@@ -35,7 +35,7 @@ namespace Monai.Deploy.InformaticsGateway.Client.Test
         public async Task SuccessStatusCode()
         {
             var message = new HttpResponseMessage(HttpStatusCode.OK);
-            var exception = await Record.ExceptionAsync(async () => await message.EnsureSuccessStatusCodeWithProblemDetails()).ConfigureAwait(false);
+            var exception = await Record.ExceptionAsync(async () => await message.EnsureSuccessStatusCodeWithProblemDetails()).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(exception);
         }
 

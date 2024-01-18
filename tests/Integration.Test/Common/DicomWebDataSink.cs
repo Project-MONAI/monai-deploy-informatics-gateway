@@ -59,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             var endpoint = args[0].ToString();
 
             _outputHelper.WriteLine($"POSTing studies to {endpoint} with {dicomFileSpec.Files.Count} files...");
-            var httpClient = HttpClientFactory.Create();
+            var httpClient = new HttpClient();
             var dicomWebClient = new DicomWebClient(httpClient, null);
             dicomWebClient.ConfigureServiceUris(new Uri(endpoint));
 

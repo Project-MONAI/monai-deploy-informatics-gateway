@@ -23,6 +23,7 @@ using Ardalis.GuardClauses;
 using FellowOakDicom;
 using FellowOakDicom.Serialization;
 using Minio;
+using Minio.DataModel.Args;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
@@ -307,7 +308,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             }
         }
 
-        private MinioClient GetMinioClient() => new MinioClient()
+        private MinioClient GetMinioClient() => (MinioClient)new MinioClient()
                     .WithEndpoint(_options.Storage.Settings["endpoint"])
                     .WithCredentials(_options.Storage.Settings["accessKey"], _options.Storage.Settings["accessToken"])
                     .Build();

@@ -18,6 +18,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Services
 {
     public enum Runner
     {
+        Unknown,
         Docker,
         Kubernetes,
         Helm,

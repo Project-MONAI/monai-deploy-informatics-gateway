@@ -18,7 +18,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
@@ -31,19 +30,11 @@ using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
-    public sealed class MllpExtract : IMllpExtract
+    public sealed class MllpExtract(IHl7ApplicationConfigRepository hl7ApplicationConfigRepository, IExternalAppDetailsRepository externalAppDetailsRepository, ILogger<MllpExtract> logger) : IMllpExtract
     {
-        private readonly ILogger<MllpExtract> _logger;
-        private readonly IHl7ApplicationConfigRepository _hl7ApplicationConfigRepository;
-        private readonly IExternalAppDetailsRepository _externalAppDetailsRepository;
-
-        public MllpExtract(IHl7ApplicationConfigRepository hl7ApplicationConfigRepository, IExternalAppDetailsRepository externalAppDetailsRepository, ILogger<MllpExtract> logger)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _hl7ApplicationConfigRepository = hl7ApplicationConfigRepository ?? throw new ArgumentNullException(nameof(hl7ApplicationConfigRepository));
-            _externalAppDetailsRepository = externalAppDetailsRepository ?? throw new ArgumentNullException(nameof(externalAppDetailsRepository));
-        }
-
+        private readonly ILogger<MllpExtract> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly IHl7ApplicationConfigRepository _hl7ApplicationConfigRepository = hl7ApplicationConfigRepository ?? throw new ArgumentNullException(nameof(hl7ApplicationConfigRepository));
+        private readonly IExternalAppDetailsRepository _externalAppDetailsRepository = externalAppDetailsRepository ?? throw new ArgumentNullException(nameof(externalAppDetailsRepository));
 
         public async Task<Message> ExtractInfo(Hl7FileStorageMetadata meta, Message message, Hl7ApplicationConfigEntity configItem)
         {

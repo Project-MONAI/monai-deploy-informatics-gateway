@@ -15,7 +15,6 @@
  */
 
 using System;
-using System.Runtime.Serialization;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Common
@@ -40,10 +39,6 @@ namespace Monai.Deploy.InformaticsGateway.Common
         }
 
         public PostPayloadException(string message, Exception innerException) : base(message, innerException)
-        {
-        }
-
-        protected PostPayloadException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
     }

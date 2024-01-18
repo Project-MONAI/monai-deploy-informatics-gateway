@@ -65,7 +65,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scu
                 {
                     var item = _workQueue.Dequeue(cancellationToken);
 
-                    var linkedCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, item.CancellationToken);
+                    using var linkedCancellationToken = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken, item.CancellationToken);
 
                     ProcessThread(item, linkedCancellationToken.Token);
                 }

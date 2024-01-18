@@ -47,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 throw new ConfigurationException("No database connections found in configuration section 'ConnectionStrings'.");
             }
 
-            var databaseType = connectionStringConfigurationSection["Type"].ToLowerInvariant();
+            var databaseType = connectionStringConfigurationSection!["Type"]!.ToLowerInvariant();
 
             switch (databaseType)
             {
@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     return healthChecksBuilder;
 
                 case DbType_MongoDb:
-                    healthChecksBuilder.AddMongoDb(mongodbConnectionString: connectionStringConfigurationSection[SR.DatabaseConnectionStringKey], mongoDatabaseName: connectionStringConfigurationSection[SR.DatabaseNameKey], name: "MongoDB");
+                    healthChecksBuilder.AddMongoDb(mongodbConnectionString: connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]!, mongoDatabaseName: connectionStringConfigurationSection[SR.DatabaseNameKey]!, name: "MongoDB");
                     return healthChecksBuilder;
 
                 default:
@@ -75,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 throw new ConfigurationException("No database connections found in configuration section 'ConnectionStrings'.");
             }
             services.Configure<DatabaseOptions>(connectionStringConfigurationSection.GetSection("DatabaseOptions"));
-            var databaseType = connectionStringConfigurationSection["Type"].ToLowerInvariant();
+            var databaseType = connectionStringConfigurationSection["Type"]!.ToLowerInvariant();
             switch (databaseType)
             {
                 case DbType_Sqlite:
