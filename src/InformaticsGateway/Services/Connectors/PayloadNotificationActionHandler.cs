@@ -170,7 +170,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             };
             artifiactRecievedEvent.DataOrigins.AddRange(payload.DataOrigins);
 
-            _logger.LogTrace($"Adding files to ArtifactsReceivedEvent files {JsonSerializer.Serialize(payload)}");
+            _logger.AddingFilesToArtifactsReceivedEvent(JsonSerializer.Serialize(payload));
 
             artifiactRecievedEvent.Artifacts = payload.Files.Select(f => new Artifact { Type = f.DataOrigin.ArtifactType, Path = f.File.UploadPath }).ToList();
 

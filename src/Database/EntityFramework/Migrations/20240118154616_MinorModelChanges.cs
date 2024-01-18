@@ -25,9 +25,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_source_all_HL7Destination",
                 table: "HL7DestinationEntities",
-                columns: new[] { "Name", "HostIp", "Port" },
+                columns: NewColumns,
                 unique: true);
         }
+
+        private static readonly string[] OldColumns = ["Name", "AeTitle", "HostIp", "Port"];
+        private static readonly string[] NewColumns = ["Name", "HostIp", "Port"];
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -53,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_source_all_HL7Destination",
                 table: "HL7DestinationEntities",
-                columns: new[] { "Name", "AeTitle", "HostIp", "Port" },
+                columns: OldColumns,
                 unique: true);
         }
     }

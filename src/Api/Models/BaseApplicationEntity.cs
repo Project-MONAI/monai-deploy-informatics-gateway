@@ -58,7 +58,6 @@ namespace Monai.Deploy.InformaticsGateway.Api.Models
 
         public BaseApplicationEntity()
         {
-            SetDefaultValues();
         }
 
         public virtual void SetDefaultValues()

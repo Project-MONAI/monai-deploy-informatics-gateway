@@ -32,6 +32,11 @@ namespace Monai.Deploy.InformaticsGateway.Api.Models
     /// </example>
     public class DestinationApplicationEntity : BaseApplicationEntity
     {
+        public DestinationApplicationEntity() : base()
+        {
+            SetDefaultValues();
+        }
+
         /// <summary>
         /// Gets or sets the port to connect to.
         /// </summary>

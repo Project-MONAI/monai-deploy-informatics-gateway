@@ -114,5 +114,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 830, Level = LogLevel.Error, Message = "Error generating HL7 acknowledgment. for message {message}")]
         public static partial void ErrorGeneratingHl7Acknowledgment(this ILogger logger, Exception ex, string message);
 
+        [LoggerMessage(EventId = 831, Level = LogLevel.Trace, Message = "HL7 message after plug-in processing: {message} correlationId: {CorrelationId}")]
+        public static partial void HL7MessageAfterPluginProcessing(this ILogger logger, string message, string CorrelationId);
+
     }
 }

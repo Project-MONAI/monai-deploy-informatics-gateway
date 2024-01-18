@@ -31,7 +31,6 @@ using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Api.Mllp;
 using Monai.Deploy.Messaging.Common;
 using Polly;
-using System.Linq;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
@@ -120,7 +119,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                .ExecuteAsync(async () =>
                {
                    await _mllpService.SendMllp(
-                       Dns.GetHostAddresses(destination.HostIp).First(),
+                       Dns.GetHostAddresses(destination.HostIp)[0],
                            destination.Port, Encoding.UTF8.GetString(exportRequestData.FileContent),
                            cancellationToken
                        ).ConfigureAwait(false);

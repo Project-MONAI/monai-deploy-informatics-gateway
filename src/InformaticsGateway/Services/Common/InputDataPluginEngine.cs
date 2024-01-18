@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using FellowOakDicom;
@@ -28,17 +27,11 @@ using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
-    internal class InputDataPlugInEngine : IInputDataPlugInEngine
+    internal class InputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputDataPlugInEngine> logger) : IInputDataPlugInEngine
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<InputDataPlugInEngine> _logger;
+        private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        private readonly ILogger<InputDataPlugInEngine> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private IReadOnlyList<IInputDataPlugIn>? _plugins;
-
-        public InputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputDataPlugInEngine> logger)
-        {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
 
         public void Configure(IReadOnlyList<string> pluginAssemblies)
         {
@@ -57,13 +50,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 _logger.ExecutingInputDataPlugIn(plugin.Name);
                 (dicomFile, fileMetadata) = await plugin.ExecuteAsync(dicomFile, fileMetadata).ConfigureAwait(false);
 
-                _logger.LogTrace($"InputDataPlugInEngine: {plugin.Name} executed. fileMetadata now: {JsonSerializer.Serialize(fileMetadata)}");
+                _logger.ExecutedInputDataPlugIn(plugin.Name, JsonSerializer.Serialize(fileMetadata));
             }
 
             return new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata);
         }
 
-        private IReadOnlyList<IInputDataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
+        private List<IInputDataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
         {
             var exceptions = new List<Exception>();
             var list = new List<IInputDataPlugIn>();
@@ -80,7 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 }
             }
 
-            if (exceptions.Any())
+            if (exceptions.Count is not 0)
             {
                 throw new AggregateException("Error loading plug-in(s).", exceptions);
             }
