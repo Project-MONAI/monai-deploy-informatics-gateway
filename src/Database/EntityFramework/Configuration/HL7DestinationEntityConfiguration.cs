@@ -26,7 +26,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
         public void Configure(EntityTypeBuilder<HL7DestinationEntity> builder)
         {
             builder.HasKey(j => j.Name);
-            builder.Property(j => j.AeTitle).IsRequired();
             builder.Property(j => j.Port).IsRequired();
             builder.Property(j => j.HostIp).IsRequired();
             builder.Property(j => j.CreatedBy).IsRequired(false);
@@ -35,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Configuration
             builder.Property(j => j.DateTimeUpdated).IsRequired(false);
 
             builder.HasIndex(p => p.Name, "idx_destination_name").IsUnique();
-            builder.HasIndex(p => new { p.Name, p.AeTitle, p.HostIp, p.Port }, "idx_source_all").IsUnique();
+            builder.HasIndex(p => new { p.Name, p.HostIp, p.Port }, "idx_source_all").IsUnique();
 
             builder.Ignore(p => p.Id);
         }

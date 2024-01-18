@@ -21,34 +21,23 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
 {
     public class HL7DestinationEntityTest
     {
-        [Fact]
-        public void GivenAMonaiApplicationEntity_WhenNameIsNotSet_ExepectSetDefaultValuesToBeUsed()
-        {
-            var entity = new HL7DestinationEntity
-            {
-                AeTitle = "AET",
-            };
 
-            entity.SetDefaultValues();
-
-            Assert.Equal(entity.AeTitle, entity.Name);
-        }
 
         [Fact]
         public void GivenAMonaiApplicationEntity_WhenNameIsSet_ExepectSetDefaultValuesToNotOverwrite()
         {
             var entity = new HL7DestinationEntity
             {
-                AeTitle = "AET",
+                Port = 1104,
                 HostIp = "IP",
                 Name = "Name"
             };
 
             entity.SetDefaultValues();
 
-            Assert.Equal("AET", entity.AeTitle);
             Assert.Equal("IP", entity.HostIp);
             Assert.Equal("Name", entity.Name);
+            Assert.Equal(1104, entity.Port);
         }
     }
 }

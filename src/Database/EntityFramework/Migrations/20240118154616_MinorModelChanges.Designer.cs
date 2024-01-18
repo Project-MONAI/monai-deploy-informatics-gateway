@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 
@@ -10,9 +11,11 @@ using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
 namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     [DbContext(typeof(InformaticsGatewayContext))]
-    partial class InformaticsGatewayContextModelSnapshot : ModelSnapshot
+    [Migration("20240118154616_MinorModelChanges")]
+    partial class MinorModelChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
@@ -35,52 +38,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("LastModified")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PlugInAssemblies")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("SendingId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Name");
-
-                    b.HasIndex(new[] { "Name" }, "idx_hl7_name")
-                        .IsUnique();
-
-                    b.ToTable("Hl7ApplicationConfig");
-                });
-
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.DataKeyValuePair", b =>
-                {
-                    b.Property<string>("Key")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Key");
-
-                    b.ToTable("DataKeyValuePair");
-                });
-
-            modelBuilder.Entity("Monai.Deploy.InformaticsGateway.Api.Hl7ApplicationConfigEntity", b =>
-                {
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT")
-                        .HasColumnOrder(0);
-
-                    b.Property<string>("DataLink")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DataMapping")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("DateTimeCreated")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("PlugInAssemblies")

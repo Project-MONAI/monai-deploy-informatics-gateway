@@ -75,13 +75,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var message = new Message(SampleMessage);
             var isParsed = message.ParseMessage();
 
-            var config = MllpExtract.GetConfig(configs, message);
+            var config = _sut.GetConfig(configs, message);
             Assert.Equal(correctid, config?.Id);
 
             message = new Message(ABCDEMessage);
             isParsed = message.ParseMessage();
 
-            config = MllpExtract.GetConfig(configs, message);
+            config = _sut.GetConfig(configs, message);
             Assert.Equal(azCorrectid, config?.Id);
         }
 
@@ -191,13 +191,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             var message = new Message(VendorMessage);
             var isParsed = message.ParseMessage();
 
-            var config = MllpExtract.GetConfig(configs, message);
+            var config = _sut.GetConfig(configs, message);
             Assert.Equal(correctid, config?.Id);
 
             message = new Message(ABCDEMessage);
             isParsed = message.ParseMessage();
 
-            config = MllpExtract.GetConfig(configs, message);
+            config = _sut.GetConfig(configs, message);
             Assert.Equal(azCorrectid, config?.Id);
         }
     }

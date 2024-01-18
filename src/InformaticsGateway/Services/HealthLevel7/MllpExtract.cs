@@ -17,6 +17,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using FellowOakDicom;
@@ -87,7 +88,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                 _logger.Hl7NoConfig();
                 return null;
             }
-            _logger.Hl7ConfigLoaded($"Config: {config}");
+            _logger.Hl7ConfigLoaded($"Config: {JsonSerializer.Serialize(config)}");
             // get config for vendorId
             var configItem = GetConfig(config, message);
             if (configItem == null)
@@ -115,13 +116,18 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             throw new Exception($"Invalid DataLinkType: {type}");
         }
 
-        internal static Hl7ApplicationConfigEntity? GetConfig(List<Hl7ApplicationConfigEntity> config, Message message)
+        internal Hl7ApplicationConfigEntity? GetConfig(List<Hl7ApplicationConfigEntity> config, Message message)
         {
             foreach (var item in config)
             {
                 if (item.SendingId.Value == message.GetValue(item.SendingId.Key))
                 {
+                    _logger.Hl7FoundMatchingConfig(sendingId, JsonSerializer.Serialize(item));
                     return item;
+                }
+                else
+                {
+                    _logger.Hl7NotMatchingConfig(sendingId, item.SendingId.Value);
                 }
             }
             return null;
@@ -142,7 +148,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                     {
                         var newMess = message.HL7Message.Replace(oldvalue, details.PatientId);
                         message = new Message(newMess);
-                        message.ParseMessage();
+                        message.ParseMessage(true);
                     }
                 }
                 else if (tag == DicomTag.StudyInstanceUID)
@@ -154,7 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                     {
                         var newMess = message.HL7Message.Replace(oldvalue, details.StudyInstanceUid);
                         message = new Message(newMess);
-                        message.ParseMessage();
+                        message.ParseMessage(true);
                     }
                 }
             }

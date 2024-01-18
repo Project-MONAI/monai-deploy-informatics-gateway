@@ -188,8 +188,8 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
 
         // HL7 Destination Controller
-        [LoggerMessage(EventId = 8401, Level = LogLevel.Information, Message = "HL7 destination added AE Title={aeTitle}, Host/IP={hostIp}.")]
-        public static partial void HL7DestinationEntityAdded(this ILogger logger, string aeTitle, string hostIp);
+        [LoggerMessage(EventId = 8401, Level = LogLevel.Information, Message = "HL7 destination added Name={name}, Host/IP={hostIp}.")]
+        public static partial void HL7DestinationEntityAdded(this ILogger logger, string name, string hostIp);
 
         [LoggerMessage(EventId = 8402, Level = LogLevel.Information, Message = "HL7 destination deleted {name}.")]
         public static partial void HL7DestinationEntityDeleted(this ILogger logger, string name);
@@ -206,7 +206,7 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 8406, Level = LogLevel.Error, Message = "Error C-ECHO to HL7 destination {name}.")]
         public static partial void ErrorCEechoHL7DestinationEntity(this ILogger logger, string name, Exception ex);
 
-        [LoggerMessage(EventId = 8407, Level = LogLevel.Information, Message = "HL7 destination updated {name}: AE Title={aeTitle}, Host/IP={hostIp}, Port={port}.")]
-        public static partial void HL7DestinationEntityUpdated(this ILogger logger, string name, string aeTitle, string hostIp, int port);
+        [LoggerMessage(EventId = 8407, Level = LogLevel.Information, Message = "HL7 destination updated {name}: Host/IP={hostIp}, Port={port}.")]
+        public static partial void HL7DestinationEntityUpdated(this ILogger logger, string name, string hostIp, int port);
     }
 }

@@ -192,8 +192,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                     {
                         await _inputHL7DataPlugInEngine.ExecutePlugInsAsync(message, hl7Filemetadata, configItem).ConfigureAwait(false);
                         newMessage = await _mIIpExtract.ExtractInfo(hl7Filemetadata, message, configItem).ConfigureAwait(false);
-                    }
 
+                        _logger.LogTrace($"HL7 message after plug-in processing: {newMessage.HL7Message} correlationId: {hl7Filemetadata.CorrelationId}");
+                    }
+                    _logger.Hl7MessageReceieved(newMessage.HL7Message);
                     await hl7Filemetadata.SetDataStream(newMessage.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
                     var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Filemetadata, new DataOrigin { DataService = DataService.HL7, Source = client.ClientIp, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
                     hl7Filemetadata.PayloadId ??= payloadId.ToString();
@@ -338,7 +340,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             foreach (var message in _rawHl7Messages)
             {
                 var hl7Message = new Message(message);
-                hl7Message.ParseMessage();
+                hl7Message.ParseMessage(false);
                 if (hl7Message.MessageStructure == "ACK")
                 {
                     return;

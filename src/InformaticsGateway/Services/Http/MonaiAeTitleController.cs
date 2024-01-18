@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -37,24 +36,16 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 {
     [ApiController]
     [Route("config/ae")]
-    public class MonaiAeTitleController : ControllerBase
+    public class MonaiAeTitleController(
+        ILogger<MonaiAeTitleController> logger,
+        IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
+        IMonaiApplicationEntityRepository repository,
+        IDataPlugInEngineFactory<IInputDataPlugIn> inputDataPlugInEngineFactory) : ControllerBase
     {
-        private readonly ILogger<MonaiAeTitleController> _logger;
-        private readonly IMonaiApplicationEntityRepository _repository;
-        private readonly IDataPlugInEngineFactory<IInputDataPlugIn> _inputDataPlugInEngineFactory;
-        private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService;
-
-        public MonaiAeTitleController(
-            ILogger<MonaiAeTitleController> logger,
-            IMonaiAeChangedNotificationService monaiAeChangedNotificationService,
-            IMonaiApplicationEntityRepository repository,
-            IDataPlugInEngineFactory<IInputDataPlugIn> inputDataPlugInEngineFactory)
-        {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-            _inputDataPlugInEngineFactory = inputDataPlugInEngineFactory ?? throw new ArgumentNullException(nameof(inputDataPlugInEngineFactory));
-            _monaiAeChangedNotificationService = monaiAeChangedNotificationService ?? throw new ArgumentNullException(nameof(monaiAeChangedNotificationService));
-        }
+        private readonly ILogger<MonaiAeTitleController> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        private readonly IMonaiApplicationEntityRepository _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+        private readonly IDataPlugInEngineFactory<IInputDataPlugIn> _inputDataPlugInEngineFactory = inputDataPlugInEngineFactory ?? throw new ArgumentNullException(nameof(inputDataPlugInEngineFactory));
+        private readonly IMonaiAeChangedNotificationService _monaiAeChangedNotificationService = monaiAeChangedNotificationService ?? throw new ArgumentNullException(nameof(monaiAeChangedNotificationService));
 
         [HttpGet]
         [Produces("application/json")]
@@ -160,9 +151,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
                 applicationEntity.AllowedSopClasses = item.AllowedSopClasses;
                 applicationEntity.Grouping = item.Grouping;
                 applicationEntity.Timeout = item.Timeout;
-                applicationEntity.IgnoredSopClasses = item.IgnoredSopClasses ?? new List<string>();
-                applicationEntity.Workflows = item.Workflows ?? new List<string>();
-                applicationEntity.PlugInAssemblies = item.PlugInAssemblies ?? new List<string>();
+                applicationEntity.IgnoredSopClasses = item.IgnoredSopClasses ?? [];
+                applicationEntity.Workflows = item.Workflows ?? [];
+                applicationEntity.PlugInAssemblies = item.PlugInAssemblies ?? [];
                 applicationEntity.SetAuthor(User, EditMode.Update);
 
                 await ValidateUpdateAsync(applicationEntity).ConfigureAwait(false);
@@ -240,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 throw new ObjectExistsException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
             }
-            if (item.IgnoredSopClasses.Any() && item.AllowedSopClasses.Any())
+            if (item.IgnoredSopClasses.Count != 0 && item.AllowedSopClasses.Count != 0)
             {
                 throw new ConfigurationException($"Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.");
             }

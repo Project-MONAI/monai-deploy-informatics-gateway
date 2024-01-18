@@ -182,6 +182,7 @@ namespace Monai.Deploy.InformaticsGateway
                     ext.RegisterLayoutRenderer("servicename", logEvent => typeof(Program).Namespace);
                     ext.RegisterLayoutRenderer("serviceversion", logEvent => assemblyVersionNumber);
                     ext.RegisterLayoutRenderer("machinename", logEvent => Environment.MachineName);
+                    ext.RegisterLayoutRenderer("appname", logEvent => "MIG");
                 })
                 .LoadConfigurationFromAppSettings()
                 .GetCurrentClassLogger();

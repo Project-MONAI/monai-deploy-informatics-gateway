@@ -30,6 +30,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.PlugIns
         public Task<(Message hl7Message, FileStorageMetadata fileMetadata)> ExecuteAsync(Message hl7File, FileStorageMetadata fileMetadata)
         {
             hl7File.SetValue("MSH.3", TestString);
+            hl7File = new Message(hl7File.SerializeMessage(false));
+            hl7File.ParseMessage();
             fileMetadata.Workflows.Add(TestString);
             return Task.FromResult((hl7File, fileMetadata));
         }
