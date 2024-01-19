@@ -76,8 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 
         public string ServiceName => "HL7 Service";
 
-        public MllpService(IServiceScopeFactory serviceScopeFactory,
-                           IOptions<InformaticsGatewayConfiguration> configuration)
+        public MllpService(IServiceScopeFactory serviceScopeFactory, IOptions<InformaticsGatewayConfiguration> configuration)
         {
             ArgumentNullException.ThrowIfNull(serviceScopeFactory, nameof(serviceScopeFactory));
 
@@ -281,7 +280,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             catch (Exception ex)
             {
                 _logger.Hl7SendException(ex);
-                throw new Hl7SendException("Send exception");
+                throw new Hl7SendException($"Send exception: {ex.Message}");
             }
         }
 

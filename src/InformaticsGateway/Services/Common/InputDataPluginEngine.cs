@@ -50,7 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 _logger.ExecutingInputDataPlugIn(plugin.Name);
                 (dicomFile, fileMetadata) = await plugin.ExecuteAsync(dicomFile, fileMetadata).ConfigureAwait(false);
 
-                _logger.ExecutedInputDataPlugIn(plugin.Name, JsonSerializer.Serialize(fileMetadata));
+                _logger.InputDataPlugInEngineexecuted(plugin.Name, JsonSerializer.Serialize(fileMetadata));
             }
 
             return new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata);
