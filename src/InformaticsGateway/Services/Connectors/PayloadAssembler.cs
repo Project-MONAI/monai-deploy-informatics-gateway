@@ -144,7 +144,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 }
                 foreach (var key in _payloads.Keys)
                 {
-                    var payload = await _payloads[key].WithCancellation(_tokenSource.Token);
+                    var payload = await _payloads[key].WithCancellation(_tokenSource.Token).ConfigureAwait(false);
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
 
                     _logger.BucketElapsedTime(key, payload.Timeout, payload.ElapsedTime().TotalSeconds, payload.Files.Count, payload.FilesUploaded, payload.FilesFailedToUpload);

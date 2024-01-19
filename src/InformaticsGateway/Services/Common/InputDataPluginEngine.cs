@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using FellowOakDicom;
 using Microsoft.Extensions.Logging;
@@ -31,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
     {
         private readonly IServiceProvider _serviceProvider;
         private readonly ILogger<InputDataPlugInEngine> _logger;
-        private IReadOnlyList<IInputDataPlugIn>? _plugsins;
+        private IReadOnlyList<IInputDataPlugIn>? _plugins;
 
         public InputDataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputDataPlugInEngine> logger)
         {
@@ -41,20 +42,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
         public void Configure(IReadOnlyList<string> pluginAssemblies)
         {
-            _plugsins = LoadPlugIns(_serviceProvider, pluginAssemblies);
+            _plugins = LoadPlugIns(_serviceProvider, pluginAssemblies);
         }
 
         public async Task<Tuple<DicomFile, FileStorageMetadata>> ExecutePlugInsAsync(DicomFile dicomFile, FileStorageMetadata fileMetadata)
         {
-            if (_plugsins == null)
+            if (_plugins == null)
             {
                 throw new PlugInInitializationException("InputDataPlugInEngine not configured, please call Configure() first.");
             }
 
-            foreach (var plugin in _plugsins)
+            foreach (var plugin in _plugins)
             {
                 _logger.ExecutingInputDataPlugIn(plugin.Name);
                 (dicomFile, fileMetadata) = await plugin.ExecuteAsync(dicomFile, fileMetadata).ConfigureAwait(false);
+
+                _logger.InputDataPlugInEngineexecuted(plugin.Name, JsonSerializer.Serialize(fileMetadata));
             }
 
             return new Tuple<DicomFile, FileStorageMetadata>(dicomFile, fileMetadata);

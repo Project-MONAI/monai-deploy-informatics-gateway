@@ -47,20 +47,22 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
         public async Task<Tuple<Message, FileStorageMetadata>> ExecutePlugInsAsync(Message hl7File, FileStorageMetadata fileMetadata, Hl7ApplicationConfigEntity? configItem)
         {
-            if (_plugsins == null)
+            if (configItem?.PlugInAssemblies is not null && configItem.PlugInAssemblies.Any())
             {
-                throw new PlugInInitializationException("InputHL7DataPlugInEngine not configured, please call Configure() first.");
-            }
-
-            foreach (var plugin in _plugsins)
-            {
-                if (configItem is not null && configItem.PlugInAssemblies.Exists(a => a.StartsWith(plugin.ToString()!)))
+                if (_plugsins == null)
                 {
-                    _logger.ExecutingInputDataPlugIn(plugin.Name);
-                    (hl7File, fileMetadata) = await plugin.ExecuteAsync(hl7File, fileMetadata).ConfigureAwait(false);
+                    throw new PlugInInitializationException("InputHL7DataPlugInEngine not configured, please call Configure() first.");
+                }
+
+                foreach (var plugin in _plugsins)
+                {
+                    if (configItem is not null && configItem.PlugInAssemblies.Exists(a => a.StartsWith(plugin.ToString()!)))
+                    {
+                        _logger.ExecutingInputDataPlugIn(plugin.Name);
+                        (hl7File, fileMetadata) = await plugin.ExecuteAsync(hl7File, fileMetadata).ConfigureAwait(false);
+                    }
                 }
             }
-
             return new Tuple<Message, FileStorageMetadata>(hl7File, fileMetadata);
         }
 

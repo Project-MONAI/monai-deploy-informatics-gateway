@@ -159,13 +159,31 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 
             if (ShouldSendAcknowledgment(message))
             {
-                var ackMessage = message.GetACK();
+                Message ackMessage = message;
+                try
+                {
+                    ackMessage = message.GetACK(false);
+                }
+                catch (Exception ex)
+                {
+                    _logger.ErrorGeneratingHl7Acknowledgment(ex, message.HL7Message);
+                    _exceptions.Add(ex);
+                    return;
+                }
+
+                if (ackMessage is null)
+                {
+                    var ex = new Exception("Error generating HL7 acknowledgment.");
+                    _logger.ErrorGeneratingHl7Acknowledgment(ex, message.HL7Message);
+                    _exceptions.Add(ex);
+                    return;
+                }
                 var ackData = new ReadOnlyMemory<byte>(ackMessage.GetMLLP());
                 try
                 {
                     await clientStream.WriteAsync(ackData, cancellationToken).ConfigureAwait(false);
                     await clientStream.FlushAsync(cancellationToken).ConfigureAwait(false);
-                    _logger.AcknowledgmentSent(ackData.Length);
+                    _logger.AcknowledgmentSent(ackMessage.HL7Message, ackData.Length);
                 }
                 catch (Exception ex)
                 {
@@ -181,7 +199,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             try
             {
                 var value = message.DefaultSegment(Resources.MessageHeaderSegment).Fields(Resources.AcceptAcknowledgementType);
-                if (value is null)
+                if (value is null || string.IsNullOrWhiteSpace(value.Value))
                 {
                     return true;
                 }
@@ -211,9 +229,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             try
             {
                 var text = data.Substring(messageStartIndex, endIndex - messageStartIndex);
-                _logger.Hl7GenerateMessage(text.Length);
+                _logger.Hl7GenerateMessage(text.Length, text);
                 message = new Message(text);
-                message.ParseMessage();
+                message.ParseMessage(false);
                 data = data.Length > endIndex ? data.Substring(messageEndIndex) : string.Empty;
                 return true;
             }

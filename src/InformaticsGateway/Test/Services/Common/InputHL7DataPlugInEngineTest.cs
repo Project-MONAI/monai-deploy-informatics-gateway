@@ -1,4 +1,4 @@
-﻿/*
+/*
  * Copyright 2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using HL7.Dotnetcore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
@@ -94,6 +95,15 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
             var pluginEngine = new InputHL7DataPlugInEngine(_serviceProvider, _logger.Object);
             var assemblies = new List<string>() { typeof(TestInputHL7DataPlugInAddWorkflow).AssemblyQualifiedName };
 
+            var config = new Hl7ApplicationConfigEntity()
+            {
+                PlugInAssemblies = assemblies,
+                DataMapping = new List<StringKeyValuePair>()
+                {
+                    new StringKeyValuePair() { Key = "MSH.3", Value = "MSH.3" },
+                },
+            };
+
             var dicomInfo = new DicomFileStorageMetadata(
                 Guid.NewGuid().ToString(),
                 Guid.NewGuid().ToString(),
@@ -105,18 +115,28 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 "called");
 
             var message = new HL7.Dotnetcore.Message(SampleMessage);
-            message.ParseMessage();
+            message.ParseMessage(true);
 
-            await Assert.ThrowsAsync<PlugInInitializationException>(async () => await pluginEngine.ExecutePlugInsAsync(message, dicomInfo, null));
+            await Assert.ThrowsAsync<PlugInInitializationException>(async () => await pluginEngine.ExecutePlugInsAsync(message, dicomInfo, config));
         }
 
         [Fact]
         public async Task GivenAnInputHL7DataPlugInEngine_WhenExecutePlugInsIsCalled_ExpectDataIsProcessedByPlugInAsync()
         {
+
             var pluginEngine = new InputHL7DataPlugInEngine(_serviceProvider, _logger.Object);
             var assemblies = new List<string>()
             {
                 typeof(TestInputHL7DataPlugInAddWorkflow).AssemblyQualifiedName,
+            };
+
+            var config = new Hl7ApplicationConfigEntity()
+            {
+                PlugInAssemblies = assemblies,
+                DataMapping = new List<StringKeyValuePair>()
+                {
+                    new StringKeyValuePair() { Key = "MSH.3", Value = "MSH.3" },
+                },
             };
 
             pluginEngine.Configure(assemblies);
@@ -132,12 +152,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Common
                 "called");
 
             var message = new HL7.Dotnetcore.Message(SampleMessage);
-            message.ParseMessage();
-            var configItem = new Hl7ApplicationConfigEntity { PlugInAssemblies = new List<string> { { "Monai.Deploy.InformaticsGateway.Test.PlugIns.TestInputHL7DataPlugInAddWorkflow" } } };
+            message.ParseMessage(true);
 
-            var (Hl7Message, resultDicomInfo) = await pluginEngine.ExecutePlugInsAsync(message, dicomInfo, configItem);
+            var (Hl7Message, resultDicomInfo) = await pluginEngine.ExecutePlugInsAsync(message, dicomInfo, config);
 
-            Assert.Equal(Hl7Message, message);
+            Assert.NotEqual(Hl7Message, message);
             Assert.Equal(resultDicomInfo, dicomInfo);
             Assert.Equal(Hl7Message.GetValue("MSH.3"), TestInputHL7DataPlugInAddWorkflow.TestString);
         }

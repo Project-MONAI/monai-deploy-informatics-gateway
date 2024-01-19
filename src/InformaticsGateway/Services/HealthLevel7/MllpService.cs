@@ -76,13 +76,9 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 
         public string ServiceName => "HL7 Service";
 
-        public MllpService(IServiceScopeFactory serviceScopeFactory,
-                           IOptions<InformaticsGatewayConfiguration> configuration)
+        public MllpService(IServiceScopeFactory serviceScopeFactory, IOptions<InformaticsGatewayConfiguration> configuration)
         {
-            if (serviceScopeFactory is null)
-            {
-                throw new ArgumentNullException(nameof(serviceScopeFactory));
-            }
+            ArgumentNullException.ThrowIfNull(nameof(serviceScopeFactory));
 
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
@@ -192,8 +188,10 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                     {
                         await _inputHL7DataPlugInEngine.ExecutePlugInsAsync(message, hl7Filemetadata, configItem).ConfigureAwait(false);
                         newMessage = await _mIIpExtract.ExtractInfo(hl7Filemetadata, message, configItem).ConfigureAwait(false);
-                    }
 
+                        _logger.LogTrace(message: $"HL7 message after plug-in processing: {newMessage.HL7Message} correlationId: {hl7Filemetadata.CorrelationId}");
+                    }
+                    _logger.Hl7MessageReceieved(newMessage.HL7Message);
                     await hl7Filemetadata.SetDataStream(newMessage.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);
                     var payloadId = await _payloadAssembler.Queue(client.ClientId.ToString(), hl7Filemetadata, new DataOrigin { DataService = DataService.HL7, Source = client.ClientIp, Destination = FileStorageMetadata.IpAddress() }).ConfigureAwait(false);
                     hl7Filemetadata.PayloadId ??= payloadId.ToString();
@@ -215,7 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
         private async Task ConfigurePlugInEngine()
         {
             var configs = await _hl7ApplicationConfigRepository.GetAllAsync().ConfigureAwait(false);
-            if (configs is not null && configs.Any() && configs.Max(c => c.LastModified) > _lastConfigRead)
+            if (configs is not null && configs.Count is not 0 && configs.Max(c => c.LastModified) > _lastConfigRead)
             {
                 var pluginAssemblies = new List<string>();
                 foreach (var config in configs.Where(p => p.PlugInAssemblies?.Count > 0))
@@ -229,7 +227,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                         _logger.HL7PluginLoadingExceptions(ex);
                     }
                 }
-                if (pluginAssemblies.Any())
+                if (pluginAssemblies.Count is not 0)
                 {
                     _inputHL7DataPlugInEngine.Configure(pluginAssemblies);
                 }
@@ -282,7 +280,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             catch (Exception ex)
             {
                 _logger.Hl7SendException(ex);
-                throw new Hl7SendException("Send exception");
+                throw new Hl7SendException($"Send exception: {ex.Message}");
             }
         }
 
@@ -338,7 +336,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             foreach (var message in _rawHl7Messages)
             {
                 var hl7Message = new Message(message);
-                hl7Message.ParseMessage();
+                hl7Message.ParseMessage(false);
                 if (hl7Message.MessageStructure == "ACK")
                 {
                     return;

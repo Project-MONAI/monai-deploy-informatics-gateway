@@ -27,7 +27,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
     public sealed record Hl7FileStorageMetadata : FileStorageMetadata
     {
         public const string Hl7SubDirectoryName = "ehr";
-        public const string FileExtension = ".txt";
+        public const string FileExtension = ".hl7";
 
         /// <inheritdoc/>
         [JsonIgnore]
