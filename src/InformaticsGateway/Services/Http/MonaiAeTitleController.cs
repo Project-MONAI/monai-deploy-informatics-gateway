@@ -231,7 +231,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
             {
                 throw new ObjectExistsException($"A MONAI Application Entity with the same AE Title '{item.AeTitle}' already exists.");
             }
-            if (item.IgnoredSopClasses.Count != 0 && item.AllowedSopClasses.Count != 0)
+            if (item.IgnoredSopClasses.Count != 0 && item.AllowedSopClasses.Count is not 0)
             {
                 throw new ConfigurationException($"Cannot specify both allowed and ignored SOP classes at the same time, they are mutually exclusive.");
             }
