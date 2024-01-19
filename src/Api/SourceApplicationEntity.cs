@@ -33,5 +33,25 @@ namespace Monai.Deploy.InformaticsGateway.Api
     /// </example>
     public class SourceApplicationEntity : BaseApplicationEntity
     {
+        public SourceApplicationEntity() : base()
+        {
+            SetDefaultValues();
+        }
+
+        /// <summary>
+        ///  Gets or sets the AE Title (AET) used to identify itself in a DICOM association.
+        /// </summary>
+        public string AeTitle { get; set; } = default!;
+
+        public override void SetDefaultValues()
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+                Name = AeTitle;
+        }
+
+        public override string ToString()
+        {
+            return $"Name: {Name}/AET: {AeTitle}/Host: {HostIp}";
+        }
     }
 }

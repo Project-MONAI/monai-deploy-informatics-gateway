@@ -68,7 +68,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 }
             }
 
-            return matchingTypes.ToArray();
+            return [.. matchingTypes];
         }
     }
 }

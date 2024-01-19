@@ -6,6 +6,9 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Migrations
 {
     public partial class R4_040 : Migration
     {
+        private static readonly string[] Columns = ["WorkflowInstanceId", "ExportTaskId", "StudyInstanceUid"];
+        private static readonly string[] StudyColumns = ["WorkflowInstanceId", "ExportTaskId", "StudyInstanceUid", "SeriesInstanceUid"];
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -30,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_remoteapp_all",
                 table: "RemoteAppExecutions",
-                columns: new[] { "WorkflowInstanceId", "ExportTaskId", "StudyInstanceUid", "SeriesInstanceUid" });
+                columns: StudyColumns);
 
             migrationBuilder.CreateIndex(
                 name: "idx_remoteapp_instance",
@@ -40,7 +43,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_remoteapp_study",
                 table: "RemoteAppExecutions",
-                columns: new[] { "WorkflowInstanceId", "ExportTaskId", "StudyInstanceUid" });
+                columns: Columns);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

@@ -58,14 +58,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = [1, 1, 1];
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
         [Fact]
         public async Task GivenAHL7DestinationEntity_WhenAddingToDatabase_ExpectItToBeSaved()
         {
-            var aet = new HL7DestinationEntity { AeTitle = "AET", HostIp = "1.2.3.4", Port = 114, Name = "AET" };
+            var aet = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET" };
 
             var store = new HL7DestinationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
             await store.AddAsync(aet).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
@@ -74,7 +74,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var actual = await collection.Find(p => p.Name == aet.Name).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
-            Assert.Equal(aet.AeTitle, actual!.AeTitle);
             Assert.Equal(aet.HostIp, actual!.HostIp);
             Assert.Equal(aet.Port, actual!.Port);
             Assert.Equal(aet.Name, actual!.Name);
@@ -84,12 +83,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         public async Task GivenAExpressionFilter_WhenContainsAsyncIsCalled_ExpectItToReturnMatchingObjects()
         {
             var store = new HL7DestinationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
-
-            var result = await store.ContainsAsync(p => p.AeTitle == "AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
-            Assert.True(result);
-            result = await store.ContainsAsync(p => p.AeTitle.Equals("AET1")).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
-            Assert.True(result);
-            result = await store.ContainsAsync(p => p.AeTitle != "AET1" && p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var result = await store.ContainsAsync(p => p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
             result = await store.ContainsAsync(p => p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
@@ -104,7 +98,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             var actual = await store.FindByNameAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
-            Assert.Equal("AET1", actual!.AeTitle);
             Assert.Equal("1.2.3.4", actual!.HostIp);
             Assert.Equal(114, actual!.Port);
             Assert.Equal("AET1", actual!.Name);
@@ -149,7 +142,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             var expected = await store.FindByNameAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
-            expected!.AeTitle = "AET100";
             expected!.Port = 1000;
             expected!.HostIp = "loalhost";
 
@@ -158,7 +150,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             var dbResult = await store.FindByNameAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(dbResult);
-            Assert.Equal(expected.AeTitle, dbResult!.AeTitle);
             Assert.Equal(expected.HostIp, dbResult!.HostIp);
             Assert.Equal(expected.Port, dbResult!.Port);
         }

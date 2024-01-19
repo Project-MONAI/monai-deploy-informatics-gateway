@@ -62,11 +62,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
         public void InitDatabaseWithHL7DestinationEntities()
         {
-            var aet1 = new HL7DestinationEntity { AeTitle = "AET1", HostIp = "1.2.3.4", Port = 114, Name = "AET1" };
-            var aet2 = new HL7DestinationEntity { AeTitle = "AET2", HostIp = "1.2.3.4", Port = 114, Name = "AET2" };
-            var aet3 = new HL7DestinationEntity { AeTitle = "AET3", HostIp = "1.2.3.4", Port = 114, Name = "AET3" };
-            var aet4 = new HL7DestinationEntity { AeTitle = "AET4", HostIp = "1.2.3.4", Port = 114, Name = "AET4" };
-            var aet5 = new HL7DestinationEntity { AeTitle = "AET5", HostIp = "1.2.3.4", Port = 114, Name = "AET5" };
+            var aet1 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET1" };
+            var aet2 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET2" };
+            var aet3 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET3" };
+            var aet4 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET4" };
+            var aet5 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET5" };
 
             var set = DatabaseContext.Set<HL7DestinationEntity>();
             set.RemoveRange(set.ToList());

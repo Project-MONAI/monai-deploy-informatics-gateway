@@ -90,7 +90,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 destination = await _informaticsGatewayClient.HL7Destinations.Create(new HL7DestinationEntity
                 {
                     Name = _dicomServer.FeatureScpAeTitle,
-                    AeTitle = _dicomServer.FeatureScpAeTitle,
                     HostIp = _hl7SendAddress,
                     Port = _hl7Port
                 }, CancellationToken.None);

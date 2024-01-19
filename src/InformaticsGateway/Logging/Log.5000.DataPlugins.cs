@@ -45,7 +45,10 @@ namespace Monai.Deploy.InformaticsGateway.Logging
         [LoggerMessage(EventId = 5007, Level = LogLevel.Error, Message = "Error executing plug-in: {plugin}.")]
         public static partial void ErrorAddingOutputDataPlugIn(this ILogger logger, Exception d, string plugin);
 
-        [LoggerMessage(EventId = 5008, Level = LogLevel.Trace, Message = "Import plugin executed: {pluginName}. now: {fileMetadata}")]
+        [LoggerMessage(EventId = 5008, Level = LogLevel.Trace, Message = "InputDataPlugInEngine: {pluginName} executed. fileMetadata now: {fileMetadata}")]
+        public static partial void ExecutedInputDataPlugIn(this ILogger logger, string pluginName, string fileMetadata);
+
+        [LoggerMessage(EventId = 5009, Level = LogLevel.Trace, Message = "Import plugin executed: {pluginName}. now: {fileMetadata}")]
         public static partial void InputDataPlugInEngineexecuted(this ILogger logger, string pluginName, string fileMetadata);
     }
 }

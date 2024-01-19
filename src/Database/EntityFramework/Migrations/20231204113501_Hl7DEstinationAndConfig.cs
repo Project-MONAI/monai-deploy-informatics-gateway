@@ -7,6 +7,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     public partial class Hl7DEstinationAndConfig : Migration
     {
+        private static readonly string[] HL7DestinationEntitiesColumns = ["Name", "AeTitle", "HostIp", "Port"];
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -58,7 +60,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_source_all_HL7Destination",
                 table: "HL7DestinationEntities",
-                columns: new[] { "Name", "AeTitle", "HostIp", "Port" },
+                columns: HL7DestinationEntitiesColumns,
                 unique: true);
         }
 

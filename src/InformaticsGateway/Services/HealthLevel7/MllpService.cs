@@ -78,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 
         public MllpService(IServiceScopeFactory serviceScopeFactory, IOptions<InformaticsGatewayConfiguration> configuration)
         {
-            ArgumentNullException.ThrowIfNull(nameof(serviceScopeFactory));
+            ArgumentNullException.ThrowIfNull(serviceScopeFactory, nameof(serviceScopeFactory));
 
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
 
@@ -189,7 +189,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                         await _inputHL7DataPlugInEngine.ExecutePlugInsAsync(message, hl7Filemetadata, configItem).ConfigureAwait(false);
                         newMessage = await _mIIpExtract.ExtractInfo(hl7Filemetadata, message, configItem).ConfigureAwait(false);
 
-                        _logger.LogTrace(message: $"HL7 message after plug-in processing: {newMessage.HL7Message} correlationId: {hl7Filemetadata.CorrelationId}");
+                        _logger.HL7MessageAfterPluginProcessing(newMessage.HL7Message, hl7Filemetadata.CorrelationId);
                     }
                     _logger.Hl7MessageReceieved(newMessage.HL7Message);
                     await hl7Filemetadata.SetDataStream(newMessage.HL7Message, _configuration.Value.Storage.TemporaryDataStorage, _fileSystem, _configuration.Value.Storage.LocalTemporaryStoragePath).ConfigureAwait(false);

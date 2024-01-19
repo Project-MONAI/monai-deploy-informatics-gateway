@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
@@ -28,17 +27,11 @@ using Monai.Deploy.InformaticsGateway.Logging;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Common
 {
-    public class InputHL7DataPlugInEngine : IInputHL7DataPlugInEngine
+    public class InputHL7DataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputHL7DataPlugInEngine> logger) : IInputHL7DataPlugInEngine
     {
-        private readonly IServiceProvider _serviceProvider;
-        private readonly ILogger<InputHL7DataPlugInEngine> _logger;
+        private readonly IServiceProvider _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
+        private readonly ILogger<InputHL7DataPlugInEngine> _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         private IReadOnlyList<IInputHL7DataPlugIn>? _plugsins;
-
-        public InputHL7DataPlugInEngine(IServiceProvider serviceProvider, ILogger<InputHL7DataPlugInEngine> logger)
-        {
-            _serviceProvider = serviceProvider ?? throw new ArgumentNullException(nameof(serviceProvider));
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        }
 
         public void Configure(IReadOnlyList<string> pluginAssemblies)
         {
@@ -47,7 +40,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
         public async Task<Tuple<Message, FileStorageMetadata>> ExecutePlugInsAsync(Message hl7File, FileStorageMetadata fileMetadata, Hl7ApplicationConfigEntity? configItem)
         {
-            if (configItem?.PlugInAssemblies is not null && configItem.PlugInAssemblies.Any())
+            if (configItem?.PlugInAssemblies is not null && configItem.PlugInAssemblies.Count is not 0)
             {
                 if (_plugsins == null)
                 {
@@ -56,7 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
 
                 foreach (var plugin in _plugsins)
                 {
-                    if (configItem is not null && configItem.PlugInAssemblies.Exists(a => a.StartsWith(plugin.ToString()!)))
+                    if (configItem.PlugInAssemblies.Exists(a => a.StartsWith(plugin.ToString()!)))
                     {
                         _logger.ExecutingInputDataPlugIn(plugin.Name);
                         (hl7File, fileMetadata) = await plugin.ExecuteAsync(hl7File, fileMetadata).ConfigureAwait(false);
@@ -66,7 +59,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
             return new Tuple<Message, FileStorageMetadata>(hl7File, fileMetadata);
         }
 
-        private IReadOnlyList<IInputHL7DataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
+        private List<IInputHL7DataPlugIn> LoadPlugIns(IServiceProvider serviceProvider, IReadOnlyList<string> pluginAssemblies)
         {
             var exceptions = new List<Exception>();
             var list = new List<IInputHL7DataPlugIn>();
@@ -83,7 +76,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Common
                 }
             }
 
-            if (exceptions.Any())
+            if (exceptions.Count is not 0)
             {
                 throw new AggregateException("Error loading plug-in(s).", exceptions);
             }

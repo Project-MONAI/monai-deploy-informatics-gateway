@@ -66,8 +66,7 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
 
             var valid = true;
             valid &= !string.IsNullOrWhiteSpace(hl7destinationEntity.Name);
-            valid &= IsAeTitleValid(hl7destinationEntity.GetType().Name, hl7destinationEntity.AeTitle, validationErrors);
-            valid &= IsValidHostNameIp(hl7destinationEntity.AeTitle, hl7destinationEntity.HostIp, validationErrors);
+            valid &= IsValidHostNameIp(hl7destinationEntity.Name, hl7destinationEntity.HostIp, validationErrors);
             valid &= IsPortValid(hl7destinationEntity.GetType().Name, hl7destinationEntity.Port, validationErrors);
 
             return valid;

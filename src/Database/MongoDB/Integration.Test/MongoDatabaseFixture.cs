@@ -69,11 +69,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var collection = Database.GetCollection<HL7DestinationEntity>(nameof(HL7DestinationEntity));
             Clear(collection);
-            var aet1 = new HL7DestinationEntity { AeTitle = "AET1", HostIp = "1.2.3.4", Port = 114, Name = "AET1", DateTimeCreated = DateTime.UtcNow };
-            var aet2 = new HL7DestinationEntity { AeTitle = "AET2", HostIp = "1.2.3.4", Port = 114, Name = "AET2", DateTimeCreated = DateTime.UtcNow };
-            var aet3 = new HL7DestinationEntity { AeTitle = "AET3", HostIp = "1.2.3.4", Port = 114, Name = "AET3", DateTimeCreated = DateTime.UtcNow };
-            var aet4 = new HL7DestinationEntity { AeTitle = "AET4", HostIp = "1.2.3.4", Port = 114, Name = "AET4", DateTimeCreated = DateTime.UtcNow };
-            var aet5 = new HL7DestinationEntity { AeTitle = "AET5", HostIp = "1.2.3.4", Port = 114, Name = "AET5", DateTimeCreated = DateTime.UtcNow };
+            var aet1 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET1", DateTimeCreated = DateTime.UtcNow };
+            var aet2 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET2", DateTimeCreated = DateTime.UtcNow };
+            var aet3 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET3", DateTimeCreated = DateTime.UtcNow };
+            var aet4 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET4", DateTimeCreated = DateTime.UtcNow };
+            var aet5 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET5", DateTimeCreated = DateTime.UtcNow };
 
             collection.InsertOne(aet1);
             collection.InsertOne(aet2);

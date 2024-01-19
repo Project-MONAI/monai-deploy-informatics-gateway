@@ -35,7 +35,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends curl \
- && apt-get install -y libc-dev                                                  # this is a workaround for Mongo encryption library
+ && apt-get install -y libc6-dev=2.35-0ubuntu3.6                          # this is a workaround for Mongo encryption library
 RUN rm -rf /var/lib/apt/lists
 
 
