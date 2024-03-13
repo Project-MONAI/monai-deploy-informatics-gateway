@@ -27,6 +27,7 @@ RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deplo
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy
+RUN adduser --system --group --no-create-home appuser
 
 # Enable elastic client compatibility mode
 ENV ELASTIC_CLIENT_APIVERSIONING=true
@@ -35,13 +36,16 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends curl \
- && apt-get install -y libc6-dev=2.35-0ubuntu3.6                          # this is a workaround for Mongo encryption library
-RUN rm -rf /var/lib/apt/lists
+ && apt-get install -y libc6-dev=2.35-0ubuntu3.6 \
+ && rm -rf /var/lib/apt/lists                           # this is a workaround for Mongo encryption library
+
 
 
 
 
 WORKDIR /opt/monai/ig
+
+RUN chown -R appuser:appuser /opt/monai/ig
 
 COPY --from=build /app/out .
 COPY --from=build /tools /opt/dotnetcore-tools
@@ -58,5 +62,7 @@ HEALTHCHECK --interval=10s --retries=10 CMD curl --fail http://localhost:5000/he
 
 RUN ls -lR /opt/monai/ig
 ENV PATH="/opt/dotnetcore-tools:${PATH}"
+
+USER appuser
 
 ENTRYPOINT ["/opt/monai/ig/Monai.Deploy.InformaticsGateway"]
