@@ -433,13 +433,26 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Scan image with Azure Container Scan
-        env:
-          TRIVY_TIMEOUT_SEC: 360s
-        uses: Azure/container-scan@v0.1
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
-          image-name: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          image-ref: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL'
+
+      - name: Run dockle scan
+        id: dockle-scan
+        uses: goodwithtech/dockle-action@main
+        if: ${{ (matrix.os == 'ubuntu-latest') }}
+        with:
+          image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
+          format: 'list'
+          exit-code: '1'
+          exit-level: 'warn'
 
       - name: Anchore container scan
         id: anchore-scan
@@ -450,7 +463,7 @@ jobs:
           fail-build: true
           severity-cutoff: critical
 
-      - name: Upload Anchore scan SARIF report
+      - name: Upload scan SARIF report
         uses: github/codeql-action/upload-sarif@v2
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
