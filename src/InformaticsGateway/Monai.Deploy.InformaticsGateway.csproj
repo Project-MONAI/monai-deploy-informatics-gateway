@@ -35,7 +35,7 @@
   <ItemGroup>
     <PackageReference Include="DotNext.Threading" Version="4.15.2" />
     <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.0" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.2" />
     <PackageReference Include="Monai.Deploy.Security" Version="1.0.0" />
     <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="1.0.0" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.8" />
