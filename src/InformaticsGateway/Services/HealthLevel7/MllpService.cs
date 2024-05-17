@@ -221,7 +221,7 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                 {
                     try
                     {
-                        pluginAssemblies.AddRange(config.PlugInAssemblies.Where(p => pluginAssemblies.Contains(p) is false));
+                        pluginAssemblies.AddRange(config.PlugInAssemblies.Where(p => string.IsNullOrWhiteSpace(p) is false && pluginAssemblies.Contains(p) is false));
                     }
                     catch (Exception ex)
                     {
