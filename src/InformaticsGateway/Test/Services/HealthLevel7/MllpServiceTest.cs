@@ -366,5 +366,49 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
             _mIIpExtract.Verify(p => p.ExtractInfo(It.IsAny<Hl7FileStorageMetadata>(), It.IsAny<Message>(), It.IsAny<Hl7ApplicationConfigEntity>()), Times.Exactly(3));
         }
+
+        [RetryFact(10, 250)]
+        public async Task GivenATcpClientWithHl7Messages_ShouldntAdddBlankPlugin()
+        {
+            var checkEvent = new ManualResetEventSlim();
+            var client = new Mock<IMllpClient>();
+            _mIIpExtract.Setup(e => e.ExtractInfo(It.IsAny<Hl7FileStorageMetadata>(), It.IsAny<Message>(), It.IsAny<Hl7ApplicationConfigEntity>()))
+                .ReturnsAsync((Hl7FileStorageMetadata meta, Message Msg, Hl7ApplicationConfigEntity configItem) => Msg);
+
+            _hl7ApplicationConfigRepository.Setup(p => p.GetAllAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<Hl7ApplicationConfigEntity> { new Hl7ApplicationConfigEntity {
+                    PlugInAssemblies = [""]
+                } });
+
+            _mllpClientFactory.Setup(p => p.CreateClient(It.IsAny<ITcpClientAdapter>(), It.IsAny<Hl7Configuration>(), It.IsAny<ILogger<MllpClient>>()))
+                .Returns(() =>
+                {
+                    client.Setup(p => p.Start(It.IsAny<Func<IMllpClient, MllpClientResult, Task>>(), It.IsAny<CancellationToken>()))
+                        .Callback<Func<IMllpClient, MllpClientResult, Task>, CancellationToken>((action, cancellationToken) =>
+                        {
+                            var results = new MllpClientResult(
+                                 new List<HL7.Dotnetcore.Message>
+                                 {
+                                     new("")
+                                 }, null);
+                            action(client.Object, results);
+                            checkEvent.Set();
+                            _cancellationTokenSource.Cancel();
+                        });
+                    client.Setup(p => p.Dispose());
+                    client.SetupGet(p => p.ClientId).Returns(Guid.NewGuid());
+                    return client.Object;
+                });
+
+            _tcpListener.Setup(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()))
+                .Returns(ValueTask.FromResult((new Mock<ITcpClientAdapter>()).Object));
+
+            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            _ = service.StartAsync(_cancellationTokenSource.Token);
+
+            Assert.True(checkEvent.Wait(3000));
+            await Task.Delay(500).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _hl7DataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Never());
+        }
     }
 }
