@@ -321,6 +321,7 @@
   - Microsoft.Extensions.Configuration.Binder
   - :versions:
       - 6.0.0
+      - 8.0.0
       - 8.0.1
     :when: 2022-08-16T23:05:56.869Z
     :who: mocsharp
@@ -1440,6 +1441,7 @@
   - System.Threading.Channels
   - :versions:
       - 6.0.0
+      - 7.0.0
       - 8.0.0
     :when: 2022-08-16T21:40:19.306Z
     :who: mocsharp
@@ -1712,7 +1714,7 @@
 - - :approve
   - xunit.runner.visualstudio
   - :versions:
-      - 2.5.6
+      - 2.8.1
     :when: 2022-08-16T21:40:32.294Z
     :who: mocsharp
     :why: MIT ( https://licenses.nuget.org/MIT)
