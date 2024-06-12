@@ -315,7 +315,7 @@ jobs:
       MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest]
+        os: [ubuntu-latest]
       fail-fast: true
 
     outputs:
