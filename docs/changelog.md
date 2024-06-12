@@ -17,6 +17,12 @@
 
 # Changelog
 
+## 0.5.0
+[GitHub Milestone 0.5.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/4)
+
+- gh-506 Updated Informatics Gateway to .NET 8.0
+- Improve logging
+
 ## 0.4.0
 
 [GitHub Milestone 0.4.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/5)

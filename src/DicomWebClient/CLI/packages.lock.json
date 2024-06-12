@@ -14,14 +14,14 @@
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
-        "requested": "[8.0.2, )",
-        "resolved": "8.0.2",
-        "contentHash": "hKTrehpfVzOhAz0mreaTAZgbz0DrMEbWq4n3hAo8Ks6WdxdqQhNPvzOqn9VygKuWf1bmxPdraqzTaXriO/sn0A=="
+        "requested": "[8.0.6, )",
+        "resolved": "8.0.6",
+        "contentHash": "E+lDylsTeP4ZiDmnEkiJ5wobnGaIJzFhOgZppznJCb69UZgbh6G3cfv1pnLDLLBx6JAgl0kAlnINDeT3uCuczQ=="
       },
       "Ardalis.GuardClauses": {
         "type": "Transitive",
-        "resolved": "4.3.0",
-        "contentHash": "5KQ6zQDNRduora6L8lGQcRikLNLj0s4XjctGuUX24uBRzHMMKv6BatVDSBWRs96riz7PJj7Efn3yOFhfYXgnWg=="
+        "resolved": "4.5.0",
+        "contentHash": "9ajMCMD3gIWUsVb//ftJFsFm+TDvP3y05dVC1S9ANLP4Bo7V2xbCeQbTVomXR0mTYkX4mX6Lp3SPtdcKag4rZg=="
       },
       "CommunityToolkit.HighPerformance": {
         "type": "Transitive",
@@ -375,7 +375,7 @@
       "monai.deploy.informaticsgateway.client.common": {
         "type": "Project",
         "dependencies": {
-          "Ardalis.GuardClauses": "[4.3.0, )"
+          "Ardalis.GuardClauses": "[4.5.0, )"
         }
       },
       "monai.deploy.informaticsgateway.dicomweb.client": {

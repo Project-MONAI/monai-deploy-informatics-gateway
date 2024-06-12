@@ -4,37 +4,37 @@
     "net8.0": {
       "Ardalis.GuardClauses": {
         "type": "Direct",
-        "requested": "[4.3.0, )",
-        "resolved": "4.3.0",
-        "contentHash": "5KQ6zQDNRduora6L8lGQcRikLNLj0s4XjctGuUX24uBRzHMMKv6BatVDSBWRs96riz7PJj7Efn3yOFhfYXgnWg=="
+        "requested": "[4.5.0, )",
+        "resolved": "4.5.0",
+        "contentHash": "9ajMCMD3gIWUsVb//ftJFsFm+TDvP3y05dVC1S9ANLP4Bo7V2xbCeQbTVomXR0mTYkX4mX6Lp3SPtdcKag4rZg=="
       },
       "Microsoft.NET.ILLink.Tasks": {
         "type": "Direct",
-        "requested": "[8.0.2, )",
-        "resolved": "8.0.2",
-        "contentHash": "hKTrehpfVzOhAz0mreaTAZgbz0DrMEbWq4n3hAo8Ks6WdxdqQhNPvzOqn9VygKuWf1bmxPdraqzTaXriO/sn0A=="
+        "requested": "[8.0.6, )",
+        "resolved": "8.0.6",
+        "contentHash": "E+lDylsTeP4ZiDmnEkiJ5wobnGaIJzFhOgZppznJCb69UZgbh6G3cfv1pnLDLLBx6JAgl0kAlnINDeT3uCuczQ=="
       },
       "System.IO.Abstractions": {
         "type": "Direct",
-        "requested": "[20.0.4, )",
-        "resolved": "20.0.4",
-        "contentHash": "Vv3DffYCM/DEQ7+9Dn7ydq852WSVtdeoLNlztIqaMAl4o6aALyAJQRTQ30d/3D7BVf5pALsGm22HYb4Y6h8xvw==",
+        "requested": "[21.0.2, )",
+        "resolved": "21.0.2",
+        "contentHash": "ewYQGK0kzOpfiYCF0P0nqPAnKqGhqiXAWDFeMtQtwJyERA2s7nLx7KEALwDvIFjZvX6677IsPREoLIU9oBOQvA==",
         "dependencies": {
-          "TestableIO.System.IO.Abstractions": "20.0.4",
-          "TestableIO.System.IO.Abstractions.Wrappers": "20.0.4"
+          "TestableIO.System.IO.Abstractions": "21.0.2",
+          "TestableIO.System.IO.Abstractions.Wrappers": "21.0.2"
         }
       },
       "TestableIO.System.IO.Abstractions": {
         "type": "Transitive",
-        "resolved": "20.0.4",
-        "contentHash": "zvuE3an8qmEjlz72ZKyW/gBZprR0TMTDxuw77i1OXi5wEagXRhHwP4lOaLvHIXNlwyCAmdmei6iLHsfsZcuUAA=="
+        "resolved": "21.0.2",
+        "contentHash": "ViPtOy4lAlmWq9GDEwiE5C9XSgDGHUWMRvVvruI38pbikUXkgu7xnCVW7PYdQOjS+iWWcQHt+U7oyPedfnWSHg=="
       },
       "TestableIO.System.IO.Abstractions.Wrappers": {
         "type": "Transitive",
-        "resolved": "20.0.4",
-        "contentHash": "LbVaZauZfCkcGmHyPhQ2yiKv5GQqTvMViPYd3NjU1tGxp0N2p7Oc6Q/2trN6ZNIZCr42ujJdYUB63hE4mtsHRQ==",
+        "resolved": "21.0.2",
+        "contentHash": "ii6Xgru3ozRaLezwE/lKAPTdE3ES+S3P3ul+QrMxIP10GN+LF0JAi4aWqb8lxzEAwBMSAeK/QipEpVt4KYlTOg==",
         "dependencies": {
-          "TestableIO.System.IO.Abstractions": "20.0.4"
+          "TestableIO.System.IO.Abstractions": "21.0.2"
         }
       }
     }

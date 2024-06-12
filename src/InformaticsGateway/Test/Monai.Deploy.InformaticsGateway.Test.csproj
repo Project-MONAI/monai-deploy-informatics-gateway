@@ -28,16 +28,16 @@
     <Content Include="xunit.runner.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="coverlet.collector" Version="6.0.0">
+    <PackageReference Include="coverlet.collector" Version="6.0.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
     <PackageReference Include="Moq" Version="4.20.70" />
-    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="20.0.4" />
+    <PackageReference Include="System.IO.Abstractions.TestingHelpers" Version="21.0.2" />
     <PackageReference Include="xRetry" Version="1.9.0" />
-    <PackageReference Include="xunit" Version="2.6.5" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.6">
+    <PackageReference Include="xunit" Version="2.8.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.1">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
@@ -61,7 +61,7 @@
   </ItemGroup>
   <Target Name="CopyPluginsBuild" AfterTargets="Build">
     <ItemGroup>
-      <PluginDlls Include="$(OutDir)Monai.Deploy.InformaticsGateway.Test.PlugIns.dll;$(OutDir)Monai.Deploy.InformaticsGateway.Test.dll;$(OutDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll;" />
+      <PluginDlls Include="$(OutDir)Monai.Deploy.InformaticsGateway.Test.PlugIns.dll;$(OutDir)Monai.Deploy.InformaticsGateway.Test.dll;$(OutDir)Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.dll;$(OutDir)Monai.Deploy.Storage.MinIO.dll;$(OutDir)Monai.Deploy.Messaging.RabbitMQ.dll;" />
     </ItemGroup>
     <Copy SourceFiles="@(PluginDlls)" DestinationFolder="$(OutDir)\plug-ins\" SkipUnchangedFiles="true" />
     <Message Text="Files copied successfully to $(OutDir)\plug-ins\." Importance="high" />
