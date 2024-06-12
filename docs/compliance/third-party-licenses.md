@@ -60,15 +60,15 @@ SOFTWARE.
 
 
 <details>
-<summary>AWSSDK.Core 3.7.300.29</summary>
+<summary>AWSSDK.Core 3.7.304.15</summary>
 
 ## AWSSDK.Core
 
-- Version: 3.7.300.29
+- Version: 3.7.304.15
 - Authors: Amazon Web Services
 - Owners: Amazon Web Services
 - Project URL: https://github.com/aws/aws-sdk-net/
-- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.Core/3.7.300.29)
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.Core/3.7.304.15)
 - License: [Apache-2.0](https://github.com/aws/aws-sdk-net/raw/master/License.txt)
 
 
@@ -206,15 +206,15 @@ END OF TERMS AND CONDITIONS
 
 
 <details>
-<summary>AWSSDK.SecurityToken 3.7.300.30</summary>
+<summary>AWSSDK.SecurityToken 3.7.300.105</summary>
 
 ## AWSSDK.SecurityToken
 
-- Version: 3.7.300.30
+- Version: 3.7.300.105
 - Authors: Amazon Web Services
 - Owners: Amazon Web Services
 - Project URL: https://github.com/aws/aws-sdk-net/
-- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.SecurityToken/3.7.300.30)
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.SecurityToken/3.7.300.105)
 - License: [Apache-2.0](https://github.com/aws/aws-sdk-net/raw/master/License.txt)
 
 
@@ -279,14 +279,14 @@ END OF TERMS AND CONDITIONS
 
 
 <details>
-<summary>Ardalis.GuardClauses 4.3.0</summary>
+<summary>Ardalis.GuardClauses 4.5.0</summary>
 
 ## Ardalis.GuardClauses
 
-- Version: 4.3.0
+- Version: 4.5.0
 - Authors: Steve Smith (@ardalis)
 - Project URL: https://github.com/ardalis/guardclauses
-- Source: [NuGet](https://www.nuget.org/packages/Ardalis.GuardClauses/4.3.0)
+- Source: [NuGet](https://www.nuget.org/packages/Ardalis.GuardClauses/4.5.0)
 - License: [MIT](https://github.com/ardalis/GuardClauses.Analyzers/raw/master/LICENSE)
 
 
@@ -318,14 +318,14 @@ SOFTWARE.
 
 
 <details>
-<summary>AspNetCore.HealthChecks.MongoDb 8.0.0</summary>
+<summary>AspNetCore.HealthChecks.MongoDb 8.0.1</summary>
 
 ## AspNetCore.HealthChecks.MongoDb
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Xabaril Contributors
 - Project URL: https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
-- Source: [NuGet](https://www.nuget.org/packages/AspNetCore.HealthChecks.MongoDb/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/AspNetCore.HealthChecks.MongoDb/8.0.1)
 - License: [Apache-2.0](https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/raw/master/LICENSE)
 
 
@@ -1144,14 +1144,14 @@ SOFTWARE.
 
 
 <details>
-<summary>DotNext 4.15.2</summary>
+<summary>DotNext 5.3.1</summary>
 
 ## DotNext
 
-- Version: 4.15.2
+- Version: 5.3.1
 - Authors: .NET Foundation and Contributors
 - Project URL: https://dotnet.github.io/dotNext/
-- Source: [NuGet](https://www.nuget.org/packages/DotNext/4.15.2)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext/5.3.1)
 - License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
 
 
@@ -1183,14 +1183,14 @@ SOFTWARE.
 
 
 <details>
-<summary>DotNext.Threading 4.15.2</summary>
+<summary>DotNext.Threading 5.5.0</summary>
 
 ## DotNext.Threading
 
-- Version: 4.15.2
+- Version: 5.5.0
 - Authors: .NET Foundation and Contributors
 - Project URL: https://dotnet.github.io/dotNext/
-- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/4.15.2)
+- Source: [NuGet](https://www.nuget.org/packages/DotNext.Threading/5.5.0)
 - License: [MIT](https://github.com/dotnet/dotNext/raw/master/LICENSE)
 
 
@@ -1443,9 +1443,9 @@ third-party archives.
 
 
 ```
-The MIT License (MIT)
+MIT License
 
-Copyright (c) Cucumber Ltd, Gaspar Nagy, Björn Rasmusson, Peter Sergeant
+Copyright (c) M.P. Korstanje
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1454,16 +1454,16 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -1517,7 +1517,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 - Authors: Mehdi Khalili, Claire Novotny
 - Project URL: https://github.com/Humanizr/Humanizer
 - Source: [NuGet](https://www.nuget.org/packages/Humanizer.Core/2.14.1)
-- License: [MIT](https://github.com/Humanizr/Humanizer/raw/main/LICENSE)
+- License: [MIT](https://raw.githubusercontent.com/Humanizr/Humanizer/v2.14.1/LICENSE)
 
 
 ```
@@ -2829,14 +2829,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.CodeCoverage 17.8.0</summary>
+<summary>Microsoft.CodeCoverage 17.10.0</summary>
 
 ## Microsoft.CodeCoverage
 
-- Version: 17.8.0
+- Version: 17.10.0
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.8.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.10.0)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
@@ -2866,14 +2866,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Data.Sqlite.Core 8.0.0</summary>
+<summary>Microsoft.Data.Sqlite.Core 8.0.6</summary>
 
 ## Microsoft.Data.Sqlite.Core
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/dotnet/standard/data/sqlite/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -2907,14 +2907,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -2948,14 +2948,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Abstractions 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore.Abstractions 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore.Abstractions
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -2989,14 +2989,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Analyzers 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore.Analyzers 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore.Analyzers
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3030,14 +3030,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Design 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore.Design 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore.Design
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3071,14 +3071,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.InMemory 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore.InMemory 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore.InMemory
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3112,14 +3112,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Relational 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore.Relational 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore.Relational
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3153,14 +3153,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3194,14 +3194,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite.Core
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3235,14 +3235,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Tools 8.0.0</summary>
+<summary>Microsoft.EntityFrameworkCore.Tools 8.0.6</summary>
 
 ## Microsoft.EntityFrameworkCore.Tools
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Tools/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Tools/8.0.6)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 
 
@@ -3653,6 +3653,47 @@ SOFTWARE.
 - Authors: Microsoft
 - Project URL: https://dot.net/
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Binder/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.Extensions.Configuration.Binder 8.0.1</summary>
+
+## Microsoft.Extensions.Configuration.Binder
+
+- Version: 8.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Binder/8.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -4178,14 +4219,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.DependencyInjection.Abstractions 8.0.0</summary>
+<summary>Microsoft.Extensions.DependencyInjection.Abstractions 8.0.1</summary>
 
 ## Microsoft.Extensions.DependencyInjection.Abstractions
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection.Abstractions/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection.Abstractions/8.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -4342,14 +4383,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks 8.0.0</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks 8.0.6</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks/8.0.6)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -4383,14 +4424,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions 8.0.0</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions 8.0.6</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions/8.0.6)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -4424,14 +4465,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore 8.0.0</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore 8.0.6</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
 
-- Version: 8.0.0
+- Version: 8.0.6
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore/8.0.6)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -5039,14 +5080,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Logging.Abstractions 8.0.0</summary>
+<summary>Microsoft.Extensions.Logging.Abstractions 8.0.1</summary>
 
 ## Microsoft.Extensions.Logging.Abstractions
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/8.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -5367,14 +5408,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Options 8.0.0</summary>
+<summary>Microsoft.Extensions.Options 8.0.2</summary>
 
 ## Microsoft.Extensions.Options
 
-- Version: 8.0.0
+- Version: 8.0.2
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Options/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Options/8.0.2)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -5847,14 +5888,178 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.NET.Test.Sdk 17.8.0</summary>
+<summary>Microsoft.NET.ILLink.Tasks 8.0.1</summary>
+
+## Microsoft.NET.ILLink.Tasks
+
+- Version: 8.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.1)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.NET.ILLink.Tasks 8.0.2</summary>
+
+## Microsoft.NET.ILLink.Tasks
+
+- Version: 8.0.2
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.2)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.NET.ILLink.Tasks 8.0.3</summary>
+
+## Microsoft.NET.ILLink.Tasks
+
+- Version: 8.0.3
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.3)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.NET.ILLink.Tasks 8.0.6</summary>
+
+## Microsoft.NET.ILLink.Tasks
+
+- Version: 8.0.6
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.6)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>Microsoft.NET.Test.Sdk 17.10.0</summary>
 
 ## Microsoft.NET.Test.Sdk
 
-- Version: 17.8.0
+- Version: 17.10.0
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.8.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.10.0)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
@@ -6573,10 +6778,10 @@ specific language governing permissions and limitations under the License.
 
 ## Microsoft.OpenApi
 
-- Version: 1.2.3
+- Version: 1.6.14
 - Authors: Microsoft
 - Project URL: https://github.com/Microsoft/OpenAPI.NET
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.OpenApi/1.2.3)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.OpenApi/1.6.14)
 - License: [MIT]( https://raw.githubusercontent.com/Microsoft/OpenAPI.NET/master/LICENSE)
 
 
@@ -6608,14 +6813,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.TestPlatform.ObjectModel 17.8.0</summary>
+<summary>Microsoft.TestPlatform.ObjectModel 17.10.0</summary>
 
 ## Microsoft.TestPlatform.ObjectModel
 
-- Version: 17.8.0
+- Version: 17.10.0
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.8.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.10.0)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
@@ -6645,14 +6850,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.TestPlatform.TestHost 17.8.0</summary>
+<summary>Microsoft.TestPlatform.TestHost 17.10.0</summary>
 
 ## Microsoft.TestPlatform.TestHost
 
-- Version: 17.8.0
+- Version: 17.10.0
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.8.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.10.0)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
@@ -7022,14 +7227,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Minio 6.0.1</summary>
+<summary>Minio 6.0.2</summary>
 
 ## Minio
 
-- Version: 6.0.1
+- Version: 6.0.2
 - Authors: MinIO, Inc.
 - Project URL: https://github.com/minio/minio-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/Minio/6.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/Minio/6.0.2)
 - License: [Apache-2.0](https://github.com/minio/minio-dotnet/raw/master/LICENSE)
 
 
@@ -7241,14 +7446,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging 2.0.0</summary>
+<summary>Monai.Deploy.Messaging 2.0.3</summary>
 
 ## Monai.Deploy.Messaging
 
-- Version: 2.0.0
+- Version: 2.0.3
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/2.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/2.0.3)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7469,14 +7674,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Messaging.RabbitMQ 2.0.0</summary>
+<summary>Monai.Deploy.Messaging.RabbitMQ 2.0.3</summary>
 
 ## Monai.Deploy.Messaging.RabbitMQ
 
-- Version: 2.0.0
+- Version: 2.0.3
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/2.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/2.0.3)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7925,14 +8130,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage 1.0.0</summary>
+<summary>Monai.Deploy.Storage 1.0.1</summary>
 
 ## Monai.Deploy.Storage
 
-- Version: 1.0.0
+- Version: 1.0.1
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/1.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/1.0.1)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8153,14 +8358,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.MinIO 1.0.0</summary>
+<summary>Monai.Deploy.Storage.MinIO 1.0.1</summary>
 
 ## Monai.Deploy.Storage.MinIO
 
-- Version: 1.0.0
+- Version: 1.0.1
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/1.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/1.0.1)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8381,14 +8586,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.S3Policy 1.0.0</summary>
+<summary>Monai.Deploy.Storage.S3Policy 1.0.1</summary>
 
 ## Monai.Deploy.Storage.S3Policy
 
-- Version: 1.0.0
+- Version: 1.0.1
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/1.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/1.0.1)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8609,14 +8814,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>MongoDB.Bson 2.23.1</summary>
+<summary>MongoDB.Bson 2.25.0</summary>
 
 ## MongoDB.Bson
 
-- Version: 2.23.1
+- Version: 2.25.0
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Bson/2.23.1)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Bson/2.25.0)
 - License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 
 
@@ -8828,14 +9033,14 @@ Apache License
 
 
 <details>
-<summary>MongoDB.Driver 2.23.1</summary>
+<summary>MongoDB.Driver 2.25.0</summary>
 
 ## MongoDB.Driver
 
-- Version: 2.23.1
+- Version: 2.25.0
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver/2.23.1)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver/2.25.0)
 - License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 
 
@@ -9047,14 +9252,14 @@ Apache License
 
 
 <details>
-<summary>MongoDB.Driver.Core 2.23.1</summary>
+<summary>MongoDB.Driver.Core 2.25.0</summary>
 
 ## MongoDB.Driver.Core
 
-- Version: 2.23.1
+- Version: 2.25.0
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver.Core/2.23.1)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver.Core/2.25.0)
 - License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 
 
@@ -9266,14 +9471,14 @@ Apache License
 
 
 <details>
-<summary>MongoDB.Libmongocrypt 1.8.0</summary>
+<summary>MongoDB.Libmongocrypt 1.8.2</summary>
 
 ## MongoDB.Libmongocrypt
 
-- Version: 1.8.0
+- Version: 1.8.2
 - Authors: MongoDB Inc.
 - Project URL: http://www.mongodb.org/display/DOCS/CSharp+Language+Center
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Libmongocrypt/1.8.0)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Libmongocrypt/1.8.2)
 - License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 
 
@@ -9779,14 +9984,14 @@ consequential or other damages.
 
 
 <details>
-<summary>NLog 5.2.8</summary>
+<summary>NLog 5.3.2</summary>
 
 ## NLog
 
-- Version: 5.2.8
+- Version: 5.3.2
 - Authors: Jarek Kowalski,Kim Christensen,Julian Verdurmen
 - Project URL: https://nlog-project.org/
-- Source: [NuGet](https://www.nuget.org/packages/NLog/5.2.8)
+- Source: [NuGet](https://www.nuget.org/packages/NLog/5.3.2)
 - License: [BSD 3-Clause License](https://github.com/NLog/NLog/raw/dev/LICENSE.txt)
 
 
@@ -9827,14 +10032,14 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>NLog.Extensions.Logging 5.3.8</summary>
+<summary>NLog.Extensions.Logging 5.3.11</summary>
 
 ## NLog.Extensions.Logging
 
-- Version: 5.3.8
+- Version: 5.3.11
 - Authors: Microsoft,Julian Verdurmen
 - Project URL: https://github.com/NLog/NLog.Extensions.Logging
-- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.3.8)
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.3.11)
 - License: [BSD 2-Clause Simplified License](https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
 
 
@@ -9868,14 +10073,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>NLog.Web.AspNetCore 5.3.8</summary>
+<summary>NLog.Web.AspNetCore 5.3.11</summary>
 
 ## NLog.Web.AspNetCore
 
-- Version: 5.3.8
+- Version: 5.3.11
 - Authors: Julian Verdurmen
 - Project URL: https://github.com/NLog/NLog.Web
-- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.3.8)
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.3.11)
 - License: [BSD 3-Clause License](https://github.com/NLog/NLog.Web/raw/master/LICENSE)
 
 
@@ -10024,14 +10229,14 @@ specific language governing permissions and limitations under the License.
 
 
 <details>
-<summary>Polly 8.2.1</summary>
+<summary>Polly 8.2.0</summary>
 
 ## Polly
 
-- Version: 8.2.1
+- Version: 8.2.0
 - Authors: Michael Wolfenden, App vNext
 - Project URL: https://github.com/App-vNext/Polly
-- Source: [NuGet](https://www.nuget.org/packages/Polly/8.2.1)
+- Source: [NuGet](https://www.nuget.org/packages/Polly/8.2.0)
 - License: [MIT]( https://licenses.nuget.org/MIT)
 
 
@@ -10079,14 +10284,124 @@ Data pulled from spdx/license-list-data on February 9, 2023.
 
 
 <details>
-<summary>Polly.Core 8.2.1</summary>
+<summary>Polly 8.4.0</summary>
+
+## Polly
+
+- Version: 8.4.0
+- Authors: Michael Wolfenden, App vNext
+- Project URL: https://github.com/App-vNext/Polly
+- Source: [NuGet](https://www.nuget.org/packages/Polly/8.4.0)
+- License: [MIT]( https://licenses.nuget.org/MIT)
+
+
+```
+'MIT' reference
+
+
+
+MIT License
+SPDX identifier
+MIT
+License text
+
+MIT License
+
+
+Copyright (c) <year> <copyright holders>
+         
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
+         associated documentation files (the "Software"), to deal in the Software without restriction,
+         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+         subject to the following conditions:
+The above copyright notice and this permission notice
+          (including the next paragraph)
+         shall be included in all copies or substantial
+         portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+SPDX web page
+
+https://spdx.org/licenses/MIT.html
+
+Notice
+This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
+
+Data pulled from spdx/license-list-data on February 9, 2023.
+```
+
+</details>
+
+
+<details>
+<summary>Polly.Core 8.2.0</summary>
 
 ## Polly.Core
 
-- Version: 8.2.1
+- Version: 8.2.0
 - Authors: Michael Wolfenden, App vNext
 - Project URL: https://github.com/App-vNext/Polly
-- Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.2.1)
+- Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.2.0)
+- License: [MIT]( https://licenses.nuget.org/MIT)
+
+
+```
+'MIT' reference
+
+
+
+MIT License
+SPDX identifier
+MIT
+License text
+
+MIT License
+
+
+Copyright (c) <year> <copyright holders>
+         
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
+         associated documentation files (the "Software"), to deal in the Software without restriction,
+         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
+         subject to the following conditions:
+The above copyright notice and this permission notice
+          (including the next paragraph)
+         shall be included in all copies or substantial
+         portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
+         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
+         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+SPDX web page
+
+https://spdx.org/licenses/MIT.html
+
+Notice
+This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
+
+Data pulled from spdx/license-list-data on February 9, 2023.
+```
+
+</details>
+
+
+<details>
+<summary>Polly.Core 8.4.0</summary>
+
+## Polly.Core
+
+- Version: 8.4.0
+- Authors: Michael Wolfenden, App vNext
+- Project URL: https://github.com/App-vNext/Polly
+- Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.4.0)
 - License: [MIT]( https://licenses.nuget.org/MIT)
 
 
@@ -11607,15 +11922,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>Swashbuckle.AspNetCore 6.5.0</summary>
+<summary>Swashbuckle.AspNetCore 6.6.2</summary>
 
 ## Swashbuckle.AspNetCore
 
-- Version: 6.5.0
-- Authors: Swashbuckle.AspNetCore
-- Owners: Swashbuckle.AspNetCore
+- Version: 6.6.2
+- Authors: domaindrivendev
+- Owners: domaindrivendev
 - Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
-- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore/6.5.0)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore/6.6.2)
 - License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 
 
@@ -11647,14 +11962,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Swashbuckle.AspNetCore.Swagger 6.5.0</summary>
+<summary>Swashbuckle.AspNetCore.Swagger 6.6.2</summary>
 
 ## Swashbuckle.AspNetCore.Swagger
 
-- Version: 6.5.0
-- Authors: Swashbuckle.AspNetCore.Swagger
+- Version: 6.6.2
+- Authors: domaindrivendev
 - Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
-- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.Swagger/6.5.0)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.Swagger/6.6.2)
 - License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 
 
@@ -11686,14 +12001,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Swashbuckle.AspNetCore.SwaggerGen 6.5.0</summary>
+<summary>Swashbuckle.AspNetCore.SwaggerGen 6.6.2</summary>
 
 ## Swashbuckle.AspNetCore.SwaggerGen
 
-- Version: 6.5.0
-- Authors: Swashbuckle.AspNetCore.SwaggerGen
+- Version: 6.6.2
+- Authors: domaindrivendev
 - Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
-- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen/6.5.0)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen/6.6.2)
 - License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 
 
@@ -11725,14 +12040,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Swashbuckle.AspNetCore.SwaggerUI 6.5.0</summary>
+<summary>Swashbuckle.AspNetCore.SwaggerUI 6.6.2</summary>
 
 ## Swashbuckle.AspNetCore.SwaggerUI
 
-- Version: 6.5.0
-- Authors: Swashbuckle.AspNetCore.SwaggerUI
+- Version: 6.6.2
+- Authors: domaindrivendev
 - Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
-- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerUI/6.5.0)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerUI/6.6.2)
 - License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 
 
@@ -16596,14 +16911,14 @@ consequential or other damages.
 
 
 <details>
-<summary>System.IO.Abstractions 20.0.4</summary>
+<summary>System.IO.Abstractions 21.0.2</summary>
 
 ## System.IO.Abstractions
 
-- Version: 20.0.4
+- Version: 21.0.2
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/20.0.4)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/21.0.2)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -16637,14 +16952,14 @@ SOFTWARE.
 
 
 <details>
-<summary>System.IO.Abstractions.TestingHelpers 20.0.4</summary>
+<summary>System.IO.Abstractions.TestingHelpers 21.0.2</summary>
 
 ## System.IO.Abstractions.TestingHelpers
 
-- Version: 20.0.4
+- Version: 21.0.2
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/20.0.4)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/21.0.2)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -17498,14 +17813,14 @@ consequential or other damages.
 
 
 <details>
-<summary>System.IO.Hashing 7.0.0</summary>
+<summary>System.IO.Hashing 8.0.0</summary>
 
 ## System.IO.Hashing
 
-- Version: 7.0.0
+- Version: 8.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/System.IO.Hashing/7.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Hashing/8.0.0)
 - License: [MIT](https://raw.githubusercontent.com/dotnet/runtime/main/LICENSE.TXT)
 
 
@@ -27388,9 +27703,6 @@ corefx/LICENSE.TXT at master · dotnet/corefx · GitHub
 
 
 
-
-
-
 Skip to content
 
 
@@ -27404,6 +27716,7 @@ Skip to content
 
 
 
+Navigation Menu
 
 Toggle navigation
 
@@ -27488,7 +27801,7 @@ Codespaces
 
 
 
-Copilot
+GitHub Copilot
         Write better code with AI
       
 
@@ -27617,8 +27930,6 @@ By Solution
 
 
 
-
-
       DevSecOps
 
     
@@ -27720,6 +28031,65 @@ Repositories
 
 
 
+
+        Enterprise
+        
+
+
+
+
+
+
+
+
+
+
+
+
+Enterprise platform
+        AI-powered developer platform
+      
+
+
+
+
+Available add-ons
+
+
+
+
+
+
+
+Advanced Security
+        Enterprise-grade security features
+      
+
+
+
+
+
+
+
+GitHub Copilot
+        Enterprise-grade AI features
+      
+
+
+
+
+
+
+
+Premium Support
+        Enterprise-grade 24/7 support
+      
+
+
+
+
+
+
 Pricing
 
 
@@ -27765,6 +28135,26 @@ Search code, repositories, users, issues, pull requests...
 
 Clear
  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -27925,7 +28315,6 @@ Dismiss alert
 
 
 
-
     This repository has been archived by the owner on Jan 23, 2023. It is now read-only.
   
 
@@ -27952,13 +28341,13 @@ Public archive
  
 
 Notifications
-
+ You must be signed in to change notification settings
 
 
  
 
 Fork
-    5.1k
+    5k
 
 
 
@@ -27967,8 +28356,10 @@ Fork
 
 
           Star
- 17.8k
+ 17.7k
   
+
+
 
 
 
@@ -28022,6 +28413,7 @@ Additional navigation options
 
 
  
+
 
 
 
@@ -28096,7 +28488,7 @@ Footer
 
 
 
-        © 2024 GitHub, Inc.
+        © 2024 GitHub, Inc.
       
 
 
@@ -29575,14 +29967,14 @@ consequential or other damages.
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions 20.0.4</summary>
+<summary>TestableIO.System.IO.Abstractions 21.0.2</summary>
 
 ## TestableIO.System.IO.Abstractions
 
-- Version: 20.0.4
+- Version: 21.0.2
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/20.0.4)
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/21.0.2)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -29892,14 +30284,14 @@ SOFTWARE.
 
 
 <details>
-<summary>coverlet.collector 6.0.0</summary>
+<summary>coverlet.collector 6.0.2</summary>
 
 ## coverlet.collector
 
-- Version: 6.0.0
+- Version: 6.0.2
 - Authors: tonerdo
 - Project URL: https://github.com/coverlet-coverage/coverlet
-- Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/6.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/6.0.2)
 - License: [MIT](https://github.com/coverlet-coverage/coverlet/raw/master/LICENSE)
 
 
@@ -42696,7 +43088,7 @@ consequential or other damages.
 ```
 MIT License
 
-Copyright (c) 2019-2023 Josh Keegan
+Copyright (c) 2019-2024 Josh Keegan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -42721,13 +43113,13 @@ SOFTWARE.
 
 
 <details>
-<summary>xunit 2.6.5</summary>
+<summary>xunit 2.8.1</summary>
 
 ## xunit
 
-- Version: 2.6.5
+- Version: 2.8.1
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit/2.6.5)
+- Source: [NuGet](https://www.nuget.org/packages/xunit/2.8.1)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -42853,13 +43245,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.analyzers 1.9.0</summary>
+<summary>xunit.analyzers 1.14.0</summary>
 
 ## xunit.analyzers
 
-- Version: 1.9.0
+- Version: 1.14.0
 - Authors: jnewkirk,bradwilson,marcind
-- Source: [NuGet](https://www.nuget.org/packages/xunit.analyzers/1.9.0)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.analyzers/1.14.0)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit.analyzers/master/LICENSE)
 
 
@@ -42884,13 +43276,13 @@ limitations under the License.
 
 
 <details>
-<summary>xunit.assert 2.6.5</summary>
+<summary>xunit.assert 2.8.1</summary>
 
 ## xunit.assert
 
-- Version: 2.6.5
+- Version: 2.8.1
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.assert/2.6.5)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.assert/2.8.1)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -42949,13 +43341,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.core 2.6.5</summary>
+<summary>xunit.core 2.8.1</summary>
 
 ## xunit.core
 
-- Version: 2.6.5
+- Version: 2.8.1
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.core/2.6.5)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.core/2.8.1)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -43014,13 +43406,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.extensibility.core 2.6.5</summary>
+<summary>xunit.extensibility.core 2.8.1</summary>
 
 ## xunit.extensibility.core
 
-- Version: 2.6.5
+- Version: 2.8.1
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.core/2.6.5)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.core/2.8.1)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -43079,13 +43471,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.extensibility.execution 2.6.5</summary>
+<summary>xunit.extensibility.execution 2.8.1</summary>
 
 ## xunit.extensibility.execution
 
-- Version: 2.6.5
+- Version: 2.8.1
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.execution/2.6.5)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.extensibility.execution/2.8.1)
 - License: [Apache-2.0]( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 
 
@@ -43144,13 +43536,13 @@ Both sets of code are covered by the following license:
 
 
 <details>
-<summary>xunit.runner.visualstudio 2.5.6</summary>
+<summary>xunit.runner.visualstudio 2.8.1</summary>
 
 ## xunit.runner.visualstudio
 
-- Version: 2.5.6
+- Version: 2.8.1
 - Authors: jnewkirk,bradwilson
-- Source: [NuGet](https://www.nuget.org/packages/xunit.runner.visualstudio/2.5.6)
+- Source: [NuGet](https://www.nuget.org/packages/xunit.runner.visualstudio/2.8.1)
 - License: [MIT]( https://licenses.nuget.org/MIT)
 
 

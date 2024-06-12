@@ -2,7 +2,7 @@
 - - :approve
   - AWSSDK.Core
   - :versions:
-      - 3.7.300.29
+      - 3.7.304.15
     :when: 2022-08-29T18:11:12.923Z
     :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
@@ -16,21 +16,21 @@
 - - :approve
   - AWSSDK.SecurityToken
   - :versions:
-      - 3.7.300.30
+      - 3.7.300.105
     :when: 2022-08-16T18:11:13.781Z
     :who: mocsharp
     :why: Apache-2.0 (https://github.com/aws/aws-sdk-net/raw/master/License.txt)
 - - :approve
   - Ardalis.GuardClauses
   - :versions:
-      - 4.3.0
+      - 4.5.0
     :when: 2022-08-16T21:39:30.077Z
     :who: mocsharp
     :why: MIT (https://github.com/ardalis/GuardClauses.Analyzers/raw/master/LICENSE)
 - - :approve
   - AspNetCore.HealthChecks.MongoDb
   - :versions:
-      - 8.0.0
+      - 8.0.1
     :when: 2022-12-08T23:37:56.206Z
     :who: mocsharp
     :why: Apache-2.0 (https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/raw/master/LICENSE)
@@ -86,14 +86,14 @@
 - - :approve
   - DotNext
   - :versions:
-      - 4.15.2
+      - 5.3.1
     :when: 2022-09-01T23:05:32.857Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
 - - :approve
   - DotNext.Threading
   - :versions:
-      - 4.15.2
+      - 5.5.0
     :when: 2022-09-01T23:05:33.298Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/dotNext/raw/master/LICENSE)
@@ -124,7 +124,7 @@
       - 2.14.1
     :when: 2022-08-16T23:05:35.500Z
     :who: mocsharp
-    :why: MIT (https://github.com/Humanizr/Humanizer/raw/main/LICENSE)
+    :why: MIT (https://raw.githubusercontent.com/Humanizr/Humanizer/v2.14.1/LICENSE)
 - - :approve
   - Macross.Json.Extensions
   - :versions:
@@ -205,77 +205,77 @@
 - - :approve
   - Microsoft.CodeCoverage
   - :versions:
-      - 17.8.0
+      - 17.10.0
     :when: 2023-08-16T16:49:26.950Z
     :who: woodheadio
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 - - :approve
   - Microsoft.Data.Sqlite.Core
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:49.698Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:50.137Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Abstractions
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:51.008Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Analyzers
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:51.445Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Design
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:51.922Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.InMemory
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:52.375Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Relational
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:52.828Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Tools
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:52.828Z
     :who: ndsouth
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:53.270Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
 - - :approve
   - Microsoft.EntityFrameworkCore.Sqlite.Core
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-16T23:05:53.706Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
@@ -322,6 +322,7 @@
   - :versions:
       - 6.0.0
       - 8.0.0
+      - 8.0.1
     :when: 2022-08-16T23:05:56.869Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
@@ -376,7 +377,7 @@
   - Microsoft.Extensions.DependencyInjection.Abstractions
   - :versions:
       - 6.0.0
-      - 8.0.0
+      - 8.0.1
     :when: 2022-08-16T21:39:41.552Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
@@ -404,21 +405,21 @@
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2023-08-16T16:49:26.950Z
     :who: woodheadio
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2023-08-16T16:49:26.950Z
     :who: woodheadio
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 - - :approve
   - Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
   - :versions:
-      - 8.0.0
+      - 8.0.6
     :when: 2022-08-29T18:11:22.090Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
@@ -474,7 +475,7 @@
   - Microsoft.Extensions.Logging.Abstractions
   - :versions:
       - 6.0.0
-      - 8.0.0
+      - 8.0.1
     :when: 2022-08-16T21:39:44.471Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
@@ -525,7 +526,7 @@
   - Microsoft.Extensions.Options
   - :versions:
       - 6.0.0
-      - 8.0.0
+      - 8.0.2
     :when: 2022-08-16T21:39:46.980Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
@@ -586,14 +587,14 @@
       - 8.0.1
       - 8.0.2
       - 8.0.3
-      - 8.0.5
+      - 8.0.6
     :when: 2022-10-14T23:37:16.793Z
     :who: mocsharp
     :why: MIT (https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 - - :approve
   - Microsoft.NET.Test.Sdk
   - :versions:
-      - 17.8.0
+      - 17.10.0
     :when: 2023-08-16T16:49:26.950Z
     :who: woodheadio
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
@@ -607,7 +608,7 @@
 - - :approve
   - Microsoft.OpenApi
   - :versions:
-      - 1.2.3
+      - 1.6.14
     :when: 2022-08-16T23:06:15.708Z
     :who: mocsharp
     :why: MIT ( https://raw.githubusercontent.com/Microsoft/OpenAPI.NET/master/LICENSE)
@@ -635,14 +636,14 @@
 - - :approve
   - Microsoft.TestPlatform.ObjectModel
   - :versions:
-      - 17.8.0
+      - 17.10.0
     :when: 2023-08-16T16:49:26.950Z
     :who: woodheadio
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 - - :approve
   - Microsoft.TestPlatform.TestHost
   - :versions:
-      - 17.8.0
+      - 17.10.0
     :when: 2023-08-16T16:49:26.950Z
     :who: woodheadio
     :why: MIT (https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
@@ -656,42 +657,42 @@
 - - :approve
   - Minio
   - :versions:
-      - 6.0.1
+      - 6.0.2
     :when: 2022-08-16T18:11:34.443Z
     :who: mocsharp
     :why: Apache-2.0 (https://github.com/minio/minio-dotnet/raw/master/LICENSE)
 - - :approve
   - Monai.Deploy.Messaging
   - :versions:
-      - 2.0.2
+      - 2.0.3
     :when: 2023-10-13T18:06:21.511Z
     :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 - - :approve
   - Monai.Deploy.Messaging.RabbitMQ
   - :versions:
-      - 2.0.2
+      - 2.0.3
     :when: 2023-10-13T18:06:21.511Z
     :who: neilsouth
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 - - :approve
   - Monai.Deploy.Storage
   - :versions:
-      - 1.0.0
+      - 1.0.1
     :when: 2022-08-16T23:06:21.988Z
     :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 - - :approve
   - Monai.Deploy.Storage.MinIO
   - :versions:
-      - 1.0.0
+      - 1.0.1
     :when: 2022-08-16T23:06:22.426Z
     :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 - - :approve
   - Monai.Deploy.Storage.S3Policy
   - :versions:
-      - 1.0.0
+      - 1.0.1
     :when: 2022-08-16T23:06:22.881Z
     :who: mocsharp
     :why: Apache-2.0 (https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
@@ -705,14 +706,14 @@
 - - :approve
   - MongoDB.Bson
   - :versions:
-      - 2.23.1
+      - 2.25.0
     :when: 2022-11-16T23:38:53.891Z
     :who: mocsharp
     :why: Apache-2.0 (https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 - - :approve
   - MongoDB.Driver
   - :versions:
-      - 2.23.1
+      - 2.25.0
     :when: 2022-11-16T23:38:54.213Z
     :who: mocsharp
     :why: Apache-2.0 (https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
@@ -727,14 +728,14 @@
 - - :approve
   - MongoDB.Driver.Core
   - :versions:
-      - 2.23.1
+      - 2.25.0
     :when: 2022-11-16T23:38:54.553Z
     :who: mocsharp
     :why: Apache-2.0 (https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 - - :approve
   - MongoDB.Libmongocrypt
   - :versions:
-      - 1.8.0
+      - 1.8.2
     :when: 2022-11-16T23:38:54.863Z
     :who: mocsharp
     :why: Apache-2.0 (https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
@@ -755,21 +756,21 @@
 - - :approve
   - NLog
   - :versions:
-      - 5.2.8
+      - 5.3.2
     :when: 2022-10-12T03:14:06.538Z
     :who: mocsharp
     :why: BSD 3-Clause License (https://github.com/NLog/NLog/raw/dev/LICENSE.txt)
 - - :approve
   - NLog.Extensions.Logging
   - :versions:
-      - 5.3.8
+      - 5.3.11
     :when: 2022-10-12T03:14:06.964Z
     :who: mocsharp
     :why: BSD 2-Clause Simplified License (https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
 - - :approve
   - NLog.Web.AspNetCore
   - :versions:
-      - 5.3.8
+      - 5.3.11
     :when: 2022-10-12T03:14:07.396Z
     :who: mocsharp
     :why: BSD 3-Clause License (https://github.com/NLog/NLog.Web/raw/master/LICENSE)
@@ -868,28 +869,28 @@
 - - :approve
   - Swashbuckle.AspNetCore
   - :versions:
-      - 6.5.0
+      - 6.6.2
     :when: 2022-08-16T23:06:33.817Z
     :who: mocsharp
     :why: MIT (https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 - - :approve
   - Swashbuckle.AspNetCore.Swagger
   - :versions:
-      - 6.5.0
+      - 6.6.2
     :when: 2022-08-16T23:06:34.264Z
     :who: mocsharp
     :why: MIT (https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 - - :approve
   - Swashbuckle.AspNetCore.SwaggerGen
   - :versions:
-      - 6.5.0
+      - 6.6.2
     :when: 2022-08-16T23:06:34.716Z
     :who: mocsharp
     :why: MIT (https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 - - :approve
   - Swashbuckle.AspNetCore.SwaggerUI
   - :versions:
-      - 6.5.0
+      - 6.6.2
     :when: 2022-08-16T23:06:35.164Z
     :who: mocsharp
     :why: MIT (https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
@@ -904,7 +905,7 @@
   - Polly
   - :versions:
       - 8.2.0
-      - 8.2.1
+      - 8.4.0
     :when: 2022-11-09T18:57:32.294Z
     :who: mocsharp
     :why: MIT ( https://licenses.nuget.org/MIT)
@@ -912,7 +913,7 @@
   - Polly.Core
   - :versions:
       - 8.2.0
-      - 8.2.1
+      - 8.4.0
     :when: 2022-11-09T18:57:32.294Z
     :who: mocsharp
     :why: MIT ( https://licenses.nuget.org/MIT)
@@ -1069,14 +1070,14 @@
 - - :approve
   - System.IO.Abstractions
   - :versions:
-      - 20.0.4
+      - 21.0.2
     :when: 2022-12-14T12:28:00.728Z
     :who: samrooke
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 - - :approve
   - System.IO.Abstractions.TestingHelpers
   - :versions:
-      - 20.0.4
+      - 21.0.2
     :when: 2022-12-14T12:28:00.728Z
     :who: samrooke
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
@@ -1441,6 +1442,7 @@
   - :versions:
       - 6.0.0
       - 7.0.0
+      - 8.0.0
     :when: 2022-08-16T21:40:19.306Z
     :who: mocsharp
     :why: MIT ( https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
@@ -1490,21 +1492,21 @@
 - - :approve
   - TestableIO.System.IO.Abstractions
   - :versions:
-      - 20.0.4
+      - 21.0.2
     :when: 2022-08-16T21:40:21.430Z
     :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 - - :approve
   - TestableIO.System.IO.Abstractions.TestingHelpers
   - :versions:
-      - 20.0.4
+      - 21.0.2
     :when: 2022-08-16T21:40:21.430Z
     :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 - - :approve
   - TestableIO.System.IO.Abstractions.Wrappers
   - :versions:
-      - 20.0.4
+      - 21.0.2
     :when: 2022-08-16T21:40:21.430Z
     :who: mocsharp
     :why: MIT (https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
@@ -1518,7 +1520,7 @@
 - - :approve
   - coverlet.collector
   - :versions:
-      - 6.0.0
+      - 6.0.2
     :when: 2022-08-16T21:40:21.855Z
     :who: mocsharp
     :why: MIT (https://github.com/coverlet-coverage/coverlet/raw/master/LICENSE)
@@ -1663,7 +1665,7 @@
 - - :approve
   - xunit
   - :versions:
-      - 2.6.5
+      - 2.8.1
     :when: 2022-08-16T21:40:29.166Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
@@ -1677,42 +1679,42 @@
 - - :approve
   - xunit.analyzers
   - :versions:
-      - 1.9.0
+      - 1.14.0
     :when: 2022-08-16T21:40:30.047Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit.analyzers/master/LICENSE)
 - - :approve
   - xunit.assert
   - :versions:
-      - 2.6.5
+      - 2.8.1
     :when: 2022-08-16T21:40:30.526Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 - - :approve
   - xunit.core
   - :versions:
-      - 2.6.5
+      - 2.8.1
     :when: 2022-08-16T21:40:30.973Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 - - :approve
   - xunit.extensibility.core
   - :versions:
-      - 2.6.5
+      - 2.8.1
     :when: 2022-08-16T21:40:31.401Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 - - :approve
   - xunit.extensibility.execution
   - :versions:
-      - 2.6.5
+      - 2.8.1
     :when: 2022-08-16T21:40:31.845Z
     :who: mocsharp
     :why: Apache-2.0 ( https://raw.githubusercontent.com/xunit/xunit/master/license.txt)
 - - :approve
   - xunit.runner.visualstudio
   - :versions:
-      - 2.5.6
+      - 2.8.1
     :when: 2022-08-16T21:40:32.294Z
     :who: mocsharp
     :why: MIT ( https://licenses.nuget.org/MIT)
@@ -1776,7 +1778,7 @@
 - - :approve
   - System.IO.Hashing
   - :versions:
-      - 7.0.0
+      - 8.0.0
     :when: 2023-08-10T20:50:14.759Z
     :who: mocsharp
     :why: MIT (https://raw.githubusercontent.com/dotnet/runtime/main/LICENSE.TXT)

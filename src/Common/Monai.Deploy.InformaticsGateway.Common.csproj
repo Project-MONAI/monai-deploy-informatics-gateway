@@ -25,8 +25,8 @@
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Ardalis.GuardClauses" Version="4.3.0" />
-    <PackageReference Include="System.IO.Abstractions" Version="20.0.4" />
+    <PackageReference Include="Ardalis.GuardClauses" Version="4.5.0" />
+    <PackageReference Include="System.IO.Abstractions" Version="21.0.2" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Test\**" />
