@@ -136,7 +136,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI.Test
             bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.NLogConfigFilePath).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
 
-            bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.NLogConfigFilePath).ConfigureAwait(false);
+            bytesWritten = await fileSystem.File.ReadAllBytesAsync(Common.NLogConfigFilePath).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(testString, Encoding.UTF8.GetString(bytesWritten));
         }
     }

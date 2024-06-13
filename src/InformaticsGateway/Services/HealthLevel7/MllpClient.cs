@@ -16,7 +16,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -54,8 +53,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             ClientId = Guid.NewGuid();
-            _exceptions = new List<Exception>();
-            _messages = new List<Message>();
+            _exceptions = [];
+            _messages = [];
 
             _loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Endpoint", _client.RemoteEndPoint }, { "CorrelationId", ClientId } })!;
         }
@@ -209,8 +208,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Mllp
                 return value.Value switch
                 {
                     Resources.AcknowledgmentTypeNever => false,
-                    Resources.AcknowledgmentTypeError => _exceptions.Any(),
-                    Resources.AcknowledgmentTypeSuccessful => !_exceptions.Any(),
+                    Resources.AcknowledgmentTypeError => _exceptions.Count is not 0,
+                    Resources.AcknowledgmentTypeSuccessful => _exceptions.Count is 0,
                     _ => true,
                 };
             }

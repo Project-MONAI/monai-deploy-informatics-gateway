@@ -9876,31 +9876,31 @@ Copyright (c) 2004-2024 Jaroslaw Kowalski , Kim Christensen, Julian Verdurmen
 
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions
+Redistribution and use in source and binary forms, with or without 
+modification, are permitted provided that the following conditions 
 are met:
 
-* Redistributions of source code must retain the above copyright notice,
-  this list of conditions and the following disclaimer.
+* Redistributions of source code must retain the above copyright notice, 
+  this list of conditions and the following disclaimer. 
 
 * Redistributions in binary form must reproduce the above copyright notice,
   this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution.
+  and/or other materials provided with the distribution. 
 
-* Neither the name of Jaroslaw Kowalski nor the names of its
+* Neither the name of Jaroslaw Kowalski nor the names of its 
   contributors may be used to endorse or promote products derived from this
-  software without specific prior written permission.
+  software without specific prior written permission. 
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
 CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
 THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
@@ -10197,6 +10197,12 @@ SOFTWARE.
 - Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.4.0)
 - License: [MIT]( https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
+MIT License
+SPDX identifier
+MIT
+License text
+
+MIT License
 
 ```
 The MIT License (MIT)
@@ -10226,6 +10232,8 @@ SOFTWARE.
 
 </details>
 
+Copyright (c) <year> <copyright holders>
+         
 
 <details>
 <summary>Polly.Core 8.5.2</summary>
@@ -10238,6 +10246,7 @@ SOFTWARE.
 - Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.5.2)
 - License: [MIT]( https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
+https://spdx.org/licenses/MIT.html
 
 ```
 The MIT License (MIT)
@@ -30546,29 +30555,890 @@ Contact
 
 
 ```
-The MIT License (MIT)
+corefx/LICENSE.TXT at master · dotnet/corefx · GitHub
 
-Copyright (c) .NET Foundation and Contributors
 
-All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+Navigation Menu
+
+Toggle navigation
+
+
+
+
+
+
+
+
+
+
+          Sign in
+        
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Packages
+        Host and manage packages
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+GitHub Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Code review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+For
+
+
+
+      Enterprise
+
+    
+
+
+
+      Teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Education
+
+    
+
+
+
+
+
+
+By Solution
+
+
+
+      CI/CD & Automation
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      DevSecOps
+
+    
+
+
+
+
+
+
+Resources
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      White papers, Ebooks, Webinars
+
+    
+
+
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+
+        Enterprise
+        
+
+
+
+
+
+
+
+
+
+
+
+
+Enterprise platform
+        AI-powered developer platform
+      
+
+
+
+
+Available add-ons
+
+
+
+
+
+
+
+Advanced Security
+        Enterprise-grade security features
+      
+
+
+
+
+
+
+
+GitHub Copilot
+        Enterprise-grade AI features
+      
+
+
+
+
+
+
+
+Premium Support
+        Enterprise-grade 24/7 support
+      
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+              Search syntax tips
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+              Sign in
+            
+
+
+              Sign up
+            
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+
+    This repository has been archived by the owner on Jan 23, 2023. It is now read-only.
+  
+
+
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+corefx
+
+Public archive
+
+
+
+
+
+ 
+
+Notifications
+ You must be signed in to change notification settings
+
+
+ 
+
+Fork
+    5k
+
+
+
+
+ 
+
+
+          Star
+ 17.7k
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Pull requests
+0
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2024 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
 ```
 
 </details>

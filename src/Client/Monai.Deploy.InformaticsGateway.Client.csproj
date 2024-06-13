@@ -36,7 +36,6 @@
   <ItemGroup>
     <Compile Include="..\AssemblyInfo.cs" Link="AssemblyInfo.cs" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Api\Monai.Deploy.InformaticsGateway.Api.csproj" />
     <ProjectReference Include="..\Client.Common\Monai.Deploy.InformaticsGateway.Client.Common.csproj" />

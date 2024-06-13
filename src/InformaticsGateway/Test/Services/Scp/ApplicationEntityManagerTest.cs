@@ -249,7 +249,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Updated));
-            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
                 new MonaiApplicationEntity
@@ -303,7 +303,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Added));
-            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
                 new MonaiApplicationEntity
@@ -312,8 +312,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     Name = "AE1"
                 }, ChangedEventType.Updated));
 
-            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
-            Assert.False(await manager.IsAeTitleConfiguredAsync("AE2").ConfigureAwait(false));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
+            Assert.False(await manager.IsAeTitleConfiguredAsync("AE2").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
         }
 
         [RetryFact(5, 250, DisplayName = "Shall handle CS Store Request")]

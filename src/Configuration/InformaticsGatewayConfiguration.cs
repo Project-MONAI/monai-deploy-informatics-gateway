@@ -79,7 +79,6 @@ namespace Monai.Deploy.InformaticsGateway.Configuration
             Export = new DataExportConfiguration();
             Messaging = new MessageBrokerConfiguration();
             Hl7 = new Hl7Configuration();
-            PlugInConfigurations = new PlugInConfiguration();
         }
     }
 }
