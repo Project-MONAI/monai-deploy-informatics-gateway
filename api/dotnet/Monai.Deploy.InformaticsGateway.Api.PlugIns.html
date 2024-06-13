@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
-   | MONAI Deploy Informatics Gateway v0.4.1 </title>
+   | MONAI Deploy Informatics Gateway v0.5.0 </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
-   | MONAI Deploy Informatics Gateway v0.4.1 ">
+   | MONAI Deploy Informatics Gateway v0.5.0 ">
     <meta name="generator" content="docfx 2.59.4.0">
     
     <link rel="shortcut icon" href="../../images/favicon.ico">
@@ -99,6 +99,17 @@ services.
 Refer to <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugInEngine.html">IInputDataPlugInEngine</a> for additional details.</p>
 </section>
       <h4><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugInEngine.html">IInputDataPlugInEngine</a></h4>
+      <section><p><code>IInputDataPlugInEngine</code> processes incoming data receivied from various supported services through
+a list of plug-ins based on <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn.html">IInputDataPlugIn</a>.
+Rules:</p>
+<ul><li>SCP: A list of plug-ins can be configured with each AET, and each plug-in is executed in the order stored, enabling piping of the incoming data before each file is uploaded to the storage service.</li><li>Incoming data is processed one file at a time and SHALL not wait for the entire study to arrive.</li><li>Plug-ins MUST be lightweight and not hinder the upload process.</li><li>Plug-ins SHALL not accumulate files in memory or storage for bulk processing.</li></ul>
+</section>
+      <h4><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputHL7DataPlugIn.html">IInputHL7DataPlugIn</a></h4>
+      <section><p><code>IInputDataPlugIn</code> enables lightweight data processing over incoming data received from supported data ingestion
+services.
+Refer to <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputHL7DataPlugInEngine.html">IInputHL7DataPlugInEngine</a> for additional details.</p>
+</section>
+      <h4><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputHL7DataPlugInEngine.html">IInputHL7DataPlugInEngine</a></h4>
       <section><p><code>IInputDataPlugInEngine</code> processes incoming data receivied from various supported services through
 a list of plug-ins based on <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn.html">IInputDataPlugIn</a>.
 Rules:</p>

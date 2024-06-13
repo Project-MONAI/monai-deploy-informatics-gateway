@@ -1,0 +1,346 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class MultipartStreamProvider
+   | MONAI Deploy Informatics Gateway v0.5.0 </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class MultipartStreamProvider
+   | MONAI Deploy Informatics Gateway v0.5.0 ">
+    <meta name="generator" content="docfx 2.59.4.0">
+    
+    <link rel="shortcut icon" href="../../images/favicon.ico">
+    <link rel="stylesheet" href="../../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../../styles/docfx.css">
+    <link rel="stylesheet" href="../../styles/main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> 
+    <meta property="docfx:navrel" content="../../toc.html">
+    <meta property="docfx:tocrel" content="../toc.html">
+    
+    <meta property="docfx:rel" content="../../">
+    
+  </head>  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../../index.html">
+                <img id="logo" class="svg" src="../../images/MONAI-logo-color.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div class="container body-content">
+        
+        <div id="search-results">
+          <div class="search-list">Search Results for <span></span></div>
+          <div class="sr-items">
+            <p><i class="glyphicon glyphicon-refresh index-loading"></i></p>
+          </div>
+          <ul id="pagination" data-first="First" data-prev="Previous" data-next="Next" data-last="Last"></ul>
+        </div>
+      </div>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="System.Net.Http.MultipartStreamProvider">
+  
+  
+  <h1 id="System_Net_Http_MultipartStreamProvider" data-uid="System.Net.Http.MultipartStreamProvider" class="text-break">Class MultipartStreamProvider
+  </h1>
+  <div class="markdown level0 summary"><p>An <a class="xref" href="System.Net.Http.MultipartStreamProvider.html">MultipartStreamProvider</a> implementation examines the headers provided by the MIME multipart parser
+as part of the MIME multipart extension methods (see <span class="xref">System.Net.Http.HttpContentMultipartExtensions</span>) and decides
+what kind of stream to return for the body part to be written to.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">Object</a></div>
+    <div class="level1"><span class="xref">MultipartStreamProvider</span></div>
+      <div class="level2"><a class="xref" href="System.Net.Http.MultipartMemoryStreamProvider.html">MultipartMemoryStreamProvider</a></div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="System.Net.Http.html">System.Net.Http</a></h6>
+  <h6><strong>Assembly</strong>: Monai.Deploy.InformaticsGateway.DicomWeb.Client.dll</h6>
+  <h5 id="System_Net_Http_MultipartStreamProvider_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class MultipartStreamProvider</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=System_Net_Http_MultipartStreamProvider__ctor.md&amp;value=---%0Auid%3A%20System.Net.Http.MultipartStreamProvider.%23ctor%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/Third-party/Microsoft/MultipartStreamProvider.cs/#L30">View Source</a>
+  </span>
+  <a id="System_Net_Http_MultipartStreamProvider__ctor_" data-uid="System.Net.Http.MultipartStreamProvider.#ctor*"></a>
+  <h4 id="System_Net_Http_MultipartStreamProvider__ctor" data-uid="System.Net.Http.MultipartStreamProvider.#ctor">MultipartStreamProvider()</h4>
+  <div class="markdown level1 summary"><p>Initializes a new instance of the <a class="xref" href="System.Net.Http.MultipartStreamProvider.html">MultipartStreamProvider</a> class.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected MultipartStreamProvider()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=System_Net_Http_MultipartStreamProvider_Contents.md&amp;value=---%0Auid%3A%20System.Net.Http.MultipartStreamProvider.Contents%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/Third-party/Microsoft/MultipartStreamProvider.cs/#L37">View Source</a>
+  </span>
+  <a id="System_Net_Http_MultipartStreamProvider_Contents_" data-uid="System.Net.Http.MultipartStreamProvider.Contents*"></a>
+  <h4 id="System_Net_Http_MultipartStreamProvider_Contents" data-uid="System.Net.Http.MultipartStreamProvider.Contents">Contents</h4>
+  <div class="markdown level1 summary"><p>Gets the collection of <span class="xref">System.Net.Http.HttpContent</span> instances where each instance represents a MIME body part.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Collection&lt;HttpContent&gt; Contents { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.objectmodel.collection-1">Collection</a>&lt;<span class="xref">System.Net.Http.HttpContent</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=System_Net_Http_MultipartStreamProvider_ExecutePostProcessingAsync.md&amp;value=---%0Auid%3A%20System.Net.Http.MultipartStreamProvider.ExecutePostProcessingAsync%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/Third-party/Microsoft/MultipartStreamProvider.cs/#L58">View Source</a>
+  </span>
+  <a id="System_Net_Http_MultipartStreamProvider_ExecutePostProcessingAsync_" data-uid="System.Net.Http.MultipartStreamProvider.ExecutePostProcessingAsync*"></a>
+  <h4 id="System_Net_Http_MultipartStreamProvider_ExecutePostProcessingAsync" data-uid="System.Net.Http.MultipartStreamProvider.ExecutePostProcessingAsync">ExecutePostProcessingAsync()</h4>
+  <div class="markdown level1 summary"><p>Immediately upon reading the last MIME body part but before completing the read task, this method is
+called to enable the <a class="xref" href="System.Net.Http.MultipartStreamProvider.html">MultipartStreamProvider</a> to do any post processing on the <span class="xref">System.Net.Http.HttpContent</span>
+instances that have been read. For example, it can be used to copy the data to another location, or perform
+some other kind of post processing on the data before completing the read operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task ExecutePostProcessingAsync()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> representing the post processing.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=System_Net_Http_MultipartStreamProvider_ExecutePostProcessingAsync_System_Threading_CancellationToken_.md&amp;value=---%0Auid%3A%20System.Net.Http.MultipartStreamProvider.ExecutePostProcessingAsync(System.Threading.CancellationToken)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/Third-party/Microsoft/MultipartStreamProvider.cs/#L71">View Source</a>
+  </span>
+  <a id="System_Net_Http_MultipartStreamProvider_ExecutePostProcessingAsync_" data-uid="System.Net.Http.MultipartStreamProvider.ExecutePostProcessingAsync*"></a>
+  <h4 id="System_Net_Http_MultipartStreamProvider_ExecutePostProcessingAsync_System_Threading_CancellationToken_" data-uid="System.Net.Http.MultipartStreamProvider.ExecutePostProcessingAsync(System.Threading.CancellationToken)">ExecutePostProcessingAsync(CancellationToken)</h4>
+  <div class="markdown level1 summary"><p>Immediately upon reading the last MIME body part but before completing the read task, this method is
+called to enable the <a class="xref" href="System.Net.Http.MultipartStreamProvider.html">MultipartStreamProvider</a> to do any post processing on the <span class="xref">System.Net.Http.HttpContent</span>
+instances that have been read. For example, it can be used to copy the data to another location, or perform
+some other kind of post processing on the data before completing the read operation.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task ExecutePostProcessingAsync(CancellationToken cancellationToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></td>
+        <td><span class="parametername">cancellationToken</span></td>
+        <td><p>The token to monitor for cancellation requests.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></td>
+        <td><p>A <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a> representing the post processing.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <span class="small pull-right mobile-hide">
+    <span class="divider">|</span>
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=System_Net_Http_MultipartStreamProvider_GetStream_System_Net_Http_HttpContent_System_Net_Http_Headers_HttpContentHeaders_.md&amp;value=---%0Auid%3A%20System.Net.Http.MultipartStreamProvider.GetStream(System.Net.Http.HttpContent%2CSystem.Net.Http.Headers.HttpContentHeaders)%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">Improve this Doc</a>
+  </span>
+  <span class="small pull-right mobile-hide">
+    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/Third-party/Microsoft/MultipartStreamProvider.cs/#L49">View Source</a>
+  </span>
+  <a id="System_Net_Http_MultipartStreamProvider_GetStream_" data-uid="System.Net.Http.MultipartStreamProvider.GetStream*"></a>
+  <h4 id="System_Net_Http_MultipartStreamProvider_GetStream_System_Net_Http_HttpContent_System_Net_Http_Headers_HttpContentHeaders_" data-uid="System.Net.Http.MultipartStreamProvider.GetStream(System.Net.Http.HttpContent,System.Net.Http.Headers.HttpContentHeaders)">GetStream(HttpContent, HttpContentHeaders)</h4>
+  <div class="markdown level1 summary"><p>When a MIME multipart body part has been parsed this method is called to get a stream for where to write the body part to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Stream GetStream(HttpContent parent, HttpContentHeaders headers)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Net.Http.HttpContent</span></td>
+        <td><span class="parametername">parent</span></td>
+        <td><p>The parent <span class="xref">System.Net.Http.HttpContent</span> MIME multipart instance.</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.headers.httpcontentheaders">HttpContentHeaders</a></td>
+        <td><span class="parametername">headers</span></td>
+        <td><p>The header fields describing the body parts content. Looking for header fields such as
+Content-Type and Content-Disposition can help provide the appropriate stream. In addition to using the information
+in the provided header fields, it is also possible to add new header fields or modify existing header fields. This can
+be useful to get around situations where the Content-type may say <strong>application/octet-stream</strong> but based on
+analyzing the <strong>Content-Disposition</strong> header field it is found that the content in fact is <strong>application/json</strong>, for example.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></td>
+        <td><p>A stream instance where the contents of a body part will be written to.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=System_Net_Http_MultipartStreamProvider.md&amp;value=---%0Auid%3A%20System.Net.Http.MultipartStreamProvider%0Asummary%3A%20'*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax'%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A" class="contribution-link">Improve this Doc</a>
+                  </li>
+                  <li>
+                    <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/Third-party/Microsoft/MultipartStreamProvider.cs/#L18" class="contribution-link">View Source</a>
+                  </li>
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+                <h5>In This Article</h5>
+                <div></div>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            Copyright © 2022-2023 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../../styles/docfx.js"></script>
+    <script type="text/javascript" src="../../styles/main.js"></script>
+  </body>
+</html>
