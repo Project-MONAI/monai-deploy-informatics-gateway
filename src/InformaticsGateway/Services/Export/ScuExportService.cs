@@ -16,32 +16,22 @@
  */
 
 using System;
-using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
-using Ardalis.GuardClauses;
-using FellowOakDicom;
-using FellowOakDicom.Network;
-using FellowOakDicom.Network.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
-using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.Messaging.Events;
-using Polly;
+using Monai.Deploy.Messaging.Common;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
     internal class ScuExportService : ExportServiceBase
     {
         private readonly ILogger<ScuExportService> _logger;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
-        private readonly IDicomToolkit _dicomToolkit;
 
         protected override ushort Concurrency { get; }
         public override string RoutingKey { get; }
@@ -52,20 +42,23 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             IServiceScopeFactory serviceScopeFactory,
             IOptions<InformaticsGatewayConfiguration> configuration,
             IDicomToolkit dicomToolkit)
-            : base(logger, configuration, serviceScopeFactory)
+            : base(logger, configuration, serviceScopeFactory, dicomToolkit)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
-            _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
 
             RoutingKey = $"{configuration.Value.Messaging.Topics.ExportRequestPrefix}.{_configuration.Value.Dicom.Scu.AgentName}";
             Concurrency = _configuration.Value.Dicom.Scu.MaximumNumberOfAssociations;
         }
 
+        protected override async Task ProcessMessage(MessageReceivedEventArgs eventArgs)
+        {
+            await BaseProcessMessage(eventArgs);
+        }
+
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
+            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
 
             foreach (var destinationName in exportRequestData.Destinations)
             {
@@ -73,160 +66,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             }
 
             return exportRequestData;
-        }
-
-        private async Task HandleDesination(ExportRequestDataMessage exportRequestData, string destinationName, CancellationToken cancellationToken)
-        {
-            Guard.Against.Null(exportRequestData, nameof(exportRequestData));
-
-            var manualResetEvent = new ManualResetEvent(false);
-            DestinationApplicationEntity? destination = null;
-            try
-            {
-                destination = await LookupDestinationAsync(destinationName, cancellationToken).ConfigureAwait(false);
-            }
-            catch (ConfigurationException ex)
-            {
-                _logger.ScuExportConfigurationError(ex.Message, ex);
-                exportRequestData.SetFailed(FileExportStatus.ConfigurationError, ex.Message);
-                return;
-            }
-
-            try
-            {
-                await Policy
-                   .Handle<Exception>()
-                   .WaitAndRetryAsync(
-                       _configuration.Value.Export.Retries.RetryDelays,
-                       (exception, timeSpan, retryCount, context) =>
-                       {
-                           _logger.DimseExportErrorWithRetry(timeSpan, retryCount, exception);
-                       })
-                   .ExecuteAsync(async () =>
-                   {
-                       var client = DicomClientFactory.Create(
-                               destination.HostIp,
-                               destination.Port,
-                               false,
-                               _configuration.Value.Dicom.Scu.AeTitle,
-                               destination.AeTitle);
-
-                       client.AssociationAccepted += (sender, args) => _logger.ExportAssociationAccepted();
-                       client.AssociationRejected += (sender, args) => _logger.ExportAssociationRejected();
-                       client.AssociationReleased += (sender, args) => _logger.ExportAssociationReleased();
-                       client.ServiceOptions.LogDataPDUs = _configuration.Value.Dicom.Scu.LogDataPdus;
-                       client.ServiceOptions.LogDimseDatasets = _configuration.Value.Dicom.Scu.LogDimseDatasets;
-
-                       client.NegotiateAsyncOps();
-                       if (await GenerateRequestsAsync(exportRequestData, client, manualResetEvent).ConfigureAwait(false))
-                       {
-                           _logger.DimseExporting(destination.AeTitle, destination.HostIp, destination.Port);
-                           await client.SendAsync(cancellationToken).ConfigureAwait(false);
-                           manualResetEvent.WaitOne();
-                           _logger.DimseExportComplete(destination.AeTitle);
-                       }
-                   }).ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                HandleCStoreException(ex, exportRequestData);
-            }
-        }
-
-        private async Task<DestinationApplicationEntity> LookupDestinationAsync(string destinationName, CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrWhiteSpace(destinationName))
-            {
-                throw new ConfigurationException("Export task does not have destination set.");
-            }
-
-            using var scope = _serviceScopeFactory.CreateScope();
-            var repository = scope.ServiceProvider.GetRequiredService<IDestinationApplicationEntityRepository>();
-            var destination = await repository.FindByNameAsync(destinationName, cancellationToken).ConfigureAwait(false);
-
-            if (destination is null)
-            {
-                throw new ConfigurationException($"Specified destination '{destinationName}' does not exist.");
-            }
-
-            return destination;
-        }
-
-        private async Task<bool> GenerateRequestsAsync(
-            ExportRequestDataMessage exportRequestData,
-            IDicomClient client,
-            ManualResetEvent manualResetEvent)
-        {
-            DicomFile dicomFile;
-            try
-            {
-                dicomFile = _dicomToolkit.Load(exportRequestData.FileContent);
-            }
-            catch (Exception ex)
-            {
-                var errorMessage = $"Error reading DICOM file: {ex.Message}";
-                _logger.ExportException(errorMessage, ex);
-                exportRequestData.SetFailed(FileExportStatus.UnsupportedDataType, errorMessage);
-                return false;
-            }
-
-            try
-            {
-                var request = new DicomCStoreRequest(dicomFile);
-
-                request.OnResponseReceived += (req, response) =>
-                {
-                    if (response.Status == DicomStatus.Success)
-                    {
-                        _logger.DimseExportInstanceComplete();
-                    }
-                    else
-                    {
-                        var errorMessage = $"Failed to export with error {response.Status}";
-                        _logger.DimseExportInstanceError(response.Status);
-                        exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
-                    }
-                    manualResetEvent.Set();
-                };
-
-                await client.AddRequestAsync(request).ConfigureAwait(false);
-                return true;
-            }
-            catch (Exception exception)
-            {
-                var errorMessage = $"Error while adding DICOM C-STORE request: {exception.Message}";
-                _logger.DimseExportErrorAddingInstance(exception.Message, exception);
-                exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
-                return false;
-            }
-        }
-
-        private void HandleCStoreException(Exception ex, ExportRequestDataMessage exportRequestData)
-        {
-            var exception = ex;
-
-            if (exception is AggregateException)
-            {
-                exception = exception.InnerException!;
-            }
-
-            var errorMessage = $"Job failed with error: {exception.Message}.";
-
-            if (exception is DicomAssociationAbortedException abortEx)
-            {
-                errorMessage = $"Association aborted with reason {abortEx.AbortReason}.";
-            }
-            else if (exception is DicomAssociationRejectedException rejectEx)
-            {
-                errorMessage = $"Association rejected with reason {rejectEx.RejectReason}.";
-            }
-            else if (exception is SocketException socketException)
-            {
-                errorMessage = $"Association aborted with error {socketException.Message}.";
-            }
-
-            _logger.ExportException(errorMessage, ex);
-            exportRequestData.SetFailed(FileExportStatus.ServiceError, errorMessage);
         }
     }
 }

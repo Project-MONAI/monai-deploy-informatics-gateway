@@ -39,7 +39,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
         public async Task SendAsync(DataProvider dataProvider, params object[] args)
         {
             Guard.Against.Null(dataProvider, nameof(dataProvider));
-            var httpClient = HttpClientFactory.Create();
+            var httpClient = new HttpClient();
             httpClient.BaseAddress = new Uri($"{_configurations.InformaticsGatewayOptions.ApiEndpoint}/fhir/");
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue(dataProvider.FhirSpecs.MediaType));
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", dataProvider.FhirSpecs.MediaType);
@@ -59,5 +59,6 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             stopwatch.Stop();
             _outputHelper.WriteLine($"Time to upload FHIR data={0}s...", stopwatch.Elapsed.TotalSeconds);
         }
+        public Task SaveHl7Async(DataProvider dataProvider, params object[] args) => throw new NotImplementedException();
     }
 }

@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -173,7 +173,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
-            IReadOnlyList<MonaiApplicationEntity> items = null;
+            IReadOnlyList<MonaiApplicationEntity>? items = null;
             try
             {
                 CheckConfiguration(configService);
@@ -390,7 +390,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
-            IDictionary<string, string> items = null;
+            IDictionary<string, string>? items = null;
             try
             {
                 CheckConfiguration(configService);

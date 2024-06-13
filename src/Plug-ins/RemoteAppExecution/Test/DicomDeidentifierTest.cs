@@ -19,7 +19,7 @@ using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database;
@@ -89,7 +89,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
             var message = new ExportRequestDataMessage(exportRequest, "file.dcm");
             var dicom = InstanceGenerator.GenerateDicomFile(studyInstanceUid, seriesInstanceUid, sopInstanceUid);
 
-            _ = await app.ExecuteAsync(dicom, message).ConfigureAwait(false);
+            _ = await app.ExecuteAsync(dicom, message).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             _repository.Verify(p => p.GetAsync(
                 It.Is<string>(p => p == exportRequest.WorkflowInstanceId),
@@ -123,7 +123,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
             dicom.Dataset.AddOrUpdate(DicomTag.PatientID, patientId);
             dicom.Dataset.AddOrUpdate(DicomTag.PatientName, patientName);
 
-            _ = await app.ExecuteAsync(dicom, message).ConfigureAwait(false);
+            _ = await app.ExecuteAsync(dicom, message).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             _repository.Verify(p => p.GetAsync(
                 It.Is<string>(p => p == exportRequest.WorkflowInstanceId),
@@ -159,7 +159,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
                     SeriesInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID
                 });
 
-            _ = await app.ExecuteAsync(dicom, message).ConfigureAwait(false);
+            _ = await app.ExecuteAsync(dicom, message).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             _repository.Verify(p => p.GetAsync(
                 It.Is<string>(p => p == exportRequest.WorkflowInstanceId),
@@ -195,7 +195,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
                     SeriesInstanceUid = seriesInstanceUid
                 });
 
-            _ = await app.ExecuteAsync(dicom, message).ConfigureAwait(false);
+            _ = await app.ExecuteAsync(dicom, message).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             _repository.Verify(p => p.GetAsync(
                 It.Is<string>(p => p == exportRequest.WorkflowInstanceId),
@@ -259,6 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test
                 CorrelationId = Guid.NewGuid().ToString(),
                 ExportTaskId = Guid.NewGuid().ToString(),
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
+                PayloadId = null
             };
     }
 }

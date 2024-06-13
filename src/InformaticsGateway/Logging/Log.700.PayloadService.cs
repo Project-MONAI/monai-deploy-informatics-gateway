@@ -148,5 +148,23 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 747, Level = LogLevel.Error, Message = "Error posting payload to publish queue.")]
         public static partial void ErrorPostingJobToPublishPayloadsQueue(this ILogger logger);
+
+        [LoggerMessage(EventId = 748, Level = LogLevel.Debug, Message = "Generating artifact recieeved request message for payload {payloadId}...")]
+        public static partial void GenerateArtifactReceievedRequest(this ILogger logger, Guid payloadId);
+
+        [LoggerMessage(EventId = 749, Level = LogLevel.Information, Message = "Publishing artifact recieved request message ID={messageId}...")]
+        public static partial void PublishingArtifactRecievedRequest(this ILogger logger, string messageId);
+
+        [LoggerMessage(EventId = 750, Level = LogLevel.Information, Message = "Artifact recieved published to {queue}, message ID={messageId}. Payload took {durationSeconds} seconds to complete.")]
+        public static partial void ArtifactRecievedPublished(this ILogger logger, string queue, string messageId, double durationSeconds);
+
+        [LoggerMessage(EventId = 751, Level = LogLevel.Debug, Message = "Saving External App Data to repo for {studyInstanceUID}.")]
+        public static partial void SavingExternalAppData(this ILogger logger, string studyInstanceUID);
+
+        [LoggerMessage(EventId = 752, Level = LogLevel.Debug, Message = "Payload in Notification handler {payloadId}.")]
+        public static partial void PayloadNotifyAsync(this ILogger logger, string payloadId);
+
+        [LoggerMessage(EventId = 753, Level = LogLevel.Trace, Message = "Adding files to ArtifactsReceivedEvent files {payload}")]
+        public static partial void AddingFilesToArtifactsReceivedEvent(this ILogger logger, string payload);
     }
 }

@@ -18,7 +18,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using Ardalis.GuardClauses;
 using BoDi;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;

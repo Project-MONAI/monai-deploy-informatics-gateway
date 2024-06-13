@@ -19,18 +19,22 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
+using FellowOakDicom;
 using FellowOakDicom.Network;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Scp
@@ -46,6 +50,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         private readonly IObjectUploadQueue _uploadQueue;
         private readonly IFileSystem _fileSystem;
         private readonly IInputDataPlugInEngine _pluginEngine;
+        private readonly IExternalAppDetailsRepository _externalAppDetailsRepository;
         private MonaiApplicationEntity? _configuration;
         private DicomJsonOptions _dicomJsonOptions;
         private bool _validateDicomValueOnJsonSerialization;
@@ -54,7 +59,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
         public ApplicationEntityHandler(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<ApplicationEntityHandler> logger,
-            IOptions<InformaticsGatewayConfiguration> options)
+            IOptions<InformaticsGatewayConfiguration> options,
+            IExternalAppDetailsRepository externalAppDetailsRepository)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
@@ -65,6 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _uploadQueue = _serviceScope.ServiceProvider.GetService<IObjectUploadQueue>() ?? throw new ServiceNotFoundException(nameof(IObjectUploadQueue));
             _fileSystem = _serviceScope.ServiceProvider.GetService<IFileSystem>() ?? throw new ServiceNotFoundException(nameof(IFileSystem));
             _pluginEngine = _serviceScope.ServiceProvider.GetService<IInputDataPlugInEngine>() ?? throw new ServiceNotFoundException(nameof(IInputDataPlugInEngine));
+            _externalAppDetailsRepository = externalAppDetailsRepository ?? throw new ServiceNotFoundException(nameof(externalAppDetailsRepository));
         }
 
         public void Configure(MonaiApplicationEntity monaiApplicationEntity, DicomJsonOptions dicomJsonOptions, bool validateDicomValuesOnJsonSerialization)
@@ -87,7 +94,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             }
         }
 
-        public async Task<string> HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids)
+        public async Task<string> HandleInstanceAsync(DicomCStoreRequest request, string calledAeTitle, string callingAeTitle, Guid associationId, StudySerieSopUids uids, ScpInputTypeEnum type)
         {
             if (_configuration is null)
             {
@@ -103,17 +110,59 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             if (!AcceptsSopClass(uids.SopClassUid))
             {
                 _logger.InstanceIgnoredWIthMatchingSopClassUid(request.SOPClassUID.UID);
-                return null;
+                return string.Empty;
             }
+            ExternalAppDetails? storedDetails;
 
-            var dicomInfo = new DicomFileStorageMetadata(associationId.ToString(), uids.Identifier, uids.StudyInstanceUid, uids.SeriesInstanceUid, uids.SopInstanceUid, DataService.DIMSE, callingAeTitle, calledAeTitle);
+
+
+            var dicomInfo = new DicomFileStorageMetadata(
+                associationId.ToString(),
+                uids.Identifier,
+                uids.StudyInstanceUid,
+                uids.SeriesInstanceUid,
+                uids.SopInstanceUid,
+                DataService.DIMSE,
+                callingAeTitle,
+                calledAeTitle);
+
+
 
             if (_configuration.Workflows.Any())
             {
                 dicomInfo.SetWorkflows(_configuration.Workflows.ToArray());
             }
+            if (request.File.Dataset.Contains(DicomTag.Modality))
+            {
+                var modality = request.File.Dataset.GetSingleValue<string>(DicomTag.Modality);
+
+                if (ArtifactTypes.Validate(modality) && Enum.TryParse(modality, out ArtifactType parsedArtifactType))
+                {
+                    dicomInfo.DataOrigin.ArtifactType = parsedArtifactType;
+                }
+            }
 
             var result = await _pluginEngine.ExecutePlugInsAsync(request.File, dicomInfo).ConfigureAwait(false);
+
+            using var scope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object>() { { "CorrelationId", dicomInfo.CorrelationId } });
+
+
+            if (type == ScpInputTypeEnum.ExternalAppReturn)
+            {
+                var uid = request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID);
+                storedDetails = await _externalAppDetailsRepository
+                    .GetByStudyIdOutboundAsync(uid, new System.Threading.CancellationToken())
+                    .ConfigureAwait(false);
+                if (storedDetails is null)
+                {
+                    _logger.FailedToFindStoredExtAppDetails(uid);
+                }
+                RetrieveExternalAppDetails(storedDetails, dicomInfo);
+                dicomInfo.SetupGivenFilePaths(storedDetails?.DestinationFolder);
+                request.Dataset.AddOrUpdate(DicomTag.StudyInstanceUID, storedDetails?.StudyInstanceUid);
+                request.Dataset.AddOrUpdate(DicomTag.PatientID, storedDetails?.PatientId);
+            }
+
 
             dicomInfo = (result.Item2 as DicomFileStorageMetadata)!;
             var dicomFile = result.Item1;
@@ -123,11 +172,24 @@ namespace Monai.Deploy.InformaticsGateway.Services.Scp
             _logger.QueueInstanceUsingDicomTag(dicomTag);
             var key = dicomFile.Dataset.GetSingleValue<string>(dicomTag);
 
-            var payloadId = await _payloadAssembler.Queue(key, dicomInfo, new DataOrigin { DataService = DataService.DIMSE, Source = callingAeTitle, Destination = calledAeTitle }, _configuration.Timeout).ConfigureAwait(false);
+            var payloadId = await _payloadAssembler.Queue(key, dicomInfo, dicomInfo.DataOrigin, _configuration.Timeout).ConfigureAwait(false);
             dicomInfo.PayloadId = payloadId.ToString();
             _uploadQueue.Queue(dicomInfo);
 
             return dicomInfo.PayloadId;
+        }
+
+        private void RetrieveExternalAppDetails(ExternalAppDetails? storedDetails, DicomFileStorageMetadata dicomInfo)
+        {
+            if (storedDetails is null)
+            {
+                return;
+            }
+            dicomInfo.ChangeCorrelationId(_logger, storedDetails.CorrelationId);
+            dicomInfo.WorkflowInstanceId = storedDetails.WorkflowInstanceId;
+            dicomInfo.TaskId = storedDetails.ExportTaskID;
+            dicomInfo.SetStudyInstanceUid(storedDetails.StudyInstanceUid);
+            //dicomInfo.DestinationFolderNeil = storedDetails.DestinationFolder!;
         }
 
         private bool AcceptsSopClass(string sopClassUid)

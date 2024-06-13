@@ -32,12 +32,13 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
     [CollectionDefinition("SpecFlowNonParallelizableFeatures", DisableParallelization = true)]
     public class DicomWebStowServiceStepDefinitions
     {
-        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromMinutes(3);
+        internal static readonly TimeSpan MessageWaitTimeSpan = TimeSpan.FromSeconds(130);
         internal static readonly string[] DummyWorkflows = new string[] { "WorkflowA", "WorkflowB" };
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private readonly InformaticsGatewayClient _informaticsGatewayClient;
         private readonly Configurations _configurations;
         private readonly RabbitMqConsumer _receivedMessages;
+        private readonly RabbitMqConsumer _artifactReceivedMessages;
         private readonly DataProvider _dataProvider;
         private readonly IDataClient _dataSink;
         private readonly Assertions _assertions;
@@ -48,6 +49,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _receivedMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _artifactReceivedMessages = objectContainer.Resolve<RabbitMqConsumer>("ArtifactRecievedSubscriber");
             _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
             _dataSink = objectContainer.Resolve<IDataClient>("DicomWebClient");
             _informaticsGatewayClient = objectContainer.Resolve<InformaticsGatewayClient>("InformaticsGatewayClient");
@@ -99,6 +101,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider.GenerateDicomData(modality, studyCount);
             _dataProvider.StudyGrouping = grouping;
             _receivedMessages.ClearMessages();
+            _artifactReceivedMessages.ClearMessages();
         }
 
         [Given(@"a workflow named '(.*)'")]
@@ -166,6 +169,15 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 
             (await _receivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
             _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, Messaging.Events.DataService.DicomWeb, _receivedMessages.Messages, workflowCount);
+        }
+
+        [Then(@"(.*) workflow requests received from receieved artifact message broker")]
+        public async Task ThenWorkflowRequestsReceivedFromReceievedArtifactMessageBroker(int workflowCount)
+        {
+            Guard.Against.NegativeOrZero(workflowCount, nameof(workflowCount));
+
+            (await _artifactReceivedMessages.WaitforAsync(workflowCount, MessageWaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, Messaging.Events.DataService.DicomWeb, _artifactReceivedMessages.Messages, workflowCount);
         }
     }
 }

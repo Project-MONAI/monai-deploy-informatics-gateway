@@ -43,7 +43,7 @@ Feature: DICOM DIMSE SCP Services
         And <count> <modality> studies
         When a C-STORE-RQ is sent to 'Informatics Gateway' with AET '<aet>' from 'TEST-RUNNER'
         Then a successful response should be received
-        And <count> workflow requests sent to message broker
+        And <count> Artifact Recieved sent to ea message broker
         And studies are uploaded to storage service with data input plugins
 
         Examples:
@@ -61,7 +61,7 @@ Feature: DICOM DIMSE SCP Services
         And <study_count> <modality> studies with <series_count> series per study
         When a C-STORE-RQ is sent to 'Informatics Gateway' with AET '<aet>' from 'TEST-RUNNER'
         Then a successful response should be received
-        And <series_count> workflow requests sent to message broker
+        And <series_count> Artifact Recieved sent to ea message broker
         And studies are uploaded to storage service
 
         Examples:
@@ -79,10 +79,21 @@ Feature: DICOM DIMSE SCP Services
         And <study_count> <modality> studies with <series_count> series per study
         When C-STORE-RQ are sent to 'Informatics Gateway' with AET 'C-STORE-MA' from 'TEST-RUNNER'
         Then a successful response should be received
-        And <workflow_requests> workflow requests sent to message broker
+        And <workflow_requests> Artifact Recieved sent to ea message broker
         And studies are uploaded to storage service
 
         Examples:
             | modality | study_count | series_count | seconds | workflow_requests |
             | MG       | 1           | 3            | 3       | 1                 |
             | MG       | 1           | 3            | 6       | 3                 |
+
+    @messaging_workflow_request @messaging
+    Scenario Outline: Respond to C-STORE-RQ and group data by Study Instance UID from external App
+        Given a called AE Title named 'C-STORE-MA' that groups by '0020,000D' for 5 seconds from external app
+        And a DICOM client configured with 300 seconds timeout
+        And a DICOM client configured to send data over 1 associations and wait 3 between each association
+        And 1 MG studies with 3 series per study
+        When C-STORE-RQ are sent to 'Informatics Gateway' with AET 'C-STORE-MA' from 'TEST-RUNNER'
+        Then a successful response should be received
+        And 1 Artifact Recieved sent to ea message broker
+        And studies are uploaded to storage service

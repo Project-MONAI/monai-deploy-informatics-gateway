@@ -19,7 +19,7 @@ using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Logging;
@@ -41,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
         public DestinationApplicationEntityRepository(
             IServiceScopeFactory serviceScopeFactory,
             ILogger<DestinationApplicationEntityRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options,
+            IOptions<DatabaseOptions> options,
             IOptions<DatabaseOptions> mongoDbOptions)
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
@@ -52,7 +52,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories
 
             _scope = serviceScopeFactory.CreateScope();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();

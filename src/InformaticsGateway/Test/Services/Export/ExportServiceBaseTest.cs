@@ -20,11 +20,13 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Threading.Tasks.Dataflow;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.PlugIns;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
@@ -54,8 +56,9 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         public TestExportService(
             ILogger logger,
             IOptions<InformaticsGatewayConfiguration> InformaticsGatewayConfiguration,
-            IServiceScopeFactory serviceScopeFactory)
-            : base(logger, InformaticsGatewayConfiguration, serviceScopeFactory)
+            IServiceScopeFactory serviceScopeFactory,
+            IDicomToolkit _dicomToolkit)
+            : base(logger, InformaticsGatewayConfiguration, serviceScopeFactory, _dicomToolkit)
         {
         }
 
@@ -70,6 +73,38 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             return Task.FromResult(exportRequestData);
         }
+
+        protected override async Task ProcessMessage(MessageReceivedEventArgs eventArgs)
+        {
+            var (exportFlow, reportingActionBlock) = SetupActionBlocks();
+
+            lock (SyncRoot)
+            {
+                var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
+                if (ExportRequests.ContainsKey(exportRequest.ExportTaskId))
+                {
+                    return;
+                }
+
+                exportRequest.MessageId = eventArgs.Message.MessageId;
+                exportRequest.DeliveryTag = eventArgs.Message.DeliveryTag;
+
+                var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
+
+                ExportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
+                if (!exportFlow.Post(exportRequestWithDetails))
+                {
+                    MessageSubscriber.Reject(eventArgs.Message);
+                }
+                else
+                {
+                }
+            }
+
+            exportFlow.Complete();
+            await reportingActionBlock.Completion.ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+
+        }
     }
 
     public class ExportServiceBaseTest
@@ -83,6 +118,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
+        private readonly Mock<IDicomToolkit> _dicomToolkit = new Mock<IDicomToolkit>();
 
         public ExportServiceBaseTest()
         {
@@ -121,7 +157,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         [RetryFact(5, 250, DisplayName = "Data flow test - can start/stop")]
         public async Task DataflowTest_StartStop()
         {
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _dicomToolkit.Object);
             await service.StartAsync(_cancellationTokenSource.Token);
             await StopAndVerify(service);
 
@@ -145,7 +181,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                     messageReceivedCallback(CreateMessageReceivedEventArgs());
                 });
 
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _dicomToolkit.Object);
             await service.StartAsync(_cancellationTokenSource.Token);
             await StopAndVerify(service);
 
@@ -178,7 +214,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 .ThrowsAsync(new Exception("storage error"));
 
             var countdownEvent = new CountdownEvent(1);
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _dicomToolkit.Object);
             service.ReportActionCompleted += (sender, e) =>
             {
                 countdownEvent.Signal();
@@ -224,7 +260,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes(testData)));
 
             var countdownEvent = new CountdownEvent(5 * 3);
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _dicomToolkit.Object);
             service.ReportActionCompleted += (sender, e) =>
             {
                 countdownEvent.Signal();
@@ -238,7 +274,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 countdownEvent.Signal();
             };
             await service.StartAsync(_cancellationTokenSource.Token);
-            Assert.True(countdownEvent.Wait(1000000));
+            Assert.True(countdownEvent.Wait(60000));
             await StopAndVerify(service);
 
             _messagePublisherService.Verify(
@@ -278,7 +314,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes(testData)));
 
             var countdownEvent = new CountdownEvent(5 * 3);
-            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _dicomToolkit.Object);
             service.ReportActionCompleted += (sender, e) =>
             {
                 countdownEvent.Signal();
@@ -290,7 +326,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                 countdownEvent.Signal();
             };
             await service.StartAsync(_cancellationTokenSource.Token);
-            Assert.True(countdownEvent.Wait(1000000));
+            Assert.True(countdownEvent.Wait(60000));
             await StopAndVerify(service);
 
             _messagePublisherService.Verify(

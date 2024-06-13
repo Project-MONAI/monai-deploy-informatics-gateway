@@ -89,5 +89,40 @@ namespace Monai.Deploy.InformaticsGateway.Api.Test
             Assert.Equal($"{payloadId}/{metadata.File.UploadPath}", metadata.File.GetPayloadPath(payloadId));
             Assert.Equal($"{payloadId}/{metadata.JsonFile.UploadPath}", metadata.JsonFile.GetPayloadPath(payloadId));
         }
+
+
+        [Fact]
+        public void StudyInstanceUid_Set_ValidValue()
+        {
+            // Arrange
+            var metadata = new DicomFileStorageMetadata();
+
+            // Act
+            metadata.StudyInstanceUid = "12345";
+
+            // Assert
+            Assert.Equal("12345", metadata.StudyInstanceUid);
+        }
+
+        [Fact]
+        public void SeriesInstanceUid_Set_ValidValue()
+        {
+            // Arrange
+            var metadata = new DicomFileStorageMetadata { SeriesInstanceUid = "67890" };
+
+            // Assert
+            Assert.Equal("67890", metadata.SeriesInstanceUid);
+        }
+
+        [Fact]
+        public void SopInstanceUid_Set_ValidValue()
+        {
+            // Arrange
+            var metadata = new DicomFileStorageMetadata { SopInstanceUid = "ABCDE" };
+
+            // Assert
+            Assert.Equal("ABCDE", metadata.SopInstanceUid);
+        }
+
     }
 }

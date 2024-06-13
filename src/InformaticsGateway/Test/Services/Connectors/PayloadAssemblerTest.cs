@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 {
     public class PayloadAssemblerTest
     {
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
         private readonly Mock<ILogger<PayloadAssembler>> _logger;
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
 
@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         {
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _repository = new Mock<IPayloadRepository>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Options.Create(new DatabaseOptions());
             _logger = new Mock<ILogger<PayloadAssembler>>();
             _cancellationTokenSource = new CancellationTokenSource();
 
@@ -62,7 +62,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
         }
 
         [Fact]
@@ -122,7 +122,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
         }
 
         [RetryFact(10, 200)]
-        public async Task GivenAPayloadThatHasNotCompleteUploads_WhenProcessedByTimedEvent_ExpectToBeRemovedFromQueue()
+        public async Task GivenAPayloadThatHasIncompleteUploads_WhenProcessedByTimedEvent_ExpectToBeRemovedFromQueue()
         {
             var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
 
@@ -134,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             file1.SetFailed();
             file2.SetUploaded();
-            await Task.Delay(1001);
+            await Task.Delay(1101);
             payloadAssembler.Dispose();
 
             _repository.Verify(p => p.UpdateAsync(It.Is<Payload>(p => p.State == Payload.PayloadState.Move), It.IsAny<CancellationToken>()), Times.Never());

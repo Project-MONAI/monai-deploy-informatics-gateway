@@ -18,10 +18,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Repositories;
 using Moq;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {
@@ -32,7 +32,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<DestinationApplicationEntityRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<DestinationApplicationEntityRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Options.Create(new DatabaseOptions());
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
@@ -65,8 +65,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet = new DestinationApplicationEntity { AeTitle = "AET", HostIp = "1.2.3.4", Port = 114, Name = "AET" };
 
             var store = new DestinationApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(aet).ConfigureAwait(false);
-            var actual = await _databaseFixture.DatabaseContext.Set<DestinationApplicationEntity>().FirstOrDefaultAsync(p => p.Name.Equals(aet.Name)).ConfigureAwait(false);
+            await store.AddAsync(aet).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await _databaseFixture.DatabaseContext.Set<DestinationApplicationEntity>().FirstOrDefaultAsync(p => p.Name.Equals(aet.Name)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(aet.AeTitle, actual!.AeTitle);
@@ -80,15 +80,15 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new DestinationApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var result = await store.ContainsAsync(p => p.AeTitle == "AET1").ConfigureAwait(false);
+            var result = await store.ContainsAsync(p => p.AeTitle == "AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.AeTitle.Equals("AET1", StringComparison.Ordinal)).ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.AeTitle.Equals("AET1", StringComparison.Ordinal)).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.AeTitle != "AET1" && p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.AeTitle != "AET1" && p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Port == 114 && p.HostIp == "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.True(result);
-            result = await store.ContainsAsync(p => p.Port == 999).ConfigureAwait(false);
+            result = await store.ContainsAsync(p => p.Port == 999).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.False(result);
         }
 
@@ -97,14 +97,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new DestinationApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var actual = await store.FindByNameAsync("AET1").ConfigureAwait(false);
+            var actual = await store.FindByNameAsync("AET1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(actual);
             Assert.Equal("AET1", actual!.AeTitle);
             Assert.Equal("1.2.3.4", actual!.HostIp);
             Assert.Equal(114, actual!.Port);
             Assert.Equal("AET1", actual!.Name);
 
-            actual = await store.FindByNameAsync("AET6").ConfigureAwait(false);
+            actual = await store.FindByNameAsync("AET6").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(actual);
         }
 
@@ -113,13 +113,13 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new DestinationApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await store.FindByNameAsync("AET5").ConfigureAwait(false);
+            var expected = await store.FindByNameAsync("AET5").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
-            var actual = await store.RemoveAsync(expected!).ConfigureAwait(false);
+            var actual = await store.RemoveAsync(expected!).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Same(expected, actual);
 
-            var dbResult = await _databaseFixture.DatabaseContext.Set<DestinationApplicationEntity>().FirstOrDefaultAsync(p => p.Name == "AET5").ConfigureAwait(false);
+            var dbResult = await _databaseFixture.DatabaseContext.Set<DestinationApplicationEntity>().FirstOrDefaultAsync(p => p.Name == "AET5").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(dbResult);
         }
 
@@ -128,8 +128,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new DestinationApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await _databaseFixture.DatabaseContext.Set<DestinationApplicationEntity>().ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var expected = await _databaseFixture.DatabaseContext.Set<DestinationApplicationEntity>().ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.Equal(expected, actual);
         }
@@ -139,17 +139,17 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new DestinationApplicationEntityRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await store.FindByNameAsync("AET3").ConfigureAwait(false);
+            var expected = await store.FindByNameAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(expected);
 
             expected!.AeTitle = "AET100";
             expected!.Port = 1000;
             expected!.HostIp = "loalhost";
 
-            var actual = await store.UpdateAsync(expected).ConfigureAwait(false);
+            var actual = await store.UpdateAsync(expected).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(expected, actual);
 
-            var dbResult = await store.FindByNameAsync("AET3").ConfigureAwait(false);
+            var dbResult = await store.FindByNameAsync("AET3").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(dbResult);
             Assert.Equal(expected.AeTitle, dbResult!.AeTitle);
             Assert.Equal(expected.HostIp, dbResult!.HostIp);

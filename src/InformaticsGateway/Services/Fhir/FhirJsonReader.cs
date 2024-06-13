@@ -53,7 +53,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Fhir
             Guard.Against.NullOrWhiteSpace(correlationId, nameof(correlationId));
             Guard.Against.NullOrInvalidInput(mediaTypeHeaderValue, nameof(mediaTypeHeaderValue), (value) =>
             {
-                return value.MediaType.Value.Equals(ContentTypes.ApplicationFhirJson, StringComparison.OrdinalIgnoreCase);
+                return value.MediaType.Value!.Equals(ContentTypes.ApplicationFhirJson, StringComparison.OrdinalIgnoreCase);
             });
 
             _logger.ParsingFhirJson();

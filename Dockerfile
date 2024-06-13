@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-jammy as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy as build
 
 # Install the tools
 RUN dotnet tool install --tool-path /tools dotnet-trace
@@ -26,7 +26,8 @@ RUN echo "Building MONAI Deploy Informatics Gateway..."
 RUN dotnet publish -c Release -o out --nologo src/InformaticsGateway/Monai.Deploy.InformaticsGateway.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-jammy
+FROM mcr.microsoft.com/dotnet/aspnet:8.0-jammy
+RUN adduser --system --group --no-create-home appuser
 
 # Enable elastic client compatibility mode
 ENV ELASTIC_CLIENT_APIVERSIONING=true
@@ -34,16 +35,20 @@ ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get clean \
  && apt-get update \
- && apt-get install -y --no-install-recommends \
-    curl \
-    && rm -rf /var/lib/apt/lists
+ && apt-get install -y --no-install-recommends curl \
+ && apt-get install -y libc6-dev=2.35-0ubuntu3.8 \
+ && rm -rf /var/lib/apt/lists                           # this is a workaround for Mongo encryption library
 
 WORKDIR /opt/monai/ig
+
+RUN chown -R appuser:appuser /opt/monai/ig
 
 COPY --from=build /app/out .
 COPY --from=build /tools /opt/dotnetcore-tools
 COPY LICENSE ./
 COPY docs/compliance/third-party-licenses.md ./
+
+RUN ln -s /usr/lib/x86_64-linux-gnu/libdl.so.2 /opt/monai/ig/libdl.so    # part 2 of workaround for Mongo encryption library
 
 EXPOSE 104
 EXPOSE 2575
@@ -53,5 +58,7 @@ HEALTHCHECK --interval=10s --retries=10 CMD curl --fail http://localhost:5000/he
 
 RUN ls -lR /opt/monai/ig
 ENV PATH="/opt/dotnetcore-tools:${PATH}"
+
+USER appuser
 
 ENTRYPOINT ["/opt/monai/ig/Monai.Deploy.InformaticsGateway"]

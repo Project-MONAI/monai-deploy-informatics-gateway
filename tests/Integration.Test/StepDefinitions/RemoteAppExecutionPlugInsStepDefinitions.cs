@@ -19,6 +19,7 @@ using BoDi;
 using FellowOakDicom;
 using FellowOakDicom.Network;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Client.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -28,6 +29,8 @@ using Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution;
 using Monai.Deploy.Messaging.Events;
 using Monai.Deploy.Messaging.Messages;
 using Monai.Deploy.Messaging.RabbitMQ;
+using Polly;
+using Polly.Timeout;
 
 namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
 {
@@ -51,6 +54,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
         private readonly DataProvider _dataProvider;
         private readonly RabbitMqConsumer _receivedExportCompletedMessages;
         private readonly RabbitMqConsumer _receivedWorkflowRequestMessages;
+        private readonly RabbitMqConsumer _receivedArtifactRecievedMessages;
         private readonly RabbitMQMessagePublisherService _messagePublisher;
         private readonly InformaticsGatewayConfiguration _informaticsGatewayConfiguration;
         private Dictionary<string, DicomFile> _originalDicomFiles;
@@ -69,6 +73,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
             _dataProvider = objectContainer.Resolve<DataProvider>("DataProvider");
             _receivedExportCompletedMessages = objectContainer.Resolve<RabbitMqConsumer>("ExportCompleteSubscriber");
             _receivedWorkflowRequestMessages = objectContainer.Resolve<RabbitMqConsumer>("WorkflowRequestSubscriber");
+            _receivedArtifactRecievedMessages = objectContainer.Resolve<RabbitMqConsumer>("ArtifactRecievedSubscriber");
             _messagePublisher = objectContainer.Resolve<RabbitMQMessagePublisherService>("MessagingPublisher");
             _informaticsGatewayConfiguration = objectContainer.Resolve<InformaticsGatewayConfiguration>("InformaticsGatewayConfiguration");
             _assertions = objectContainer.Resolve<Assertions>("Assertions");
@@ -122,6 +127,7 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 Files = _dataProvider.DicomSpecs.Files.Keys.ToList(),
                 MessageId = Guid.NewGuid().ToString(),
                 WorkflowInstanceId = Guid.NewGuid().ToString(),
+                PayloadId = Guid.NewGuid().ToString(),
             };
 
             _exportRequestEvent.PluginAssemblies.Add(typeof(DicomDeidentifier).AssemblyQualifiedName);
@@ -133,12 +139,81 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 string.Empty);
 
             _receivedExportCompletedMessages.ClearMessages();
+            _receivedArtifactRecievedMessages.ClearMessages();
             await _messagePublisher.Publish("md.export.request.monaiscu", message.ToMessage());
         }
 
-        [When(@"the study is received and sent back to Informatics Gateway")]
-        public async Task TheStudyIsReceivedAndSentBackToInformaticsGateway()
+        [Given(@"a study that is exported to the test host with a bad plugin")]
+        public async Task AStudyThatIsExportedToTheTestHostBadPlugin()
         {
+            // Register a new DICOM destination
+            DestinationApplicationEntity destination;
+            try
+            {
+                destination = await _informaticsGatewayClient.DicomDestinations.Create(new DestinationApplicationEntity
+                {
+                    Name = _dicomServer.FeatureScpAeTitle,
+                    AeTitle = _dicomServer.FeatureScpAeTitle,
+                    HostIp = _configuration.InformaticsGatewayOptions.Host,
+                    Port = _dicomServer.FeatureScpPort
+                }, CancellationToken.None);
+            }
+            catch (ProblemException ex)
+            {
+                if (ex.ProblemDetails.Status == (int)HttpStatusCode.Conflict && ex.ProblemDetails.Detail.Contains("already exists"))
+                {
+                    destination = await _informaticsGatewayClient.DicomDestinations.GetAeTitle(_dicomServer.FeatureScpAeTitle, CancellationToken.None);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            _dicomDestination = destination.Name;
+
+            // Generate a study with multiple series
+            //_dataProvider.GenerateDicomData("MG", 1, 1);
+            _dataProvider.GenerateDicomData("CT", 1);
+            _dataProvider.InjectRandomData(DicomTags);
+            _originalDicomFiles = new Dictionary<string, DicomFile>(_dataProvider.DicomSpecs.Files);
+
+            await _dataSinkMinio.SendAsync(_dataProvider);
+
+            // send 2 messagees the first on should fail, the second one should not
+            string pluginName = typeof(DicomDeidentifier).AssemblyQualifiedName;
+            pluginName = pluginName.Replace("DicomDeidentifier", "fail");
+
+            for (int i = 0; i < 2; ++i)
+            {
+
+                // Emit a export request event
+                _exportRequestEvent = new ExportRequestEvent
+                {
+                    CorrelationId = Guid.NewGuid().ToString(),
+                    Destinations = new[] { _dicomDestination },
+                    ExportTaskId = Guid.NewGuid().ToString(),
+                    Files = _dataProvider.DicomSpecs.Files.Keys.ToList(),
+                    MessageId = Guid.NewGuid().ToString(),
+                    WorkflowInstanceId = Guid.NewGuid().ToString(),
+                    PayloadId = Guid.NewGuid().ToString(),
+                };
+                _exportRequestEvent.PluginAssemblies.Add(pluginName);
+                var message = new JsonMessage<ExportRequestEvent>(
+                    _exportRequestEvent,
+                    MessageBrokerConfiguration.InformaticsGatewayApplicationId,
+                    _exportRequestEvent.CorrelationId,
+                    string.Empty);
+
+                _receivedExportCompletedMessages.ClearMessages();
+                await _messagePublisher.Publish("md.export.request.monaiscu", message.ToMessage());
+                pluginName = typeof(DicomDeidentifier).AssemblyQualifiedName;
+            }
+        }
+
+        [When(@"the study is received and sent back to Informatics Gateway with (.*) messages")]
+        public async Task WhenTheStudyIsReceivedAndSentBackToInformaticsGatewayWith(int exportCount)
+        {
+
             // setup DICOM Source
             try
             {
@@ -190,8 +265,27 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 }
             }
 
+            var timeoutPolicy = Policy.TimeoutAsync(240, TimeoutStrategy.Pessimistic);
+            await timeoutPolicy
+                .ExecuteAsync(
+                    async () => { await SendRequest(exportCount); }
+                  );
+
+            // Clear workflow request messages
+            _receivedWorkflowRequestMessages.ClearMessages();
+            _receivedArtifactRecievedMessages.ClearMessages();
+
+            _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
+
+            // Wait for workflow request events
+            (await _receivedArtifactRecievedMessages.WaitforAsync(1, MessageWaitTimeSpan)).Should().BeTrue();
+            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, DataService.DIMSE, _receivedArtifactRecievedMessages.Messages, 1);
+        }
+
+        private async Task SendRequest(int exportCount = 1)
+        {
             // Wait for export completed event
-            (await _receivedExportCompletedMessages.WaitforAsync(1, DicomScpWaitTimeSpan)).Should().BeTrue();
+            (await _receivedExportCompletedMessages.WaitforAsync(exportCount, DicomScpWaitTimeSpan)).Should().BeTrue();
 
             foreach (var key in _dataProvider.DicomSpecs.FileHashes.Keys)
             {
@@ -215,26 +309,17 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.StepDefinitions
                 host,
                 port,
                 MonaiAeTitle);
-
-            // Clear workflow request messages
-            _receivedWorkflowRequestMessages.ClearMessages();
-
-            _dataProvider.DimseRsponse.Should().Be(DicomStatus.Success);
-
-            // Wait for workflow request events
-            (await _receivedWorkflowRequestMessages.WaitforAsync(1, MessageWaitTimeSpan)).Should().BeTrue();
-            _assertions.ShouldHaveCorrectNumberOfWorkflowRequestMessages(_dataProvider, DataService.DIMSE, _receivedWorkflowRequestMessages.Messages, 1);
         }
 
         [Then(@"ensure the original study and the received study are the same")]
         public async Task EnsureTheOriginalStudyAndTheReceivedStudyAreTheSameAsync()
         {
-            var workflowRequestEvent = _receivedWorkflowRequestMessages.Messages[0].ConvertTo<WorkflowRequestEvent>();
-            _exportRequestEvent.CorrelationId.Should().Be(_receivedWorkflowRequestMessages.Messages[0].CorrelationId);
+            var workflowRequestEvent = _receivedArtifactRecievedMessages.Messages[0].ConvertTo<WorkflowRequestEvent>();
+            _exportRequestEvent.CorrelationId.Should().Be(_receivedArtifactRecievedMessages.Messages[0].CorrelationId);
             _exportRequestEvent.CorrelationId.Should().Be(workflowRequestEvent.CorrelationId);
             _exportRequestEvent.WorkflowInstanceId.Should().Be(workflowRequestEvent.WorkflowInstanceId);
             _exportRequestEvent.ExportTaskId.Should().Be(workflowRequestEvent.TaskId);
-            await _assertions.ShouldRestoreAllDicomMetaata(_receivedWorkflowRequestMessages.Messages, _originalDicomFiles, DefaultDicomTags.ToArray()).ConfigureAwait(false);
+            await _assertions.ShouldRestoreAllDicomMetaata(_receivedArtifactRecievedMessages.Messages, _originalDicomFiles, DefaultDicomTags.ToArray()).ConfigureAwait(false);
         }
     }
 }

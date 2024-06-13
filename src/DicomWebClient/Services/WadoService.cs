@@ -17,7 +17,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
@@ -114,7 +113,10 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
             try
             {
-                return await response.ToDicomAsyncEnumerable().FirstOrDefaultAsync();
+                await using (var enumerator = response.ToDicomAsyncEnumerable().GetAsyncEnumerator())
+                {
+                    return await enumerator.MoveNextAsync() ? enumerator.Current : null;
+                }
             }
             catch (Exception ex)
             {
@@ -250,7 +252,10 @@ namespace Monai.Deploy.InformaticsGateway.DicomWeb.Client
 
             try
             {
-                return await GetMetadata<T>(instancMetadataUri).FirstOrDefaultAsync();
+                await using (var enumerator = GetMetadata<T>(instancMetadataUri).GetAsyncEnumerator())
+                {
+                    return await enumerator.MoveNextAsync() ? enumerator.Current : default;
+                }
             }
             catch (Exception ex) when (ex is not UnsupportedReturnTypeException)
             {

@@ -22,6 +22,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.DicomWeb
         public const string ApplicationDicomJson = "application/dicom+json";
         public const string ApplicationDicomXml = "application/dicom+xml";
         public const string ApplicationOctetStream = "application/octet-stream";
+        public const string ApplicationJson = "application/json";
 
         public const string MultipartRelated = "multipart/related";
 

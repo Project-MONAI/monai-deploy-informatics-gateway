@@ -26,7 +26,7 @@ using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.CLI.Services;
 using Monai.Deploy.InformaticsGateway.Client;
 using Monai.Deploy.InformaticsGateway.Common;
@@ -142,7 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
-            IReadOnlyList<DestinationApplicationEntity> items = null;
+            IReadOnlyList<DestinationApplicationEntity>? items = null;
             try
             {
                 CheckConfiguration(configService);
@@ -153,12 +153,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.ErrorListingDicomDestinations(ex.Message);
+                logger?.ErrorListingDicomDestinations(ex.Message);
                 return ExitCodes.DestinationAe_ErrorList;
             }
 
@@ -214,7 +214,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
@@ -250,7 +250,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
@@ -288,7 +288,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
@@ -325,7 +325,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
@@ -354,7 +354,7 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             Guard.Against.Null(client, nameof(client), $"{Strings.ApplicationName} client is unavailable.");
             Guard.Against.Null(consoleRegion, nameof(consoleRegion), "Console region is unavailable.");
 
-            IDictionary<string, string> items = null;
+            IDictionary<string, string>? items = null;
             try
             {
                 CheckConfiguration(configService);
@@ -365,12 +365,12 @@ namespace Monai.Deploy.InformaticsGateway.CLI
             }
             catch (ConfigurationException ex)
             {
-                logger.ConfigurationException(ex.Message);
+                logger?.ConfigurationException(ex.Message);
                 return ExitCodes.Config_NotConfigured;
             }
             catch (Exception ex)
             {
-                logger.ErrorListingDataOutputPlugIns(ex.Message);
+                logger?.ErrorListingDataOutputPlugIns(ex.Message);
                 return ExitCodes.DestinationAe_ErrorPlugIns;
             }
 

@@ -30,7 +30,6 @@ using System;
 
 namespace Monai.Deploy.InformaticsGateway.Common
 {
-    [Serializable]
     public class InsufficientStorageAvailableException : Exception
     {
         public InsufficientStorageAvailableException()
@@ -40,13 +39,9 @@ namespace Monai.Deploy.InformaticsGateway.Common
         public InsufficientStorageAvailableException(string message) : base(message)
         {
         }
+
         public InsufficientStorageAvailableException(string message, Exception innerException) : base(message, innerException)
         {
-        }
-
-        protected InsufficientStorageAvailableException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext)
-        {
-            throw new NotImplementedException();
         }
     }
 }

@@ -16,6 +16,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 {
@@ -49,6 +50,25 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var aet5 = new DestinationApplicationEntity { AeTitle = "AET5", HostIp = "1.2.3.4", Port = 114, Name = "AET5" };
 
             var set = DatabaseContext.Set<DestinationApplicationEntity>();
+            set.RemoveRange(set.ToList());
+            set.Add(aet1);
+            set.Add(aet2);
+            set.Add(aet3);
+            set.Add(aet4);
+            set.Add(aet5);
+
+            DatabaseContext.SaveChanges();
+        }
+
+        public void InitDatabaseWithHL7DestinationEntities()
+        {
+            var aet1 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET1" };
+            var aet2 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET2" };
+            var aet3 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET3" };
+            var aet4 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET4" };
+            var aet5 = new HL7DestinationEntity { HostIp = "1.2.3.4", Port = 114, Name = "AET5" };
+
+            var set = DatabaseContext.Set<HL7DestinationEntity>();
             set.RemoveRange(set.ToList());
             set.Add(aet1);
             set.Add(aet2);
@@ -131,6 +151,17 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             set.Add(da3);
             set.Add(da4);
             set.Add(da5);
+
+            DatabaseContext.SaveChanges();
+        }
+        internal void InitDatabaseWithExternalAppDetailsEntries()
+        {
+            var ea1 = new ExternalAppDetails { StudyInstanceUid = "1", PatientId = "11", PatientIdOutBound = "1" };
+            var ea2 = new ExternalAppDetails { StudyInstanceUid = "2", PatientId = "22", PatientIdOutBound = "2" };
+            var set = DatabaseContext.Set<ExternalAppDetails>();
+            set.RemoveRange(set.ToList());
+            set.Add(ea1);
+            set.Add(ea2);
 
             DatabaseContext.SaveChanges();
         }

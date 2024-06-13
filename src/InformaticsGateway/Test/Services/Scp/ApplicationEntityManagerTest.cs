@@ -26,9 +26,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Storage;
 using Monai.Deploy.InformaticsGateway.SharedTest;
@@ -108,7 +110,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             var exception = await Assert.ThrowsAsync<ArgumentException>(async () =>
             {
-                await manager.HandleCStoreRequest(request, "BADAET", "CallingAET", Guid.NewGuid());
+                await manager.HandleCStoreRequest(request, "BADAET", "CallingAET", Guid.NewGuid(), InformaticsGateway.Services.Common.ScpInputTypeEnum.WorkflowTrigger);
             });
 
             Assert.Equal("Called AE Title 'BADAET' is not configured", exception.Message);
@@ -138,7 +140,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             var request = GenerateRequest();
             await Assert.ThrowsAsync<InsufficientStorageAvailableException>(async () =>
             {
-                await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid());
+                await manager.HandleCStoreRequest(request, aet, "CallingAET", Guid.NewGuid(), InformaticsGateway.Services.Common.ScpInputTypeEnum.WorkflowTrigger);
             });
 
             _logger.VerifyLogging($"{aet} added to AE Title Manager.", LogLevel.Information, Times.Once());
@@ -170,8 +172,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                                                        _monaiAeChangedNotificationService,
                                                        _connfiguration);
 
-            Assert.False(await manager.IsValidSourceAsync("  ", "123").ConfigureAwait(false));
-            Assert.False(await manager.IsValidSourceAsync("AAA", "").ConfigureAwait(false));
+            Assert.False(await manager.IsValidSourceAsync("  ", "123").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
+            Assert.False(await manager.IsValidSourceAsync("AAA", "").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
         }
 
         [RetryFact(5, 250, DisplayName = "IsValidSource - False when no matching source found")]
@@ -193,7 +195,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                 ));
 
             var sourceAeTitle = "ValidSource";
-            Assert.False(await manager.IsValidSourceAsync(sourceAeTitle, "1.2.3.4").ConfigureAwait(false));
+            Assert.False(await manager.IsValidSourceAsync(sourceAeTitle, "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             _sourceEntityRepository.Verify(p => p.ContainsAsync(It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(), It.IsAny<CancellationToken>()), Times.Once());
             _logger.VerifyLoggingMessageBeginsWith($"Available source AET: SAE @ 1.2.3.4.", LogLevel.Information, Times.Once());
@@ -211,7 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
             _sourceEntityRepository.Setup(p => p.ContainsAsync(It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(true);
 
-            Assert.True(await manager.IsValidSourceAsync(aet, "1.2.3.4").ConfigureAwait(false));
+            Assert.True(await manager.IsValidSourceAsync(aet, "1.2.3.4").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             _sourceEntityRepository.Verify(p => p.ContainsAsync(It.IsAny<Expression<Func<SourceApplicationEntity, bool>>>(), It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -231,7 +233,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Added));
-            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
                 new MonaiApplicationEntity
@@ -239,7 +241,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Updated));
-            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
                 new MonaiApplicationEntity
@@ -247,7 +249,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Deleted));
-            Assert.False(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+            Assert.False(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
         }
 
         [RetryFact(5, 250, DisplayName = "Shall prevent AE update when AE Title do not match")]
@@ -265,7 +267,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Added));
-            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             _monaiAeChangedNotificationService.Notify(new MonaiApplicationentityChangedEvent(
                 new MonaiApplicationEntity
@@ -274,8 +276,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     Name = "AE1"
                 }, ChangedEventType.Updated));
 
-            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
-            Assert.False(await manager.IsAeTitleConfiguredAsync("AE2").ConfigureAwait(false));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
+            Assert.False(await manager.IsAeTitleConfiguredAsync("AE2").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
         }
 
         [RetryFact(5, 250, DisplayName = "Shall handle CS Store Request")]
@@ -294,10 +296,10 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                     AeTitle = "AE1",
                     Name = "AE1"
                 }, ChangedEventType.Added));
-            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(false));
+            Assert.True(await manager.IsAeTitleConfiguredAsync("AE1").ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext));
 
             var request = GenerateRequest();
-            await manager.HandleCStoreRequest(request, "AE1", "AE", associationId);
+            await manager.HandleCStoreRequest(request, "AE1", "AE", associationId, InformaticsGateway.Services.Common.ScpInputTypeEnum.WorkflowTrigger);
 
             _applicationEntityHandler.Verify(p =>
                 p.HandleInstanceAsync(
@@ -309,7 +311,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Scp
                         p.SopClassUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SOPClassUID)) &&
                         p.StudyInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.StudyInstanceUID)) &&
                         p.SeriesInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SeriesInstanceUID)) &&
-                        p.SopInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID))))
+                        p.SopInstanceUid.Equals(request.Dataset.GetSingleValue<string>(DicomTag.SOPInstanceUID))),
+                    ScpInputTypeEnum.WorkflowTrigger)
                 , Times.Once());
         }
 

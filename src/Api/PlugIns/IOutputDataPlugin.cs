@@ -16,6 +16,7 @@
 
 using System.Threading.Tasks;
 using FellowOakDicom;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 
 namespace Monai.Deploy.InformaticsGateway.Api.PlugIns
 {

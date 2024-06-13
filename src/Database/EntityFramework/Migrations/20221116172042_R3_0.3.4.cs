@@ -6,6 +6,9 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
 {
     public partial class R3_034 : Migration
     {
+        private static readonly string[] StorageMetadataWrapperEntitiesColumns = ["CorrelationId", "Identity"];
+        private static readonly string[] StorageMetadataWrapperColumns = ["CorrelationId", "Identity"];
+
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
@@ -87,7 +90,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_storagemetadata_ids",
                 table: "StorageMetadataWrapperEntities",
-                columns: new[] { "CorrelationId", "Identity" });
+                columns: StorageMetadataWrapperEntitiesColumns);
 
             migrationBuilder.CreateIndex(
                 name: "idx_storagemetadata_uploaded",
@@ -166,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.Migrations
             migrationBuilder.CreateIndex(
                 name: "idx_storagemetadata_ids",
                 table: "StorageMetadataWrapper",
-                columns: new[] { "CorrelationId", "Identity" });
+                columns: StorageMetadataWrapperColumns);
 
             migrationBuilder.CreateIndex(
                 name: "idx_storagemetadata_uploaded",

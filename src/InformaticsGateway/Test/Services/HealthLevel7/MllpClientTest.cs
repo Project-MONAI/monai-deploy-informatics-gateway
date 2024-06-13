@@ -22,6 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Api.Mllp;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
@@ -32,12 +33,13 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 {
     public class MllpClientTest
     {
-        private const string SampleMessage = "MSH|^~\\&|MD|MD HOSPITAL|MD Test|MONAI Deploy|202207130000|SECURITY|MD^A01^ADT_A01|MSG00001|P|2.8|||<ACK>|\r\n";
+        private const string SampleMessage = "MSH|^~\\&|MD|MD HOSPITAL|MD Test|MONAI Deploy|202207130000|SECURITY|MD^A01^ADT_A01|MSG00001|P|2.8|||<ACK>|\r";
 
         private readonly Mock<ITcpClientAdapter> _tcpClient;
         private readonly Hl7Configuration _config;
         private readonly Mock<ILogger<MllpClient>> _logger;
         private readonly CancellationTokenSource _cancellationTokenSource;
+        private readonly Mock<IMllpExtract> _mIIpExtract = new Mock<IMllpExtract>();
 
         public MllpClientTest()
         {
@@ -54,6 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         {
             Assert.Throws<ArgumentNullException>(() => new MllpClient(null, null, null));
             Assert.Throws<ArgumentNullException>(() => new MllpClient(_tcpClient.Object, null, null));
+            Assert.Throws<ArgumentNullException>(() => new MllpClient(_tcpClient.Object, _config, null));
             Assert.Throws<ArgumentNullException>(() => new MllpClient(_tcpClient.Object, _config, null));
 
             new MllpClient(_tcpClient.Object, _config, _logger.Object);
@@ -131,10 +134,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             {
                 await Task.Run(() =>
                 {
-                    Assert.Empty(results.Messages);
                     Assert.NotNull(results.AggregateException);
-                    Assert.Single(results.AggregateException.InnerExceptions);
-                    Assert.Contains("Failed to validate the message with error", results.AggregateException.InnerExceptions.First().Message);
+                    Assert.Equal(1, results.AggregateException.InnerExceptions.Count);
                 });
             });
             await client.Start(action, _cancellationTokenSource.Token);

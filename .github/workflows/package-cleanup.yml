@@ -17,8 +17,8 @@
 name: Cleanup Pre-release Packages
 
 on:
-  schedule:
-  - cron: "0 0 * * *"
+  # schedule:
+  # - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:

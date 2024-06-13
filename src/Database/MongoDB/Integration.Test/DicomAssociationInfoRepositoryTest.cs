@@ -18,7 +18,7 @@ using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test;
 using Monai.Deploy.InformaticsGateway.Database.MongoDB.Repositories;
@@ -34,7 +34,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<DicomAssociationInfoRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -46,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<DicomAssociationInfoRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = _databaseFixture.Options;
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -57,7 +57,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
@@ -72,11 +72,11 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
             association.FileReceived(string.Empty);
             association.Disconnect();
 
-            var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
-            await store.AddAsync(association).ConfigureAwait(false);
+            var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
+            await store.AddAsync(association).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var collection = _databaseFixture.Database.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
-            var actual = await collection.Find(p => p.Id == association.Id).FirstOrDefaultAsync().ConfigureAwait(false);
+            var actual = await collection.Find(p => p.Id == association.Id).FirstOrDefaultAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(association.FileCount, actual!.FileCount);
@@ -90,13 +90,32 @@ namespace Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test
         }
 
         [Fact]
-        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
+        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenGetAllAsyncCalled_ExpectLimitedEntitiesToBeReturned()
         {
-            var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options, _databaseFixture.Options);
+            var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _databaseFixture.Options);
 
             var collection = _databaseFixture.Database.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
-            var expected = await collection.Find(Builders<DicomAssociationInfo>.Filter.Empty).ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var startTime = DateTime.Now;
+            var endTime = DateTime.MinValue;
+            var builder = Builders<DicomAssociationInfo>.Filter;
+            var filter = builder.Empty;
+            filter &= builder.Where(t => t.DateTimeDisconnected >= startTime.ToUniversalTime());
+            filter &= builder.Where(t => t.DateTimeDisconnected <= endTime.ToUniversalTime());
+            var expected = await collection.Find(filter).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.GetAllAsync(0, 1, startTime, endTime, default).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+
+            actual.Should().NotBeNull();
+            actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
+        }
+
+        [Fact]
+        public async Task GivenDestinationApplicationEntitiesInTheDatabase_WhenToListIsCalled_ExpectAllEntitiesToBeReturned()
+        {
+            var store = new DicomAssociationInfoRepository(_serviceScopeFactory.Object, _logger.Object, _options);
+
+            var collection = _databaseFixture.Database.GetCollection<DicomAssociationInfo>(nameof(DicomAssociationInfo));
+            var expected = await collection.Find(Builders<DicomAssociationInfo>.Filter.Empty).ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             actual.Should().BeEquivalentTo(expected, options => options.Excluding(p => p.DateTimeCreated));
         }

@@ -15,22 +15,15 @@
  * limitations under the License.
  */
 
-using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Runtime.Serialization;
 
 namespace Monai.Deploy.InformaticsGateway.Api
 {
-    [Serializable]
     public class LoggingDataDictionary<TKey, TValue> : Dictionary<TKey, TValue> where TKey : notnull
     {
         public LoggingDataDictionary()
-        {
-        }
-
-        protected LoggingDataDictionary(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
 

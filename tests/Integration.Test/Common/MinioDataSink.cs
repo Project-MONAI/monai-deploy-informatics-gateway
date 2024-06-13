@@ -15,7 +15,9 @@
  */
 
 using System.Diagnostics;
+using System.Text;
 using Minio;
+using Minio.DataModel.Args;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Integration.Test.Drivers;
 using Polly;
@@ -69,7 +71,39 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Common
             });
         }
 
-        private MinioClient CreateMinioClient() => new MinioClient()
+        public async Task SaveHl7Async(DataProvider dataProvider, params object[] args)
+        {
+            await _retryPolicy.ExecuteAsync(async () =>
+            {
+                var minioClient = CreateMinioClient();
+
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+
+                _outputHelper.WriteLine($"Uploading {dataProvider.HL7Specs.Files.Count} files to MinIO...");
+
+                foreach (var key in dataProvider.HL7Specs.Files.Keys)
+                {
+                    var file = dataProvider.HL7Specs.Files[key];
+                    var filename = $"{args[0]}/{key.Replace(".txt", ".hl7")}";
+                    var byteArray = Encoding.ASCII.GetBytes(file.HL7Message);
+                    var stream = new MemoryStream(byteArray);
+
+                    stream.Position = 0;
+                    var puObjectArgs = new PutObjectArgs();
+                    puObjectArgs.WithBucket(_options.Storage.StorageServiceBucketName)
+                        .WithObject(filename)
+                        .WithStreamData(stream)
+                        .WithObjectSize(stream.Length);
+                    await minioClient.PutObjectAsync(puObjectArgs);
+                }
+
+                stopwatch.Stop();
+                _outputHelper.WriteLine($"Time to upload to Minio={0}s...", stopwatch.Elapsed.TotalSeconds);
+            });
+        }
+
+        private MinioClient CreateMinioClient() => (MinioClient)new MinioClient()
                         .WithEndpoint(_options.Storage.Settings["endpoint"])
                         .WithCredentials(_options.Storage.Settings["accessKey"], _options.Storage.Settings["accessToken"])
                     .Build();

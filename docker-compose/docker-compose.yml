@@ -15,7 +15,7 @@
 version: "3.9"
 services:
   rabbitmq:
-    image: rabbitmq:3.10-management
+    image: rabbitmq:3.13-management
     hostname: rabbitmq
     ports:
       - 5672:5672
@@ -35,7 +35,7 @@ services:
       - monaideploy
 
   minio:
-    image: "minio/minio:latest"
+    image: "minio/minio:RELEASE.2024-06-11T03-13-30Z"
     command: server --console-address ":9001" /data
     hostname: minio
     volumes:
@@ -75,7 +75,7 @@ services:
       start_period: 40s
 
   orthanc:
-    image: osimis/orthanc:22.9.0
+    image: osimis/orthanc:24.1.2-full
     hostname: orthanc
     volumes:
       - ./configs/orthanc.json:/etc/orthanc/orthanc.json

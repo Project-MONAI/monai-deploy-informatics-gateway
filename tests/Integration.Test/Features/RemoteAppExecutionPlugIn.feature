@@ -23,5 +23,12 @@ re-identifying data sent and received by the MIG respectively.
     @messaging_workflow_request @messaging
     Scenario: End-to-end test of plug-ins
         Given a study that is exported to the test host
-        When the study is received and sent back to Informatics Gateway
+        When the study is received and sent back to Informatics Gateway with 1 messages
         Then ensure the original study and the received study are the same
+
+   @messaging_workflow_request @messaging
+    Scenario: End-to-end test of plug-ins with one failing
+        Given a study that is exported to the test host with a bad plugin
+        When the study is received and sent back to Informatics Gateway with 2 messages
+        Then ensure the original study and the received study are the same
+

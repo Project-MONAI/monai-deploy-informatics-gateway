@@ -24,6 +24,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Database.EntityFramework;
@@ -46,7 +47,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 throw new ConfigurationException("No database connections found in configuration section 'ConnectionStrings'.");
             }
 
-            var databaseType = connectionStringConfigurationSection["Type"].ToLowerInvariant();
+            var databaseType = connectionStringConfigurationSection!["Type"]!.ToLowerInvariant();
 
             switch (databaseType)
             {
@@ -55,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     return healthChecksBuilder;
 
                 case DbType_MongoDb:
-                    healthChecksBuilder.AddMongoDb(mongodbConnectionString: connectionStringConfigurationSection[SR.DatabaseConnectionStringKey], mongoDatabaseName: connectionStringConfigurationSection[SR.DatabaseNameKey], name: "MongoDB");
+                    healthChecksBuilder.AddMongoDb(mongodbConnectionString: connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]!, mongoDatabaseName: connectionStringConfigurationSection[SR.DatabaseNameKey]!, name: "MongoDB");
                     return healthChecksBuilder;
 
                 default:
@@ -63,17 +64,18 @@ namespace Monai.Deploy.InformaticsGateway.Database
             }
         }
 
-        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, ILogger logger)
-            => services.ConfigureDatabase(connectionStringConfigurationSection, new FileSystem(), logger);
+        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IConfigurationSection? pluginsConfigurationSection, ILoggerFactory loggerFactory)
+            => services.ConfigureDatabase(connectionStringConfigurationSection, pluginsConfigurationSection, new FileSystem(), loggerFactory);
 
-        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IFileSystem fileSystem, ILogger logger)
+        public static IServiceCollection ConfigureDatabase(this IServiceCollection services, IConfigurationSection? connectionStringConfigurationSection, IConfigurationSection? pluginsConfigurationSection, IFileSystem fileSystem, ILoggerFactory loggerFactory)
         {
+
             if (connectionStringConfigurationSection is null)
             {
                 throw new ConfigurationException("No database connections found in configuration section 'ConnectionStrings'.");
             }
-
-            var databaseType = connectionStringConfigurationSection["Type"].ToLowerInvariant();
+            services.Configure<DatabaseOptions>(connectionStringConfigurationSection.GetSection("DatabaseOptions"));
+            var databaseType = connectionStringConfigurationSection["Type"]!.ToLowerInvariant();
             switch (databaseType)
             {
                 case DbType_Sqlite:
@@ -82,6 +84,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                         ServiceLifetime.Transient);
                     services.AddScoped<IDatabaseMigrationManager, EfDatabaseMigrationManager>();
                     services.AddScoped(typeof(IDestinationApplicationEntityRepository), typeof(EntityFramework.Repositories.DestinationApplicationEntityRepository));
+                    services.AddScoped(typeof(IHL7DestinationEntityRepository), typeof(EntityFramework.Repositories.HL7DestinationEntityRepository));
                     services.AddScoped(typeof(IInferenceRequestRepository), typeof(EntityFramework.Repositories.InferenceRequestRepository));
                     services.AddScoped(typeof(IMonaiApplicationEntityRepository), typeof(EntityFramework.Repositories.MonaiApplicationEntityRepository));
                     services.AddScoped(typeof(ISourceApplicationEntityRepository), typeof(EntityFramework.Repositories.SourceApplicationEntityRepository));
@@ -89,16 +92,17 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IPayloadRepository), typeof(EntityFramework.Repositories.PayloadRepository));
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(EntityFramework.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(EntityFramework.Repositories.VirtualApplicationEntityRepository));
+                    services.AddScoped(typeof(IHl7ApplicationConfigRepository), typeof(EntityFramework.Repositories.Hl7ApplicationConfigRepository));
+                    services.AddSingleton(typeof(IExternalAppDetailsRepository), typeof(EntityFramework.Repositories.ExternalAppDetailsRepository));
 
-                    services.ConfigureDatabaseFromPlugIns(DatabaseType.EntityFramework, fileSystem, connectionStringConfigurationSection, logger);
+                    services.ConfigureDatabaseFromPlugIns(DatabaseType.EntityFramework, fileSystem, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
                     return services;
 
                 case DbType_MongoDb:
                     services.AddSingleton<IMongoClient, MongoClient>(s => new MongoClient(connectionStringConfigurationSection[SR.DatabaseConnectionStringKey]));
-                    services.Configure<DatabaseOptions>(connectionStringConfigurationSection);
-
                     services.AddScoped<IDatabaseMigrationManager, MongoDatabaseMigrationManager>();
                     services.AddScoped(typeof(IDestinationApplicationEntityRepository), typeof(MongoDB.Repositories.DestinationApplicationEntityRepository));
+                    services.AddScoped(typeof(IHL7DestinationEntityRepository), typeof(MongoDB.Repositories.HL7DestinationEntityRepository));
                     services.AddScoped(typeof(IInferenceRequestRepository), typeof(MongoDB.Repositories.InferenceRequestRepository));
                     services.AddScoped(typeof(IMonaiApplicationEntityRepository), typeof(MongoDB.Repositories.MonaiApplicationEntityRepository));
                     services.AddScoped(typeof(ISourceApplicationEntityRepository), typeof(MongoDB.Repositories.SourceApplicationEntityRepository));
@@ -106,8 +110,10 @@ namespace Monai.Deploy.InformaticsGateway.Database
                     services.AddScoped(typeof(IPayloadRepository), typeof(MongoDB.Repositories.PayloadRepository));
                     services.AddScoped(typeof(IDicomAssociationInfoRepository), typeof(MongoDB.Repositories.DicomAssociationInfoRepository));
                     services.AddScoped(typeof(IVirtualApplicationEntityRepository), typeof(MongoDB.Repositories.VirtualApplicationEntityRepository));
+                    services.AddScoped(typeof(IHl7ApplicationConfigRepository), typeof(MongoDB.Repositories.Hl7ApplicationConfigRepository));
+                    services.AddSingleton(typeof(IExternalAppDetailsRepository), typeof(MongoDB.Repositories.ExternalAppDetailsRepository));
 
-                    services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection, logger);
+                    services.ConfigureDatabaseFromPlugIns(DatabaseType.MongoDb, fileSystem, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
 
                     return services;
 
@@ -120,7 +126,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
             DatabaseType databaseType,
             IFileSystem fileSystem,
             IConfigurationSection? connectionStringConfigurationSection,
-            ILogger logger)
+            IConfigurationSection? pluginsConfigurationSection,
+            ILoggerFactory loggerFactory)
         {
             Guard.Against.Null(fileSystem, nameof(fileSystem));
 
@@ -133,7 +140,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
                 {
                     throw new ConfigurationException($"Error activating database registration from type '{type.FullName}'.");
                 }
-                registrar.Configure(services, databaseType, connectionStringConfigurationSection?[SR.DatabaseConnectionStringKey], logger);
+                registrar.Configure(services, databaseType, connectionStringConfigurationSection, pluginsConfigurationSection, loggerFactory);
             }
             return services;
         }
@@ -153,6 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Database
             return matchingTypes.ToArray();
         }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("SonarLint", "S3885", Justification = "assembly.Load does not full register the contents, but assembly.LoadFrom does, this is need to load .dlls from the plug-ins folder that plugins use")]
         internal static Assembly[] LoadAssemblyFromPlugInsDirectory(IFileSystem fileSystem)
         {
             Guard.Against.Null(fileSystem, nameof(fileSystem));
@@ -167,8 +175,8 @@ namespace Monai.Deploy.InformaticsGateway.Database
 
             foreach (var plugin in plugins)
             {
-                var asesmblyeData = fileSystem.File.ReadAllBytes(plugin);
-                assemblies.Add(Assembly.Load(asesmblyeData));
+
+                assemblies.Add(Assembly.LoadFrom(plugin));
             }
             return assemblies.ToArray();
         }

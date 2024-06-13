@@ -173,5 +173,40 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 8204, Level = LogLevel.Error, Message = "Failed to store FHIR resource.")]
         public static partial void ErrorStoringFhirResource(this ILogger logger, Exception ex);
+
+        //
+        // Dicom Associations Controller.
+        //
+        [LoggerMessage(EventId = 8300, Level = LogLevel.Error, Message = "Unexpected error occurred in GET /dicom-associations API..")]
+        public static partial void DicomAssociationsControllerGetError(this ILogger logger, Exception ex);
+
+        ///
+        /// HL7 Application Configuration controller
+        ///
+        [LoggerMessage(EventId = 8400, Level = LogLevel.Error, Message = "Unexpected error occurred in PUT {endpoint} API.")]
+        public static partial void PutHl7ApplicationConfigException(this ILogger logger, string endpoint, Exception ex);
+
+
+        // HL7 Destination Controller
+        [LoggerMessage(EventId = 8401, Level = LogLevel.Information, Message = "HL7 destination added Name={name}, Host/IP={hostIp}.")]
+        public static partial void HL7DestinationEntityAdded(this ILogger logger, string name, string hostIp);
+
+        [LoggerMessage(EventId = 8402, Level = LogLevel.Information, Message = "HL7 destination deleted {name}.")]
+        public static partial void HL7DestinationEntityDeleted(this ILogger logger, string name);
+
+        [LoggerMessage(EventId = 8403, Level = LogLevel.Error, Message = "Error querying HL7 destinations.")]
+        public static partial void ErrorListingHL7DestinationEntities(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8404, Level = LogLevel.Error, Message = "Error adding new HL7 destination.")]
+        public static partial void ErrorAddingHL7DestinationEntity(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8405, Level = LogLevel.Error, Message = "Error deleting HL7 destination.")]
+        public static partial void ErrorDeletingHL7DestinationEntity(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 8406, Level = LogLevel.Error, Message = "Error C-ECHO to HL7 destination {name}.")]
+        public static partial void ErrorCEechoHL7DestinationEntity(this ILogger logger, string name, Exception ex);
+
+        [LoggerMessage(EventId = 8407, Level = LogLevel.Information, Message = "HL7 destination updated {name}: Host/IP={hostIp}, Port={port}.")]
+        public static partial void HL7DestinationEntityUpdated(this ILogger logger, string name, string hostIp, int port);
     }
 }

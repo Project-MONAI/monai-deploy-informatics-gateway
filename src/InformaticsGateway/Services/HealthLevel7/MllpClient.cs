@@ -16,19 +16,18 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Ardalis.GuardClauses;
 using HL7.Dotnetcore;
 using Microsoft.Extensions.Logging;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
     internal sealed class MllpClient : IMllpClient
     {
@@ -54,10 +53,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
             ClientId = Guid.NewGuid();
-            _exceptions = new List<Exception>();
-            _messages = new List<Message>();
+            _exceptions = [];
+            _messages = [];
 
-            _loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Endpoint", _client.RemoteEndPoint }, { "CorrelationId", ClientId } });
+            _loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "Endpoint", _client.RemoteEndPoint }, { "CorrelationId", ClientId } })!;
         }
 
         public async Task Start(Func<IMllpClient, MllpClientResult, Task> onDisconnect, CancellationToken cancellationToken)
@@ -143,6 +142,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                     }
                 } while (true);
             }
+            linkedCancellationTokenSource.Dispose();
             return messages;
         }
 
@@ -158,13 +158,31 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
             if (ShouldSendAcknowledgment(message))
             {
-                var ackMessage = message.GetACK();
+                Message ackMessage;
+                try
+                {
+                    ackMessage = message.GetACK(true);
+                }
+                catch (Exception ex)
+                {
+                    _logger.ErrorGeneratingHl7Acknowledgment(ex, message.HL7Message);
+                    _exceptions.Add(ex);
+                    return;
+                }
+
+                if (ackMessage is null)
+                {
+                    var ex = new Exception("Error generating HL7 acknowledgment.");
+                    _logger.ErrorGeneratingHl7Acknowledgment(ex, message.HL7Message);
+                    _exceptions.Add(ex);
+                    return;
+                }
                 var ackData = new ReadOnlyMemory<byte>(ackMessage.GetMLLP());
                 try
                 {
                     await clientStream.WriteAsync(ackData, cancellationToken).ConfigureAwait(false);
                     await clientStream.FlushAsync(cancellationToken).ConfigureAwait(false);
-                    _logger.AcknowledgmentSent(ackData.Length);
+                    _logger.AcknowledgmentSent(ackMessage.HL7Message, ackData.Length);
                 }
                 catch (Exception ex)
                 {
@@ -180,7 +198,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             try
             {
                 var value = message.DefaultSegment(Resources.MessageHeaderSegment).Fields(Resources.AcceptAcknowledgementType);
-                if (value is null)
+                if (value is null || string.IsNullOrWhiteSpace(value.Value))
                 {
                     return true;
                 }
@@ -190,8 +208,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
                 return value.Value switch
                 {
                     Resources.AcknowledgmentTypeNever => false,
-                    Resources.AcknowledgmentTypeError => _exceptions.Any(),
-                    Resources.AcknowledgmentTypeSuccessful => !_exceptions.Any(),
+                    Resources.AcknowledgmentTypeError => _exceptions.Count is not 0,
+                    Resources.AcknowledgmentTypeSuccessful => _exceptions.Count is 0,
                     _ => true,
                 };
             }
@@ -210,9 +228,9 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             try
             {
                 var text = data.Substring(messageStartIndex, endIndex - messageStartIndex);
-                _logger.Hl7GenerateMessage(text.Length);
+                _logger.Hl7GenerateMessage(text.Length, text);
                 message = new Message(text);
-                message.ParseMessage();
+                message.ParseMessage(false);
                 data = data.Length > endIndex ? data.Substring(messageEndIndex) : string.Empty;
                 return true;
             }

@@ -17,7 +17,6 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Ardalis.GuardClauses;
-using Monai.Deploy.InformaticsGateway.Api;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 
 namespace Monai.Deploy.InformaticsGateway.Database.Api
@@ -27,7 +26,6 @@ namespace Monai.Deploy.InformaticsGateway.Database.Api
     /// </summary>
     public class StorageMetadataWrapper : MongoDBEntityBase
     {
-        private readonly JsonSerializerOptions _options;
 
         [JsonPropertyName("correlationId")]
         public string CorrelationId { get; set; } = string.Empty;

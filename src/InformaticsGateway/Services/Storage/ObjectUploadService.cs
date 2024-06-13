@@ -167,7 +167,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             catch (Exception ex)
             {
                 blob.SetFailed();
-                _logger.FailedToUploadFile(blob.Id, ex);
+                _logger.FailedToUploadFile(blob.Id, blob.File.UploadPath, ex);
             }
             finally
             {
@@ -213,7 +213,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                    })
                .ExecuteAsync(async () =>
                {
-                   var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                   using var internalCancellationTokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
                    internalCancellationTokenSource.CancelAfter(_configuration.Value.Storage.StorageServiceListTimeout);
                    var exists = await _storageService.VerifyObjectExistsAsync(_configuration.Value.Storage.StorageServiceBucketName, path).ConfigureAwait(false);
                    _logger.VerifyFileExists(path, exists);
@@ -256,7 +256,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
                        metadata,
                        cancellationToken).ConfigureAwait(false);
                    storageObjectMetadata.SetUploaded(_configuration.Value.Storage.TemporaryStorageBucket); // deletes local file and sets uploaded to true
-                   _logger.UploadedFileToStoreage(storageObjectMetadata.TemporaryPath);
+                   _logger.UploadedFileToStoreage(path);
                    storageObjectMetadata.SetMoved(_configuration.Value.Storage.StorageServiceBucketName); // set bucket, date moved, and move complete
                })
                .ConfigureAwait(false);
@@ -268,6 +268,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Storage
             {
                 if (disposing)
                 {
+                    _cancellationTokenSource.Dispose();
                     _scope.Dispose();
                 }
 

@@ -29,30 +29,30 @@ namespace Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Database.Mo
 {
     public class RemoteAppExecutionRepository : IRemoteAppExecutionRepository, IDisposable
     {
-        private readonly ILogger<RemoteAppExecutionRepository> _logger;
+        private readonly ILogger _logger;
         private readonly IServiceScope _scope;
         private readonly AsyncRetryPolicy _retryPolicy;
         private readonly IMongoCollection<RemoteAppExecution> _collection;
         private bool _disposedValue;
 
-        public RemoteAppExecutionRepository(IServiceScopeFactory serviceScopeFactory,
-            ILogger<RemoteAppExecutionRepository> logger,
-            IOptions<InformaticsGatewayConfiguration> options,
-            IOptions<DatabaseOptions> mongoDbOptions)
+        public RemoteAppExecutionRepository(
+            IServiceScopeFactory serviceScopeFactory,
+            ILoggerFactory loggerFactory,
+            IOptions<DatabaseOptions> options
+            )
         {
             Guard.Against.Null(serviceScopeFactory, nameof(serviceScopeFactory));
             Guard.Against.Null(options, nameof(options));
-            Guard.Against.Null(mongoDbOptions, nameof(mongoDbOptions));
 
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _logger = loggerFactory.CreateLogger<RemoteAppExecutionRepository>();
 
             _scope = serviceScopeFactory.CreateScope();
             _retryPolicy = Policy.Handle<Exception>().WaitAndRetryAsync(
-                options.Value.Database.Retries.RetryDelays,
+                options.Value.Retries.RetryDelays,
                 (exception, timespan, count, context) => _logger.DatabaseErrorRetry(timespan, count, exception));
 
             var mongoDbClient = _scope.ServiceProvider.GetRequiredService<IMongoClient>();
-            var mongoDatabase = mongoDbClient.GetDatabase(mongoDbOptions.Value.DatabaseName);
+            var mongoDatabase = mongoDbClient.GetDatabase(options.Value.DatabaseName);
             _collection = mongoDatabase.GetCollection<RemoteAppExecution>(nameof(RemoteAppExecution));
             CreateIndexes();
         }

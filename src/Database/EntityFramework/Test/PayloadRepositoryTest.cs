@@ -33,7 +33,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
         private readonly Mock<IServiceScopeFactory> _serviceScopeFactory;
         private readonly Mock<ILogger<PayloadRepository>> _logger;
-        private readonly IOptions<InformaticsGatewayConfiguration> _options;
+        private readonly IOptions<DatabaseOptions> _options;
 
         private readonly Mock<IServiceScope> _serviceScope;
         private readonly IServiceProvider _serviceProvider;
@@ -44,7 +44,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
 
             _serviceScopeFactory = new Mock<IServiceScopeFactory>();
             _logger = new Mock<ILogger<PayloadRepository>>();
-            _options = Options.Create(new InformaticsGatewayConfiguration());
+            _options = Options.Create(new DatabaseOptions());
 
             _serviceScope = new Mock<IServiceScope>();
             var services = new ServiceCollection();
@@ -55,7 +55,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
             _serviceScope.Setup(p => p.ServiceProvider).Returns(_serviceProvider);
 
-            _options.Value.Database.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
+            _options.Value.Retries.DelaysMilliseconds = new[] { 1, 1, 1 };
             _logger.Setup(p => p.IsEnabled(It.IsAny<LogLevel>())).Returns(true);
         }
 
@@ -69,8 +69,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             payload.State = Payload.PayloadState.Move;
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            await store.AddAsync(payload).ConfigureAwait(false);
-            var actual = await _databaseFixture.DatabaseContext.Set<Payload>().FirstOrDefaultAsync(p => p.PayloadId == payload.PayloadId).ConfigureAwait(false);
+            await store.AddAsync(payload).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await _databaseFixture.DatabaseContext.Set<Payload>().FirstOrDefaultAsync(p => p.PayloadId == payload.PayloadId).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(payload.Key, actual!.Key);
@@ -99,12 +99,12 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             payload.State = Payload.PayloadState.Move;
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            var added = await store.AddAsync(payload).ConfigureAwait(false);
+            var added = await store.AddAsync(payload).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var removed = await store.RemoveAsync(added!).ConfigureAwait(false);
+            var removed = await store.RemoveAsync(added!).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Same(removed, added);
 
-            var dbResult = await _databaseFixture.DatabaseContext.Set<Payload>().FirstOrDefaultAsync(p => p.PayloadId == payload.PayloadId).ConfigureAwait(false);
+            var dbResult = await _databaseFixture.DatabaseContext.Set<Payload>().FirstOrDefaultAsync(p => p.PayloadId == payload.PayloadId).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Null(dbResult);
         }
 
@@ -113,8 +113,8 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
 
-            var expected = await _databaseFixture.DatabaseContext.Set<Payload>().ToListAsync().ConfigureAwait(false);
-            var actual = await store.ToListAsync().ConfigureAwait(false);
+            var expected = await _databaseFixture.DatabaseContext.Set<Payload>().ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            var actual = await store.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.Equal(expected, actual);
         }
@@ -126,14 +126,14 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             payload.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.DIMSE, "calling", "called"));
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            var added = await store.AddAsync(payload).ConfigureAwait(false);
+            var added = await store.AddAsync(payload).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             added.State = Payload.PayloadState.Notify;
             added.Add(new DicomFileStorageMetadata(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), DataService.ACR, "calling1", "called1"));
-            var updated = await store.UpdateAsync(payload).ConfigureAwait(false);
+            var updated = await store.UpdateAsync(payload).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.NotNull(updated);
 
-            var actual = await _databaseFixture.DatabaseContext.Set<Payload>().FirstOrDefaultAsync(p => p.PayloadId == payload.PayloadId).ConfigureAwait(false);
+            var actual = await _databaseFixture.DatabaseContext.Set<Payload>().FirstOrDefaultAsync(p => p.PayloadId == payload.PayloadId).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             Assert.NotNull(actual);
             Assert.Equal(updated.Key, actual!.Key);
@@ -160,7 +160,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var set = _databaseFixture.DatabaseContext.Set<Payload>();
             set.RemoveRange(set.ToList());
-            await _databaseFixture.DatabaseContext.SaveChangesAsync().ConfigureAwait(false);
+            await _databaseFixture.DatabaseContext.SaveChangesAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var payload1 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Created };
             var payload2 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Created };
@@ -169,16 +169,16 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            _ = await store.AddAsync(payload1).ConfigureAwait(false);
-            _ = await store.AddAsync(payload2).ConfigureAwait(false);
-            _ = await store.AddAsync(payload3).ConfigureAwait(false);
-            _ = await store.AddAsync(payload4).ConfigureAwait(false);
-            _ = await store.AddAsync(payload5).ConfigureAwait(false);
+            _ = await store.AddAsync(payload1).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload2).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload3).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload4).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload5).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var result = await store.RemovePendingPayloadsAsync().ConfigureAwait(false);
+            var result = await store.RemovePendingPayloadsAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(2, result);
 
-            var actual = await set.ToListAsync().ConfigureAwait(false);
+            var actual = await set.ToListAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(3, actual.Count);
 
             foreach (var payload in actual)
@@ -192,7 +192,7 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
         {
             var set = _databaseFixture.DatabaseContext.Set<Payload>();
             set.RemoveRange(set.ToList());
-            await _databaseFixture.DatabaseContext.SaveChangesAsync().ConfigureAwait(false);
+            await _databaseFixture.DatabaseContext.SaveChangesAsync().ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
             var payload1 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Created };
             var payload2 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Created };
@@ -201,22 +201,22 @@ namespace Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test
             var payload5 = new Payload(Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), Guid.NewGuid().ToString(), new DataOrigin { DataService = Messaging.Events.DataService.DIMSE, Destination = "dest", Source = "source" }, 5) { State = Payload.PayloadState.Notify };
 
             var store = new PayloadRepository(_serviceScopeFactory.Object, _logger.Object, _options);
-            _ = await store.AddAsync(payload1).ConfigureAwait(false);
-            _ = await store.AddAsync(payload2).ConfigureAwait(false);
-            _ = await store.AddAsync(payload3).ConfigureAwait(false);
-            _ = await store.AddAsync(payload4).ConfigureAwait(false);
-            _ = await store.AddAsync(payload5).ConfigureAwait(false);
+            _ = await store.AddAsync(payload1).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload2).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload3).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload4).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
+            _ = await store.AddAsync(payload5).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 
-            var result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Move).ConfigureAwait(false);
+            var result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Move).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Single(result);
 
-            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Created).ConfigureAwait(false);
+            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Created).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(2, result.Count);
 
-            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Notify).ConfigureAwait(false);
+            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Notify).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(2, result.Count);
 
-            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Notify, Payload.PayloadState.Created).ConfigureAwait(false);
+            result = await store.GetPayloadsInStateAsync(CancellationToken.None, Payload.PayloadState.Notify, Payload.PayloadState.Created).ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
             Assert.Equal(4, result.Count);
         }
     }

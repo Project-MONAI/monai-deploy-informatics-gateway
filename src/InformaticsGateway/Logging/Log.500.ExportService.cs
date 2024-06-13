@@ -132,5 +132,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 536, Level = LogLevel.Error, Message = "Error executing data plug-ins.")]
         public static partial void ErrorExecutingDataPlugIns(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 537, Level = LogLevel.Error, Message = "Error executing OutputDataEngine plug-in.")]
+        public static partial void OutputDataEngineBlockException(this ILogger logger, Exception ex);
+
+        [LoggerMessage(EventId = 538, Level = LogLevel.Error, Message = "Error exporting to Hl7 destination. Waiting {timeSpan} before next retry. Retry attempt {retryCount}.")]
+        public static partial void HL7ExportErrorWithRetry(this ILogger logger, TimeSpan timespan, int retryCount, Exception ex);
     }
 }

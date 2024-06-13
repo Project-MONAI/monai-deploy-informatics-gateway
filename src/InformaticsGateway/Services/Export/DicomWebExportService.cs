@@ -26,7 +26,7 @@ using FellowOakDicom;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Models;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
@@ -35,6 +35,7 @@ using Monai.Deploy.InformaticsGateway.DicomWeb.Client;
 using Monai.Deploy.InformaticsGateway.DicomWeb.Client.API;
 using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.Messaging.Common;
 using Monai.Deploy.Messaging.Events;
 using Polly;
 
@@ -44,7 +45,6 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     {
         private readonly ILoggerFactory _loggerFactory;
         private readonly IHttpClientFactory _httpClientFactory;
-        private readonly IServiceScopeFactory _serviceScopeFactory;
         private readonly ILogger<DicomWebExportService> _logger;
         private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
         private readonly IDicomToolkit _dicomToolkit;
@@ -60,11 +60,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             ILogger<DicomWebExportService> logger,
             IOptions<InformaticsGatewayConfiguration> configuration,
             IDicomToolkit dicomToolkit)
-            : base(logger, configuration, serviceScopeFactory)
+            : base(logger, configuration, serviceScopeFactory, dicomToolkit)
         {
             _loggerFactory = loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory));
             _httpClientFactory = httpClientFactory ?? throw new ArgumentNullException(nameof(httpClientFactory));
-            _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
             _dicomToolkit = dicomToolkit ?? throw new ArgumentNullException(nameof(dicomToolkit));
@@ -73,11 +72,15 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             Concurrency = configuration.Value.DicomWeb.MaximumNumberOfConnection;
         }
 
+        protected override async Task ProcessMessage(MessageReceivedEventArgs eventArgs)
+        {
+            await BaseProcessMessage(eventArgs);
+        }
         protected override async Task<ExportRequestDataMessage> ExportDataBlockCallback(ExportRequestDataMessage exportRequestData, CancellationToken cancellationToken)
         {
-            using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
+            using var loggerScope = _logger.BeginScope(new Api.LoggingDataDictionary<string, object> { { "ExportTaskId", exportRequestData.ExportTaskId }, { "CorrelationId", exportRequestData.CorrelationId }, { "Filename", exportRequestData.Filename } });
 
-            using var scope = _serviceScopeFactory.CreateScope();
+            using var scope = ServiceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IInferenceRequestRepository>();
 
             foreach (var transaction in exportRequestData.Destinations)
@@ -174,7 +177,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
                     break;
 
                 default:
-                    throw new ServiceException("Failed to export to destination.");
+                    throw new InformaticsGateway.Common.ServiceException("Failed to export to destination.");
             }
         }
     }
