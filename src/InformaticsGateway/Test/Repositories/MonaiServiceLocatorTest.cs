@@ -15,6 +15,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Hosting;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Common;
@@ -37,26 +39,30 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
                 mock.SetupGet(p => p.ServiceName).Returns(type.Name);
                 return mock.Object;
             });
+
+            _serviceProvider.Setup(sp => sp.GetService(typeof(IEnumerable<IHostedService>)))
+            .Returns((Type type) =>
+            {
+                var mock = new Mock<IHostedService>();
+                return new List<IHostedService> { mock.Object };
+            });
         }
 
         [Fact(DisplayName = "GetMonaiServices")]
         public void GetMonaiServices()
         {
+            var hosted = new List<IHostedService>()
+            {
+                new Mock<IHostedService>().Object
+            };
+
+
+
             var serviceLocator = new MonaiServiceLocator(_serviceProvider.Object);
             var result = serviceLocator.GetMonaiServices();
 
             Assert.Collection(result,
-                items => items.ServiceName.Equals("DataRetrievalService"),
-                items => items.ServiceName.Equals("ScpService"),
-                items => items.ServiceName.Equals("ScuService"),
-                items => items.ServiceName.Equals("ExtAppScuService"),
-                items => items.ServiceName.Equals("SpaceReclaimerService"),
-                items => items.ServiceName.Equals("DicomWebExportService"),
-                items => items.ServiceName.Equals("ScuExportService"),
-                items => items.ServiceName.Equals("PayloadNotificationService"),
-                items => items.ServiceName.Equals("HL7 Service"),
-                items => items.ServiceName.Equals("ExtAppScuExportService"),
-                items => items.ServiceName.Equals("Hl7ExportService"));
+                items => items.ServiceName.Equals("IPayloadService"));
         }
 
         [Fact(DisplayName = "GetServiceStatus")]
@@ -65,7 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Repositories
             var serviceLocator = new MonaiServiceLocator(_serviceProvider.Object);
             var result = serviceLocator.GetServiceStatus();
 
-            Assert.Equal(11, result.Count);
+            Assert.Equal(1, result.Count);
             foreach (var svc in result.Keys)
             {
                 Assert.Equal(ServiceStatus.Running, result[svc]);
