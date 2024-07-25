@@ -59,5 +59,11 @@ namespace Monai.Deploy.InformaticsGateway.Logging
 
         [LoggerMessage(EventId = 13, Level = LogLevel.Critical, Message = "Failed to start {ServiceName}.")]
         public static partial void ServiceFailedToStart(this ILogger logger, string serviceName, Exception ex);
+
+        [LoggerMessage(EventId = 14, Level = LogLevel.Critical, Message = "All services are unhealthy")]
+        public static partial void AllServiceUnheathly(this ILogger logger);
+
+        [LoggerMessage(EventId = 15, Level = LogLevel.Error, Message = "Some services are unhealthy {list}")]
+        public static partial void SomeServiceUnheathly(this ILogger logger, string list);
     }
 }
