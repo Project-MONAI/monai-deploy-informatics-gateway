@@ -21,10 +21,12 @@ branches:
     label: rc
   develop:
     label: beta
+    increment: Patch
   feature:
     label: alpha.{BranchName}
   pull-request:
     label: pr
+    increment: Patch
 
 ignore:
   sha: []
