@@ -51,7 +51,9 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool
+        uses: gittools/actions/gitversion/setup@v2.0.1
+        with:
+          versionSpec: '5.x'
 
       - name: Determine Version
         id: gitversion
