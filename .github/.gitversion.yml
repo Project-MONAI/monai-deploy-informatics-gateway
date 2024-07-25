@@ -16,15 +16,15 @@ assembly-versioning-scheme: MajorMinorPatchTag
 mode: ContinuousDelivery
 branches:
   main:
-    tag: ''
+    label: ''
   release:
-    tag: rc
+    label: rc
   develop:
-    tag: beta
+    label: beta
   feature:
-    tag: alpha.{BranchName}
+    label: alpha.{BranchName}
   pull-request:
-    tag: pr
+    label: pr
 
 ignore:
   sha: []
