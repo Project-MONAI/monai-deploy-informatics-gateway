@@ -17,6 +17,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 using Monai.Deploy.InformaticsGateway.Repositories;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Moq;
@@ -27,6 +29,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
     public class MonaiHealthCheckTest
     {
         private readonly Mock<IMonaiServiceLocator> _monaiServiceLocator;
+        private readonly ILogger<MonaiHealthCheck> _logger = new NullLogger<MonaiHealthCheck>();
 
         public MonaiHealthCheckTest()
         {
@@ -43,7 +46,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 { "C", Api.Rest.ServiceStatus.Running },
             });
 
-            var svc = new MonaiHealthCheck(_monaiServiceLocator.Object);
+            var svc = new MonaiHealthCheck(_monaiServiceLocator.Object, _logger);
             var result = await svc.CheckHealthAsync(null);
             Assert.Equal(HealthStatus.Healthy, result.Status);
         }
@@ -58,7 +61,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 { "C", Api.Rest.ServiceStatus.Stopped },
             });
 
-            var svc = new MonaiHealthCheck(_monaiServiceLocator.Object);
+            var svc = new MonaiHealthCheck(_monaiServiceLocator.Object, _logger);
             var result = await svc.CheckHealthAsync(null);
             Assert.Equal(HealthStatus.Degraded, result.Status);
             Assert.Equal(Api.Rest.ServiceStatus.Cancelled, result.Data["B"]);
@@ -75,7 +78,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Http
                 { "C", Api.Rest.ServiceStatus.Stopped },
             });
 
-            var svc = new MonaiHealthCheck(_monaiServiceLocator.Object);
+            var svc = new MonaiHealthCheck(_monaiServiceLocator.Object, _logger);
             var result = await svc.CheckHealthAsync(null);
 
             Assert.Equal(HealthStatus.Unhealthy, result.Status);

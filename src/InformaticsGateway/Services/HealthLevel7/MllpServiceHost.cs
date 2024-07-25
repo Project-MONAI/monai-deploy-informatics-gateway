@@ -1,5 +1,5 @@
-﻿/*
- * Copyright 2023 MONAI Consortium
+/*
+ * Copyright 2022-2023 MONAI Consortium
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,27 +15,51 @@
  */
 
 using System;
-using System.Net;
-using System.Net.Sockets;
-using System.Text;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.IO.Abstractions;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using HL7.Dotnetcore;
+using Ardalis.GuardClauses;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Monai.Deploy.InformaticsGateway.Api.Mllp;
+using Monai.Deploy.InformaticsGateway.Api.PlugIns;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
+using Monai.Deploy.InformaticsGateway.Api.Storage;
+using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
+using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.InformaticsGateway.Services.Common;
+using Monai.Deploy.InformaticsGateway.Services.Connectors;
+using Monai.Deploy.InformaticsGateway.Services.Storage;
+using Monai.Deploy.Messaging.Events;
 
-namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
+namespace Monai.Deploy.InformaticsGateway.Api.Mllp
 {
-    internal class MllpService : IMllpService
+    internal sealed class MllpServiceHost : IHostedService, IDisposable, IMonaiService
     {
+        private const int SOCKET_OPERATION_CANCELLED = 125;
+        private bool _disposedValue;
+        private readonly ITcpListener _tcpListener;
+        private readonly IMllpClientFactory _mllpClientFactory;
+        private readonly IObjectUploadQueue _uploadQueue;
+        private readonly IPayloadAssembler _payloadAssembler;
+        private readonly IFileSystem _fileSystem;
+        private readonly ILoggerFactory _logginFactory;
+        private readonly ILogger<MllpServiceHost> _logger;
+        private readonly IOptions<InformaticsGatewayConfiguration> _configuration;
+        private readonly IStorageInfoProvider _storageInfoProvider;
+        private readonly ConcurrentDictionary<Guid, IMllpClient> _activeTasks;
+        private readonly IMllpExtract _mIIpExtract;
+        private readonly IInputHL7DataPlugInEngine _inputHL7DataPlugInEngine;
+        private readonly IHl7ApplicationConfigRepository _hl7ApplicationConfigRepository;
+        private DateTime _lastConfigRead = new(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        private readonly ILogger<MllpService> _logger;
-        private readonly InformaticsGatewayConfiguration _configuration;
-
-        public MllpService(ILogger<MllpService> logger, IOptions<InformaticsGatewayConfiguration> configuration)
+        public int ActiveConnections
         {
             get
             {
@@ -47,8 +71,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
         public string ServiceName => "HL7 Service";
 
-        public MllpService(IServiceScopeFactory serviceScopeFactory,
-                           IOptions<InformaticsGatewayConfiguration> configuration)
+        public MllpServiceHost(IServiceScopeFactory serviceScopeFactory, IOptions<InformaticsGatewayConfiguration> configuration)
         {
             ArgumentNullException.ThrowIfNull(serviceScopeFactory, nameof(serviceScopeFactory));
 
@@ -56,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 
             var serviceScope = serviceScopeFactory.CreateScope();
             _logginFactory = serviceScope.ServiceProvider.GetService<ILoggerFactory>() ?? throw new ServiceNotFoundException(nameof(ILoggerFactory));
-            _logger = _logginFactory.CreateLogger<MllpService>();
+            _logger = _logginFactory.CreateLogger<MllpServiceHost>();
             var tcpListenerFactory = serviceScope.ServiceProvider.GetService<ITcpListenerFactory>() ?? throw new ServiceNotFoundException(nameof(ITcpListenerFactory));
             _tcpListener = tcpListenerFactory.CreateTcpListener(System.Net.IPAddress.Any, _configuration.Value.Hl7.Port);
             _mllpClientFactory = serviceScope.ServiceProvider.GetService<IMllpClientFactory>() ?? throw new ServiceNotFoundException(nameof(IMllpClientFactory));
@@ -236,85 +259,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
             }
         }
 
-        public async Task SendMllp(IPAddress address, int port, string hl7Message, CancellationToken cancellationToken)
+        public void Dispose()
         {
-            try
-            {
-                var body = $"{Resources.AsciiVT}{hl7Message}{Resources.AsciiFS}{Resources.AcsiiCR}";
-                var sendMessageByteBuffer = Encoding.UTF8.GetBytes(body);
-                await WriteMessage(sendMessageByteBuffer, address, port).ConfigureAwait(false);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                _logger.Hl7AckMissingStartOrEndCharacters();
-                throw new Hl7SendException("ACK missing start or end characters");
-            }
-            catch (Exception ex)
-            {
-                _logger.Hl7SendException(ex);
-                throw new Hl7SendException($"Send exception: {ex.Message}");
-            }
-        }
-
-        private async Task WriteMessage(byte[] sendMessageByteBuffer, IPAddress address, int port)
-        {
-
-            using var tcpClient = new TcpClient();
-
-            tcpClient.Connect(address, port);
-
-            var networkStream = new NetworkStream(tcpClient.Client);
-
-            if (networkStream.CanWrite)
-            {
-                networkStream.Write(sendMessageByteBuffer, 0, sendMessageByteBuffer.Length);
-                networkStream.Flush();
-            }
-            else
-            {
-                _logger.Hl7ClientStreamNotWritable();
-                throw new Hl7SendException("Client stream not writable");
-            }
-
-            _logger.Hl7MessageSent(Encoding.UTF8.GetString(sendMessageByteBuffer));
-
-            await EnsureAck(networkStream).ConfigureAwait(false);
-        }
-
-        private async Task EnsureAck(NetworkStream networkStream)
-        {
-            using var s_cts = new CancellationTokenSource();
-            s_cts.CancelAfter(_configuration.Hl7.ClientTimeoutMilliseconds);
-            var buffer = new byte[2048];
-
-            // get the SentHl7Message
-            networkStream.ReadTimeout = 5000;
-            networkStream.WriteTimeout = 5000;
-
-            // wait for responce
-            while (!s_cts.IsCancellationRequested && networkStream.DataAvailable == false)
-            {
-                await Task.Delay(20).ConfigureAwait(false);
-            }
-
-            var bytesRead = await networkStream.ReadAsync(buffer).ConfigureAwait(false);
-
-            if (bytesRead == 0 || s_cts.IsCancellationRequested)
-            {
-                throw new Hl7SendException("ACK message contains no ACK!");
-            }
-
-            var _rawHl7Messages = MessageHelper.ExtractMessages(Encoding.UTF8.GetString(buffer));
-            foreach (var message in _rawHl7Messages)
-            {
-                var hl7Message = new Message(message);
-                hl7Message.ParseMessage(false);
-                if (hl7Message.MessageStructure == "ACK")
-                {
-                    return;
-                }
-            }
-            throw new Hl7SendException("ACK message contains no ACK!");
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }

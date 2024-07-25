@@ -26,9 +26,11 @@ using DotNext.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Monai.Deploy.InformaticsGateway.Api;
+using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Api.Storage;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
+using Monai.Deploy.InformaticsGateway.Services.Common;
 using Monai.Deploy.Messaging.Events;
 
 #nullable enable
@@ -39,7 +41,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
     /// An in-memory queue for providing any files/DICOM instances received by the Informatics Gateway to
     /// other internal services.
     /// </summary>
-    internal sealed partial class PayloadAssembler : IPayloadAssembler, IDisposable
+    internal sealed partial class PayloadAssembler : IPayloadAssembler, IDisposable, IMonaiService
     {
         internal const int DEFAULT_TIMEOUT = 5;
         private readonly ILogger<PayloadAssembler> _logger;
@@ -57,6 +59,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _serviceScopeFactory = serviceScopeFactory ?? throw new ArgumentNullException(nameof(serviceScopeFactory));
+            var scope = _serviceScopeFactory.CreateScope();
+            var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>(); // done here to ensure connection on startup
 
             _workItems = [];
             _tokenSource = new CancellationTokenSource();
@@ -70,7 +74,13 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             };
             _timer.Elapsed += OnTimedEvent;
             _timer.Enabled = true;
+
+            Status = ServiceStatus.Running;
         }
+
+        public string ServiceName { get => nameof(PayloadAssembler); }
+
+        public ServiceStatus Status { get; set; } = ServiceStatus.Unknown;
 
         private async Task RemovePendingPayloads()
         {
@@ -194,6 +204,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 payload.State = Payload.PayloadState.Move;
                 var scope = _serviceScopeFactory.CreateScope();
                 var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
+
+
                 await repository.UpdateAsync(payload).ConfigureAwait(false);
                 _logger.PayloadSaved(payload.PayloadId);
                 _workItems.Add(payload);
@@ -220,9 +232,11 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
 
         private async Task<Payload> PayloadFactory(string key, string correlationId, string? workflowInstanceId, string? taskId, Messaging.Events.DataOrigin dataOrigin, uint timeout, CancellationToken cancellationToken)
         {
+            var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout, null);
             var scope = _serviceScopeFactory.CreateScope();
             var repository = scope.ServiceProvider.GetRequiredService<IPayloadRepository>();
-            var newPayload = new Payload(key, correlationId, workflowInstanceId, taskId, dataOrigin, timeout, null);
+
+
             await repository.AddAsync(newPayload, cancellationToken).ConfigureAwait(false);
             _logger.BucketCreated(key, timeout);
             return newPayload;
@@ -233,6 +247,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
             _tokenSource.Cancel();
             _payloads.Clear();
             _timer.Stop();
+            Status = ServiceStatus.Stopped;
         }
     }
 }

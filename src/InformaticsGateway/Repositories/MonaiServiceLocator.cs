@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using Ardalis.GuardClauses;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Monai.Deploy.InformaticsGateway.Api.Rest;
 using Monai.Deploy.InformaticsGateway.Services.Common;
 
@@ -51,7 +53,13 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
         {
             Guard.Against.Null(type, nameof(type));
 
-            return (_serviceProvider.GetService(type) as IMonaiService);
+            var TypeInterface = type.GetInterfaces().FirstOrDefault(i => i.Name == $"I{type.Name}");
+            if (TypeInterface is null)
+            {
+                var service = _serviceProvider.GetServices<IHostedService>()?.FirstOrDefault(i => i.GetType().Name == type.Name);
+                return service as IMonaiService;
+            }
+            return (_serviceProvider.GetService(TypeInterface) as IMonaiService);
 
         }
 
@@ -67,7 +75,7 @@ namespace Monai.Deploy.InformaticsGateway.Repositories
             return services.Distinct().ToList();
         }
 
-        private IList<IMonaiService> LocateServices()
+        private List<IMonaiService> LocateServices()
         {
             var list = new List<IMonaiService>();
             foreach (var t in _types)

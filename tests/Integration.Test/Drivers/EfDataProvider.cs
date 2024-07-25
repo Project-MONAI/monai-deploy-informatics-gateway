@@ -62,7 +62,14 @@ namespace Monai.Deploy.InformaticsGateway.Integration.Test.Hooks
             DumpAndClear("SourceApplicationEntities", _dbContext.SourceApplicationEntities.ToList());
             DumpAndClear("MonaiApplicationEntities", _dbContext.MonaiApplicationEntities.ToList());
             DumpAndClear("VirtualApplicationEntities", _dbContext.VirtualApplicationEntities.ToList());
-            DumpAndClear("Payloads", _dbContext.Payloads.ToList());
+            try
+            {
+                DumpAndClear("Payloads", _dbContext.Payloads.ToList());
+            }
+            catch (Exception)
+            {
+            }
+
             DumpAndClear("InferenceRequests", _dbContext.InferenceRequests.ToList());
             DumpAndClear("StorageMetadataWrapperEntities", _dbContext.StorageMetadataWrapperEntities.ToList());
             _dbContext.SaveChanges();
