@@ -18,15 +18,15 @@ branches:
   main:
     tag: ''
   release:
-    tag: 'rc'
+    tag: rc
   develop:
-    tag: 'beta'
+    tag: beta
   feature:
-    tag: 'alpha.{BranchName}'
+    tag: alpha.{BranchName}
   pull-request:
-    tag: 'pr'
+    tag: pr
 
 ignore:
   sha: []
 merge-message-formats: {}
-next-version: 0.3.17
+next-version: 0.3.18
