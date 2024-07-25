@@ -96,7 +96,7 @@ jobs:
         dotnet-version: "8.0.x"
 
     - name: Enable NuGet cache
-      uses: actions/cache@v3.3.2
+      uses: actions/cache@v4.0.2
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -146,7 +146,7 @@ jobs:
         cache: yes
 
     - name: Enable NuGet cache
-      uses: actions/cache@v3.3.2
+      uses: actions/cache@v4.0.2
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -199,7 +199,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.0.2
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -278,7 +278,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.0.2
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -343,7 +343,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.0.2
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -495,7 +495,7 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.0.2
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
