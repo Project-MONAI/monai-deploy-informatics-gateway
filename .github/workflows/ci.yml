@@ -352,7 +352,7 @@ jobs:
 
       - name: Download AssemblyInfo.cs
         id: download
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4.1.7
         with:
           name: assembly-info
           path: src/
@@ -544,7 +544,7 @@ jobs:
     needs: [build, unit-test, integration-test]
     if: ${{ ! ( github.event.inputs.nuget ) && ! ( contains(github.ref, 'refs/heads/main') ) }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4.1.7
         id: download
 
       - name: List artifacts
@@ -577,7 +577,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4.1.7
         id: download
 
       - name: List artifacts
