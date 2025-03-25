@@ -60,15 +60,14 @@ SOFTWARE.
 
 
 <details>
-<summary>AWSSDK.Core 3.7.304.15</summary>
+<summary>AWSSDK.Core 3.7.402.25</summary>
 
 ## AWSSDK.Core
 
-- Version: 3.7.304.15
+- Version: 3.7.402.25
 - Authors: Amazon Web Services
-- Owners: Amazon Web Services
 - Project URL: https://github.com/aws/aws-sdk-net/
-- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.Core/3.7.304.15)
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.Core/3.7.402.25)
 - License: [Apache-2.0](https://github.com/aws/aws-sdk-net/raw/master/License.txt)
 
 
@@ -206,15 +205,14 @@ END OF TERMS AND CONDITIONS
 
 
 <details>
-<summary>AWSSDK.SecurityToken 3.7.300.105</summary>
+<summary>AWSSDK.SecurityToken 3.7.401.68</summary>
 
 ## AWSSDK.SecurityToken
 
-- Version: 3.7.300.105
+- Version: 3.7.401.68
 - Authors: Amazon Web Services
-- Owners: Amazon Web Services
 - Project URL: https://github.com/aws/aws-sdk-net/
-- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.SecurityToken/3.7.300.105)
+- Source: [NuGet](https://www.nuget.org/packages/AWSSDK.SecurityToken/3.7.401.68)
 - License: [Apache-2.0](https://github.com/aws/aws-sdk-net/raw/master/License.txt)
 
 
@@ -279,14 +277,14 @@ END OF TERMS AND CONDITIONS
 
 
 <details>
-<summary>Ardalis.GuardClauses 4.5.0</summary>
+<summary>Ardalis.GuardClauses 4.6.0</summary>
 
 ## Ardalis.GuardClauses
 
-- Version: 4.5.0
+- Version: 4.6.0
 - Authors: Steve Smith (@ardalis)
 - Project URL: https://github.com/ardalis/guardclauses
-- Source: [NuGet](https://www.nuget.org/packages/Ardalis.GuardClauses/4.5.0)
+- Source: [NuGet](https://www.nuget.org/packages/Ardalis.GuardClauses/4.6.0)
 - License: [MIT](https://github.com/ardalis/GuardClauses.Analyzers/raw/master/LICENSE)
 
 
@@ -318,14 +316,14 @@ SOFTWARE.
 
 
 <details>
-<summary>AspNetCore.HealthChecks.MongoDb 8.0.1</summary>
+<summary>AspNetCore.HealthChecks.MongoDb 8.1.0</summary>
 
 ## AspNetCore.HealthChecks.MongoDb
 
-- Version: 8.0.1
+- Version: 8.1.0
 - Authors: Xabaril Contributors
 - Project URL: https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks
-- Source: [NuGet](https://www.nuget.org/packages/AspNetCore.HealthChecks.MongoDb/8.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/AspNetCore.HealthChecks.MongoDb/8.1.0)
 - License: [Apache-2.0](https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/raw/master/LICENSE)
 
 
@@ -546,7 +544,7 @@ Apache License
 - Owners: Gaspar Nagy
 - Project URL: https://github.com/gasparnagy/BoDi
 - Source: [NuGet](https://www.nuget.org/packages/BoDi/1.5.0)
-- License: [Apache-2.0](https://raw.githubusercontent.com/SpecFlowOSS/BoDi/master/LICENSE.txt)
+- License: [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0.txt)
 
 
 ```
@@ -727,7 +725,18 @@ Apache License
 
    END OF TERMS AND CONDITIONS
 
-   Copyright 2014 Gaspar Nagy (http://gasparnagy.com)
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -777,14 +786,14 @@ limitations under the License.
 
 
 <details>
-<summary>CommunityToolkit.HighPerformance 8.2.2</summary>
+<summary>CommunityToolkit.HighPerformance 8.3.2</summary>
 
 ## CommunityToolkit.HighPerformance
 
-- Version: 8.2.2
+- Version: 8.3.2
 - Authors: Microsoft
 - Project URL: https://github.com/CommunityToolkit/dotnet
-- Source: [NuGet](https://www.nuget.org/packages/CommunityToolkit.HighPerformance/8.2.2)
+- Source: [NuGet](https://www.nuget.org/packages/CommunityToolkit.HighPerformance/8.3.2)
 - License: [MIT](https://raw.githubusercontent.com/CommunityToolkit/dotnet/main/License.md)
 
 
@@ -1222,15 +1231,15 @@ SOFTWARE.
 
 
 <details>
-<summary>FluentAssertions 6.12.0</summary>
+<summary>FluentAssertions 6.12.2</summary>
 
 ## FluentAssertions
 
-- Version: 6.12.0
+- Version: 6.12.2
 - Authors: Dennis Doomen,Jonas Nyrup
 - Project URL: https://www.fluentassertions.com/
-- Source: [NuGet](https://www.nuget.org/packages/FluentAssertions/6.12.0)
-- License: [Apache-2.0](https://github.com/fluentassertions/fluentassertions/raw/develop/LICENSE)
+- Source: [NuGet](https://www.nuget.org/packages/FluentAssertions/6.12.2)
+- License: [Apache-2.0](https://raw.githubusercontent.com/fluentassertions/fluentassertions/refs/tags/6.12.2/LICENSE)
 
 
 ```
@@ -1445,7 +1454,7 @@ third-party archives.
 ```
 MIT License
 
-Copyright (c) M.P. Korstanje
+Copyright (c) 2017 Cucumber Ltd, Gaspar Nagy, Björn Rasmusson, Peter Sergeant, and contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -1470,14 +1479,14 @@ SOFTWARE.
 
 
 <details>
-<summary>HL7-dotnetcore 2.36.0</summary>
+<summary>HL7-dotnetcore 2.39.1</summary>
 
 ## HL7-dotnetcore
 
-- Version: 2.36.0
+- Version: 2.39.1
 - Authors: HL7-dotnetcore
 - Project URL: https://github.com/Efferent-Health/HL7-dotnetcore
-- Source: [NuGet](https://www.nuget.org/packages/HL7-dotnetcore/2.36.0)
+- Source: [NuGet](https://www.nuget.org/packages/HL7-dotnetcore/2.39.1)
 - License: [MIT](https://github.com/Efferent-Health/HL7-dotnetcore/raw/master/LICENSE.txt)
 
 
@@ -2058,10 +2067,10 @@ specific language governing permissions and limitations under the License.
 
 ## Microsoft.AspNetCore.Authentication.JwtBearer
 
-- Version: 8.0.0
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.AspNetCore.Authentication.JwtBearer/8.0.14)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -2136,14 +2145,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Bcl.AsyncInterfaces 6.0.0</summary>
+<summary>Microsoft.Bcl.AsyncInterfaces 8.0.0</summary>
 
 ## Microsoft.Bcl.AsyncInterfaces
 
-- Version: 6.0.0
+- Version: 8.0.0
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/6.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Bcl.AsyncInterfaces/8.0.0)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -2186,7 +2195,7 @@ SOFTWARE.
 - Owners: microsoft,dotnetframework
 - Project URL: https://github.com/dotnet/corefx
 - Source: [NuGet](https://www.nuget.org/packages/Microsoft.Bcl.HashCode/1.1.1)
-- License: [MIT](https://licenses.nuget.org/MIT)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -2375,14 +2384,19 @@ consequential or other damages.
 
 </details>
 
+Copyright (c) .NET Foundation and Contributors
 
+All rights reserved.
 
-MIT License
-SPDX identifier
-MIT
-License text
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-MIT License
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 
 Copyright (c) <year> <copyright holders>
@@ -2829,14 +2843,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.CodeCoverage 17.10.0</summary>
+<summary>Microsoft.CodeCoverage 17.13.0</summary>
 
 ## Microsoft.CodeCoverage
 
-- Version: 17.10.0
+- Version: 17.13.0
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.10.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.CodeCoverage/17.13.0)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
@@ -2866,15 +2880,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Data.Sqlite.Core 8.0.6</summary>
+<summary>Microsoft.Data.Sqlite.Core 8.0.14</summary>
 
 ## Microsoft.Data.Sqlite.Core
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/dotnet/standard/data/sqlite/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Data.Sqlite.Core/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -2907,15 +2921,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -2948,15 +2962,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Abstractions 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore.Abstractions 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore.Abstractions
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Abstractions/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -2989,15 +3003,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Analyzers 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore.Analyzers 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore.Analyzers
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Analyzers/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -3030,15 +3044,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Design 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore.Design 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore.Design
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Design/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -3071,15 +3085,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.InMemory 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore.InMemory 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore.InMemory
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.InMemory/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -3112,15 +3126,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Relational 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore.Relational 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore.Relational
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Relational/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -3153,15 +3167,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -3194,15 +3208,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore.Sqlite.Core 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore.Sqlite.Core
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Sqlite.Core/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -3235,15 +3249,15 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.EntityFrameworkCore.Tools 8.0.6</summary>
+<summary>Microsoft.EntityFrameworkCore.Tools 8.0.14</summary>
 
 ## Microsoft.EntityFrameworkCore.Tools
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://docs.microsoft.com/ef/core/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Tools/8.0.6)
-- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/release/6.0/LICENSE.txt)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.EntityFrameworkCore.Tools/8.0.14)
+- License: [MIT](https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
@@ -3399,14 +3413,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Caching.Memory 8.0.0</summary>
+<summary>Microsoft.Extensions.Caching.Memory 8.0.1</summary>
 
 ## Microsoft.Extensions.Caching.Memory
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Caching.Memory/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Caching.Memory/8.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -3686,14 +3700,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Configuration.Binder 8.0.1</summary>
+<summary>Microsoft.Extensions.Configuration.Binder 8.0.2</summary>
 
 ## Microsoft.Extensions.Configuration.Binder
 
-- Version: 8.0.1
+- Version: 8.0.2
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Binder/8.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Binder/8.0.2)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -3891,14 +3905,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Configuration.FileExtensions 8.0.0</summary>
+<summary>Microsoft.Extensions.Configuration.FileExtensions 8.0.1</summary>
 
 ## Microsoft.Extensions.Configuration.FileExtensions
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.FileExtensions/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.FileExtensions/8.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -3973,14 +3987,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Configuration.Json 8.0.0</summary>
+<summary>Microsoft.Extensions.Configuration.Json 8.0.1</summary>
 
 ## Microsoft.Extensions.Configuration.Json
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Json/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Configuration.Json/8.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -4178,6 +4192,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.DependencyInjection 8.0.1</summary>
+
+## Microsoft.Extensions.DependencyInjection
+
+- Version: 8.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection/8.0.1)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.DependencyInjection.Abstractions 6.0.0</summary>
 
 ## Microsoft.Extensions.DependencyInjection.Abstractions
@@ -4219,14 +4274,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.DependencyInjection.Abstractions 8.0.1</summary>
+<summary>Microsoft.Extensions.DependencyInjection.Abstractions 8.0.2</summary>
 
 ## Microsoft.Extensions.DependencyInjection.Abstractions
 
-- Version: 8.0.1
+- Version: 8.0.2
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection.Abstractions/8.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyInjection.Abstractions/8.0.2)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -4260,14 +4315,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.DependencyModel 8.0.0</summary>
+<summary>Microsoft.Extensions.DependencyModel 8.0.2</summary>
 
 ## Microsoft.Extensions.DependencyModel
 
-- Version: 8.0.0
+- Version: 8.0.2
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyModel/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.DependencyModel/8.0.2)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -4342,14 +4397,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.Abstractions 8.0.0</summary>
+<summary>Microsoft.Extensions.Diagnostics.Abstractions 8.0.1</summary>
 
 ## Microsoft.Extensions.Diagnostics.Abstractions
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.Abstractions/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.Abstractions/8.0.1)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -4383,14 +4438,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks 8.0.6</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks 8.0.14</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks/8.0.6)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks/8.0.14)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -4424,14 +4479,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions 8.0.6</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions 8.0.14</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions/8.0.6)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions/8.0.14)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -4465,14 +4520,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore 8.0.6</summary>
+<summary>Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore 8.0.14</summary>
 
 ## Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore
 
-- Version: 8.0.6
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://asp.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore/8.0.6)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore/8.0.14)
 - License: [MIT](https://github.com/dotnet/aspnetcore/raw/main/LICENSE.txt)
 
 
@@ -4875,14 +4930,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Hosting.Abstractions 8.0.0</summary>
+<summary>Microsoft.Extensions.Hosting.Abstractions 8.0.1</summary>
 
 ## Microsoft.Extensions.Hosting.Abstractions
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Hosting.Abstractions/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Hosting.Abstractions/8.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -5039,6 +5094,47 @@ SOFTWARE.
 
 
 <details>
+<summary>Microsoft.Extensions.Logging 8.0.1</summary>
+
+## Microsoft.Extensions.Logging
+
+- Version: 8.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging/8.0.1)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
 <summary>Microsoft.Extensions.Logging.Abstractions 6.0.0</summary>
 
 ## Microsoft.Extensions.Logging.Abstractions
@@ -5080,14 +5176,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Logging.Abstractions 8.0.1</summary>
+<summary>Microsoft.Extensions.Logging.Abstractions 8.0.3</summary>
 
 ## Microsoft.Extensions.Logging.Abstractions
 
-- Version: 8.0.1
+- Version: 8.0.3
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/8.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Abstractions/8.0.3)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -5162,14 +5258,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.Extensions.Logging.Configuration 8.0.0</summary>
+<summary>Microsoft.Extensions.Logging.Configuration 8.0.1</summary>
 
 ## Microsoft.Extensions.Logging.Configuration
 
-- Version: 8.0.0
+- Version: 8.0.1
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Configuration/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.Extensions.Logging.Configuration/8.0.1)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -5613,14 +5709,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.IdentityModel.Abstractions 7.0.3</summary>
+<summary>Microsoft.IdentityModel.Abstractions 7.1.2</summary>
 
 ## Microsoft.IdentityModel.Abstractions
 
-- Version: 7.0.3
+- Version: 7.1.2
 - Authors: Microsoft
 - Project URL: https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Abstractions/7.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Abstractions/7.1.2)
 - License: [MIT](https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/raw/dev/LICENSE.txt)
 
 
@@ -5652,14 +5748,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.IdentityModel.JsonWebTokens 7.0.3</summary>
+<summary>Microsoft.IdentityModel.JsonWebTokens 7.1.2</summary>
 
 ## Microsoft.IdentityModel.JsonWebTokens
 
-- Version: 7.0.3
+- Version: 7.1.2
 - Authors: Microsoft
 - Project URL: https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.JsonWebTokens/7.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.JsonWebTokens/7.1.2)
 - License: [MIT](https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/raw/dev/LICENSE.txt)
 
 
@@ -5691,14 +5787,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.IdentityModel.Logging 7.0.3</summary>
+<summary>Microsoft.IdentityModel.Logging 7.1.2</summary>
 
 ## Microsoft.IdentityModel.Logging
 
-- Version: 7.0.3
+- Version: 7.1.2
 - Authors: Microsoft
 - Project URL: https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Logging/7.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Logging/7.1.2)
 - License: [MIT](https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/raw/dev/LICENSE.txt)
 
 
@@ -5730,14 +5826,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.IdentityModel.Protocols 7.0.3</summary>
+<summary>Microsoft.IdentityModel.Protocols 7.1.2</summary>
 
 ## Microsoft.IdentityModel.Protocols
 
-- Version: 7.0.3
+- Version: 7.1.2
 - Authors: Microsoft
 - Project URL: https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Protocols/7.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Protocols/7.1.2)
 - License: [MIT](https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/raw/dev/LICENSE.txt)
 
 
@@ -5769,14 +5865,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.IdentityModel.Protocols.OpenIdConnect 7.0.3</summary>
+<summary>Microsoft.IdentityModel.Protocols.OpenIdConnect 7.1.2</summary>
 
 ## Microsoft.IdentityModel.Protocols.OpenIdConnect
 
-- Version: 7.0.3
+- Version: 7.1.2
 - Authors: Microsoft
 - Project URL: https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Protocols.OpenIdConnect/7.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Protocols.OpenIdConnect/7.1.2)
 - License: [MIT](https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/raw/dev/LICENSE.txt)
 
 
@@ -5808,14 +5904,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.IdentityModel.Tokens 7.0.3</summary>
+<summary>Microsoft.IdentityModel.Tokens 7.1.2</summary>
 
 ## Microsoft.IdentityModel.Tokens
 
-- Version: 7.0.3
+- Version: 7.1.2
 - Authors: Microsoft
 - Project URL: https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Tokens/7.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.IdentityModel.Tokens/7.1.2)
 - License: [MIT](https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/raw/dev/LICENSE.txt)
 
 
@@ -5847,14 +5943,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.NET.ILLink.Tasks 8.0.0</summary>
+<summary>Microsoft.NET.ILLink.Tasks 8.0.14</summary>
 
 ## Microsoft.NET.ILLink.Tasks
 
-- Version: 8.0.0
+- Version: 8.0.14
 - Authors: Microsoft
 - Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.14)
 - License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
 
 
@@ -5888,178 +5984,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.NET.ILLink.Tasks 8.0.1</summary>
-
-## Microsoft.NET.ILLink.Tasks
-
-- Version: 8.0.1
-- Authors: Microsoft
-- Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.1)
-- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) .NET Foundation and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>Microsoft.NET.ILLink.Tasks 8.0.2</summary>
-
-## Microsoft.NET.ILLink.Tasks
-
-- Version: 8.0.2
-- Authors: Microsoft
-- Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.2)
-- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) .NET Foundation and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>Microsoft.NET.ILLink.Tasks 8.0.3</summary>
-
-## Microsoft.NET.ILLink.Tasks
-
-- Version: 8.0.3
-- Authors: Microsoft
-- Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.3)
-- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) .NET Foundation and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>Microsoft.NET.ILLink.Tasks 8.0.6</summary>
-
-## Microsoft.NET.ILLink.Tasks
-
-- Version: 8.0.6
-- Authors: Microsoft
-- Project URL: https://dot.net/
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.ILLink.Tasks/8.0.6)
-- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
-
-
-```
-The MIT License (MIT)
-
-Copyright (c) .NET Foundation and Contributors
-
-All rights reserved.
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
-
-</details>
-
-
-<details>
-<summary>Microsoft.NET.Test.Sdk 17.10.0</summary>
+<summary>Microsoft.NET.Test.Sdk 17.13.0</summary>
 
 ## Microsoft.NET.Test.Sdk
 
-- Version: 17.10.0
+- Version: 17.13.0
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.10.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.NET.Test.Sdk/17.13.0)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
@@ -6102,29 +6034,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -6349,29 +6267,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -6778,10 +6682,10 @@ specific language governing permissions and limitations under the License.
 
 ## Microsoft.OpenApi
 
-- Version: 1.6.14
+- Version: 1.6.23
 - Authors: Microsoft
 - Project URL: https://github.com/Microsoft/OpenAPI.NET
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.OpenApi/1.6.14)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.OpenApi/1.6.23)
 - License: [MIT]( https://raw.githubusercontent.com/Microsoft/OpenAPI.NET/master/LICENSE)
 
 
@@ -6813,14 +6717,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.TestPlatform.ObjectModel 17.10.0</summary>
+<summary>Microsoft.TestPlatform.ObjectModel 17.13.0</summary>
 
 ## Microsoft.TestPlatform.ObjectModel
 
-- Version: 17.10.0
+- Version: 17.13.0
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.10.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.ObjectModel/17.13.0)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
@@ -6850,14 +6754,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Microsoft.TestPlatform.TestHost 17.10.0</summary>
+<summary>Microsoft.TestPlatform.TestHost 17.13.0</summary>
 
 ## Microsoft.TestPlatform.TestHost
 
-- Version: 17.10.0
+- Version: 17.13.0
 - Authors: Microsoft
 - Project URL: https://github.com/microsoft/vstest
-- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.10.0)
+- Source: [NuGet](https://www.nuget.org/packages/Microsoft.TestPlatform.TestHost/17.13.0)
 - License: [MIT](https://github.com/microsoft/vstest/raw/v17.4.1/LICENSE)
 
 
@@ -6993,29 +6897,15 @@ THE SOFTWARE IS PROVIDED *AS IS*, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -7446,14 +7336,14 @@ Apache License
 
 
 <details>
-<summary>Monai.Deploy.Messaging 2.0.3</summary>
+<summary>Monai.Deploy.Messaging 2.0.4</summary>
 
 ## Monai.Deploy.Messaging
 
-- Version: 2.0.3
+- Version: 2.0.4
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/2.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging/2.0.4)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7674,14 +7564,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Messaging.RabbitMQ 2.0.3</summary>
+<summary>Monai.Deploy.Messaging.RabbitMQ 2.0.4</summary>
 
 ## Monai.Deploy.Messaging.RabbitMQ
 
-- Version: 2.0.3
+- Version: 2.0.4
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-messaging
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/2.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Messaging.RabbitMQ/2.0.4)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-messaging/raw/main/LICENSE)
 
 
@@ -7902,14 +7792,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Security 1.0.0</summary>
+<summary>Monai.Deploy.Security 1.0.1</summary>
 
 ## Monai.Deploy.Security
 
-- Version: 1.0.0
+- Version: 1.0.1
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-security
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Security/1.0.0)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Security/1.0.1)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-security/raw/develop/LICENSE)
 
 
@@ -8130,14 +8020,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage 1.0.1</summary>
+<summary>Monai.Deploy.Storage 1.0.2</summary>
 
 ## Monai.Deploy.Storage
 
-- Version: 1.0.1
+- Version: 1.0.2
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/1.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage/1.0.2)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8358,14 +8248,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.MinIO 1.0.1</summary>
+<summary>Monai.Deploy.Storage.MinIO 1.0.2</summary>
 
 ## Monai.Deploy.Storage.MinIO
 
-- Version: 1.0.1
+- Version: 1.0.2
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/1.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.MinIO/1.0.2)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8586,14 +8476,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>Monai.Deploy.Storage.S3Policy 1.0.1</summary>
+<summary>Monai.Deploy.Storage.S3Policy 1.0.2</summary>
 
 ## Monai.Deploy.Storage.S3Policy
 
-- Version: 1.0.1
+- Version: 1.0.2
 - Authors: MONAI Consortium
 - Project URL: https://github.com/Project-MONAI/monai-deploy-storage
-- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/1.0.1)
+- Source: [NuGet](https://www.nuget.org/packages/Monai.Deploy.Storage.S3Policy/1.0.2)
 - License: [Apache-2.0](https://github.com/Project-MONAI/monai-deploy-storage/raw/main/LICENSE)
 
 
@@ -8814,14 +8704,14 @@ By downloading this software, you agree to the license terms & all licenses list
 
 
 <details>
-<summary>MongoDB.Bson 2.25.0</summary>
+<summary>MongoDB.Bson 2.30.0</summary>
 
 ## MongoDB.Bson
 
-- Version: 2.25.0
+- Version: 2.30.0
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Bson/2.25.0)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Bson/2.30.0)
 - License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 
 
@@ -9033,14 +8923,14 @@ Apache License
 
 
 <details>
-<summary>MongoDB.Driver 2.25.0</summary>
+<summary>MongoDB.Driver 2.30.0</summary>
 
 ## MongoDB.Driver
 
-- Version: 2.25.0
+- Version: 2.30.0
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver/2.25.0)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver/2.30.0)
 - License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 
 
@@ -9252,14 +9142,14 @@ Apache License
 
 
 <details>
-<summary>MongoDB.Driver.Core 2.25.0</summary>
+<summary>MongoDB.Driver.Core 2.30.0</summary>
 
 ## MongoDB.Driver.Core
 
-- Version: 2.25.0
+- Version: 2.30.0
 - Authors: MongoDB Inc.
 - Project URL: https://www.mongodb.com/docs/drivers/csharp/
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver.Core/2.25.0)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Driver.Core/2.30.0)
 - License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 
 
@@ -9471,14 +9361,14 @@ Apache License
 
 
 <details>
-<summary>MongoDB.Libmongocrypt 1.8.2</summary>
+<summary>MongoDB.Libmongocrypt 1.12.0</summary>
 
 ## MongoDB.Libmongocrypt
 
-- Version: 1.8.2
+- Version: 1.12.0
 - Authors: MongoDB Inc.
 - Project URL: http://www.mongodb.org/display/DOCS/CSharp+Language+Center
-- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Libmongocrypt/1.8.2)
+- Source: [NuGet](https://www.nuget.org/packages/MongoDB.Libmongocrypt/1.12.0)
 - License: [Apache-2.0](https://raw.githubusercontent.com/mongodb/mongo-csharp-driver/master/LICENSE.md)
 
 
@@ -9744,7 +9634,7 @@ THE SOFTWARE.
 
 
 ```
-BSD 3-Clause License
+BSD-3-Clause
 
 Copyright (c) 2007, Clarius Consulting, Manas Technology Solutions, InSTEDD,
 and Contributors. All rights reserved.
@@ -9792,29 +9682,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -9984,47 +9860,47 @@ consequential or other damages.
 
 
 <details>
-<summary>NLog 5.3.2</summary>
+<summary>NLog 5.4.0</summary>
 
 ## NLog
 
-- Version: 5.3.2
+- Version: 5.4.0
 - Authors: Jarek Kowalski,Kim Christensen,Julian Verdurmen
 - Project URL: https://nlog-project.org/
-- Source: [NuGet](https://www.nuget.org/packages/NLog/5.3.2)
+- Source: [NuGet](https://www.nuget.org/packages/NLog/5.4.0)
 - License: [BSD 3-Clause License](https://github.com/NLog/NLog/raw/dev/LICENSE.txt)
 
 
 ```
-Copyright (c) 2004-2021 Jaroslaw Kowalski , Kim Christensen, Julian Verdurmen
+Copyright (c) 2004-2024 Jaroslaw Kowalski , Kim Christensen, Julian Verdurmen
 
 All rights reserved.
 
-Redistribution and use in source and binary forms, with or without 
-modification, are permitted provided that the following conditions 
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
 are met:
 
-* Redistributions of source code must retain the above copyright notice, 
-  this list of conditions and the following disclaimer. 
+* Redistributions of source code must retain the above copyright notice,
+  this list of conditions and the following disclaimer.
 
 * Redistributions in binary form must reproduce the above copyright notice,
   this list of conditions and the following disclaimer in the documentation
-  and/or other materials provided with the distribution. 
+  and/or other materials provided with the distribution.
 
-* Neither the name of Jaroslaw Kowalski nor the names of its 
+* Neither the name of Jaroslaw Kowalski nor the names of its
   contributors may be used to endorse or promote products derived from this
-  software without specific prior written permission. 
+  software without specific prior written permission.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
-ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
-LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
 CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
-SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
-INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
-CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
-ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF
 THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
@@ -10032,14 +9908,14 @@ THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>NLog.Extensions.Logging 5.3.11</summary>
+<summary>NLog.Extensions.Logging 5.4.0</summary>
 
 ## NLog.Extensions.Logging
 
-- Version: 5.3.11
-- Authors: Microsoft,Julian Verdurmen
+- Version: 5.4.0
+- Authors: Julian Verdurmen
 - Project URL: https://github.com/NLog/NLog.Extensions.Logging
-- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.3.11)
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Extensions.Logging/5.4.0)
 - License: [BSD 2-Clause Simplified License](https://github.com/NLog/NLog.Extensions.Logging/raw/master/LICENSE)
 
 
@@ -10073,14 +9949,14 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 <details>
-<summary>NLog.Web.AspNetCore 5.3.11</summary>
+<summary>NLog.Web.AspNetCore 5.4.0</summary>
 
 ## NLog.Web.AspNetCore
 
-- Version: 5.3.11
+- Version: 5.4.0
 - Authors: Julian Verdurmen
 - Project URL: https://github.com/NLog/NLog.Web
-- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.3.11)
+- Source: [NuGet](https://www.nuget.org/packages/NLog.Web.AspNetCore/5.4.0)
 - License: [BSD 3-Clause License](https://github.com/NLog/NLog.Web/raw/master/LICENSE)
 
 
@@ -10229,61 +10105,6 @@ specific language governing permissions and limitations under the License.
 
 
 <details>
-<summary>Polly 8.2.0</summary>
-
-## Polly
-
-- Version: 8.2.0
-- Authors: Michael Wolfenden, App vNext
-- Project URL: https://github.com/App-vNext/Polly
-- Source: [NuGet](https://www.nuget.org/packages/Polly/8.2.0)
-- License: [MIT]( https://licenses.nuget.org/MIT)
-
-
-```
-'MIT' reference
-
-
-
-MIT License
-SPDX identifier
-MIT
-License text
-
-MIT License
-
-
-Copyright (c) <year> <copyright holders>
-         
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
-         associated documentation files (the "Software"), to deal in the Software without restriction,
-         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-         subject to the following conditions:
-The above copyright notice and this permission notice
-          (including the next paragraph)
-         shall be included in all copies or substantial
-         portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-SPDX web page
-
-https://spdx.org/licenses/MIT.html
-
-Notice
-This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
-
-Data pulled from spdx/license-list-data on February 9, 2023.
-```
-
-</details>
-
-
-<details>
 <summary>Polly 8.4.0</summary>
 
 ## Polly
@@ -10292,102 +10113,74 @@ Data pulled from spdx/license-list-data on February 9, 2023.
 - Authors: Michael Wolfenden, App vNext
 - Project URL: https://github.com/App-vNext/Polly
 - Source: [NuGet](https://www.nuget.org/packages/Polly/8.4.0)
-- License: [MIT]( https://licenses.nuget.org/MIT)
+- License: [MIT]( https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
-'MIT' reference
+The MIT License (MIT)
 
+Copyright (c) .NET Foundation and Contributors
 
+All rights reserved.
 
-MIT License
-SPDX identifier
-MIT
-License text
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-MIT License
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-
-Copyright (c) <year> <copyright holders>
-         
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
-         associated documentation files (the "Software"), to deal in the Software without restriction,
-         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-         subject to the following conditions:
-The above copyright notice and this permission notice
-          (including the next paragraph)
-         shall be included in all copies or substantial
-         portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-SPDX web page
-
-https://spdx.org/licenses/MIT.html
-
-Notice
-This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
-
-Data pulled from spdx/license-list-data on February 9, 2023.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
 
 
 <details>
-<summary>Polly.Core 8.2.0</summary>
+<summary>Polly 8.5.2</summary>
 
-## Polly.Core
+## Polly
 
-- Version: 8.2.0
+- Version: 8.5.2
 - Authors: Michael Wolfenden, App vNext
 - Project URL: https://github.com/App-vNext/Polly
-- Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.2.0)
-- License: [MIT]( https://licenses.nuget.org/MIT)
+- Source: [NuGet](https://www.nuget.org/packages/Polly/8.5.2)
+- License: [MIT]( https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
-'MIT' reference
+The MIT License (MIT)
 
+Copyright (c) .NET Foundation and Contributors
 
+All rights reserved.
 
-MIT License
-SPDX identifier
-MIT
-License text
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-MIT License
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-
-Copyright (c) <year> <copyright holders>
-         
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
-         associated documentation files (the "Software"), to deal in the Software without restriction,
-         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-         subject to the following conditions:
-The above copyright notice and this permission notice
-          (including the next paragraph)
-         shall be included in all copies or substantial
-         portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-SPDX web page
-
-https://spdx.org/licenses/MIT.html
-
-Notice
-This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
-
-Data pulled from spdx/license-list-data on February 9, 2023.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>
@@ -10402,45 +10195,63 @@ Data pulled from spdx/license-list-data on February 9, 2023.
 - Authors: Michael Wolfenden, App vNext
 - Project URL: https://github.com/App-vNext/Polly
 - Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.4.0)
-- License: [MIT]( https://licenses.nuget.org/MIT)
+- License: [MIT]( https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
-'MIT' reference
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
 
 
+<details>
+<summary>Polly.Core 8.5.2</summary>
 
-MIT License
-SPDX identifier
-MIT
-License text
+## Polly.Core
 
-MIT License
+- Version: 8.5.2
+- Authors: Michael Wolfenden, App vNext
+- Project URL: https://github.com/App-vNext/Polly
+- Source: [NuGet](https://www.nuget.org/packages/Polly.Core/8.5.2)
+- License: [MIT]( https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
-Copyright (c) <year> <copyright holders>
-         
+```
+The MIT License (MIT)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
-         associated documentation files (the "Software"), to deal in the Software without restriction,
-         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-         subject to the following conditions:
-The above copyright notice and this permission notice
-          (including the next paragraph)
-         shall be included in all copies or substantial
-         portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-SPDX web page
+Copyright (c) .NET Foundation and Contributors
 
-https://spdx.org/licenses/MIT.html
+All rights reserved.
 
-Notice
-This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
 
 
@@ -11632,7 +11443,7 @@ THE SOFTWARE.
 
 
 ```
-Copyright 2011-2020, Google, Inc. and Snappier Authors
+Copyright 2011-2024, Google, Inc. and Snappier Authors.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -11701,39 +11512,146 @@ Some of the benchmark data in testdata/ is licensed differently:
 - Owners: SpecFlow Team
 - Project URL: https://www.specflow.org/
 - Source: [NuGet](https://www.nuget.org/packages/SpecFlow/3.9.74)
-- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/raw/master/LICENSE.txt)
+- License: [New BSD License](https://spdx.org/licenses/BSD-3-Clause.html)
 
 
 ```
-SpecFlow License (New BSD License)
+BSD 3-Clause "New" or "Revised" License | Software Package Data Exchange (SPDX)
 
-Copyright (c) 2020, Tricentis GmbH
 
-Disclaimer:
-* No code of customer projects was used to create this project.
- * Tricentis has the full rights to publish the initial codebase.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
- * Neither the name of the SpecFlow project nor the
-   names of its contributors may be used to endorse or promote products
-   derived from this software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL TRICENTIS OR CONTRIBUTORS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+
+
+
+
+
+
+Linux Foundation Collaborative Projects
+
+
+
+
+
+
+
+
+
+
+Software Package Data Exchange (SPDX)
+
+
+
+ 
+
+
+
+
+
+Home » Licenses
+BSD 3-Clause "New" or "Revised" License
+false
+Full name
+BSD 3-Clause "New" or "Revised" License
+Short identifier
+BSD-3-Clause
+Other web pages for this license
+
+
+
+https://opensource.org/licenses/BSD-3-Clause
+
+
+
+https://www.eclipse.org/org/documents/edl-v10.php
+
+
+
+
+true
+Notes
+Note for matching purposes, this license contains a number of equivalent variations, particularly in the third clause. See the XML file for more details. Also note that the Eclipse Distribution License - v 1.0 (EDL 1.0) is a match to BSD-3-Clause, even though it uses a different name.
+Text
+
+
+		      Text in italicized blue is omittable (see Matching Guidelines B.3.5).
+		      License or exception text will match to the text for the specified identifier if it either includes or excludes this omittable text.
+			  
+
+			  Text in red is replaceable (see Matching Guidelines B.3.4).
+			  License or exception text will match to the text for the specified identifier if it includes a permitted variant of this replaceable text.
+			  The permitted variants can be found in the corresponding regular expression as shown in title text visible by hovering over the red text.
+	      
+
+
+
+Copyright (c) <year> <owner>. 
+
+Redistribution and use in source and binary forms,
+         with or without modification,  are permitted provided
+         that the following conditions are met:
+
+
+ 1.
+               Redistributions of  source code must retain the  above copyright notice, this list of conditions
+                 and the following disclaimer.
+            
+
+ 2.
+                Redistributions in binary form must reproduce the  above copyright notice, this list of conditions
+                 and the following disclaimer in the documentation and/or other materials provided with the
+                 distribution.
+            
+
+ 3.
+ 
+                 Neither the name of the copyright holder nor the names of its contributors may
+                 be used to endorse or promote products derived from this
+	  software without  specific prior written permission.  
+
+
+THIS  SOFTWARE IS PROVIDED  BY THE COPYRIGHT HOLDERS AND
+         CONTRIBUTORS "AS IS" AND ANY  EXPRESS OR IMPLIED
+         WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+         PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL  THE
+         COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+         OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+         LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+         WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+         OUT OF THE USE OF THIS  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Standard License Header
+
+There is no standard license header for the license
+
+
+      <<var;name="copyright";original="Copyright (c) <year> <owner>.  ";match=".{0,5000}">>
+Redistribution and use in source and binary forms<<var;name="theme";original="";match="()|( of the theme)">>, with or without modification, <<var;name="tobe";original="are";match="are|is">> permitted provided that the following conditions are met:
+
+   <<var;name="bullet";original="1.";match=".{0,20}">> Redistributions of <<var;name="code";original="source code";match="source code|works">> must retain the <<var;name="above";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer.
+   <<var;name="bullet";original="2.";match=".{0,20}">> Redistributions in binary form must reproduce the <<var;name="above2";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+   <<var;name="bullet";original="3.";match=".{0,20}">> <<var;name="organizationClause3";original="Neither the name of the copyright holder nor the names of its contributors may";match="(The\s+name\s+of.+may\s+not)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+their\s+contributors\s+may)|(\s*Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+its\s+authors\s+and\s+contributors\s+may)|(Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+(specific\s+)?contributors,?\s+may)|(Neither\s+the\s+name.+nor\s+the\s+names\s+of\s+contributors\s+may)|(The\s+names\s+of\s+its\s+contributors\s+may\s+not)|(The\s+names\s+of\s+any\s+contributors\s+may\s+not)|(The\s+names\s+of\s+the\s+contributors\s+may\s+not)|(None\s+of\s+the\s+names\s+of.+and\s+any\s+contributors\s+may)|(Neither\s+my\s+name.+nor\s+the\s+names\s+of\s+contributors\s+to\s+this\s+code\s+may)|(Neither\s+name\s+of\s+copyright\s+holders\s+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)">> be used to endorse or promote products derived from this <<var;name="software";original="software";match="software|work">> without<<beginOptional>> specific<<endOptional>> prior written permission. <<var;name="contact";original="";match="(To obtain permission, contact .*)?">>
+THIS <<var;name="software2";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> IS PROVIDED <<var;name="copyrightHolderAsIs";original="BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS";match=".*">> "AS IS" AND ANY <<var;name="express";original="EXPRESS";match="EXPRESS(ED)?">> OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <<var;name="copyrightHolderLiability";original="THE COPYRIGHT HOLDER OR CONTRIBUTORS";match=".+">> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS <<var;name="software3";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> , EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+      
+ 
+
+
+
+
+© 2018          SPDX Workgroup a Linux Foundation Project. All Rights Reserved.        
+Linux Foundation is a registered trademark of The Linux Foundation. Linux is a registered trademark of Linus Torvalds.
+Please see our privacy policy and terms of use.
+
+
+
+
+
+top of page
 ```
 
 </details>
@@ -11748,30 +11666,146 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - Authors: SpecFlow Team
 - Project URL: https://specflow.org/
 - Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Internal.Json/1.0.8)
-- License: [MIT](https://github.com/SpecFlowOSS/SpecFlow.Internal.Json/raw/master/LICENSE)
+- License: [MIT](https://spdx.org/licenses/BSD-3-Clause.html)
 
 
 ```
-The MIT License (MIT)
+BSD 3-Clause "New" or "Revised" License | Software Package Data Exchange (SPDX)
 
-Copyright (c) 2018 Alex Parker
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of
-this software and associated documentation files (the "Software"), to deal in
-the Software without restriction, including without limitation the rights to
-use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is furnished to do so,
-subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
-FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
-COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
-IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+
+
+
+
+
+
+
+Linux Foundation Collaborative Projects
+
+
+
+
+
+
+
+
+
+
+Software Package Data Exchange (SPDX)
+
+
+
+ 
+
+
+
+
+
+Home » Licenses
+BSD 3-Clause "New" or "Revised" License
+false
+Full name
+BSD 3-Clause "New" or "Revised" License
+Short identifier
+BSD-3-Clause
+Other web pages for this license
+
+
+
+https://opensource.org/licenses/BSD-3-Clause
+
+
+
+https://www.eclipse.org/org/documents/edl-v10.php
+
+
+
+
+true
+Notes
+Note for matching purposes, this license contains a number of equivalent variations, particularly in the third clause. See the XML file for more details. Also note that the Eclipse Distribution License - v 1.0 (EDL 1.0) is a match to BSD-3-Clause, even though it uses a different name.
+Text
+
+
+		      Text in italicized blue is omittable (see Matching Guidelines B.3.5).
+		      License or exception text will match to the text for the specified identifier if it either includes or excludes this omittable text.
+			  
+
+			  Text in red is replaceable (see Matching Guidelines B.3.4).
+			  License or exception text will match to the text for the specified identifier if it includes a permitted variant of this replaceable text.
+			  The permitted variants can be found in the corresponding regular expression as shown in title text visible by hovering over the red text.
+	      
+
+
+
+Copyright (c) <year> <owner>. 
+
+Redistribution and use in source and binary forms,
+         with or without modification,  are permitted provided
+         that the following conditions are met:
+
+
+ 1.
+               Redistributions of  source code must retain the  above copyright notice, this list of conditions
+                 and the following disclaimer.
+            
+
+ 2.
+                Redistributions in binary form must reproduce the  above copyright notice, this list of conditions
+                 and the following disclaimer in the documentation and/or other materials provided with the
+                 distribution.
+            
+
+ 3.
+ 
+                 Neither the name of the copyright holder nor the names of its contributors may
+                 be used to endorse or promote products derived from this
+	  software without  specific prior written permission.  
+
+
+THIS  SOFTWARE IS PROVIDED  BY THE COPYRIGHT HOLDERS AND
+         CONTRIBUTORS "AS IS" AND ANY  EXPRESS OR IMPLIED
+         WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+         PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL  THE
+         COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+         OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+         LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+         WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+         OUT OF THE USE OF THIS  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Standard License Header
+
+There is no standard license header for the license
+
+
+      <<var;name="copyright";original="Copyright (c) <year> <owner>.  ";match=".{0,5000}">>
+Redistribution and use in source and binary forms<<var;name="theme";original="";match="()|( of the theme)">>, with or without modification, <<var;name="tobe";original="are";match="are|is">> permitted provided that the following conditions are met:
+
+   <<var;name="bullet";original="1.";match=".{0,20}">> Redistributions of <<var;name="code";original="source code";match="source code|works">> must retain the <<var;name="above";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer.
+   <<var;name="bullet";original="2.";match=".{0,20}">> Redistributions in binary form must reproduce the <<var;name="above2";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+   <<var;name="bullet";original="3.";match=".{0,20}">> <<var;name="organizationClause3";original="Neither the name of the copyright holder nor the names of its contributors may";match="(The\s+name\s+of.+may\s+not)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+their\s+contributors\s+may)|(\s*Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+its\s+authors\s+and\s+contributors\s+may)|(Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+(specific\s+)?contributors,?\s+may)|(Neither\s+the\s+name.+nor\s+the\s+names\s+of\s+contributors\s+may)|(The\s+names\s+of\s+its\s+contributors\s+may\s+not)|(The\s+names\s+of\s+any\s+contributors\s+may\s+not)|(The\s+names\s+of\s+the\s+contributors\s+may\s+not)|(None\s+of\s+the\s+names\s+of.+and\s+any\s+contributors\s+may)|(Neither\s+my\s+name.+nor\s+the\s+names\s+of\s+contributors\s+to\s+this\s+code\s+may)|(Neither\s+name\s+of\s+copyright\s+holders\s+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)">> be used to endorse or promote products derived from this <<var;name="software";original="software";match="software|work">> without<<beginOptional>> specific<<endOptional>> prior written permission. <<var;name="contact";original="";match="(To obtain permission, contact .*)?">>
+THIS <<var;name="software2";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> IS PROVIDED <<var;name="copyrightHolderAsIs";original="BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS";match=".*">> "AS IS" AND ANY <<var;name="express";original="EXPRESS";match="EXPRESS(ED)?">> OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <<var;name="copyrightHolderLiability";original="THE COPYRIGHT HOLDER OR CONTRIBUTORS";match=".+">> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS <<var;name="software3";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> , EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+      
+ 
+
+
+
+
+© 2018          SPDX Workgroup a Linux Foundation Project. All Rights Reserved.        
+Linux Foundation is a registered trademark of The Linux Foundation. Linux is a registered trademark of Linus Torvalds.
+Please see our privacy policy and terms of use.
+
+
+
+
+
+top of page
 ```
 
 </details>
@@ -11787,39 +11821,146 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 - Owners: SpecFlow Team
 - Project URL: https://docs.specflow.org/projects/specflow-livingdoc
 - Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Plus.LivingDocPlugin/3.9.57)
-- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/raw/master/LICENSE.txt)
+- License: [New BSD License](https://spdx.org/licenses/BSD-3-Clause.html)
 
 
 ```
-SpecFlow License (New BSD License)
+BSD 3-Clause "New" or "Revised" License | Software Package Data Exchange (SPDX)
 
-Copyright (c) 2020, Tricentis GmbH
 
-Disclaimer:
-* No code of customer projects was used to create this project.
- * Tricentis has the full rights to publish the initial codebase.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
- * Neither the name of the SpecFlow project nor the
-   names of its contributors may be used to endorse or promote products
-   derived from this software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL TRICENTIS OR CONTRIBUTORS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+
+
+
+
+
+
+Linux Foundation Collaborative Projects
+
+
+
+
+
+
+
+
+
+
+Software Package Data Exchange (SPDX)
+
+
+
+ 
+
+
+
+
+
+Home » Licenses
+BSD 3-Clause "New" or "Revised" License
+false
+Full name
+BSD 3-Clause "New" or "Revised" License
+Short identifier
+BSD-3-Clause
+Other web pages for this license
+
+
+
+https://opensource.org/licenses/BSD-3-Clause
+
+
+
+https://www.eclipse.org/org/documents/edl-v10.php
+
+
+
+
+true
+Notes
+Note for matching purposes, this license contains a number of equivalent variations, particularly in the third clause. See the XML file for more details. Also note that the Eclipse Distribution License - v 1.0 (EDL 1.0) is a match to BSD-3-Clause, even though it uses a different name.
+Text
+
+
+		      Text in italicized blue is omittable (see Matching Guidelines B.3.5).
+		      License or exception text will match to the text for the specified identifier if it either includes or excludes this omittable text.
+			  
+
+			  Text in red is replaceable (see Matching Guidelines B.3.4).
+			  License or exception text will match to the text for the specified identifier if it includes a permitted variant of this replaceable text.
+			  The permitted variants can be found in the corresponding regular expression as shown in title text visible by hovering over the red text.
+	      
+
+
+
+Copyright (c) <year> <owner>. 
+
+Redistribution and use in source and binary forms,
+         with or without modification,  are permitted provided
+         that the following conditions are met:
+
+
+ 1.
+               Redistributions of  source code must retain the  above copyright notice, this list of conditions
+                 and the following disclaimer.
+            
+
+ 2.
+                Redistributions in binary form must reproduce the  above copyright notice, this list of conditions
+                 and the following disclaimer in the documentation and/or other materials provided with the
+                 distribution.
+            
+
+ 3.
+ 
+                 Neither the name of the copyright holder nor the names of its contributors may
+                 be used to endorse or promote products derived from this
+	  software without  specific prior written permission.  
+
+
+THIS  SOFTWARE IS PROVIDED  BY THE COPYRIGHT HOLDERS AND
+         CONTRIBUTORS "AS IS" AND ANY  EXPRESS OR IMPLIED
+         WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+         PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL  THE
+         COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+         OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+         LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+         WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+         OUT OF THE USE OF THIS  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Standard License Header
+
+There is no standard license header for the license
+
+
+      <<var;name="copyright";original="Copyright (c) <year> <owner>.  ";match=".{0,5000}">>
+Redistribution and use in source and binary forms<<var;name="theme";original="";match="()|( of the theme)">>, with or without modification, <<var;name="tobe";original="are";match="are|is">> permitted provided that the following conditions are met:
+
+   <<var;name="bullet";original="1.";match=".{0,20}">> Redistributions of <<var;name="code";original="source code";match="source code|works">> must retain the <<var;name="above";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer.
+   <<var;name="bullet";original="2.";match=".{0,20}">> Redistributions in binary form must reproduce the <<var;name="above2";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+   <<var;name="bullet";original="3.";match=".{0,20}">> <<var;name="organizationClause3";original="Neither the name of the copyright holder nor the names of its contributors may";match="(The\s+name\s+of.+may\s+not)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+their\s+contributors\s+may)|(\s*Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+its\s+authors\s+and\s+contributors\s+may)|(Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+(specific\s+)?contributors,?\s+may)|(Neither\s+the\s+name.+nor\s+the\s+names\s+of\s+contributors\s+may)|(The\s+names\s+of\s+its\s+contributors\s+may\s+not)|(The\s+names\s+of\s+any\s+contributors\s+may\s+not)|(The\s+names\s+of\s+the\s+contributors\s+may\s+not)|(None\s+of\s+the\s+names\s+of.+and\s+any\s+contributors\s+may)|(Neither\s+my\s+name.+nor\s+the\s+names\s+of\s+contributors\s+to\s+this\s+code\s+may)|(Neither\s+name\s+of\s+copyright\s+holders\s+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)">> be used to endorse or promote products derived from this <<var;name="software";original="software";match="software|work">> without<<beginOptional>> specific<<endOptional>> prior written permission. <<var;name="contact";original="";match="(To obtain permission, contact .*)?">>
+THIS <<var;name="software2";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> IS PROVIDED <<var;name="copyrightHolderAsIs";original="BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS";match=".*">> "AS IS" AND ANY <<var;name="express";original="EXPRESS";match="EXPRESS(ED)?">> OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <<var;name="copyrightHolderLiability";original="THE COPYRIGHT HOLDER OR CONTRIBUTORS";match=".+">> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS <<var;name="software3";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> , EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+      
+ 
+
+
+
+
+© 2018          SPDX Workgroup a Linux Foundation Project. All Rights Reserved.        
+Linux Foundation is a registered trademark of The Linux Foundation. Linux is a registered trademark of Linus Torvalds.
+Please see our privacy policy and terms of use.
+
+
+
+
+
+top of page
 ```
 
 </details>
@@ -11835,39 +11976,146 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - Owners: SpecFlow Team
 - Project URL: https://www.specflow.org/
 - Source: [NuGet](https://www.nuget.org/packages/SpecFlow.Tools.MsBuild.Generation/3.9.74)
-- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/raw/master/LICENSE.txt)
+- License: [New BSD License](https://spdx.org/licenses/BSD-3-Clause.html)
 
 
 ```
-SpecFlow License (New BSD License)
+BSD 3-Clause "New" or "Revised" License | Software Package Data Exchange (SPDX)
 
-Copyright (c) 2020, Tricentis GmbH
 
-Disclaimer:
-* No code of customer projects was used to create this project.
- * Tricentis has the full rights to publish the initial codebase.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
- * Neither the name of the SpecFlow project nor the
-   names of its contributors may be used to endorse or promote products
-   derived from this software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL TRICENTIS OR CONTRIBUTORS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+
+
+
+
+
+
+Linux Foundation Collaborative Projects
+
+
+
+
+
+
+
+
+
+
+Software Package Data Exchange (SPDX)
+
+
+
+ 
+
+
+
+
+
+Home » Licenses
+BSD 3-Clause "New" or "Revised" License
+false
+Full name
+BSD 3-Clause "New" or "Revised" License
+Short identifier
+BSD-3-Clause
+Other web pages for this license
+
+
+
+https://opensource.org/licenses/BSD-3-Clause
+
+
+
+https://www.eclipse.org/org/documents/edl-v10.php
+
+
+
+
+true
+Notes
+Note for matching purposes, this license contains a number of equivalent variations, particularly in the third clause. See the XML file for more details. Also note that the Eclipse Distribution License - v 1.0 (EDL 1.0) is a match to BSD-3-Clause, even though it uses a different name.
+Text
+
+
+		      Text in italicized blue is omittable (see Matching Guidelines B.3.5).
+		      License or exception text will match to the text for the specified identifier if it either includes or excludes this omittable text.
+			  
+
+			  Text in red is replaceable (see Matching Guidelines B.3.4).
+			  License or exception text will match to the text for the specified identifier if it includes a permitted variant of this replaceable text.
+			  The permitted variants can be found in the corresponding regular expression as shown in title text visible by hovering over the red text.
+	      
+
+
+
+Copyright (c) <year> <owner>. 
+
+Redistribution and use in source and binary forms,
+         with or without modification,  are permitted provided
+         that the following conditions are met:
+
+
+ 1.
+               Redistributions of  source code must retain the  above copyright notice, this list of conditions
+                 and the following disclaimer.
+            
+
+ 2.
+                Redistributions in binary form must reproduce the  above copyright notice, this list of conditions
+                 and the following disclaimer in the documentation and/or other materials provided with the
+                 distribution.
+            
+
+ 3.
+ 
+                 Neither the name of the copyright holder nor the names of its contributors may
+                 be used to endorse or promote products derived from this
+	  software without  specific prior written permission.  
+
+
+THIS  SOFTWARE IS PROVIDED  BY THE COPYRIGHT HOLDERS AND
+         CONTRIBUTORS "AS IS" AND ANY  EXPRESS OR IMPLIED
+         WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+         PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL  THE
+         COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+         OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+         LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+         WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+         OUT OF THE USE OF THIS  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Standard License Header
+
+There is no standard license header for the license
+
+
+      <<var;name="copyright";original="Copyright (c) <year> <owner>.  ";match=".{0,5000}">>
+Redistribution and use in source and binary forms<<var;name="theme";original="";match="()|( of the theme)">>, with or without modification, <<var;name="tobe";original="are";match="are|is">> permitted provided that the following conditions are met:
+
+   <<var;name="bullet";original="1.";match=".{0,20}">> Redistributions of <<var;name="code";original="source code";match="source code|works">> must retain the <<var;name="above";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer.
+   <<var;name="bullet";original="2.";match=".{0,20}">> Redistributions in binary form must reproduce the <<var;name="above2";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+   <<var;name="bullet";original="3.";match=".{0,20}">> <<var;name="organizationClause3";original="Neither the name of the copyright holder nor the names of its contributors may";match="(The\s+name\s+of.+may\s+not)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+their\s+contributors\s+may)|(\s*Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+its\s+authors\s+and\s+contributors\s+may)|(Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+(specific\s+)?contributors,?\s+may)|(Neither\s+the\s+name.+nor\s+the\s+names\s+of\s+contributors\s+may)|(The\s+names\s+of\s+its\s+contributors\s+may\s+not)|(The\s+names\s+of\s+any\s+contributors\s+may\s+not)|(The\s+names\s+of\s+the\s+contributors\s+may\s+not)|(None\s+of\s+the\s+names\s+of.+and\s+any\s+contributors\s+may)|(Neither\s+my\s+name.+nor\s+the\s+names\s+of\s+contributors\s+to\s+this\s+code\s+may)|(Neither\s+name\s+of\s+copyright\s+holders\s+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)">> be used to endorse or promote products derived from this <<var;name="software";original="software";match="software|work">> without<<beginOptional>> specific<<endOptional>> prior written permission. <<var;name="contact";original="";match="(To obtain permission, contact .*)?">>
+THIS <<var;name="software2";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> IS PROVIDED <<var;name="copyrightHolderAsIs";original="BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS";match=".*">> "AS IS" AND ANY <<var;name="express";original="EXPRESS";match="EXPRESS(ED)?">> OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <<var;name="copyrightHolderLiability";original="THE COPYRIGHT HOLDER OR CONTRIBUTORS";match=".+">> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS <<var;name="software3";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> , EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+      
+ 
+
+
+
+
+© 2018          SPDX Workgroup a Linux Foundation Project. All Rights Reserved.        
+Linux Foundation is a registered trademark of The Linux Foundation. Linux is a registered trademark of Linus Torvalds.
+Please see our privacy policy and terms of use.
+
+
+
+
+
+top of page
 ```
 
 </details>
@@ -11883,54 +12131,161 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - Owners: SpecFlow Team
 - Project URL: https://www.specflow.org/
 - Source: [NuGet](https://www.nuget.org/packages/SpecFlow.xUnit/3.9.74)
-- License: [New BSD License](https://github.com/SpecFlowOSS/SpecFlow/raw/master/LICENSE.txt)
+- License: [New BSD License](https://spdx.org/licenses/BSD-3-Clause.html)
 
 
 ```
-SpecFlow License (New BSD License)
+BSD 3-Clause "New" or "Revised" License | Software Package Data Exchange (SPDX)
 
-Copyright (c) 2020, Tricentis GmbH
 
-Disclaimer:
-* No code of customer projects was used to create this project.
- * Tricentis has the full rights to publish the initial codebase.
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
- * Redistributions of source code must retain the above copyright
-   notice, this list of conditions and the following disclaimer.
- * Redistributions in binary form must reproduce the above copyright
-   notice, this list of conditions and the following disclaimer in the
-   documentation and/or other materials provided with the distribution.
- * Neither the name of the SpecFlow project nor the
-   names of its contributors may be used to endorse or promote products
-   derived from this software without specific prior written permission.
 
-THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY
-EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL TRICENTIS OR CONTRIBUTORS BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+
+
+
+
+
+
+
+Linux Foundation Collaborative Projects
+
+
+
+
+
+
+
+
+
+
+Software Package Data Exchange (SPDX)
+
+
+
+ 
+
+
+
+
+
+Home » Licenses
+BSD 3-Clause "New" or "Revised" License
+false
+Full name
+BSD 3-Clause "New" or "Revised" License
+Short identifier
+BSD-3-Clause
+Other web pages for this license
+
+
+
+https://opensource.org/licenses/BSD-3-Clause
+
+
+
+https://www.eclipse.org/org/documents/edl-v10.php
+
+
+
+
+true
+Notes
+Note for matching purposes, this license contains a number of equivalent variations, particularly in the third clause. See the XML file for more details. Also note that the Eclipse Distribution License - v 1.0 (EDL 1.0) is a match to BSD-3-Clause, even though it uses a different name.
+Text
+
+
+		      Text in italicized blue is omittable (see Matching Guidelines B.3.5).
+		      License or exception text will match to the text for the specified identifier if it either includes or excludes this omittable text.
+			  
+
+			  Text in red is replaceable (see Matching Guidelines B.3.4).
+			  License or exception text will match to the text for the specified identifier if it includes a permitted variant of this replaceable text.
+			  The permitted variants can be found in the corresponding regular expression as shown in title text visible by hovering over the red text.
+	      
+
+
+
+Copyright (c) <year> <owner>. 
+
+Redistribution and use in source and binary forms,
+         with or without modification,  are permitted provided
+         that the following conditions are met:
+
+
+ 1.
+               Redistributions of  source code must retain the  above copyright notice, this list of conditions
+                 and the following disclaimer.
+            
+
+ 2.
+                Redistributions in binary form must reproduce the  above copyright notice, this list of conditions
+                 and the following disclaimer in the documentation and/or other materials provided with the
+                 distribution.
+            
+
+ 3.
+ 
+                 Neither the name of the copyright holder nor the names of its contributors may
+                 be used to endorse or promote products derived from this
+	  software without  specific prior written permission.  
+
+
+THIS  SOFTWARE IS PROVIDED  BY THE COPYRIGHT HOLDERS AND
+         CONTRIBUTORS "AS IS" AND ANY  EXPRESS OR IMPLIED
+         WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+         PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL  THE
+         COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+         OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+         LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+         WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+         OUT OF THE USE OF THIS  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Standard License Header
+
+There is no standard license header for the license
+
+
+      <<var;name="copyright";original="Copyright (c) <year> <owner>.  ";match=".{0,5000}">>
+Redistribution and use in source and binary forms<<var;name="theme";original="";match="()|( of the theme)">>, with or without modification, <<var;name="tobe";original="are";match="are|is">> permitted provided that the following conditions are met:
+
+   <<var;name="bullet";original="1.";match=".{0,20}">> Redistributions of <<var;name="code";original="source code";match="source code|works">> must retain the <<var;name="above";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer.
+   <<var;name="bullet";original="2.";match=".{0,20}">> Redistributions in binary form must reproduce the <<var;name="above2";original="above";match="above|original">> copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+   <<var;name="bullet";original="3.";match=".{0,20}">> <<var;name="organizationClause3";original="Neither the name of the copyright holder nor the names of its contributors may";match="(The\s+name\s+of.+may\s+not)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)|(Neither\s+the\s+names?\s+of.+nor\s+the\s+names\s+of\s+their\s+contributors\s+may)|(\s*Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+its\s+authors\s+and\s+contributors\s+may)|(Neither\s+the\s+name\s+of.+nor\s+the\s+names\s+of\s+(specific\s+)?contributors,?\s+may)|(Neither\s+the\s+name.+nor\s+the\s+names\s+of\s+contributors\s+may)|(The\s+names\s+of\s+its\s+contributors\s+may\s+not)|(The\s+names\s+of\s+any\s+contributors\s+may\s+not)|(The\s+names\s+of\s+the\s+contributors\s+may\s+not)|(None\s+of\s+the\s+names\s+of.+and\s+any\s+contributors\s+may)|(Neither\s+my\s+name.+nor\s+the\s+names\s+of\s+contributors\s+to\s+this\s+code\s+may)|(Neither\s+name\s+of\s+copyright\s+holders\s+nor\s+the\s+names\s+of\s+its\s+contributors\s+may)">> be used to endorse or promote products derived from this <<var;name="software";original="software";match="software|work">> without<<beginOptional>> specific<<endOptional>> prior written permission. <<var;name="contact";original="";match="(To obtain permission, contact .*)?">>
+THIS <<var;name="software2";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> IS PROVIDED <<var;name="copyrightHolderAsIs";original="BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS";match=".*">> "AS IS" AND ANY <<var;name="express";original="EXPRESS";match="EXPRESS(ED)?">> OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL <<var;name="copyrightHolderLiability";original="THE COPYRIGHT HOLDER OR CONTRIBUTORS";match=".+">> BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS <<var;name="software3";original="SOFTWARE";match="(SOFTWARE)|(THEME)">> , EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+      
+ 
+
+
+
+
+© 2018          SPDX Workgroup a Linux Foundation Project. All Rights Reserved.        
+Linux Foundation is a registered trademark of The Linux Foundation. Linux is a registered trademark of Linus Torvalds.
+Please see our privacy policy and terms of use.
+
+
+
+
+
+top of page
 ```
 
 </details>
 
 
 <details>
-<summary>Swashbuckle.AspNetCore 6.6.2</summary>
+<summary>Swashbuckle.AspNetCore 8.0.0</summary>
 
 ## Swashbuckle.AspNetCore
 
-- Version: 6.6.2
+- Version: 8.0.0
 - Authors: domaindrivendev
 - Owners: domaindrivendev
 - Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
-- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore/6.6.2)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore/8.0.0)
 - License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 
 
@@ -11962,14 +12317,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Swashbuckle.AspNetCore.Swagger 6.6.2</summary>
+<summary>Swashbuckle.AspNetCore.Swagger 8.0.0</summary>
 
 ## Swashbuckle.AspNetCore.Swagger
 
-- Version: 6.6.2
+- Version: 8.0.0
 - Authors: domaindrivendev
 - Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
-- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.Swagger/6.6.2)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.Swagger/8.0.0)
 - License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 
 
@@ -12001,14 +12356,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Swashbuckle.AspNetCore.SwaggerGen 6.6.2</summary>
+<summary>Swashbuckle.AspNetCore.SwaggerGen 8.0.0</summary>
 
 ## Swashbuckle.AspNetCore.SwaggerGen
 
-- Version: 6.6.2
+- Version: 8.0.0
 - Authors: domaindrivendev
 - Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
-- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen/6.6.2)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerGen/8.0.0)
 - License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 
 
@@ -12040,14 +12395,14 @@ SOFTWARE.
 
 
 <details>
-<summary>Swashbuckle.AspNetCore.SwaggerUI 6.6.2</summary>
+<summary>Swashbuckle.AspNetCore.SwaggerUI 8.0.0</summary>
 
 ## Swashbuckle.AspNetCore.SwaggerUI
 
-- Version: 6.6.2
+- Version: 8.0.0
 - Authors: domaindrivendev
 - Project URL: https://github.com/domaindrivendev/Swashbuckle.AspNetCore
-- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerUI/6.6.2)
+- Source: [NuGet](https://www.nuget.org/packages/Swashbuckle.AspNetCore.SwaggerUI/8.0.0)
 - License: [MIT](https://github.com/domaindrivendev/Swashbuckle.AspNetCore/raw/master/LICENSE)
 
 
@@ -12092,29 +12447,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -12297,29 +12638,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -12502,192 +12829,1097 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
-2.   
-THIRD PARTY COMPONENTS. The software may include third party components with
-separate legal notices or governed by other agreements, as may be described in
-the ThirdPartyNotices file(s) accompanying the software.
-3.   
-ADDITIONAL LICENSING
-REQUIREMENTS AND/OR USE RIGHTS.
-a.    
-DISTRIBUTABLE
-CODE.  The software is
-comprised of Distributable Code. “Distributable Code” is code that you are
-permitted to distribute in applications you develop if you comply with the
-terms below.
-i.      Right to Use and Distribute. 
-·       
-You may copy and distribute the object code form of the software.
-·       
-Third Party Distribution. You may permit distributors of your applications
-to copy and distribute the Distributable Code as part of those applications.
-ii.     Distribution Requirements. For any
-Distributable Code you distribute, you must
-·       
-use the Distributable Code in your applications and not as a
-standalone distribution;
-·       
-require distributors and external end users to agree to terms that
-protect it at least as much as this agreement; and
-·       
-indemnify, defend, and hold harmless Microsoft from any claims,
-including attorneys’ fees, related to the distribution or use of your applications,
-except to the extent that any claim is based solely on the unmodified Distributable
-Code.
-iii.   Distribution Restrictions. You may not
-·       
-use Microsoft’s trademarks in your applications’ names or in a way
-that suggests your applications come from or are endorsed by Microsoft; or
-·       
-modify or distribute the source code of any Distributable Code so
-that any part of it becomes subject to an Excluded License. An “Excluded
-License” is one that requires, as a condition of use, modification or
-distribution of code, that (i) it be disclosed or distributed in source code
-form; or (ii) others have the right to modify it.
-4.   
-DATA.
-a.    
-Data Collection. The software may collect
-information about you and your use of the software, and send that to Microsoft.
-Microsoft may use this information to provide services and improve our products
-and services.  You may opt-out of many of these scenarios, but not all, as
-described in the software documentation.  There are also some features in the software that may enable you and
-Microsoft to collect data from users of your applications. If you use
-these features, you must comply with applicable law, including providing
-appropriate notices to users of your applications together with Microsoft’s
-privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
-collection and its use from the software documentation and our privacy
-statement. Your use of the software operates as your consent to these
-practices.
-b.   
-Processing of Personal Data. To the extent Microsoft is a
-processor or subprocessor of personal data in connection with the software,
-Microsoft makes the commitments in the European Union General Data Protection
-Regulation Terms of the Online Services Terms to all customers effective May
-25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
-5.   
-Scope of
-License. The software is licensed, not sold. This agreement
-only gives you some rights to use the software. Microsoft reserves all other
-rights. Unless applicable law gives you more rights despite this limitation,
-you may use the software only as expressly permitted in this agreement. In
-doing so, you must comply with any technical limitations in the software that
-only allow you to use it in certain ways. You may not
-·       
-work around any technical
-limitations in the software;
-·       
-reverse engineer, decompile or
-disassemble the software, or otherwise attempt to derive the source code for
-the software, except and to the extent required by third party licensing terms
-governing use of certain open source components that may be included in the
-software;
-·       
-remove, minimize, block or modify
-any notices of Microsoft or its suppliers in the software; 
-·       
-use the software in any way that
-is against the law; or
-·       
-share, publish, rent or lease the
-software, provide the software as a stand-alone offering for others to use, or
-transfer the software or this agreement to any third party.
-6.   
-Export
-Restrictions. You must comply with all domestic and international
-export laws and regulations that apply to the software, which include
-restrictions on destinations, end users, and end use. For further information
-on export restrictions, visit www.microsoft.com/exporting.
-7.   
-SUPPORT
-SERVICES. Because this software is “as is,” we may not provide
-support services for it.
-8.   
-Entire
-Agreement. This
-agreement, and the terms for supplements, updates, Internet-based services and
-support services that you use, are the entire agreement for the software and
-support services.
-9.    Applicable Law.  If you acquired the software in the United States, Washington law
-applies to interpretation of and claims for breach of this agreement, and the
-laws of the state where you live apply to all other claims. If you acquired the
-software in any other country, its laws apply.
-10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
-may have other rights, including consumer rights, under the laws of your state
-or country. Separate and apart from your relationship with Microsoft, you may
-also have rights with respect to the party from which you acquired the
-software. This agreement does not change those other rights if the laws of your
-state or country do not permit it to do so. For example, if you acquired the
-software in one of the below regions, or mandatory country law applies, then
-the following provisions apply to you:
-a)    Australia. You have statutory guarantees under the Australian Consumer
-Law and nothing in this agreement is intended to affect those rights.
-b)    Canada. If you acquired this software in Canada, you may stop
-receiving updates by turning off the automatic update feature, disconnecting
-your device from the Internet (if and when you re-connect to the Internet,
-however, the software will resume checking for and installing updates), or uninstalling
-the software. The product documentation, if any, may also specify how to turn
-off updates for your specific device or software.
-c)    Germany and Austria.
-(i)        Warranty. The software will perform
-substantially as described in any Microsoft materials that accompany it.
-However, Microsoft gives no contractual guarantee in relation to the software.
-(ii)       Limitation of Liability. In case of
-intentional conduct, gross negligence, claims based on the Product Liability
-Act, as well as in case of death or personal or physical injury, Microsoft is
-liable according to the statutory law.
-Subject to the foregoing clause (ii), Microsoft will only
-be liable for slight negligence if Microsoft is in breach of such material
-contractual obligations, the fulfillment of which facilitate the due
-performance of this agreement, the breach of which would endanger the purpose
-of this agreement and the compliance with which a party may constantly trust in
-(so-called "cardinal obligations"). In other cases of slight negligence,
-Microsoft will not be liable for slight negligence
-11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
-OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
-TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NON-INFRINGEMENT. 
-12.
-Limitation
-on and Exclusion of Remedies and Damages. YOU
-CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
-$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
-PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
-This limitation applies to (a)
-anything related to the software, services, content (including code) on third
-party Internet sites, or third party applications; and (b) claims for breach of
-contract, breach of warranty, guarantee or condition, strict liability,
-negligence, or other tort to the extent permitted by applicable law.
-It
-also applies even if Microsoft knew or should have known about the possibility
-of the damages. The above limitation or exclusion may not apply to you because
-your state or country may not allow the exclusion or limitation of incidental,
-consequential or other damages.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+
+Navigation Menu
+
+Toggle navigation
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Sign in
+          
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+GitHub Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Code Review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+
+
+
+Code Search
+        Find more, search less
+      
+
+
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+
+By company size
+
+
+
+      Enterprises
+
+    
+
+
+
+      Small and medium teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Nonprofits
+
+    
+
+
+
+
+By use case
+
+
+
+      DevSecOps
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      CI/CD
+
+    
+
+
+
+      View all use cases
+
+    
+
+
+
+
+
+
+By industry
+
+
+
+      Healthcare
+
+    
+
+
+
+      Financial services
+
+    
+
+
+
+      Manufacturing
+
+    
+
+
+
+      Government
+
+    
+
+
+
+      View all industries
+
+    
+
+
+
+
+
+
+              View all solutions
+              
+
+
+ 
+
+
+
+
+        Resources
+        
+
+
+
+
+
+
+Topics
+
+
+
+      AI
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      Security
+
+    
+
+
+
+      Software Development
+
+    
+
+
+
+      View all
+
+    
+
+
+
+
+
+
+Explore
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      Events & Webinars
+
+    
+
+
+
+
+
+      Ebooks & Whitepapers
+
+    
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+      Executive Insights
+
+    
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+
+
+        Enterprise
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+Enterprise platform
+        AI-powered developer platform
+      
+
+
+
+
+Available add-ons
+
+
+
+
+
+
+
+Advanced Security
+        Enterprise-grade security features
+      
+
+
+
+
+
+
+
+Copilot for business
+        Enterprise-grade AI features
+      
+
+
+
+
+
+
+
+Premium Support
+        Enterprise-grade 24/7 support
+      
+
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+Search syntax tips 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+                Sign in
+              
+
+
+                Sign up
+              
+Reseting focus
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+core
+
+Public
+
+
+
+
+
+ 
+
+Notifications
+ You must be signed in to change notification settings
+
+
+ 
+
+Fork
+    4.9k
+
+
+
+
+ 
+
+
+          Star
+ 21.2k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Issues
+310
+
+
+
+
+
+
+Pull requests
+3
+
+
+
+
+
+
+Discussions
+
+
+
+
+
+
+
+Actions
+
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+
+          Issues
+
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+
+          Discussions
+
+
+
+
+
+
+
+
+
+
+
+          Actions
+
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+   Files mainBreadcrumbscore/license-information.mdCopy path Blame  Blame        Latest commit HistoryHistory45 lines (25 loc) · 2.2 KB mainBreadcrumbscore/license-information.mdTopFile metadata and controlsPreviewCodeBlame45 lines (25 loc) · 2.2 KBRawLicense Information
+The .NET project uses source and binaries from multiple sources that may be important to your use of .NET.
+This document is provided for informative purposes only and is not itself a license.
+Source code
+.NET source uses the MIT license.
+Each repo has:
+
+A license, for example, dotnet/runtime LICENSE.TXT.
+Third party notice file, for example, dotnet/runtime THIRD-PARTY-NOTICES.TXT
+
+More information:
+
+Project copyright guidance
+
+Product distributions
+Product distributions use the following license:
+
+On Linux and macOS: MIT license
+On Windows: .NET Library License
+
+Product distributions include downloadable assets and runtime packs.
+More information:
+
+Windows license information.
+.NET Asset Licensing Model
+
+Package distributions
+Library packages use the MIT license, for example System.Text.Json.
+Redistribution
+Binaries produced by .NET SDK compilers (C#, F#, VB) can be redistributed without additional restrictions. The only restrictions are based on the license of the compiler inputs used to produce the binary.
+Applications are subject to the same terms as are covered by "Product distributions" and "Package distibutions", above.
+Parts of the .NET runtime are embedded in applications, including platform-specific executable hosts,
+and self-contained deployments.
+      
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2025 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
 ```
 
 </details>
@@ -12749,29 +13981,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -12954,29 +14172,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -14522,29 +15726,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -14727,29 +15917,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -15252,29 +16428,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -15457,29 +16619,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -16104,29 +17252,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -16309,29 +17443,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -16514,29 +17634,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -16719,29 +17825,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -16911,14 +18003,14 @@ consequential or other damages.
 
 
 <details>
-<summary>System.IO.Abstractions 21.0.2</summary>
+<summary>System.IO.Abstractions 21.3.1</summary>
 
 ## System.IO.Abstractions
 
-- Version: 21.0.2
+- Version: 21.3.1
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/21.0.2)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions/21.3.1)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -16952,14 +18044,14 @@ SOFTWARE.
 
 
 <details>
-<summary>System.IO.Abstractions.TestingHelpers 21.0.2</summary>
+<summary>System.IO.Abstractions.TestingHelpers 21.3.1</summary>
 
 ## System.IO.Abstractions.TestingHelpers
 
-- Version: 21.0.2
+- Version: 21.3.1
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/21.0.2)
+- Source: [NuGet](https://www.nuget.org/packages/System.IO.Abstractions.TestingHelpers/21.3.1)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -17006,29 +18098,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -17211,29 +18289,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -17416,29 +18480,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -17621,29 +18671,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -17936,14 +18972,14 @@ SOFTWARE.
 
 
 <details>
-<summary>System.IdentityModel.Tokens.Jwt 7.0.3</summary>
+<summary>System.IdentityModel.Tokens.Jwt 7.1.2</summary>
 
 ## System.IdentityModel.Tokens.Jwt
 
-- Version: 7.0.3
+- Version: 7.1.2
 - Authors: Microsoft
 - Project URL: https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet
-- Source: [NuGet](https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt/7.0.3)
+- Source: [NuGet](https://www.nuget.org/packages/System.IdentityModel.Tokens.Jwt/7.1.2)
 - License: [MIT](https://github.com/AzureAD/azure-activedirectory-identitymodel-extensions-for-dotnet/raw/dev/LICENSE.txt)
 
 
@@ -17988,29 +19024,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -18234,29 +19256,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -18481,29 +19489,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -18686,29 +19680,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -19091,29 +20071,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -19496,29 +20462,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -19701,29 +20653,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -20147,29 +21085,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -20352,29 +21276,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -20557,29 +21467,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -20762,29 +21658,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -20967,29 +21849,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -21255,29 +22123,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -21460,29 +22314,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -21665,29 +22505,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -21870,29 +22696,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -22358,29 +23170,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -22563,29 +23361,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -22768,29 +23552,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -22973,29 +23743,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -23178,29 +23934,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -23383,29 +24125,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -24430,29 +25158,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -24635,29 +25349,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -25040,29 +25740,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -25245,29 +25931,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -25450,29 +26122,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -25655,29 +26313,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -25944,29 +26588,15 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -26633,7 +27263,7 @@ SOFTWARE.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
@@ -27716,21 +28346,12 @@ Skip to content
 
 
 
+
 Navigation Menu
 
 Toggle navigation
 
 
-
-
-
-
-
-
-
-
-          Sign in
-        
 
 
  
@@ -27739,6 +28360,16 @@ Toggle navigation
 
 
 
+
+
+
+
+
+
+
+
+            Sign in
+          
 
 
 
@@ -27761,18 +28392,9 @@ Toggle navigation
 
 
 
-Actions
-        Automate any workflow
-      
 
-
-
-
-
-
-
-Packages
-        Host and manage packages
+GitHub Copilot
+        Write better code with AI
       
 
 
@@ -27791,28 +28413,18 @@ Security
 
 
 
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
 Codespaces
         Instant dev environments
-      
-
-
-
-
-
-
-
-GitHub Copilot
-        Write better code with AI
-      
-
-
-
-
-
-
-
-Code review
-        Manage code changes
       
 
 
@@ -27831,9 +28443,31 @@ Issues
 
 
 
+Code Review
+        Manage code changes
+      
+
+
+
+
+
+
+
 Discussions
         Collaborate outside of code
       
+
+
+
+
+
+
+
+Code Search
+        Find more, search less
+      
+
+
 
 
 
@@ -27876,6 +28510,7 @@ Explore
 
 
 
+
         Solutions
         
 
@@ -27883,17 +28518,18 @@ Explore
 
 
 
-For
+
+By company size
 
 
 
-      Enterprise
+      Enterprises
 
     
 
 
 
-      Teams
+      Small and medium teams
 
     
 
@@ -27905,20 +28541,18 @@ For
 
 
 
-      Education
+      Nonprofits
 
     
 
 
 
 
-
-
-By Solution
+By use case
 
 
 
-      CI/CD & Automation
+      DevSecOps
 
     
 
@@ -27930,7 +28564,13 @@ By Solution
 
 
 
-      DevSecOps
+      CI/CD
+
+    
+
+
+
+      View all use cases
 
     
 
@@ -27939,7 +28579,98 @@ By Solution
 
 
 
-Resources
+By industry
+
+
+
+      Healthcare
+
+    
+
+
+
+      Financial services
+
+    
+
+
+
+      Manufacturing
+
+    
+
+
+
+      Government
+
+    
+
+
+
+      View all industries
+
+    
+
+
+
+
+
+
+              View all solutions
+              
+
+
+ 
+
+
+
+
+        Resources
+        
+
+
+
+
+
+
+Topics
+
+
+
+      AI
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      Security
+
+    
+
+
+
+      Software Development
+
+    
+
+
+
+      View all
+
+    
+
+
+
+
+
+
+Explore
 
 
 
@@ -27951,11 +28682,17 @@ Resources
 
 
 
-      White papers, Ebooks, Webinars
+      Events & Webinars
 
     
 
 
+
+
+
+      Ebooks & Whitepapers
+
+    
 
 
 
@@ -27973,12 +28710,20 @@ Resources
 
 
 
+      Executive Insights
+
+    
+
+
+
+
 
 
 
 
         Open Source
         
+
 
 
 
@@ -28032,8 +28777,10 @@ Repositories
 
 
 
+
         Enterprise
         
+
 
 
 
@@ -28071,7 +28818,7 @@ Advanced Security
 
 
 
-GitHub Copilot
+Copilot for business
         Enterprise-grade AI features
       
 
@@ -28084,6 +28831,7 @@ GitHub Copilot
 Premium Support
         Enterprise-grade 24/7 support
       
+
 
 
 
@@ -28182,13 +28930,12 @@ Clear
 
 
 
+
  
 
 
 
-
-              Search syntax tips
- 
+Search syntax tips 
 
 
 
@@ -28282,12 +29029,13 @@ Query
 
 
 
-              Sign in
-            
+                Sign in
+              
 
 
-              Sign up
-            
+                Sign up
+              
+Reseting focus
 
 
 
@@ -28315,7 +29063,4609 @@ Dismiss alert
 
 
 
-    This repository has been archived by the owner on Jan 23, 2023. It is now read-only.
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+core
+
+Public
+
+
+
+
+
+ 
+
+Notifications
+ You must be signed in to change notification settings
+
+
+ 
+
+Fork
+    4.9k
+
+
+
+
+ 
+
+
+          Star
+ 21.2k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Issues
+310
+
+
+
+
+
+
+Pull requests
+3
+
+
+
+
+
+
+Discussions
+
+
+
+
+
+
+
+Actions
+
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+
+          Issues
+
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+
+          Discussions
+
+
+
+
+
+
+
+
+
+
+
+          Actions
+
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+   Files mainBreadcrumbscore/license-information.mdCopy path Blame  Blame        Latest commit HistoryHistory45 lines (25 loc) · 2.2 KB mainBreadcrumbscore/license-information.mdTopFile metadata and controlsPreviewCodeBlame45 lines (25 loc) · 2.2 KBRawLicense Information
+The .NET project uses source and binaries from multiple sources that may be important to your use of .NET.
+This document is provided for informative purposes only and is not itself a license.
+Source code
+.NET source uses the MIT license.
+Each repo has:
+
+A license, for example, dotnet/runtime LICENSE.TXT.
+Third party notice file, for example, dotnet/runtime THIRD-PARTY-NOTICES.TXT
+
+More information:
+
+Project copyright guidance
+
+Product distributions
+Product distributions use the following license:
+
+On Linux and macOS: MIT license
+On Windows: .NET Library License
+
+Product distributions include downloadable assets and runtime packs.
+More information:
+
+Windows license information.
+.NET Asset Licensing Model
+
+Package distributions
+Library packages use the MIT license, for example System.Text.Json.
+Redistribution
+Binaries produced by .NET SDK compilers (C#, F#, VB) can be redistributed without additional restrictions. The only restrictions are based on the license of the compiler inputs used to produce the binary.
+Applications are subject to the same terms as are covered by "Product distributions" and "Package distibutions", above.
+Parts of the .NET runtime are embedded in applications, including platform-specific executable hosts,
+and self-contained deployments.
+      
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2025 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
+```
+
+</details>
+
+
+<details>
+<summary>System.Text.Encoding.CodePages 6.0.1</summary>
+
+## System.Text.Encoding.CodePages
+
+- Version: 6.0.1
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encoding.CodePages/6.0.1)
+- License: [MIT](https://github.com/dotnet/corefx/raw/master/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Text.Encoding.Extensions 4.3.0</summary>
+
+## System.Text.Encoding.Extensions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encoding.Extensions/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+core/license-information.md at main · dotnet/core · GitHub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+
+Navigation Menu
+
+Toggle navigation
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Sign in
+          
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+GitHub Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Code Review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+
+
+
+Code Search
+        Find more, search less
+      
+
+
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+
+By company size
+
+
+
+      Enterprises
+
+    
+
+
+
+      Small and medium teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Nonprofits
+
+    
+
+
+
+
+By use case
+
+
+
+      DevSecOps
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      CI/CD
+
+    
+
+
+
+      View all use cases
+
+    
+
+
+
+
+
+
+By industry
+
+
+
+      Healthcare
+
+    
+
+
+
+      Financial services
+
+    
+
+
+
+      Manufacturing
+
+    
+
+
+
+      Government
+
+    
+
+
+
+      View all industries
+
+    
+
+
+
+
+
+
+              View all solutions
+              
+
+
+ 
+
+
+
+
+        Resources
+        
+
+
+
+
+
+
+Topics
+
+
+
+      AI
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      Security
+
+    
+
+
+
+      Software Development
+
+    
+
+
+
+      View all
+
+    
+
+
+
+
+
+
+Explore
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      Events & Webinars
+
+    
+
+
+
+
+
+      Ebooks & Whitepapers
+
+    
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+      Executive Insights
+
+    
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+
+
+        Enterprise
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+Enterprise platform
+        AI-powered developer platform
+      
+
+
+
+
+Available add-ons
+
+
+
+
+
+
+
+Advanced Security
+        Enterprise-grade security features
+      
+
+
+
+
+
+
+
+Copilot for business
+        Enterprise-grade AI features
+      
+
+
+
+
+
+
+
+Premium Support
+        Enterprise-grade 24/7 support
+      
+
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+Search syntax tips 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+                Sign in
+              
+
+
+                Sign up
+              
+Reseting focus
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+core
+
+Public
+
+
+
+
+
+ 
+
+Notifications
+ You must be signed in to change notification settings
+
+
+ 
+
+Fork
+    4.9k
+
+
+
+
+ 
+
+
+          Star
+ 21.2k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Issues
+310
+
+
+
+
+
+
+Pull requests
+3
+
+
+
+
+
+
+Discussions
+
+
+
+
+
+
+
+Actions
+
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+
+          Issues
+
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+
+          Discussions
+
+
+
+
+
+
+
+
+
+
+
+          Actions
+
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+   Files mainBreadcrumbscore/license-information.mdCopy path Blame  Blame        Latest commit HistoryHistory45 lines (25 loc) · 2.2 KB mainBreadcrumbscore/license-information.mdTopFile metadata and controlsPreviewCodeBlame45 lines (25 loc) · 2.2 KBRawLicense Information
+The .NET project uses source and binaries from multiple sources that may be important to your use of .NET.
+This document is provided for informative purposes only and is not itself a license.
+Source code
+.NET source uses the MIT license.
+Each repo has:
+
+A license, for example, dotnet/runtime LICENSE.TXT.
+Third party notice file, for example, dotnet/runtime THIRD-PARTY-NOTICES.TXT
+
+More information:
+
+Project copyright guidance
+
+Product distributions
+Product distributions use the following license:
+
+On Linux and macOS: MIT license
+On Windows: .NET Library License
+
+Product distributions include downloadable assets and runtime packs.
+More information:
+
+Windows license information.
+.NET Asset Licensing Model
+
+Package distributions
+Library packages use the MIT license, for example System.Text.Json.
+Redistribution
+Binaries produced by .NET SDK compilers (C#, F#, VB) can be redistributed without additional restrictions. The only restrictions are based on the license of the compiler inputs used to produce the binary.
+Applications are subject to the same terms as are covered by "Product distributions" and "Package distibutions", above.
+Parts of the .NET runtime are embedded in applications, including platform-specific executable hosts,
+and self-contained deployments.
+      
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2025 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
+```
+
+</details>
+
+
+<details>
+<summary>System.Text.Encodings.Web 6.0.0</summary>
+
+## System.Text.Encodings.Web
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encodings.Web/6.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Text.Encodings.Web 8.0.0</summary>
+
+## System.Text.Encodings.Web
+
+- Version: 8.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Encodings.Web/8.0.0)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Text.Json 8.0.5</summary>
+
+## System.Text.Json
+
+- Version: 8.0.5
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.Json/8.0.5)
+- License: [MIT](https://github.com/dotnet/runtime/raw/main/LICENSE.TXT)
+
+
+```
+The MIT License (MIT)
+
+Copyright (c) .NET Foundation and Contributors
+
+All rights reserved.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+</details>
+
+
+<details>
+<summary>System.Text.RegularExpressions 4.3.0</summary>
+
+## System.Text.RegularExpressions
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Text.RegularExpressions/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+core/license-information.md at main · dotnet/core · GitHub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+
+Navigation Menu
+
+Toggle navigation
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Sign in
+          
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+GitHub Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Code Review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+
+
+
+Code Search
+        Find more, search less
+      
+
+
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+
+By company size
+
+
+
+      Enterprises
+
+    
+
+
+
+      Small and medium teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Nonprofits
+
+    
+
+
+
+
+By use case
+
+
+
+      DevSecOps
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      CI/CD
+
+    
+
+
+
+      View all use cases
+
+    
+
+
+
+
+
+
+By industry
+
+
+
+      Healthcare
+
+    
+
+
+
+      Financial services
+
+    
+
+
+
+      Manufacturing
+
+    
+
+
+
+      Government
+
+    
+
+
+
+      View all industries
+
+    
+
+
+
+
+
+
+              View all solutions
+              
+
+
+ 
+
+
+
+
+        Resources
+        
+
+
+
+
+
+
+Topics
+
+
+
+      AI
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      Security
+
+    
+
+
+
+      Software Development
+
+    
+
+
+
+      View all
+
+    
+
+
+
+
+
+
+Explore
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      Events & Webinars
+
+    
+
+
+
+
+
+      Ebooks & Whitepapers
+
+    
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+      Executive Insights
+
+    
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+
+
+        Enterprise
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+Enterprise platform
+        AI-powered developer platform
+      
+
+
+
+
+Available add-ons
+
+
+
+
+
+
+
+Advanced Security
+        Enterprise-grade security features
+      
+
+
+
+
+
+
+
+Copilot for business
+        Enterprise-grade AI features
+      
+
+
+
+
+
+
+
+Premium Support
+        Enterprise-grade 24/7 support
+      
+
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+Search syntax tips 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+                Sign in
+              
+
+
+                Sign up
+              
+Reseting focus
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+core
+
+Public
+
+
+
+
+
+ 
+
+Notifications
+ You must be signed in to change notification settings
+
+
+ 
+
+Fork
+    4.9k
+
+
+
+
+ 
+
+
+          Star
+ 21.2k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Issues
+310
+
+
+
+
+
+
+Pull requests
+3
+
+
+
+
+
+
+Discussions
+
+
+
+
+
+
+
+Actions
+
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+
+          Issues
+
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+
+          Discussions
+
+
+
+
+
+
+
+
+
+
+
+          Actions
+
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+   Files mainBreadcrumbscore/license-information.mdCopy path Blame  Blame        Latest commit HistoryHistory45 lines (25 loc) · 2.2 KB mainBreadcrumbscore/license-information.mdTopFile metadata and controlsPreviewCodeBlame45 lines (25 loc) · 2.2 KBRawLicense Information
+The .NET project uses source and binaries from multiple sources that may be important to your use of .NET.
+This document is provided for informative purposes only and is not itself a license.
+Source code
+.NET source uses the MIT license.
+Each repo has:
+
+A license, for example, dotnet/runtime LICENSE.TXT.
+Third party notice file, for example, dotnet/runtime THIRD-PARTY-NOTICES.TXT
+
+More information:
+
+Project copyright guidance
+
+Product distributions
+Product distributions use the following license:
+
+On Linux and macOS: MIT license
+On Windows: .NET Library License
+
+Product distributions include downloadable assets and runtime packs.
+More information:
+
+Windows license information.
+.NET Asset Licensing Model
+
+Package distributions
+Library packages use the MIT license, for example System.Text.Json.
+Redistribution
+Binaries produced by .NET SDK compilers (C#, F#, VB) can be redistributed without additional restrictions. The only restrictions are based on the license of the compiler inputs used to produce the binary.
+Applications are subject to the same terms as are covered by "Product distributions" and "Package distibutions", above.
+Parts of the .NET runtime are embedded in applications, including platform-specific executable hosts,
+and self-contained deployments.
+      
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2025 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
+```
+
+</details>
+
+
+<details>
+<summary>System.Threading 4.3.0</summary>
+
+## System.Threading
+
+- Version: 4.3.0
+- Authors: Microsoft
+- Owners: microsoft,dotnetframework
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading/4.3.0)
+- License: [MICROSOFT .NET LIBRARY License]( http://go.microsoft.com/fwlink/?LinkId=329770)
+
+
+```
+core/license-information.md at main · dotnet/core · GitHub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+
+Navigation Menu
+
+Toggle navigation
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Sign in
+          
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+GitHub Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Code Review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+
+
+
+Code Search
+        Find more, search less
+      
+
+
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+
+By company size
+
+
+
+      Enterprises
+
+    
+
+
+
+      Small and medium teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Nonprofits
+
+    
+
+
+
+
+By use case
+
+
+
+      DevSecOps
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      CI/CD
+
+    
+
+
+
+      View all use cases
+
+    
+
+
+
+
+
+
+By industry
+
+
+
+      Healthcare
+
+    
+
+
+
+      Financial services
+
+    
+
+
+
+      Manufacturing
+
+    
+
+
+
+      Government
+
+    
+
+
+
+      View all industries
+
+    
+
+
+
+
+
+
+              View all solutions
+              
+
+
+ 
+
+
+
+
+        Resources
+        
+
+
+
+
+
+
+Topics
+
+
+
+      AI
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      Security
+
+    
+
+
+
+      Software Development
+
+    
+
+
+
+      View all
+
+    
+
+
+
+
+
+
+Explore
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      Events & Webinars
+
+    
+
+
+
+
+
+      Ebooks & Whitepapers
+
+    
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+      Executive Insights
+
+    
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+
+
+        Enterprise
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+Enterprise platform
+        AI-powered developer platform
+      
+
+
+
+
+Available add-ons
+
+
+
+
+
+
+
+Advanced Security
+        Enterprise-grade security features
+      
+
+
+
+
+
+
+
+Copilot for business
+        Enterprise-grade AI features
+      
+
+
+
+
+
+
+
+Premium Support
+        Enterprise-grade 24/7 support
+      
+
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+Search syntax tips 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+                Sign in
+              
+
+
+                Sign up
+              
+Reseting focus
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+core
+
+Public
+
+
+
+
+
+ 
+
+Notifications
+ You must be signed in to change notification settings
+
+
+ 
+
+Fork
+    4.9k
+
+
+
+
+ 
+
+
+          Star
+ 21.2k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Issues
+310
+
+
+
+
+
+
+Pull requests
+3
+
+
+
+
+
+
+Discussions
+
+
+
+
+
+
+
+Actions
+
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+
+          Issues
+
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+
+          Discussions
+
+
+
+
+
+
+
+
+
+
+
+          Actions
+
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+   Files mainBreadcrumbscore/license-information.mdCopy path Blame  Blame        Latest commit HistoryHistory45 lines (25 loc) · 2.2 KB mainBreadcrumbscore/license-information.mdTopFile metadata and controlsPreviewCodeBlame45 lines (25 loc) · 2.2 KBRawLicense Information
+The .NET project uses source and binaries from multiple sources that may be important to your use of .NET.
+This document is provided for informative purposes only and is not itself a license.
+Source code
+.NET source uses the MIT license.
+Each repo has:
+
+A license, for example, dotnet/runtime LICENSE.TXT.
+Third party notice file, for example, dotnet/runtime THIRD-PARTY-NOTICES.TXT
+
+More information:
+
+Project copyright guidance
+
+Product distributions
+Product distributions use the following license:
+
+On Linux and macOS: MIT license
+On Windows: .NET Library License
+
+Product distributions include downloadable assets and runtime packs.
+More information:
+
+Windows license information.
+.NET Asset Licensing Model
+
+Package distributions
+Library packages use the MIT license, for example System.Text.Json.
+Redistribution
+Binaries produced by .NET SDK compilers (C#, F#, VB) can be redistributed without additional restrictions. The only restrictions are based on the license of the compiler inputs used to produce the binary.
+Applications are subject to the same terms as are covered by "Product distributions" and "Package distibutions", above.
+Parts of the .NET runtime are embedded in applications, including platform-specific executable hosts,
+and self-contained deployments.
+      
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2025 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
+```
+
+</details>
+
+
+<details>
+<summary>System.Threading.Channels 6.0.0</summary>
+
+## System.Threading.Channels
+
+- Version: 6.0.0
+- Authors: Microsoft
+- Project URL: https://dot.net/
+- Source: [NuGet](https://www.nuget.org/packages/System.Threading.Channels/6.0.0)
+- License: [MIT]( https://github.com/dotnet/corefx/blob/master/LICENSE.TXT)
+
+
+```
+corefx/LICENSE.TXT at master · dotnet/corefx · GitHub
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+
+Navigation Menu
+
+Toggle navigation
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Sign in
+          
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+GitHub Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Code Review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+
+
+
+Code Search
+        Find more, search less
+      
+
+
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+
+By company size
+
+
+
+      Enterprises
+
+    
+
+
+
+      Small and medium teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Nonprofits
+
+    
+
+
+
+
+By use case
+
+
+
+      DevSecOps
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      CI/CD
+
+    
+
+
+
+      View all use cases
+
+    
+
+
+
+
+
+
+By industry
+
+
+
+      Healthcare
+
+    
+
+
+
+      Financial services
+
+    
+
+
+
+      Manufacturing
+
+    
+
+
+
+      Government
+
+    
+
+
+
+      View all industries
+
+    
+
+
+
+
+
+
+              View all solutions
+              
+
+
+ 
+
+
+
+
+        Resources
+        
+
+
+
+
+
+
+Topics
+
+
+
+      AI
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      Security
+
+    
+
+
+
+      Software Development
+
+    
+
+
+
+      View all
+
+    
+
+
+
+
+
+
+Explore
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      Events & Webinars
+
+    
+
+
+
+
+
+      Ebooks & Whitepapers
+
+    
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+      Executive Insights
+
+    
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+
+
+        Enterprise
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+Enterprise platform
+        AI-powered developer platform
+      
+
+
+
+
+Available add-ons
+
+
+
+
+
+
+
+Advanced Security
+        Enterprise-grade security features
+      
+
+
+
+
+
+
+
+Copilot for business
+        Enterprise-grade AI features
+      
+
+
+
+
+
+
+
+Premium Support
+        Enterprise-grade 24/7 support
+      
+
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+Search syntax tips 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+                Sign in
+              
+
+
+                Sign up
+              
+Reseting focus
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+    This repository was archived by the owner on Jan 23, 2023. It is now read-only.
   
 
 
@@ -28347,7 +33697,7 @@ Notifications
  
 
 Fork
-    5k
+    4.9k
 
 
 
@@ -28356,12 +33706,7 @@ Fork
 
 
           Star
- 17.7k
-  
-
-
-
-
+ 17.6k
 
 
 
@@ -28434,7 +33779,9 @@ Additional navigation options
 
 
 
+
           Pull requests
+
 
 
 
@@ -28456,7 +33803,9 @@ Additional navigation options
 
 
 
+
           Insights
+
 
 
 
@@ -28470,7 +33819,12 @@ Additional navigation options
 
 
 
-
+   Files masterBreadcrumbscorefx/LICENSE.TXTCopy path Blame  Blame        Latest commit HistoryHistory23 lines (18 loc) · 1.09 KB masterBreadcrumbscorefx/LICENSE.TXTTopFile metadata and controlsCodeBlame23 lines (18 loc) · 1.09 KBRaw1234567891011121314151617181920212223The MIT License (MIT)
+Copyright (c) .NET Foundation and Contributors
+All rights reserved.
+Permission is hereby granted, free of charge, to any person obtaining a copyof this software and associated documentation files (the "Software"), to dealin the Software without restriction, including without limitation the rightsto use, copy, modify, merge, publish, distribute, sublicense, and/or sellcopies of the Software, and to permit persons to whom the Software isfurnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in allcopies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS ORIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THEAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHERLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THESOFTWARE.      
 
 
 
@@ -28488,7 +33842,7 @@ Footer
 
 
 
-        © 2024 GitHub, Inc.
+        © 2025 GitHub, Inc.
       
 
 
@@ -28750,29 +34104,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -29365,29 +34705,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -29570,29 +34896,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -29775,29 +35087,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -29967,14 +35265,14 @@ consequential or other damages.
 
 
 <details>
-<summary>TestableIO.System.IO.Abstractions 21.0.2</summary>
+<summary>TestableIO.System.IO.Abstractions 21.3.1</summary>
 
 ## TestableIO.System.IO.Abstractions
 
-- Version: 21.0.2
+- Version: 21.3.1
 - Authors: Tatham Oddie & friends
 - Project URL: https://github.com/TestableIO/System.IO.Abstractions
-- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/21.0.2)
+- Source: [NuGet](https://www.nuget.org/packages/TestableIO.System.IO.Abstractions/21.3.1)
 - License: [MIT](https://github.com/TestableIO/System.IO.Abstractions/raw/main/LICENSE)
 
 
@@ -30284,14 +35582,14 @@ SOFTWARE.
 
 
 <details>
-<summary>coverlet.collector 6.0.2</summary>
+<summary>coverlet.collector 6.0.4</summary>
 
 ## coverlet.collector
 
-- Version: 6.0.2
+- Version: 6.0.4
 - Authors: tonerdo
 - Project URL: https://github.com/coverlet-coverage/coverlet
-- Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/6.0.2)
+- Source: [NuGet](https://www.nuget.org/packages/coverlet.collector/6.0.4)
 - License: [MIT](https://github.com/coverlet-coverage/coverlet/raw/master/LICENSE)
 
 
@@ -30323,14 +35621,14 @@ SOFTWARE.
 
 
 <details>
-<summary>fo-dicom 5.1.2</summary>
+<summary>fo-dicom 5.2.1</summary>
 
 ## fo-dicom
 
-- Version: 5.1.2
+- Version: 5.2.1
 - Authors: fo-dicom contributors
 - Project URL: https://github.com/fo-dicom/fo-dicom
-- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.1.2)
+- Source: [NuGet](https://www.nuget.org/packages/fo-dicom/5.2.1)
 - License: [Microsoft Public License](https://github.com/fo-dicom/fo-dicom/raw/development/License.txt)
 
 
@@ -34346,29 +39644,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -34551,29 +39835,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -34756,29 +40026,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -34961,29 +40217,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -35166,29 +40408,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -35371,29 +40599,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -35576,29 +40790,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -35781,29 +40981,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -35986,192 +41172,1097 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
-2.   
-THIRD PARTY COMPONENTS. The software may include third party components with
-separate legal notices or governed by other agreements, as may be described in
-the ThirdPartyNotices file(s) accompanying the software.
-3.   
-ADDITIONAL LICENSING
-REQUIREMENTS AND/OR USE RIGHTS.
-a.    
-DISTRIBUTABLE
-CODE.  The software is
-comprised of Distributable Code. “Distributable Code” is code that you are
-permitted to distribute in applications you develop if you comply with the
-terms below.
-i.      Right to Use and Distribute. 
-·       
-You may copy and distribute the object code form of the software.
-·       
-Third Party Distribution. You may permit distributors of your applications
-to copy and distribute the Distributable Code as part of those applications.
-ii.     Distribution Requirements. For any
-Distributable Code you distribute, you must
-·       
-use the Distributable Code in your applications and not as a
-standalone distribution;
-·       
-require distributors and external end users to agree to terms that
-protect it at least as much as this agreement; and
-·       
-indemnify, defend, and hold harmless Microsoft from any claims,
-including attorneys’ fees, related to the distribution or use of your applications,
-except to the extent that any claim is based solely on the unmodified Distributable
-Code.
-iii.   Distribution Restrictions. You may not
-·       
-use Microsoft’s trademarks in your applications’ names or in a way
-that suggests your applications come from or are endorsed by Microsoft; or
-·       
-modify or distribute the source code of any Distributable Code so
-that any part of it becomes subject to an Excluded License. An “Excluded
-License” is one that requires, as a condition of use, modification or
-distribution of code, that (i) it be disclosed or distributed in source code
-form; or (ii) others have the right to modify it.
-4.   
-DATA.
-a.    
-Data Collection. The software may collect
-information about you and your use of the software, and send that to Microsoft.
-Microsoft may use this information to provide services and improve our products
-and services.  You may opt-out of many of these scenarios, but not all, as
-described in the software documentation.  There are also some features in the software that may enable you and
-Microsoft to collect data from users of your applications. If you use
-these features, you must comply with applicable law, including providing
-appropriate notices to users of your applications together with Microsoft’s
-privacy statement. Our privacy statement is located at https://go.microsoft.com/fwlink/?LinkID=824704. You can learn more about data
-collection and its use from the software documentation and our privacy
-statement. Your use of the software operates as your consent to these
-practices.
-b.   
-Processing of Personal Data. To the extent Microsoft is a
-processor or subprocessor of personal data in connection with the software,
-Microsoft makes the commitments in the European Union General Data Protection
-Regulation Terms of the Online Services Terms to all customers effective May
-25, 2018, at https://learn.microsoft.com/en-us/legal/gdpr.
-5.   
-Scope of
-License. The software is licensed, not sold. This agreement
-only gives you some rights to use the software. Microsoft reserves all other
-rights. Unless applicable law gives you more rights despite this limitation,
-you may use the software only as expressly permitted in this agreement. In
-doing so, you must comply with any technical limitations in the software that
-only allow you to use it in certain ways. You may not
-·       
-work around any technical
-limitations in the software;
-·       
-reverse engineer, decompile or
-disassemble the software, or otherwise attempt to derive the source code for
-the software, except and to the extent required by third party licensing terms
-governing use of certain open source components that may be included in the
-software;
-·       
-remove, minimize, block or modify
-any notices of Microsoft or its suppliers in the software; 
-·       
-use the software in any way that
-is against the law; or
-·       
-share, publish, rent or lease the
-software, provide the software as a stand-alone offering for others to use, or
-transfer the software or this agreement to any third party.
-6.   
-Export
-Restrictions. You must comply with all domestic and international
-export laws and regulations that apply to the software, which include
-restrictions on destinations, end users, and end use. For further information
-on export restrictions, visit www.microsoft.com/exporting.
-7.   
-SUPPORT
-SERVICES. Because this software is “as is,” we may not provide
-support services for it.
-8.   
-Entire
-Agreement. This
-agreement, and the terms for supplements, updates, Internet-based services and
-support services that you use, are the entire agreement for the software and
-support services.
-9.    Applicable Law.  If you acquired the software in the United States, Washington law
-applies to interpretation of and claims for breach of this agreement, and the
-laws of the state where you live apply to all other claims. If you acquired the
-software in any other country, its laws apply.
-10. CONSUMER RIGHTS; REGIONAL VARIATIONS. This agreement describes certain legal rights. You
-may have other rights, including consumer rights, under the laws of your state
-or country. Separate and apart from your relationship with Microsoft, you may
-also have rights with respect to the party from which you acquired the
-software. This agreement does not change those other rights if the laws of your
-state or country do not permit it to do so. For example, if you acquired the
-software in one of the below regions, or mandatory country law applies, then
-the following provisions apply to you:
-a)    Australia. You have statutory guarantees under the Australian Consumer
-Law and nothing in this agreement is intended to affect those rights.
-b)    Canada. If you acquired this software in Canada, you may stop
-receiving updates by turning off the automatic update feature, disconnecting
-your device from the Internet (if and when you re-connect to the Internet,
-however, the software will resume checking for and installing updates), or uninstalling
-the software. The product documentation, if any, may also specify how to turn
-off updates for your specific device or software.
-c)    Germany and Austria.
-(i)        Warranty. The software will perform
-substantially as described in any Microsoft materials that accompany it.
-However, Microsoft gives no contractual guarantee in relation to the software.
-(ii)       Limitation of Liability. In case of
-intentional conduct, gross negligence, claims based on the Product Liability
-Act, as well as in case of death or personal or physical injury, Microsoft is
-liable according to the statutory law.
-Subject to the foregoing clause (ii), Microsoft will only
-be liable for slight negligence if Microsoft is in breach of such material
-contractual obligations, the fulfillment of which facilitate the due
-performance of this agreement, the breach of which would endanger the purpose
-of this agreement and the compliance with which a party may constantly trust in
-(so-called "cardinal obligations"). In other cases of slight negligence,
-Microsoft will not be liable for slight negligence
-11. Disclaimer of Warranty. THE SOFTWARE IS LICENSED “AS-IS.” YOU BEAR THE RISK
-OF USING IT. MICROSOFT GIVES NO EXPRESS WARRANTIES, GUARANTEES OR CONDITIONS.
-TO THE EXTENT PERMITTED UNDER YOUR LOCAL LAWS, MICROSOFT EXCLUDES THE IMPLIED
-WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-NON-INFRINGEMENT. 
-12.
-Limitation
-on and Exclusion of Remedies and Damages. YOU
-CAN RECOVER FROM MICROSOFT AND ITS SUPPLIERS ONLY DIRECT DAMAGES UP TO U.S.
-$5.00. YOU CANNOT RECOVER ANY OTHER DAMAGES, INCLUDING CONSEQUENTIAL, LOST
-PROFITS, SPECIAL, INDIRECT OR INCIDENTAL DAMAGES.
-This limitation applies to (a)
-anything related to the software, services, content (including code) on third
-party Internet sites, or third party applications; and (b) claims for breach of
-contract, breach of warranty, guarantee or condition, strict liability,
-negligence, or other tort to the extent permitted by applicable law.
-It
-also applies even if Microsoft knew or should have known about the possibility
-of the damages. The above limitation or exclusion may not apply to you because
-your state or country may not allow the exclusion or limitation of incidental,
-consequential or other damages.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Skip to content
+
+
+
+
+
+
+
+
+
+
+
+
+
+Navigation Menu
+
+Toggle navigation
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Sign in
+          
+
+
+
+
+
+
+
+
+        Product
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+GitHub Copilot
+        Write better code with AI
+      
+
+
+
+
+
+
+
+Security
+        Find and fix vulnerabilities
+      
+
+
+
+
+
+
+
+Actions
+        Automate any workflow
+      
+
+
+
+
+
+
+
+Codespaces
+        Instant dev environments
+      
+
+
+
+
+
+
+
+Issues
+        Plan and track work
+      
+
+
+
+
+
+
+
+Code Review
+        Manage code changes
+      
+
+
+
+
+
+
+
+Discussions
+        Collaborate outside of code
+      
+
+
+
+
+
+
+
+Code Search
+        Find more, search less
+      
+
+
+
+
+
+
+Explore
+
+
+
+      All features
+
+    
+
+
+
+      Documentation
+
+    
+
+
+
+
+
+      GitHub Skills
+
+    
+
+
+
+
+
+      Blog
+
+    
+
+
+
+
+
+
+
+
+
+
+        Solutions
+        
+
+
+
+
+
+
+By company size
+
+
+
+      Enterprises
+
+    
+
+
+
+      Small and medium teams
+
+    
+
+
+
+      Startups
+
+    
+
+
+
+      Nonprofits
+
+    
+
+
+
+
+By use case
+
+
+
+      DevSecOps
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      CI/CD
+
+    
+
+
+
+      View all use cases
+
+    
+
+
+
+
+
+
+By industry
+
+
+
+      Healthcare
+
+    
+
+
+
+      Financial services
+
+    
+
+
+
+      Manufacturing
+
+    
+
+
+
+      Government
+
+    
+
+
+
+      View all industries
+
+    
+
+
+
+
+
+
+              View all solutions
+              
+
+
+ 
+
+
+
+
+        Resources
+        
+
+
+
+
+
+
+Topics
+
+
+
+      AI
+
+    
+
+
+
+      DevOps
+
+    
+
+
+
+      Security
+
+    
+
+
+
+      Software Development
+
+    
+
+
+
+      View all
+
+    
+
+
+
+
+
+
+Explore
+
+
+
+      Learning Pathways
+
+    
+
+
+
+
+
+      Events & Webinars
+
+    
+
+
+
+
+
+      Ebooks & Whitepapers
+
+    
+
+
+
+      Customer Stories
+
+    
+
+
+
+      Partners
+
+    
+
+
+
+
+
+      Executive Insights
+
+    
+
+
+
+
+
+
+
+
+        Open Source
+        
+
+
+
+
+
+
+
+
+
+
+GitHub Sponsors
+        Fund open source developers
+      
+
+
+
+
+
+
+
+
+The ReadME Project
+        GitHub community articles
+      
+
+
+
+
+Repositories
+
+
+
+      Topics
+
+    
+
+
+
+      Trending
+
+    
+
+
+
+      Collections
+
+    
+
+
+
+
+
+
+
+
+        Enterprise
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+Enterprise platform
+        AI-powered developer platform
+      
+
+
+
+
+Available add-ons
+
+
+
+
+
+
+
+Advanced Security
+        Enterprise-grade security features
+      
+
+
+
+
+
+
+
+Copilot for business
+        Enterprise-grade AI features
+      
+
+
+
+
+
+
+
+Premium Support
+        Enterprise-grade 24/7 support
+      
+
+
+
+
+
+
+
+Pricing
+
+
+
+
+
+
+
+
+
+
+
+
+Search or jump to...
+
+
+
+
+
+
+
+Search code, repositories, users, issues, pull requests...
+
+ 
+
+
+
+
+        Search
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+Clear
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+Search syntax tips 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        Provide feedback
+      
+
+
+
+
+
+
+
+
+
+ 
+We read every piece of feedback, and take your input very seriously.
+
+
+Include my email address so I can be contacted
+
+
+     Cancel
+
+    Submit feedback
+
+
+
+
+
+
+
+
+
+
+        Saved searches
+      
+Use saved searches to filter your results more quickly
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+Name
+
+
+
+
+
+
+Query
+
+
+
+            To see all available qualifiers, see our documentation.
+          
+ 
+
+
+
+
+
+     Cancel
+
+    Create saved search
+
+
+
+
+
+
+
+
+                Sign in
+              
+
+
+                Sign up
+              
+Reseting focus
+
+
+
+
+
+
+
+
+
+You signed in with another tab or window. Reload to refresh your session.
+You signed out in another tab or window. Reload to refresh your session.
+You switched accounts on another tab or window. Reload to refresh your session.
+ 
+
+
+Dismiss alert
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        dotnet
+ 
+/
+
+core
+
+Public
+
+
+
+
+
+ 
+
+Notifications
+ You must be signed in to change notification settings
+
+
+ 
+
+Fork
+    4.9k
+
+
+
+
+ 
+
+
+          Star
+ 21.2k
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Code
+
+
+
+
+
+
+
+Issues
+310
+
+
+
+
+
+
+Pull requests
+3
+
+
+
+
+
+
+Discussions
+
+
+
+
+
+
+
+Actions
+
+
+
+
+
+
+
+Security
+
+
+
+
+
+
+
+Insights
+
+
+
+ 
+
+ 
+
+
+Additional navigation options
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+          Code
+
+
+
+
+
+
+
+
+
+
+
+          Issues
+
+
+
+
+
+
+
+
+
+
+
+          Pull requests
+
+
+
+
+
+
+
+
+
+
+
+          Discussions
+
+
+
+
+
+
+
+
+
+
+
+          Actions
+
+
+
+
+
+
+
+
+
+
+
+          Security
+
+
+
+
+
+
+
+
+
+
+
+          Insights
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+   Files mainBreadcrumbscore/license-information.mdCopy path Blame  Blame        Latest commit HistoryHistory45 lines (25 loc) · 2.2 KB mainBreadcrumbscore/license-information.mdTopFile metadata and controlsPreviewCodeBlame45 lines (25 loc) · 2.2 KBRawLicense Information
+The .NET project uses source and binaries from multiple sources that may be important to your use of .NET.
+This document is provided for informative purposes only and is not itself a license.
+Source code
+.NET source uses the MIT license.
+Each repo has:
+
+A license, for example, dotnet/runtime LICENSE.TXT.
+Third party notice file, for example, dotnet/runtime THIRD-PARTY-NOTICES.TXT
+
+More information:
+
+Project copyright guidance
+
+Product distributions
+Product distributions use the following license:
+
+On Linux and macOS: MIT license
+On Windows: .NET Library License
+
+Product distributions include downloadable assets and runtime packs.
+More information:
+
+Windows license information.
+.NET Asset Licensing Model
+
+Package distributions
+Library packages use the MIT license, for example System.Text.Json.
+Redistribution
+Binaries produced by .NET SDK compilers (C#, F#, VB) can be redistributed without additional restrictions. The only restrictions are based on the license of the compiler inputs used to produce the binary.
+Applications are subject to the same terms as are covered by "Product distributions" and "Package distibutions", above.
+Parts of the .NET runtime are embedded in applications, including platform-specific executable hosts,
+and self-contained deployments.
+      
+
+
+
+
+
+
+
+
+Footer
+
+
+
+
+
+
+
+
+        © 2025 GitHub, Inc.
+      
+
+
+Footer navigation
+
+
+Terms
+
+
+Privacy
+
+
+Security
+
+
+Status
+
+
+Docs
+
+
+Contact
+
+
+
+
+      Manage cookies
+    
+
+
+
+
+
+      Do not share my personal information
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    You can’t perform that action at this time.
 ```
 
 </details>
@@ -36191,29 +42282,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -36396,29 +42473,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -36601,29 +42664,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -36806,29 +42855,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -37011,29 +43046,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -37216,29 +43237,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -37421,29 +43428,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -37626,29 +43619,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -37831,29 +43810,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -38036,29 +44001,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -38241,29 +44192,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -38446,29 +44383,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -38651,29 +44574,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -38856,29 +44765,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -39061,29 +44956,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -39266,29 +45147,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -39471,29 +45338,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -39676,29 +45529,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -39881,29 +45720,15 @@ consequential or other damages.
 
 
 ```
-.NET Library License Terms | .NET
+core/license-information.md at main · dotnet/core · GitHub
 
 
 
 
-MICROSOFT SOFTWARE LICENSE
-TERMS
 
-MICROSOFT .NET
-LIBRARY
 
-These
-license terms are an agreement between you and Microsoft Corporation (or based
-on where you live, one of its affiliates). They apply to the software named
-above. The terms also apply to any Microsoft services or updates for the
-software, except to the extent those have different terms.
 
-If
-you comply with these license terms, you have the rights below.
 
-1.    INSTALLATION AND USE RIGHTS. 
-You may
-install and use any number of copies of the software to develop and test your applications. 
 
 2.   
 THIRD PARTY COMPONENTS. The software may include third party components with
@@ -43088,7 +48913,7 @@ consequential or other damages.
 ```
 MIT License
 
-Copyright (c) 2019-2024 Josh Keegan
+Copyright (c) 2019-2025 Josh Keegan
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -43543,47 +49368,33 @@ Both sets of code are covered by the following license:
 - Version: 2.8.1
 - Authors: jnewkirk,bradwilson
 - Source: [NuGet](https://www.nuget.org/packages/xunit.runner.visualstudio/2.8.1)
-- License: [MIT]( https://licenses.nuget.org/MIT)
+- License: [MIT]( https://raw.githubusercontent.com/dotnet/efcore/refs/heads/main/LICENSE.txt)
 
 
 ```
-'MIT' reference
+The MIT License (MIT)
 
+Copyright (c) .NET Foundation and Contributors
 
+All rights reserved.
 
-MIT License
-SPDX identifier
-MIT
-License text
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-MIT License
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-
-Copyright (c) <year> <copyright holders>
-         
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of  this software and
-         associated documentation files (the "Software"), to deal in the Software without restriction,
-         including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
-         and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so,
-         subject to the following conditions:
-The above copyright notice and this permission notice
-          (including the next paragraph)
-         shall be included in all copies or substantial
-         portions of the Software.
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT
-         LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN
-         NO EVENT SHALL  THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-         WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-         SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-SPDX web page
-
-https://spdx.org/licenses/MIT.html
-
-Notice
-This license content is provided by the SPDX project. For more information about licenses.nuget.org, see our documentation.
-
-Data pulled from spdx/license-list-data on February 9, 2023.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 ```
 
 </details>

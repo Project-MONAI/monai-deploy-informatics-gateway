@@ -16,7 +16,8 @@ header:
   license:
     spdx-id: Apache-2.0
     copyright-owner: MONAI Consortium
-
+    copyright-year: 2022-2025
+    
   paths-ignore:
     - 'LICENSE'
     - '.github/**/*.md'
