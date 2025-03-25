@@ -12,23 +12,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+workflow: GitHubFlow/v1
 assembly-versioning-scheme: MajorMinorPatchTag
+assembly-file-versioning-scheme: MajorMinorPatchTag
 mode: ContinuousDelivery
 branches:
   main:
     label: ''
+    regex: ^main$
   release:
     label: rc
+    regex: ^releases?[/-](?<BranchName>.+)
   develop:
     label: beta
     increment: Patch
+    regex: ^develop$
   feature:
     label: alpha.{BranchName}
+    regex: ^features?[/-](?<BranchName>.+)
   pull-request:
     label: pr
     increment: Patch
+    regex: ^(pull|pull\-requests|pr)[/-]
 
 ignore:
   sha: []
 merge-message-formats: {}
-next-version: 0.3.17

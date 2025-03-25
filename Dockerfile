@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy as build
+FROM mcr.microsoft.com/dotnet/sdk:8.0-jammy AS build
 
 # Install the tools
 RUN dotnet tool install --tool-path /tools dotnet-trace
@@ -36,7 +36,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends curl \
- && apt-get install -y libc6-dev=2.35-0ubuntu3.8 \
+ && apt-get install -y libc6-dev=2.35-0ubuntu3.9 \
  && rm -rf /var/lib/apt/lists                           # this is a workaround for Mongo encryption library
 
 WORKDIR /opt/monai/ig
