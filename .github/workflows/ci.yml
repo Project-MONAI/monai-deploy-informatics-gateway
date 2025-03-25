@@ -607,7 +607,7 @@ jobs:
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         run: |
           mkdir userguide
-          unzip artifacts/mig-docs-${{ env.SEMVER }}.zip -d userguide/
+          unzip artifacts-docs/mig-docs-${{ env.SEMVER }}.zip -d userguide/
           ls -lR userguide/
 
       - name: Deploy Docs
