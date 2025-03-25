@@ -633,7 +633,6 @@ jobs:
           name: "Release v${{ env.MAJORMINORPATCH }}"
           assets: |
             artifacts-cli/mig-cli-${{ env.SEMVER }}-linux-x64.zip
-            artifacts-cli/mig-cli-${{ env.SEMVER }}-win-x64.zip
             artifacts-docs/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
