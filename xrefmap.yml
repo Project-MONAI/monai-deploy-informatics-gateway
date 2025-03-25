@@ -3373,6 +3373,12 @@ references:
   commentId: T:Monai.Deploy.InformaticsGateway.Api.Storage.Payload
   fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload
   nameWithType: Payload
+- uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor
+  name: Payload()
+  href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor
+  commentId: M:Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor
+  fullName: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Payload()
+  nameWithType: Payload.Payload()
 - uid: Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor(System.String,System.String,System.String,System.String,Monai.Deploy.Messaging.Events.DataOrigin,System.UInt32)
   name: Payload(String, String, String, String, DataOrigin, UInt32)
   href: api/dotnet/Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html#Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_System_String_System_String_System_String_System_String_Monai_Deploy_Messaging_Events_DataOrigin_System_UInt32_
