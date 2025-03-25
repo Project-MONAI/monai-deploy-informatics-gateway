@@ -603,6 +603,21 @@ jobs:
           separator: "/"
           msg: ${{ github.repository }}
 
+      - name: Unzip docs
+        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        run: |
+          mkdir userguide
+          unzip artifacts/mig-docs-${{ env.SEMVER }}.zip -d userguide/
+          ls -lR userguide/
+
+      - name: Deploy Docs
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: userguide/
+          publish_branch: docs
+
       - name: Install GitReleaseManager
         uses: gittools/actions/gitreleasemanager/setup@v3.1.11
         with:
