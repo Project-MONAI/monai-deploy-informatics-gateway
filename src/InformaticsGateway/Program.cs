@@ -36,6 +36,7 @@ using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
+using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Scu;

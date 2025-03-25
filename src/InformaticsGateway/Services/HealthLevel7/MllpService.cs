@@ -25,10 +25,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Monai.Deploy.InformaticsGateway.Api.Mllp;
 using Monai.Deploy.InformaticsGateway.Configuration;
-using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
 
-namespace Monai.Deploy.InformaticsGateway.Api.Mllp
+namespace Monai.Deploy.InformaticsGateway.Services.HealthLevel7
 {
     internal class MllpService : IMllpService
     {
