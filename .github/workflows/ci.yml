@@ -607,7 +607,7 @@ jobs:
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         run: |
           mkdir userguide
-          unzip artifacts/mig-docs-${{ env.SEMVER }}.zip -d userguide/
+          unzip artifacts-docs/mig-docs-${{ env.SEMVER }}.zip -d userguide/
           ls -lR userguide/
 
       - name: Deploy Docs
@@ -633,7 +633,6 @@ jobs:
           name: "Release v${{ env.MAJORMINORPATCH }}"
           assets: |
             artifacts-cli/mig-cli-${{ env.SEMVER }}-linux-x64.zip
-            artifacts-cli/mig-cli-${{ env.SEMVER }}-win-x64.zip
             artifacts-docs/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
@@ -653,18 +652,3 @@ jobs:
           owner: ${{ steps.repo.outputs._0 }}
           repository: ${{ steps.repo.outputs._1 }}
           milestone: ${{ env.MAJORMINORPATCH }}
-
-      - name: Unzip docs
-        if: ${{ contains(github.ref, 'refs/heads/main') }}
-        run: |
-          mkdir userguide
-          unzip artifacts-docs/mig-docs-${{ env.SEMVER }}.zip -d userguide/
-          ls -lR userguide/
-
-      - name: Deploy Docs
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ contains(github.ref, 'refs/heads/main') }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: userguide/
-          publish_branch: docs
