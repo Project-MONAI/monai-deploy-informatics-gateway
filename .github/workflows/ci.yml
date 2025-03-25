@@ -37,8 +37,8 @@ jobs:
 
     outputs:
       semVer: ${{ steps.gitversion.outputs.semVer }}
-      preReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}
-      majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
+      preReleaseLabel: ${{ steps.gitversion.outputs.PreReleaseLabel }}
+      majorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}
       nuGetVersionV2: ${{ steps.gitversion.outputs.MajorMinorPatch }}
 
     steps:
@@ -46,21 +46,18 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
-      # - name: Install GitVersion
-      #   run: dotnet tool install --global GitVersion.Tool
-
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v2.0.1
+      - name: Setup GitVersion
+        uses: gittools/actions/gitversion/setup@v3.1.1
         with:
-          versionSpec: '6.x'
+          versionSpec: '6.0.5'
 
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v2.0.1
+        uses: gittools/actions/gitversion/execute@v3.1.11
         with:
           useConfigFile: true
           updateAssemblyInfo: true
@@ -91,12 +88,12 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: "8.0.x"
 
     - name: Enable NuGet cache
-      uses: actions/cache@v3.3.2
+      uses: actions/cache@v4.2.3
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -104,7 +101,7 @@ jobs:
           ${{ runner.os }}-nuget
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: csharp
 
@@ -117,7 +114,7 @@ jobs:
       working-directory: ./src
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
 
   analyze:
     runs-on: ubuntu-latest
@@ -132,7 +129,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: "8.0.x"
 
@@ -146,7 +143,7 @@ jobs:
         cache: yes
 
     - name: Enable NuGet cache
-      uses: actions/cache@v3.3.2
+      uses: actions/cache@v4.2.3
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -189,17 +186,17 @@ jobs:
         - 27017:27017
     steps:
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: '17'
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -273,12 +270,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -316,8 +313,8 @@ jobs:
     env:
       NUGETVER: ${{ needs.calc-version.outputs.nuGetVersionV2 }}
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
-      PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
-      MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
+      PRERELEASELABEL: ${{ needs.calc-version.outputs.PreReleaseLabel }}
+      MAJORMINORPATCH: ${{ needs.calc-version.outputs.MajorMinorPatch }}
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -338,12 +335,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -352,7 +349,7 @@ jobs:
 
       - name: Download AssemblyInfo.cs
         id: download
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: assembly-info
           path: src/
@@ -484,18 +481,18 @@ jobs:
     runs-on: windows-latest
     needs: [calc-version]
     env:
-      SEMVER: ${{ needs.calc-version.outputs.semVer }}
+      SEMVER: ${{ needs.calc-version.outputs.SemVer }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -544,7 +541,7 @@ jobs:
     needs: [build, unit-test, integration-test]
     if: ${{ ! ( github.event.inputs.nuget ) && ! ( contains(github.ref, 'refs/heads/main') ) }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         id: download
 
       - name: List artifacts
@@ -553,7 +550,7 @@ jobs:
       - name: Install grp
         run: dotnet tool install gpr -g
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
@@ -568,16 +565,16 @@ jobs:
     runs-on: ubuntu-latest
     needs: [calc-version, unit-test, docs, integration-test, analyze]
     env:
-      SEMVER: ${{ needs.calc-version.outputs.semVer }}
-      PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
-      MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
+      SEMVER: ${{ needs.calc-version.outputs.SemVer }}
+      PRERELEASELABEL: ${{ needs.calc-version.outputs.PreReleaseLabel }}
+      MAJORMINORPATCH: ${{ needs.calc-version.outputs.MajorMinorPatch }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         id: download
 
       - name: List artifacts
@@ -586,7 +583,7 @@ jobs:
       - name: Install grp
         run: dotnet tool install gpr -g
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
@@ -607,12 +604,12 @@ jobs:
           msg: ${{ github.repository }}
 
       - name: Install GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/setup@v0.10.2
+        uses: gittools/actions/gitreleasemanager/setup@v3.1.11
         with:
-          versionSpec: "0.13.x"
+          versionSpec: '0.18.x'
 
       - name: Create release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/create@v0.10.2
+        uses: gittools/actions/gitreleasemanager/create@v3.1.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -625,16 +622,16 @@ jobs:
             artifacts/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/publish@v0.10.2
+        uses: gittools/actions/gitreleasemanager/publish@v3.1.11
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
           repository: ${{ steps.repo.outputs._1 }}
-          tagName: ${{ env.MAJORMINORPATCH }}
+          milestone: ${{ env.MAJORMINORPATCH }}
 
       - name: Close release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/close@v0.10.2
+        uses: gittools/actions/gitreleasemanager/close@v3.1.11
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

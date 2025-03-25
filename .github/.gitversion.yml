@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+workflow: GitHubFlow/v1
 assembly-versioning-scheme: MajorMinorPatchTag
+assembly-file-versioning-scheme: MajorMinorPatchTag
 mode: ContinuousDelivery
 branches:
   main:
@@ -31,4 +33,3 @@ branches:
 ignore:
   sha: []
 merge-message-formats: {}
-next-version: 0.3.17
