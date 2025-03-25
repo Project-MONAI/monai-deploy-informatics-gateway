@@ -547,15 +547,15 @@ jobs:
       - name: List artifacts
         run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
 
-      - name: Install grp
-        run: dotnet tool install gpr -g
-
       - uses: actions/setup-dotnet@v4
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           dotnet-version: "8.0.x"
           source-url: https://nuget.pkg.github.com/Project-MONAI/index.json
+
+      - name: Install grp
+        run: dotnet tool install gpr -g
 
       - name: Publish to GitHub
         run: gpr push '${{ steps.download.outputs.download-path }}/nuget/*.nupkg' --repository ${{ github.repository }} -k ${{ secrets.GITHUB_TOKEN }}
@@ -579,9 +579,6 @@ jobs:
 
       - name: List artifacts
         run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
-        
-      - name: Install grp
-        run: dotnet tool install gpr -g
 
       - uses: actions/setup-dotnet@v4
         env:
@@ -589,6 +586,9 @@ jobs:
         with:
           dotnet-version: "8.0.x"
           source-url: https://nuget.pkg.github.com/Project-MONAI/index.json
+        
+      - name: Install grp
+        run: dotnet tool install gpr -g
 
       - name: Publish to GitHub
         run: gpr push '${{ steps.download.outputs.download-path }}/nuget/*.nupkg' --repository ${{ github.repository }} -k ${{ secrets.GITHUB_TOKEN }}
