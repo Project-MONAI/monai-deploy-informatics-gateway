@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         private readonly Mock<IFileSystem> _fileSystem;
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly Mock<IServiceScope> _serviceScope;
-        private readonly Mock<ILogger<MllpService>> _logger;
+        private readonly Mock<ILogger<MllpServiceHost>> _logger;
         private readonly IServiceProvider _serviceProvider;
         private readonly Mock<IStorageInfoProvider> _storageInfoProvider;
         private readonly Mock<IMllpExtract> _mIIpExtract = new Mock<IMllpExtract>();
@@ -79,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
 
             _cancellationTokenSource = new CancellationTokenSource();
             _serviceScope = new Mock<IServiceScope>();
-            _logger = new Mock<ILogger<MllpService>>();
+            _logger = new Mock<ILogger<MllpServiceHost>>();
 
             _serviceScopeFactory.Setup(p => p.CreateScope()).Returns(_serviceScope.Object);
 
@@ -109,16 +109,16 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         [RetryFact(10, 250)]
         public void GivenAMllpService_WhenInitialized_ExpectParametersToBeValidated()
         {
-            Assert.Throws<ArgumentNullException>(() => new MllpService(null, null));
-            Assert.Throws<ArgumentNullException>(() => new MllpService(_serviceScopeFactory.Object, null));
+            Assert.Throws<ArgumentNullException>(() => new MllpServiceHost(null, null));
+            Assert.Throws<ArgumentNullException>(() => new MllpServiceHost(_serviceScopeFactory.Object, null));
 
-            new MllpService(_serviceScopeFactory.Object, _options);
+            new MllpServiceHost(_serviceScopeFactory.Object, _options);
         }
 
         [RetryFact(5, 250)]
         public void GivenAMllpService_WhenStartAsyncIsCalled_ExpectServiceStartupNormally()
         {
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             var task = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.NotNull(task);
@@ -129,7 +129,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
         public void GivenAMllpService_WhenStopAsyncIsCalled_ExpectServiceStopsNormally()
         {
             _tcpListener.Setup(p => p.Stop());
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             var task = service.StopAsync(_cancellationTokenSource.Token);
 
             Assert.NotNull(task);
@@ -172,7 +172,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
                     }
                 });
 
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));
@@ -208,7 +208,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _tcpListener.Setup(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()))
                 .Returns(ValueTask.FromResult((new Mock<ITcpClientAdapter>()).Object));
 
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             checkEvent.Wait();
@@ -242,7 +242,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _tcpListener.Setup(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()))
                 .Returns(ValueTask.FromResult((new Mock<ITcpClientAdapter>()).Object));
 
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));
@@ -267,7 +267,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _tcpListener.Setup(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()))
                 .Returns(ValueTask.FromResult(clientAdapter.Object));
 
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             _cancellationTokenSource.CancelAfter(400);
@@ -311,7 +311,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _tcpListener.Setup(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()))
                 .Returns(ValueTask.FromResult((new Mock<ITcpClientAdapter>()).Object));
 
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));
@@ -358,7 +358,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _tcpListener.Setup(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()))
                 .Returns(ValueTask.FromResult((new Mock<ITcpClientAdapter>()).Object));
 
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));
@@ -403,7 +403,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.HealthLevel7
             _tcpListener.Setup(p => p.AcceptTcpClientAsync(It.IsAny<CancellationToken>()))
                 .Returns(ValueTask.FromResult((new Mock<ITcpClientAdapter>()).Object));
 
-            var service = new MllpService(_serviceScopeFactory.Object, _options);
+            var service = new MllpServiceHost(_serviceScopeFactory.Object, _options);
             _ = service.StartAsync(_cancellationTokenSource.Token);
 
             Assert.True(checkEvent.Wait(3000));

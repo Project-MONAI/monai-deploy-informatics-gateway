@@ -86,6 +86,8 @@ namespace Monai.Deploy.InformaticsGateway.Api.Storage
 
         public int FilesFailedToUpload { get => Files.Count(p => p.IsUploadFailed); }
 
+        public Payload() { }
+
         public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout)
         {
             Guard.Against.NullOrWhiteSpace(key, nameof(key));

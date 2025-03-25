@@ -36,6 +36,7 @@ using Monai.Deploy.InformaticsGateway.Services.Connectors;
 using Monai.Deploy.InformaticsGateway.Services.DicomWeb;
 using Monai.Deploy.InformaticsGateway.Services.Export;
 using Monai.Deploy.InformaticsGateway.Services.Fhir;
+using Monai.Deploy.InformaticsGateway.Services.HealthLevel7;
 using Monai.Deploy.InformaticsGateway.Services.Http;
 using Monai.Deploy.InformaticsGateway.Services.Scp;
 using Monai.Deploy.InformaticsGateway.Services.Scu;
@@ -138,7 +139,6 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddSingleton<IScuQueue, ScuQueue>();
                     services.AddSingleton<IMllpService, MllpService>();
 
-
                     var timeout = TimeSpan.FromSeconds(hostContext.Configuration.GetValue("InformaticsGateway:dicomWeb:clientTimeout", DicomWebConfiguration.DefaultClientTimeout));
                     services
                         .AddHttpClient("dicomweb", configure => configure.Timeout = timeout)
@@ -163,7 +163,7 @@ namespace Monai.Deploy.InformaticsGateway
                     services.AddHostedService<ScuExportService>();
                     services.AddHostedService<DicomWebExportService>();
                     services.AddHostedService<PayloadNotificationService>();
-                    services.AddHostedService<MllpService>();
+                    services.AddHostedService<MllpServiceHost>();
                     services.AddHostedService<Hl7ExportService>();
 
                 })

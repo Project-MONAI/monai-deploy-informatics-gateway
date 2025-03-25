@@ -97,10 +97,11 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
         [RetryFact(1, 250, DisplayName = "Constructor - throws on null params")]
         public void Constructor_ThrowsOnNullParams()
         {
-            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(null, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(_logger.Object, null, null, null));
-            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, null, null));
-            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, null));
+            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(null, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(_logger.Object, null, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, null, null, null));
+            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, null, null));
+            Assert.Throws<ArgumentNullException>(() => new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object, null));
         }
 
 
@@ -123,7 +124,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
 
-            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
+            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object, _mllpService.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionCompleted += (sender, args) =>
@@ -168,7 +169,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(default(HL7DestinationEntity));
 
-            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
+            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object, _mllpService.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionCompleted += (sender, args) =>
@@ -221,7 +222,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _repository.Setup(p => p.FindByNameAsync(It.IsAny<string>(), It.IsAny<CancellationToken>())).ReturnsAsync(destination);
             _dicomToolkit.Setup(p => p.Load(It.IsAny<byte[]>())).Returns(InstanceGenerator.GenerateDicomFile(sopInstanceUid: sopInstanceUid));
 
-            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
+            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object, _mllpService.Object);
 
             var dataflowCompleted = new ManualResetEvent(false);
             service.ReportActionCompleted += (sender, args) =>
@@ -258,7 +259,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _extAppScpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var destination = new HL7DestinationEntity { HostIp = "192.168.0.0", Port = _port };
-            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
+            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object, _mllpService.Object);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
@@ -310,7 +311,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             _extAppScpLogger.Invocations.Clear();
             var sopInstanceUid = DicomUIDGenerator.GenerateDerivedFromUUID().UID;
             var destination = new HL7DestinationEntity { HostIp = "192.168.0.0", Port = _port };
-            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object);
+            var service = new Hl7ExportService(_logger.Object, _serviceScopeFactory.Object, _configuration, _dicomToolkit.Object, _mllpService.Object);
 
             _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
             _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));

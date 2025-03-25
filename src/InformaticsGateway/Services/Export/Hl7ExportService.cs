@@ -28,9 +28,9 @@ using Monai.Deploy.InformaticsGateway.Common;
 using Monai.Deploy.InformaticsGateway.Configuration;
 using Monai.Deploy.InformaticsGateway.Database.Api.Repositories;
 using Monai.Deploy.InformaticsGateway.Logging;
-using Monai.Deploy.InformaticsGateway.Api.Mllp;
 using Monai.Deploy.Messaging.Common;
 using Polly;
+using Monai.Deploy.InformaticsGateway.Api.Mllp;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Export
 {
@@ -38,27 +38,28 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     {
         private readonly ILogger<Hl7ExportService> _logger;
         private readonly InformaticsGatewayConfiguration _configuration;
-        private readonly IMllpService _mllpService;
 
         protected override ushort Concurrency { get; }
         public override string RoutingKey { get; }
         public override string ServiceName => "DICOM Export HL7 Service";
+        private readonly IMllpService _mllpService;
 
 
         public Hl7ExportService(
             ILogger<Hl7ExportService> logger,
             IServiceScopeFactory serviceScopeFactory,
             IOptions<InformaticsGatewayConfiguration> configuration,
-            IDicomToolkit dicomToolkit)
+            IDicomToolkit dicomToolkit,
+            IMllpService mllpService)
             : base(logger, configuration, serviceScopeFactory, dicomToolkit)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _configuration = configuration.Value ?? throw new ArgumentNullException(nameof(configuration));
 
-            _mllpService = serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IMllpService>();
             RoutingKey = $"{configuration.Value.Messaging.Topics.ExportHL7}";
             ExportCompleteTopic = $"{configuration.Value.Messaging.Topics.ExportHl7Complete}";
             Concurrency = _configuration.Dicom.Scu.MaximumNumberOfAssociations;
+            _mllpService = mllpService ?? throw new ArgumentNullException(nameof(mllpService));
         }
 
 
@@ -159,6 +160,5 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
         {
             return Task.FromResult(exportDataRequest);
         }
-
     }
 }

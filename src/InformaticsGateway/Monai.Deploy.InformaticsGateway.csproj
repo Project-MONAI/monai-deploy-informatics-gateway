@@ -34,13 +34,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="DotNext.Threading" Version="5.5.0" />
-    <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.3" />
-    <PackageReference Include="Monai.Deploy.Security" Version="1.0.0" />
-    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="1.0.1" />
-    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.11" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6" />
+    <PackageReference Include="HL7-dotnetcore" Version="2.39.1" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.4" />
+    <PackageReference Include="Monai.Deploy.Security" Version="1.0.1" />
+    <PackageReference Include="Monai.Deploy.Storage.MinIO" Version="1.0.2" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="8.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.14" />
   </ItemGroup>
   <ItemGroup>
     <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

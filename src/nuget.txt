@@ -1,0 +1,2028 @@
+Project 'Monai.Deploy.InformaticsGateway' has the following package references
+   [net8.0]: 
+   Top-level Package                           Requested   Resolved
+   > DotNext.Threading                         5.5.0       5.5.0   
+   > HL7-dotnetcore                            2.39.1      2.39.1  
+   > Microsoft.EntityFrameworkCore.Design      8.0.14      8.0.14  
+   > Monai.Deploy.Messaging.RabbitMQ           2.0.4       2.0.4   
+   > Monai.Deploy.Security                     1.0.1       1.0.1   
+   > Monai.Deploy.Storage.MinIO                1.0.2       1.0.2   
+   > NLog.Web.AspNetCore                       5.4.0       5.4.0   
+   > Swashbuckle.AspNetCore                    8.0.0       8.0.0   
+
+   Transitive Package                                                       Resolved  
+   > Ardalis.GuardClauses                                                   4.6.0     
+   > AspNetCore.HealthChecks.MongoDb                                        8.1.0     
+   > AWSSDK.Core                                                            3.7.402.25
+   > AWSSDK.SecurityToken                                                   3.7.401.68
+   > CommunityToolkit.HighPerformance                                       8.3.2     
+   > DnsClient                                                              1.6.1     
+   > DotNext                                                                5.3.1     
+   > fo-dicom                                                               5.2.1     
+   > Humanizer.Core                                                         2.14.1    
+   > Macross.Json.Extensions                                                3.0.0     
+   > Microsoft.AspNetCore.Authentication.JwtBearer                          8.0.14    
+   > Microsoft.Bcl.AsyncInterfaces                                          8.0.0     
+   > Microsoft.Bcl.HashCode                                                 1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                       3.3.3     
+   > Microsoft.CodeAnalysis.Common                                          4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                          4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                               4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                               4.5.0     
+   > Microsoft.Data.Sqlite.Core                                             8.0.14    
+   > Microsoft.EntityFrameworkCore                                          8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                             8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                                8.0.14    
+   > Microsoft.EntityFrameworkCore.Relational                               8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite                                   8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite.Core                              8.0.14    
+   > Microsoft.EntityFrameworkCore.Tools                                    8.0.14    
+   > Microsoft.Extensions.ApiDescription.Server                             6.0.5     
+   > Microsoft.Extensions.Caching.Abstractions                              8.0.0     
+   > Microsoft.Extensions.Caching.Memory                                    8.0.1     
+   > Microsoft.Extensions.Configuration                                     8.0.0     
+   > Microsoft.Extensions.Configuration.Abstractions                        8.0.0     
+   > Microsoft.Extensions.Configuration.Binder                              8.0.2     
+   > Microsoft.Extensions.Configuration.FileExtensions                      8.0.1     
+   > Microsoft.Extensions.Configuration.Json                                8.0.1     
+   > Microsoft.Extensions.DependencyInjection                               8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions                  8.0.2     
+   > Microsoft.Extensions.DependencyModel                                   8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                          8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                          8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions             8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                        8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                            8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                                8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                              8.0.1     
+   > Microsoft.Extensions.Logging                                           8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                              8.0.3     
+   > Microsoft.Extensions.Logging.Configuration                             8.0.1     
+   > Microsoft.Extensions.Options                                           8.0.2     
+   > Microsoft.Extensions.Options.ConfigurationExtensions                   8.0.0     
+   > Microsoft.Extensions.Primitives                                        8.0.0     
+   > Microsoft.IdentityModel.Abstractions                                   7.1.2     
+   > Microsoft.IdentityModel.JsonWebTokens                                  7.1.2     
+   > Microsoft.IdentityModel.Logging                                        7.1.2     
+   > Microsoft.IdentityModel.Protocols                                      7.1.2     
+   > Microsoft.IdentityModel.Protocols.OpenIdConnect                        7.1.2     
+   > Microsoft.IdentityModel.Tokens                                         7.1.2     
+   > Microsoft.NETCore.Platforms                                            5.0.0     
+   > Microsoft.OpenApi                                                      1.6.23    
+   > Microsoft.Win32.Registry                                               5.0.0     
+   > Minio                                                                  6.0.2     
+   > Monai.Deploy.Messaging                                                 2.0.4     
+   > Monai.Deploy.Storage                                                   1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                          1.0.2     
+   > MongoDB.Bson                                                           2.30.0    
+   > MongoDB.Driver                                                         2.30.0    
+   > MongoDB.Driver.Core                                                    2.30.0    
+   > MongoDB.Libmongocrypt                                                  1.12.0    
+   > Mono.TextTemplating                                                    2.2.1     
+   > Newtonsoft.Json                                                        13.0.3    
+   > NLog                                                                   5.4.0     
+   > NLog.Extensions.Logging                                                5.4.0     
+   > Polly                                                                  8.5.2     
+   > Polly.Core                                                             8.5.2     
+   > RabbitMQ.Client                                                        6.8.1     
+   > SharpCompress                                                          0.30.1    
+   > Snappier                                                               1.0.0     
+   > SQLitePCLRaw.bundle_e_sqlite3                                          2.1.6     
+   > SQLitePCLRaw.core                                                      2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                             2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                        2.1.6     
+   > Swashbuckle.AspNetCore.Swagger                                         8.0.0     
+   > Swashbuckle.AspNetCore.SwaggerGen                                      8.0.0     
+   > Swashbuckle.AspNetCore.SwaggerUI                                       8.0.0     
+   > System.Buffers                                                         4.5.1     
+   > System.CodeDom                                                         4.4.0     
+   > System.Collections.Immutable                                           6.0.0     
+   > System.Composition                                                     6.0.0     
+   > System.Composition.AttributedModel                                     6.0.0     
+   > System.Composition.Convention                                          6.0.0     
+   > System.Composition.Hosting                                             6.0.0     
+   > System.Composition.Runtime                                             6.0.0     
+   > System.Composition.TypedParts                                          6.0.0     
+   > System.IdentityModel.Tokens.Jwt                                        7.1.2     
+   > System.IO.Abstractions                                                 21.3.1    
+   > System.IO.Hashing                                                      8.0.0     
+   > System.IO.Pipelines                                                    6.0.3     
+   > System.Memory                                                          4.5.5     
+   > System.Reactive                                                        6.0.0     
+   > System.Reflection.Metadata                                             6.0.1     
+   > System.Runtime.CompilerServices.Unsafe                                 6.0.0     
+   > System.Security.AccessControl                                          5.0.0     
+   > System.Security.Principal.Windows                                      5.0.0     
+   > System.Text.Encoding.CodePages                                         6.0.1     
+   > System.Text.Encodings.Web                                              8.0.0     
+   > System.Text.Json                                                       8.0.5     
+   > System.Threading.Channels                                              8.0.0     
+   > TestableIO.System.IO.Abstractions                                      21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                             21.3.1    
+   > ZstdSharp.Port                                                         0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.Api' has the following package references
+   [net8.0]: 
+   Top-level Package                                    Requested    Resolved
+   > fo-dicom                                           5.2.1        5.2.1   
+   > HL7-dotnetcore                                     2.36.0       2.36.0  
+   > Macross.Json.Extensions                            3.0.0        3.0.0   
+   > Microsoft.EntityFrameworkCore.Abstractions         8.0.14       8.0.14  
+   > Microsoft.NET.ILLink.Tasks                   (A)   [8.0.14, )   8.0.14  
+   > Monai.Deploy.Messaging                             2.0.4        2.0.4   
+   > Monai.Deploy.Messaging.RabbitMQ                    2.0.3        2.0.3   
+   > Monai.Deploy.Storage                               1.0.2        1.0.2   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Newtonsoft.Json                                                 13.0.3    
+   > Polly                                                           8.4.0     
+   > Polly.Core                                                      8.4.0     
+   > RabbitMQ.Client                                                 6.8.1     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+
+Project 'Monai.Deploy.InformaticsGateway.Configuration' has the following package references
+   [net8.0]: 
+   Top-level Package                    Requested    Resolved
+   > Microsoft.NET.ILLink.Tasks   (A)   [8.0.14, )   8.0.14  
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Newtonsoft.Json                                                 13.0.3    
+   > Polly                                                           8.4.0     
+   > Polly.Core                                                      8.4.0     
+   > RabbitMQ.Client                                                 6.8.1     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+
+Project 'Monai.Deploy.InformaticsGateway.Common' has the following package references
+   [net8.0]: 
+   Top-level Package                    Requested    Resolved
+   > Ardalis.GuardClauses               4.6.0        4.6.0   
+   > Microsoft.NET.ILLink.Tasks   (A)   [8.0.14, )   8.0.14  
+   > System.IO.Abstractions             21.0.2       21.0.2  
+
+   Transitive Package                                Resolved
+   > TestableIO.System.IO.Abstractions               21.0.2  
+   > TestableIO.System.IO.Abstractions.Wrappers      21.0.2  
+
+Project 'Monai.Deploy.InformaticsGateway.Database' has the following package references
+   [net8.0]: 
+   Top-level Package                                                        Requested   Resolved
+   > AspNetCore.HealthChecks.MongoDb                                        8.1.0       8.1.0   
+   > Microsoft.EntityFrameworkCore.Tools                                    8.0.14      8.0.14  
+   > Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore      8.0.14      8.0.14  
+   > Microsoft.Extensions.Options.ConfigurationExtensions                   8.0.0       8.0.0   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > DnsClient                                                       1.6.1     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Humanizer.Core                                                  2.14.1    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                3.3.3     
+   > Microsoft.CodeAnalysis.Common                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                        4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                        4.5.0     
+   > Microsoft.Data.Sqlite.Core                                      8.0.14    
+   > Microsoft.EntityFrameworkCore                                   8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                         8.0.14    
+   > Microsoft.EntityFrameworkCore.Design                            8.0.14    
+   > Microsoft.EntityFrameworkCore.Relational                        8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite                            8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite.Core                       8.0.14    
+   > Microsoft.Extensions.Caching.Abstractions                       8.0.0     
+   > Microsoft.Extensions.Caching.Memory                             8.0.1     
+   > Microsoft.Extensions.Configuration                              8.0.0     
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Configuration.Binder                       8.0.0     
+   > Microsoft.Extensions.Configuration.FileExtensions               8.0.1     
+   > Microsoft.Extensions.Configuration.Json                         8.0.1     
+   > Microsoft.Extensions.DependencyInjection                        8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.DependencyModel                            8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                     8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                         8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.NETCore.Platforms                                     5.0.0     
+   > Microsoft.Win32.Registry                                        5.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > MongoDB.Bson                                                    2.30.0    
+   > MongoDB.Driver                                                  2.30.0    
+   > MongoDB.Driver.Core                                             2.30.0    
+   > MongoDB.Libmongocrypt                                           1.12.0    
+   > Mono.TextTemplating                                             2.2.1     
+   > Newtonsoft.Json                                                 13.0.3    
+   > NLog                                                            5.4.0     
+   > Polly                                                           8.5.2     
+   > Polly.Core                                                      8.5.2     
+   > RabbitMQ.Client                                                 6.8.1     
+   > SharpCompress                                                   0.30.1    
+   > Snappier                                                        1.0.0     
+   > SQLitePCLRaw.bundle_e_sqlite3                                   2.1.6     
+   > SQLitePCLRaw.core                                               2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                      2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                 2.1.6     
+   > System.Buffers                                                  4.5.1     
+   > System.CodeDom                                                  4.4.0     
+   > System.Collections.Immutable                                    6.0.0     
+   > System.Composition                                              6.0.0     
+   > System.Composition.AttributedModel                              6.0.0     
+   > System.Composition.Convention                                   6.0.0     
+   > System.Composition.Hosting                                      6.0.0     
+   > System.Composition.Runtime                                      6.0.0     
+   > System.Composition.TypedParts                                   6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.IO.Pipelines                                             6.0.3     
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      6.0.1     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Security.AccessControl                                   5.0.0     
+   > System.Security.Principal.Windows                               5.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > ZstdSharp.Port                                                  0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.DicomWeb.Client' has the following package references
+   [net8.0]: 
+   Top-level Package                    Requested    Resolved
+   > fo-dicom                           5.2.1        5.2.1   
+   > Microsoft.NET.ILLink.Tasks   (A)   [8.0.14, )   8.0.14  
+
+   Transitive Package                                           Resolved
+   > Ardalis.GuardClauses                                       4.6.0   
+   > CommunityToolkit.HighPerformance                           8.3.2   
+   > Microsoft.Bcl.AsyncInterfaces                              8.0.0   
+   > Microsoft.Bcl.HashCode                                     1.1.1   
+   > Microsoft.Extensions.DependencyInjection                   6.0.1   
+   > Microsoft.Extensions.DependencyInjection.Abstractions      6.0.0   
+   > Microsoft.Extensions.Logging                               6.0.0   
+   > Microsoft.Extensions.Logging.Abstractions                  6.0.0   
+   > Microsoft.Extensions.Options                               6.0.0   
+   > Microsoft.Extensions.Primitives                            6.0.0   
+   > System.Buffers                                             4.5.1   
+   > System.Diagnostics.DiagnosticSource                        6.0.0   
+   > System.Runtime.CompilerServices.Unsafe                     6.0.0   
+   > System.Text.Encoding.CodePages                             6.0.1   
+   > System.Text.Encodings.Web                                  8.0.0   
+   > System.Text.Json                                           8.0.5   
+   > System.Threading.Channels                                  6.0.0   
+
+Project 'Monai.Deploy.InformaticsGateway.Api.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                            Requested   Resolved
+   > coverlet.collector                         6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk                     17.13.0     17.13.0 
+   > System.IO.Abstractions.TestingHelpers      21.3.1      21.3.1  
+   > xRetry                                     1.9.0       1.9.0   
+   > xunit                                      2.8.1       2.8.1   
+   > xunit.runner.visualstudio                  2.8.1       2.8.1   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeCoverage                                          17.13.0   
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.TestPlatform.ObjectModel                              17.13.0   
+   > Microsoft.TestPlatform.TestHost                                 17.13.0   
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Newtonsoft.Json                                                 13.0.3    
+   > Polly                                                           8.4.0     
+   > Polly.Core                                                      8.4.0     
+   > RabbitMQ.Client                                                 6.8.1     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      1.6.0     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.TestingHelpers                21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > xunit.abstractions                                              2.0.3     
+   > xunit.analyzers                                                 1.14.0    
+   > xunit.assert                                                    2.8.1     
+   > xunit.core                                                      2.8.1     
+   > xunit.extensibility.core                                        2.8.1     
+   > xunit.extensibility.execution                                   2.8.1     
+
+Project 'Monai.Deploy.InformaticsGateway.Common.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                            Requested   Resolved
+   > coverlet.collector                         6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk                     17.13.0     17.13.0 
+   > Moq                                        4.20.70     4.20.70 
+   > System.IO.Abstractions                     21.0.2      21.0.2  
+   > System.IO.Abstractions.TestingHelpers      21.3.1      21.3.1  
+   > xunit                                      2.8.1       2.8.1   
+   > xunit.runner.visualstudio                  2.8.1       2.8.1   
+
+   Transitive Package                                      Resolved
+   > Ardalis.GuardClauses                                  4.6.0   
+   > Castle.Core                                           5.1.1   
+   > Microsoft.CodeCoverage                                17.13.0 
+   > Microsoft.TestPlatform.ObjectModel                    17.13.0 
+   > Microsoft.TestPlatform.TestHost                       17.13.0 
+   > Newtonsoft.Json                                       13.0.1  
+   > System.Diagnostics.EventLog                           6.0.0   
+   > System.Reflection.Metadata                            1.6.0   
+   > TestableIO.System.IO.Abstractions                     21.3.1  
+   > TestableIO.System.IO.Abstractions.TestingHelpers      21.3.1  
+   > TestableIO.System.IO.Abstractions.Wrappers            21.3.1  
+   > xunit.abstractions                                    2.0.3   
+   > xunit.analyzers                                       1.14.0  
+   > xunit.assert                                          2.8.1   
+   > xunit.core                                            2.8.1   
+   > xunit.extensibility.core                              2.8.1   
+   > xunit.extensibility.execution                         2.8.1   
+
+Project 'Monai.Deploy.InformaticsGateway.Configuration.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                            Requested   Resolved
+   > coverlet.collector                         6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk                     17.13.0     17.13.0 
+   > Moq                                        4.20.70     4.20.70 
+   > System.IO.Abstractions.TestingHelpers      21.3.1      21.3.1  
+   > xunit                                      2.8.1       2.8.1   
+   > xunit.runner.visualstudio                  2.8.1       2.8.1   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > Castle.Core                                                     5.1.1     
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeCoverage                                          17.13.0   
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.TestPlatform.ObjectModel                              17.13.0   
+   > Microsoft.TestPlatform.TestHost                                 17.13.0   
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Newtonsoft.Json                                                 13.0.3    
+   > Polly                                                           8.4.0     
+   > Polly.Core                                                      8.4.0     
+   > RabbitMQ.Client                                                 6.8.1     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.Diagnostics.EventLog                                     6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      1.6.0     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.TestingHelpers                21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > xunit.abstractions                                              2.0.3     
+   > xunit.analyzers                                                 1.14.0    
+   > xunit.assert                                                    2.8.1     
+   > xunit.core                                                      2.8.1     
+   > xunit.extensibility.core                                        2.8.1     
+   > xunit.extensibility.execution                                   2.8.1     
+
+Project 'Monai.Deploy.InformaticsGateway.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                            Requested   Resolved
+   > coverlet.collector                         6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk                     17.13.0     17.13.0 
+   > Moq                                        4.20.70     4.20.70 
+   > System.IO.Abstractions.TestingHelpers      21.3.1      21.3.1  
+   > xRetry                                     1.9.0       1.9.0   
+   > xunit                                      2.8.1       2.8.1   
+   > xunit.runner.visualstudio                  2.8.1       2.8.1   
+
+   Transitive Package                                                       Resolved  
+   > Ardalis.GuardClauses                                                   4.6.0     
+   > AspNetCore.HealthChecks.MongoDb                                        8.1.0     
+   > AWSSDK.Core                                                            3.7.402.25
+   > AWSSDK.SecurityToken                                                   3.7.401.68
+   > Castle.Core                                                            5.1.1     
+   > CommunityToolkit.HighPerformance                                       8.3.2     
+   > DnsClient                                                              1.6.1     
+   > DotNext                                                                5.3.1     
+   > DotNext.Threading                                                      5.5.0     
+   > fo-dicom                                                               5.2.1     
+   > HL7-dotnetcore                                                         2.39.1    
+   > Humanizer.Core                                                         2.14.1    
+   > Macross.Json.Extensions                                                3.0.0     
+   > Microsoft.AspNetCore.Authentication.JwtBearer                          8.0.14    
+   > Microsoft.Bcl.AsyncInterfaces                                          8.0.0     
+   > Microsoft.Bcl.HashCode                                                 1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                       3.3.3     
+   > Microsoft.CodeAnalysis.Common                                          4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                          4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                               4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                               4.5.0     
+   > Microsoft.CodeCoverage                                                 17.13.0   
+   > Microsoft.Data.Sqlite.Core                                             8.0.14    
+   > Microsoft.EntityFrameworkCore                                          8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                             8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                                8.0.14    
+   > Microsoft.EntityFrameworkCore.Design                                   8.0.14    
+   > Microsoft.EntityFrameworkCore.Relational                               8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite                                   8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite.Core                              8.0.14    
+   > Microsoft.EntityFrameworkCore.Tools                                    8.0.14    
+   > Microsoft.Extensions.ApiDescription.Server                             6.0.5     
+   > Microsoft.Extensions.Caching.Abstractions                              8.0.0     
+   > Microsoft.Extensions.Caching.Memory                                    8.0.1     
+   > Microsoft.Extensions.Configuration                                     8.0.0     
+   > Microsoft.Extensions.Configuration.Abstractions                        8.0.0     
+   > Microsoft.Extensions.Configuration.Binder                              8.0.2     
+   > Microsoft.Extensions.Configuration.FileExtensions                      8.0.1     
+   > Microsoft.Extensions.Configuration.Json                                8.0.1     
+   > Microsoft.Extensions.DependencyInjection                               8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions                  8.0.2     
+   > Microsoft.Extensions.DependencyModel                                   8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                          8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                          8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions             8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                        8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                            8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                                8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                              8.0.1     
+   > Microsoft.Extensions.Logging                                           8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                              8.0.3     
+   > Microsoft.Extensions.Logging.Configuration                             8.0.1     
+   > Microsoft.Extensions.Options                                           8.0.2     
+   > Microsoft.Extensions.Options.ConfigurationExtensions                   8.0.0     
+   > Microsoft.Extensions.Primitives                                        8.0.0     
+   > Microsoft.IdentityModel.Abstractions                                   7.1.2     
+   > Microsoft.IdentityModel.JsonWebTokens                                  7.1.2     
+   > Microsoft.IdentityModel.Logging                                        7.1.2     
+   > Microsoft.IdentityModel.Protocols                                      7.1.2     
+   > Microsoft.IdentityModel.Protocols.OpenIdConnect                        7.1.2     
+   > Microsoft.IdentityModel.Tokens                                         7.1.2     
+   > Microsoft.NETCore.Platforms                                            5.0.0     
+   > Microsoft.OpenApi                                                      1.6.23    
+   > Microsoft.TestPlatform.ObjectModel                                     17.13.0   
+   > Microsoft.TestPlatform.TestHost                                        17.13.0   
+   > Microsoft.Win32.Registry                                               5.0.0     
+   > Minio                                                                  6.0.2     
+   > Monai.Deploy.Messaging                                                 2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                        2.0.4     
+   > Monai.Deploy.Security                                                  1.0.1     
+   > Monai.Deploy.Storage                                                   1.0.2     
+   > Monai.Deploy.Storage.MinIO                                             1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                          1.0.2     
+   > MongoDB.Bson                                                           2.30.0    
+   > MongoDB.Driver                                                         2.30.0    
+   > MongoDB.Driver.Core                                                    2.30.0    
+   > MongoDB.Libmongocrypt                                                  1.12.0    
+   > Mono.TextTemplating                                                    2.2.1     
+   > Newtonsoft.Json                                                        13.0.3    
+   > NLog                                                                   5.4.0     
+   > NLog.Extensions.Logging                                                5.4.0     
+   > NLog.Web.AspNetCore                                                    5.4.0     
+   > Polly                                                                  8.5.2     
+   > Polly.Core                                                             8.5.2     
+   > RabbitMQ.Client                                                        6.8.1     
+   > SharpCompress                                                          0.30.1    
+   > Snappier                                                               1.0.0     
+   > SQLitePCLRaw.bundle_e_sqlite3                                          2.1.6     
+   > SQLitePCLRaw.core                                                      2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                             2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                        2.1.6     
+   > Swashbuckle.AspNetCore                                                 8.0.0     
+   > Swashbuckle.AspNetCore.Swagger                                         8.0.0     
+   > Swashbuckle.AspNetCore.SwaggerGen                                      8.0.0     
+   > Swashbuckle.AspNetCore.SwaggerUI                                       8.0.0     
+   > System.Buffers                                                         4.5.1     
+   > System.CodeDom                                                         4.4.0     
+   > System.Collections.Immutable                                           6.0.0     
+   > System.Composition                                                     6.0.0     
+   > System.Composition.AttributedModel                                     6.0.0     
+   > System.Composition.Convention                                          6.0.0     
+   > System.Composition.Hosting                                             6.0.0     
+   > System.Composition.Runtime                                             6.0.0     
+   > System.Composition.TypedParts                                          6.0.0     
+   > System.Diagnostics.EventLog                                            6.0.0     
+   > System.IdentityModel.Tokens.Jwt                                        7.1.2     
+   > System.IO.Abstractions                                                 21.3.1    
+   > System.IO.Hashing                                                      8.0.0     
+   > System.IO.Pipelines                                                    6.0.3     
+   > System.Memory                                                          4.5.5     
+   > System.Reactive                                                        6.0.0     
+   > System.Reflection.Metadata                                             6.0.1     
+   > System.Runtime.CompilerServices.Unsafe                                 6.0.0     
+   > System.Security.AccessControl                                          5.0.0     
+   > System.Security.Principal.Windows                                      5.0.0     
+   > System.Text.Encoding.CodePages                                         6.0.1     
+   > System.Text.Encodings.Web                                              8.0.0     
+   > System.Text.Json                                                       8.0.5     
+   > System.Threading.Channels                                              8.0.0     
+   > TestableIO.System.IO.Abstractions                                      21.3.1    
+   > TestableIO.System.IO.Abstractions.TestingHelpers                       21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                             21.3.1    
+   > xunit.abstractions                                                     2.0.3     
+   > xunit.analyzers                                                        1.14.0    
+   > xunit.assert                                                           2.8.1     
+   > xunit.core                                                             2.8.1     
+   > xunit.extensibility.core                                               2.8.1     
+   > xunit.extensibility.execution                                          2.8.1     
+   > ZstdSharp.Port                                                         0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.DicomWeb.Client.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                Requested   Resolved
+   > Ardalis.GuardClauses           4.6.0       4.6.0   
+   > coverlet.collector             6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk         17.13.0     17.13.0 
+   > Moq                            4.20.70     4.20.70 
+   > xRetry                         1.9.0       1.9.0   
+   > xunit                          2.8.1       2.8.1   
+   > xunit.runner.visualstudio      2.8.1       2.8.1   
+
+   Transitive Package                                           Resolved
+   > Castle.Core                                                5.1.1   
+   > CommunityToolkit.HighPerformance                           8.3.2   
+   > fo-dicom                                                   5.2.1   
+   > Microsoft.Bcl.AsyncInterfaces                              8.0.0   
+   > Microsoft.Bcl.HashCode                                     1.1.1   
+   > Microsoft.CodeCoverage                                     17.13.0 
+   > Microsoft.Extensions.DependencyInjection                   6.0.1   
+   > Microsoft.Extensions.DependencyInjection.Abstractions      6.0.0   
+   > Microsoft.Extensions.Logging                               6.0.0   
+   > Microsoft.Extensions.Logging.Abstractions                  6.0.0   
+   > Microsoft.Extensions.Options                               6.0.0   
+   > Microsoft.Extensions.Primitives                            6.0.0   
+   > Microsoft.TestPlatform.ObjectModel                         17.13.0 
+   > Microsoft.TestPlatform.TestHost                            17.13.0 
+   > Newtonsoft.Json                                            13.0.1  
+   > System.Buffers                                             4.5.1   
+   > System.Diagnostics.DiagnosticSource                        6.0.0   
+   > System.Diagnostics.EventLog                                6.0.0   
+   > System.Reflection.Metadata                                 1.6.0   
+   > System.Runtime.CompilerServices.Unsafe                     6.0.0   
+   > System.Text.Encoding.CodePages                             6.0.1   
+   > System.Text.Encodings.Web                                  8.0.0   
+   > System.Text.Json                                           8.0.5   
+   > System.Threading.Channels                                  6.0.0   
+   > xunit.abstractions                                         2.0.3   
+   > xunit.analyzers                                            1.14.0  
+   > xunit.assert                                               2.8.1   
+   > xunit.core                                                 2.8.1   
+   > xunit.extensibility.core                                   2.8.1   
+   > xunit.extensibility.execution                              2.8.1   
+
+Project 'Monai.Deploy.InformaticsGateway.CLI' has the following package references
+   [net8.0]: 
+   Top-level Package                      Requested             Resolved           
+   > Crayon                               2.0.69                2.0.69             
+   > Docker.DotNet                        3.125.15              3.125.15           
+   > Microsoft.Extensions.Http            8.0.0                 8.0.0              
+   > Microsoft.NET.ILLink.Tasks     (A)   [8.0.14, )            8.0.14             
+   > System.CommandLine.Hosting           0.4.0-alpha.22272.1   0.4.0-alpha.22272.1
+   > System.CommandLine.Rendering         0.4.0-alpha.22272.1   0.4.0-alpha.22272.1
+
+   Transitive Package                                                Resolved           
+   > Ardalis.GuardClauses                                            4.6.0              
+   > AWSSDK.Core                                                     3.7.402.25         
+   > AWSSDK.SecurityToken                                            3.7.401.68         
+   > CommunityToolkit.HighPerformance                                8.3.2              
+   > fo-dicom                                                        5.2.1              
+   > HL7-dotnetcore                                                  2.36.0             
+   > Macross.Json.Extensions                                         3.0.0              
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0              
+   > Microsoft.Bcl.HashCode                                          1.1.1              
+   > Microsoft.CSharp                                                4.7.0              
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14             
+   > Microsoft.Extensions.Configuration                              8.0.0              
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0              
+   > Microsoft.Extensions.Configuration.Binder                       8.0.0              
+   > Microsoft.Extensions.Configuration.CommandLine                  6.0.0              
+   > Microsoft.Extensions.Configuration.EnvironmentVariables         6.0.0              
+   > Microsoft.Extensions.Configuration.FileExtensions               6.0.0              
+   > Microsoft.Extensions.Configuration.Json                         6.0.0              
+   > Microsoft.Extensions.Configuration.UserSecrets                  6.0.0              
+   > Microsoft.Extensions.DependencyInjection                        8.0.0              
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2              
+   > Microsoft.Extensions.Diagnostics                                8.0.0              
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1              
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14             
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14             
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0              
+   > Microsoft.Extensions.FileProviders.Physical                     6.0.0              
+   > Microsoft.Extensions.FileSystemGlobbing                         6.0.0              
+   > Microsoft.Extensions.Hosting                                    6.0.0              
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1              
+   > Microsoft.Extensions.Logging                                    8.0.0              
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3              
+   > Microsoft.Extensions.Logging.Configuration                      6.0.0              
+   > Microsoft.Extensions.Logging.Console                            6.0.0              
+   > Microsoft.Extensions.Logging.Debug                              6.0.0              
+   > Microsoft.Extensions.Logging.EventLog                           6.0.0              
+   > Microsoft.Extensions.Logging.EventSource                        6.0.0              
+   > Microsoft.Extensions.Options                                    8.0.2              
+   > Microsoft.Extensions.Options.ConfigurationExtensions            8.0.0              
+   > Microsoft.Extensions.Primitives                                 8.0.0              
+   > Monai.Deploy.Messaging                                          2.0.4              
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3              
+   > Monai.Deploy.Storage                                            1.0.2              
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2              
+   > Newtonsoft.Json                                                 13.0.3             
+   > Polly                                                           8.4.0              
+   > Polly.Core                                                      8.4.0              
+   > RabbitMQ.Client                                                 6.8.1              
+   > System.Buffers                                                  4.5.1              
+   > System.CommandLine                                              2.0.0-beta4.22272.1
+   > System.CommandLine.NamingConventionBinder                       2.0.0-beta4.22272.1
+   > System.Diagnostics.EventLog                                     6.0.0              
+   > System.IO.Abstractions                                          21.3.1             
+   > System.Memory                                                   4.5.5              
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0              
+   > System.Text.Encoding.CodePages                                  6.0.1              
+   > System.Text.Encodings.Web                                       8.0.0              
+   > System.Text.Json                                                8.0.5              
+   > System.Threading.Channels                                       7.0.0              
+   > System.Threading.Tasks.Extensions                               4.5.4              
+   > TestableIO.System.IO.Abstractions                               21.3.1             
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1             
+
+Project 'Monai.Deploy.InformaticsGateway.Client' has the following package references
+   [net8.0]: 
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Newtonsoft.Json                                                 13.0.3    
+   > Polly                                                           8.4.0     
+   > Polly.Core                                                      8.4.0     
+   > RabbitMQ.Client                                                 6.8.1     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+
+Project 'Monai.Deploy.InformaticsGateway.Client.Common' has the following package references
+   [net8.0]: 
+   Top-level Package                    Requested    Resolved
+   > Ardalis.GuardClauses               4.6.0        4.6.0   
+   > Microsoft.NET.ILLink.Tasks   (A)   [8.0.14, )   8.0.14  
+
+Project 'Monai.Deploy.InformaticsGateway.Client.Common.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                Requested   Resolved
+   > Ardalis.GuardClauses           4.6.0       4.6.0   
+   > coverlet.collector             6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk         17.13.0     17.13.0 
+   > Moq                            4.20.70     4.20.70 
+   > xRetry                         1.9.0       1.9.0   
+   > xunit                          2.8.1       2.8.1   
+   > xunit.runner.visualstudio      2.8.1       2.8.1   
+
+   Transitive Package                        Resolved
+   > Castle.Core                             5.1.1   
+   > Microsoft.CodeCoverage                  17.13.0 
+   > Microsoft.TestPlatform.ObjectModel      17.13.0 
+   > Microsoft.TestPlatform.TestHost         17.13.0 
+   > Newtonsoft.Json                         13.0.1  
+   > System.Diagnostics.EventLog             6.0.0   
+   > System.Reflection.Metadata              1.6.0   
+   > xunit.abstractions                      2.0.3   
+   > xunit.analyzers                         1.14.0  
+   > xunit.assert                            2.8.1   
+   > xunit.core                              2.8.1   
+   > xunit.extensibility.core                2.8.1   
+   > xunit.extensibility.execution           2.8.1   
+
+Project 'Monai.Deploy.InformaticsGateway.Client.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk         17.13.0     17.13.0 
+   > Moq                            4.20.70     4.20.70 
+   > xunit                          2.8.1       2.8.1   
+   > xunit.runner.visualstudio      2.8.1       2.8.1   
+
+   Transitive Package                                                       Resolved  
+   > Ardalis.GuardClauses                                                   4.6.0     
+   > AspNetCore.HealthChecks.MongoDb                                        8.1.0     
+   > AWSSDK.Core                                                            3.7.402.25
+   > AWSSDK.SecurityToken                                                   3.7.401.68
+   > Castle.Core                                                            5.1.1     
+   > CommunityToolkit.HighPerformance                                       8.3.2     
+   > DnsClient                                                              1.6.1     
+   > DotNext                                                                5.3.1     
+   > DotNext.Threading                                                      5.5.0     
+   > fo-dicom                                                               5.2.1     
+   > HL7-dotnetcore                                                         2.39.1    
+   > Humanizer.Core                                                         2.14.1    
+   > Macross.Json.Extensions                                                3.0.0     
+   > Microsoft.AspNetCore.Authentication.JwtBearer                          8.0.14    
+   > Microsoft.Bcl.AsyncInterfaces                                          8.0.0     
+   > Microsoft.Bcl.HashCode                                                 1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                       3.3.3     
+   > Microsoft.CodeAnalysis.Common                                          4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                          4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                               4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                               4.5.0     
+   > Microsoft.CodeCoverage                                                 17.13.0   
+   > Microsoft.Data.Sqlite.Core                                             8.0.14    
+   > Microsoft.EntityFrameworkCore                                          8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                             8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                                8.0.14    
+   > Microsoft.EntityFrameworkCore.Design                                   8.0.14    
+   > Microsoft.EntityFrameworkCore.Relational                               8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite                                   8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite.Core                              8.0.14    
+   > Microsoft.EntityFrameworkCore.Tools                                    8.0.14    
+   > Microsoft.Extensions.ApiDescription.Server                             6.0.5     
+   > Microsoft.Extensions.Caching.Abstractions                              8.0.0     
+   > Microsoft.Extensions.Caching.Memory                                    8.0.1     
+   > Microsoft.Extensions.Configuration                                     8.0.0     
+   > Microsoft.Extensions.Configuration.Abstractions                        8.0.0     
+   > Microsoft.Extensions.Configuration.Binder                              8.0.2     
+   > Microsoft.Extensions.Configuration.FileExtensions                      8.0.1     
+   > Microsoft.Extensions.Configuration.Json                                8.0.1     
+   > Microsoft.Extensions.DependencyInjection                               8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions                  8.0.2     
+   > Microsoft.Extensions.DependencyModel                                   8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                          8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                          8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions             8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                        8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                            8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                                8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                              8.0.1     
+   > Microsoft.Extensions.Logging                                           8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                              8.0.3     
+   > Microsoft.Extensions.Logging.Configuration                             8.0.1     
+   > Microsoft.Extensions.Options                                           8.0.2     
+   > Microsoft.Extensions.Options.ConfigurationExtensions                   8.0.0     
+   > Microsoft.Extensions.Primitives                                        8.0.0     
+   > Microsoft.IdentityModel.Abstractions                                   7.1.2     
+   > Microsoft.IdentityModel.JsonWebTokens                                  7.1.2     
+   > Microsoft.IdentityModel.Logging                                        7.1.2     
+   > Microsoft.IdentityModel.Protocols                                      7.1.2     
+   > Microsoft.IdentityModel.Protocols.OpenIdConnect                        7.1.2     
+   > Microsoft.IdentityModel.Tokens                                         7.1.2     
+   > Microsoft.NETCore.Platforms                                            5.0.0     
+   > Microsoft.OpenApi                                                      1.6.23    
+   > Microsoft.TestPlatform.ObjectModel                                     17.13.0   
+   > Microsoft.TestPlatform.TestHost                                        17.13.0   
+   > Microsoft.Win32.Registry                                               5.0.0     
+   > Minio                                                                  6.0.2     
+   > Monai.Deploy.Messaging                                                 2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                        2.0.4     
+   > Monai.Deploy.Security                                                  1.0.1     
+   > Monai.Deploy.Storage                                                   1.0.2     
+   > Monai.Deploy.Storage.MinIO                                             1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                          1.0.2     
+   > MongoDB.Bson                                                           2.30.0    
+   > MongoDB.Driver                                                         2.30.0    
+   > MongoDB.Driver.Core                                                    2.30.0    
+   > MongoDB.Libmongocrypt                                                  1.12.0    
+   > Mono.TextTemplating                                                    2.2.1     
+   > Newtonsoft.Json                                                        13.0.3    
+   > NLog                                                                   5.4.0     
+   > NLog.Extensions.Logging                                                5.4.0     
+   > NLog.Web.AspNetCore                                                    5.4.0     
+   > Polly                                                                  8.5.2     
+   > Polly.Core                                                             8.5.2     
+   > RabbitMQ.Client                                                        6.8.1     
+   > SharpCompress                                                          0.30.1    
+   > Snappier                                                               1.0.0     
+   > SQLitePCLRaw.bundle_e_sqlite3                                          2.1.6     
+   > SQLitePCLRaw.core                                                      2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                             2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                        2.1.6     
+   > Swashbuckle.AspNetCore                                                 8.0.0     
+   > Swashbuckle.AspNetCore.Swagger                                         8.0.0     
+   > Swashbuckle.AspNetCore.SwaggerGen                                      8.0.0     
+   > Swashbuckle.AspNetCore.SwaggerUI                                       8.0.0     
+   > System.Buffers                                                         4.5.1     
+   > System.CodeDom                                                         4.4.0     
+   > System.Collections.Immutable                                           6.0.0     
+   > System.Composition                                                     6.0.0     
+   > System.Composition.AttributedModel                                     6.0.0     
+   > System.Composition.Convention                                          6.0.0     
+   > System.Composition.Hosting                                             6.0.0     
+   > System.Composition.Runtime                                             6.0.0     
+   > System.Composition.TypedParts                                          6.0.0     
+   > System.Diagnostics.EventLog                                            6.0.0     
+   > System.IdentityModel.Tokens.Jwt                                        7.1.2     
+   > System.IO.Abstractions                                                 21.3.1    
+   > System.IO.Hashing                                                      8.0.0     
+   > System.IO.Pipelines                                                    6.0.3     
+   > System.Memory                                                          4.5.5     
+   > System.Reactive                                                        6.0.0     
+   > System.Reflection.Metadata                                             6.0.1     
+   > System.Runtime.CompilerServices.Unsafe                                 6.0.0     
+   > System.Security.AccessControl                                          5.0.0     
+   > System.Security.Principal.Windows                                      5.0.0     
+   > System.Text.Encoding.CodePages                                         6.0.1     
+   > System.Text.Encodings.Web                                              8.0.0     
+   > System.Text.Json                                                       8.0.5     
+   > System.Threading.Channels                                              8.0.0     
+   > TestableIO.System.IO.Abstractions                                      21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                             21.3.1    
+   > xunit.abstractions                                                     2.0.3     
+   > xunit.analyzers                                                        1.14.0    
+   > xunit.assert                                                           2.8.1     
+   > xunit.core                                                             2.8.1     
+   > xunit.extensibility.core                                               2.8.1     
+   > xunit.extensibility.execution                                          2.8.1     
+   > ZstdSharp.Port                                                         0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.CLI.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                            Requested             Resolved           
+   > coverlet.collector                         6.0.4                 6.0.4              
+   > Microsoft.NET.Test.Sdk                     17.13.0               17.13.0            
+   > Moq                                        4.20.70               4.20.70            
+   > System.CommandLine.Hosting                 0.4.0-alpha.22272.1   0.4.0-alpha.22272.1
+   > System.IO.Abstractions.TestingHelpers      21.3.1                21.3.1             
+   > xRetry                                     1.9.0                 1.9.0              
+   > xunit                                      2.8.1                 2.8.1              
+   > xunit.runner.visualstudio                  2.8.1                 2.8.1              
+
+   Transitive Package                                                Resolved           
+   > Ardalis.GuardClauses                                            4.6.0              
+   > AWSSDK.Core                                                     3.7.402.25         
+   > AWSSDK.SecurityToken                                            3.7.401.68         
+   > Castle.Core                                                     5.1.1              
+   > CommunityToolkit.HighPerformance                                8.3.2              
+   > Crayon                                                          2.0.69             
+   > Docker.DotNet                                                   3.125.15           
+   > fo-dicom                                                        5.2.1              
+   > HL7-dotnetcore                                                  2.36.0             
+   > Macross.Json.Extensions                                         3.0.0              
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0              
+   > Microsoft.Bcl.HashCode                                          1.1.1              
+   > Microsoft.CodeCoverage                                          17.13.0            
+   > Microsoft.CSharp                                                4.7.0              
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14             
+   > Microsoft.Extensions.Configuration                              8.0.0              
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0              
+   > Microsoft.Extensions.Configuration.Binder                       8.0.0              
+   > Microsoft.Extensions.Configuration.CommandLine                  6.0.0              
+   > Microsoft.Extensions.Configuration.EnvironmentVariables         6.0.0              
+   > Microsoft.Extensions.Configuration.FileExtensions               6.0.0              
+   > Microsoft.Extensions.Configuration.Json                         6.0.0              
+   > Microsoft.Extensions.Configuration.UserSecrets                  6.0.0              
+   > Microsoft.Extensions.DependencyInjection                        8.0.0              
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2              
+   > Microsoft.Extensions.Diagnostics                                8.0.0              
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1              
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14             
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14             
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0              
+   > Microsoft.Extensions.FileProviders.Physical                     6.0.0              
+   > Microsoft.Extensions.FileSystemGlobbing                         6.0.0              
+   > Microsoft.Extensions.Hosting                                    6.0.0              
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1              
+   > Microsoft.Extensions.Http                                       8.0.0              
+   > Microsoft.Extensions.Logging                                    8.0.0              
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3              
+   > Microsoft.Extensions.Logging.Configuration                      6.0.0              
+   > Microsoft.Extensions.Logging.Console                            6.0.0              
+   > Microsoft.Extensions.Logging.Debug                              6.0.0              
+   > Microsoft.Extensions.Logging.EventLog                           6.0.0              
+   > Microsoft.Extensions.Logging.EventSource                        6.0.0              
+   > Microsoft.Extensions.Options                                    8.0.2              
+   > Microsoft.Extensions.Options.ConfigurationExtensions            8.0.0              
+   > Microsoft.Extensions.Primitives                                 8.0.0              
+   > Microsoft.TestPlatform.ObjectModel                              17.13.0            
+   > Microsoft.TestPlatform.TestHost                                 17.13.0            
+   > Monai.Deploy.Messaging                                          2.0.4              
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3              
+   > Monai.Deploy.Storage                                            1.0.2              
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2              
+   > Newtonsoft.Json                                                 13.0.3             
+   > Polly                                                           8.4.0              
+   > Polly.Core                                                      8.4.0              
+   > RabbitMQ.Client                                                 6.8.1              
+   > System.Buffers                                                  4.5.1              
+   > System.CommandLine                                              2.0.0-beta4.22272.1
+   > System.CommandLine.NamingConventionBinder                       2.0.0-beta4.22272.1
+   > System.CommandLine.Rendering                                    0.4.0-alpha.22272.1
+   > System.Diagnostics.EventLog                                     6.0.0              
+   > System.IO.Abstractions                                          21.3.1             
+   > System.Memory                                                   4.5.5              
+   > System.Reflection.Metadata                                      1.6.0              
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0              
+   > System.Text.Encoding.CodePages                                  6.0.1              
+   > System.Text.Encodings.Web                                       8.0.0              
+   > System.Text.Json                                                8.0.5              
+   > System.Threading.Channels                                       7.0.0              
+   > System.Threading.Tasks.Extensions                               4.5.4              
+   > TestableIO.System.IO.Abstractions                               21.3.1             
+   > TestableIO.System.IO.Abstractions.TestingHelpers                21.3.1             
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1             
+   > xunit.abstractions                                              2.0.3              
+   > xunit.analyzers                                                 1.14.0             
+   > xunit.assert                                                    2.8.1              
+   > xunit.core                                                      2.8.1              
+   > xunit.extensibility.core                                        2.8.1              
+   > xunit.extensibility.execution                                   2.8.1              
+
+Project 'Monai.Deploy.InformaticsGateway.Integration.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                                              Requested   Resolved
+   > coverlet.collector                                           6.0.4       6.0.4   
+   > FluentAssertions                                             6.12.2      6.12.2  
+   > fo-dicom                                                     5.2.1       5.2.1   
+   > HL7-dotnetcore                                               2.39.1      2.39.1  
+   > Microsoft.EntityFrameworkCore                                8.0.14      8.0.14  
+   > Microsoft.EntityFrameworkCore.Sqlite                         8.0.14      8.0.14  
+   > Microsoft.Extensions.Configuration                           8.0.0       8.0.0   
+   > Microsoft.Extensions.Configuration.Binder                    8.0.2       8.0.2   
+   > Microsoft.Extensions.Configuration.EnvironmentVariables      8.0.0       8.0.0   
+   > Microsoft.Extensions.Configuration.Json                      8.0.1       8.0.1   
+   > Microsoft.NET.Test.Sdk                                       17.13.0     17.13.0 
+   > Minio                                                        6.0.2       6.0.2   
+   > Monai.Deploy.Messaging.RabbitMQ                              2.0.4       2.0.4   
+   > Monai.Deploy.Storage.MinIO                                   1.0.2       1.0.2   
+   > Moq                                                          4.20.70     4.20.70 
+   > Polly                                                        8.5.2       8.5.2   
+   > RabbitMQ.Client                                              6.8.1       6.8.1   
+   > SpecFlow.Plus.LivingDocPlugin                                3.9.57      3.9.57  
+   > SpecFlow.xUnit                                               3.9.74      3.9.74  
+   > System.Linq.Async                                            6.0.1       6.0.1   
+   > xunit                                                        2.8.1       2.8.1   
+   > xunit.runner.visualstudio                                    2.8.1       2.8.1   
+
+   Transitive Package                                                                   Resolved  
+   > Ardalis.GuardClauses                                                               4.6.0     
+   > AspNetCore.HealthChecks.MongoDb                                                    8.1.0     
+   > AWSSDK.Core                                                                        3.7.402.25
+   > AWSSDK.SecurityToken                                                               3.7.401.68
+   > BoDi                                                                               1.5.0     
+   > Castle.Core                                                                        5.1.1     
+   > CommunityToolkit.HighPerformance                                                   8.3.2     
+   > DnsClient                                                                          1.6.1     
+   > DotNext                                                                            5.3.1     
+   > DotNext.Threading                                                                  5.5.0     
+   > Gherkin                                                                            19.0.3    
+   > Humanizer.Core                                                                     2.14.1    
+   > Macross.Json.Extensions                                                            3.0.0     
+   > Microsoft.AspNetCore.Authentication.JwtBearer                                      8.0.14    
+   > Microsoft.Bcl.AsyncInterfaces                                                      8.0.0     
+   > Microsoft.Bcl.HashCode                                                             1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                                   3.3.3     
+   > Microsoft.CodeAnalysis.Common                                                      4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                                      4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                                           4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                                           4.5.0     
+   > Microsoft.CodeCoverage                                                             17.13.0   
+   > Microsoft.Data.Sqlite.Core                                                         8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                                         8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                                            8.0.14    
+   > Microsoft.EntityFrameworkCore.Design                                               8.0.14    
+   > Microsoft.EntityFrameworkCore.Relational                                           8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite.Core                                          8.0.14    
+   > Microsoft.EntityFrameworkCore.Tools                                                8.0.14    
+   > Microsoft.Extensions.ApiDescription.Server                                         6.0.5     
+   > Microsoft.Extensions.Caching.Abstractions                                          8.0.0     
+   > Microsoft.Extensions.Caching.Memory                                                8.0.1     
+   > Microsoft.Extensions.Configuration.Abstractions                                    8.0.0     
+   > Microsoft.Extensions.Configuration.FileExtensions                                  8.0.1     
+   > Microsoft.Extensions.DependencyInjection                                           8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions                              8.0.2     
+   > Microsoft.Extensions.DependencyModel                                               8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                                      8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                                      8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions                         8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.EntityFrameworkCore                  8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                                    8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                                        8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                                            8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                                          8.0.1     
+   > Microsoft.Extensions.Logging                                                       8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                                          8.0.3     
+   > Microsoft.Extensions.Logging.Configuration                                         8.0.1     
+   > Microsoft.Extensions.Options                                                       8.0.2     
+   > Microsoft.Extensions.Options.ConfigurationExtensions                               8.0.0     
+   > Microsoft.Extensions.Primitives                                                    8.0.0     
+   > Microsoft.IdentityModel.Abstractions                                               7.1.2     
+   > Microsoft.IdentityModel.JsonWebTokens                                              7.1.2     
+   > Microsoft.IdentityModel.Logging                                                    7.1.2     
+   > Microsoft.IdentityModel.Protocols                                                  7.1.2     
+   > Microsoft.IdentityModel.Protocols.OpenIdConnect                                    7.1.2     
+   > Microsoft.IdentityModel.Tokens                                                     7.1.2     
+   > Microsoft.NETCore.Platforms                                                        5.0.0     
+   > Microsoft.NETCore.Targets                                                          1.1.0     
+   > Microsoft.OpenApi                                                                  1.6.23    
+   > Microsoft.TestPlatform.ObjectModel                                                 17.13.0   
+   > Microsoft.TestPlatform.TestHost                                                    17.13.0   
+   > Microsoft.Win32.Registry                                                           5.0.0     
+   > Monai.Deploy.Messaging                                                             2.0.4     
+   > Monai.Deploy.Security                                                              1.0.1     
+   > Monai.Deploy.Storage                                                               1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                                      1.0.2     
+   > MongoDB.Bson                                                                       2.30.0    
+   > MongoDB.Driver                                                                     2.30.0    
+   > MongoDB.Driver.Core                                                                2.30.0    
+   > MongoDB.Libmongocrypt                                                              1.12.0    
+   > Mono.TextTemplating                                                                2.2.1     
+   > Newtonsoft.Json                                                                    13.0.3    
+   > NLog                                                                               5.4.0     
+   > NLog.Extensions.Logging                                                            5.4.0     
+   > NLog.Web.AspNetCore                                                                5.4.0     
+   > Polly.Core                                                                         8.5.2     
+   > runtime.debian.8-x64.runtime.native.System.Security.Cryptography.OpenSsl           4.3.2     
+   > runtime.fedora.23-x64.runtime.native.System.Security.Cryptography.OpenSsl          4.3.2     
+   > runtime.fedora.24-x64.runtime.native.System.Security.Cryptography.OpenSsl          4.3.2     
+   > runtime.native.System                                                              4.3.0     
+   > runtime.native.System.Net.Http                                                     4.3.0     
+   > runtime.native.System.Security.Cryptography.Apple                                  4.3.0     
+   > runtime.native.System.Security.Cryptography.OpenSsl                                4.3.2     
+   > runtime.opensuse.13.2-x64.runtime.native.System.Security.Cryptography.OpenSsl      4.3.2     
+   > runtime.opensuse.42.1-x64.runtime.native.System.Security.Cryptography.OpenSsl      4.3.2     
+   > runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.Apple            4.3.0     
+   > runtime.osx.10.10-x64.runtime.native.System.Security.Cryptography.OpenSsl          4.3.2     
+   > runtime.rhel.7-x64.runtime.native.System.Security.Cryptography.OpenSsl             4.3.2     
+   > runtime.ubuntu.14.04-x64.runtime.native.System.Security.Cryptography.OpenSsl       4.3.2     
+   > runtime.ubuntu.16.04-x64.runtime.native.System.Security.Cryptography.OpenSsl       4.3.2     
+   > runtime.ubuntu.16.10-x64.runtime.native.System.Security.Cryptography.OpenSsl       4.3.2     
+   > SharpCompress                                                                      0.30.1    
+   > Snappier                                                                           1.0.0     
+   > SpecFlow                                                                           3.9.74    
+   > SpecFlow.Internal.Json                                                             1.0.8     
+   > SpecFlow.Tools.MsBuild.Generation                                                  3.9.74    
+   > SQLitePCLRaw.bundle_e_sqlite3                                                      2.1.6     
+   > SQLitePCLRaw.core                                                                  2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                                         2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                                    2.1.6     
+   > Swashbuckle.AspNetCore                                                             8.0.0     
+   > Swashbuckle.AspNetCore.Swagger                                                     8.0.0     
+   > Swashbuckle.AspNetCore.SwaggerGen                                                  8.0.0     
+   > Swashbuckle.AspNetCore.SwaggerUI                                                   8.0.0     
+   > System.Buffers                                                                     4.5.1     
+   > System.CodeDom                                                                     4.4.0     
+   > System.Collections                                                                 4.3.0     
+   > System.Collections.Concurrent                                                      4.3.0     
+   > System.Collections.Immutable                                                       6.0.0     
+   > System.Composition                                                                 6.0.0     
+   > System.Composition.AttributedModel                                                 6.0.0     
+   > System.Composition.Convention                                                      6.0.0     
+   > System.Composition.Hosting                                                         6.0.0     
+   > System.Composition.Runtime                                                         6.0.0     
+   > System.Composition.TypedParts                                                      6.0.0     
+   > System.Configuration.ConfigurationManager                                          4.5.0     
+   > System.Diagnostics.Debug                                                           4.3.0     
+   > System.Diagnostics.DiagnosticSource                                                4.3.0     
+   > System.Diagnostics.EventLog                                                        6.0.0     
+   > System.Diagnostics.Tracing                                                         4.3.0     
+   > System.Globalization                                                               4.3.0     
+   > System.Globalization.Calendars                                                     4.3.0     
+   > System.Globalization.Extensions                                                    4.3.0     
+   > System.IdentityModel.Tokens.Jwt                                                    7.1.2     
+   > System.IO                                                                          4.3.0     
+   > System.IO.Abstractions                                                             21.3.1    
+   > System.IO.FileSystem                                                               4.3.0     
+   > System.IO.FileSystem.Primitives                                                    4.3.0     
+   > System.IO.Hashing                                                                  8.0.0     
+   > System.IO.Pipelines                                                                6.0.3     
+   > System.Linq                                                                        4.3.0     
+   > System.Memory                                                                      4.5.5     
+   > System.Net.Http                                                                    4.3.4     
+   > System.Net.Primitives                                                              4.3.0     
+   > System.Reactive                                                                    6.0.0     
+   > System.Reflection                                                                  4.3.0     
+   > System.Reflection.Metadata                                                         6.0.1     
+   > System.Reflection.Primitives                                                       4.3.0     
+   > System.Resources.ResourceManager                                                   4.3.0     
+   > System.Runtime                                                                     4.3.0     
+   > System.Runtime.CompilerServices.Unsafe                                             6.0.0     
+   > System.Runtime.Extensions                                                          4.3.0     
+   > System.Runtime.Handles                                                             4.3.0     
+   > System.Runtime.InteropServices                                                     4.3.0     
+   > System.Runtime.Loader                                                              4.3.0     
+   > System.Runtime.Numerics                                                            4.3.0     
+   > System.Security.AccessControl                                                      5.0.0     
+   > System.Security.Cryptography.Algorithms                                            4.3.0     
+   > System.Security.Cryptography.Cng                                                   4.3.0     
+   > System.Security.Cryptography.Csp                                                   4.3.0     
+   > System.Security.Cryptography.Encoding                                              4.3.0     
+   > System.Security.Cryptography.OpenSsl                                               4.3.0     
+   > System.Security.Cryptography.Primitives                                            4.3.0     
+   > System.Security.Cryptography.ProtectedData                                         4.5.0     
+   > System.Security.Cryptography.X509Certificates                                      4.3.0     
+   > System.Security.Permissions                                                        4.5.0     
+   > System.Security.Principal.Windows                                                  5.0.0     
+   > System.Text.Encoding                                                               4.3.0     
+   > System.Text.Encoding.CodePages                                                     6.0.1     
+   > System.Text.Encodings.Web                                                          8.0.0     
+   > System.Text.Json                                                                   8.0.5     
+   > System.Threading                                                                   4.3.0     
+   > System.Threading.Channels                                                          8.0.0     
+   > System.Threading.Tasks                                                             4.3.0     
+   > TestableIO.System.IO.Abstractions                                                  21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                                         21.3.1    
+   > Validation                                                                         2.4.18    
+   > xunit.abstractions                                                                 2.0.3     
+   > xunit.analyzers                                                                    1.14.0    
+   > xunit.assert                                                                       2.8.1     
+   > xunit.core                                                                         2.8.1     
+   > xunit.extensibility.core                                                           2.8.1     
+   > xunit.extensibility.execution                                                      2.8.1     
+   > Xunit.SkippableFact                                                                1.3.12    
+   > ZstdSharp.Port                                                                     0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.DicomWeb.Client.CLI' has the following package references
+   [net8.0]: 
+   Top-level Package                    Requested    Resolved
+   > ConsoleAppFramework                4.2.4        4.2.4   
+   > Microsoft.NET.ILLink.Tasks   (A)   [8.0.14, )   8.0.14  
+
+   Transitive Package                                             Resolved
+   > Ardalis.GuardClauses                                         4.5.0   
+   > CommunityToolkit.HighPerformance                             8.3.2   
+   > fo-dicom                                                     5.2.1   
+   > Microsoft.Bcl.AsyncInterfaces                                8.0.0   
+   > Microsoft.Bcl.HashCode                                       1.1.1   
+   > Microsoft.Extensions.Configuration                           6.0.0   
+   > Microsoft.Extensions.Configuration.Abstractions              6.0.0   
+   > Microsoft.Extensions.Configuration.Binder                    6.0.0   
+   > Microsoft.Extensions.Configuration.CommandLine               6.0.0   
+   > Microsoft.Extensions.Configuration.EnvironmentVariables      6.0.0   
+   > Microsoft.Extensions.Configuration.FileExtensions            6.0.0   
+   > Microsoft.Extensions.Configuration.Json                      6.0.0   
+   > Microsoft.Extensions.Configuration.UserSecrets               6.0.0   
+   > Microsoft.Extensions.DependencyInjection                     6.0.1   
+   > Microsoft.Extensions.DependencyInjection.Abstractions        6.0.0   
+   > Microsoft.Extensions.FileProviders.Abstractions              6.0.0   
+   > Microsoft.Extensions.FileProviders.Physical                  6.0.0   
+   > Microsoft.Extensions.FileSystemGlobbing                      6.0.0   
+   > Microsoft.Extensions.Hosting                                 6.0.0   
+   > Microsoft.Extensions.Hosting.Abstractions                    6.0.0   
+   > Microsoft.Extensions.Logging                                 6.0.0   
+   > Microsoft.Extensions.Logging.Abstractions                    6.0.0   
+   > Microsoft.Extensions.Logging.Configuration                   6.0.0   
+   > Microsoft.Extensions.Logging.Console                         6.0.0   
+   > Microsoft.Extensions.Logging.Debug                           6.0.0   
+   > Microsoft.Extensions.Logging.EventLog                        6.0.0   
+   > Microsoft.Extensions.Logging.EventSource                     6.0.0   
+   > Microsoft.Extensions.Options                                 6.0.0   
+   > Microsoft.Extensions.Options.ConfigurationExtensions         6.0.0   
+   > Microsoft.Extensions.Primitives                              6.0.0   
+   > System.Buffers                                               4.5.1   
+   > System.Diagnostics.DiagnosticSource                          6.0.0   
+   > System.Diagnostics.EventLog                                  6.0.0   
+   > System.Runtime.CompilerServices.Unsafe                       6.0.0   
+   > System.Text.Encoding.CodePages                               6.0.1   
+   > System.Text.Encodings.Web                                    8.0.0   
+   > System.Text.Json                                             8.0.5   
+   > System.Threading.Channels                                    6.0.0   
+
+Project 'Monai.Deploy.InformaticsGateway.Database.EntityFramework' has the following package references
+   [net8.0]: 
+   Top-level Package                                        Requested   Resolved
+   > Microsoft.EntityFrameworkCore                          8.0.14      8.0.14  
+   > Microsoft.EntityFrameworkCore.Design                   8.0.14      8.0.14  
+   > Microsoft.EntityFrameworkCore.Sqlite                   8.0.14      8.0.14  
+   > Microsoft.Extensions.Configuration.FileExtensions      8.0.1       8.0.1   
+   > Microsoft.Extensions.Configuration.Json                8.0.1       8.0.1   
+   > Polly                                                  8.5.2       8.5.2   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Humanizer.Core                                                  2.14.1    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                3.3.3     
+   > Microsoft.CodeAnalysis.Common                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                        4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                        4.5.0     
+   > Microsoft.Data.Sqlite.Core                                      8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                         8.0.14    
+   > Microsoft.EntityFrameworkCore.Relational                        8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite.Core                       8.0.14    
+   > Microsoft.Extensions.Caching.Abstractions                       8.0.0     
+   > Microsoft.Extensions.Caching.Memory                             8.0.1     
+   > Microsoft.Extensions.Configuration                              8.0.0     
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.DependencyModel                            8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                     8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                         8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Mono.TextTemplating                                             2.2.1     
+   > Newtonsoft.Json                                                 13.0.3    
+   > NLog                                                            5.4.0     
+   > Polly.Core                                                      8.5.2     
+   > RabbitMQ.Client                                                 6.8.1     
+   > SQLitePCLRaw.bundle_e_sqlite3                                   2.1.6     
+   > SQLitePCLRaw.core                                               2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                      2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                 2.1.6     
+   > System.Buffers                                                  4.5.1     
+   > System.CodeDom                                                  4.4.0     
+   > System.Collections.Immutable                                    6.0.0     
+   > System.Composition                                              6.0.0     
+   > System.Composition.AttributedModel                              6.0.0     
+   > System.Composition.Convention                                   6.0.0     
+   > System.Composition.Hosting                                      6.0.0     
+   > System.Composition.Runtime                                      6.0.0     
+   > System.Composition.TypedParts                                   6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.IO.Pipelines                                             6.0.3     
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      6.0.1     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+
+Project 'Monai.Deploy.InformaticsGateway.Database.Api' has the following package references
+   [net8.0]: 
+   Top-level Package      Requested   Resolved
+   > NLog                 5.4.0       5.4.0   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Newtonsoft.Json                                                 13.0.3    
+   > Polly                                                           8.4.0     
+   > Polly.Core                                                      8.4.0     
+   > RabbitMQ.Client                                                 6.8.1     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+
+Project 'Monai.Deploy.InformaticsGateway.Database.Api.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             6.0.4       6.0.4   
+   > Microsoft.NET.Test.Sdk         17.13.0     17.13.0 
+   > xunit                          2.8.1       2.8.1   
+   > xunit.runner.visualstudio      2.8.1       2.8.1   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeCoverage                                          17.13.0   
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.TestPlatform.ObjectModel                              17.13.0   
+   > Microsoft.TestPlatform.TestHost                                 17.13.0   
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Newtonsoft.Json                                                 13.0.3    
+   > NLog                                                            5.4.0     
+   > Polly                                                           8.4.0     
+   > Polly.Core                                                      8.4.0     
+   > RabbitMQ.Client                                                 6.8.1     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      1.6.0     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > xunit.abstractions                                              2.0.3     
+   > xunit.analyzers                                                 1.14.0    
+   > xunit.assert                                                    2.8.1     
+   > xunit.core                                                      2.8.1     
+   > xunit.extensibility.core                                        2.8.1     
+   > xunit.extensibility.execution                                   2.8.1     
+
+Project 'Monai.Deploy.InformaticsGateway.Database.EntityFramework.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                             Requested   Resolved
+   > coverlet.collector                          6.0.4       6.0.4   
+   > Microsoft.EntityFrameworkCore.InMemory      8.0.14      8.0.14  
+   > Microsoft.NET.Test.Sdk                      17.13.0     17.13.0 
+   > Moq                                         4.20.70     4.20.70 
+   > xunit                                       2.8.1       2.8.1   
+   > xunit.runner.visualstudio                   2.8.1       2.8.1   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > Castle.Core                                                     5.1.1     
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Humanizer.Core                                                  2.14.1    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                3.3.3     
+   > Microsoft.CodeAnalysis.Common                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                        4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                        4.5.0     
+   > Microsoft.CodeCoverage                                          17.13.0   
+   > Microsoft.Data.Sqlite.Core                                      8.0.14    
+   > Microsoft.EntityFrameworkCore                                   8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                         8.0.14    
+   > Microsoft.EntityFrameworkCore.Design                            8.0.14    
+   > Microsoft.EntityFrameworkCore.Relational                        8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite                            8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite.Core                       8.0.14    
+   > Microsoft.Extensions.Caching.Abstractions                       8.0.0     
+   > Microsoft.Extensions.Caching.Memory                             8.0.1     
+   > Microsoft.Extensions.Configuration                              8.0.0     
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Configuration.FileExtensions               8.0.1     
+   > Microsoft.Extensions.Configuration.Json                         8.0.1     
+   > Microsoft.Extensions.DependencyInjection                        8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.DependencyModel                            8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                     8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                         8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.TestPlatform.ObjectModel                              17.13.0   
+   > Microsoft.TestPlatform.TestHost                                 17.13.0   
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Mono.TextTemplating                                             2.2.1     
+   > Newtonsoft.Json                                                 13.0.3    
+   > NLog                                                            5.4.0     
+   > Polly                                                           8.5.2     
+   > Polly.Core                                                      8.5.2     
+   > RabbitMQ.Client                                                 6.8.1     
+   > SQLitePCLRaw.bundle_e_sqlite3                                   2.1.6     
+   > SQLitePCLRaw.core                                               2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                      2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                 2.1.6     
+   > System.Buffers                                                  4.5.1     
+   > System.CodeDom                                                  4.4.0     
+   > System.Collections.Immutable                                    6.0.0     
+   > System.Composition                                              6.0.0     
+   > System.Composition.AttributedModel                              6.0.0     
+   > System.Composition.Convention                                   6.0.0     
+   > System.Composition.Hosting                                      6.0.0     
+   > System.Composition.Runtime                                      6.0.0     
+   > System.Composition.TypedParts                                   6.0.0     
+   > System.Diagnostics.EventLog                                     6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.IO.Pipelines                                             6.0.3     
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      6.0.1     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > xunit.abstractions                                              2.0.3     
+   > xunit.analyzers                                                 1.14.0    
+   > xunit.assert                                                    2.8.1     
+   > xunit.core                                                      2.8.1     
+   > xunit.extensibility.core                                        2.8.1     
+   > xunit.extensibility.execution                                   2.8.1     
+
+Project 'Monai.Deploy.InformaticsGateway.Database.MongoDB' has the following package references
+   [net8.0]: 
+   Top-level Package      Requested   Resolved
+   > MongoDB.Driver       2.30.0      2.30.0  
+   > Polly                8.5.2       8.5.2   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > DnsClient                                                       1.6.1     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.NETCore.Platforms                                     5.0.0     
+   > Microsoft.Win32.Registry                                        5.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > MongoDB.Bson                                                    2.30.0    
+   > MongoDB.Driver.Core                                             2.30.0    
+   > MongoDB.Libmongocrypt                                           1.12.0    
+   > Newtonsoft.Json                                                 13.0.3    
+   > NLog                                                            5.4.0     
+   > Polly.Core                                                      8.5.2     
+   > RabbitMQ.Client                                                 6.8.1     
+   > SharpCompress                                                   0.30.1    
+   > Snappier                                                        1.0.0     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Security.AccessControl                                   5.0.0     
+   > System.Security.Principal.Windows                               5.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > ZstdSharp.Port                                                  0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.Database.MongoDB.Integration.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                Requested   Resolved
+   > coverlet.collector             6.0.2       6.0.2   
+   > FluentAssertions               6.12.2      6.12.2  
+   > Microsoft.NET.Test.Sdk         17.13.0     17.13.0 
+   > Moq                            4.20.70     4.20.70 
+   > xunit                          2.8.1       2.8.1   
+   > xunit.runner.visualstudio      2.8.1       2.8.1   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > Castle.Core                                                     5.1.1     
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > DnsClient                                                       1.6.1     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeCoverage                                          17.13.0   
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.NETCore.Platforms                                     5.0.0     
+   > Microsoft.TestPlatform.ObjectModel                              17.13.0   
+   > Microsoft.TestPlatform.TestHost                                 17.13.0   
+   > Microsoft.Win32.Registry                                        5.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > MongoDB.Bson                                                    2.30.0    
+   > MongoDB.Driver                                                  2.30.0    
+   > MongoDB.Driver.Core                                             2.30.0    
+   > MongoDB.Libmongocrypt                                           1.12.0    
+   > Newtonsoft.Json                                                 13.0.3    
+   > NLog                                                            5.4.0     
+   > Polly                                                           8.5.2     
+   > Polly.Core                                                      8.5.2     
+   > RabbitMQ.Client                                                 6.8.1     
+   > SharpCompress                                                   0.30.1    
+   > Snappier                                                        1.0.0     
+   > System.Buffers                                                  4.5.1     
+   > System.Configuration.ConfigurationManager                       4.4.0     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.Diagnostics.EventLog                                     6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      1.6.0     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Security.AccessControl                                   5.0.0     
+   > System.Security.Cryptography.ProtectedData                      4.4.0     
+   > System.Security.Principal.Windows                               5.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > xunit.abstractions                                              2.0.3     
+   > xunit.analyzers                                                 1.14.0    
+   > xunit.assert                                                    2.8.1     
+   > xunit.core                                                      2.8.1     
+   > xunit.extensibility.core                                        2.8.1     
+   > xunit.extensibility.execution                                   2.8.1     
+   > ZstdSharp.Port                                                  0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution' has the following package references
+   [net8.0]: 
+   Top-level Package                                           Requested   Resolved
+   > Microsoft.EntityFrameworkCore                             8.0.14      8.0.14  
+   > Microsoft.EntityFrameworkCore.Design                      8.0.14      8.0.14  
+   > Microsoft.EntityFrameworkCore.Relational                  8.0.14      8.0.14  
+   > Microsoft.EntityFrameworkCore.Sqlite                      8.0.14      8.0.14  
+   > Microsoft.Extensions.Configuration                        8.0.0       8.0.0   
+   > Microsoft.Extensions.Configuration.FileExtensions         8.0.1       8.0.1   
+   > Microsoft.Extensions.Configuration.Json                   8.0.1       8.0.1   
+   > Microsoft.Extensions.Options.ConfigurationExtensions      8.0.0       8.0.0   
+   > MongoDB.Driver                                            2.30.0      2.30.0  
+   > NLog                                                      5.4.0       5.4.0   
+   > Polly                                                     8.5.2       8.5.2   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > DnsClient                                                       1.6.1     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Humanizer.Core                                                  2.14.1    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                3.3.3     
+   > Microsoft.CodeAnalysis.Common                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                        4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                        4.5.0     
+   > Microsoft.Data.Sqlite.Core                                      8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                         8.0.14    
+   > Microsoft.EntityFrameworkCore.Sqlite.Core                       8.0.14    
+   > Microsoft.Extensions.Caching.Abstractions                       8.0.0     
+   > Microsoft.Extensions.Caching.Memory                             8.0.1     
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Configuration.Binder                       8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.DependencyModel                            8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                     8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                         8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.NETCore.Platforms                                     5.0.0     
+   > Microsoft.Win32.Registry                                        5.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > MongoDB.Bson                                                    2.30.0    
+   > MongoDB.Driver.Core                                             2.30.0    
+   > MongoDB.Libmongocrypt                                           1.12.0    
+   > Mono.TextTemplating                                             2.2.1     
+   > Newtonsoft.Json                                                 13.0.3    
+   > Polly.Core                                                      8.5.2     
+   > RabbitMQ.Client                                                 6.8.1     
+   > SharpCompress                                                   0.30.1    
+   > Snappier                                                        1.0.0     
+   > SQLitePCLRaw.bundle_e_sqlite3                                   2.1.6     
+   > SQLitePCLRaw.core                                               2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                      2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                 2.1.6     
+   > System.Buffers                                                  4.5.1     
+   > System.CodeDom                                                  4.4.0     
+   > System.Collections.Immutable                                    6.0.0     
+   > System.Composition                                              6.0.0     
+   > System.Composition.AttributedModel                              6.0.0     
+   > System.Composition.Convention                                   6.0.0     
+   > System.Composition.Hosting                                      6.0.0     
+   > System.Composition.Runtime                                      6.0.0     
+   > System.Composition.TypedParts                                   6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.IO.Pipelines                                             6.0.3     
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      6.0.1     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Security.AccessControl                                   5.0.0     
+   > System.Security.Principal.Windows                               5.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > ZstdSharp.Port                                                  0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.PlugIns.RemoteAppExecution.Test' has the following package references
+   [net8.0]: 
+   Top-level Package                                Requested   Resolved
+   > coverlet.collector                             6.0.4       6.0.4   
+   > Microsoft.EntityFrameworkCore.InMemory         8.0.14      8.0.14  
+   > Microsoft.EntityFrameworkCore.Sqlite           8.0.14      8.0.14  
+   > Microsoft.EntityFrameworkCore.Sqlite.Core      8.0.14      8.0.14  
+   > Microsoft.NET.Test.Sdk                         17.13.0     17.13.0 
+   > Moq                                            4.20.70     4.20.70 
+   > System.IO.Abstractions.TestingHelpers          21.3.1      21.3.1  
+   > xRetry                                         1.9.0       1.9.0   
+   > xunit                                          2.8.1       2.8.1   
+   > xunit.runner.visualstudio                      2.8.1       2.8.1   
+
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > Castle.Core                                                     5.1.1     
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > DnsClient                                                       1.6.1     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Humanizer.Core                                                  2.14.1    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.CodeAnalysis.Analyzers                                3.3.3     
+   > Microsoft.CodeAnalysis.Common                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp                                   4.5.0     
+   > Microsoft.CodeAnalysis.CSharp.Workspaces                        4.5.0     
+   > Microsoft.CodeAnalysis.Workspaces.Common                        4.5.0     
+   > Microsoft.CodeCoverage                                          17.13.0   
+   > Microsoft.Data.Sqlite.Core                                      8.0.14    
+   > Microsoft.EntityFrameworkCore                                   8.0.14    
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.EntityFrameworkCore.Analyzers                         8.0.14    
+   > Microsoft.EntityFrameworkCore.Design                            8.0.14    
+   > Microsoft.EntityFrameworkCore.Relational                        8.0.14    
+   > Microsoft.Extensions.Caching.Abstractions                       8.0.0     
+   > Microsoft.Extensions.Caching.Memory                             8.0.1     
+   > Microsoft.Extensions.Configuration                              8.0.0     
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Configuration.Binder                       8.0.0     
+   > Microsoft.Extensions.Configuration.FileExtensions               8.0.1     
+   > Microsoft.Extensions.Configuration.Json                         8.0.1     
+   > Microsoft.Extensions.DependencyInjection                        8.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.DependencyModel                            8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.FileProviders.Physical                     8.0.0     
+   > Microsoft.Extensions.FileSystemGlobbing                         8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    8.0.1     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Options.ConfigurationExtensions            8.0.0     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Microsoft.NETCore.Platforms                                     5.0.0     
+   > Microsoft.TestPlatform.ObjectModel                              17.13.0   
+   > Microsoft.TestPlatform.TestHost                                 17.13.0   
+   > Microsoft.Win32.Registry                                        5.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > MongoDB.Bson                                                    2.30.0    
+   > MongoDB.Driver                                                  2.30.0    
+   > MongoDB.Driver.Core                                             2.30.0    
+   > MongoDB.Libmongocrypt                                           1.12.0    
+   > Mono.TextTemplating                                             2.2.1     
+   > Newtonsoft.Json                                                 13.0.3    
+   > NLog                                                            5.4.0     
+   > Polly                                                           8.5.2     
+   > Polly.Core                                                      8.5.2     
+   > RabbitMQ.Client                                                 6.8.1     
+   > SharpCompress                                                   0.30.1    
+   > Snappier                                                        1.0.0     
+   > SQLitePCLRaw.bundle_e_sqlite3                                   2.1.6     
+   > SQLitePCLRaw.core                                               2.1.6     
+   > SQLitePCLRaw.lib.e_sqlite3                                      2.1.6     
+   > SQLitePCLRaw.provider.e_sqlite3                                 2.1.6     
+   > System.Buffers                                                  4.5.1     
+   > System.CodeDom                                                  4.4.0     
+   > System.Collections.Immutable                                    6.0.0     
+   > System.Composition                                              6.0.0     
+   > System.Composition.AttributedModel                              6.0.0     
+   > System.Composition.Convention                                   6.0.0     
+   > System.Composition.Hosting                                      6.0.0     
+   > System.Composition.Runtime                                      6.0.0     
+   > System.Composition.TypedParts                                   6.0.0     
+   > System.Diagnostics.EventLog                                     6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.IO.Pipelines                                             6.0.3     
+   > System.Memory                                                   4.5.5     
+   > System.Reflection.Metadata                                      6.0.1     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Security.AccessControl                                   5.0.0     
+   > System.Security.Principal.Windows                               5.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.TestingHelpers                21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+   > xunit.abstractions                                              2.0.3     
+   > xunit.analyzers                                                 1.14.0    
+   > xunit.assert                                                    2.8.1     
+   > xunit.core                                                      2.8.1     
+   > xunit.extensibility.core                                        2.8.1     
+   > xunit.extensibility.execution                                   2.8.1     
+   > ZstdSharp.Port                                                  0.7.3     
+
+Project 'Monai.Deploy.InformaticsGateway.Test.PlugIns' has the following package references
+   [net8.0]: 
+   Transitive Package                                                Resolved  
+   > Ardalis.GuardClauses                                            4.6.0     
+   > AWSSDK.Core                                                     3.7.402.25
+   > AWSSDK.SecurityToken                                            3.7.401.68
+   > CommunityToolkit.HighPerformance                                8.3.2     
+   > fo-dicom                                                        5.2.1     
+   > HL7-dotnetcore                                                  2.36.0    
+   > Macross.Json.Extensions                                         3.0.0     
+   > Microsoft.Bcl.AsyncInterfaces                                   8.0.0     
+   > Microsoft.Bcl.HashCode                                          1.1.1     
+   > Microsoft.EntityFrameworkCore.Abstractions                      8.0.14    
+   > Microsoft.Extensions.Configuration.Abstractions                 8.0.0     
+   > Microsoft.Extensions.DependencyInjection                        6.0.1     
+   > Microsoft.Extensions.DependencyInjection.Abstractions           8.0.2     
+   > Microsoft.Extensions.Diagnostics.Abstractions                   8.0.1     
+   > Microsoft.Extensions.Diagnostics.HealthChecks                   8.0.14    
+   > Microsoft.Extensions.Diagnostics.HealthChecks.Abstractions      8.0.14    
+   > Microsoft.Extensions.FileProviders.Abstractions                 8.0.0     
+   > Microsoft.Extensions.Hosting.Abstractions                       8.0.1     
+   > Microsoft.Extensions.Logging                                    6.0.0     
+   > Microsoft.Extensions.Logging.Abstractions                       8.0.3     
+   > Microsoft.Extensions.Options                                    8.0.2     
+   > Microsoft.Extensions.Primitives                                 8.0.0     
+   > Monai.Deploy.Messaging                                          2.0.4     
+   > Monai.Deploy.Messaging.RabbitMQ                                 2.0.3     
+   > Monai.Deploy.Storage                                            1.0.2     
+   > Monai.Deploy.Storage.S3Policy                                   1.0.2     
+   > Newtonsoft.Json                                                 13.0.3    
+   > Polly                                                           8.4.0     
+   > Polly.Core                                                      8.4.0     
+   > RabbitMQ.Client                                                 6.8.1     
+   > System.Buffers                                                  4.5.1     
+   > System.Diagnostics.DiagnosticSource                             6.0.0     
+   > System.IO.Abstractions                                          21.3.1    
+   > System.Memory                                                   4.5.5     
+   > System.Runtime.CompilerServices.Unsafe                          6.0.0     
+   > System.Text.Encoding.CodePages                                  6.0.1     
+   > System.Text.Encodings.Web                                       8.0.0     
+   > System.Text.Json                                                8.0.5     
+   > System.Threading.Channels                                       7.0.0     
+   > TestableIO.System.IO.Abstractions                               21.3.1    
+   > TestableIO.System.IO.Abstractions.Wrappers                      21.3.1    
+
+(A) : Auto-referenced package.

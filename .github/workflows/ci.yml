@@ -37,25 +37,27 @@ jobs:
 
     outputs:
       semVer: ${{ steps.gitversion.outputs.semVer }}
-      preReleaseLabel: ${{ steps.gitversion.outputs.preReleaseLabel }}
-      majorMinorPatch: ${{ steps.gitversion.outputs.majorMinorPatch }}
-      nuGetVersionV2: ${{ steps.gitversion.outputs.nuGetVersionV2 }}
+      preReleaseLabel: ${{ steps.gitversion.outputs.PreReleaseLabel }}
+      majorMinorPatch: ${{ steps.gitversion.outputs.MajorMinorPatch }}
+      nuGetVersionV2: ${{ steps.gitversion.outputs.MajorMinorPatch }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
-      - name: Install GitVersion
-        run: dotnet tool install --global GitVersion.Tool
+      - name: Setup GitVersion
+        uses: gittools/actions/gitversion/setup@v3.1.11
+        with:
+          versionSpec: '6.0.x'
 
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v0.10.2
+        uses: gittools/actions/gitversion/execute@v3.1.11
         with:
           useConfigFile: true
           updateAssemblyInfo: true
@@ -66,7 +68,7 @@ jobs:
         run: cat src/AssemblyInfo.cs
 
       - name: Upload AssemblyInfo
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
           name: assembly-info
@@ -86,12 +88,12 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: "8.0.x"
 
     - name: Enable NuGet cache
-      uses: actions/cache@v3.3.2
+      uses: actions/cache@v4.2.3
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -99,7 +101,7 @@ jobs:
           ${{ runner.os }}-nuget
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v2
+      uses: github/codeql-action/init@v3
       with:
         languages: csharp
 
@@ -112,7 +114,7 @@ jobs:
       working-directory: ./src
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v2
+      uses: github/codeql-action/analyze@v3
 
   analyze:
     runs-on: ubuntu-latest
@@ -127,7 +129,7 @@ jobs:
       with:
         fetch-depth: 0
 
-    - uses: actions/setup-dotnet@v3
+    - uses: actions/setup-dotnet@v4
       with:
         dotnet-version: "8.0.x"
 
@@ -141,7 +143,7 @@ jobs:
         cache: yes
 
     - name: Enable NuGet cache
-      uses: actions/cache@v3.3.2
+      uses: actions/cache@v4.2.3
       with:
         path: ~/.nuget/packages
         key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -184,17 +186,17 @@ jobs:
         - 27017:27017
     steps:
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: zulu
           java-version: '17'
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -268,12 +270,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -295,10 +297,10 @@ jobs:
           popd
 
       - name: Upload Integration Test Results
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
-          name: integration-${{ matrix.feature }}
+          name: integration-${{ matrix.feature }}-${{ matrix.database }}
           path: |
             ${{ github.workspace }}/LivingDoc.html
             ${{ github.workspace }}/services.log
@@ -311,8 +313,8 @@ jobs:
     env:
       NUGETVER: ${{ needs.calc-version.outputs.nuGetVersionV2 }}
       SEMVER: ${{ needs.calc-version.outputs.semVer }}
-      PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
-      MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
+      PRERELEASELABEL: ${{ needs.calc-version.outputs.PreReleaseLabel }}
+      MAJORMINORPATCH: ${{ needs.calc-version.outputs.MajorMinorPatch }}
     strategy:
       matrix:
         os: [ubuntu-latest]
@@ -333,12 +335,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -347,7 +349,7 @@ jobs:
 
       - name: Download AssemblyInfo.cs
         id: download
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: assembly-info
           path: src/
@@ -384,9 +386,9 @@ jobs:
           dir -r ~/release
 
       - name: Upload CLI
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         with:
-          name: artifacts
+          name: artifacts-cli
           path: ~/release
           retention-days: 7
 
@@ -400,7 +402,7 @@ jobs:
           
       - name: Upload Nuget
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: nuget
           path: ~/nupkg
@@ -479,18 +481,18 @@ jobs:
     runs-on: windows-latest
     needs: [calc-version]
     env:
-      SEMVER: ${{ needs.calc-version.outputs.semVer }}
+      SEMVER: ${{ needs.calc-version.outputs.SemVer }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "8.0.x"
 
       - name: Enable NuGet cache
-        uses: actions/cache@v3.3.2
+        uses: actions/cache@v4.2.3
         with:
           path: ~/.nuget/packages
           key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
@@ -527,9 +529,9 @@ jobs:
           Get-ChildItem ~\release -Recurse
 
       - name: Upload docs
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         with:
-          name: artifacts
+          name: artifacts-docs
           path: ~/release
           retention-days: 7
           
@@ -539,21 +541,21 @@ jobs:
     needs: [build, unit-test, integration-test]
     if: ${{ ! ( github.event.inputs.nuget ) && ! ( contains(github.ref, 'refs/heads/main') ) }}
     steps:
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         id: download
 
       - name: List artifacts
         run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
 
-      - name: Install grp
-        run: dotnet tool install gpr -g
-
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           dotnet-version: "8.0.x"
           source-url: https://nuget.pkg.github.com/Project-MONAI/index.json
+
+      - name: Install grp
+        run: dotnet tool install gpr -g
 
       - name: Publish to GitHub
         run: gpr push '${{ steps.download.outputs.download-path }}/nuget/*.nupkg' --repository ${{ github.repository }} -k ${{ secrets.GITHUB_TOKEN }}
@@ -563,30 +565,30 @@ jobs:
     runs-on: ubuntu-latest
     needs: [calc-version, unit-test, docs, integration-test, analyze]
     env:
-      SEMVER: ${{ needs.calc-version.outputs.semVer }}
-      PRERELEASELABEL: ${{ needs.calc-version.outputs.preReleaseLabel }}
-      MAJORMINORPATCH: ${{ needs.calc-version.outputs.majorMinorPatch }}
+      SEMVER: ${{ needs.calc-version.outputs.SemVer }}
+      PRERELEASELABEL: ${{ needs.calc-version.outputs.PreReleaseLabel }}
+      MAJORMINORPATCH: ${{ needs.calc-version.outputs.MajorMinorPatch }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         id: download
 
       - name: List artifacts
         run: ls -ldR ${{steps.download.outputs.download-path}}/**/*
-        
-      - name: Install grp
-        run: dotnet tool install gpr -g
 
-      - uses: actions/setup-dotnet@v3
+      - uses: actions/setup-dotnet@v4
         env:
           NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           dotnet-version: "8.0.x"
           source-url: https://nuget.pkg.github.com/Project-MONAI/index.json
+        
+      - name: Install grp
+        run: dotnet tool install gpr -g
 
       - name: Publish to GitHub
         run: gpr push '${{ steps.download.outputs.download-path }}/nuget/*.nupkg' --repository ${{ github.repository }} -k ${{ secrets.GITHUB_TOKEN }}
@@ -617,12 +619,12 @@ jobs:
           publish_branch: docs
 
       - name: Install GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/setup@v0.10.2
+        uses: gittools/actions/gitreleasemanager/setup@v3.1.11
         with:
-          versionSpec: "0.13.x"
+          versionSpec: '0.18.x'
 
       - name: Create release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/create@v0.10.2
+        uses: gittools/actions/gitreleasemanager/create@v3.1.11
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -630,24 +632,39 @@ jobs:
           milestone: ${{ env.MAJORMINORPATCH }}
           name: "Release v${{ env.MAJORMINORPATCH }}"
           assets: |
-            artifacts/mig-cli-${{ env.SEMVER }}-linux-x64.zip
-            artifacts/mig-cli-${{ env.SEMVER }}-win-x64.zip
-            artifacts/mig-docs-${{ env.SEMVER }}.zip
+            artifacts-cli/mig-cli-${{ env.SEMVER }}-linux-x64.zip
+            artifacts-cli/mig-cli-${{ env.SEMVER }}-win-x64.zip
+            artifacts-docs/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/publish@v0.10.2
-        if: ${{ contains(github.ref, 'refs/heads/main') }}
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          owner: ${{ steps.repo.outputs._0 }}
-          repository: ${{ steps.repo.outputs._1 }}
-          tagName: ${{ env.MAJORMINORPATCH }}
-
-      - name: Close release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/close@v0.10.2
+        uses: gittools/actions/gitreleasemanager/publish@v3.1.11
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
           repository: ${{ steps.repo.outputs._1 }}
           milestone: ${{ env.MAJORMINORPATCH }}
+
+      - name: Close release with GitReleaseManager
+        uses: gittools/actions/gitreleasemanager/close@v3.1.11
+        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          owner: ${{ steps.repo.outputs._0 }}
+          repository: ${{ steps.repo.outputs._1 }}
+          milestone: ${{ env.MAJORMINORPATCH }}
+
+      - name: Unzip docs
+        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        run: |
+          mkdir userguide
+          unzip artifacts-docs/mig-docs-${{ env.SEMVER }}.zip -d userguide/
+          ls -lR userguide/
+
+      - name: Deploy Docs
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: userguide/
+          publish_branch: docs

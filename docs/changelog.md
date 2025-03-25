@@ -17,6 +17,11 @@
 
 # Changelog
 
+## 0.5.1
+[GitHub Milestone 0.5.1](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/30)
+
+- gh-521 Address vulnerabilities in .NET (CVE-2024-38229, CVE-2024-35264)
+
 ## 0.5.0
 [GitHub Milestone 0.5.0](https://github.com/Project-MONAI/monai-deploy-informatics-gateway/milestone/4)
 

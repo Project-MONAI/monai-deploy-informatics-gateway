@@ -18,7 +18,10 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Logging;
+using Monai.Deploy.InformaticsGateway.Logging;
 using Monai.Deploy.InformaticsGateway.Repositories;
 
 namespace Monai.Deploy.InformaticsGateway.Services.Http
@@ -26,10 +29,12 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
     public class MonaiHealthCheck : IHealthCheck
     {
         private readonly IMonaiServiceLocator _monaiServiceLocator;
+        private readonly ILogger<MonaiHealthCheck> _logger;
 
-        public MonaiHealthCheck(IMonaiServiceLocator monaiServiceLocator)
+        public MonaiHealthCheck(IMonaiServiceLocator monaiServiceLocator, ILogger<MonaiHealthCheck> logger)
         {
             _monaiServiceLocator = monaiServiceLocator ?? throw new ArgumentNullException(nameof(monaiServiceLocator));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public Task<HealthCheckResult> CheckHealthAsync(HealthCheckContext context, CancellationToken cancellationToken = default)
@@ -44,9 +49,10 @@ namespace Monai.Deploy.InformaticsGateway.Services.Http
 
             if (unhealthyServices.Count == services.Count)
             {
+                _logger.AllServiceUnheathly();
                 return Task.FromResult(HealthCheckResult.Unhealthy(data: unhealthyServices));
             }
-
+            _logger.SomeServiceUnheathly(string.Join(",", unhealthyServices.Keys));
             return Task.FromResult(HealthCheckResult.Degraded(data: unhealthyServices));
         }
     }

@@ -31,7 +31,7 @@
   </PropertyGroup>
   <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
     <ItemGroup>
-      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths->WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
     </ItemGroup>
   </Target>
   <PropertyGroup>
@@ -48,13 +48,13 @@
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="fo-dicom" Version="5.1.2" />
-    <PackageReference Include="HL7-dotnetcore" Version="2.36.0" />
+    <PackageReference Include="fo-dicom" Version="5.2.1" />
+    <PackageReference Include="HL7-dotnetcore" Version="2.39.1" />
     <PackageReference Include="Macross.Json.Extensions" Version="3.0.0" />
-    <PackageReference Include="Monai.Deploy.Messaging" Version="2.0.3" />
-    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.3" />
-    <PackageReference Include="Monai.Deploy.Storage" Version="1.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.6" />
+    <PackageReference Include="Monai.Deploy.Messaging" Version="2.0.4" />
+    <PackageReference Include="Monai.Deploy.Messaging.RabbitMQ" Version="2.0.4" />
+    <PackageReference Include="Monai.Deploy.Storage" Version="1.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="8.0.14" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Test\**" />
