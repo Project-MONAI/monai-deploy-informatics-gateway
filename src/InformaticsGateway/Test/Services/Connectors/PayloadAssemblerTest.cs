@@ -134,7 +134,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
 
             file1.SetFailed();
             file2.SetUploaded();
-            await Task.Delay(1001);
+            await Task.Delay(1101);
             payloadAssembler.Dispose();
 
             _repository.Verify(p => p.UpdateAsync(It.Is<Payload>(p => p.State == Payload.PayloadState.Move), It.IsAny<CancellationToken>()), Times.Never());
