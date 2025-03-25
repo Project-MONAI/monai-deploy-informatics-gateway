@@ -51,9 +51,9 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Setup GitVersion
-        uses: gittools/actions/gitversion/setup@v3.1.1
+        uses: gittools/actions/gitversion/setup@v3.1.11
         with:
-          versionSpec: '6.0.5'
+          versionSpec: '6.0.x'
 
       - name: Determine Version
         id: gitversion
@@ -68,7 +68,7 @@ jobs:
         run: cat src/AssemblyInfo.cs
 
       - name: Upload AssemblyInfo
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
           name: assembly-info
@@ -297,10 +297,10 @@ jobs:
           popd
 
       - name: Upload Integration Test Results
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         if: always()
         with:
-          name: integration-${{ matrix.feature }}
+          name: integration-${{ matrix.feature }}-${{ matrix.database }}
           path: |
             ${{ github.workspace }}/LivingDoc.html
             ${{ github.workspace }}/services.log
@@ -386,9 +386,9 @@ jobs:
           dir -r ~/release
 
       - name: Upload CLI
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         with:
-          name: artifacts
+          name: artifacts-cli
           path: ~/release
           retention-days: 7
 
@@ -402,7 +402,7 @@ jobs:
           
       - name: Upload Nuget
         if: ${{ matrix.os == 'ubuntu-latest' }}
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: nuget
           path: ~/nupkg
@@ -529,9 +529,9 @@ jobs:
           Get-ChildItem ~\release -Recurse
 
       - name: Upload docs
-        uses: actions/upload-artifact@v3.1.2
+        uses: actions/upload-artifact@v4.6.2
         with:
-          name: artifacts
+          name: artifacts-docs
           path: ~/release
           retention-days: 7
           
@@ -617,9 +617,9 @@ jobs:
           milestone: ${{ env.MAJORMINORPATCH }}
           name: "Release v${{ env.MAJORMINORPATCH }}"
           assets: |
-            artifacts/mig-cli-${{ env.SEMVER }}-linux-x64.zip
-            artifacts/mig-cli-${{ env.SEMVER }}-win-x64.zip
-            artifacts/mig-docs-${{ env.SEMVER }}.zip
+            artifacts-cli/mig-cli-${{ env.SEMVER }}-linux-x64.zip
+            artifacts-cli/mig-cli-${{ env.SEMVER }}-win-x64.zip
+            artifacts-docs/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
         uses: gittools/actions/gitreleasemanager/publish@v3.1.11
@@ -643,7 +643,7 @@ jobs:
         if: ${{ contains(github.ref, 'refs/heads/main') }}
         run: |
           mkdir userguide
-          unzip artifacts/mig-docs-${{ env.SEMVER }}.zip -d userguide/
+          unzip artifacts-docs/mig-docs-${{ env.SEMVER }}.zip -d userguide/
           ls -lR userguide/
 
       - name: Deploy Docs
