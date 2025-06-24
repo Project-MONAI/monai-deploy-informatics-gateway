@@ -36,7 +36,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get clean \
  && apt-get update \
  && apt-get install -y --no-install-recommends curl \
- && apt-get install -y libc6-dev=2.35-0ubuntu3.9 \
+ && apt-get install -y libc6-dev=2.35-* \
  && rm -rf /var/lib/apt/lists                           # this is a workaround for Mongo encryption library
 
 WORKDIR /opt/monai/ig
