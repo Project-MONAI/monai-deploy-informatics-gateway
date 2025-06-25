@@ -148,7 +148,16 @@ username, password, IP address/hostname, and port.
   "ConnectionStrings": {
     "Type": "mongodb",
     "InformaticsGatewayDatabase": "mongodb://username:password@IP:port",
-    "DatabaseName": "InformaticsGateway"
+    "DatabaseOptions": {
+      "DatabaseName": "InformaticsGateway",
+      "retries": {
+        "delays": [
+          "750",
+          "1201",
+          "2500"
+        ]
+      }
+    }
   }
 }
 ```
