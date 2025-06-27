@@ -23,6 +23,12 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    inputs:
+      ga:
+        description: 'GA (Official) Build'
+        required: true
+        type: boolean
+        default: false
 
 env:
   REGISTRY: ghcr.io
@@ -604,7 +610,7 @@ jobs:
           msg: ${{ github.repository }}
 
       - name: Unzip docs
-        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        if: ${{ inputs.ga == 'true' }}
         run: |
           mkdir userguide
           unzip artifacts-docs/mig-docs-${{ env.SEMVER }}.zip -d userguide/
@@ -612,7 +618,7 @@ jobs:
 
       - name: Deploy Docs
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        if: ${{ inputs.ga == 'true' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: userguide/
@@ -637,7 +643,7 @@ jobs:
 
       - name: Publish release with GitReleaseManager
         uses: gittools/actions/gitreleasemanager/publish@v3.1.11
-        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        if: ${{ inputs.ga == 'true' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -646,7 +652,7 @@ jobs:
 
       - name: Close release with GitReleaseManager
         uses: gittools/actions/gitreleasemanager/close@v3.1.11
-        if: ${{ contains(github.ref, 'refs/heads/main') }}
+        if: ${{ inputs.ga == 'true' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
