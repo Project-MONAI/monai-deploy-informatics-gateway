@@ -28,7 +28,7 @@ N/A
 
 ### Responses
 
-Response Content Type: JSON - Array of [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
+Response Content Type: JSON - Array of [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity).
 
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -84,7 +84,7 @@ Returns the configuration of the specified MONAI SCP AE Title.
 
 ### Responses
 
-Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
+Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity).
 
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -130,12 +130,12 @@ Creates a new MONAI SCP Application Entity to accept DICOM instances.
 
 ### Parameters
 
-See the [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity)
+See the [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity)
 class definition for details.
 
 ### Responses
 
-Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
+Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity).
 
 | Code | Description                                                                                                                                 |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -198,12 +198,12 @@ Updates an existing MONAI SCP Application Entity.
 
 ### Parameters
 
-See the [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity)
+See the [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity)
 class definition for details.
 
 ### Responses
 
-Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
+Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity).
 
 | Code | Description                                                                                                                                 |
 | ---- | ------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -259,7 +259,7 @@ Deletes the specified MONAI SCP Application Entity.
 
 ### Responses
 
-Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.MonaiApplicationEntity).
+Response Content Type: JSON - [MonaiApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.MonaiApplicationEntity).
 
 | Code | Description                                                                                                                              |
 | ---- | ---------------------------------------------------------------------------------------------------------------------------------------- |
@@ -576,7 +576,7 @@ N/A
 
 ### Responses
 
-Response Content Type: JSON - Array of [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
+Response Content Type: JSON - Array of [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.DestinationApplicationEntity).
 
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -622,7 +622,7 @@ Retrieves the destination AE Title with the specified name.
 
 ### Responses
 
-Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
+Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.DestinationApplicationEntity).
 
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -683,12 +683,12 @@ Updates an existing DICOM destination.
 
 ### Parameters
 
-See the [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity)
+See the [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.DestinationApplicationEntity)
 class definition for details.
 
 ### Responses
 
-Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
+Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.DestinationApplicationEntity).
 
 | Code | Description                                                                                                                                              |
 | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -729,12 +729,12 @@ Adds a new DICOM destination AET for exporting results to.
 
 ### Parameters
 
-See the [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity)
+See the [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.DestinationApplicationEntity)
 class definition for details.
 
 ### Responses
 
-Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
+Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.DestinationApplicationEntity).
 
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |
@@ -780,7 +780,7 @@ Deletes a Destination AE Title.
 
 ### Responses
 
-Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.DestinationApplicationEntity).
+Response Content Type: JSON - [DestinationApplicationEntity](xref:Monai.Deploy.InformaticsGateway.Api.Models.DestinationApplicationEntity).
 
 | Code | Description                                                                                                                             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------------- |

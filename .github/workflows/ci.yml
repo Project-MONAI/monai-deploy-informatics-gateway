@@ -429,7 +429,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ env.SEMVER }}
+            type=raw,value=${{ env.MAJORMINORPATCH }}
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
 
       - name: Build and push Docker image
@@ -506,9 +506,7 @@ jobs:
             ${{ runner.os }}-nuget
 
       - name: Setup DocFX
-        uses: crazy-max/ghaction-chocolatey@v3
-        with:
-          args: install docfx
+        run: dotnet tool update -g docfx
 
       - name: Restore dependencies
         run: dotnet restore
@@ -524,8 +522,7 @@ jobs:
           sed -i -e "s,v0.0.0,v${{ env.SEMVER }},g" ./docs/index.md
 
       - name: Build Docs
-        working-directory: docs
-        run: docfx docfx.json
+        run: ~/.dotnet/tools/docfx docs/docfx.json
         continue-on-error: false
 
       - name: Package docs

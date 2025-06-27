@@ -56,7 +56,7 @@ namespace Monai.Deploy.InformaticsGateway.Api
         public List<StringKeyValuePair> DataMapping { get; set; } = new();
 
         /// <summary>
-        /// Optional list of data input plug-in type names to be executed by the <see cref="IInputHL7DataPlugInEngine"/>.
+        /// Optional list of data input plug-in type names to be executed by the <see cref="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputHL7DataPlugInEngine"/>.
         /// </summary>
         public List<string> PlugInAssemblies { get; set; } = default!;
 
