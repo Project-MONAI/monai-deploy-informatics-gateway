@@ -550,7 +550,7 @@ jobs:
     name: Publish to GitHub Packages
     runs-on: ubuntu-latest
     needs: [build, unit-test, integration-test]
-    if: ${{ inputs.ga == 'false' }}
+    if: ${{ inputs.ga == false }}
     steps:
       - uses: actions/download-artifact@v4
         id: download
@@ -572,7 +572,7 @@ jobs:
         run: gpr push '${{ steps.download.outputs.download-path }}/nuget/*.nupkg' --repository ${{ github.repository }} -k ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    if: ${{ inputs.ga == 'true' }}
+    if: ${{ inputs.ga == true }}
     runs-on: ubuntu-latest
     needs: [calc-version, unit-test, docs, integration-test, analyze]
     env:
