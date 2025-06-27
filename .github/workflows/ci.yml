@@ -458,7 +458,7 @@ jobs:
 
       - name: Anchore container scan
         id: anchore-scan
-        uses: anchore/scan-action@v3.3.6
+        uses: anchore/scan-action@v6.3.0
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         with:
           image: ${{ fromJSON(steps.meta.outputs.json).tags[0] }}
