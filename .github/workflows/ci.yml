@@ -429,7 +429,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=${{ inputs.ga == 'true' && env.MAJORMINORPATCH || env.NUGETVER }}
+            type=raw,value=${{ inputs.ga == 'true' ? env.MAJORMINORPATCH : env.NUGETVER }}
             type=raw,value=latest,enable=${{ endsWith(github.ref, github.event.repository.default_branch) }}
 
       - name: Build and push Docker image
