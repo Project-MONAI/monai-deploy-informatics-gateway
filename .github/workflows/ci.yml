@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      SEMVER: ${{ steps.gitversion.outputs.semVer }}
+      SEMVER: ${{ steps.version-tag.outputs.SEMVER }}
       VERSION: ${{ steps.version-tag.outputs.VERSION }}
 
     steps:
@@ -73,8 +73,10 @@ jobs:
         run: |
           if [ "${{ inputs.ga }}" = "true" ]; then
             echo "VERSION=${{ steps.gitversion.outputs.MajorMinorPatch }}" >> $GITHUB_OUTPUT
+            echo "SEMVER=${{ steps.gitversion.outputs.MajorMinorPatch }}" >> $GITHUB_OUTPUT
           else
             echo "VERSION=${{ steps.gitversion.outputs.AssemblySemVer }}" >> $GITHUB_OUTPUT
+            echo "SEMVER=${{ steps.gitversion.outputs.SemVer }}" >> $GITHUB_OUTPUT
           fi
 
       - name: Print AssemblyInfo
@@ -408,7 +410,7 @@ jobs:
         if: ${{ (matrix.os == 'ubuntu-latest') }}
         run: |
           mkdir ~/nupkg
-          dotnet pack -c ${{ env.BUILD_CONFIG }} -o ~/nupkg -p:PackageVersion=${{ env.VERSION }}
+          dotnet pack -c ${{ env.BUILD_CONFIG }} -o ~/nupkg -p:PackageVersion=${{ env.SEMVER }}
           ls -lR ~/nupkg
         working-directory: ./src/Api
           
