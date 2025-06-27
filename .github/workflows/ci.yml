@@ -567,7 +567,7 @@ jobs:
         run: gpr push '${{ steps.download.outputs.download-path }}/nuget/*.nupkg' --repository ${{ github.repository }} -k ${{ secrets.GITHUB_TOKEN }}
 
   release:
-    if: ${{ contains(github.ref, 'refs/heads/main') || contains(github.ref, 'refs/heads/develop') ||contains(github.head_ref, 'release/') || contains(github.head_ref, 'feature/') || contains(github.head_ref, 'develop') }}
+    if: ${{ inputs.ga == 'true' }}
     runs-on: ubuntu-latest
     needs: [calc-version, unit-test, docs, integration-test, analyze]
     env:
@@ -610,7 +610,6 @@ jobs:
           msg: ${{ github.repository }}
 
       - name: Unzip docs
-        if: ${{ inputs.ga == 'true' }}
         run: |
           mkdir userguide
           unzip artifacts-docs/mig-docs-${{ env.SEMVER }}.zip -d userguide/
@@ -618,7 +617,6 @@ jobs:
 
       - name: Deploy Docs
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ inputs.ga == 'true' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: userguide/
@@ -643,7 +641,6 @@ jobs:
 
       - name: Publish release with GitReleaseManager
         uses: gittools/actions/gitreleasemanager/publish@v3.1.11
-        if: ${{ inputs.ga == 'true' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -652,7 +649,6 @@ jobs:
 
       - name: Close release with GitReleaseManager
         uses: gittools/actions/gitreleasemanager/close@v3.1.11
-        if: ${{ inputs.ga == 'true' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
