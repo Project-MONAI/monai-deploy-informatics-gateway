@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class StorageMetadataRepositoryBase | MONAI Deploy Informatics Gateway v0.5.2 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class StorageMetadataRepositoryBase | MONAI Deploy Informatics Gateway v0.5.2 ">
+      
+      
+      <link rel="icon" href="../../../images/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../api/toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../images/MONAI-logo-color.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase">
+
+
+
+  <h1 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase" class="text-break">
+Class StorageMetadataRepositoryBase  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Monai.html">Monai</a>.<a class="xref" href="Monai.Deploy.html">Deploy</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.html">InformaticsGateway</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Database.html">Database</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.html">Api</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.html">Repositories</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Monai.Deploy.InformaticsGateway.Database.Api.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class StorageMetadataRepositoryBase : IStorageMetadataRepository</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">StorageMetadataRepositoryBase</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IStorageMetadataRepository.html">IStorageMetadataRepository</a></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase__ctor_Microsoft_Extensions_Logging_ILogger_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.#ctor(Microsoft.Extensions.Logging.ILogger)">
+  StorageMetadataRepositoryBase(ILogger)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected StorageMetadataRepositoryBase(ILogger logger)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)">
+  AddAsync(FileStorageMetadata, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L34"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds new storage metadata object to the repository.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task AddAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>metadata</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a></dt>
+    <dd><p>The storage metadata object to be added.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddAsyncInternal_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsyncInternal*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddAsyncInternal_Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddAsyncInternal(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)">
+  AddAsyncInternal(StorageMetadataWrapper, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L105"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task AddAsyncInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>metadata</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html">StorageMetadataWrapper</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddOrUpdateAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddOrUpdateAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_AddOrUpdateAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.AddOrUpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)">
+  AddOrUpdateAsync(FileStorageMetadata, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds or updates an storage metadata object's status.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task AddOrUpdateAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>metadata</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a></dt>
+    <dd><p>The storage metadata object to be added/updated.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeleteAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeleteAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteAsync(System.String,System.String,System.Threading.CancellationToken)">
+  DeleteAsync(string, string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Deletes the specified storage metadata object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; DeleteAsync(string correlationId, string identity, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>correlationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Correlation ID</p>
+</dd>
+    <dt><code>identity</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique identity representing the object.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeleteInternalAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteInternalAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeleteInternalAsync_Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeleteInternalAsync(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)">
+  DeleteInternalAsync(StorageMetadataWrapper, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task&lt;bool&gt; DeleteInternalAsync(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>metadata</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html">StorageMetadataWrapper</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeletePendingUploadsAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeletePendingUploadsAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_DeletePendingUploadsAsync_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.DeletePendingUploadsAsync(System.Threading.CancellationToken)">
+  DeletePendingUploadsAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Deletes all pending storage metadata objects.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Task DeletePendingUploadsAsync(CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_FindByIds_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.FindByIds*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_FindByIds_System_String_System_String_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.FindByIds(System.String,System.String,System.Threading.CancellationToken)">
+  FindByIds(string, string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L103"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task&lt;StorageMetadataWrapper?&gt; FindByIds(string id, string correlationId, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>id</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>correlationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html">StorageMetadataWrapper</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_GetFileStorageMetdadataAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_GetFileStorageMetdadataAsync_System_String_System_String_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(System.String,System.String,System.Threading.CancellationToken)">
+  GetFileStorageMetdadataAsync(string, string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L82"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the specified storage metadata object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Task&lt;FileStorageMetadata?&gt; GetFileStorageMetdadataAsync(string correlationId, string identity, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>correlationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Correlation ID</p>
+</dd>
+    <dt><code>identity</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The unique identity representing the object.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_GetFileStorageMetdadataAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_GetFileStorageMetdadataAsync_System_String_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.GetFileStorageMetdadataAsync(System.String,System.Threading.CancellationToken)">
+  GetFileStorageMetdadataAsync(string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets all storage metadata objects associated with the correlation ID.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Task&lt;IList&lt;FileStorageMetadata&gt;&gt; GetFileStorageMetdadataAsync(string correlationId, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>correlationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Correlation ID</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.ilist-1">IList</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a>&gt;&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_UpdateAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata,System.Threading.CancellationToken)">
+  UpdateAsync(FileStorageMetadata, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates an storage metadata object's status.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task UpdateAsync(FileStorageMetadata metadata, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>metadata</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a></dt>
+    <dd><p>The storage metadata object to be updated.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_UpdateInternal_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_StorageMetadataRepositoryBase_UpdateInternal_Monai_Deploy_InformaticsGateway_Database_Api_StorageMetadataWrapper_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.StorageMetadataRepositoryBase.UpdateInternal(Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper,System.Threading.CancellationToken)">
+  UpdateInternal(StorageMetadataWrapper, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L101"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task UpdateInternal(StorageMetadataWrapper metadata, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>metadata</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.StorageMetadataWrapper.html">StorageMetadataWrapper</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/StorageMetadataRepositoryBase.cs/#L25" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2022-2025 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

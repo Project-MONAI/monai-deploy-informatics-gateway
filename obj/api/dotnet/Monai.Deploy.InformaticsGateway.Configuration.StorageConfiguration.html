@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class StorageConfiguration | MONAI Deploy Informatics Gateway v0.5.2 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class StorageConfiguration | MONAI Deploy Informatics Gateway v0.5.2 ">
+      
+      
+      <link rel="icon" href="../../../images/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../api/toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../images/MONAI-logo-color.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration">
+
+
+
+  <h1 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration" class="text-break">
+Class StorageConfiguration  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L23"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Monai.html">Monai</a>.<a class="xref" href="Monai.Deploy.html">Deploy</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.html">InformaticsGateway</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Configuration.html">Configuration</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Monai.Deploy.InformaticsGateway.Configuration.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class StorageConfiguration : StorageServiceConfiguration</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="https://github.com/Project-MONAI/monai-deploy-storage/blob/2fd5b0c58387372ab2df79c523368851e3102d5e/src/Storage/Configuration/StorageServiceConfiguration.cs">StorageServiceConfiguration</a></div>
+      <div><span class="xref">StorageConfiguration</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="https://github.com/Project-MONAI/monai-deploy-storage/blob/2fd5b0c58387372ab2df79c523368851e3102d5e/src/Storage/Configuration/StorageServiceConfiguration.cs">StorageServiceConfiguration.ServiceAssemblyName</a>
+    </div>
+    <div>
+      <a class="xref" href="https://github.com/Project-MONAI/monai-deploy-storage/blob/2fd5b0c58387372ab2df79c523368851e3102d5e/src/Storage/Configuration/StorageServiceConfiguration.cs">StorageServiceConfiguration.Settings</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferSize_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_BufferSize" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.BufferSize">
+  BufferSize
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the number of bytes buffered for reads and writes to the temporary file.
+Defaults to <code>128000</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;bufferSize&quot;)]
+public int BufferSize { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ConcurrentUploads_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ConcurrentUploads*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ConcurrentUploads" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ConcurrentUploads">
+  ConcurrentUploads
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L104"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the maximum number of concurrent uploads. Default is 2;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;concurrentUploads&quot;)]
+public int ConcurrentUploads { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_LocalTemporaryStoragePath_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_LocalTemporaryStoragePath" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.LocalTemporaryStoragePath">
+  LocalTemporaryStoragePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the path used for buffering incoming data.
+Defaults to <code>./temp</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;localTemporaryStoragePath&quot;)]
+public string LocalTemporaryStoragePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_MemoryThreshold_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.MemoryThreshold*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_MemoryThreshold" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.MemoryThreshold">
+  MemoryThreshold
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L49"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the maximum memory buffer size in bytes with default to 30MiB.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;memoryThreshold&quot;)]
+public int MemoryThreshold { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_PayloadProcessThreads_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.PayloadProcessThreads*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_PayloadProcessThreads" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.PayloadProcessThreads">
+  PayloadProcessThreads
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set number of payloads to be processed at a given time. Default is 1;</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;payloadProcessThreads&quot;)]
+public int PayloadProcessThreads { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_RemoteTemporaryStoragePath_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_RemoteTemporaryStoragePath" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.RemoteTemporaryStoragePath">
+  RemoteTemporaryStoragePath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets root directory path for storing incoming data in the <code>temporaryBucketName</code>.
+Defaults to <code>/incoming</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;remoteTemporaryStoragePath&quot;)]
+public string RemoteTemporaryStoragePath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ReserveSpaceGB_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ReserveSpaceGB*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_ReserveSpaceGB" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.ReserveSpaceGB">
+  ReserveSpaceGB
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L86"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the reserved disk space for the MONAI Deploy Informatics Gateway with default value of 5GB.
+MONAI Deploy Informatics Gateway will stop accepting (C-STORE-RQ) associations,
+stop exporting and stop retrieving data via DICOMweb when available disk space
+is less than the value.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;reserveSpaceGB&quot;)]
+public uint ReserveSpaceGB { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Retries_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Retries*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Retries" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Retries">
+  Retries
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets retry options relate to saving files to temporary storage, processing payloads and uploading payloads to the storage service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;retries&quot;)]
+public RetryConfiguration Retries { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Monai.Deploy.InformaticsGateway.Configuration.RetryConfiguration.html">RetryConfiguration</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceBucketName_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceBucketName*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceBucketName" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceBucketName">
+  StorageServiceBucketName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L55"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name of the bucket where payloads are uploaded to.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;bucketName&quot;)]
+public string StorageServiceBucketName { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceListTimeout_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceListTimeout*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_StorageServiceListTimeout" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.StorageServiceListTimeout">
+  StorageServiceListTimeout
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the timeout value, in milliseconds, for calls made to the storage service. Default is 5000;
+This applies to the following calls: ListObjectsAsync, VerifyObjectsExistAsync, VerifyObjectExistsAsync, ListObjectsWithCredentialsAsync.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;storageServiceListTimeout&quot;)]
+public int StorageServiceListTimeout { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryDataStorage_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryDataStorage" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryDataStorage">
+  TemporaryDataStorage
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether to store temporary data in <code>Memory</code> or on <code>Disk</code>.
+Defaults to <code>Memory</code>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;tempStorageLocation&quot;)]
+public TemporaryDataStorageLocation TemporaryDataStorage { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Monai.Deploy.InformaticsGateway.Configuration.TemporaryDataStorageLocation.html">TemporaryDataStorageLocation</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryStorageBucket_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageBucket*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_TemporaryStorageBucket" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.TemporaryStorageBucket">
+  TemporaryStorageBucket
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name of the bucket used for storing objects before they are assembled into payloads.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;temporaryBucketName&quot;)]
+public string TemporaryStorageBucket { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Watermark_" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Watermark*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Configuration_StorageConfiguration_Watermark" data-uid="Monai.Deploy.InformaticsGateway.Configuration.StorageConfiguration.Watermark">
+  Watermark
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L77"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the watermark for disk usage with default value of 75%,
+meaning that MONAI Deploy Informatics Gateway will stop accepting (C-STORE-RQ) associations,
+stop exporting and stop retrieving data via DICOMweb when used disk space
+is above the watermark.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[ConfigurationKeyName(&quot;watermarkPercent&quot;)]
+public uint Watermark { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Configuration/StorageConfiguration.cs/#L23" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2022-2025 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class VirtualApplicationEntity | MONAI Deploy Informatics Gateway v0.5.2 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class VirtualApplicationEntity | MONAI Deploy Informatics Gateway v0.5.2 ">
+      
+      <meta name="description" content="Virtual Application Entity (VAE). A VAE identifies a service or application similar to a DIMSE AE but is designed to be used for DICOMWeb. For example, users can configure VAEs on DICOMWeb STOW-RS endpoints to enable data input plug-ins, . This allows different plug-ins to be associated with each VAE for data manipulation, etc... In addition, one can trigger a new workflow request with the workflows defined in  when studies are posted to a VAE-enabled STOW-RS endpoint.">
+      <link rel="icon" href="../../../images/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../api/toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../images/MONAI-logo-color.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity">
+
+
+
+  <h1 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity" class="text-break">
+Class VirtualApplicationEntity  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Monai.html">Monai</a>.<a class="xref" href="Monai.Deploy.html">Deploy</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.html">InformaticsGateway</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.html">Api</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Monai.Deploy.InformaticsGateway.Api.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Virtual Application Entity (VAE).</p>
+<p>A VAE identifies a service or application similar to a DIMSE AE but is
+designed to be used for DICOMWeb.</p>
+<p>For example, users can configure VAEs on DICOMWeb STOW-RS endpoints to enable
+data input plug-ins, <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugIn.html">IInputDataPlugIn</a>. This allows different plug-ins
+to be associated with each VAE for data manipulation, etc...</p>
+<p>In addition, one can trigger a new workflow request with the workflows defined in
+<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.html#Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_Workflows">Workflows</a> when studies are posted to a VAE-enabled STOW-RS endpoint.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class VirtualApplicationEntity : MongoDBEntityBase</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.MongoDBEntityBase.html">MongoDBEntityBase</a></div>
+      <div><span class="xref">VirtualApplicationEntity</span></div>
+    </dd>
+  </dl>
+
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.MongoDBEntityBase.html#Monai_Deploy_InformaticsGateway_Api_Storage_MongoDBEntityBase_Id">MongoDBEntityBase.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.MongoDBEntityBase.html#Monai_Deploy_InformaticsGateway_Api_Storage_MongoDBEntityBase_DateTimeCreated">MongoDBEntityBase.DateTimeCreated</a>
+    </div>
+  </dd></dl>
+
+  <dl class="typelist extensionMethods">
+    <dt>Extension Methods</dt>
+    <dd>
+  <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Configuration.ValidationExtensions.html#Monai_Deploy_InformaticsGateway_Configuration_ValidationExtensions_IsValid_Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_System_Collections_Generic_IList_System_String___">ValidationExtensions.IsValid(VirtualApplicationEntity, out IList&lt;string&gt;)</a>
+  </div>
+  </dd></dl>
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity__ctor" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.#ctor">
+  VirtualApplicationEntity()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public VirtualApplicationEntity()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_CreatedBy_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.CreatedBy*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_CreatedBy" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.CreatedBy">
+  CreatedBy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the user who created the DICOM entity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? CreatedBy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_DateTimeUpdated_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.DateTimeUpdated*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_DateTimeUpdated" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.DateTimeUpdated">
+  DateTimeUpdated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the most recent date time the DICOM entity was updated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime? DateTimeUpdated { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_Name_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.Name*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_Name" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.Name">
+  Name
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the name of a MONAI DICOM application entity.
+This value must be unique.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[Key]
+[Column(Order = 0)]
+public string Name { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_PlugInAssemblies_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.PlugInAssemblies*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_PlugInAssemblies" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.PlugInAssemblies">
+  PlugInAssemblies
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L63"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Optional list of data input plug-in type names to be executed by the <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.PlugIns.IInputDataPlugInEngine.html">IInputDataPlugInEngine</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; PlugInAssemblies { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_UpdatedBy_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.UpdatedBy*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_UpdatedBy" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.UpdatedBy">
+  UpdatedBy
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the most recent user who updated the DICOM entity.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? UpdatedBy { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_VirtualAeTitle_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.VirtualAeTitle*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_VirtualAeTitle" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.VirtualAeTitle">
+  VirtualAeTitle
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L53"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the virtual AE TItle which is used as the URL fragment in the DICOMWeb STOW-RS endpoint.
+E.g. POST /dicomweb/vae/{aet}/studies where {aet} is the value from this property.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string VirtualAeTitle { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_Workflows_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.Workflows*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_Workflows" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.Workflows">
+  Workflows
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Optional field to map AE to one or more workflows.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;string&gt; Workflows { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_SetAuthor_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.SetAuthor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_SetAuthor_System_Security_Claims_ClaimsPrincipal_Monai_Deploy_InformaticsGateway_Api_EditMode_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.SetAuthor(System.Security.Claims.ClaimsPrincipal,Monai.Deploy.InformaticsGateway.Api.EditMode)">
+  SetAuthor(ClaimsPrincipal, EditMode)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L102"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetAuthor(ClaimsPrincipal user, EditMode editMode)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>user</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.security.claims.claimsprincipal">ClaimsPrincipal</a></dt>
+    <dd></dd>
+    <dt><code>editMode</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.EditMode.html">EditMode</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_SetDefaultValues_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.SetDefaultValues*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_SetDefaultValues" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.SetDefaultValues">
+  SetDefaultValues()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetDefaultValues()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_ToString_" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.ToString*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_VirtualApplicationEntity_ToString" data-uid="Monai.Deploy.InformaticsGateway.Api.VirtualApplicationEntity.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L97"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a string that represents the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A string that represents the current object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/VirtualApplicationEntity.cs/#L40" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2022-2025 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

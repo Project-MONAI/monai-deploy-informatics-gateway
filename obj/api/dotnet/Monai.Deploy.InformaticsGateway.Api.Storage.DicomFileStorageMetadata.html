@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class DicomFileStorageMetadata | MONAI Deploy Informatics Gateway v0.5.2 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DicomFileStorageMetadata | MONAI Deploy Informatics Gateway v0.5.2 ">
+      
+      <meta name="description" content="Provides basic information for a DICOM instance and storage hierarchy/path.">
+      <link rel="icon" href="../../../images/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../api/toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../images/MONAI-logo-color.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata">
+
+
+
+  <h1 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata" class="text-break">
+Class DicomFileStorageMetadata  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L27"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Monai.html">Monai</a>.<a class="xref" href="Monai.Deploy.html">Deploy</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.html">InformaticsGateway</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.html">Api</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.html">Storage</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Monai.Deploy.InformaticsGateway.Api.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>Provides basic information for a DICOM instance and storage hierarchy/path.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public sealed record DicomFileStorageMetadata : FileStorageMetadata, IEquatable&lt;FileStorageMetadata&gt;, IEquatable&lt;DicomFileStorageMetadata&gt;</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a></div>
+      <div><span class="xref">DicomFileStorageMetadata</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a>&gt;</div>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.iequatable-1">IEquatable</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.html">DicomFileStorageMetadata</a>&gt;</div>
+    </dd>
+  </dl>
+
+
+  <dl class="typelist inheritedMembers">
+    <dt>Inherited Members</dt>
+    <dd>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_Id">FileStorageMetadata.Id</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_CorrelationId">FileStorageMetadata.CorrelationId</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_DataOrigin">FileStorageMetadata.DataOrigin</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_Workflows">FileStorageMetadata.Workflows</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_DateReceived">FileStorageMetadata.DateReceived</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_WorkflowInstanceId">FileStorageMetadata.WorkflowInstanceId</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_TaskId">FileStorageMetadata.TaskId</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_PayloadId">FileStorageMetadata.PayloadId</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_SetWorkflows_System_String___">FileStorageMetadata.SetWorkflows(params string[])</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_ChangeCorrelationId_Microsoft_Extensions_Logging_ILogger_System_String_">FileStorageMetadata.ChangeCorrelationId(ILogger, string)</a>
+    </div>
+    <div>
+      <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html#Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_IpAddress">FileStorageMetadata.IpAddress()</a>
+    </div>
+  </dd></dl>
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata__ctor" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.#ctor">
+  DicomFileStorageMetadata()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L81"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>DO NOT USE
+This constructor is intended for JSON serializer.
+Due to limitation in current version of .NET, the constructor must be public.
+<a href="https://github.com/dotnet/runtime/issues/31511">https://github.com/dotnet/runtime/issues/31511</a></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonConstructor]
+public DicomFileStorageMetadata()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata__ctor_System_String_System_String_System_String_System_String_System_String_Monai_Deploy_Messaging_Events_DataService_System_String_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.#ctor(System.String,System.String,System.String,System.String,System.String,Monai.Deploy.Messaging.Events.DataService,System.String,System.String)">
+  DicomFileStorageMetadata(string, string, string, string, string, DataService, string, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L84"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DicomFileStorageMetadata(string associationId, string identifier, string studyInstanceUid, string seriesInstanceUid, string sopInstanceUid, DataService dataService, string callingAeTitle, string calledAeTitle)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>associationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>identifier</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>studyInstanceUid</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>seriesInstanceUid</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>sopInstanceUid</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>dataService</code> <span class="xref">DataService</span></dt>
+    <dd></dd>
+    <dt><code>callingAeTitle</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>calledAeTitle</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_DicomContentType" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.DicomContentType">
+  DicomContentType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L32"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly string DicomContentType</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_DicomJsonContentType" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.DicomJsonContentType">
+  DicomJsonContentType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L33"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly string DicomJsonContentType</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_DicomJsonFileExtension" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.DicomJsonFileExtension">
+  DicomJsonFileExtension
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly string DicomJsonFileExtension</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_DicomSubDirectoryName" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.DicomSubDirectoryName">
+  DicomSubDirectoryName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L29"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly string DicomSubDirectoryName</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_FileExtension" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.FileExtension">
+  FileExtension
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly string FileExtension</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_DataTypeDirectoryName_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.DataTypeDirectoryName*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_DataTypeDirectoryName" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.DataTypeDirectoryName">
+  DataTypeDirectoryName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the root directory name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public override string DataTypeDirectoryName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_File_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.File*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_File" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.File">
+  File
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the storage object associated.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;file&quot;)]
+public override StorageObjectMetadata File { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.html">StorageObjectMetadata</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_IsMoveCompleted_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.IsMoveCompleted*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_IsMoveCompleted" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.IsMoveCompleted">
+  IsMoveCompleted
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public override bool IsMoveCompleted { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_IsUploadFailed_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.IsUploadFailed*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_IsUploadFailed" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.IsUploadFailed">
+  IsUploadFailed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L73"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public override bool IsUploadFailed { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_IsUploaded_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.IsUploaded*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_IsUploaded" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.IsUploaded">
+  IsUploaded
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L67"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public override bool IsUploaded { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_JsonFile_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.JsonFile*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_JsonFile" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.JsonFile">
+  JsonFile
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the storage object metadata for the JSON file associated with the DICOM instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;jsonFile&quot;)]
+public StorageObjectMetadata JsonFile { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.html">StorageObjectMetadata</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SeriesInstanceUid_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SeriesInstanceUid*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SeriesInstanceUid" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SeriesInstanceUid">
+  SeriesInstanceUid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L44"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the Series Instance UID of the DICOM instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;seriesInstanceUid&quot;)]
+public string SeriesInstanceUid { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SopInstanceUid_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SopInstanceUid*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SopInstanceUid" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SopInstanceUid">
+  SopInstanceUid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the SOP Instance UID of the DICOM instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;sopInstanceUid&quot;)]
+public string SopInstanceUid { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_StudyInstanceUid_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.StudyInstanceUid*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_StudyInstanceUid" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.StudyInstanceUid">
+  StudyInstanceUid
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L38"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the Study Instance UID of the DICOM instance.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;studyInstanceUid&quot;)]
+public string StudyInstanceUid { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SetFailed_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SetFailed*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SetFailed" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SetFailed">
+  SetFailed()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L153"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void SetFailed()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SetStudyInstanceUid_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SetStudyInstanceUid*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SetStudyInstanceUid_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SetStudyInstanceUid(System.String)">
+  SetStudyInstanceUid(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetStudyInstanceUid(string newStudyInstanceUid)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>newStudyInstanceUid</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SetupGivenFilePaths_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SetupGivenFilePaths*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_DicomFileStorageMetadata_SetupGivenFilePaths_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.DicomFileStorageMetadata.SetupGivenFilePaths(System.String)">
+  SetupGivenFilePaths(string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L120"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetupGivenFilePaths(string? DestinationFolder)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>DestinationFolder</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/DicomFileStorageMetadata.cs/#L27" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2022-2025 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

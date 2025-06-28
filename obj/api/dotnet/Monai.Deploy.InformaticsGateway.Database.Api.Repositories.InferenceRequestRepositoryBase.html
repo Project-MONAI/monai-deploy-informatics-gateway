@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class InferenceRequestRepositoryBase | MONAI Deploy Informatics Gateway v0.5.2 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class InferenceRequestRepositoryBase | MONAI Deploy Informatics Gateway v0.5.2 ">
+      
+      
+      <link rel="icon" href="../../../images/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../api/toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../images/MONAI-logo-color.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase">
+
+
+
+  <h1 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase" class="text-break">
+Class InferenceRequestRepositoryBase  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Monai.html">Monai</a>.<a class="xref" href="Monai.Deploy.html">Deploy</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.html">InformaticsGateway</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Database.html">Database</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.html">Api</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.html">Repositories</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Monai.Deploy.InformaticsGateway.Database.Api.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class InferenceRequestRepositoryBase : IInferenceRequestRepository</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">InferenceRequestRepositoryBase</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.IInferenceRequestRepository.html">IInferenceRequestRepository</a></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase__ctor_Microsoft_Extensions_Logging_ILogger_Microsoft_Extensions_Options_IOptions_Monai_Deploy_InformaticsGateway_Configuration_DatabaseOptions__" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.#ctor(Microsoft.Extensions.Logging.ILogger,Microsoft.Extensions.Options.IOptions{Monai.Deploy.InformaticsGateway.Configuration.DatabaseOptions})">
+  InferenceRequestRepositoryBase(ILogger, IOptions&lt;DatabaseOptions&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected InferenceRequestRepositoryBase(ILogger logger, IOptions&lt;DatabaseOptions&gt; options)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger">ILogger</a></dt>
+    <dd></dd>
+    <dt><code>options</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.options.ioptions-1">IOptions</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Configuration.DatabaseOptions.html">DatabaseOptions</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_AddAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.AddAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_AddAsync_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.AddAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,System.Threading.CancellationToken)">
+  AddAsync(InferenceRequest, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L90"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Adds new inference request to the repository.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Task AddAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>inferenceRequest</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html">InferenceRequest</a></dt>
+    <dd><p>The inference request to be added.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_ExistsAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.ExistsAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_ExistsAsync_System_String_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.ExistsAsync(System.String,System.Threading.CancellationToken)">
+  ExistsAsync(string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L39"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><code>Exists</code> checks whether if an existing request with the same transaction ID exists.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;bool&gt; ExistsAsync(string transactionId, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>transactionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetInferenceRequestAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetInferenceRequestAsync_System_Guid_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync(System.Guid,System.Threading.CancellationToken)">
+  GetInferenceRequestAsync(Guid, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L96"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><code>Get</code> returns the specified inference request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Task&lt;InferenceRequest?&gt; GetInferenceRequestAsync(Guid inferenceRequestId, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>inferenceRequestId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd><p>The internal ID of the request.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html">InferenceRequest</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetInferenceRequestAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetInferenceRequestAsync_System_String_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetInferenceRequestAsync(System.String,System.Threading.CancellationToken)">
+  GetInferenceRequestAsync(string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><code>Get</code> returns the specified inference request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Task&lt;InferenceRequest?&gt; GetInferenceRequestAsync(string transactionId, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>transactionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The transactionId of the request.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html">InferenceRequest</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetStatusAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetStatusAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_GetStatusAsync_System_String_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.GetStatusAsync(System.String,System.Threading.CancellationToken)">
+  GetStatusAsync(string, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L45"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><code>GetStatus</code> returns the status of the specified inference request.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual Task&lt;InferenceStatusResponse?&gt; GetStatusAsync(string transactionId, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>transactionId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>The transactionId from the original request.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceStatusResponse.html">InferenceStatusResponse</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_SaveAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.SaveAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_SaveAsync_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.SaveAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,System.Threading.CancellationToken)">
+  SaveAsync(InferenceRequest, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L98"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected abstract Task SaveAsync(InferenceRequest inferenceRequest, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>inferenceRequest</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html">InferenceRequest</a></dt>
+    <dd></dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_TakeAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.TakeAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_TakeAsync_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.TakeAsync(System.Threading.CancellationToken)">
+  TakeAsync(CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L92"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p><code>Take</code> returns the next pending inference request for data retrieval.
+The default implementation blocks the call until a pending inference request is available for process.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Task&lt;InferenceRequest&gt; TakeAsync(CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd><p>cancellation token used to cancel the action.</p>
+</dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task-1">Task</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html">InferenceRequest</a>&gt;</dt>
+    <dd><p><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html">InferenceRequest</a></p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_UpdateAsync_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.UpdateAsync*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Database_Api_Repositories_InferenceRequestRepositoryBase_UpdateAsync_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequest_Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestStatus_System_Threading_CancellationToken_" data-uid="Monai.Deploy.InformaticsGateway.Database.Api.Repositories.InferenceRequestRepositoryBase.UpdateAsync(Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest,Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus,System.Threading.CancellationToken)">
+  UpdateAsync(InferenceRequest, InferenceRequestStatus, CancellationToken)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L61"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Updates an inference request's status.
+The default implementation drops the request after 3 retries if status is
+<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus.html#Monai_Deploy_InformaticsGateway_Api_Rest_InferenceRequestStatus_Fail">Fail</a>.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Task UpdateAsync(InferenceRequest inferenceRequest, InferenceRequestStatus status, CancellationToken cancellationToken = default)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>inferenceRequest</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequest.html">InferenceRequest</a></dt>
+    <dd><p>The inference request to be updated.</p>
+</dd>
+    <dt><code>status</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Rest.InferenceRequestStatus.html">InferenceRequestStatus</a></dt>
+    <dd><p>Current status of the inference request.</p>
+</dd>
+    <dt><code>cancellationToken</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.cancellationtoken">CancellationToken</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.threading.tasks.task">Task</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Database/Api/Repositories/InferenceRequestRepositoryBase.cs/#L26" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2022-2025 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

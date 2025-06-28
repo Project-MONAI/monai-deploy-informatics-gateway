@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class DicomWebClient | MONAI Deploy Informatics Gateway v0.5.2 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class DicomWebClient | MONAI Deploy Informatics Gateway v0.5.2 ">
+      
+      <meta name="description" content="A DICOMweb client for sending HTTP requests and receiving HTTP responses from a DICOMweb server.">
+      <link rel="icon" href="../../../images/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../api/toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../images/MONAI-logo-color.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient">
+
+
+
+  <h1 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient" class="text-break">
+Class DicomWebClient  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L31"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Monai.html">Monai</a>.<a class="xref" href="Monai.Deploy.html">Deploy</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.html">InformaticsGateway</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.html">DicomWeb</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.html">Client</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Monai.Deploy.InformaticsGateway.DicomWeb.Client.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"><p>A DICOMweb client for sending HTTP requests and receiving HTTP responses from a DICOMweb server.</p>
+</div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class DicomWebClient : IDicomWebClient</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">DicomWebClient</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IDicomWebClient.html">IDicomWebClient</a></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient__ctor_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient__ctor_System_Net_Http_HttpClient_Microsoft_Extensions_Logging_ILogger_Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient__" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.#ctor(System.Net.Http.HttpClient,Microsoft.Extensions.Logging.ILogger{Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient})">
+  DicomWebClient(HttpClient, ILogger&lt;DicomWebClient&gt;)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Initializes a new instance of the DicomWebClient class that connects to the specified URI using the credentials provided.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DicomWebClient(HttpClient httpClient, ILogger&lt;DicomWebClient&gt; logger)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>httpClient</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.httpclient">HttpClient</a></dt>
+    <dd><p>HTTP client .</p>
+</dd>
+    <dt><code>logger</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/microsoft.extensions.logging.ilogger-1">ILogger</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.html">DicomWebClient</a>&gt;</dt>
+    <dd><p>Optional logger for capturing client logs.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Qido_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Qido*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Qido" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Qido">
+  Qido
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L40"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Provides DICOMweb QIDO services for querying a remote server for studies.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IQidoService Qido { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IQidoService.html">IQidoService</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Stow_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Stow*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Stow" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Stow">
+  Stow
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L43"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Provides DICOMweb STOW services for storing DICOM instances.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IStowService Stow { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IStowService.html">IStowService</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Wado_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Wado*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_Wado" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.Wado">
+  Wado
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L37"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Provides DICOMweb WADO services for retrieving studies, series, instances, frames and bulkdata.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IWadoService Wado { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.IWadoService.html">IWadoService</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureAuthentication_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureAuthentication*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureAuthentication_System_Net_Http_Headers_AuthenticationHeaderValue_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureAuthentication(System.Net.Http.Headers.AuthenticationHeaderValue)">
+  ConfigureAuthentication(AuthenticationHeaderValue)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L114"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Configures the authentication header for the DICOMweb client.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ConfigureAuthentication(AuthenticationHeaderValue value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.net.http.headers.authenticationheadervalue">AuthenticationHeaderValue</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServicePrefix_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServicePrefix*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServicePrefix_Monai_Deploy_InformaticsGateway_DicomWeb_Client_API_DicomWebServiceType_System_String_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServicePrefix(Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebServiceType,System.String)">
+  ConfigureServicePrefix(DicomWebServiceType, string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L83"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Configures prefix for the specified service</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ConfigureServicePrefix(DicomWebServiceType serviceType, string urlPrefix)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>serviceType</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.DicomWeb.Client.API.DicomWebServiceType.html">DicomWebServiceType</a></dt>
+    <dd><p><code>ServiceType</code> to be configured</p>
+</dd>
+    <dt><code>urlPrefix</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>Url prefix</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServiceUris_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServiceUris*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_DicomWeb_Client_DicomWebClient_ConfigureServiceUris_System_Uri_" data-uid="Monai.Deploy.InformaticsGateway.DicomWeb.Client.DicomWebClient.ConfigureServiceUris(System.Uri)">
+  ConfigureServiceUris(Uri)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L71"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Configures the service URI of the DICOMweb service.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ConfigureServiceUris(Uri uriRoot)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>uriRoot</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uri">Uri</a></dt>
+    <dd><p>Base URL of the DICOMweb server.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/DicomWebClient/DicomWebClient.cs/#L31" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2022-2025 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

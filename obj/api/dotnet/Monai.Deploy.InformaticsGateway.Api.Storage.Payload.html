@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class Payload | MONAI Deploy Informatics Gateway v0.5.2 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class Payload | MONAI Deploy Informatics Gateway v0.5.2 ">
+      
+      
+      <link rel="icon" href="../../../images/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../api/toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_Payload.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.Payload%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../images/MONAI-logo-color.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload">
+
+
+
+  <h1 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload" class="text-break">
+Class Payload  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L26"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Monai.html">Monai</a>.<a class="xref" href="Monai.Deploy.html">Deploy</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.html">InformaticsGateway</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.html">Api</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.html">Storage</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Monai.Deploy.InformaticsGateway.Api.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class Payload : IDisposable</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">Payload</span></div>
+    </dd>
+  </dl>
+
+  <dl class="typelist implements">
+    <dt>Implements</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.idisposable">IDisposable</a></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor">
+  Payload()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L89"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Payload()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_System_String_System_String_System_String_System_String_Monai_Deploy_Messaging_Events_DataOrigin_System_UInt32_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor(System.String,System.String,System.String,System.String,Monai.Deploy.Messaging.Events.DataOrigin,System.UInt32)">
+  Payload(string, string, string?, string?, DataOrigin, uint)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>correlationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>workflowInstanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>taskId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>dataTrigger</code> <span class="xref">DataOrigin</span></dt>
+    <dd></dd>
+    <dt><code>timeout</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload__ctor_System_String_System_String_System_String_System_String_Monai_Deploy_Messaging_Events_DataOrigin_System_UInt32_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.#ctor(System.String,System.String,System.String,System.String,Monai.Deploy.Messaging.Events.DataOrigin,System.UInt32,System.String)">
+  Payload(string, string, string?, string?, DataOrigin, uint, string?)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L111"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Payload(string key, string correlationId, string? workflowInstanceId, string? taskId, DataOrigin dataTrigger, uint timeout, string? payloadId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>key</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>correlationId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>workflowInstanceId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>taskId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+    <dt><code>dataTrigger</code> <span class="xref">DataOrigin</span></dt>
+    <dd></dd>
+    <dt><code>timeout</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd></dd>
+    <dt><code>payloadId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="fields">Fields
+</h2>
+
+
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MAX_RETRY" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MAX_RETRY">
+  MAX_RETRY
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L46"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int MAX_RETRY = 3</code></pre>
+  </div>
+
+
+
+
+  <h4 class="section">Field Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CorrelationId_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CorrelationId*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_CorrelationId" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.CorrelationId">
+  CorrelationId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string CorrelationId { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Count_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Count*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Count" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Count">
+  Count
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L76"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataOrigins_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataOrigins*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataOrigins" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataOrigins">
+  DataOrigins
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L74"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HashSet&lt;DataOrigin&gt; DataOrigins { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.hashset-1">HashSet</a>&lt;<span class="xref">DataOrigin</span>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataTrigger_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataTrigger*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DataTrigger" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DataTrigger">
+  DataTrigger
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DataOrigin DataTrigger { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><span class="xref">DataOrigin</span></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DateTimeCreated_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DateTimeCreated*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_DateTimeCreated" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.DateTimeCreated">
+  DateTimeCreated
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L58"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DateTime DateTimeCreated { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Elapsed_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Elapsed" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Elapsed">
+  Elapsed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L80"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan Elapsed { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Files_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Files*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Files" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Files">
+  Files
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L64"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public List&lt;FileStorageMetadata&gt; Files { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.collections.generic.list-1">List</a>&lt;<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a>&gt;</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesFailedToUpload_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesFailedToUpload" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesFailedToUpload">
+  FilesFailedToUpload
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L87"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int FilesFailedToUpload { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesUploaded_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_FilesUploaded" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.FilesUploaded">
+  FilesUploaded
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int FilesUploaded { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_HasTimedOut_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.HasTimedOut*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_HasTimedOut" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.HasTimedOut">
+  HasTimedOut
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L78"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool HasTimedOut { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Key_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Key*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Key" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Key">
+  Key
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string Key { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MachineName_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_MachineName" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.MachineName">
+  MachineName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L56"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? MachineName { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_PayloadId_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_PayloadId" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadId">
+  PayloadId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L50"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Guid PayloadId { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_RetryCount_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.RetryCount*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_RetryCount" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.RetryCount">
+  RetryCount
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RetryCount { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.int32">int</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_State_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.State*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_State" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.State">
+  State
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L62"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Payload.PayloadState State { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.html">Payload</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.PayloadState.html">PayloadState</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_TaskId_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.TaskId*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_TaskId" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.TaskId">
+  TaskId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L70"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? TaskId { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Timeout_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Timeout*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Timeout" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Timeout">
+  Timeout
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L52"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public uint Timeout { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.uint32">uint</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_WorkflowInstanceId_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.WorkflowInstanceId*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_WorkflowInstanceId" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.WorkflowInstanceId">
+  WorkflowInstanceId
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L68"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string? WorkflowInstanceId { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Add_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Add*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Add_Monai_Deploy_InformaticsGateway_Api_Storage_FileStorageMetadata_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Add(Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata)">
+  Add(FileStorageMetadata)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L126"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Add(FileStorageMetadata value)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>value</code> <a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.FileStorageMetadata.html">FileStorageMetadata</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose">
+  Dispose()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L175"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Dispose()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_Dispose_System_Boolean_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.Dispose(System.Boolean)">
+  Dispose(bool)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L156"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected virtual void Dispose(bool disposing)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>disposing</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ElapsedTime_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ElapsedTime*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ElapsedTime" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ElapsedTime">
+  ElapsedTime()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L146"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public TimeSpan ElapsedTime()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.timespan">TimeSpan</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ResetRetry_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ResetRetry*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ResetRetry" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ResetRetry">
+  ResetRetry()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L151"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ResetRetry()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ToString_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_Payload_ToString" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.Payload.ToString">
+  ToString()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L170"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Returns a string that represents the current object.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd><p>A string that represents the current object.</p>
+</dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/Payload.cs/#L26" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2022-2025 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

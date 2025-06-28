@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+      <title>Class StorageObjectMetadata | MONAI Deploy Informatics Gateway v0.5.2 </title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="title" content="Class StorageObjectMetadata | MONAI Deploy Informatics Gateway v0.5.2 ">
+      
+      
+      <link rel="icon" href="../../../images/favicon.ico">
+      <link rel="stylesheet" href="../../../public/docfx.min.css">
+      <link rel="stylesheet" href="../../../public/main.css">
+      <meta name="docfx:navrel" content="../../../toc.html">
+      <meta name="docfx:tocrel" content="../../../api/toc.html">
+      
+      <meta name="docfx:rel" content="../../../">
+      
+      
+      <meta name="docfx:docurl" content="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/new/main/apiSpec/new?filename=Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata.md&amp;value=---%0Auid%3A%20Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata%0Asummary%3A%20&#39;*You%20can%20override%20summary%20for%20the%20API%20here%20using%20*MARKDOWN*%20syntax&#39;%0A---%0A%0A*Please%20type%20below%20more%20information%20about%20this%20API%3A*%0A%0A">
+      <meta name="loc:inThisArticle" content="In this article">
+      <meta name="loc:searchResultsCount" content="{count} results for &quot;{query}&quot;">
+      <meta name="loc:searchNoResults" content="No results for &quot;{query}&quot;">
+      <meta name="loc:tocFilter" content="Filter by title">
+      <meta name="loc:nextArticle" content="Next">
+      <meta name="loc:prevArticle" content="Previous">
+      <meta name="loc:themeLight" content="Light">
+      <meta name="loc:themeDark" content="Dark">
+      <meta name="loc:themeAuto" content="Auto">
+      <meta name="loc:changeTheme" content="Change theme">
+      <meta name="loc:copy" content="Copy">
+      <meta name="loc:downloadPdf" content="Download PDF">
+
+      <script type="module" src="./../../../public/docfx.min.js"></script>
+
+      <script>
+        const theme = localStorage.getItem('theme') || 'auto'
+        document.documentElement.setAttribute('data-bs-theme', theme === 'auto' ? (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light') : theme)
+      </script>
+
+  </head>
+
+  <body class="tex2jax_ignore" data-layout="" data-yaml-mime="ManagedReference">
+    <header class="bg-body border-bottom">
+      <nav id="autocollapse" class="navbar navbar-expand-md" role="navigation">
+        <div class="container-xxl flex-nowrap">
+          <a class="navbar-brand" href="../../../index.html">
+            <img id="logo" class="svg" src="../../../images/MONAI-logo-color.svg" alt="">
+            
+          </a>
+          <button class="btn btn-lg d-md-none border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navpanel" aria-controls="navpanel" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi bi-three-dots"></i>
+          </button>
+          <div class="collapse navbar-collapse" id="navpanel">
+            <div id="navbar">
+              <form class="search" role="search" id="search">
+                <i class="bi bi-search"></i>
+                <input class="form-control" id="search-query" type="search" disabled placeholder="Search" autocomplete="off" aria-label="Search">
+              </form>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main class="container-xxl">
+      <div class="toc-offcanvas">
+        <div class="offcanvas-md offcanvas-start" tabindex="-1" id="tocOffcanvas" aria-labelledby="tocOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="tocOffcanvasLabel">Table of Contents</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#tocOffcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <nav class="toc" id="toc"></nav>
+          </div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div class="actionbar">
+          <button class="btn btn-lg border-0 d-md-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#tocOffcanvas" aria-controls="tocOffcanvas" aria-expanded="false" aria-label="Show table of contents">
+            <i class="bi bi-list"></i>
+          </button>
+
+          <nav id="breadcrumb"></nav>
+        </div>
+
+        <article data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata">
+
+
+
+  <h1 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata" class="text-break">
+Class StorageObjectMetadata  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L25"><i class="bi bi-code-slash"></i></a>
+  </h1>
+
+  <div class="facts text-secondary">
+    <dl><dt>Namespace</dt><dd><a class="xref" href="Monai.html">Monai</a>.<a class="xref" href="Monai.Deploy.html">Deploy</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.html">InformaticsGateway</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.html">Api</a>.<a class="xref" href="Monai.Deploy.InformaticsGateway.Api.Storage.html">Storage</a></dd></dl>
+  <dl><dt>Assembly</dt><dd>Monai.Deploy.InformaticsGateway.Api.dll</dd></dl>
+  </div>
+
+  <div class="markdown summary"></div>
+  <div class="markdown conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class StorageObjectMetadata</code></pre>
+  </div>
+
+
+
+
+  <dl class="typelist inheritance">
+    <dt>Inheritance</dt>
+    <dd>
+      <div><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.object">object</a></div>
+      <div><span class="xref">StorageObjectMetadata</span></div>
+    </dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="constructors">Constructors
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata__ctor_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.#ctor*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata__ctor_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.#ctor(System.String)">
+  StorageObjectMetadata(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L94"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public StorageObjectMetadata(string fileExtension)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>fileExtension</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <h2 class="section" id="properties">Properties
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_ContentType_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.ContentType*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_ContentType" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.ContentType">
+  ContentType
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L48"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the content type of the file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;contentType&quot;)]
+public string ContentType { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_Data_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.Data*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_Data" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.Data">
+  Data
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L54"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the data stream.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonIgnore]
+public Stream Data { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.io.stream">Stream</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_DateMoved_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.DateMoved*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_DateMoved" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.DateMoved">
+  DateMoved
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L60"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;dateMoved&quot;)]
+[JsonInclude]
+public DateTime DateMoved { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_DateUploaded_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.DateUploaded*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_DateUploaded" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.DateUploaded">
+  DateUploaded
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L66"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or set the date time file was uploaded.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;dateUploaded&quot;)]
+public DateTime? DateUploaded { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.datetime">DateTime</a>?</dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_DestinationFolderOverride_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.DestinationFolderOverride*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_DestinationFolderOverride" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.DestinationFolderOverride">
+  DestinationFolderOverride
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L91"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;destinationFolderOverride&quot;)]
+public bool DestinationFolderOverride { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_FileExtension_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.FileExtension*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_FileExtension" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.FileExtension">
+  FileExtension
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L42"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the file extension.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;fileExtension&quot;)]
+public string FileExtension { get; init; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_IsMoveCompleted_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.IsMoveCompleted*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_IsMoveCompleted" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.IsMoveCompleted">
+  IsMoveCompleted
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L88"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;isMoveCompleted&quot;)]
+[JsonInclude]
+public bool IsMoveCompleted { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_IsUploadFailed_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.IsUploadFailed*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_IsUploadFailed" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.IsUploadFailed">
+  IsUploadFailed
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L85"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether upload failed.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;isUploadFailed&quot;)]
+[JsonInclude]
+public bool IsUploadFailed { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_IsUploaded_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.IsUploaded*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_IsUploaded" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.IsUploaded">
+  IsUploaded
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L79"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets whether the file is uploaded to the temporary bucket.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;isUploaded&quot;)]
+[JsonInclude]
+public bool IsUploaded { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.boolean">bool</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_PayloadBucketName_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.PayloadBucketName*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_PayloadBucketName" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.PayloadBucketName">
+  PayloadBucketName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L57"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;payloadBucketName&quot;)]
+[JsonInclude]
+public string PayloadBucketName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_TemporaryBucketName_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.TemporaryBucketName*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_TemporaryBucketName" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.TemporaryBucketName">
+  TemporaryBucketName
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L72"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets the temporary bucket used for storing the file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;temporaryBucketName&quot;)]
+[JsonInclude]
+public string TemporaryBucketName { get; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_TemporaryPath_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.TemporaryPath*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_TemporaryPath" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.TemporaryPath">
+  TemporaryPath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L30"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the temporary path before file is assembled into a payload.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;temporaryPath&quot;)]
+public string TemporaryPath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_UploadPath_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.UploadPath*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_UploadPath" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.UploadPath">
+  UploadPath
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L36"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"><p>Gets or sets the path the file is stored within the payload directory.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">[JsonPropertyName(&quot;uploadPath&quot;)]
+public string UploadPath { get; set; }</code></pre>
+  </div>
+
+
+
+
+
+  <h4 class="section">Property Value</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+  <h2 class="section" id="methods">Methods
+</h2>
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_GetPayloadPath_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.GetPayloadPath*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_GetPayloadPath_System_Guid_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.GetPayloadPath(System.Guid)">
+  GetPayloadPath(Guid)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L113"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetPayloadPath(Guid payloadId)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>payloadId</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.guid">Guid</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_GetTempStoragPath_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.GetTempStoragPath*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_GetTempStoragPath_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.GetTempStoragPath(System.String)">
+  GetTempStoragPath(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L107"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string GetTempStoragPath(string rootPath)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>rootPath</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+  <h4 class="section">Returns</h4>
+  <dl class="parameters">
+    <dt><a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_SetFailed_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.SetFailed*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_SetFailed" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.SetFailed">
+  SetFailed()
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L158"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetFailed()</code></pre>
+  </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_SetMoved_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.SetMoved*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_SetMoved_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.SetMoved(System.String)">
+  SetMoved(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L163"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetMoved(string bucketName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bucketName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+  <a id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_SetUploaded_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.SetUploaded*"></a>
+
+  <h3 id="Monai_Deploy_InformaticsGateway_Api_Storage_StorageObjectMetadata_SetUploaded_System_String_" data-uid="Monai.Deploy.InformaticsGateway.Api.Storage.StorageObjectMetadata.SetUploaded(System.String)">
+  SetUploaded(string)
+  <a class="header-action link-secondary" title="View source" href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L124"><i class="bi bi-code-slash"></i></a>
+  </h3>
+
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetUploaded(string bucketName)</code></pre>
+  </div>
+
+  <h4 class="section">Parameters</h4>
+  <dl class="parameters">
+    <dt><code>bucketName</code> <a class="xref" href="https://learn.microsoft.com/dotnet/api/system.string">string</a></dt>
+    <dd></dd>
+  </dl>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</article>
+
+        <div class="contribution d-print-none">
+          <a href="https://github.com/Project-MONAI/monai-deploy-informatics-gateway/blob/main/src/Api/Storage/StorageObjectMetadata.cs/#L25" class="edit-link">Edit this page</a>
+        </div>
+
+
+      </div>
+
+      <div class="affix">
+        <nav id="affix"></nav>
+      </div>
+    </main>
+
+    <div class="container-xxl search-results" id="search-results"></div>
+
+    <footer class="border-top text-secondary">
+      <div class="container-xxl">
+        <div class="flex-fill">
+          Copyright © 2022-2025 <a href="https://monai.io/">Project MONAI</a><br>Generated by <strong>DocFX</strong>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
