@@ -23,6 +23,8 @@
             ],
             "dest": "obj/api/dotnet",
             "filter": "filterConfig.yml",
+            "namespaceLayout": "flattened",
+            "memberLayout": "samePage",
             "properties": {
                 "TargetFramework": "net8.0"
             }
