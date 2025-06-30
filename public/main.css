@@ -23,11 +23,11 @@
     --highlight-dark: #03a3a3;
     --accent-dim: #e0e0e0;
     --accent-super-dim: #f3f3f3;
-    --font-color: #34393e;
+    --font-color: light-dark(#34393e, #fff);
     --card-box-shadow: 0 1px 2px 0 rgba(61, 65, 68, 0.06), 0 1px 3px 1px rgba(61, 65, 68, 0.16);
     --search-box-shadow: 0 1px 2px 0 rgba(41, 45, 48, 0.36), 0 1px 3px 1px rgba(41, 45, 48, 0.46);
     --transition: 350ms;
-    --hover: #eff7e0;
+    --hover: light-dark(#eff7e0, #34393e);
 }
 
 body {
@@ -54,8 +54,7 @@ a:hover,
 a:focus {
     color: var(--highlight-light);
     text-decoration: none;
-    color: #03a3a3;
-    background-color: #eff7e0;
+    background-color: var(--hover);
 }
 
 .toc .nav>li.active>a {
