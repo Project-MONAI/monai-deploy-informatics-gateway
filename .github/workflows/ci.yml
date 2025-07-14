@@ -55,13 +55,13 @@ jobs:
           dotnet-version: "8.0.x"
 
       - name: Setup GitVersion
-        uses: gittools/actions/gitversion/setup@v3.1.11
+        uses: gittools/actions/gitversion/setup@v4.0.1
         with:
           versionSpec: '6.0.x'
 
       - name: Determine Version
         id: gitversion
-        uses: gittools/actions/gitversion/execute@v3.1.11
+        uses: gittools/actions/gitversion/execute@v4.0.1
         with:
           useConfigFile: true
           updateAssemblyInfo: true
@@ -627,12 +627,12 @@ jobs:
           publish_branch: docs
 
       - name: Install GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/setup@v3.1.11
+        uses: gittools/actions/gitreleasemanager/setup@v4.0.1
         with:
           versionSpec: '0.18.x'
 
       - name: Create release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/create@v3.1.11
+        uses: gittools/actions/gitreleasemanager/create@v4.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -644,7 +644,7 @@ jobs:
             artifacts-docs/mig-docs-${{ env.SEMVER }}.zip
 
       - name: Publish release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/publish@v3.1.11
+        uses: gittools/actions/gitreleasemanager/publish@v4.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
@@ -652,7 +652,7 @@ jobs:
           milestone: ${{ env.VERSION }}
 
       - name: Close release with GitReleaseManager
-        uses: gittools/actions/gitreleasemanager/close@v3.1.11
+        uses: gittools/actions/gitreleasemanager/close@v4.0.1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           owner: ${{ steps.repo.outputs._0 }}
