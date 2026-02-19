@@ -15,6 +15,9 @@
  */
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
@@ -156,6 +159,126 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Connectors
             _logger.VerifyLoggingMessageBeginsWith($"Number of incomplete payloads waiting for processing: 1.", LogLevel.Trace, Times.AtLeastOnce());
             Assert.Single(result.Files);
             _logger.VerifyLoggingMessageBeginsWith($"Bucket A sent to processing queue with {result.Count} files", LogLevel.Information, Times.AtLeastOnce());
+        }
+
+        [RetryFact(5, 500)]
+        public async Task GivenConcurrentQueueOperations_WhenTimerProcessesBuckets_ExpectNoInvalidOperationException()
+        {
+            // This test verifies the race condition fix: concurrent Queue() calls
+            // should not cause InvalidOperationException in OnTimedEvent when it
+            // iterates over the _payloads dictionary.
+            var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
+            var exceptions = new ConcurrentBag<Exception>();
+            var tasks = new List<Task>();
+
+            // Simulate many concurrent Queue operations across different buckets
+            // while the timer is actively processing (fires every 1 second).
+            for (int i = 0; i < 50; i++)
+            {
+                var bucketName = $"concurrent-bucket-{i}";
+                var file = new TestStorageInfo(
+                    Guid.NewGuid().ToString(),
+                    Guid.NewGuid().ToString(),
+                    $"file-{i}",
+                    ".dcm",
+                    new DataOrigin
+                    {
+                        DataService = Messaging.Events.DataService.DIMSE,
+                        Destination = "dest",
+                        Source = "source"
+                    });
+
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        await payloadAssembler.Queue(
+                            bucketName,
+                            file,
+                            new DataOrigin
+                            {
+                                DataService = Messaging.Events.DataService.DIMSE,
+                                Destination = "dest",
+                                Source = "source"
+                            },
+                            1);
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(ex);
+                    }
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+
+            // Allow the timer to fire and process buckets while new ones may still be settling
+            await Task.Delay(3000);
+
+            payloadAssembler.Dispose();
+
+            // The critical assertion: no InvalidOperationException should have occurred
+            // in either the Queue tasks or the timer's OnTimedEvent processing.
+            var raceConditionErrors = exceptions.Where(ex => ex is InvalidOperationException).ToList();
+            Assert.Empty(raceConditionErrors);
+        }
+
+        [RetryFact(5, 500)]
+        public async Task GivenConcurrentQueueAndDequeue_WhenUnderLoad_ExpectStableOperation()
+        {
+            // Stress test: rapidly add files to overlapping buckets with short timeouts,
+            // ensuring concurrent modification of the dictionary does not crash the timer.
+            var payloadAssembler = new PayloadAssembler(_logger.Object, _serviceScopeFactory.Object);
+            var exceptions = new ConcurrentBag<Exception>();
+            var tasks = new List<Task>();
+
+            for (int i = 0; i < 100; i++)
+            {
+                // Use only 5 distinct bucket names so multiple tasks hit the same bucket concurrently
+                var bucketName = $"stress-bucket-{i % 5}";
+                var file = new TestStorageInfo(
+                    Guid.NewGuid().ToString(),
+                    Guid.NewGuid().ToString(),
+                    $"stress-file-{i}",
+                    ".dcm",
+                    new DataOrigin
+                    {
+                        DataService = Messaging.Events.DataService.DIMSE,
+                        Destination = "dest",
+                        Source = "source"
+                    });
+
+                tasks.Add(Task.Run(async () =>
+                {
+                    try
+                    {
+                        await payloadAssembler.Queue(
+                            bucketName,
+                            file,
+                            new DataOrigin
+                            {
+                                DataService = Messaging.Events.DataService.DIMSE,
+                                Destination = "dest",
+                                Source = "source"
+                            },
+                            1);
+                    }
+                    catch (Exception ex)
+                    {
+                        exceptions.Add(ex);
+                    }
+                }));
+            }
+
+            await Task.WhenAll(tasks);
+
+            // Let timer fire several cycles
+            await Task.Delay(4000);
+
+            payloadAssembler.Dispose();
+
+            var raceConditionErrors = exceptions.Where(ex => ex is InvalidOperationException).ToList();
+            Assert.Empty(raceConditionErrors);
         }
     }
 }

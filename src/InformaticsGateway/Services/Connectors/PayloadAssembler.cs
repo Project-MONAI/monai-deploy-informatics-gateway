@@ -152,9 +152,20 @@ namespace Monai.Deploy.InformaticsGateway.Services.Connectors
                 {
                     _logger.BucketsActive(_payloads.Count);
                 }
-                foreach (var key in _payloads.Keys)
+
+                // Take a snapshot of the keys to avoid InvalidOperationException
+                // when the collection is modified during iteration by concurrent Queue() calls.
+                var keysSnapshot = _payloads.Keys.ToList();
+
+                foreach (var key in keysSnapshot)
                 {
-                    var payload = await _payloads[key].WithCancellation(_tokenSource.Token).ConfigureAwait(false);
+                    // Key may have been removed by another thread between snapshot and access
+                    if (!_payloads.TryGetValue(key, out var lazyPayload))
+                    {
+                        continue;
+                    }
+
+                    var payload = await lazyPayload.WithCancellation(_tokenSource.Token).ConfigureAwait(false);
                     using var loggerScope = _logger.BeginScope(new LoggingDataDictionary<string, object> { { "CorrelationId", payload.CorrelationId } });
 
                     _logger.BucketElapsedTime(key, payload.Timeout, payload.ElapsedTime().TotalSeconds, payload.Files.Count, payload.FilesUploaded, payload.FilesFailedToUpload);
