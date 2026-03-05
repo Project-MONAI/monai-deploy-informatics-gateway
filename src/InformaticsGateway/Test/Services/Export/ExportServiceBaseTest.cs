@@ -81,7 +81,8 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
             lock (SyncRoot)
             {
                 var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
-                if (ExportRequests.ContainsKey(exportRequest.ExportTaskId))
+                string exportKey = BuildExportKey(exportRequest.WorkflowInstanceId, exportRequest.ExportTaskId);
+                if (ExportRequests.ContainsKey(exportKey))
                 {
                     return;
                 }
@@ -91,7 +92,7 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
 
                 var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
 
-                ExportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
+                ExportRequests.Add(exportKey, exportRequestWithDetails);
                 if (!exportFlow.Post(exportRequestWithDetails))
                 {
                     MessageSubscriber.Reject(eventArgs.Message);
@@ -340,6 +341,62 @@ namespace Monai.Deploy.InformaticsGateway.Test.Services.Export
                                                               It.IsAny<ushort>()), Times.Once());
             _outputDataPlugInEngine.Verify(p => p.Configure(It.IsAny<IReadOnlyList<string>>()), Times.Exactly(5 * 2));
             _outputDataPlugInEngine.Verify(p => p.ExecutePlugInsAsync(It.IsAny<ExportRequestDataMessage>()), Times.Exactly(5 * 2));
+        }
+
+        [RetryFact(1, 10, DisplayName = "Data flow test - same ExportTaskId different WorkflowInstanceId are not deduplicated")]
+        public async Task DataflowTest_SameExportTaskId_DifferentWorkflowInstanceId_BothProcessed()
+        {
+            var sharedExportTaskId = Guid.NewGuid().ToString();
+            var completedCount = 0;
+
+            _messagePublisherService.Setup(p => p.Publish(It.IsAny<string>(), It.IsAny<Message>()));
+            _messageSubscriberService.Setup(p => p.Acknowledge(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(p => p.RequeueWithDelay(It.IsAny<MessageBase>()));
+            _messageSubscriberService.Setup(
+                p => p.SubscribeAsync(It.IsAny<string>(),
+                                 It.IsAny<string>(),
+                                 It.IsAny<Func<MessageReceivedEventArgs, Task>>(),
+                                 It.IsAny<ushort>()))
+                .Callback<string, string, Func<MessageReceivedEventArgs, Task>, ushort>(async (topic, queue, messageReceivedCallback, prefetchCount) =>
+                {
+                    // Same ExportTaskId, two different WorkflowInstanceIds - must NOT be deduplicated
+                    await messageReceivedCallback(CreateMessageReceivedEventArgs(Guid.NewGuid().ToString(), sharedExportTaskId));
+                    await messageReceivedCallback(CreateMessageReceivedEventArgs(Guid.NewGuid().ToString(), sharedExportTaskId));
+                });
+
+            _storageService.Setup(p => p.GetObjectAsync(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new MemoryStream(Encoding.UTF8.GetBytes("test")));
+
+            var countdownEvent = new CountdownEvent(2);
+            var service = new TestExportService(_logger.Object, _configuration, _serviceScopeFactory.Object, _dicomToolkit.Object);
+            service.ReportActionCompleted += (sender, e) =>
+            {
+                Interlocked.Increment(ref completedCount);
+                countdownEvent.Signal();
+            };
+            await service.StartAsync(_cancellationTokenSource.Token);
+            Assert.True(countdownEvent.Wait(60000), $"Expected 2 exports to complete but only {completedCount} completed - second request was incorrectly deduplicated");
+            await StopAndVerify(service);
+
+            _messagePublisherService.Verify(
+                p => p.Publish(It.IsAny<string>(),
+                               It.Is<Message>(match => (match.ConvertTo<ExportCompleteEvent>()).Status == ExportStatus.Success)), Times.Exactly(2));
+            _messageSubscriberService.Verify(p => p.Acknowledge(It.IsAny<MessageBase>()), Times.Exactly(2));
+        }
+
+        internal static MessageReceivedEventArgs CreateMessageReceivedEventArgs(string workflowInstanceId, string exportTaskId)
+        {
+            var exportRequestEvent = new ExportRequestEvent
+            {
+                ExportTaskId = exportTaskId,
+                CorrelationId = Guid.NewGuid().ToString(),
+                Destinations = new[] { "destination" },
+                Files = new[] { "file1", "file2" },
+                MessageId = Guid.NewGuid().ToString(),
+                WorkflowInstanceId = workflowInstanceId,
+            };
+            var jsonMessage = new JsonMessage<ExportRequestEvent>(exportRequestEvent, MessageBrokerConfiguration.InformaticsGatewayApplicationId, exportRequestEvent.CorrelationId, exportRequestEvent.DeliveryTag);
+            return new MessageReceivedEventArgs(jsonMessage.ToMessage(), CancellationToken.None);
         }
 
         internal static MessageReceivedEventArgs CreateMessageReceivedEventArgs()
