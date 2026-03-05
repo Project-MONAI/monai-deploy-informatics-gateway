@@ -53,6 +53,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
     {
         protected static readonly object SyncRoot = new();
 
+        protected static string BuildExportKey(string workflowInstanceId, string exportTaskId) => $"{workflowInstanceId}/{exportTaskId}";
+
         internal event EventHandler? ReportActionCompleted;
 
         private readonly CancellationTokenSource _cancellationTokenSource;
@@ -373,7 +375,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
         private void ReportingActionBlock(ExportRequestDataMessage exportRequestData)
         {
-            var exportRequest = ExportRequests[exportRequestData.ExportTaskId];
+            var exportRequest = ExportRequests[BuildExportKey(exportRequestData.WorkflowInstanceId, exportRequestData.ExportTaskId)];
             HandleStatus(exportRequestData, exportRequest);
             if (!exportRequest.IsCompleted)
             {
@@ -391,7 +393,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
             lock (SyncRoot)
             {
-                ExportRequests.Remove(exportRequestData.ExportTaskId);
+                ExportRequests.Remove(BuildExportKey(exportRequestData.WorkflowInstanceId, exportRequestData.ExportTaskId));
             }
 
             if (ReportActionCompleted != null)
@@ -588,7 +590,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             lock (SyncRoot)
             {
                 var exportRequest = eventArgs.Message.ConvertTo<ExportRequestEvent>();
-                if (ExportRequests.ContainsKey(exportRequest.ExportTaskId))
+                string exportKey = BuildExportKey(exportRequest.WorkflowInstanceId, exportRequest.ExportTaskId);
+                if (ExportRequests.ContainsKey(exportKey))
                 {
                     _logger.ExportRequestAlreadyQueued(exportRequest.CorrelationId, exportRequest.ExportTaskId);
                     return;
@@ -599,7 +602,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
                 var exportRequestWithDetails = new ExportRequestEventDetails(exportRequest);
 
-                ExportRequests.Add(exportRequest.ExportTaskId, exportRequestWithDetails);
+                ExportRequests.Add(exportKey, exportRequestWithDetails);
                 if (!exportFlow.Post(exportRequestWithDetails))
                 {
                     _logger.ErrorPostingExportJobToQueue(exportRequest.CorrelationId, exportRequest.ExportTaskId);

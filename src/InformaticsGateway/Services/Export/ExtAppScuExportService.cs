@@ -67,7 +67,8 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
             lock (SyncRoot)
             {
                 var externalAppRequest = eventArgs.Message.ConvertTo<ExternalAppRequestEvent>();
-                if (ExportRequests.ContainsKey(externalAppRequest.ExportTaskId))
+                string exportKey = BuildExportKey(externalAppRequest.WorkflowInstanceId, externalAppRequest.ExportTaskId);
+                if (ExportRequests.ContainsKey(exportKey))
                 {
                     _logger.ExportRequestAlreadyQueued(externalAppRequest.CorrelationId, externalAppRequest.ExportTaskId);
                     return;
@@ -78,7 +79,7 @@ namespace Monai.Deploy.InformaticsGateway.Services.Export
 
                 var exportRequestWithDetails = new ExportRequestEventDetails(externalAppRequest);
 
-                ExportRequests.Add(externalAppRequest.ExportTaskId, exportRequestWithDetails);
+                ExportRequests.Add(exportKey, exportRequestWithDetails);
                 if (!exportFlow.Post(exportRequestWithDetails))
                 {
                     _logger.ErrorPostingExportJobToQueue(externalAppRequest.CorrelationId, externalAppRequest.ExportTaskId);
